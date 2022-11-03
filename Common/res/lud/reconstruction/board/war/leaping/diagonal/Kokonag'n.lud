@@ -10,20 +10,29 @@
 
 //------------------------------------------------------------------------------
 
+
+(rulesets { 
+
+(ruleset "Ruleset/Historical Information (Incomplete)" {
+
+})
+
+})
+
 (metadata 
     
-    (info
-        {
-        (description "Kokonag'n is a game that was played by the Passamaquoddy people of Maine. Unlike other games played by the Passamaquoddy, this one could be played between women and men.")
-        (rules "Resembles checkers. The spaces on the board have different sizes. Round and square pieces. Pieces are marked with different values.")
-        (source "DLP evidence.")
-        (id "1236")
-        (version "1.3.7")
-        (classification "board/war/leaping/diagonal/reconstruction")
-        (credit "Eric Piette")
-        (origin "This game was played in Maine, around 1888.")
-        }
-    )
+(info
+{
+(description "Kokonag'n is a game that was played by the Passamaquoddy people of Maine. Unlike other games played by the Passamaquoddy, this one could be played between women and men.")
+(rules "Resembles checkers. The spaces on the board have different sizes. Round and square pieces. Pieces are marked with different values.")
+(source "DLP evidence.")
+(id "1236")
+(version "1.3.7")
+(classification "board/war/leaping/diagonal/reconstruction")
+(credit "Eric Piette")
+(origin "This game was played in Maine, around 1888.")
+}
+)
     
     (recon {
         (concept "PieceValue" True)

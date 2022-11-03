@@ -76,30 +76,30 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    (info
-        {
-        (description "Lava is a territorial stacking game invented by Alek Erickson and Michael Amundsen in August 2021.")
-        (rules "Lava is a territorial stacking game for two players, Red and Black. Play using a Hexhex board size 4 or 5, and a sufficient supply of Red/Black stacking checkers. To setup, place one Red and one Black checker in opposite corners of the hex hex board.
-            
-            Definitions:
-            Stack: One or more checkers occupying the same cell.
-            Control: You control a stack if your color is on top of it.
-            
-            Players take turns, with Black moving first.
-            
-            Each turn, take N checkers (where N is any number from 1 to stack size) from the top of a stack you control and move them N spaces in a straight line to a destination containing N or less checkers. Then, add a new checker of your color to the destination. Stacks may not jump over enemies, but may land on enemy or friendly stacks, thereby burying them.
-            
-            If you at any point cannot make a move, you must pass. This does not end the game, only your turn.
-            
-        When the board is full, the player controlling more stacks wins the game.")
-        (id "1651")
-        (version "1.3.7")
-        (classification "board/space/territory")
-        (author "Alek Erickson and Michael Amundsen")
-        (credit "Michael Amundsen")
-        (date "2021")
-        }
-    )
+(info
+{
+(description "Lava is a territorial stacking game invented by Alek Erickson and Michael Amundsen in August 2021.")
+(rules "Lava is a territorial stacking game for two players, Red and Black. Play using a Hexhex board size 4 or 5, and a sufficient supply of Red/Black stacking checkers. To setup, place one Red and one Black checker in opposite corners of the hex hex board.
+
+Definitions:
+Stack: One or more checkers occupying the same cell.
+Control: You control a stack if your color is on top of it.
+
+Players take turns, with Black moving first.
+
+Each turn, take N checkers (where N is any number from 1 to stack size) from the top of a stack you control and move them N spaces in a straight line to a destination containing N or less checkers. Then, add a new checker of your color to the destination. Stacks may not jump over enemies, but may land on enemy or friendly stacks, thereby burying them.
+
+If you at any point cannot make a move, you must pass. This does not end the game, only your turn.
+
+When the board is full, the player controlling more stacks wins the game.")
+(id "1651")
+(version "1.3.7")
+(classification "board/space/territory")
+(author "Alek Erickson and Michael Amundsen")
+(credit "Michael Amundsen")
+(date "2021")
+}
+)
     
     (graphics {
         (player Colour P1 (colour DarkGrey))

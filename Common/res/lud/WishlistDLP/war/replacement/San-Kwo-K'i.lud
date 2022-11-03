@@ -107,20 +107,20 @@
 
 (metadata 
     
-    (info
-        {
-        (description "San-Kwo-K'i is a three-player version of Xiangqi. It is conceptualized as reflecting the War of the Three Kingdoms from Chinese history (221-264 CE). Each player plays as one of the three kingdoms: Wei (blue), Shu (red), and Wu (green).")
-        (aliases {"San-Kwo-Chih"})
-        (rules "Played on a hexagonal board with the three camps divided by a \"river.\" Pieces are placed on the intersections of the lines. Centered on opposite sides of the boards are two areas, known as the gong (\"castle\"). Pieces are double-sided, with different colors and names of the pieces indicating to which player they belong. Jiang(\"general\")/shuai(\"marshal\")(1): may move one space orthogonally and cannot leave the gong except when opposite the opponent's jiang/shuai, in which case the piece can capture the opponent's jiang/shuai. Shi(\"guard\")(2): moves one space diagonally and cannot leave the gong. Xiang(\"elephant\")/xiang(\"minister\")(2): move two places diagonally and cannot cross the river. Ma(\"horse\")(2): move orthogonally one and then diagonally one space. Can be blocked by a piece next to it orthogonally. Ju(\"chariot\"(2): moves any number of spaces orthogonally. Pao(\"catapult\")/pao(\"cannon\") (2): can move orthogonally any number of spaces, captures by jumping one piece (of either player). Zu(\"private\"/zu (\"soldier\")(5): can move one space forward. Once they cross the river, can also move one space horizontally. Chuo (red, \"fire\")/Ch'i (blue, \"banner\")/Feng (green, \"wind\")(2): moves two points orthogonally and one point diagonallyThe goal is to checkmate the opponents' jiang/shuai. When a player checkmates one of their opponent's jiang/shuai, it is removed from the board and any of that opponent's pieces are now controlled by the player making the checkmate.  
-                ")
-                (source "von Möllendorf 1876: 17-18.")
-                (id "303")
-                (version "1.3.7")
-                (classification "war/replacement/WishlistDLP")
-                (credit "Eric Piette")
-                (origin "This game was played in China, around 1876.")
-                }
-            )
+(info
+{
+(description "San-Kwo-K'i is a three-player version of Xiangqi. It is conceptualized as reflecting the War of the Three Kingdoms from Chinese history (221-264 CE). Each player plays as one of the three kingdoms: Wei (blue), Shu (red), and Wu (green).")
+(aliases {"San-Kwo-Chih"})
+(rules "Played on a hexagonal board with the three camps divided by a \"river.\" Pieces are placed on the intersections of the lines. Centered on opposite sides of the boards are two areas, known as the gong (\"castle\"). Pieces are double-sided, with different colors and names of the pieces indicating to which player they belong. Jiang(\"general\")/shuai(\"marshal\")(1): may move one space orthogonally and cannot leave the gong except when opposite the opponent's jiang/shuai, in which case the piece can capture the opponent's jiang/shuai. Shi(\"guard\")(2): moves one space diagonally and cannot leave the gong. Xiang(\"elephant\")/xiang(\"minister\")(2): move two places diagonally and cannot cross the river. Ma(\"horse\")(2): move orthogonally one and then diagonally one space. Can be blocked by a piece next to it orthogonally. Ju(\"chariot\"(2): moves any number of spaces orthogonally. Pao(\"catapult\")/pao(\"cannon\") (2): can move orthogonally any number of spaces, captures by jumping one piece (of either player). Zu(\"private\"/zu (\"soldier\")(5): can move one space forward. Once they cross the river, can also move one space horizontally. Chuo (red, \"fire\")/Ch'i (blue, \"banner\")/Feng (green, \"wind\")(2): moves two points orthogonally and one point diagonallyThe goal is to checkmate the opponents' jiang/shuai. When a player checkmates one of their opponent's jiang/shuai, it is removed from the board and any of that opponent's pieces are now controlled by the player making the checkmate.  
+")
+(source "von Möllendorf 1876: 17-18.")
+(id "303")
+(version "1.3.7")
+(classification "war/replacement/WishlistDLP")
+(credit "Eric Piette")
+(origin "This game was played in China, around 1876.")
+}
+)
             
             (graphics {
                 (show Edges Diagonal Hidden)

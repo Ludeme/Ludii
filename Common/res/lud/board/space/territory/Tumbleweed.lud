@@ -120,27 +120,27 @@
 
 (metadata
     
-    (info
-        {
-        (description "Far-ranging stacks compete for all territory in sight.")
-        (rules "Tumbleweed is played with stackable tokens on a hexhex board.
-            
-            A stack is said to be seen from a hex when they are connected by a straight line, with no stacks in between.
-            
-            The players take turns settling hexes by placing a stack of their tokens on a hex of their choice. The height of a new stack is equal to the number of friendly stacks seen from the settled hex. Removing a stack occupying a hex and re-settling it with a new stack is possible, only as long as the new stack is taller than the previous one. This works with opponent stacks (to capture), or your own stacks (to reinforce).
-            
-            The board is initially empty, except for a central neutral (blue) two-stack. The first player sets up initial one-stacks: White and Red. The second player then chooses which side he wants to play, by clicking on a stone. Red goes first.
-            
-        The game ends when no more moves can be made by either player, or after two successive passes. The player who occupies over half the board wins. The program automatically scores indirectly controlled territory.")
-        (id "963")
-        (version "1.3.7")
-        (classification "board/space/territory")
-        (author "Mike Zapawa")
-        (publisher "Mike Zapawa")
-        (credit "Designer: Mike Zapawa. Implemented by Michael Amundsen and Alek Erickson")
-        (date "2020")
-        }
-    )
+(info
+{
+(description "Far-ranging stacks compete for all territory in sight.")
+(rules "Tumbleweed is played with stackable tokens on a hexhex board.
+
+A stack is said to be seen from a hex when they are connected by a straight line, with no stacks in between.
+
+The players take turns settling hexes by placing a stack of their tokens on a hex of their choice. The height of a new stack is equal to the number of friendly stacks seen from the settled hex. Removing a stack occupying a hex and re-settling it with a new stack is possible, only as long as the new stack is taller than the previous one. This works with opponent stacks (to capture), or your own stacks (to reinforce).
+
+The board is initially empty, except for a central neutral (blue) two-stack. The first player sets up initial one-stacks: White and Red. The second player then chooses which side he wants to play, by clicking on a stone. Red goes first.
+
+The game ends when no more moves can be made by either player, or after two successive passes. The player who occupies over half the board wins. The program automatically scores indirectly controlled territory.")
+(id "963")
+(version "1.3.7")
+(classification "board/space/territory")
+(author "Mike Zapawa")
+(publisher "Mike Zapawa")
+(credit "Designer: Mike Zapawa. Implemented by Michael Amundsen and Alek Erickson")
+(date "2020")
+}
+)
     
     (graphics {
         (player Colour Neutral (colour Blue))

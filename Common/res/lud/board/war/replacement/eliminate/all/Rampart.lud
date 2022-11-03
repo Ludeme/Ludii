@@ -96,14 +96,14 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    (info
-        {
-        (description "Rampart is an annihilation game in which players grow a set number of groups attempting to capture the opponent's groups.")
-        (rules "Play starts with black. On his turn a player may either drop a stone of his color or remove a dead enemy group. Players may only legally drop stones adjacent to at least one of their stones already on the board. For boards sized 11x11 and smaller a group is considered dead if any stone within it meets the following criteria.
-            
-        a)The stone has no empty points orthogonally adjacent
-    b)The stone has at least one enemy stone adjacent
-    
+(info
+{
+(description "Rampart is an annihilation game in which players grow a set number of groups attempting to capture the opponent's groups.")
+(rules "Play starts with black. On his turn a player may either drop a stone of his color or remove a dead enemy group. Players may only legally drop stones adjacent to at least one of their stones already on the board. For boards sized 11x11 and smaller a group is considered dead if any stone within it meets the following criteria.
+
+a)The stone has no empty points orthogonally adjacent
+b)The stone has at least one enemy stone adjacent
+
 For boards larger than 11x11 only the first criterion applies when determining if a group is dead. You may never remove your own dead groups. If a player has no legal move on his turn he must pass. Passing is otherwise not permitted. The player to remove all opposing groups from the board wins.")
 (id "1933")
 (source "<a href=\"https://boardgamegeek.com/boardgame/133923/rampart\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")

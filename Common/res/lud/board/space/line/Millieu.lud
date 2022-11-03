@@ -251,47 +251,47 @@
 //-------------------------------------
 
 (metadata
-    (info
-        {
-        (description "Millieu is a 3-D Morris game based loosely on the game OutFox
-            
-            The goal is to be the last to complete a turn - this almost always occurs by the opponent running out of pieces.
-            
-            The game uses 2 sets of 9 common pieces combining all combinations of 3 attributes in 2 dimensions (color + shape). Each player has their own set in-hand in the beginning, but the pieces are no longer owned once in play. Moves follow a place-then-must-slide-an-adjacent-piece protocol. All turns must be fully completed.
-            
-            Captures are made by forming mills, and allow a player to restock their hand. A mill is an orthogonal line of 3 uniquely different pieces that share one common attribute. When a player forms a mill, they must remove one of the 2 inactive pieces in that mill back into their own hand for re-use.
-            
-        To win, the first player must either make one more capture than the opponent, or rarely, prevent the other player from placing a piece by leaving no slide moves available. This suggests the game, as it stands, has a second player advantage. - However much opening play testing will be needed to determine if the perceived advantage is real...")
-        (rules "Goal:
-            The last player to complete a turn wins - typically when the opponent runs out of pieces in their hand.
-            
-            Each player starts with a full set of 9 pieces: each combination of shape and color. Pieces once played are not owned, but may be recaptured during the game for reuse.
-            
-            The game starts with a placement by the first player.
-            Thereafter, each turn has a placement followed by a movement, and one or more required piece recaptures if available.
-            
-            -- 1. Placement:
-            The first step in every turn is a placement to an empty point next to at least one existing piece that can slide.
-            
-            -- 2. Movement:
-            The player must choose on piece next to the newly placed piece and slide it orthogonally one or two points to a new position. The piece can only move to empty points, never crossing a piece in play.
-            
-            -- 3. Capture:
-            Either (or both) of the first two actions can form one or more 'mills'.
-            
-            A mill is an orthogonal line of three uniquely different piece types that all share one common attribute - either color or shape.
-            
-            The player completes their turn by destroying every mill on the board by removing one of the 2 unmoved pieces that it contains. (Newly added and moved pieces may not be removed.)
-            
-        A turn is not complete until all the applicable actions have been performed. A player may not make a move that would bring their hand size to more than 9 pieces.")
-        (id "1950")
-        (version "1.3.7")
-        (classification "board/space/line")
-        (author "Dale Walton")
-        (credit "Dale Walton")
-        (date "22-02-2022")
-        }
-    )
+(info
+{
+(description "Millieu is a 3-D Morris game based loosely on the game OutFox
+
+The goal is to be the last to complete a turn - this almost always occurs by the opponent running out of pieces.
+
+The game uses 2 sets of 9 common pieces combining all combinations of 3 attributes in 2 dimensions (color + shape). Each player has their own set in-hand in the beginning, but the pieces are no longer owned once in play. Moves follow a place-then-must-slide-an-adjacent-piece protocol. All turns must be fully completed.
+
+Captures are made by forming mills, and allow a player to restock their hand. A mill is an orthogonal line of 3 uniquely different pieces that share one common attribute. When a player forms a mill, they must remove one of the 2 inactive pieces in that mill back into their own hand for re-use.
+
+To win, the first player must either make one more capture than the opponent, or rarely, prevent the other player from placing a piece by leaving no slide moves available. This suggests the game, as it stands, has a second player advantage. - However much opening play testing will be needed to determine if the perceived advantage is real...")
+(rules "Goal:
+The last player to complete a turn wins - typically when the opponent runs out of pieces in their hand.
+
+Each player starts with a full set of 9 pieces: each combination of shape and color. Pieces once played are not owned, but may be recaptured during the game for reuse.
+
+The game starts with a placement by the first player.
+Thereafter, each turn has a placement followed by a movement, and one or more required piece recaptures if available.
+
+-- 1. Placement:
+The first step in every turn is a placement to an empty point next to at least one existing piece that can slide.
+
+-- 2. Movement:
+The player must choose on piece next to the newly placed piece and slide it orthogonally one or two points to a new position. The piece can only move to empty points, never crossing a piece in play.
+
+-- 3. Capture:
+Either (or both) of the first two actions can form one or more 'mills'.
+
+A mill is an orthogonal line of three uniquely different piece types that all share one common attribute - either color or shape.
+
+The player completes their turn by destroying every mill on the board by removing one of the 2 unmoved pieces that it contains. (Newly added and moved pieces may not be removed.)
+
+A turn is not complete until all the applicable actions have been performed. A player may not make a move that would bring their hand size to more than 9 pieces.")
+(id "1950")
+(version "1.3.7")
+(classification "board/space/line")
+(author "Dale Walton")
+(credit "Dale Walton")
+(date "22-02-2022")
+}
+)
     
     (graphics
         {

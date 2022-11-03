@@ -119,28 +119,28 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-    (info
-        {
-        (description "Koro is a two-row mancala-style board game played by the Dogon people of Mali. In it, the player's rightmost hole is a reserve, from which counters are redistributed periodically throughout the game.")
-        (useFor "Ruleset/Koro (Observed)" (rules "2x6 board. Four counters per hole. Each player's rightmost hole is their \"hogon,\" from which they cannot sow, except they must when it reaches fourteen counters. Sowing occurs in an anti-clockwise direction. Sowing from a hole with a single counter is forbidden. When the older player has only single counters in their regular holes, they pass. When the younger player has only single counters in their regular holes, they sow from their hogon. When a player must sow from their hogon and the opponent's holes only contain single counters, the player picks these up and sows them along with the contents of the hogon. When one player only has single counters in their row, the opponent wins. "))
-        (useFor "Ruleset/Koro (Observed)" (source "Griaule 1938: 168-169."))
-        (useFor "Ruleset/Koro (Observed)" (id "781"))
-        (useFor "Ruleset/Five Holes (Observed)" (rules "2x5 board. Sowing from the hogon occurs when it reaches fifteen counters."))
-        (useFor "Ruleset/Five Holes (Observed)" (source "Griaule 1928: 168."))
-        (useFor "Ruleset/Five Holes (Observed)" (id "782"))
-        (useFor "Ruleset/Six Holes (Observed)" (rules "2x5 board. Sowing from the hogon occurs when it reaches sixteen counters.
-                
-        "))
-        (useFor "Ruleset/Six Holes (Observed)" (source "Griaule 1938: 168."))
-        (useFor "Ruleset/Six Holes (Observed)" (id "783"))
-        (source "Murray 1951: 183-184.")
-        (id "781")
-        (version "1.3.7")
-        (classification "board/sow/two rows")
-        (credit "Eric Piette")
-        (origin "This game was played in Mali, around 1938.")
-        }
-    )
+(info
+{
+(description "Koro is a two-row mancala-style board game played by the Dogon people of Mali. In it, the player's rightmost hole is a reserve, from which counters are redistributed periodically throughout the game.")
+(useFor "Ruleset/Koro (Observed)" (rules "2x6 board. Four counters per hole. Each player's rightmost hole is their \"hogon,\" from which they cannot sow, except they must when it reaches fourteen counters. Sowing occurs in an anti-clockwise direction. Sowing from a hole with a single counter is forbidden. When the older player has only single counters in their regular holes, they pass. When the younger player has only single counters in their regular holes, they sow from their hogon. When a player must sow from their hogon and the opponent's holes only contain single counters, the player picks these up and sows them along with the contents of the hogon. When one player only has single counters in their row, the opponent wins. "))
+(useFor "Ruleset/Koro (Observed)" (source "Griaule 1938: 168-169."))
+(useFor "Ruleset/Koro (Observed)" (id "781"))
+(useFor "Ruleset/Five Holes (Observed)" (rules "2x5 board. Sowing from the hogon occurs when it reaches fifteen counters."))
+(useFor "Ruleset/Five Holes (Observed)" (source "Griaule 1928: 168."))
+(useFor "Ruleset/Five Holes (Observed)" (id "782"))
+(useFor "Ruleset/Six Holes (Observed)" (rules "2x5 board. Sowing from the hogon occurs when it reaches sixteen counters.
+
+"))
+(useFor "Ruleset/Six Holes (Observed)" (source "Griaule 1938: 168."))
+(useFor "Ruleset/Six Holes (Observed)" (id "783"))
+(source "Murray 1951: 183-184.")
+(id "781")
+(version "1.3.7")
+(classification "board/sow/two rows")
+(credit "Eric Piette")
+(origin "This game was played in Mali, around 1938.")
+}
+)
     
     (graphics {
         (board Style Mancala)

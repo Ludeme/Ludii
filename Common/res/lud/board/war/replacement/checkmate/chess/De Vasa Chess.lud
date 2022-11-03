@@ -383,31 +383,31 @@
 
 (metadata
     
-    (info
-        {
-        (description "De Vasa Chess, a chess variant played on a board made of hexagons, was invented by Helge E. de Vasa in 1953-1954. The rules originally called for eight rows, but a variant with nine rows later became more popular.")
-        (aliases {"De Vasa's Chess" "Hexagonal Chess"})
-        (rules "De Vasa Chess is most commonly played on a 9x9 rhombus-shaped board with 81 spaces. It is sometimes played on the original layout, involving a 9x8 rhombus-shaped board with only 72 spaces.
-            
-            Piece Movement:
-            * All pieces other than Kings and Pawns move as in Glinski Chess.
-            - Queens slide in any of the 12 directions.
-            - Rooks slide in any of the 6 adjacent directions.
-            - Bishops slide in any of the 6 'diagonal' directions.
-            - Knights move two spaces in any adjacent direction, then one space in another direction.
-            * Kings step one space in any of the 12 directions, and can castle either kingside (moving two spaces) or queenside (moving three spaces). Castling can only take place when neither the King nor the Rook being moved have moved before.
-            * Pawns advance without capturing to an adjacent space slightly left or right of forward. On their first move, they can move two spaces in either of these directions without capturing. They capture 'diagonally forward' (i.e., to a space ahead connected by an edge, and having the same colour). En passant capture and Pawn promotion take place as in Glinski Chess.
-            
-        The game ends on a checkmate or stalemate.")
-        (id "858")
-        (source "For a comparison of popular versions of hexagonal chess, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For more details on other chess variants, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).")
-        (version "1.3.7")
-        (classification "board/war/replacement/checkmate/chess")
-        (author "Helge E. de Vasa")
-        (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
-        (date "1953")
-        }
-    )
+(info
+{
+(description "De Vasa Chess, a chess variant played on a board made of hexagons, was invented by Helge E. de Vasa in 1953-1954. The rules originally called for eight rows, but a variant with nine rows later became more popular.")
+(aliases {"De Vasa's Chess" "Hexagonal Chess"})
+(rules "De Vasa Chess is most commonly played on a 9x9 rhombus-shaped board with 81 spaces. It is sometimes played on the original layout, involving a 9x8 rhombus-shaped board with only 72 spaces.
+
+Piece Movement:
+  * All pieces other than Kings and Pawns move as in Glinski Chess.
+      - Queens slide in any of the 12 directions.
+      - Rooks slide in any of the 6 adjacent directions.
+      - Bishops slide in any of the 6 'diagonal' directions.
+      - Knights move two spaces in any adjacent direction, then one space in another direction.
+  * Kings step one space in any of the 12 directions, and can castle either kingside (moving two spaces) or queenside (moving three spaces). Castling can only take place when neither the King nor the Rook being moved have moved before.
+  * Pawns advance without capturing to an adjacent space slightly left or right of forward. On their first move, they can move two spaces in either of these directions without capturing. They capture 'diagonally forward' (i.e., to a space ahead connected by an edge, and having the same colour). En passant capture and Pawn promotion take place as in Glinski Chess.
+
+The game ends on a checkmate or stalemate.")
+(id "858")
+(source "For a comparison of popular versions of hexagonal chess, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For more details on other chess variants, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).")
+(version "1.3.7")
+(classification "board/war/replacement/checkmate/chess")
+(author "Helge E. de Vasa")
+(credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
+(date "1953")
+}
+)
     
     (graphics {
         (piece Scale "Pawn" 0.7)

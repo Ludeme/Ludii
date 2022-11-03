@@ -146,18 +146,18 @@
 
 (metadata
     
-    (info
-        {
-        (description "Ilpion is a graph theory game that uses a centroid decomposition method. It is played on an undirected and unweighted tree. The board graph is initially coloured with a common colour.")
-        (rules "Players take turns adding his friendly colour in an uncoloured vertex. The aim of each player is to colour the centre vertex of the coloured tree. It is a scoring based game, and it has two versions. At the centroid version, each player gets one point for correctly coloured a tree centre. In the second version is the degree version, where a player gets a score, which is equal to the degree of his last coloured tree centre. For both versions, all the incident edges of last move are uncoloured. So the tree is divided into subtrees. The game ends when there is no coloured tree available. The player with the highest score wins.")
-        (id "694")
-        (version "1.3.7")
-        (classification "experimental/graph theory")
-        (author "Tahmina Begum")
-        (credit "Tahmina Begum 01-06-2020")
-        (date "01-06-2020")
-        }
-    )
+(info
+{
+(description "Ilpion is a graph theory game that uses a centroid decomposition method. It is played on an undirected and unweighted tree. The board graph is initially coloured with a common colour.")
+(rules "Players take turns adding his friendly colour in an uncoloured vertex. The aim of each player is to colour the centre vertex of the coloured tree. It is a scoring based game, and it has two versions. At the centroid version, each player gets one point for correctly coloured a tree centre. In the second version is the degree version, where a player gets a score, which is equal to the degree of his last coloured tree centre. For both versions, all the incident edges of last move are uncoloured. So the tree is divided into subtrees. The game ends when there is no coloured tree available. The player with the highest score wins.")
+(id "694")
+(version "1.3.7")
+(classification "experimental/graph theory")
+(author "Tahmina Begum")
+(credit "Tahmina Begum 01-06-2020")
+(date "01-06-2020")
+}
+)
     
     (graphics {
         (player Colour Shared (colour lightBlue))

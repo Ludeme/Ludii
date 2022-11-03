@@ -13,20 +13,29 @@
 
 //------------------------------------------------------------------------------
 
+
+(rulesets { 
+
+(ruleset "Ruleset/Historical Information (Incomplete)" {
+
+})
+
+})
+
 (metadata 
     
-    (info
-        {
-        (description "Yi is an ancient name for the game Weiqi. While they were probably used interchangeably at the time, this is the older version of the game, which was played on a 17x17 board.")
-        (rules "17x17 board. Players make groups on the board, opponents may capture groups.")
-        (source "DLP evidence.")
-        (id "1182")
-        (version "1.3.7")
-        (classification "board/space/territory/reconstruction")
-        (credit "Eric Piette")
-        (origin "This game was played in China, from around 450BCE to 755.")
-        }
-    )
+(info
+{
+(description "Yi is an ancient name for the game Weiqi. While they were probably used interchangeably at the time, this is the older version of the game, which was played on a 17x17 board.")
+(rules "17x17 board. Players make groups on the board, opponents may capture groups.")
+(source "DLP evidence.")
+(id "1182")
+(version "1.3.7")
+(classification "board/space/territory/reconstruction")
+(credit "Eric Piette")
+(origin "This game was played in China, from around 450BCE to 755.")
+}
+)
     
     (graphics {
         (board Style Go)

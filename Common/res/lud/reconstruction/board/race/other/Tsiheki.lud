@@ -19,20 +19,29 @@
 
 //------------------------------------------------------------------------------
 
+
+(rulesets { 
+
+(ruleset "Ruleset/Tsiheki (Incomplete)" {
+
+})
+
+})
+
 (metadata 
     
-    (info
-        {
-        (description "Tsiheki is a game played by the Yokuts people of California. Each player plays with four horses (witchet), who move according to the throws of four sticks along a track of 24 spaces.")
-        (rules "25 sticks stuck in the ground, the spaces between the sticks being the playing spaces. Four sticks per player as pieces. Four sticks, convex on one side and concave on the other, used as dice. The value of the throws equals the number of concave sides up, except all concave sides up = 16. When the opponent throws the same amount as the player's last throw, the player moves their pieces backward the same amount.")
-        (source "DLP evidence.")
-        (id "827")
-        (version "1.3.7")
-        (classification "board/race/reconstruction")
-        (credit "Eric Piette")
-        (origin "This game was played in California, around 1907.")
-        }
-    )
+(info
+{
+(description "Tsiheki is a game played by the Yokuts people of California. Each player plays with four horses (witchet), who move according to the throws of four sticks along a track of 24 spaces.")
+(rules "25 sticks stuck in the ground, the spaces between the sticks being the playing spaces. Four sticks per player as pieces. Four sticks, convex on one side and concave on the other, used as dice. The value of the throws equals the number of concave sides up, except all concave sides up = 16. When the opponent throws the same amount as the player's last throw, the player moves their pieces backward the same amount.")
+(source "DLP evidence.")
+(id "827")
+(version "1.3.7")
+(classification "board/race/reconstruction")
+(credit "Eric Piette")
+(origin "This game was played in California, around 1907.")
+}
+)
     
     (graphics {
         (show Edges (colour Hidden))

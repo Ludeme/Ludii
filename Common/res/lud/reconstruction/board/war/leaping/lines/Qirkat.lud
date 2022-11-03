@@ -15,19 +15,28 @@
 
 //------------------------------------------------------------------------------
 
+
+(rulesets { 
+
+(ruleset "Ruleset/Historical Information (Incomplete)" {
+
+})
+
+})
+
 (metadata 
     
-    (info
-        {
-        (description "Qirkat is a game that was played in the Middle Ages in west Asia, probably originating in the Arabian peninsula. It was typically made on the ground, and has been found only as graffiti at several archaeological sites.")
-        (rules "5x5 intersecting lines with diagonals in the four quadrants formed.")
-        (source "DLP evidence.")
-        (id "2039")
-        (version "1.3.7")
-        (classification "board/war/leaping/lines/reconstruction")
-        (origin "This game was played in Arabia, from around 600 to 1099.")
-        }
-    )
+(info
+{
+(description "Qirkat is a game that was played in the Middle Ages in west Asia, probably originating in the Arabian peninsula. It was typically made on the ground, and has been found only as graffiti at several archaeological sites.")
+(rules "5x5 intersecting lines with diagonals in the four quadrants formed.")
+(source "DLP evidence.")
+(id "2039")
+(version "1.3.7")
+(classification "board/war/leaping/lines/reconstruction")
+(origin "This game was played in Arabia, from around 600 to 1099.")
+}
+)
     
     (graphics {
         (show Edges Diagonal Hidden)

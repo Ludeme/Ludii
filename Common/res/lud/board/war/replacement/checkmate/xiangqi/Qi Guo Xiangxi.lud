@@ -268,18 +268,18 @@
 
 (metadata
     
-    (info
-        {
-        (description "Qi Guo Xiangxi (\"Xiangxi of the Seven Kingdoms\") is a seven-player Xiangqi game from eleventh century China. Its invention is attributed to the official Sima Guan, and is meant to be a representation of the conflict during the Warring States Period of Chinese history.")
-        (rules "19x19 lines, pieces are played on the intersections of the lines. Seventeen pieces per player, each with special moves, as follows: Jiang (General) x1: moves orthogonally or diagonally any distance; Pian (Deputy General) x1: Moves orthogonally any distance; Bai (Officer) x1: moves diagonally any distance; Ren (Emissary) x1: moves orthogonally or diagonally any distance, but cannot capture or be captured; Pao (Catapult) x1: moves orthogonally any distance, but can only capture by jumping over one of the player's own pieces first; Gong (Bow) x1: moves orthogonally or diagonally four spaces; Nu (Crossbow) x1: moves orthogonally or diagonally five spaces; Dao (Knife) x2: moves one space diagonally; Jian (Sword) x4: moves one space orthogonally; Qi (Mounted riders) x4: moves one space in a straight line then three diagonally, does not jump. Seven players. Players play as seven states: Ch'in (white), Ch'u (red), Han (orange), Ch'i (dark blue), Wei (green), Chao (purple), and Yen (black). They play in that order. One piece, the Chou (King, which is yellow), is placed in the central spot and does not move and pieces cannot enter that space. Pieces capture an enemy piece by moving to the spot it occupies. A player is eliminated when their general or ten of their pieces are captured, and their remaining pieces are removed from the board. Play continues until one player remains, one player captures two generals, or one player captures thirty pieces. The player with the most captured pieces wins.")
-        (source "Leventhal 1978: 24-27")
-        (id "797")
-        (version "1.3.7")
-        (classification "board/war/replacement/checkmate/xiangqi")
-        (credit "Eric Piette")
-        (origin "This game was played in China, from around 1039 to 1647.")
-        }
-    )
+(info
+{
+(description "Qi Guo Xiangxi (\"Xiangxi of the Seven Kingdoms\") is a seven-player Xiangqi game from eleventh century China. Its invention is attributed to the official Sima Guan, and is meant to be a representation of the conflict during the Warring States Period of Chinese history.")
+(rules "19x19 lines, pieces are played on the intersections of the lines. Seventeen pieces per player, each with special moves, as follows: Jiang (General) x1: moves orthogonally or diagonally any distance; Pian (Deputy General) x1: Moves orthogonally any distance; Bai (Officer) x1: moves diagonally any distance; Ren (Emissary) x1: moves orthogonally or diagonally any distance, but cannot capture or be captured; Pao (Catapult) x1: moves orthogonally any distance, but can only capture by jumping over one of the player's own pieces first; Gong (Bow) x1: moves orthogonally or diagonally four spaces; Nu (Crossbow) x1: moves orthogonally or diagonally five spaces; Dao (Knife) x2: moves one space diagonally; Jian (Sword) x4: moves one space orthogonally; Qi (Mounted riders) x4: moves one space in a straight line then three diagonally, does not jump. Seven players. Players play as seven states: Ch'in (white), Ch'u (red), Han (orange), Ch'i (dark blue), Wei (green), Chao (purple), and Yen (black). They play in that order. One piece, the Chou (King, which is yellow), is placed in the central spot and does not move and pieces cannot enter that space. Pieces capture an enemy piece by moving to the spot it occupies. A player is eliminated when their general or ten of their pieces are captured, and their remaining pieces are removed from the board. Play continues until one player remains, one player captures two generals, or one player captures thirty pieces. The player with the most captured pieces wins.")
+(source "Leventhal 1978: 24-27")
+(id "797")
+(version "1.3.7")
+(classification "board/war/replacement/checkmate/xiangqi")
+(credit "Eric Piette")
+(origin "This game was played in China, from around 1039 to 1647.")
+}
+)
     
     (graphics {
         (show Edges Diagonal Hidden)

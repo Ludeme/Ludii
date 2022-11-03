@@ -110,25 +110,25 @@
 //---------------------------------------------
 
 (metadata
-    (info
-        {
-        (description "Infuse is a game of entering the most pieces. They can only enter out of sight of your own pieces, but you make move your pieces that lie near to enemy pieces, in order to make new entry sites for yourself, or block entry sites for your opponent. The game may be played on either hex or square grids.")
-        (rules "Start on an empty board. 
-            
-            On a turn either enter a piece not in line of sight of your own pieces, or move a piece a number of independant single steps not to exceed the count of that piece's enemy neighbors. 
-            
-            If one player passes, to avoid ending the game with a 2nd pass, the opponent must place a piece if possible, or if unable to place, he may move in a way that enables his future placement. Otherwise, he must pass and the game ends.
-            
-        The winner is the player with the most pieces in play. If equal, the last to pass loses.")
-        (id "1142")
-        (source "<a href=\"https://boardgamegeek.com/thread/2518705\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.7")
-        (classification "board/space/territory")
-        (author "Dale W. Walton")
-        (credit "Dale W. Walton")
-        (date "19-11-2020")
-        }
-    )
+(info
+{
+(description "Infuse is a game of entering the most pieces. They can only enter out of sight of your own pieces, but you make move your pieces that lie near to enemy pieces, in order to make new entry sites for yourself, or block entry sites for your opponent. The game may be played on either hex or square grids.")
+(rules "Start on an empty board. 
+        
+On a turn either enter a piece not in line of sight of your own pieces, or move a piece a number of independant single steps not to exceed the count of that piece's enemy neighbors. 
+        
+If one player passes, to avoid ending the game with a 2nd pass, the opponent must place a piece if possible, or if unable to place, he may move in a way that enables his future placement. Otherwise, he must pass and the game ends.
+        
+The winner is the player with the most pieces in play. If equal, the last to pass loses.")
+(id "1142")
+(source "<a href=\"https://boardgamegeek.com/thread/2518705\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+(version "1.3.7")
+(classification "board/space/territory")
+(author "Dale W. Walton")
+(credit "Dale W. Walton")
+(date "19-11-2020")
+}
+)
     (ai
         "Infuse_ai"
     )

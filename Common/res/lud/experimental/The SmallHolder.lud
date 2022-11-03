@@ -325,51 +325,51 @@
     
     // need to add Cascade if Value = 1, and Cascade if Piece is of mover.
     (metadata
-        (info
-            {
-            (description "'The Smallholder' is an evolution of the game Offshore to find a similar game that is easier to play on a physical set.
-                The game gives up most of the counting: 
-                No territory - last to place wins; 
-                No tracking of the larger group sizes.
-                
-                The concept started with the ancestor of Offshore (no counting) and then    added in a different placement limitation:
-                
-                --Must play to form a new group, or, if there are already multiple groups, may also play to merge or extend the smallest group.
-                
-                This rule is much easier to visualize without counting.
-                
-                Next, piecewise capture was introduced, and finally, the 'hull' notion of territory was replaced with territory defined as spaces between two members of a group, to make the play tighter and more tactical, as well as being easier to visualize.
-            The options are left available so that players can assess on their own the value of these changes.")
-            (rules "Goal: Be the last to place a stone.
-                
-                Definitions:
-                -- Stones are connected if they are the same color and next to each other orthogonally.
-                -- Groups consist of connected stones. Every stone is part of exactly one group. Every group contains all the connected stones.
-                -- 'Holdings' are every space that lies between any two members of the same group. The group 'guards' a holding, preventing opponent placement there.
-                
-                Play starts with black. Turns alternate. Passing is not allowed.
-                
-                On their turn, the mover places a stone onto an empty space according to the following rules:
-                
-                - 1. If the player doesn't have 2 groups on the board, they must place a stone to form a group.
-                
-                Otherwise, they must place a stone either to form a group, or to extend or merge a group that is no larger than their smallest group.
-                
-                - 2. Placement is not allowed in opponent's holdings. 
-                
-                After placement, the mover captures every stone within their holdings.
-                
-                The mover wins if the next player cannot make a legal placement.
-                
-            Options are available to redefine the rules for Placement, Capture and Holdings.")
-            (id "2001")
-            (version "1.3.7")
-            (classification "experimental")
-            (author "Dale Walton")
-            (credit "Dale Walton")
-            (date "07-2022")
-            }
-        )
+(info
+{
+(description "'The Smallholder' is an evolution of the game Offshore to find a similar game that is easier to play on a physical set.
+         The game gives up most of the counting: 
+         No territory - last to place wins; 
+         No tracking of the larger group sizes.
+         
+        The concept started with the ancestor of Offshore (no counting) and then    added in a different placement limitation:
+        
+        --Must play to form a new group, or, if there are already multiple groups, may also play to merge or extend the smallest group.
+        
+        This rule is much easier to visualize without counting.
+        
+        Next, piecewise capture was introduced, and finally, the 'hull' notion of territory was replaced with territory defined as spaces between two members of a group, to make the play tighter and more tactical, as well as being easier to visualize.
+        The options are left available so that players can assess on their own the value of these changes.")
+(rules "Goal: Be the last to place a stone.
+        
+Definitions:
+-- Stones are connected if they are the same color and next to each other orthogonally.
+-- Groups consist of connected stones. Every stone is part of exactly one group. Every group contains all the connected stones.
+-- 'Holdings' are every space that lies between any two members of the same group. The group 'guards' a holding, preventing opponent placement there.
+
+Play starts with black. Turns alternate. Passing is not allowed.
+
+On their turn, the mover places a stone onto an empty space according to the following rules:
+
+- 1. If the player doesn't have 2 groups on the board, they must place a stone to form a group.
+
+Otherwise, they must place a stone either to form a group, or to extend or merge a group that is no larger than their smallest group.
+
+- 2. Placement is not allowed in opponent's holdings. 
+
+After placement, the mover captures every stone within their holdings.
+
+The mover wins if the next player cannot make a legal placement.
+
+Options are available to redefine the rules for Placement, Capture and Holdings.")
+(id "2001")
+(version "1.3.7")
+(classification "experimental")
+(author "Dale Walton")
+(credit "Dale Walton")
+(date "07-2022")
+}
+)
         
         (graphics
             {

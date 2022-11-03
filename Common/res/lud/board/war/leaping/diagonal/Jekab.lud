@@ -60,19 +60,19 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Jekab is a Draughts game played in the Marshall Islands. It appears to be a derivative of American Pool Checkers, which is identical except for the promotion of the king.")
-        (aliases {"Marshallese Checkers"})
-        (rules "8x8 board, twelve pieces per player. Pieces placed on the dark squares of the first three rows of each side, with the empty corner to the right of each player. Pieces move one space forward diagonally. They may capture pieces of the opponent by hopping over them. Captures may happen in any direction. Multiple captures are allowed in the same turn, but they may not hop over the same piece or a player's own piece. Captures are compulsory, but if more than one option exists the player may choose which capture to make. When a piece reaches the opposite edge of the board, it becomes a king, even if this is in the middle of a turn. Kings may move any number of spaces forward or backwards, and may capture by flying leap. Kings must take all possible pieces in a sequence. The player to capture all of the other player's pieces wins.")
-        (source "Danilovic and de Voogt 2020: 6-8.")
-        (id "561")
-        (version "1.3.7")
-        (classification "board/war/leaping/diagonal")
-        (credit "Eric Piette")
-        (origin "This game was played in Mershall islands, from around 2017 to 2018.")
-        }
-    )
+(info
+{
+(description "Jekab is a Draughts game played in the Marshall Islands. It appears to be a derivative of American Pool Checkers, which is identical except for the promotion of the king.")
+(aliases {"Marshallese Checkers"})
+(rules "8x8 board, twelve pieces per player. Pieces placed on the dark squares of the first three rows of each side, with the empty corner to the right of each player. Pieces move one space forward diagonally. They may capture pieces of the opponent by hopping over them. Captures may happen in any direction. Multiple captures are allowed in the same turn, but they may not hop over the same piece or a player's own piece. Captures are compulsory, but if more than one option exists the player may choose which capture to make. When a piece reaches the opposite edge of the board, it becomes a king, even if this is in the middle of a turn. Kings may move any number of spaces forward or backwards, and may capture by flying leap. Kings must take all possible pieces in a sequence. The player to capture all of the other player's pieces wins.")
+(source "Danilovic and de Voogt 2020: 6-8.")
+(id "561")
+(version "1.3.7")
+(classification "board/war/leaping/diagonal")
+(credit "Eric Piette")
+(origin "This game was played in Mershall islands, from around 2017 to 2018.")
+}
+)
     
     (graphics {
         (board Style Chess)

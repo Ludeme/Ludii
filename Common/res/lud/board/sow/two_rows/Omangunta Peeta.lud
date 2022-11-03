@@ -182,21 +182,21 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-    (info
-        {
-        (description "Omangunta Peeta is a two-row mancala-style board game from southern India. It was played in the Madras Presidency during the early twentieth century.")
-        (aliases {"Palanguli"})
-        (rules "2x7 board. Six counters in each hole, except the central hole in each row, which contains one counter. Sowing occurs in an anti-clockwise direction. When the last counter is sown, the player picks up the counters in the next hole in the direction of the sowing and continues sowing with those counters. When the hole after the hole in which the final counter is sown is empty, the counters in the next hole are captured, as well as the counters in the hole opposite this hole, and the turn ends. Sowing cannot begin from the central hole of either row. When a capture would occur from one of these central holes, the counters are not captured until the end of the round. At the end of the round, if both players are eligible to capture from the hole, they split the counters, leaving one in the hole if it is an odd number, or two if it is an even number. If only one player captured from the holes, they leave one counter in each hole. If neither player made a capture from the hole, the counters remain in the hole. 
-            
-        When the players can no longer play, a new round begins. Each player then fills up as many holes, not counting the central holes, on their side of the board with six counters if possible. Any holes that do not contain counters are out of play. Play continues until one player captures all the counters, and is the winner.")
-        (source "Das Gupta 1923: 73-74.")
-        (id "920")
-        (version "1.3.7")
-        (classification "board/sow/two rows")
-        (credit "Eric Piette")
-        (origin "This game was played in India, around 1923.")
-        }
-    )
+(info
+{
+(description "Omangunta Peeta is a two-row mancala-style board game from southern India. It was played in the Madras Presidency during the early twentieth century.")
+(aliases {"Palanguli"})
+(rules "2x7 board. Six counters in each hole, except the central hole in each row, which contains one counter. Sowing occurs in an anti-clockwise direction. When the last counter is sown, the player picks up the counters in the next hole in the direction of the sowing and continues sowing with those counters. When the hole after the hole in which the final counter is sown is empty, the counters in the next hole are captured, as well as the counters in the hole opposite this hole, and the turn ends. Sowing cannot begin from the central hole of either row. When a capture would occur from one of these central holes, the counters are not captured until the end of the round. At the end of the round, if both players are eligible to capture from the hole, they split the counters, leaving one in the hole if it is an odd number, or two if it is an even number. If only one player captured from the holes, they leave one counter in each hole. If neither player made a capture from the hole, the counters remain in the hole. 
+
+When the players can no longer play, a new round begins. Each player then fills up as many holes, not counting the central holes, on their side of the board with six counters if possible. Any holes that do not contain counters are out of play. Play continues until one player captures all the counters, and is the winner.")
+(source "Das Gupta 1923: 73-74.")
+(id "920")
+(version "1.3.7")
+(classification "board/sow/two rows")
+(credit "Eric Piette")
+(origin "This game was played in India, around 1923.")
+}
+)
     
     (graphics {
         (board Style Mancala)

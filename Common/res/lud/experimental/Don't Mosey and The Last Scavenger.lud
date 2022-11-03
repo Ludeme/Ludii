@@ -156,38 +156,38 @@
 (define "ColourBackground" (colour 245 245 245)) 
 
 (metadata
-    (info
-        {
-        (description "Games inspired by Kanare Kato's 'Squish'
-            
-            'Don't Mosey' and 'The Last Scavenger' are based on Kanare Kato's work developing 'Squish' and 'Advanced Squish'.
-            
-            Originally 'Squish' was a unification game with step movement toward a friendly piece in-line, possibly involving a capture.  'Advanced Squish' added a requirement on non-capturing steps for the piece to become part of a larger group. (Singletons were exempted.)
-            
-            -- 'Don't Mosey'and 'The Last Scavenger' differ by being explicitly stalemate games: Last to move wins or loses depending on the game. 
-            
-        They also differ by using slide moves instead of steps, and having a different 'larger group' rule that restricts empty destination choices, but applies to any group formed along the path, and does not restrict captures (which must be the first opponent along the path).")
-        (rules "Setup: Pieces of each color start distributed symmetrically on every 3rd cell of the board. (For a game on an order 4 board, the outer cells are not used.)
-            
-            Play    
-            - Decide which player will play with which color (Dark or Light). 
-            - Light is the first player to play.
-            - Passing is not allowed.
-            - The game ends when a player cannot move. 
-            
-            On each turn, the mover chooses a piece and slides it over empty cells towards a friendly piece in the same line (but not necessarily visible from the moving piece's point of view.) 
-            
-            The sliding piece must either:
-            - stop on an empty cell next to a friendly piece to form a group of friendly pieces that is larger than the group it started in, or 
-        - stop at the first opponent's piece and remove it.")
-        (id "1733")
-        (version "1.3.7")
-        (classification "experimental")
-        (author "Dale W. Walton")
-        (credit "Dale W. Walton")
-        (date "12-10-2021")
-        }
-    )
+(info
+{
+(description "Games inspired by Kanare Kato's 'Squish'
+    
+    'Don't Mosey' and 'The Last Scavenger' are based on Kanare Kato's work developing 'Squish' and 'Advanced Squish'.
+    
+    Originally 'Squish' was a unification game with step movement toward a friendly piece in-line, possibly involving a capture.  'Advanced Squish' added a requirement on non-capturing steps for the piece to become part of a larger group. (Singletons were exempted.)
+    
+    -- 'Don't Mosey'and 'The Last Scavenger' differ by being explicitly stalemate games: Last to move wins or loses depending on the game. 
+     
+    They also differ by using slide moves instead of steps, and having a different 'larger group' rule that restricts empty destination choices, but applies to any group formed along the path, and does not restrict captures (which must be the first opponent along the path).")
+(rules "Setup: Pieces of each color start distributed symmetrically on every 3rd cell of the board. (For a game on an order 4 board, the outer cells are not used.)
+    
+    Play    
+    - Decide which player will play with which color (Dark or Light). 
+    - Light is the first player to play.
+    - Passing is not allowed.
+    - The game ends when a player cannot move. 
+    
+    On each turn, the mover chooses a piece and slides it over empty cells towards a friendly piece in the same line (but not necessarily visible from the moving piece's point of view.) 
+    
+    The sliding piece must either:
+    - stop on an empty cell next to a friendly piece to form a group of friendly pieces that is larger than the group it started in, or 
+    - stop at the first opponent's piece and remove it.")
+(id "1733")
+(version "1.3.7")
+(classification "experimental")
+(author "Dale W. Walton")
+(credit "Dale W. Walton")
+(date "12-10-2021")
+}
+)
     
     (graphics 
         {

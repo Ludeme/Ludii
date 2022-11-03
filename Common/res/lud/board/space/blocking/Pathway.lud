@@ -46,21 +46,21 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    (info
-        {
-        (description "Pathway is a simple game made by Mark Steere. It was designed to be easy to program.")
-        (rules "Players take turns placing one of their stones on an empty square. It is not legal to place orthogonally adjacent to only enemy stones and it is not legal to place orthogonally adjacent to more than 1 friendly stone. All other placements onto empty squares are legal. Put differently: You may place adjacent to no stone or to exactly 1 friendly and any number of enemy stones.
-        The first player unable to place a stone has won the game.")
-        (id "1507")
-        (source "<a href=\"http://www.marksteeregames.com/Pathway_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />http://www.marksteeregames.com/</a>")
-        (version "1.3.7")
-        (classification "board/space/blocking")
-        (author "Mark Steere")
-        (publisher "<a href=\"http://www.marksteeregames.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a> (used with permission)")
-        (credit "Michael Amundsen")
-        (date "2021")
-        }
-    )
+(info
+{
+(description "Pathway is a simple game made by Mark Steere. It was designed to be easy to program.")
+(rules "Players take turns placing one of their stones on an empty square. It is not legal to place orthogonally adjacent to only enemy stones and it is not legal to place orthogonally adjacent to more than 1 friendly stone. All other placements onto empty squares are legal. Put differently: You may place adjacent to no stone or to exactly 1 friendly and any number of enemy stones.
+The first player unable to place a stone has won the game.")
+(id "1507")
+(source "<a href=\"http://www.marksteeregames.com/Pathway_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />http://www.marksteeregames.com/</a>")
+(version "1.3.7")
+(classification "board/space/blocking")
+(author "Mark Steere")
+(publisher "<a href=\"http://www.marksteeregames.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a> (used with permission)")
+(credit "Michael Amundsen")
+(date "2021")
+}
+)
     (ai
         "Pathway_ai"
     )

@@ -297,43 +297,43 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    (info
-        {
-        (description "Seesaw is a Draughts-inspired elimination game invented by Alek Erickson and Michael Amundsen in 2021.")
-        (rules "Overview:
-            In Seesaw the players (North and South) command opposing armies with soldiers that can promote. Your army starts out as a single soldier and your promotion area evolves as you deploy more soldiers. Every time a soldier promotes it grows - first into a 2-stack, then a 3-stack, and so on. 
-            
-            The central idea of Seesaw is the 2-fold significance of stack-size: 
-            (i) Odd-sized stacks move forwards and even-sized stacks move backwards, and 
-            (ii) on any given turn, a stack can take as many steps as it likes from 1 up to its size. 
-            
-            This results in soldiers seesawing up and down the board as their strength increases to the point where the game is forced to conclude in one side completely eliminating the other.
-            
-            How to play:
-            On your turn, you must either make a stack-move, or place a new stack. 
-            
-            1. Placing a new stack: 
-            A newly placed stack will always be of size 1. You may only place a stack on an empty cell next to a cell of your color. These cells are promotion cells, and each cell you place a new stack on automatically turns into a promotion cell of your color.
-            
-            2. Stackmoves:
-            You only ever move one stack per turn, but that stack may be able to move several steps or capture several enemiy stacks, depending on its size.
-            The number of steps a stack may take is the number of pieces in it, i.e. its size.
-            
-            2.1 Noncapturing moves: On turns where you do not have to capture an enemy (see below) all the steps a stack takes is either constrained to the 3 upward directions or to the 3 downward directions, depending on the size and the owner of the stack. South's forward directions are the 3 upward directions, and North's forward directions are the 3 downward directions.
-            
-            2.2 Capturing moves: If one or more of your stacks can reach an enemy by lifting the restraint on direction, you must capture such a reachable enemy by replacement. If that stack did not spend all its steps reaching the captured enemy, you can, before you end your turn, spend the left-over steps by making a noncapturing move. However, if yet an enemy is in range immediately after you have captured (counting only the steps left over), you must capture again.
-            
-            3. Promoting: Your odd-sized stacks promote when they end up on a promotion cell belonging to your opponent at the end of your turn. Your even-sized stacks promote when they end up on a promotion cell belonging to you at the end of your turn.
-            
-        The object of Seesaw is to capture all your opponent's soldiers. More precisely: If, at the end of your turn, your opponent has no stacks on the board, you have won the game.")
-        (id "1552")
-        (version "1.3.7")
-        (classification "board/war/leaping/orthogonal")
-        (author "Alek Erickson and Michael Amundsen")
-        (credit "Alek Erickson and Michael Amundsen")
-        (date "2021")
-        }
-    )
+(info
+{
+(description "Seesaw is a Draughts-inspired elimination game invented by Alek Erickson and Michael Amundsen in 2021.")
+(rules "Overview:
+In Seesaw the players (North and South) command opposing armies with soldiers that can promote. Your army starts out as a single soldier and your promotion area evolves as you deploy more soldiers. Every time a soldier promotes it grows - first into a 2-stack, then a 3-stack, and so on. 
+
+The central idea of Seesaw is the 2-fold significance of stack-size: 
+(i) Odd-sized stacks move forwards and even-sized stacks move backwards, and 
+(ii) on any given turn, a stack can take as many steps as it likes from 1 up to its size. 
+
+This results in soldiers seesawing up and down the board as their strength increases to the point where the game is forced to conclude in one side completely eliminating the other.
+
+How to play:
+On your turn, you must either make a stack-move, or place a new stack. 
+
+1. Placing a new stack: 
+A newly placed stack will always be of size 1. You may only place a stack on an empty cell next to a cell of your color. These cells are promotion cells, and each cell you place a new stack on automatically turns into a promotion cell of your color.
+
+2. Stackmoves:
+You only ever move one stack per turn, but that stack may be able to move several steps or capture several enemiy stacks, depending on its size.
+The number of steps a stack may take is the number of pieces in it, i.e. its size.
+
+2.1 Noncapturing moves: On turns where you do not have to capture an enemy (see below) all the steps a stack takes is either constrained to the 3 upward directions or to the 3 downward directions, depending on the size and the owner of the stack. South's forward directions are the 3 upward directions, and North's forward directions are the 3 downward directions.
+
+2.2 Capturing moves: If one or more of your stacks can reach an enemy by lifting the restraint on direction, you must capture such a reachable enemy by replacement. If that stack did not spend all its steps reaching the captured enemy, you can, before you end your turn, spend the left-over steps by making a noncapturing move. However, if yet an enemy is in range immediately after you have captured (counting only the steps left over), you must capture again.
+
+3. Promoting: Your odd-sized stacks promote when they end up on a promotion cell belonging to your opponent at the end of your turn. Your even-sized stacks promote when they end up on a promotion cell belonging to you at the end of your turn.
+
+The object of Seesaw is to capture all your opponent's soldiers. More precisely: If, at the end of your turn, your opponent has no stacks on the board, you have won the game.")
+(id "1552")
+(version "1.3.7")
+(classification "board/war/leaping/orthogonal")
+(author "Alek Erickson and Michael Amundsen")
+(credit "Alek Erickson and Michael Amundsen")
+(date "2021")
+}
+)
     (graphics {
         (player Colour P1 (colour Cream))
         (player Colour P2 (colour Grey))

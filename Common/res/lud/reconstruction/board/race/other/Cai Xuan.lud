@@ -10,19 +10,28 @@
 
 //------------------------------------------------------------------------------
 
+
+(rulesets { 
+
+(ruleset "Ruleset/Historical Information (Incomplete)" {
+
+})
+
+})
+
 (metadata 
     
-    (info
-        {
-        (description "Cai Xuan is a game played since at least the Song Dynasty in China. It is one of a family of games which use dice and in which people attempt to navigate through the Chinese bureaucracy.")
-        (rules "Players use dice to navigate through a board with the different positions of the Chinese bureaucracy. Spaces are the different positions in the bureaucracy, and the dice rolls determine to which spaces a player moves.")
-        (source "DLP evidence.")
-        (id "1187")
-        (version "1.3.7")
-        (classification "board/race/reconstruction")
-        (origin "This game was played in China, from around 827 to 838.")
-        }
-    )
+(info
+{
+(description "Cai Xuan is a game played since at least the Song Dynasty in China. It is one of a family of games which use dice and in which people attempt to navigate through the Chinese bureaucracy.")
+(rules "Players use dice to navigate through a board with the different positions of the Chinese bureaucracy. Spaces are the different positions in the bureaucracy, and the dice rolls determine to which spaces a player moves.")
+(source "DLP evidence.")
+(id "1187")
+(version "1.3.7")
+(classification "board/race/reconstruction")
+(origin "This game was played in China, from around 827 to 838.")
+}
+)
     
     (recon {
         (concept "Dice" True)

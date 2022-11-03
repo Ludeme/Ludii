@@ -666,9 +666,9 @@
 // -------------------------------------
 
 (metadata
-    (info
-        {
-        (description "Throngs a highly abstracted wargame (territorial invasion game) for two players. It is typically played on the intersections of a triangular grid, using Go stones. It is a double-move game: each player takes 2 full turns in succession before the next player takes control. 
+(info
+{
+(description "Throngs a highly abstracted wargame (territorial invasion game) for two players. It is typically played on the intersections of a triangular grid, using Go stones. It is a double-move game: each player takes 2 full turns in succession before the next player takes control. 
             
             Movement: The game is distinguished by the way the power of a moving piece is determined according to the pieces around it: A piece can move as far as the difference in count of the friends and enemies in its immediate vicinity. 
             
@@ -687,7 +687,7 @@
             The center of the board is very advantageous, and a pie rule or balanced starting positions are needed. The standard starting position places the initial pieces near the edges to allow players a wider variety of strategies. Placing multiple starting stones, and or playing on torus boards, leads to finer grained, denser, highly tactical games, while using few starting pieces and larger boards or boards with less connectivity (e.g. boards with holes, and boards on semi-regular grids) lead to a more territorial game.
             
         Play on a torus also eliminates the advantage of a board center, but requires a larger board because invasion is no longer from a single direction.")
-        (rules "Objective
+(rules "Objective
             Each player tries to achieve a majority of territory.
             Objectively, territory means a player's pieces on a filled board when no captures are left to be made. 
             
@@ -704,7 +704,7 @@
             The structure of the game:
             Before play begins, one player places a Black stone and two White stones on three different sites. 
             Then the other player decides to play either as Black or as White. 
-            
+                       
             A standard setup is provided by default. To choose other positions, select the Pie option from the menu.
             
             After the player's colors are determined, player alternate turns with each taking two moves in succession on their turn, beginning with Black.  
@@ -717,7 +717,7 @@
             -- If the site is occupied by the enemy, you deduct 2 actions to remove and replace it with your stone.
             -- If the site is empty, you deduct one action to add one of your own stones, with the following exception:
             ---- The empty-site deduction is waived if there is no other empty site next to the chosen site and the action-potential at that site is zero.
-            
+                        
             When you select a site, the application will calculate these deductions for you, and if there is any remaining action potential, it will be shown on the transparent stone.
             
             You may use this leftover actions potential, to move the stone at that site, in a sequence of steps and jumps; spending one action for each space moved during the sequence.
@@ -735,27 +735,27 @@
             Ending the game:
             The game ends when the two scores add up to the size of the board, or when the score of one player exceeds half the board plus a safety factor of 3. 
             The score is based on:
-            1 point for each friendly piece unless: 
-            A. It could be captured by the opponent if an opponent's piece were added next to it, or 
-            B. It could not be defended against capture by adding a friendly piece after 2 opponent's pieces were added next to it.
-            
-            1 point for each opponent's piece that can be captured, even if all the rest of the empty sites around it are filled with opponent's pieces
-            (this purposely underestimates the territory)
-            
-            1 point for each empty space where both A: and B: below are true,
-            A: if a friendly piece were placed there, it would be secure no matter how many additional opponent's pieces were placed next to it. 
-            B: if an opponent's piece were placed there and on an adjacent empty site, one of them could be captured if the remaining sites around them were filled with friendly pieces.
-            
-        This method ends the game when one player has a clear advantage.")
-        (id "1224")
-        (source "<a href=\"https://boardgamegeek.com/thread/2452882/throngs-new-attempt-describe-how-play\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG Forum</a>")
-        (version "1.3.7")
-        (classification "board/war/leaping/lines")
-        (author "Dale W. Walton")
-        (credit "Dale W. Walton 2020-11-11")
-        (date "18-11-2019")
-        }
-    )
+             1 point for each friendly piece unless: 
+             A. It could be captured by the opponent if an opponent's piece were added next to it, or 
+             B. It could not be defended against capture by adding a friendly piece after 2 opponent's pieces were added next to it.
+             
+             1 point for each opponent's piece that can be captured, even if all the rest of the empty sites around it are filled with opponent's pieces
+             (this purposely underestimates the territory)
+             
+             1 point for each empty space where both A: and B: below are true,
+             A: if a friendly piece were placed there, it would be secure no matter how many additional opponent's pieces were placed next to it. 
+             B: if an opponent's piece were placed there and on an adjacent empty site, one of them could be captured if the remaining sites around them were filled with friendly pieces.
+             
+             This method ends the game when one player has a clear advantage.")
+(id "1224")
+(source "<a href=\"https://boardgamegeek.com/thread/2452882/throngs-new-attempt-describe-how-play\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG Forum</a>")
+(version "1.3.7")
+(classification "board/war/leaping/lines")
+(author "Dale W. Walton")
+(credit "Dale W. Walton 2020-11-11")
+(date "18-11-2019")
+}
+)
     
     (graphics {
         (board Style Graph)

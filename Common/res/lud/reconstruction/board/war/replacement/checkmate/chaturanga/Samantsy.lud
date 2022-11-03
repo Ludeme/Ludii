@@ -100,20 +100,29 @@
 
 //------------------------------------------------------------------------------
 
+
+(rulesets { 
+
+(ruleset "Ruleset/Historical Information (Incomplete)" {
+
+})
+
+})
+
 (metadata 
     
-    (info
-        {
-        (description "Samantsy is a capturing game played in Madagascar. ")
-        (rules "8x8 board. Pieces with the following movement, for each player: Hova (x1): moves one space orthogonally or diagonally, is not taken by other pieces and does not take other pieces; Anakova (x1): moves one space diagonally; Farasy (x2): moves one space orthogonally and one space diagonally, jumping over any intervening pieces; Basy (x2): moves diagonally to the second space, but does not jump over the first; Vorona (2): moves orthogonally any number of spaces; Zaza (x8): move one space forward orthogonally, captures one space forward diagonally to capture. When a Zaza reaches the opposite edge of the board, they are promoted to Anakova. The pieces are set up on the last row of the player's side of the board, from left to right, as follows: Vorona, Farasy, Basy, Hova, Anakova, Basy, Farasy, Vorona, except the Hova and Anakova are swapped for the opponent. The Zaza are placed in the row in front of these pieces.  Replacement capture.")
-        (source "DLP evidence.")
-        (id "1328")
-        (version "1.3.7")
-        (classification "board/war/replacement/checkmate/chaturanga/reconstruction")
-        (credit "Eric Piette")
-        (origin "This game was played in Madagascar, around 1912.")
-        }
-    )
+(info
+{
+(description "Samantsy is a capturing game played in Madagascar. ")
+(rules "8x8 board. Pieces with the following movement, for each player: Hova (x1): moves one space orthogonally or diagonally, is not taken by other pieces and does not take other pieces; Anakova (x1): moves one space diagonally; Farasy (x2): moves one space orthogonally and one space diagonally, jumping over any intervening pieces; Basy (x2): moves diagonally to the second space, but does not jump over the first; Vorona (2): moves orthogonally any number of spaces; Zaza (x8): move one space forward orthogonally, captures one space forward diagonally to capture. When a Zaza reaches the opposite edge of the board, they are promoted to Anakova. The pieces are set up on the last row of the player's side of the board, from left to right, as follows: Vorona, Farasy, Basy, Hova, Anakova, Basy, Farasy, Vorona, except the Hova and Anakova are swapped for the opponent. The Zaza are placed in the row in front of these pieces.  Replacement capture.")
+(source "DLP evidence.")
+(id "1328")
+(version "1.3.7")
+(classification "board/war/replacement/checkmate/chaturanga/reconstruction")
+(credit "Eric Piette")
+(origin "This game was played in Madagascar, around 1912.")
+}
+)
     
     (graphics {
         (board Style Chess)

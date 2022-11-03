@@ -272,38 +272,38 @@
 //---------------
 
 (metadata
-    (info
-        {
-        (description "Brood is a polyhex-matching game for two players – Black and White – played on an initially empty hexhex board. Michael Amundsen invented Brood in May 2022.")
-        (rules "Definitions:
-            1 A group is a stone along with all stones one can reach from it through a series of steps onto adjacent stones of the same color.
-            1.1 The size of a group is the number of stones in it.
-            
-            2 A brood is a group along with all other groups of identical color, size and shape. Shapes are considered identical across symmetries (just like in Bug).
-            2.1 The size of a brood is the number of groups in it.
-            2.2 The order of a brood is the size of the groups in it.
-            2.3 The mass of a brood is the number of stones in it (its size times its order).
-            
-            Play:
-            On the very first turn of the game, Black places one stone of their colour on any hex.
-            After, that – starting with White – take turns doing one of the following:
-            - Pass.
-            - Place two stones of your colour on empty hexes.
-            
-            When the players pass consecutively, the winner is the player with the higher score.
-            
-            Scoring:
-            For each of your broods, you score its mass multiplied by the lesser of its size and its order.
-            
-        For example, if a brood consists of 2 groups of size 3, it is worth 12 points. Its order is 3, its size is 2 and its mass is 6. Since 2 is smaller than 3, the brood is worth 6*2 = 12.")
-        (id "1998")
-        (version "1.3.7")
-        (classification "board/space/group")
-        (author "Michael Admundsen")
-        (credit "Dale Walton")
-        (date "2022")
-        }
-    )
+(info
+{
+(description "Brood is a polyhex-matching game for two players – Black and White – played on an initially empty hexhex board. Michael Amundsen invented Brood in May 2022.")
+(rules "Definitions:
+1 A group is a stone along with all stones one can reach from it through a series of steps onto adjacent stones of the same color.
+1.1 The size of a group is the number of stones in it.
+
+2 A brood is a group along with all other groups of identical color, size and shape. Shapes are considered identical across symmetries (just like in Bug).
+2.1 The size of a brood is the number of groups in it.
+2.2 The order of a brood is the size of the groups in it.
+2.3 The mass of a brood is the number of stones in it (its size times its order).
+
+Play:
+On the very first turn of the game, Black places one stone of their colour on any hex.
+After, that – starting with White – take turns doing one of the following:
+- Pass.
+- Place two stones of your colour on empty hexes.
+
+When the players pass consecutively, the winner is the player with the higher score.
+
+Scoring:
+For each of your broods, you score its mass multiplied by the lesser of its size and its order.
+
+For example, if a brood consists of 2 groups of size 3, it is worth 12 points. Its order is 3, its size is 2 and its mass is 6. Since 2 is smaller than 3, the brood is worth 6*2 = 12.")
+(id "1998")
+(version "1.3.7")
+(classification "board/space/group")
+(author "Michael Admundsen")
+(credit "Dale Walton")
+(date "2022")
+}
+)
     (graphics
         {
         (board Colour Phase0 (colour 100 200 250 120))

@@ -118,38 +118,38 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-    (info
-        {
-        (description "Icebreaker is a drawless game for two players competing to break the most ice with their ships. Mark Steere designed Icebreaker in November, 2021.")
-        (rules "There are three red ships and three black ships. The remainder
-            of the cells contain white icebergs. The two players, Red and Black, take turns
-            moving one of their own ships, one move per turn, starting with Red. Players are
-            not allowed to pass.
-            
-            MOVES:
-            You must move one of your ships to an adjacent cell which doesn't contain
-            another ship. By moving to a cell containing an iceberg, you capture the iceberg,
-            and your score increases by 1.
-            
-            MOVE DIRECTION:
-            You must select one of your ships to move, and move it closer to its closest
-            iceberg. Distance is measured by the number of cells between ship and iceberg
-            along the shortest path of cells that connects them, going around other ships. If
-            the ship you've chosen to move has icebergs adjacent to it, you must capture one
-            of them.
-            
-            OBJECT OF THE GAME:
-            The goal is to capture the majority of the icebergs. On the default size 5 board, there are 55 icebergs starting out. If you capture 28 of them, you
-        win.")
-        (id "1926")
-        (version "1.3.7")
-        (classification "board/war/replacement/eliminate/all")
-        (author "Mark Steere")
-        (publisher "<a href=\"http://www.marksteeregames.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a>")
-        (credit "Michael Amundsen")
-        (date "2021")
-        }
-    )
+(info
+{
+(description "Icebreaker is a drawless game for two players competing to break the most ice with their ships. Mark Steere designed Icebreaker in November, 2021.")
+(rules "There are three red ships and three black ships. The remainder
+of the cells contain white icebergs. The two players, Red and Black, take turns
+moving one of their own ships, one move per turn, starting with Red. Players are
+not allowed to pass.
+
+MOVES:
+You must move one of your ships to an adjacent cell which doesn't contain
+another ship. By moving to a cell containing an iceberg, you capture the iceberg,
+and your score increases by 1.
+
+MOVE DIRECTION:
+You must select one of your ships to move, and move it closer to its closest
+iceberg. Distance is measured by the number of cells between ship and iceberg
+along the shortest path of cells that connects them, going around other ships. If
+the ship you've chosen to move has icebergs adjacent to it, you must capture one
+of them.
+
+OBJECT OF THE GAME:
+The goal is to capture the majority of the icebergs. On the default size 5 board, there are 55 icebergs starting out. If you capture 28 of them, you
+win.")
+(id "1926")
+(version "1.3.7")
+(classification "board/war/replacement/eliminate/all")
+(author "Mark Steere")
+(publisher "<a href=\"http://www.marksteeregames.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a>")
+(credit "Michael Amundsen")
+(date "2021")
+}
+)
     
     (graphics {
         (player Colour Neutral (colour White))

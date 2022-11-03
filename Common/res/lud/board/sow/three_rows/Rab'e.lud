@@ -165,19 +165,19 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-    (info
-        {
-        (description "Rab'e is a three-row mancala-style board game played in Eritrea. It is different from other three-row games because captures may happen at any time during the player's move.")
-        (aliases {"Gabata"})
-        (rules "3x6 board. Four counters per hole. Each player controls one row of holes and the half of the central row to their right. Sowing occurs from left ro right in the player's full row, right to left in their holes in the central row, then right to left in the opponent's full row, then left to right in the opponent's holes in the central row, at that point continuing into the player's full row again. When the final counter is sown into an occupied hole, the counters are picked up and sowing continues. When the final counter falls into an empty hole, the turn ends. At any point while the player sows, if a hole is made to contain four counters, these are captured, regardless of who the hole belongs to. When the final counter causes a capture, the turn ends. Play continues until a player has no counters in their holes. The opponent then captures the remaining counters. Players then redistribute their counters, four in each hole, starting from the leftmost hole in their row in the direction of play. The player with fewer counters distributes all of their counters on the board, even if they cannot place four in the final hole of the counting. The player with more counters then places four counters in the same number of holes as the other player, taking any remaining as their winnings. Play continues in this fashion until one player captures all of the counters.")
-        (source "Pankhurst 1971: 172.")
-        (id "350")
-        (version "1.3.7")
-        (classification "board/sow/three rows")
-        (credit "Eric Piette")
-        (origin "This game was played in Horn of Africa, around 1971.")
-        }
-    )
+(info
+{
+(description "Rab'e is a three-row mancala-style board game played in Eritrea. It is different from other three-row games because captures may happen at any time during the player's move.")
+(aliases {"Gabata"})
+(rules "3x6 board. Four counters per hole. Each player controls one row of holes and the half of the central row to their right. Sowing occurs from left ro right in the player's full row, right to left in their holes in the central row, then right to left in the opponent's full row, then left to right in the opponent's holes in the central row, at that point continuing into the player's full row again. When the final counter is sown into an occupied hole, the counters are picked up and sowing continues. When the final counter falls into an empty hole, the turn ends. At any point while the player sows, if a hole is made to contain four counters, these are captured, regardless of who the hole belongs to. When the final counter causes a capture, the turn ends. Play continues until a player has no counters in their holes. The opponent then captures the remaining counters. Players then redistribute their counters, four in each hole, starting from the leftmost hole in their row in the direction of play. The player with fewer counters distributes all of their counters on the board, even if they cannot place four in the final hole of the counting. The player with more counters then places four counters in the same number of holes as the other player, taking any remaining as their winnings. Play continues in this fashion until one player captures all of the counters.")
+(source "Pankhurst 1971: 172.")
+(id "350")
+(version "1.3.7")
+(classification "board/sow/three rows")
+(credit "Eric Piette")
+(origin "This game was played in Horn of Africa, around 1971.")
+}
+)
     
     (graphics {
         (board Style Mancala)

@@ -18,20 +18,29 @@
 
 //------------------------------------------------------------------------------
 
+
+(rulesets { 
+
+(ruleset "Ruleset/Historical Information (Incomplete)" {
+
+})
+
+})
+
 (metadata 
     
-    (info
-        {
-        (description "Jåggå Hårrån pi Tåppin is a hunt game played in Norway. ")
-        (aliases {"Jåggå Hårrån pi Tåppin"})
-        (rules "A square, with diagonals and lines connecting the midpoints. Two triangles on opposite sides of the square, with a line drawn from the apex to the midpoint of the base. One player plays as three hounds, the other as a hare. The hounds begin on one triangle of the board, and must trap the hare in the triangle on the opposite end of the board.")
-        (source "DLP evidence.")
-        (id "1496")
-        (version "1.3.7")
-        (classification "board/hunt/reconstruction")
-        (credit "Eric Piette")
-        }
-    )
+(info
+{
+(description "Jåggå Hårrån pi Tåppin is a hunt game played in Norway. ")
+(aliases {"Jåggå Hårrån pi Tåppin"})
+(rules "A square, with diagonals and lines connecting the midpoints. Two triangles on opposite sides of the square, with a line drawn from the apex to the midpoint of the base. One player plays as three hounds, the other as a hare. The hounds begin on one triangle of the board, and must trap the hare in the triangle on the opposite end of the board.")
+(source "DLP evidence.")
+(id "1496")
+(version "1.3.7")
+(classification "board/hunt/reconstruction")
+(credit "Eric Piette")
+}
+)
     
     (graphics {
         (show Edges Diagonal Hidden)

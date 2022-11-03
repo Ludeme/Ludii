@@ -65,32 +65,33 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Jostle is a two player game. The 10x10 board is initially set up with 16 red and 16 blue checkers. Red and
-        Blue, take turns moving checkers of their own color, one move per turn, starting with Red.")
-        (rules "OBJECT OF THE GAME The last player to make a move wins.
-            
-            FRIENDLY AND ENEMY CONNECTIONS A connection, i.e. an orthogonal
-            adjacency between two checkers, is friendly if the two checkers are the same color and enemy if the two checkers are oppositely colored. 
-            
-            CHECKER VALUE A checker’s value is its number of friendly connections minus
-            its number of enemy connections.
-            
-            MOVES A checker’s value must increase when it‘s moved. Move a checker to an
-            unoccupied, orthogonally adjacent square.
-            
-        There is no capturing in Jostle, only jostling.")
-        (id "1766")
-        (source "<a href=\"http://www.marksteeregames.com/Jostle_Go_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.marksteeregames.com</a>")
-        (version "1.3.7")
-        (classification "board/space/blocking")
-        (author "Mark Steere")
-        (publisher "<a href=\"http://www.marksteeregames.com/Jostle_Go_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.marksteeregames.com</a>")
-        (credit "Eric Piette")
-        (date "2010")
-        }
-    )
+(info
+{
+(description "Jostle is a two player game. The 10x10 board is initially set up with 16 red and 16 blue checkers. Red and
+Blue, take turns moving checkers of their own color, one move per turn, starting with Red.")
+(rules "OBJECT OF THE GAME The last player to make a move wins.
+
+FRIENDLY AND ENEMY CONNECTIONS A connection, i.e. an orthogonal
+adjacency between two checkers, is friendly if the two checkers are the same color and enemy if the two checkers are oppositely colored. 
+
+CHECKER VALUE A checker’s value is its number of friendly connections minus
+its number of enemy connections.
+
+
+MOVES A checker’s value must increase when it‘s moved. Move a checker to an
+unoccupied, orthogonally adjacent square.
+
+There is no capturing in Jostle, only jostling.")
+(id "1766")
+(source "<a href=\"http://www.marksteeregames.com/Jostle_Go_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.marksteeregames.com</a>")
+(version "1.3.7")
+(classification "board/space/blocking")
+(author "Mark Steere")
+(publisher "<a href=\"http://www.marksteeregames.com/Jostle_Go_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.marksteeregames.com</a>")
+(credit "Eric Piette")
+(date "2010")
+}
+)
     
     (graphics {
         (player Colour P1 (colour Red))

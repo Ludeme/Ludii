@@ -53,32 +53,32 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Barca is a recent commercial chess variant. The game was invented by Andrew Caldwell, and appeared in 2011.")
-        (rules "The game is played on a 10x10 board. Four of the squares are marked and are considered to contain a watering hole.
-            Each player has two elephants, two lions and two mice.
-            
-            Pieces do not take other pieces. Their movement is as follows: mice move like rooks, lions move like bishops, and elephants move like queens.
-            
-            Like their chess counterparts, the pieces cannot jump over other pieces.
-            
-            A mouse is afraid of a lion of the opponent; a lion is afraid of an elephant of the opponent, and an elephant is afraid of a mouse of the opponent.
-            
-            An animal may not move to a square that is adjacent (horizontally, vertically or diagonally) to an animal it is afraid of. In addition, if an animal is adjacent to an animal that it is afraid of, then it must be moved by its owner, i.e., the owner may not move another animal.
-            
-            In the special case that more than one animal is adjacent to an animal it is afraid of, the owner may choose which animal to move.
-            
-        One wins the game by occupying three of the watering holes with own pieces.")
-        (id "1778")
-        (source "<a href=\"http://playbarca.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />playbarca.com/</a>")
-        (version "1.3.7")
-        (classification "board/race/fill")
-        (author "Andrew Caldwell")
-        (credit "Eric Piette")
-        (date "2007")
-        }
-    )
+(info
+{
+(description "Barca is a recent commercial chess variant. The game was invented by Andrew Caldwell, and appeared in 2011.")
+(rules "The game is played on a 10x10 board. Four of the squares are marked and are considered to contain a watering hole.
+Each player has two elephants, two lions and two mice.
+
+Pieces do not take other pieces. Their movement is as follows: mice move like rooks, lions move like bishops, and elephants move like queens.
+
+Like their chess counterparts, the pieces cannot jump over other pieces.
+
+A mouse is afraid of a lion of the opponent; a lion is afraid of an elephant of the opponent, and an elephant is afraid of a mouse of the opponent.
+
+An animal may not move to a square that is adjacent (horizontally, vertically or diagonally) to an animal it is afraid of. In addition, if an animal is adjacent to an animal that it is afraid of, then it must be moved by its owner, i.e., the owner may not move another animal.
+
+In the special case that more than one animal is adjacent to an animal it is afraid of, the owner may choose which animal to move.
+
+One wins the game by occupying three of the watering holes with own pieces.")
+(id "1778")
+(source "<a href=\"http://playbarca.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />playbarca.com/</a>")
+(version "1.3.7")
+(classification "board/race/fill")
+(author "Andrew Caldwell")
+(credit "Eric Piette")
+(date "2007")
+}
+)
     
     (graphics {
         (board Checkered)

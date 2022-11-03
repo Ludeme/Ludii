@@ -145,9 +145,9 @@
 //--------------------------------------
 
 (metadata
-    (info
-        {
-        (description "Veloop is an original game with a loop forming goal. 
+(info
+{
+(description "Veloop is an original game with a loop forming goal. 
             
             There are two versions: this shorter Hexagonal grid game, and a longer game played on a square grid.
             While the game in theory can cycle cooperatively, in practice it is decisive.
@@ -161,7 +161,7 @@
             If there are no moves left for either player, the game is a draw. However, on all but the smallest board sizes offered here, games typically end with a winner, even before the piece replacement phase is reached. 
             
         The larger size boards additionally minimize the edge effects and the transition to the replacement phase.  Playing on even larger boards, does not affect play very much, other thanto minimize stacking.")
-        (rules "Goal: Form an orthogonally connected path of friendly stones that surrounds at least one non-friendly stone.
+(rules "Goal: Form an orthogonally connected path of friendly stones that surrounds at least one non-friendly stone.
             
             Set-up:
             Two stones, one of each colour, are placed next to each other adjacent to the center of the board. 
@@ -183,15 +183,15 @@
             
             Optional Variants: 
             -- Larger Board to reduce the strategic effect of the edge cells. / Smaller board to focus on stacked play as a significant part of the game.
-        -- Double move protocol for a shorter, more tactical game, that maintains a balance of material on every turn.")
-        (id "1984")
-        (version "1.3.7")
-        (classification "experimental")
-        (author "Dale Walton")
-        (credit "Dale Walton")
-        (date "16-05-2022")
-        }
-    )
+            -- Double move protocol for a shorter, more tactical game, that maintains a balance of material on every turn.")
+(id "1984")
+(version "1.3.7")
+(classification "experimental")
+(author "Dale Walton")
+(credit "Dale Walton")
+(date "16-05-2022")
+}
+)
     
     (graphics
         {

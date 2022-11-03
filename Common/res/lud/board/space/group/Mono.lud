@@ -75,24 +75,24 @@
 //--------------------------------------
 
 (metadata
-    (info
-        {
-        (description "Mono is a simple unification game of pure placement invented by Michael Amundsen in May 2022. It is a variant of Elea, by the same inventor.")
-        (rules "Players take turns placing a stone of their own color on any empty cell of a hexagonal grid of hexagons (a hexhex board). 
-            The game is over when the board is full, and the player with the lower score wins. 
-            If both players have the same number of groups, your score is your number of odd-sized groups, otherwise it is simply your number of groups.
-            
-            The running score only shows the number of odd groups (with a minus sign in front of it, for technical reasons).
-            
-        Groups of odd size is marked with a red outline.")
-        (id "1985")
-        (version "1.3.7")
-        (classification "board/space/group")
-        (author "Michael Amundsen")
-        (credit "Michael Amundsen")
-        (date "2022")
-        }
-    )
+(info
+{
+(description "Mono is a simple unification game of pure placement invented by Michael Amundsen in May 2022. It is a variant of Elea, by the same inventor.")
+(rules "Players take turns placing a stone of their own color on any empty cell of a hexagonal grid of hexagons (a hexhex board). 
+The game is over when the board is full, and the player with the lower score wins. 
+If both players have the same number of groups, your score is your number of odd-sized groups, otherwise it is simply your number of groups.
+
+The running score only shows the number of odd groups (with a minus sign in front of it, for technical reasons).
+
+Groups of odd size is marked with a red outline.")
+(id "1985")
+(version "1.3.7")
+(classification "board/space/group")
+(author "Michael Amundsen")
+(credit "Michael Amundsen")
+(date "2022")
+}
+)
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))

@@ -134,31 +134,31 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Cannon is a two-player board game invented in 2003 by David E. Whitcher.")
-        (rules "The objective of Cannon is to capture or shoot the opponent's Town.
-            
-            The player also wins the game if his opponent doesn't have legal moves.
-            
-            Players move alternately. On their first turns both players put a special piece called \"Town\" anywhere on the rows closest to them excluding corners.
-            
-            Once placed, Towns don't move during the entire game.
-            
-            A soldier may move one step forward or diagonally forward to an adjacent empty point.
-            A soldier may capture an enemy piece (a soldier or the Town) standing on an adjacent point by moving one step sideways, forward or diagonally forward.
-            A soldier can retreat two points backwards or diagonally backwards if it is adjacent to an enemy soldier and if the target and intermediate spots are empty.
-            Cannon is a (orthogonal or diagonal) line of 3 adjacent friendly soldiers. A cannon may slide along its line in either direction if the target spot is empty.
-        A cannon may make a capture without sliding, i.e. to \"shoot\" an enemy piece (either a soldier or the Town) standing on the same line as the shooting cannon if there is one or two empty points between the cannon's front soldier and the enemy piece.")
-        (id "1927")
-        (source "<a href=\"https://www.iggamecenter.com/info/en/cannon.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.iggamecenter.com</a>")
-        (version "1.3.7")
-        (classification "board/war/replacement/eliminate/target")
-        (author "David E. Whitcher")
-        (credit "Eric Piette")
-        (date "2003")
-        }
-    )
+(info
+{
+(description "Cannon is a two-player board game invented in 2003 by David E. Whitcher.")
+(rules "The objective of Cannon is to capture or shoot the opponent's Town.
+
+The player also wins the game if his opponent doesn't have legal moves.
+
+Players move alternately. On their first turns both players put a special piece called \"Town\" anywhere on the rows closest to them excluding corners.
+
+Once placed, Towns don't move during the entire game.
+
+A soldier may move one step forward or diagonally forward to an adjacent empty point.
+A soldier may capture an enemy piece (a soldier or the Town) standing on an adjacent point by moving one step sideways, forward or diagonally forward.
+A soldier can retreat two points backwards or diagonally backwards if it is adjacent to an enemy soldier and if the target and intermediate spots are empty.
+Cannon is a (orthogonal or diagonal) line of 3 adjacent friendly soldiers. A cannon may slide along its line in either direction if the target spot is empty.
+A cannon may make a capture without sliding, i.e. to \"shoot\" an enemy piece (either a soldier or the Town) standing on the same line as the shooting cannon if there is one or two empty points between the cannon's front soldier and the enemy piece.")
+(id "1927")
+(source "<a href=\"https://www.iggamecenter.com/info/en/cannon.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.iggamecenter.com</a>")
+(version "1.3.7")
+(classification "board/war/replacement/eliminate/target")
+(author "David E. Whitcher")
+(credit "Eric Piette")
+(date "2003")
+}
+)
     
     (graphics {
         (board Style Board)

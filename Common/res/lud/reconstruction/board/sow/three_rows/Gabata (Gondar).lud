@@ -17,18 +17,27 @@
 
 //------------------------------------------------------------------------------
 
+
+(rulesets { 
+
+(ruleset "Ruleset/Historical Information (Incomplete)" {
+
+})
+
+})
+
 (metadata 
-    (info
-        {
-        (description "Gabata is the name used for mancala-style games played in Ethiopia and Eritrea. This version was played in the eighteenth century in Gondar, the capital of Ethiopia at the time.")
-        (rules "3x6 board. Two players. Multiple counters per hole.")
-        (source "DLP evidence.")
-        (id "2042")
-        (version "1.3.7")
-        (classification "board/sow/three rows/reconstruction")
-        (origin "This game was played in Ethiopia, from around 1721 to 1730.")
-        }
-    )
+(info
+{
+(description "Gabata is the name used for mancala-style games played in Ethiopia and Eritrea. This version was played in the eighteenth century in Gondar, the capital of Ethiopia at the time.")
+(rules "3x6 board. Two players. Multiple counters per hole.")
+(source "DLP evidence.")
+(id "2042")
+(version "1.3.7")
+(classification "board/sow/three rows/reconstruction")
+(origin "This game was played in Ethiopia, from around 1721 to 1730.")
+}
+)
     
     (graphics {
         (board Style Mancala)

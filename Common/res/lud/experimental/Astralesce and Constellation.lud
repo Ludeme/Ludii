@@ -208,42 +208,43 @@
 (define "ColourBackground" (colour 245 245 245)) 
 
 (metadata
-    (info
-        {
-        (description "'Astralesce' and 'Constellate' are games based loosely on Kanare Kato's 'Advanced Squish'.
-            
-            The mechanism found in 'advanced Squish' of: 'move toward in-line-targets that are part of larger groups', is extended in these games to a future look-ahead restriction, i.e.:
-            'move along a line from a starting location to a location that is in line with a larger group than the moving piece had been in line with before.'
-            
-            This is inherently difficult perceptually, and it remains to be seen if the game can be played without the assistance of an app.
-            
-            However the game is both interesting and exciting, and appears to have various levels of strategy.     
-            
-            The goal is unification, and causing a stalemate before achieving the goal is considered a loss.
-            
-            'Astralesce' has sliding moves and captures that can remove multiple pieces. Thus stalemate is impossible, as the opponent cannot block movement. This is the preferred game.
-            
-        'Constellation' also has sliding moves, but only allows capture at the move's desination. This means opponent's pieces can block some potential destinations.")
-        (rules "Setup: Pieces of each color are distributed symmetrically on every 3rd cell of the board.
-            Play
-            - Decide which player will play with which color (Dark or Light).
-            - Light is the first player to play.
-            - Players take turns moving one of their own pieces
-            - Passing is not allowed.
-            
-            Ending the game:
-            The game ends when one player's pieces all form a single group. That player wins. If tied, the moving player wins.
-            
-            Note: The Game 'Constellation' can also end in Stalemate if a player cannot move. In this case the last to move loses.
-            
-            How to make a move:
-        1) Choose a piece to play.
-    2) Note the size of the first friendly group in each direction. (If the piece is not a singleton, one of these is the group the piece is part.)
+(info
+{
+(description "'Astralesce' and 'Constellate' are games based loosely on Kanare Kato's 'Advanced Squish'.
+    
+    The mechanism found in 'advanced Squish' of: 'move toward in-line-targets that are part of larger groups', is extended in these games to a future look-ahead restriction, i.e.:
+    'move along a line from a starting location to a location that is in line with a larger group than the moving piece had been in line with before.'
+    
+    This is inherently difficult perceptually, and it remains to be seen if the game can be played without the assistance of an app.
+    
+    However the game is both interesting and exciting, and appears to have various levels of strategy.     
+      
+    The goal is unification, and causing a stalemate before achieving the goal is considered a loss.
+    
+    'Astralesce' has sliding moves and captures that can remove multiple pieces. Thus stalemate is impossible, as the opponent cannot block movement. This is the preferred game.
+    
+    'Constellation' also has sliding moves, but only allows capture at the move's desination. This means opponent's pieces can block some potential destinations.")
+(rules "Setup: Pieces of each color are distributed symmetrically on every 3rd cell of the board.
+Play
+- Decide which player will play with which color (Dark or Light).
+- Light is the first player to play.
+- Players take turns moving one of their own pieces
+- Passing is not allowed.
+
+Ending the game:
+The game ends when one player's pieces all form a single group. That player wins. If tied, the moving player wins.
+
+Note: The Game 'Constellation' can also end in Stalemate if a player cannot move. In this case the last to move loses.
+
+How to make a move:
+1) Choose a piece to play.
+2) Note the size of the first friendly group in each direction. (If the piece is not a singleton, one of these is the group the piece is part.)
 3) The largest of these gives the starting value for the move.
 4) Try to move the chosen piece in any of the six radial directions.
 -- (In Astralesce, as the piece moves it will capture every opponent's piece that it reaches.)
 5) For the piece to be able to move, it must stop on a destination at which it has a higher value than before.
 -- The ending value is found in the same way as the starting value was found: It is the size of largest of the nearest friendly groups on a radial line from the new location.
+
 
 Notes on what to look for to find moves quickly:
 A) move to join the largest group in-line with the piece.

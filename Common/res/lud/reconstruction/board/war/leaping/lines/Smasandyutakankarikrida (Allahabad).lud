@@ -14,19 +14,28 @@
 
 //------------------------------------------------------------------------------
 
+
+(rulesets { 
+
+(ruleset "Ruleset/Historical Information (Incomplete)" {
+
+})
+
+})
+
 (metadata 
     
-    (info
-        {
-        (description "Smasandyutakankarikrida is a word that described several board games played in nineteenth century India in the Kridakaushalya. This version was played in Allahabad on a larger board than other varieties.")
-        (rules "5x5 intersecting lines, with diagonals in the four quadrants. Eight triangles, with the apex of each intersecting with a midpoint of a side or a corner. In each triangle, a line from the apex bisecting the base, and a line bisecting this line and the opposite sides of the triangle.")
-        (source "DLP evidence.")
-        (id "1461")
-        (version "1.3.7")
-        (classification "board/war/leaping/lines/reconstruction")
-        (origin "This game was played in India, around 1871.")
-        }
-    )
+(info
+{
+(description "Smasandyutakankarikrida is a word that described several board games played in nineteenth century India in the Kridakaushalya. This version was played in Allahabad on a larger board than other varieties.")
+(rules "5x5 intersecting lines, with diagonals in the four quadrants. Eight triangles, with the apex of each intersecting with a midpoint of a side or a corner. In each triangle, a line from the apex bisecting the base, and a line bisecting this line and the opposite sides of the triangle.")
+(source "DLP evidence.")
+(id "1461")
+(version "1.3.7")
+(classification "board/war/leaping/lines/reconstruction")
+(origin "This game was played in India, around 1871.")
+}
+)
     
     (graphics {
         (show Edges Diagonal Hidden)

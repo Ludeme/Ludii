@@ -24,20 +24,29 @@
 
 //------------------------------------------------------------------------------
 
+
+(rulesets { 
+
+(ruleset "Ruleset/Historical Evidence (Incomplete)" {
+
+})
+
+})
+
 (metadata 
     
-    (info
-        {
-        (description "This game was found as graffiti on a temple at Mahabalipuram, India. It is closely similar to other single-track board games found throughout India and Sri Lanka, which were fully described in the twentieth century.")
-        (rules "Bottom row with eleven squares. Ten squares extending vertically from the central square. A square track with five spaces per side extends up and to the right from the top square. Immediately above this, another square, with its left side aligned with the left side of the other square, but with smaller squares (thus, the squares do not line up where they are adjacent. The outer squares of the bottom track are marked, as are every fifth space from them along the board, except in the smaller square which is marked in all but the bottom left corner with a single diagonal..
-            ")
-            (source "DLP evidence.")
-            (id "1054")
-            (version "1.3.7")
-            (classification "board/race/escape/reconstruction")
-            (credit "Eric Piette")
-            }
-        )
+(info
+{
+(description "This game was found as graffiti on a temple at Mahabalipuram, India. It is closely similar to other single-track board games found throughout India and Sri Lanka, which were fully described in the twentieth century.")
+(rules "Bottom row with eleven squares. Ten squares extending vertically from the central square. A square track with five spaces per side extends up and to the right from the top square. Immediately above this, another square, with its left side aligned with the left side of the other square, but with smaller squares (thus, the squares do not line up where they are adjacent. The outer squares of the bottom track are marked, as are every fifth space from them along the board, except in the smaller square which is marked in all but the bottom left corner with a single diagonal..
+")
+(source "DLP evidence.")
+(id "1054")
+(version "1.3.7")
+(classification "board/race/escape/reconstruction")
+(credit "Eric Piette")
+}
+)
         
         (graphics {
             (board Colour Phase0 (colour 223 178 110))

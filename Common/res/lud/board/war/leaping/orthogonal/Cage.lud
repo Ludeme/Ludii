@@ -215,41 +215,41 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    (info
-        {
-        (description "Cages is a drawless checkers variant that always ends in one player eliminating the other. Mark Steere designed Cage in 2010.")
-        (rules "Cage is a checkers variant for two players played on a square 10x10 board. In this implementation you also have the option of playing on smaller boards. In the initial position, 50 checkers of one color and 50 checkers of a different color fill up the board in a checkered pattern. The goal of the game is to capture all your opponent's checkers.
-            
-            On your turn, if you can, you must choose one of two different kinds of moves to perform:
-            • a single step, or
-            • a sequence of jumps.
-            Note: A single jump is considered a jump sequence of length 1.
-            
-            Universal restriction:
-            All moves are subject to the following restriction:
-            • At no time may a checker be orthogonally adjacent to a checker of the same color.
-            
-            Stepping:
-            Stepping is moving one of your checkers to an orthogonally or diagonally adjacent empty square, and this kind of move is subject to the following two additional restrictions:
-            • A step my never bring the number of orthogonal enemy neighbors of the moved checker down to 0.
-            • The only condition under which a step may fail to bring the moved checker closer to the center of the line you are moving along is if it brings its number of orthogonal enemy neighbors up from 0.
-            
-            (Some elaboration on this last restriction: In general, a step must decrease the moved checker's straight line distance to the board's central intersection. That's the same as bringing it closer to the center of the orthogonal or diagonal line you are moving along. (Note: The center of a diagonal line is an intersection if it is an even number of squares long, and a square otherwise. The center of an orthogonal line is an edge if it is an even number of squares long, and a square otherwise.) Here is a different way of putting it: Whatever diagonal or orthogonal line you are stepping along, the largest distance to an edge square on this line before the step must be bigger than the largest distance to an edge square on the same line after the step. The only exception to this rule, as explained in the last restriction, is if your checker has no orthogonal neighbors and can step into such a relationship – then you may step in any direction.)
-            
-            Jumping sequences:
-            If a checker of your color is orthogonally adjacent to an enemy checker, and immediately on the opposite side of that enemy checker is either an empty square or the outside of the board, your checker may initiate a sequence of jumps. You do this by jumping your checker over to the opposite side of the enemy checker and immediately removing the jumped piece. If your checker lands outside the board, it too is removed from the board. Note: If your last checker is removed when you capture your opponent's last checker, you still win.
-            
-        If the jumping checker lands in a position where it can jump again, your turn does not end, and the checker must make yet a jump. If there are several ways to continue the sequence, you may choose freely between these. The sequence of jumps only ends when the checker lands on a square where it can make no further jump.")
-        (id "1270")
-        (source "<a href=\"http://web.archive.org/web/20200701105455/http://www.marksteeregames.com/Cage_rules.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.marksteeregames.com/</a>")
-        (version "1.3.7")
-        (classification "board/war/leaping/orthogonal")
-        (author "Mark Steere")
-        (publisher "<a href=\"http://www.marksteeregames.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a> (used with permission)")
-        (credit "Designed by Mark Steere and implemented by Michael Amundsen.")
-        (date "2010")
-        }
-    )
+(info
+{
+(description "Cages is a drawless checkers variant that always ends in one player eliminating the other. Mark Steere designed Cage in 2010.")
+(rules "Cage is a checkers variant for two players played on a square 10x10 board. In this implementation you also have the option of playing on smaller boards. In the initial position, 50 checkers of one color and 50 checkers of a different color fill up the board in a checkered pattern. The goal of the game is to capture all your opponent's checkers.
+
+On your turn, if you can, you must choose one of two different kinds of moves to perform:
+• a single step, or
+• a sequence of jumps.
+Note: A single jump is considered a jump sequence of length 1.
+
+Universal restriction:
+All moves are subject to the following restriction:
+• At no time may a checker be orthogonally adjacent to a checker of the same color.
+
+Stepping:
+Stepping is moving one of your checkers to an orthogonally or diagonally adjacent empty square, and this kind of move is subject to the following two additional restrictions:
+• A step my never bring the number of orthogonal enemy neighbors of the moved checker down to 0.
+• The only condition under which a step may fail to bring the moved checker closer to the center of the line you are moving along is if it brings its number of orthogonal enemy neighbors up from 0.
+
+(Some elaboration on this last restriction: In general, a step must decrease the moved checker's straight line distance to the board's central intersection. That's the same as bringing it closer to the center of the orthogonal or diagonal line you are moving along. (Note: The center of a diagonal line is an intersection if it is an even number of squares long, and a square otherwise. The center of an orthogonal line is an edge if it is an even number of squares long, and a square otherwise.) Here is a different way of putting it: Whatever diagonal or orthogonal line you are stepping along, the largest distance to an edge square on this line before the step must be bigger than the largest distance to an edge square on the same line after the step. The only exception to this rule, as explained in the last restriction, is if your checker has no orthogonal neighbors and can step into such a relationship – then you may step in any direction.)
+
+Jumping sequences:
+If a checker of your color is orthogonally adjacent to an enemy checker, and immediately on the opposite side of that enemy checker is either an empty square or the outside of the board, your checker may initiate a sequence of jumps. You do this by jumping your checker over to the opposite side of the enemy checker and immediately removing the jumped piece. If your checker lands outside the board, it too is removed from the board. Note: If your last checker is removed when you capture your opponent's last checker, you still win.
+
+If the jumping checker lands in a position where it can jump again, your turn does not end, and the checker must make yet a jump. If there are several ways to continue the sequence, you may choose freely between these. The sequence of jumps only ends when the checker lands on a square where it can make no further jump.")
+(id "1270")
+(source "<a href=\"http://web.archive.org/web/20200701105455/http://www.marksteeregames.com/Cage_rules.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.marksteeregames.com/</a>")
+(version "1.3.7")
+(classification "board/war/leaping/orthogonal")
+(author "Mark Steere")
+(publisher "<a href=\"http://www.marksteeregames.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a> (used with permission)")
+(credit "Designed by Mark Steere and implemented by Michael Amundsen.")
+(date "2010")
+}
+)
     
     (graphics {
         (player Colour P1 (colour Red))

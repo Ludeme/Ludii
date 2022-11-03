@@ -10,20 +10,29 @@
 
 //------------------------------------------------------------------------------
 
+
+(rulesets { 
+
+(ruleset "Ruleset/Historical Information. (Incomplete)" {
+
+})
+
+})
+
 (metadata 
     
-    (info
-        {
-        (description "Mak Yep is a game that was played in nineteenth century Thailand. The rules are incompletely documented, but a player wins by removing five pieces from the board without the other player being able to hop over one of the player's pieces.")
-        (rules "Board with sixteen squares. Seven pieces per player. One player must remove five counters so that at no point can the other player capture one of the pieces by hopping over it. ")
-        (source "DLP evidence.")
-        (id "192")
-        (version "1.3.7")
-        (classification "board/war/reconstruction")
-        (credit "Eric Piette")
-        (origin "This game was played in Thailand, around 1836.")
-        }
-    )
+(info
+{
+(description "Mak Yep is a game that was played in nineteenth century Thailand. The rules are incompletely documented, but a player wins by removing five pieces from the board without the other player being able to hop over one of the player's pieces.")
+(rules "Board with sixteen squares. Seven pieces per player. One player must remove five counters so that at no point can the other player capture one of the pieces by hopping over it. ")
+(source "DLP evidence.")
+(id "192")
+(version "1.3.7")
+(classification "board/war/reconstruction")
+(credit "Eric Piette")
+(origin "This game was played in Thailand, around 1836.")
+}
+)
     
     (recon {
         (concept "NumStartComponents" 14)

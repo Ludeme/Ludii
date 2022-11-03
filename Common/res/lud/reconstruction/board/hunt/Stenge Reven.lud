@@ -15,19 +15,28 @@
 
 //------------------------------------------------------------------------------
 
+
+(rulesets { 
+
+(ruleset "Ruleset/Historical Information (Incomplete)" {
+
+})
+
+})
+
 (metadata 
     
-    (info
-        {
-        (description "Stenge Reven is a hunt game played in Norway. ")
-        (rules "A square, with diagonals and lines connecting the midpoint of only two opposite sides. Two triangles on opposite sides of the square, with a line drawn from the apex to the midpoint of the base.")
-        (source "DLP evidence.")
-        (id "1498")
-        (version "1.3.7")
-        (classification "board/hunt/reconstruction")
-        (credit "Eric Piette")
-        }
-    )
+(info
+{
+(description "Stenge Reven is a hunt game played in Norway. ")
+(rules "A square, with diagonals and lines connecting the midpoint of only two opposite sides. Two triangles on opposite sides of the square, with a line drawn from the apex to the midpoint of the base.")
+(source "DLP evidence.")
+(id "1498")
+(version "1.3.7")
+(classification "board/hunt/reconstruction")
+(credit "Eric Piette")
+}
+)
     
     (graphics {
         (show Edges Diagonal Hidden)

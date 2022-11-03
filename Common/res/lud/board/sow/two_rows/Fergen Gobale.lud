@@ -239,17 +239,17 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Fergen Gobale is a two-row mancala-style board game from Ethiopia. It contains special neutral holes that can be captured in the course of play.")
-        (rules "2x6 board, divided in half and joined in the center with a single row of two holes. From the left, Five, five, three, three, five, and five counters in each hole of the double-row holes, four counters in the single row holes. Each player owns the row closest to them, but neither player controls the holes in the single row. Sowing begins from one of the holes in the player's row, and continues in an anti-clockwise direction. If the final counter lands in an occupied hole, these counters are picked up and sowing continues, unless the hole is in the single row, in which case the turn comes to an end. When the final counter falls in an empty hole in the player's row, the contents of the hole in the opponent's row adjacent to it are captured, along with the final counter of the sowing. However, if the hole from which the capture would be made contained three counters, these plus the final counter of the sowing are divided between the last hole of the sowing and the hole from which the capture would be made, i.e. two counters per each hole. The player then owns both of these holes, but cannot sow from them. The player also chooses at this point one of the holes in the single row to own, but the player still cannot begin sowing from it. Play continues until one player cannot play, and the players collect all of the counters from the holes they own. If one or both holes in the single row have not been claimed, the counters remain in them for the next round. The next round begins with the losing player filling as many holes in their row as possible, beginning from their left, according to the original starting number. After as many holes as possible are filled to the original capacity, the remaining  are placed in the next hole, or in an empty central hole. The opponent matches the arrangement in their own holes that are opposite the ones the other player can fill. If the losing player has fewer than five counters, they place one in each hole, starting from their left, and the opponent matches this arrangement. Play continues like this until one player has no more counters.")
-        (source "Pankhurst 1971: 181.")
-        (id "367")
-        (version "1.3.7")
-        (classification "board/sow/two rows")
-        (credit "Eric Piette")
-        }
-    )
+(info
+{
+(description "Fergen Gobale is a two-row mancala-style board game from Ethiopia. It contains special neutral holes that can be captured in the course of play.")
+(rules "2x6 board, divided in half and joined in the center with a single row of two holes. From the left, Five, five, three, three, five, and five counters in each hole of the double-row holes, four counters in the single row holes. Each player owns the row closest to them, but neither player controls the holes in the single row. Sowing begins from one of the holes in the player's row, and continues in an anti-clockwise direction. If the final counter lands in an occupied hole, these counters are picked up and sowing continues, unless the hole is in the single row, in which case the turn comes to an end. When the final counter falls in an empty hole in the player's row, the contents of the hole in the opponent's row adjacent to it are captured, along with the final counter of the sowing. However, if the hole from which the capture would be made contained three counters, these plus the final counter of the sowing are divided between the last hole of the sowing and the hole from which the capture would be made, i.e. two counters per each hole. The player then owns both of these holes, but cannot sow from them. The player also chooses at this point one of the holes in the single row to own, but the player still cannot begin sowing from it. Play continues until one player cannot play, and the players collect all of the counters from the holes they own. If one or both holes in the single row have not been claimed, the counters remain in them for the next round. The next round begins with the losing player filling as many holes in their row as possible, beginning from their left, according to the original starting number. After as many holes as possible are filled to the original capacity, the remaining  are placed in the next hole, or in an empty central hole. The opponent matches the arrangement in their own holes that are opposite the ones the other player can fill. If the losing player has fewer than five counters, they place one in each hole, starting from their left, and the opponent matches this arrangement. Play continues like this until one player has no more counters.")
+(source "Pankhurst 1971: 181.")
+(id "367")
+(version "1.3.7")
+(classification "board/sow/two rows")
+(credit "Eric Piette")
+}
+)
     
     (graphics {
         (board Style Mancala)

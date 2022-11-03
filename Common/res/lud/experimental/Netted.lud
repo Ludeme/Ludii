@@ -577,15 +577,15 @@
 (define "ColourBackground" (colour Cream)) 
 
 (metadata
-    (info
-        {
-        (description "Netted is a race to surround the opponent  Nets include Hex diagonals and single empty spaces, and so can cross each other. It is placement only and so can be played as a paper and pencil game. However the computer version adds markers for the empty space connections which must be removed when the spaces are filled.
+(info
+{
+(description "Netted is a race to surround the opponent  Nets include Hex diagonals and single empty spaces, and so can cross each other. It is placement only and so can be played as a paper and pencil game. However the computer version adds markers for the empty space connections which must be removed when the spaces are filled.
             
     The distinctive features are  1) a novel type of liberty for live groups that involves the count of available edge sites, and 2) the novel definitions for surrounding that include diagonals that cut groups, and connections across single empty spaces that can be broken by the opponent's placement.
     
     Moves are forced, suicide is prohibited, stalemate is a loss for the player who is stalemated.
     
-Strategy notes: sites next to the board corners are strong ways to gain the corner territory - Board should be at least 5-6 to avoid winnable edge play.")
+    Strategy notes: sites next to the board corners are strong ways to gain the corner territory - Board should be at least 5-6 to avoid winnable edge play.")
 (rules "The goal of Netted is to surround or 'Net' your opponent before being netted yourself.
     
     Definitions:
@@ -615,7 +615,7 @@ Strategy notes: sites next to the board corners are strong ways to gain the corn
     Black starts with an empty board.
     On your turn place one of your stones on an empty site that has enough liberties to avoid Suicide.
     The player who Nets his opponent wins.
-A player who cannot place on their turn, loses.")
+    A player who cannot place on their turn, loses.")
 (id "1652")
 (version "1.3.7")
 (classification "experimental")
