@@ -21,7 +21,11 @@ import app.DesktopApp;
 import app.PlayerApp;
 import app.display.dialogs.util.DialogUtil;
 import main.FileHandling;
+import utils.recons.ReconstructionGenerator;
 
+/**
+ * @author Matthew.Stephenson and Eric.Piette
+ */
 public class ReconstructionDialog extends JDialog
 {
 	private static final long serialVersionUID = 1L;
@@ -222,18 +226,16 @@ public class ReconstructionDialog extends JDialog
 					try
 					{
 						final String outputPath = txtcommonresoutput.getText();
-						final Integer playableRecons = Integer.valueOf(textFieldMaxRecons.getText());
+						final Integer numRecons = Integer.valueOf(textFieldMaxRecons.getText());
 						final Integer maxTries = Integer.valueOf(textFieldMaxTries.getText());
-						final Double csnScore = Double.valueOf(textFieldCSNScore.getText());
-						final Double conceptScore = Double.valueOf(textFieldConceptScore.getText());
-						final Double qualityScore = Double.valueOf(textFieldPlayability.getText());
+//						final Double csnScore = Double.valueOf(textFieldCSNScore.getText());
+//						final Double conceptScore = Double.valueOf(textFieldConceptScore.getText());
+//						final Double qualityScore = Double.valueOf(textFieldPlayability.getText());
 						System.out.println(selectedLudPath);
-						
-						// TODO Eric you need to call your function here with the values above.
+						ReconstructionGenerator.reconstruction(outputPath + File.separatorChar, numRecons.intValue(), maxTries.intValue(), selectedLudPath);
 					}
 					catch (final Exception e)
 					{
-						// You probably entered a string instead of a number.
 						e.printStackTrace();
 					}
 				}

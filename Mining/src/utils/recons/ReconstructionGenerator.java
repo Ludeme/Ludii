@@ -24,14 +24,14 @@ import other.GameLoader;
 import other.concept.Concept;
 
 /**
- * To reconstruct rulesets.
+ * Reconstruction Generator.
  *
  * @author Eric.Piette
  */
 public class ReconstructionGenerator
 {
 	final static String defaultOutputPath        = "./res/recons/output/";
-	final static int    defaultNumReconsExpected = 1;
+	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 10000;
 	final static String defaultReconsPath        = "/lud/reconstruction/board/war/replacement/checkmate/chaturanga/Samantsy";
 	//final static String defaultReconsPath = "/lud/reconstruction/";
@@ -61,7 +61,7 @@ public class ReconstructionGenerator
 	 * @param maxNumberAttempts  The number of attempts.
 	 * @param reconsPath         The path of the file to recons.
 	 */
-	private static void reconstruction
+	public static void reconstruction
 	(
 		String outputPath, 
 		int    numReconsExpected, 
@@ -70,6 +70,7 @@ public class ReconstructionGenerator
 	)
 	{
 		System.out.println("\n=========================================\nStart reconstruction:\n");
+		System.out.println("Output Path = " + outputPath);
 		final long startAt = System.nanoTime();
 
 		// Load from memory
