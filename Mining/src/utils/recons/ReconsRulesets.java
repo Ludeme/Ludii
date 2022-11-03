@@ -51,7 +51,8 @@ public class ReconsRulesets
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Fortresse"))
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/space/line/Ashanti Alignment Game"))
-			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/war/other/Macheng"))
+			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/war/other/Macheng"))
+			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/war/replacement/checkmate/chaturanga/Samantsy"))
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Bagh Bukree"))
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/test"))
 				continue;
@@ -85,10 +86,10 @@ public class ReconsRulesets
 			idStr = idStr.substring(0, idStr.indexOf(')')-1);
 			final int idRulesetToRecons = Integer.valueOf(idStr).intValue();
 
-			final List<Concept> trueConcepts = computeTrueConcepts(desc);
-			
-			for(Concept c: trueConcepts)
-				System.out.println(c.name());
+//			final List<Concept> trueConcepts = computeTrueConcepts(desc);
+//			
+//			for(Concept c: trueConcepts)
+//				System.out.println(c.name());
 			
 			int numAttempts = 0;
 			List<Completion> compilingCompletions = new ArrayList<Completion>();
