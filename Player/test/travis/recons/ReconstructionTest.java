@@ -15,7 +15,7 @@ import org.junit.Test;
 import completer.Completion;
 import main.FileHandling;
 import other.GameLoader;
-import utils.recons.CompleterWithPrepro;
+import reconstruction.completer.CompleterWithPrepro;
 
 /**
  * Unit Test to compile all the reconstruction games on the lud/reconstruction folder

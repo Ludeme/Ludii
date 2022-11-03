@@ -1,4 +1,4 @@
-package utils.recons;
+package reconstruction.preprocessing;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,13 +28,14 @@ import main.grammar.Symbol;
 import main.options.Ruleset;
 import other.GameLoader;
 import other.concept.Concept;
+import reconstruction.completer.CompleterWithPrepro;
 
 /**
  * To run the preprocessing part of the recons process.
  * 
  * @author Eric.Piette
  */
-public final class PreProcessRecons
+public final class PreProcessReconstruction
 {
 	public static void main(final String[] args)
 	{

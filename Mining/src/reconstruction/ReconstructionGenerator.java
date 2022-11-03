@@ -1,4 +1,4 @@
-package utils.recons;
+package reconstruction;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,6 +27,7 @@ import main.grammar.Report;
 import main.grammar.Symbol;
 import other.GameLoader;
 import other.concept.Concept;
+import reconstruction.completer.CompleterWithPrepro;
 
 /**
  * Reconstruction Generator.
@@ -401,7 +402,6 @@ public class ReconstructionGenerator
 		catch (final Exception ex)
 		{
 			ex.getStackTrace();
-			// Nothing to do.
 		}
 		
 		return trueConcepts;

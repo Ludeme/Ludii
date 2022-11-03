@@ -21,7 +21,7 @@ import app.DesktopApp;
 import app.PlayerApp;
 import app.display.dialogs.util.DialogUtil;
 import main.FileHandling;
-import utils.recons.ReconstructionGenerator;
+import reconstruction.ReconstructionGenerator;
 
 /**
  * @author Matthew.Stephenson and Eric.Piette
