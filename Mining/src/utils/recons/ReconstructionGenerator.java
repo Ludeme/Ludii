@@ -28,36 +28,59 @@ import other.concept.Concept;
  *
  * @author Eric.Piette
  */
-public class ReconsRulesets
+public class ReconstructionGenerator
 {
+	final static String defaultOutputPath        = "./res/recons/output/";
+	final static int    defaultNumReconsExpected = 1;
+	final static int    defaultNumAttempts       = 10000;
+	final static String defaultReconsPath        = "/lud/reconstruction/board/war/replacement/checkmate/chaturanga/Samantsy";
+	//final static String defaultReconsPath = "/lud/reconstruction/";
+	//final static String defaultReconsPath = "/lud/reconstruction/board/hunt/Fortresse";
+	//final static String defaultReconsPath = "/lud/reconstruction/board/space/line/Ashanti Alignment Game";
+	//final static String defaultReconsPath = "/lud/reconstruction/board/war/other/Macheng";
+	//final static String defaultReconsPath = "/lud/reconstruction/board/hunt/Bagh Bukree";
+	
+	/**
+	 * Main method to call the reconstruction with command lines.
+	 * @param args
+	 */
 	public static void main(final String[] args)
 	{
-		String outputPath = args.length == 0 ?  "./res/recons/output/" : args[0];
-		int numRecons = args.length < 1 ?  100 : Integer.parseInt(args[1]);
-		int numReconsNoWarning = args.length < 2 ?  100 : Integer.parseInt(args[2]);
-		int numReconsNoWarningExpectedConcepts = args.length < 3 ?  100 : Integer.parseInt(args[3]);
-		int maxNumberAttempts = args.length < 4 ?  10000 : Integer.parseInt(args[4]);
-		
-		System.out.println("\n=========================================\nTest: Start reconstruction all of rulesets:\n");
-
+		String outputPath = args.length == 0 ?                      defaultOutputPath : args[0];
+		int numReconsNoWarningExpectedConcepts = args.length < 1 ?  defaultNumReconsExpected : Integer.parseInt(args[1]);
+		int maxNumberAttempts = args.length < 2 ?                   defaultNumAttempts : Integer.parseInt(args[2]);
+		String reconsPath = args.length < 3 ?                       defaultReconsPath : args[3];
+	
+		reconstruction(outputPath, numReconsNoWarningExpectedConcepts, maxNumberAttempts, reconsPath);
+	}
+	
+	
+	/**
+	 * @param outputPath         The path of the folder to place the reconstructions.
+	 * @param numReconsExpected  The number of reconstruction expected to generate.
+	 * @param maxNumberAttempts  The number of attempts.
+	 * @param reconsPath         The path of the file to recons.
+	 */
+	private static void reconstruction
+	(
+		String outputPath, 
+		int    numReconsExpected, 
+		int    maxNumberAttempts,
+		String reconsPath
+	)
+	{
+		System.out.println("\n=========================================\nStart reconstruction:\n");
 		final long startAt = System.nanoTime();
 
 		// Load from memory
 		final String[] choices = FileHandling.listGames();
 		CompleterWithPrepro completer = new CompleterWithPrepro();
-
 		for (final String fileName : choices)
 		{
-			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
-			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Fortresse"))
-			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/space/line/Ashanti Alignment Game"))
-			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/war/other/Macheng"))
-			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/war/replacement/checkmate/chaturanga/Samantsy"))
-			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/hunt/Bagh Bukree"))
-			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/test"))
+			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains(reconsPath))
 				continue;
 			
-			final String gameName = fileName.substring(fileName.lastIndexOf("/")+1,fileName.length()-4);
+			final String gameName = fileName.substring(fileName.lastIndexOf("/") + 1, fileName.length() - 4);
 			
 			// Get game description from resource
 			System.out.println("Game: " + gameName);
@@ -81,29 +104,28 @@ public class ReconsRulesets
 				e1.printStackTrace();
 			}
 			
+			// Extract the metadata.
 			final String metadata = desc.contains("(metadata") ? desc.substring(desc.indexOf("(metadata")) : "";
-			String idStr = metadata.contains("(id") ? metadata.substring(metadata.indexOf("(id")+ 5) : "";
-			idStr = idStr.substring(0, idStr.indexOf(')')-1);
+			
+			// Extract the id of the reconstruction.
+			String idStr = metadata.contains("(id") ? metadata.substring(metadata.indexOf("(id") + 5) : "";
+			idStr = idStr.substring(0, idStr.indexOf(')') - 1);
 			final int idRulesetToRecons = Integer.valueOf(idStr).intValue();
 
-//			final List<Concept> trueConcepts = computeTrueConcepts(desc);
-//			
-//			for(Concept c: trueConcepts)
+			// To check the expected concepts detected.
+//			final List<Concept> expectedConcepts = computeexpectedConcepts(desc);
+//			for(Concept c: expectedConcepts)
 //				System.out.println(c.name());
 			
 			int numAttempts = 0;
-			List<Completion> compilingCompletions = new ArrayList<Completion>();
-			List<Completion> compilingNoWarningCompletions = new ArrayList<Completion>();
-			List<Completion> compilingNoWarningExpectedConceptsCompletions = new ArrayList<Completion>();
+			List<Completion> correctCompletions = new ArrayList<Completion>();
 			
-			// Run the recons process until enough attempts is executed or reconstruction are generated.
-			while(numAttempts < maxNumberAttempts && 
-					(compilingCompletions.size() < numRecons ||
-							compilingNoWarningCompletions.size() < numReconsNoWarning ||
-							compilingNoWarningExpectedConceptsCompletions.size() < numReconsNoWarningExpectedConcepts)
-			)
+			// Run the recons process until enough attempts are executed or all reconstructions are generated.
+			while(numAttempts < maxNumberAttempts && correctCompletions.size() < numReconsExpected)
 			{
 				List<Completion> completions = null;
+				
+				// Run the completer.
 				try
 				{
 					completions = completer.completeSampled(desc, 1, idRulesetToRecons, null);
@@ -113,46 +135,47 @@ public class ReconsRulesets
 					e.printStackTrace();
 				}
 
+				// Check the completions.
 				if (completions != null)
 				{
 					for (int n = 0; n < completions.size(); n++) 
 					{
 						final Completion completion = completions.get(n);
 						final String completionRaw = indentNicely(StringRoutines.unformatOneLineDesc(completion.raw()));
+						
 						// Test if the completion compiles.
 						Game game = null;
 						//System.out.println(completionRaw);
 						try{game = (Game) Compiler.compileTest(new Description(completionRaw), false);}
 						catch(final Exception e)
 						{
-//							System.out.println("Impossible to compile number "+ n);
+//							System.out.println("Impossible to compile);
 //							System.out.println("DESC IS");
 //							System.out.println(completionRaw);
 //							e.printStackTrace();
 						}
+						
+						// It compiles.
 						if(game != null)
 						{
 							final String rawDescMetadata = completionRaw + "\n" + metadata;
 							completions.get(n).setRaw(rawDescMetadata);
-							compilingCompletions.add(completions.get(n));
-							
 							System.out.print("One Completion found");
 							
+							// Check if no warning and if no potential crash.
 							if(!game.hasMissingRequirement() && !game.willCrash())
 							{
 								System.out.print( " with no warning");
-								compilingNoWarningCompletions.add(completions.get(n));
+								
 								// Check if the concepts expected are present.
 								boolean expectedConcepts = Concept.isExpectedConcepts(rawDescMetadata);
 								if(expectedConcepts)
 								{
-									compilingNoWarningExpectedConceptsCompletions.add(completions.get(n));
+									// All good, add to the list of correct completions.
+									correctCompletions.add(completions.get(n));
 									System.out.print( " and with the expected concepts");
 								}
 							}
-							game = (Game) Compiler.compileTest(new Description(rawDescMetadata), false);
-							
-
 							System.out.println();
 						}
 					}
@@ -161,38 +184,25 @@ public class ReconsRulesets
 			}
 
 			// We rank the completions.
-			Collections.sort(compilingCompletions, (c1, c2) -> c1.score() < c2.score() ? 1 : c1.score() == c2.score() ? 0 : -1);
+			Collections.sort(correctCompletions, (c1, c2) -> c1.score() < c2.score() ? 1 : c1.score() == c2.score() ? 0 : -1);
 			
-			for (int n = 0; n < compilingCompletions.size(); n++) 
+			for (int n = 0; n < correctCompletions.size(); n++) 
 			{
-				System.out.println("Completion " + n + " has a score of " + compilingCompletions.get(n).score() + " similarity Score = " + compilingCompletions.get(n).similarityScore() + " true concepts score = " + compilingCompletions.get(n).commonTrueConceptsScore() + " IDS used = " + compilingCompletions.get(n).idsUsed());
-				if(compilingNoWarningExpectedConceptsCompletions.contains(compilingCompletions.get(n)))
-					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/" + "noWarning/"+ "expectedConcepts/", gameName + n, compilingCompletions.get(n).raw());
-				else if(compilingNoWarningCompletions.contains(compilingCompletions.get(n)))
-					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/" + "noWarning/", gameName + n, compilingCompletions.get(n).raw());
-				else
-					CompleterWithPrepro.saveCompletion(outputPath + gameName + "/", gameName + n, compilingCompletions.get(n).raw());
+				System.out.println("Completion " + n + " has a score of " + correctCompletions.get(n).score() + " similarity Score = " + correctCompletions.get(n).similarityScore() + " true concepts score = " + correctCompletions.get(n).commonTrueConceptsScore() + " IDS used = " + correctCompletions.get(n).idsUsed());
+				CompleterWithPrepro.saveCompletion(outputPath + gameName + "/", gameName + n, correctCompletions.get(n).raw());
 			}
 
 			System.out.println("Num Attempts = " + numAttempts);
-			
-			System.out.println(compilingCompletions.size() + " recons generated, " + compilingNoWarningCompletions.size() + " recons without warning generated.");
+			System.out.println(correctCompletions.size() + " recons generated");
 		}
 		
 		final long stopAt = System.nanoTime();
 		final double secs = (stopAt - startAt) / 1000000000.0;
 		System.out.println("\nDone in " + secs + "s.");
-
-//		if (!failedGames.isEmpty())
-//		{
-//			System.out.println("\nUncompiled games:");
-//			for (final String name : failedGames)
-//				System.out.println(name);
-//		}
 	}
 
 	//-----------------------------------------------------------------------------
-	
+
 	/**
 	 * Nicely indents the description in entry.
 	 */
@@ -279,7 +289,7 @@ public class ReconsRulesets
 	 * @param desc The recons desc of the game.
 	 * @return The list of concepts which are sure to be true for a recons description.
 	 */
-	final static List<Concept> computeTrueConcepts(final String desc)
+	final static List<Concept> computeExceptedConcepts(final String desc)
 	{
 		final List<Concept> trueConcepts = new ArrayList<Concept>();
 		
