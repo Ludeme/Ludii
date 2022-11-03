@@ -70,6 +70,8 @@ public class ReconstructionDialog extends JDialog
 		lblOutputPath.setBounds(12, 56, 149, 38);
 		contentPanel.add(lblOutputPath);
 		
+		final JButton okButton = new JButton("OK");
+		
 		txtcommonresoutput = new JTextField();
 		txtcommonresoutput.setText("/common/res/output/");
 		txtcommonresoutput.setBounds(167, 68, 220, 19);
@@ -160,6 +162,9 @@ public class ReconstructionDialog extends JDialog
 		        	
 	        		selectedLudPath = GameLoaderDialog.showDialog(DesktopApp.frame(), choices, initialChoice);
 	        		selectedGameText.setText(selectedLudPath.split("/")[selectedLudPath.split("/").length-1]);
+	        		if(!selectedGameText.getText().isEmpty())
+	        			okButton.setEnabled(true);
+	        			
 				}
 				catch (final Exception e1)
 				{
@@ -213,10 +218,11 @@ public class ReconstructionDialog extends JDialog
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 		{
-			final JButton okButton = new JButton("OK");
+			
 			okButton.setActionCommand("OK");
 			buttonPane.add(okButton);
 			getRootPane().setDefaultButton(okButton);
+			okButton.setEnabled(false);
 			
 			final ActionListener okButtonListener = new ActionListener()
 			{
