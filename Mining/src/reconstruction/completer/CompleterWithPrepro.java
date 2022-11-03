@@ -340,7 +340,7 @@ public class CompleterWithPrepro
 				final String candidate = new String(otherDescription);
 				
 				double similarity = 0.0;
-				double trueConceptsAvg = 0.0;
+				double commonExpectedConcepts = 0.0;
 				if(rulesetReconId == -1) // We do not use the CSN.
 					similarity = 1.0;
 				else
@@ -354,7 +354,7 @@ public class CompleterWithPrepro
 					else
 						similarity = DistanceUtils.getRulesetCSNDistance(rulesetId, rulesetReconId);
 					
-					trueConceptsAvg = getAVGCommonTrueConcept(rulesetReconId, rulesetId);
+					commonExpectedConcepts = getAVGCommonExpectedConcept(rulesetReconId, rulesetId);
 				}
 				
 				// We ignore all the ludemes coming from a negative similarity value.
@@ -363,7 +363,7 @@ public class CompleterWithPrepro
 				
 				final double weightSimilarity = 0.5;
 				final double weightCommonTrueConcepts = 0.5; 
-				final double score = weightSimilarity * similarity + weightCommonTrueConcepts * trueConceptsAvg;
+				final double score = weightSimilarity * similarity + weightCommonTrueConcepts * commonExpectedConcepts;
 				
 				final int l = candidate.indexOf(parent[0]);
 				
@@ -425,7 +425,7 @@ public class CompleterWithPrepro
 					//System.out.println("Adding completion:\n" + completion.raw());
 					final double newScore = (completion.idsUsed().size() == 0) ? score : ((completion.score() * completion.idsUsed().size() + score) / (1 + completion.idsUsed().size()));
 					final double newSimilarityScore = (completion.idsUsed().size() == 0) ? similarity : ((completion.score() * completion.idsUsed().size() + similarity) / (1 + completion.idsUsed().size()));
-					final double newCommonTrueConceptsAvgScore = (completion.idsUsed().size() == 0) ? trueConceptsAvg : ((completion.score() * completion.idsUsed().size() + trueConceptsAvg) / (1 + completion.idsUsed().size()));
+					final double newCommonTrueConceptsAvgScore = (completion.idsUsed().size() == 0) ? commonExpectedConcepts : ((completion.score() * completion.idsUsed().size() + commonExpectedConcepts) / (1 + completion.idsUsed().size()));
 					
 					newCompletion.setIdsUsed(completion.idsUsed());
 					newCompletion.addId(rulesetId);
@@ -901,10 +901,10 @@ public class CompleterWithPrepro
 	/**
 	 * @return Map of rulesetId (key) to CSN distance (value) pairs, based on distance to specified rulesetId.
 	 */
-	public static double getAVGCommonTrueConcept(final int reconsRulesetId, final int rulesetID)
+	public static double getAVGCommonExpectedConcept(final int reconsRulesetId, final int rulesetID)
 	{
 		// Load ruleset avg common true concepts from specific directory.
-		final String trueConceptsFilePath = "./res/recons/input/trueConcepts/TrueConcept_" + reconsRulesetId + ".csv";
+		final String trueConceptsFilePath = "./res/recons/input/commonExpectedConcepts/CommonExpectedConcept_" + reconsRulesetId + ".csv";
 		File fileTrueConcept = new File(trueConceptsFilePath);
 		
 		if(!fileTrueConcept.exists() || (reconsRulesetId == rulesetID)) // If TrueConcept not computing or comparing the same rulesets, trueConceptsAvg is 0.

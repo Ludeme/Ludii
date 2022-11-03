@@ -37,13 +37,13 @@ import reconstruction.completer.CompleterWithPrepro;
 public class ComputeCommonExpectedConcepts
 {
 	/**
-	 * To compute the AVG of true concepts between recons and rulesets.
+	 * Generate the CSVs with the common expected concepts between each reconstruction and the complete rulesets.
 	 */
 	public static void generateCSVs()
 	{
-		System.out.println("Compute AVG True concepts between recons and rulesets.");
+		System.out.println("Compute average common expected concepts between reconstruction and rulesets.");
 		
-		// Compute % TrueConcepts in each complete ruleset.
+		// Compute % Common Expected Concepts in each complete ruleset.
 		final String[] gameNames = FileHandling.listGames();
 		final Map<Integer, BitSet> conceptsNonBoolean = new HashMap<Integer, BitSet>();
 		
@@ -109,7 +109,7 @@ public class ComputeCommonExpectedConcepts
 			}
 		}
 
-		System.out.println("Start compute True concepts for recons description.");
+		System.out.println("Start compute Common Expected concepts for recons description.");
 		// Check each recons description.
 		final String[] choices = FileHandling.listGames();
 		for (final String fileName : choices)
@@ -145,9 +145,9 @@ public class ComputeCommonExpectedConcepts
 			
 			// Get game description from resource
 			System.out.println("Game: " + gameName + " id = " + idRulesetToRecons);
-			final List<Concept> trueConcepts = computeTrueConcepts(desc);
+			final List<Concept> commonExpectedConcepts = computeCommonExpectedConcepts(desc);
 			
-			final String beginOutput = "TrueConcept_";
+			final String beginOutput = "CommonExpectedConcept_";
 			final String endOutput = ".csv";
 			
 			try (final PrintWriter writer = new UnixPrintWriter(new File(beginOutput + idRulesetToRecons + endOutput), "UTF-8"))
@@ -158,11 +158,11 @@ public class ComputeCommonExpectedConcepts
 					final BitSet conceptsRuleset = entry.getValue();
 					
 					int countCommonConcepts = 0;
-					for(Concept concept: trueConcepts)
+					for(Concept concept: commonExpectedConcepts)
 						if(conceptsRuleset.get(concept.id()))
 							countCommonConcepts++;
 					
-					final double avgCommonConcepts = trueConcepts.size() == 0 ? 0.0 : ((double) countCommonConcepts / (double) trueConcepts.size());
+					final double avgCommonConcepts = commonExpectedConcepts.size() == 0 ? 0.0 : ((double) countCommonConcepts / (double) commonExpectedConcepts.size());
 	
 
 					final List<String> lineToWrite = new ArrayList<String>();
@@ -170,7 +170,7 @@ public class ComputeCommonExpectedConcepts
 					lineToWrite.add(avgCommonConcepts+"");
 					writer.println(StringRoutines.join(",", lineToWrite));
 //					System.out.println("id = " + rulesetId);
-//					System.out.println("% True Concepts = " + avgCommonConcepts);
+//					System.out.println("% Common Expected Concepts = " + avgCommonConcepts);
 					
 				}
 			}
@@ -180,18 +180,18 @@ public class ComputeCommonExpectedConcepts
 			}
 		}
 
-		System.out.println("TrueConcept CSVs GENERATED");
+		System.out.println("CommonExpectedConcepts CSVs Generated");
 	}
 	
 	//-----------------------------------------------------------------------------
 	
 		/**
-		 * @param desc The recons desc of the game.
-		 * @return The list of concepts which are sure to be true for a recons description.
+		 * @param desc The reconstruction description of the game.
+		 * @return The list of concepts which are sure to be true for a reconstruction description.
 		 */
-		final static List<Concept> computeTrueConcepts(final String desc)
+		public static List<Concept> computeCommonExpectedConcepts(final String desc)
 		{
-			final List<Concept> trueConcepts = new ArrayList<Concept>();
+			final List<Concept> commonExpectedConcepts = new ArrayList<Concept>();
 			
 			// Keep only the game description.
 			String descNoMetadata = desc.substring(0,desc.lastIndexOf("(metadata"));
@@ -231,37 +231,37 @@ public class ComputeCommonExpectedConcepts
 				}
 			}
 			
-			// Get the true concepts.
+			// Get the common concepts.
 			for(String ludemeplex : ludemeplexes)
 			{
-				for(Concept concept: getTrueConcepts(ludemeplex))
+				for(Concept concept: getCommonExpectedConcepts(ludemeplex))
 				{
-					if(!trueConcepts.contains(concept))
-						trueConcepts.add(concept);
+					if(!commonExpectedConcepts.contains(concept))
+						commonExpectedConcepts.add(concept);
 				}
 			}
 			
-			return trueConcepts;
+			return commonExpectedConcepts;
 		}
 
 		//----------------------CODE TO GET THE CONCEPTS OF A STRING (TO MOVE TO ANOTHER CLASS LATER)------------------------------------
 		
 		/**
 		 * @param str The description of the ludemeplex.
-		 * @return The true concepts of the ludemeplex.
+		 * @return The common expected concepts of the ludemeplex.
 		 */
-		static List<Concept> getTrueConcepts(final String str)
+		static List<Concept> getCommonExpectedConcepts(final String str)
 		{
-			final List<Concept> trueConcepts = new ArrayList<Concept>();
+			final List<Concept> commonConcepts = new ArrayList<Concept>();
 			
 			if (str == null || str.equals(""))
-				return trueConcepts;
+				return commonConcepts;
 
 			try
 			{
 				final Object compiledObject = compileString(str);
 				if (compiledObject != null)
-					trueConcepts.addAll(evalConceptCompiledObject(compiledObject));
+					commonConcepts.addAll(evalConceptCompiledObject(compiledObject));
 			}
 			catch (final Exception ex)
 			{
@@ -269,7 +269,7 @@ public class ComputeCommonExpectedConcepts
 				// Nothing to do.
 			}
 			
-			return trueConcepts;
+			return commonConcepts;
 		}
 		
 		/**
@@ -277,11 +277,12 @@ public class ComputeCommonExpectedConcepts
 		 */
 		static List<Concept> evalConceptCompiledObject(final Object obj)
 		{
+			// Default Game description to make the compiler happy, but not used except for this.
 			final Game tempGame = (Game)Compiler.compileTest(new Description("(game \"Test\" (players 2) (equipment { (board (square 3)) "
 					+ "	          (piece \"Disc\" Each) }) (rules (play (move Add (to "
 					+ "	          (sites Empty)))) (end (if (is Line 3) (result Mover Win)))))"), false);
 			
-			final List<Concept> trueConcepts = new ArrayList<Concept>();
+			final List<Concept> commonConcepts = new ArrayList<Concept>();
 			
 			// Need to preprocess the ludemes before to call the eval method.
 			Method preprocess = null;
@@ -316,10 +317,10 @@ public class ComputeCommonExpectedConcepts
 			{
 				final Concept concept = Concept.values()[i];
 				if (concepts.get(concept.id()))
-					trueConcepts.add(concept);
+					commonConcepts.add(concept);
 			}
 
-			return trueConcepts;
+			return commonConcepts;
 		}
 		
 		/**
@@ -354,5 +355,4 @@ public class ComputeCommonExpectedConcepts
 			
 			return obj;
 		}
-	
 }
