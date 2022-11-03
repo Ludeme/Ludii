@@ -340,15 +340,11 @@
             
             (end 
                 (if 
-                    (= 
-                        (count Pieces Mover)
-                        
-                        (- 
-                            (count Pieces All)
-                        2)
-                    )
+                    (<= 
+                        (count Pieces Next)
+                    2)
                     
-                    (byScore)
+                    (result Next Loss)
                 )
             )
         )

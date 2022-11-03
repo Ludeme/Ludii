@@ -340,9 +340,13 @@
             
             (end 
                 (if 
-                    (no Pieces Next)
+                    (= 
+                        (sites Occupied by:Mover)
+                        
+                        (sites Next)
+                    )
                     
-                    (result Next Loss)
+                    (result Mover Win)
                 )
             )
         )
