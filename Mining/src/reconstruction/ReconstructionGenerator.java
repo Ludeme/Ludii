@@ -8,9 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -18,13 +16,10 @@ import java.util.regex.Pattern;
 import compiler.Compiler;
 import completer.Completion;
 import game.Game;
-import grammar.Grammar;
 import main.FileHandling;
 import main.StringRoutines;
 import main.UnixPrintWriter;
 import main.grammar.Description;
-import main.grammar.Report;
-import main.grammar.Symbol;
 import other.GameLoader;
 import other.concept.Concept;
 import reconstruction.completer.CompleterWithPrepro;
@@ -130,7 +125,7 @@ public class ReconstructionGenerator
 			final int idRulesetToRecons = Integer.valueOf(idStr).intValue();
 
 			// To check the expected concepts detected.
-//			final List<Concept> expectedConcepts = computeexpectedConcepts(desc);
+//			final List<Concept> expectedConcepts = ComputeCommonExpectedConcepts.computeCommonExpectedConcepts(desc);
 //			for(Concept c: expectedConcepts)
 //				System.out.println(c.name());
 			
@@ -320,175 +315,4 @@ public class ReconstructionGenerator
         		indent += difference;  // indent from next line
         }
 	}
-	
-	/**
-	 * @param desc The recons desc of the game.
-	 * @return The list of concepts which are sure to be true for a recons description.
-	 */
-	final static List<Concept> computeExceptedConcepts(final String desc)
-	{
-		final List<Concept> trueConcepts = new ArrayList<Concept>();
-		
-		// Keep only the game description.
-		String descNoMetadata = desc.substring(0,desc.lastIndexOf("(metadata"));
-		descNoMetadata = descNoMetadata.substring(0, descNoMetadata.lastIndexOf(')'));
-
-		Description description = new Description(descNoMetadata);
-		CompleterWithPrepro.expandRecons(description);
-		descNoMetadata = description.expanded();
-		
-		// Get all the ludemeplexes between parenthesis.
-		final List<String> ludemeplexes = new ArrayList<String>();
-		for(int i = 0; i < descNoMetadata.length(); i++)
-		{
-			final char c = descNoMetadata.charAt(i);
-			if(c == '(')
-			{
-				int countParenthesis = 1;
-				int indexCorrespondingParenthesis = i+1;
-				for(; indexCorrespondingParenthesis < descNoMetadata.length(); indexCorrespondingParenthesis++)
-				{
-					if(descNoMetadata.charAt(indexCorrespondingParenthesis) == '(')
-						countParenthesis++;
-					else
-						if(descNoMetadata.charAt(indexCorrespondingParenthesis) == ')')
-							countParenthesis--;
-					if(countParenthesis == 0)
-					{
-						indexCorrespondingParenthesis++;
-						break;
-					}
-				}
-				final String ludemeplex = descNoMetadata.substring(i, indexCorrespondingParenthesis);
-				
-				// We keep the ludemeplexes with no completion point.
-				if(!ludemeplex.contains("#") && !ludemeplex.contains("[") && !ludemeplex.contains("]"))
-					ludemeplexes.add(ludemeplex);
-			}
-		}
-		
-		// Get the true concepts.
-		for(String ludemeplex : ludemeplexes)
-		{
-			for(Concept concept: getTrueConcepts(ludemeplex))
-			{
-				if(!trueConcepts.contains(concept))
-					trueConcepts.add(concept);
-			}
-		}
-		
-		return trueConcepts;
-	}
-
-	//----------------------CODE TO GET THE CONCEPTS OF A STRING (TO MOVE TO ANOTHER CLASS LATER)------------------------------------
-	
-	/**
-	 * @param str The description of the ludemeplex.
-	 * @return The true concepts of the ludemeplex.
-	 */
-	static List<Concept> getTrueConcepts(final String str)
-	{
-		final List<Concept> trueConcepts = new ArrayList<Concept>();
-		
-		if (str == null || str.equals(""))
-			return trueConcepts;
-
-		try
-		{
-			final Object compiledObject = compileString(str);
-			if (compiledObject != null)
-				trueConcepts.addAll(evalConceptCompiledObject(compiledObject));
-		}
-		catch (final Exception ex)
-		{
-			ex.getStackTrace();
-		}
-		
-		return trueConcepts;
-	}
-	
-	/**
-	 * Attempts to get the concepts from a ludemeplex.
-	 */
-	static List<Concept> evalConceptCompiledObject(final Object obj)
-	{
-		final Game tempGame = (Game)Compiler.compileTest(new Description("(game \"Test\" (players 2) (equipment { (board (square 3)) "
-				+ "	          (piece \"Disc\" Each) }) (rules (play (move Add (to "
-				+ "	          (sites Empty)))) (end (if (is Line 3) (result Mover Win)))))"), false);
-		
-		final List<Concept> trueConcepts = new ArrayList<Concept>();
-		
-		// Need to preprocess the ludemes before to call the eval method.
-		Method preprocess = null;
-		try
-		{
-			preprocess = obj.getClass().getDeclaredMethod("preprocess", tempGame.getClass());
-			if (preprocess != null)
-				preprocess.invoke(obj, tempGame);
-		}
-		catch (final Exception e)
-		{
-			// Nothing to do.
-			//e.printStackTrace();
-		}
-
-		// get the concepts by reflection.
-		Method conceptMethod = null;
-		BitSet concepts = new BitSet();
-		try
-		{
-			conceptMethod = obj.getClass().getDeclaredMethod("concepts", tempGame.getClass());
-			if (conceptMethod != null)
-				concepts = ((BitSet) conceptMethod.invoke(obj, tempGame));
-		}
-		catch (final Exception e)
-		{
-			// Nothing to do.
-			//e.printStackTrace();
-		}
-		
-		for (int i = 0; i < Concept.values().length; i++)
-		{
-			final Concept concept = Concept.values()[i];
-			if (concepts.get(concept.id()))
-				trueConcepts.add(concept);
-		}
-
-		return trueConcepts;
-	}
-	
-	/**
-	 * Attempts to compile a given string for every possible symbol class.
-	 * @return Compiled object if possible, else null.
-	 */
-	static Object compileString(final String str)
-	{
-		Object obj = null;
-		
-		final String token = StringRoutines.getFirstToken(str);
-		final List<Symbol> symbols = Grammar.grammar().symbolsWithPartialKeyword(token);
-
-		// Try each possible symbol for this token
-		for (final Symbol symbol : symbols)
-		{
-			final String className = symbol.cls().getName();
-			final Report report = new Report();
-			
-			try
-			{
-				obj = Compiler.compileObject(str, className, report);
-			}
-			catch (final Exception ex)
-			{
-				//System.out.println("Couldn't compile.");
-			}
-				
-			if (obj != null)
-				break;
-		}
-		
-		return obj;
-	}
-
-
 }
