@@ -338,12 +338,31 @@
                 (forEach Piece)
             )
             
-            (end 
+            (end { 
                 (if 
-                    (no Pieces Enemy)
+                    (= 8 
+                        (count at:0)
+                    )
                     
-                    (result TeamMover Win)
+                    (result Mover Win)
                 )
+                
+                (if 
+                    (and 
+                        (= 1 
+                            (count at:
+                                (last To afterConsequence:True)
+                            )
+                        )
+                        
+                        (= 
+                            (last To afterConsequence:True)
+                        0)
+                    )
+                    
+                    (result Mover Loss)
+                )
+                }
             )
         )
     > "The incomplete ruleset.")

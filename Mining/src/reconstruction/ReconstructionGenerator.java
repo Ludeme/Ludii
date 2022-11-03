@@ -215,6 +215,7 @@ public class ReconstructionGenerator
 				{
 					final List<String> lineToWrite = new ArrayList<String>();
 					lineToWrite.add(gameName + n);
+					lineToWrite.add(idRulesetToRecons+"");
 					lineToWrite.add(correctCompletions.get(n).score() +"");
 					lineToWrite.add(correctCompletions.get(n).similarityScore() +"");
 					lineToWrite.add(correctCompletions.get(n).commonExpectedConceptsScore() +"");

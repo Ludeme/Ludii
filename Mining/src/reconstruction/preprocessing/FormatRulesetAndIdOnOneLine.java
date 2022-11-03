@@ -107,7 +107,7 @@ public class FormatRulesetAndIdOnOneLine
 			e.printStackTrace();
 		}
 		
-		System.out.println("RulesetFormatted CSV GENERATED");
+		System.out.println("RulesetFormatted CSV generated");
 	}
 	
 }

@@ -340,54 +340,9 @@
             
             (end 
                 (if 
-                    (or 
-                        (all Sites 
-                            (sites P1)
-                            if:
-                            (= 0 
-                                (count at:
-                                    (site)
-                                )
-                            )
-                        )
-                        
-                        (all Sites 
-                            (sites P2)
-                            if:
-                            (= 0 
-                                (count at:
-                                    (site)
-                                )
-                            )
-                        )
-                    )
+                    (is Line 3)
                     
-                    (byScore { 
-                        (score P1 
-                            (+ 
-                                (count Cell at:
-                                    (handSite P1)
-                                )
-                                
-                                (count in:
-                                    (sites P1)
-                                )
-                            )
-                        )
-                        
-                        (score P2 
-                            (+ 
-                                (count Cell at:
-                                    (handSite P2)
-                                )
-                                
-                                (count in:
-                                    (sites P2)
-                                )
-                            )
-                        )
-                        }
-                    )
+                    (result Mover Win)
                 )
             )
         )

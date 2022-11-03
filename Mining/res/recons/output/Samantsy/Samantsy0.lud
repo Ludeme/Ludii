@@ -340,9 +340,7 @@
             
             (end 
                 (if 
-                    (<= 
-                        (count Pieces Next)
-                    2)
+                    (no Pieces Next)
                     
                     (result Next Loss)
                 )

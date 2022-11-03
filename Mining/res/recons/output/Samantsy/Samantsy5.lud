@@ -339,10 +339,18 @@
             )
             
             (end 
-                (if 
-                    (no Pieces Mover)
+                (forEach Player if:
+                    (all Sites 
+                        (sites Player)
+                        if:
+                        (>= 1 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
                     
-                    (result Mover Win)
+                    (result Player Loss)
                 )
             )
         )
