@@ -53,7 +53,7 @@ public class Completion
 		similarityScore = value;
 	}
 	
-	public double commonTrueConceptsScore()
+	public double commonExpectedConceptsScore()
 	{
 		return commonTrueConceptsScore;
 	}

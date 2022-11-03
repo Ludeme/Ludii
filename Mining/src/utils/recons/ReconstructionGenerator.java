@@ -27,7 +27,6 @@ import main.grammar.Report;
 import main.grammar.Symbol;
 import other.GameLoader;
 import other.concept.Concept;
-import other.concept.ConceptDataType;
 
 /**
  * Reconstruction Generator.
@@ -205,38 +204,31 @@ public class ReconstructionGenerator
 			
 			for (int n = 0; n < correctCompletions.size(); n++) 
 			{
-				System.out.println("Completion " + n + " has a score of " + correctCompletions.get(n).score() + " similarity Score = " + correctCompletions.get(n).similarityScore() + " true concepts score = " + correctCompletions.get(n).commonTrueConceptsScore() + " IDS used = " + correctCompletions.get(n).idsUsed());
+				System.out.println("Completion " + n + " has a score of " + correctCompletions.get(n).score() + " similarity Score = " + correctCompletions.get(n).similarityScore() + " true concepts score = " + correctCompletions.get(n).commonExpectedConceptsScore() + " IDS used = " + correctCompletions.get(n).idsUsed());
 				CompleterWithPrepro.saveCompletion(outputPath + gameName + "/", gameName + n, correctCompletions.get(n).raw());
 			}
 
 			System.out.println("Num Attempts = " + numAttempts);
 			System.out.println(correctCompletions.size() + " recons generated");
 
-//			final String outputReconsData = outputPath + gameName + ".csv";
-//			try (final PrintWriter writer = new UnixPrintWriter(new File(outputReconsData), "UTF-8"))
-//			{
-//				for (int n = 0; n < correctCompletions.size(); n++) 
-//				{
-//					final List<String> lineToWrite = new ArrayList<String>();
-//					lineToWrite.add(gameName + n);
-//					lineToWrite.add(correctCompletions.get(n).score() +"");
-//					lineToWrite.add(correctCompletions.get(n).score() +"");
-//					lineToWrite.add(correctCompletions.get(n).score() +"");
-//					writer.println(StringRoutines.join(",", lineToWrite));
-//				}
-//				
-//				for (final ConceptDataType dataType : ConceptDataType.values())
-//				{
-//					final List<String> lineToWrite = new ArrayList<String>();
-//					lineToWrite.add(dataType.id() + "");
-//					lineToWrite.add("\"" + dataType.name() + "\"");
-//					writer.println(StringRoutines.join(",", lineToWrite));
-//				}
-//			}
-//			catch (final FileNotFoundException | UnsupportedEncodingException e)
-//			{
-//				e.printStackTrace();
-//			}
+			final String outputReconsData = outputPath + gameName + ".csv";
+			try (final PrintWriter writer = new UnixPrintWriter(new File(outputReconsData), "UTF-8"))
+			{
+				for (int n = 0; n < correctCompletions.size(); n++) 
+				{
+					final List<String> lineToWrite = new ArrayList<String>();
+					lineToWrite.add(gameName + n);
+					lineToWrite.add(correctCompletions.get(n).score() +"");
+					lineToWrite.add(correctCompletions.get(n).similarityScore() +"");
+					lineToWrite.add(correctCompletions.get(n).commonExpectedConceptsScore() +"");
+					lineToWrite.add(correctCompletions.get(n).idsUsed() +"");
+					writer.println(StringRoutines.join(",", lineToWrite));
+				}
+			}
+			catch (final FileNotFoundException | UnsupportedEncodingException e)
+			{
+				e.printStackTrace();
+			}
 		}
 		
 		final long stopAt = System.nanoTime();
