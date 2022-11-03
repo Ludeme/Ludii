@@ -90,20 +90,20 @@ public class ReconstructionDialog extends JDialog
 			contentPanel.add(textFieldMaxRecons);
 		}
 		{
-			final JLabel lblCsnScore = new JLabel("Historical");
+			final JLabel lblCsnScore = new JLabel("Historical Weight");
 			lblCsnScore.setBounds(12, 170, 149, 38);
 			contentPanel.add(lblCsnScore);
 		}
 		{
-			final JLabel lblConceptScore = new JLabel("Concept");
+			final JLabel lblConceptScore = new JLabel("Conceptual Weight");
 			lblConceptScore.setBounds(12, 199, 149, 38);
 			contentPanel.add(lblConceptScore);
 		}
-		{
-			final JLabel lblPlayability = new JLabel("Quality");
-			lblPlayability.setBounds(12, 228, 149, 38);
-			contentPanel.add(lblPlayability);
-		}
+//		{
+//			final JLabel lblPlayability = new JLabel("Quality");
+//			lblPlayability.setBounds(12, 228, 149, 38);
+//			contentPanel.add(lblPlayability);
+//		}
 		{
 			textFieldCSNScore = new JTextField();
 			textFieldCSNScore.setText("1.0");
@@ -118,13 +118,13 @@ public class ReconstructionDialog extends JDialog
 			textFieldConceptScore.setBounds(280, 209, 130, 19);
 			contentPanel.add(textFieldConceptScore);
 		}
-		{
-			textFieldPlayability = new JTextField();
-			textFieldPlayability.setText("1.0");
-			textFieldPlayability.setColumns(10);
-			textFieldPlayability.setBounds(280, 238, 130, 19);
-			contentPanel.add(textFieldPlayability);
-		}
+//		{
+//			textFieldPlayability = new JTextField();
+//			textFieldPlayability.setText("1.0");
+//			textFieldPlayability.setColumns(10);
+//			textFieldPlayability.setBounds(280, 238, 130, 19);
+//			contentPanel.add(textFieldPlayability);
+//		}
 		
 		final JButton btnSelectGame = new JButton("Select Game");
 		btnSelectGame.setBounds(12, 28, 130, 25);
@@ -234,11 +234,13 @@ public class ReconstructionDialog extends JDialog
 						final String outputPath = txtcommonresoutput.getText();
 						final Integer numRecons = Integer.valueOf(textFieldMaxRecons.getText());
 						final Integer maxTries = Integer.valueOf(textFieldMaxTries.getText());
-//						final Double csnScore = Double.valueOf(textFieldCSNScore.getText());
-//						final Double conceptScore = Double.valueOf(textFieldConceptScore.getText());
-//						final Double qualityScore = Double.valueOf(textFieldPlayability.getText());
-						System.out.println(selectedLudPath);
-						ReconstructionGenerator.reconstruction(outputPath + File.separatorChar, numRecons.intValue(), maxTries.intValue(), selectedLudPath);
+						Double csnScore = Double.valueOf(textFieldCSNScore.getText());
+						Double conceptScore = Double.valueOf(textFieldConceptScore.getText());
+						double totalWeight = csnScore.doubleValue() + conceptScore.doubleValue();
+						double csnWeight = csnScore.doubleValue() / totalWeight;
+						double conceptWeight = conceptScore.doubleValue() / totalWeight;
+						
+						ReconstructionGenerator.reconstruction(outputPath + File.separatorChar, numRecons.intValue(), maxTries.intValue(), conceptWeight, csnWeight, selectedLudPath);
 					}
 					catch (final Exception e)
 					{

@@ -40,6 +40,9 @@ public class ReconstructionGenerator
 	//final static String defaultReconsPath = "/lud/reconstruction/board/war/other/Macheng";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/hunt/Bagh Bukree";
 	
+	final static double defaultConceptualWeight = 0.5;
+	final static double defaultHistoricalWeight = 0.5;
+	
 	/**
 	 * Main method to call the reconstruction with command lines.
 	 * @param args
@@ -49,9 +52,11 @@ public class ReconstructionGenerator
 		String outputPath = args.length == 0 ?                      defaultOutputPath : args[0];
 		int numReconsNoWarningExpectedConcepts = args.length < 1 ?  defaultNumReconsExpected : Integer.parseInt(args[1]);
 		int maxNumberAttempts = args.length < 2 ?                   defaultNumAttempts : Integer.parseInt(args[2]);
-		String reconsPath = args.length < 3 ?                       defaultReconsPath : args[3];
+		double conceptualWeight = args.length < 3 ?                 defaultConceptualWeight : Double.parseDouble(args[3]);
+		double historicalWeight = args.length < 4 ?                 defaultHistoricalWeight : Double.parseDouble(args[4]);
+		String reconsPath = args.length < 5 ?                       defaultReconsPath : args[5];
 	
-		reconstruction(outputPath, numReconsNoWarningExpectedConcepts, maxNumberAttempts, reconsPath);
+		reconstruction(outputPath, numReconsNoWarningExpectedConcepts, maxNumberAttempts, conceptualWeight, historicalWeight, reconsPath);
 	}
 	
 	
@@ -59,6 +64,8 @@ public class ReconstructionGenerator
 	 * @param outputPath         The path of the folder to place the reconstructions.
 	 * @param numReconsExpected  The number of reconstruction expected to generate.
 	 * @param maxNumberAttempts  The number of attempts.
+	 * @param conceptualWeight   The weight of the expected concepts.
+	 * @param historicalWeight   The weight of the historical similarity.
 	 * @param reconsPath         The path of the file to recons.
 	 */
 	public static void reconstruction
@@ -66,11 +73,14 @@ public class ReconstructionGenerator
 		String outputPath, 
 		int    numReconsExpected, 
 		int    maxNumberAttempts,
+		double conceptualWeight,
+		double historicalWeight,
 		String reconsPath
 	)
 	{
 		System.out.println("\n=========================================\nStart reconstruction:\n");
 		System.out.println("Output Path = " + outputPath);
+		System.out.println("Historical Weight = " + historicalWeight + " Conceptual Weight = " + conceptualWeight);
 		final long startAt = System.nanoTime();
 
 		// Load from memory
