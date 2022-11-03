@@ -93,19 +93,19 @@
 
 (metadata
     
-(info
-{
-(description "MaxMatch is a 2-player game. This game is based on the principle of \"matching\" in graph theory. ")
-(rules "Every turn, the current player can choose to pass, or select a previously-unselected edge. If the selected edge is disjoint from any other friendly edge, then the player gets 1 point. If the graph is full (i.e., all edges have been selected) or both players are passed their turn, the game is over and the winner is selected by their score.
-")
-(id "618")
-(version "1.3.7")
-(classification "math/graph")
-(author "Tahmina Begum")
-(credit "Tahmina Begum")
-(date "28-04-2020")
-}
-)
+    (info
+        {
+        (description "MaxMatch is a 2-player game. This game is based on the principle of \"matching\" in graph theory. ")
+        (rules "Every turn, the current player can choose to pass, or select a previously-unselected edge. If the selected edge is disjoint from any other friendly edge, then the player gets 1 point. If the graph is full (i.e., all edges have been selected) or both players are passed their turn, the game is over and the winner is selected by their score.
+        ")
+        (id "618")
+        (version "1.3.7")
+        (classification "math/graph")
+        (author "Tahmina Begum")
+        (credit "Tahmina Begum")
+        (date "28-04-2020")
+        }
+    )
     
     (graphics {
         (player Colour P1 (colour Red))

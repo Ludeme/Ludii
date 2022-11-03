@@ -101,34 +101,34 @@
 
 (metadata 
     
-(info
-{
-(description "Let's Catch the Lion is a simple version of Shogi. Both players have only four pieces – chick, giraffe, elephant and lion – and they're trying to either catch the opponent's lion or move their own lion to the other side. The board is just 3×4 squares, so the game is rather short, aimed mostly at getting children interested in Shogi – but even if you're an adult, the game is enjoyable.")
-(aliases {"Dobutsu Shogi"})
-(rules "Each player starts the game with four pieces:
-
-- a Lion (king) in the center of the home row
-- a Giraffe (rook) to the right of the king
-- an Elephant (bishop) to the left of the king
-- a Chick (pawn) in front of the king
-
-Each piece moves as in standard shogi, but is limited to moving one square per turn. If the Chick advances to reach the final rank, it promotes to a Hen, which can move one square any way except diagonally backwards (like the gold general in shogi).
-
-As in shogi, if a Hen is captured, it may only be dropped back into play as a Chick. However, standard restrictions on where one may drop a Chick, such as not being allowed to give immediate checkmate, have two Chicks on a file, or drop the Chick on the final rank, do not apply. A chick dropped on the final rank, however, does not promote (and may make no further moves until it is recaptured).
-
-If the players play the same position three turns in a row, the game is a draw.")
-(id "1546")
-(source "<a href=\"https://en.wikipedia.org/wiki/D%C5%8Dbutsu_sh%C5%8Dgi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>
-")
-(version "1.3.7")
-(classification "board/war/replacement/eliminate/target")
-(author "Madoka Kitao")
-(publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>
-")
-(credit "Eric Piette")
-(date "2008")
-}
-)
+    (info
+        {
+        (description "Let's Catch the Lion is a simple version of Shogi. Both players have only four pieces – chick, giraffe, elephant and lion – and they're trying to either catch the opponent's lion or move their own lion to the other side. The board is just 3×4 squares, so the game is rather short, aimed mostly at getting children interested in Shogi – but even if you're an adult, the game is enjoyable.")
+        (aliases {"Dobutsu Shogi"})
+        (rules "Each player starts the game with four pieces:
+            
+            - a Lion (king) in the center of the home row
+            - a Giraffe (rook) to the right of the king
+            - an Elephant (bishop) to the left of the king
+            - a Chick (pawn) in front of the king
+            
+            Each piece moves as in standard shogi, but is limited to moving one square per turn. If the Chick advances to reach the final rank, it promotes to a Hen, which can move one square any way except diagonally backwards (like the gold general in shogi).
+            
+            As in shogi, if a Hen is captured, it may only be dropped back into play as a Chick. However, standard restrictions on where one may drop a Chick, such as not being allowed to give immediate checkmate, have two Chicks on a file, or drop the Chick on the final rank, do not apply. A chick dropped on the final rank, however, does not promote (and may make no further moves until it is recaptured).
+            
+        If the players play the same position three turns in a row, the game is a draw.")
+        (id "1546")
+        (source "<a href=\"https://en.wikipedia.org/wiki/D%C5%8Dbutsu_sh%C5%8Dgi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>
+        ")
+        (version "1.3.7")
+        (classification "board/war/replacement/eliminate/target")
+        (author "Madoka Kitao")
+        (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>
+        ")
+        (credit "Eric Piette")
+        (date "2008")
+        }
+    )
     
     (graphics {
         (board Style Graph)

@@ -260,18 +260,18 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "Thaayam is a race game played in southern India in the twentieth century.")
-(rules "5x5 board, marked with an X in the central square and the midpoints of the outer circuit of spaces. Four players. Four pieces per player. Four seeds, with one white side and one dark side, used as dice. The values of the throws are equal to the number of white sides up, except when no white sides are up the throw equals 8. Throws of 1, 4, and 8 grant the player another throw. Players make all of the throws in their turn first, and then move the values of the throws individually. A player cannot subdivide the value of a single throw between pieces, but may move more than one piece in a turn if they have multiple throws, moving a piece the value of an entire throw. Pieces may only enter the board with a throw of 1. When a player has no pieces on the board, throws made before a throw of 1 do not count and cannot be played. Pieces enter on the marked square on the outer track of the square in front of the player. Pieces move anticlockwise around the outer squares of the board until they reach the square just before the square from which they started, then moving to the inner track and moving clockwise, and then onto the central square. Multiple pieces may occupy the same square. If a player's piece lands on a spot occupied by an opponent's piece, the opponent's piece is removed from the board and must be entered again. If the opponent has multiple pieces on this spot, they all are sent to the beginning. Sending an opponent's piece off the board grants the player another throw. Pieces on marked squares cannot be sent off the board. If a player has two pieces on the marked square on the opposite side of the board from the one in which they begin, the player may declare these as a twin which then play as one piece. Twins move half the value of a throw, rounding down. Twins may only be sent off the board by another twin. Twins may not send back to start a single piece belonging to an opponent. When sent off the board, the twins enter the board again as single pieces. When the twin reaches the central space, it becomes two single pieces again. When all of a player's pieces are in the central square, they may begin bearing them off. A throw of 1 is required to bear a piece off. The player who bears off all their pieces first wins.")
-(source "Bell 1960: 17-20.")
-(id "1126")
-(version "1.3.7")
-(classification "board/race/escape")
-(credit "Eric Piette")
-(origin "This game was played in India, around 1956.")
-}
-)
+    (info
+        {
+        (description "Thaayam is a race game played in southern India in the twentieth century.")
+        (rules "5x5 board, marked with an X in the central square and the midpoints of the outer circuit of spaces. Four players. Four pieces per player. Four seeds, with one white side and one dark side, used as dice. The values of the throws are equal to the number of white sides up, except when no white sides are up the throw equals 8. Throws of 1, 4, and 8 grant the player another throw. Players make all of the throws in their turn first, and then move the values of the throws individually. A player cannot subdivide the value of a single throw between pieces, but may move more than one piece in a turn if they have multiple throws, moving a piece the value of an entire throw. Pieces may only enter the board with a throw of 1. When a player has no pieces on the board, throws made before a throw of 1 do not count and cannot be played. Pieces enter on the marked square on the outer track of the square in front of the player. Pieces move anticlockwise around the outer squares of the board until they reach the square just before the square from which they started, then moving to the inner track and moving clockwise, and then onto the central square. Multiple pieces may occupy the same square. If a player's piece lands on a spot occupied by an opponent's piece, the opponent's piece is removed from the board and must be entered again. If the opponent has multiple pieces on this spot, they all are sent to the beginning. Sending an opponent's piece off the board grants the player another throw. Pieces on marked squares cannot be sent off the board. If a player has two pieces on the marked square on the opposite side of the board from the one in which they begin, the player may declare these as a twin which then play as one piece. Twins move half the value of a throw, rounding down. Twins may only be sent off the board by another twin. Twins may not send back to start a single piece belonging to an opponent. When sent off the board, the twins enter the board again as single pieces. When the twin reaches the central space, it becomes two single pieces again. When all of a player's pieces are in the central square, they may begin bearing them off. A throw of 1 is required to bear a piece off. The player who bears off all their pieces first wins.")
+        (source "Bell 1960: 17-20.")
+        (id "1126")
+        (version "1.3.7")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        (origin "This game was played in India, around 1956.")
+        }
+    )
     
     (graphics {
         (show Symbol "thinCross" "MarkedCells")

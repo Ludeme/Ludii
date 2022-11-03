@@ -202,34 +202,34 @@
 
 (metadata 
     
-(info
-{
-(description "Kyoto shogi is a modern variant of Shogi. It was invented by Tamiya Katsuya.
-
-Kyoto shogi is played like standard Shogi, but with a reduced number of pieces on a 5×5 board. However, the pieces alternately promote and demote with every move, and the promotion values are entirely different from standard Shogi.")
-(aliases {"Kyoto Chess"})
-(rules "Two players play on a board ruled into a grid of 5 ranks (rows) by 5 files (columns).
-
-Each player has a set of 5 wedge-shaped pieces, of slightly different sizes. From largest to smallest (most to least powerful) they are: 1 king, 1 gold general, 1 silver general, 1 tokin, 1 pawn.
-
-There is no promotion zone in Kyoto shogi. Every time a piece makes a move it alternately promotes and reverts to its unpromoted state. Promotion is effected by turning the piece over after it moves, revealing the name of its promoted rank; demotion is effected by turning the piece back.
-
-The promotion rules and values are reminiscent of microshogi and entirely different from standard shogi: A king cannot promote. A tokin promotes to a lance and vice versa. A silver general promotes to a bishop and vice versa. A gold general promotes to a knight and vice versa. A pawn promotes to a rook and vice versa.
-
-A piece is allowed to move, capture or be dropped in a manner that will prevent it from moving on a subsequent turn, which is illegal in standard shogi. For example, a rook can move onto the farthest rank, becoming a pawn and unable to move further. Such pieces may be captured as any other.
-
-A captured piece may be dropped with either side facing up. There are no restrictions on where pieces can be dropped, other than that the square must be empty. So unlike in regular Shogi, pieces can be dropped in places where they can never move again, pawns can be dropped in files that already contain a pawn, and checkmate can be delivered through a pawn drop.
-
-The conditions to win are the same of the conditions of Shogi by checkmating the King.")
-(id "793")
-(source "<a href=\"https://en.wikipedia.org/wiki/Kyoto_shogi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-(version "1.3.7")
-(classification "board/war/replacement/checkmate/shogi")
-(author "Tamiya Katsuya")
-(credit "Matthew Stephenson")
-(date "1976")
-}
-)
+    (info
+        {
+        (description "Kyoto shogi is a modern variant of Shogi. It was invented by Tamiya Katsuya.
+            
+        Kyoto shogi is played like standard Shogi, but with a reduced number of pieces on a 5×5 board. However, the pieces alternately promote and demote with every move, and the promotion values are entirely different from standard Shogi.")
+        (aliases {"Kyoto Chess"})
+        (rules "Two players play on a board ruled into a grid of 5 ranks (rows) by 5 files (columns).
+            
+            Each player has a set of 5 wedge-shaped pieces, of slightly different sizes. From largest to smallest (most to least powerful) they are: 1 king, 1 gold general, 1 silver general, 1 tokin, 1 pawn.
+            
+            There is no promotion zone in Kyoto shogi. Every time a piece makes a move it alternately promotes and reverts to its unpromoted state. Promotion is effected by turning the piece over after it moves, revealing the name of its promoted rank; demotion is effected by turning the piece back.
+            
+            The promotion rules and values are reminiscent of microshogi and entirely different from standard shogi: A king cannot promote. A tokin promotes to a lance and vice versa. A silver general promotes to a bishop and vice versa. A gold general promotes to a knight and vice versa. A pawn promotes to a rook and vice versa.
+            
+            A piece is allowed to move, capture or be dropped in a manner that will prevent it from moving on a subsequent turn, which is illegal in standard shogi. For example, a rook can move onto the farthest rank, becoming a pawn and unable to move further. Such pieces may be captured as any other.
+            
+            A captured piece may be dropped with either side facing up. There are no restrictions on where pieces can be dropped, other than that the square must be empty. So unlike in regular Shogi, pieces can be dropped in places where they can never move again, pawns can be dropped in files that already contain a pawn, and checkmate can be delivered through a pawn drop.
+            
+        The conditions to win are the same of the conditions of Shogi by checkmating the King.")
+        (id "793")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Kyoto_shogi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.3.7")
+        (classification "board/war/replacement/checkmate/shogi")
+        (author "Tamiya Katsuya")
+        (credit "Matthew Stephenson")
+        (date "1976")
+        }
+    )
     
     (graphics {
         (player Colour P1 (colour White))

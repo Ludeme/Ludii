@@ -359,52 +359,52 @@
 
 (metadata 
     
-(info
-{
-(description "Spartan Chess is a chess variant played on a standard 8x8 chess board. The two sides have pieces and pawns with different characteristics and capabilities. Such differences you would expect between opponents on an actual ancient battlefield.
-
-The Black side represents the Spartans and the White the Persians. The Persians have pawns, pieces, an initial placement and move in accord with the rules of orthodox chess. The Spartans have two Kings and with the exception of their Kings, every Spartan playing piece moves differently from any piece found in orthodox chess.")
-(rules "<b>The Pieces</b>
- - <i>White</i> (the Persians) has orthodox chess pieces in standard spaces: 2 Rooks (A1, H1); 2 Knights (B1, G1); 2 Bishops (C1, F1); 1 Queen (D1); 1 King (E1); 8 Pawns (A2-H2).
- - <i>Black</i> (the Spartans) has: 2 Lieutenants (A8, H8); 1 General (B8); 1 Warlord (G8); 2 Kings (C8, F8); 2 Captains (D8, E8); 8 Hoplites (A7-H7).
-<b>The Moves</b>
- - <i>Pawns</i> can move (but not capture) one space forward. On their first move they can move two spaces forward. They capture one space diagonally forward. There is no en passant rule.
- - <i>Rooks</i> can move and capture any number of spaces orthogonally.
- - <i>Bishops</i> can move and capture any number of spaces diagonally.
- - <i>Knights</i> can move one space orthogonally with one space forward diagonally leaping over intervening pieces and capturing what they land on.
- - The <i>Queen</i> can move and capture any number of spaces orthogonally or diagonally.
- - <i>Kings</i> can move and capture one space orthogonally or diagonally.
- - <i>Lieutenants</i> (shown as crosses) can move and capture diagonally upto two spaces, jumping over any piece if necessary. They can also move (but not capture) one space sideways.
- - The <i>General</i> (shown as an upside-down rook) can move and capture any number of spaces orthogonally or one space diagonally.
- - The <i>Warlord</i> (shown as an upside-down bishop) can move and capture any number of spaces diagonally or like a knight.
- - <i>Captains</i> (shown as squares) can move and capture upto spaces orthogonally and may jump if necessary.
- - <i>Hoplites</i> (shown as an upside-down pawns) can move (but not capture) one space diagonally forward. On their first move they can move two spaces diagonally forward, jumping if necessary. They capture one space forward.
-<b>Winning</b>
-The Spartan and Persian have different victory conditions.
-<i>Spartan Victory</i>: The Spartan wins when the Persian King is checkmated as in orthodox chess.
-<i>Persians Victory</i>: The Persian wins once one of the Spartan Kings is captured and the remaining Spartan King is checkmated or when both Spartan Kings are placed under simultaneous attack (duple-check) and neither King can be removed from attack on the next move (Duple-Check and Mate).
-<b>First Move</b>
-The Persians, being the aggressors historically and White, always move first.
-<b>Check Immunity</b>
-When the Spartan has two Kings in play a Spartan King is immune from check. Thus, the Spartan may move a King onto an enemy attacked square, leave a King under attack or move a piece that would expose a King to attack.
-<b>Duple-Check & Mate</b>
-If both Spartan Kings are placed under simultaneous attack this is a form of check called duple-check. It is illegal for the Spartan to make a move that will place both of his Kings underattack. With both Kings under attack, the Spartan loses if on his move he is unable to remove at least one King from attack. In such case the game ends in checkmate.
-<b>Promotion</b>
-A hoplite, upon reaching its 8th rank, may promote to any Spartan piece including a King but only if the Spartan has only one king in play.
-A pawn, upon reaching its 8th rank, may promote to any Persian piece apart from the King.
-<b>Capturing en passant</b>
-There is no capturing en passant in Spartan Chess.
-<b>Castling</b>
-Spartan Kings may not castle. Persian Kings may castle as normal.")
-(id "1396")
-(source "<a href=\"https://boardgamegeek.com/boardgame/86997/spartan-chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-(version "1.3.7")
-(classification "board/war/replacement/checkmate/chess")
-(author "Steven Streetman")
-(credit "Nicholas Bamber (building on Eric Piette's implementation of chess)")
-(date "2010")
-}
-)
+    (info
+        {
+        (description "Spartan Chess is a chess variant played on a standard 8x8 chess board. The two sides have pieces and pawns with different characteristics and capabilities. Such differences you would expect between opponents on an actual ancient battlefield.
+            
+        The Black side represents the Spartans and the White the Persians. The Persians have pawns, pieces, an initial placement and move in accord with the rules of orthodox chess. The Spartans have two Kings and with the exception of their Kings, every Spartan playing piece moves differently from any piece found in orthodox chess.")
+        (rules "<b>The Pieces</b>
+            - <i>White</i> (the Persians) has orthodox chess pieces in standard spaces: 2 Rooks (A1, H1); 2 Knights (B1, G1); 2 Bishops (C1, F1); 1 Queen (D1); 1 King (E1); 8 Pawns (A2-H2).
+            - <i>Black</i> (the Spartans) has: 2 Lieutenants (A8, H8); 1 General (B8); 1 Warlord (G8); 2 Kings (C8, F8); 2 Captains (D8, E8); 8 Hoplites (A7-H7).
+            <b>The Moves</b>
+            - <i>Pawns</i> can move (but not capture) one space forward. On their first move they can move two spaces forward. They capture one space diagonally forward. There is no en passant rule.
+            - <i>Rooks</i> can move and capture any number of spaces orthogonally.
+            - <i>Bishops</i> can move and capture any number of spaces diagonally.
+            - <i>Knights</i> can move one space orthogonally with one space forward diagonally leaping over intervening pieces and capturing what they land on.
+            - The <i>Queen</i> can move and capture any number of spaces orthogonally or diagonally.
+            - <i>Kings</i> can move and capture one space orthogonally or diagonally.
+            - <i>Lieutenants</i> (shown as crosses) can move and capture diagonally upto two spaces, jumping over any piece if necessary. They can also move (but not capture) one space sideways.
+            - The <i>General</i> (shown as an upside-down rook) can move and capture any number of spaces orthogonally or one space diagonally.
+            - The <i>Warlord</i> (shown as an upside-down bishop) can move and capture any number of spaces diagonally or like a knight.
+            - <i>Captains</i> (shown as squares) can move and capture upto spaces orthogonally and may jump if necessary.
+            - <i>Hoplites</i> (shown as an upside-down pawns) can move (but not capture) one space diagonally forward. On their first move they can move two spaces diagonally forward, jumping if necessary. They capture one space forward.
+            <b>Winning</b>
+            The Spartan and Persian have different victory conditions.
+            <i>Spartan Victory</i>: The Spartan wins when the Persian King is checkmated as in orthodox chess.
+            <i>Persians Victory</i>: The Persian wins once one of the Spartan Kings is captured and the remaining Spartan King is checkmated or when both Spartan Kings are placed under simultaneous attack (duple-check) and neither King can be removed from attack on the next move (Duple-Check and Mate).
+            <b>First Move</b>
+            The Persians, being the aggressors historically and White, always move first.
+            <b>Check Immunity</b>
+            When the Spartan has two Kings in play a Spartan King is immune from check. Thus, the Spartan may move a King onto an enemy attacked square, leave a King under attack or move a piece that would expose a King to attack.
+            <b>Duple-Check & Mate</b>
+            If both Spartan Kings are placed under simultaneous attack this is a form of check called duple-check. It is illegal for the Spartan to make a move that will place both of his Kings underattack. With both Kings under attack, the Spartan loses if on his move he is unable to remove at least one King from attack. In such case the game ends in checkmate.
+            <b>Promotion</b>
+            A hoplite, upon reaching its 8th rank, may promote to any Spartan piece including a King but only if the Spartan has only one king in play.
+            A pawn, upon reaching its 8th rank, may promote to any Persian piece apart from the King.
+            <b>Capturing en passant</b>
+            There is no capturing en passant in Spartan Chess.
+            <b>Castling</b>
+        Spartan Kings may not castle. Persian Kings may castle as normal.")
+        (id "1396")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/86997/spartan-chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.7")
+        (classification "board/war/replacement/checkmate/chess")
+        (author "Steven Streetman")
+        (credit "Nicholas Bamber (building on Eric Piette's implementation of chess)")
+        (date "2010")
+        }
+    )
     
     (graphics {
         (player Name P1 "Persians")

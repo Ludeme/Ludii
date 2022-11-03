@@ -48,25 +48,25 @@
 
 (metadata 
     
-(info
-{
-(description "Fission is a game where players attempt to eliminate all of their opponents stones but must have at least one stone left on the board in order to win.")
-(rules "TURN - On each turn, each player slides (orthogonally or diagonally) a stone until it hits another stone or a wall.
-	
-If it stops because of a stone, the moving stone and all adjacent stones (of either color) are removed.
-	
-GOAL - The player with no stones onboard loses.
-	
-The game is a draw if (i) the board becomes empty, or (ii) each player has just one stone, or (iii) the moving player has no valid moves.")
-(id "1805")
-(source "<a href=\"https://boardgamegeek.com/boardgame/30213/fission\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-(version "1.3.7")
-(classification "board/war/replacement/eliminate/all")
-(author "Robert A. Kraus")
-(credit "Eric Piette")
-(date "2003")
-}
-)
+    (info
+        {
+        (description "Fission is a game where players attempt to eliminate all of their opponents stones but must have at least one stone left on the board in order to win.")
+        (rules "TURN - On each turn, each player slides (orthogonally or diagonally) a stone until it hits another stone or a wall.
+            
+            If it stops because of a stone, the moving stone and all adjacent stones (of either color) are removed.
+            
+            GOAL - The player with no stones onboard loses.
+            
+        The game is a draw if (i) the board becomes empty, or (ii) each player has just one stone, or (iii) the moving player has no valid moves.")
+        (id "1805")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/30213/fission\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.7")
+        (classification "board/war/replacement/eliminate/all")
+        (author "Robert A. Kraus")
+        (credit "Eric Piette")
+        (date "2003")
+        }
+    )
     
     (graphics {
         (board Style Chess)

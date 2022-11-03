@@ -106,19 +106,19 @@
 
 (metadata 
     
-(info
-{
-(description "A simple, drawless, and finite annihilation game where groups only grow by capturing.")
-(rules "Oust is a game for two players, played on a hexagonally patterned board which is initially empty. The two players, Black and White, take turns placing stones of their color onto unoccupied cells on the board. A group is a set of interconnected, like-colored stones. A group can be a singleton, a single stone which is not connected to any other stones of its color. A group includes all the stones of its own color connected to it. There are two types of moves - non-capturing placements and capturing placements. Non-capturing placements either forms no connections (adjacencies) with any stones, or forms one or more connections with only enemy stones. A non-capturing placement does not form any connection with stones of its own color. Making a non-capturing placement concludes your turn. When you place a stone which forms one or more connections with your own groups, you will create a new, larger group of your own stones. You can only make such a placement if said new group will have one or more connections with enemy groups upon its creation and if all said enemy groups are smaller than said new group. Upon making such a placement, all said enemy groups are removed from the board. After capturing one or more enemy groups and while it is still your turn, you must continue to add stones until you make a non-capturing placement, at which time your turn is concluded. If you have a placement available on your turn you must make one. If you don't have any placements available, you must pass your turn. There will always be a placement available for at least one player. You win by making a placement which captures all of the enemy stones on the board.")
-(id "1107")
-(source "<a href=\"http://www.marksteeregames.com/Oust_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a>")
-(version "1.3.7")
-(classification "board/war/replacement/eliminate/all")
-(author "Mark Steere")
-(credit "Michael Amundsen")
-(date "2007")
-}
-)
+    (info
+        {
+        (description "A simple, drawless, and finite annihilation game where groups only grow by capturing.")
+        (rules "Oust is a game for two players, played on a hexagonally patterned board which is initially empty. The two players, Black and White, take turns placing stones of their color onto unoccupied cells on the board. A group is a set of interconnected, like-colored stones. A group can be a singleton, a single stone which is not connected to any other stones of its color. A group includes all the stones of its own color connected to it. There are two types of moves - non-capturing placements and capturing placements. Non-capturing placements either forms no connections (adjacencies) with any stones, or forms one or more connections with only enemy stones. A non-capturing placement does not form any connection with stones of its own color. Making a non-capturing placement concludes your turn. When you place a stone which forms one or more connections with your own groups, you will create a new, larger group of your own stones. You can only make such a placement if said new group will have one or more connections with enemy groups upon its creation and if all said enemy groups are smaller than said new group. Upon making such a placement, all said enemy groups are removed from the board. After capturing one or more enemy groups and while it is still your turn, you must continue to add stones until you make a non-capturing placement, at which time your turn is concluded. If you have a placement available on your turn you must make one. If you don't have any placements available, you must pass your turn. There will always be a placement available for at least one player. You win by making a placement which captures all of the enemy stones on the board.")
+        (id "1107")
+        (source "<a href=\"http://www.marksteeregames.com/Oust_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a>")
+        (version "1.3.7")
+        (classification "board/war/replacement/eliminate/all")
+        (author "Mark Steere")
+        (credit "Michael Amundsen")
+        (date "2007")
+        }
+    )
     
     (graphics {
         (player Colour P1 (colour Red))

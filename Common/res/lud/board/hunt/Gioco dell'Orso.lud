@@ -142,22 +142,22 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "Gioco dell'Orso is a game that was played in Piedmont, Northern Italy. It was documented in the twentieth century, but graffiti in the region suggests that the game could be much older.")
-(useFor "Ruleset/Gioco dell'Orso (Described)" (rules "Two concentric circles, with four radii from the outer circle to in the center, dividing the circles into four equal parts. There are four arcs, each of which bisects a radius between where each radius intersects the circumference of each circle, the arc also intersecting with the outer circle's circumference. One player plays as a bear, which begins on the central point, the other as three hunters, which begin on any three points on the inner circle. The bear plays first. Players alternate turns moving a piece to an empty adjacent spot along the lines. When the bear is unable to move, the game ends and the players play again, switching sides. The player who lasts longest while playing as the bear wins."))
-(useFor "Ruleset/Gioco dell'Orso (Described)" (source "Depaulis and Gavazzi 1999: 47."))
-(useFor "Ruleset/Gioco dell'Orso (Described)" (id "1163"))
-(useFor "Ruleset/Bear Wins One Round (Suggested)" (rules "Only played in one round. If the hunters are unable to block the bear before the game times out, the bear wins."))
-(useFor "Ruleset/Bear Wins One Round (Suggested)" (id "1956"))
-(source "Michaelsen 2014: 212.")
-(id "1163")
-(version "1.3.7")
-(classification "board/hunt")
-(credit "Eric Piette")
-(origin "This game was played in Italy, from around 1910 to 1994.")
-}
-)
+    (info
+        {
+        (description "Gioco dell'Orso is a game that was played in Piedmont, Northern Italy. It was documented in the twentieth century, but graffiti in the region suggests that the game could be much older.")
+        (useFor "Ruleset/Gioco dell'Orso (Described)" (rules "Two concentric circles, with four radii from the outer circle to in the center, dividing the circles into four equal parts. There are four arcs, each of which bisects a radius between where each radius intersects the circumference of each circle, the arc also intersecting with the outer circle's circumference. One player plays as a bear, which begins on the central point, the other as three hunters, which begin on any three points on the inner circle. The bear plays first. Players alternate turns moving a piece to an empty adjacent spot along the lines. When the bear is unable to move, the game ends and the players play again, switching sides. The player who lasts longest while playing as the bear wins."))
+        (useFor "Ruleset/Gioco dell'Orso (Described)" (source "Depaulis and Gavazzi 1999: 47."))
+        (useFor "Ruleset/Gioco dell'Orso (Described)" (id "1163"))
+        (useFor "Ruleset/Bear Wins One Round (Suggested)" (rules "Only played in one round. If the hunters are unable to block the bear before the game times out, the bear wins."))
+        (useFor "Ruleset/Bear Wins One Round (Suggested)" (id "1956"))
+        (source "Michaelsen 2014: 212.")
+        (id "1163")
+        (version "1.3.7")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin "This game was played in Italy, from around 1910 to 1994.")
+        }
+    )
     (graphics {
         (show Line {{6 8}} curve:{0.2 0.6 0.2 0.4} Bezier)
         (show Line {{9 11}} curve:{0.4 0.2 0.6 0.2} Bezier)

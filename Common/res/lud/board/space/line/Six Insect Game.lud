@@ -60,18 +60,18 @@
 
 (metadata 
     
-(info
-{
-(description "The Six Insect Game, the Chinese name for which was not reported, is a capturing game played in Chengdu, China.")
-(rules "4x4 board. Six pieces per player, which begin on opposite rows of the board and in the two outer squares in the row in front of it. Players alternate turns moving a piece orthogonally to an adjacent space on the board. When a player moves a piece such that it creates three in a row: two of their own pieces (which must be adjacent to one another) and one of the opponent's pieces (which must have a vacant space on the opposite side of it), the opponent's piece is captured. However, when the opponent's piece moves in line with two of the player's piece on the opponent's turn, the player does not capture the opponent's piece. The player who captures all of the opponent's pieces wins.
-")
-(source "Newell 1959: 29-30.")
-(id "1419")
-(version "1.3.7")
-(classification "board/space/line")
-(origin "This game was played in China, around 1959.")
-}
-)
+    (info
+        {
+        (description "The Six Insect Game, the Chinese name for which was not reported, is a capturing game played in Chengdu, China.")
+        (rules "4x4 board. Six pieces per player, which begin on opposite rows of the board and in the two outer squares in the row in front of it. Players alternate turns moving a piece orthogonally to an adjacent space on the board. When a player moves a piece such that it creates three in a row: two of their own pieces (which must be adjacent to one another) and one of the opponent's pieces (which must have a vacant space on the opposite side of it), the opponent's piece is captured. However, when the opponent's piece moves in line with two of the player's piece on the opponent's turn, the player does not capture the opponent's piece. The player who captures all of the opponent's pieces wins.
+        ")
+        (source "Newell 1959: 29-30.")
+        (id "1419")
+        (version "1.3.7")
+        (classification "board/space/line")
+        (origin "This game was played in China, around 1959.")
+        }
+    )
     
     (graphics {
         (board style Board)

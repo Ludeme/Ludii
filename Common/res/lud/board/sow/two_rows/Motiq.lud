@@ -144,17 +144,17 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "Motiq is a two-row mancala-style board game played by the Kédang people on the island of Lembata in Indonesia. ")
-(rules "2x7 board. Four counters in each hole. Sowing occurs in an anti-clockwise direction and begins from one of the holes in the player's row. When the final counter lands in an occupied hole, these are picked up and sowing continues. If the occupied hole has three counters (four including the final counter from the sowing), these are captured. Then, the player picks up the counters in the next hole after the one from which the capture was made and continues sowing from there. When the final counter lands into an empty hole the turn ends. The game ends when one player no longer has any counters on their side of the board. The opponent then captures the remaining counters on the board. A new game begins, with each player filling holes with the counters they captured, four to each hole. The player now controls as many holes as they can fill with counters. Play begins with the player who played second in the previous game. Subsequent games are played until one player captures all of the holes, becoming the winner.")
-(source "Barnes 1975: 73-76.")
-(id "433")
-(version "1.3.7")
-(classification "board/sow/two rows")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "Motiq is a two-row mancala-style board game played by the Kédang people on the island of Lembata in Indonesia. ")
+        (rules "2x7 board. Four counters in each hole. Sowing occurs in an anti-clockwise direction and begins from one of the holes in the player's row. When the final counter lands in an occupied hole, these are picked up and sowing continues. If the occupied hole has three counters (four including the final counter from the sowing), these are captured. Then, the player picks up the counters in the next hole after the one from which the capture was made and continues sowing from there. When the final counter lands into an empty hole the turn ends. The game ends when one player no longer has any counters on their side of the board. The opponent then captures the remaining counters on the board. A new game begins, with each player filling holes with the counters they captured, four to each hole. The player now controls as many holes as they can fill with counters. Play begins with the player who played second in the previous game. Subsequent games are played until one player captures all of the holes, becoming the winner.")
+        (source "Barnes 1975: 73-76.")
+        (id "433")
+        (version "1.3.7")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (board Style Mancala)

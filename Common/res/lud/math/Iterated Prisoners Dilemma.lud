@@ -47,24 +47,24 @@
 
 (metadata
     
-(info
-{
-(description "The prisoner's dilemma is a standard example of a game analyzed in game theory that shows why two completely rational individuals might not cooperate, even if it appears that it is in their best interests to do so. It was originally framed by Merrill Flood and Melvin Dresher while working at RAND in 1950. Albert W. Tucker formalized the game with prison sentence rewards and named it \"prisoner's dilemma\"")
-(rules "The dilemma is repeated 10 times:
-- If the two players are cooperating (C), they get 6 points.
-- If the two players are defecting (D), they get 2 points.
-- If one player is cooperating (C) and the other is defecting (D), the first one gets 0 points and the second one gets 10 points.
-")
-(id "1773")
-(source "<a href=\"https://en.wikipedia.org/wiki/Prisoner%27s_dilemma\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>
-")
-(version "1.3.7")
-(classification "math")
-(author "Merrill Flood and Melvin Dresher")
-(credit "Eric Piette")
-(date "1950")
-}
-)
+    (info
+        {
+        (description "The prisoner's dilemma is a standard example of a game analyzed in game theory that shows why two completely rational individuals might not cooperate, even if it appears that it is in their best interests to do so. It was originally framed by Merrill Flood and Melvin Dresher while working at RAND in 1950. Albert W. Tucker formalized the game with prison sentence rewards and named it \"prisoner's dilemma\"")
+        (rules "The dilemma is repeated 10 times:
+            - If the two players are cooperating (C), they get 6 points.
+            - If the two players are defecting (D), they get 2 points.
+            - If one player is cooperating (C) and the other is defecting (D), the first one gets 0 points and the second one gets 10 points.
+        ")
+        (id "1773")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Prisoner%27s_dilemma\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>
+        ")
+        (version "1.3.7")
+        (classification "math")
+        (author "Merrill Flood and Melvin Dresher")
+        (credit "Eric Piette")
+        (date "1950")
+        }
+    )
     
     (graphics {
         (board colour Phase0 (colour Hidden))

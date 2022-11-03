@@ -139,19 +139,19 @@
 
 (metadata 
     
-(info
-{
-(description "Persian Chess with a Queen—its indigenous name was not recorded—is a game that was played in the nineteenth century in Samarkand, Uzbekistan.")
-(rules "8x8 board. The pieces move as follows, with the number per player: 1 x Shah (king): moves one space orthogonally or diagonally. 1 x Fers (counselor): Any distance orthogonally or diagonally.]. 2 x Rukh (rook): Any number of spaces orthogonally. 2 x Pil (elephant): Any distance diagonally. 2 x Asb (horse): Moves as a chess knight. 8 x Sarbaz (soldier): Moves one space forward orthogonally; one space forward diagonally to capture. No en passant. The first move must be the Fers's Sarbaz, which moves two spaces forward. Castling can happen in three moves, moving the Shah forward or backward once orthogonally and once with the Asb's  move, and moving the Rukh to the Shah's former space. Castling can also be done on the Fers's side, but moving the Rukh to the Fers's space. When a piece moves to a space occupied by an opponent's piece, the opponent's piece is captured. If the Shah can be captured on the opponent's next turn, it is in check. A player's Shah must not be in check at the end of their turn. If this is impossible, it is checkmate and the opponent wins.
-")
-(source "Markov 2017.")
-(id "1325")
-(version "1.3.7")
-(classification "board/war/replacement/checkmate/chaturanga")
-(credit "Eric Piette")
-(origin "This game was played in Uzbekistan, around 1877.")
-}
-)
+    (info
+        {
+        (description "Persian Chess with a Queen—its indigenous name was not recorded—is a game that was played in the nineteenth century in Samarkand, Uzbekistan.")
+        (rules "8x8 board. The pieces move as follows, with the number per player: 1 x Shah (king): moves one space orthogonally or diagonally. 1 x Fers (counselor): Any distance orthogonally or diagonally.]. 2 x Rukh (rook): Any number of spaces orthogonally. 2 x Pil (elephant): Any distance diagonally. 2 x Asb (horse): Moves as a chess knight. 8 x Sarbaz (soldier): Moves one space forward orthogonally; one space forward diagonally to capture. No en passant. The first move must be the Fers's Sarbaz, which moves two spaces forward. Castling can happen in three moves, moving the Shah forward or backward once orthogonally and once with the Asb's  move, and moving the Rukh to the Shah's former space. Castling can also be done on the Fers's side, but moving the Rukh to the Fers's space. When a piece moves to a space occupied by an opponent's piece, the opponent's piece is captured. If the Shah can be captured on the opponent's next turn, it is in check. A player's Shah must not be in check at the end of their turn. If this is impossible, it is checkmate and the opponent wins.
+        ")
+        (source "Markov 2017.")
+        (id "1325")
+        (version "1.3.7")
+        (classification "board/war/replacement/checkmate/chaturanga")
+        (credit "Eric Piette")
+        (origin "This game was played in Uzbekistan, around 1877.")
+        }
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

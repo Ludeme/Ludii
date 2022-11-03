@@ -159,44 +159,44 @@
 //------------------------------------------------
 
 (metadata
-(info
-{
-(description "Epoxy is a version of 'Shaka' (my ancestor game a few other games including my game Situ.) Shaka was a territorial lines-of-sight game based on out-of-sight entry, sliding moves, increasing stone contact, capture by enclosure and double-pass ending. 
-
-Epoxy does not involve capture, and is a survival game. It is played on a special, 'perforated' triangular grid that makes the game more manageable than pure Shaka by limiting the lines of sight and movement. 
-
-Both Epoxy and Situ improve the balance and opening stability of Shaka by using a '12* double-move protocol' (that is, after the first placement, players alternate taking double turns.)
-
-Epoxy differs from Situ in having no capture, but having movement. Movement is controlled by adjacency to the opponent's stones, effectively locking stones in place as they neighbour more and more opponent's stones. 
-
-This creates territories that can be filled, as well as dead-zones for movement and/or placement. Due to this territorial nature, unlike Situ, turns may be partially passed, but a full pass is by definition a resignation.
-
-Territory equates to the availability of future placements when other movement is no longer possible, and the goal is to be the last to play.")
-(rules "Use Options to select a board size.
-        Goal: Be the last to play.
- 
- Then the first player (Maroon) places a stone, after which the players alternate, taking up to two moves per turn.
- To move, either:
-  
- 1. Add a stone to an empty space that is not in line-of-sight of any opponent's stone. -Or,
- 2. Slide a stone along a straight line to a new position, with the following restriction:
-
- Either
- -- A. The new location must have a greater number of opponent's stones adjacent to it, or
- -- B. The new location must have more sight-lines to opponent's stones than the old location, while keeping number of adjacent opponent's stones the same.  
- 
-To avoid forfeiting the game, a player must move at least once on a turn.  The second move can be voluntarily skipped.
-The winner is last to play.
-
-The score shown is a count of the available moves at the beginning of a player's turn for use by the AI.")
-(id "1762")
-(version "1.3.7")
-(classification "board/space/blocking")
-(author "Dale W. Walton")
-(credit "Dale W. Walton")
-(date "05-12-2020")
-}
-)
+    (info
+        {
+        (description "Epoxy is a version of 'Shaka' (my ancestor game a few other games including my game Situ.) Shaka was a territorial lines-of-sight game based on out-of-sight entry, sliding moves, increasing stone contact, capture by enclosure and double-pass ending. 
+            
+            Epoxy does not involve capture, and is a survival game. It is played on a special, 'perforated' triangular grid that makes the game more manageable than pure Shaka by limiting the lines of sight and movement. 
+            
+            Both Epoxy and Situ improve the balance and opening stability of Shaka by using a '12* double-move protocol' (that is, after the first placement, players alternate taking double turns.)
+            
+            Epoxy differs from Situ in having no capture, but having movement. Movement is controlled by adjacency to the opponent's stones, effectively locking stones in place as they neighbour more and more opponent's stones. 
+            
+            This creates territories that can be filled, as well as dead-zones for movement and/or placement. Due to this territorial nature, unlike Situ, turns may be partially passed, but a full pass is by definition a resignation.
+            
+        Territory equates to the availability of future placements when other movement is no longer possible, and the goal is to be the last to play.")
+        (rules "Use Options to select a board size.
+            Goal: Be the last to play.
+            
+            Then the first player (Maroon) places a stone, after which the players alternate, taking up to two moves per turn.
+            To move, either:
+            
+            1. Add a stone to an empty space that is not in line-of-sight of any opponent's stone. -Or,
+            2. Slide a stone along a straight line to a new position, with the following restriction:
+            
+            Either
+            -- A. The new location must have a greater number of opponent's stones adjacent to it, or
+            -- B. The new location must have more sight-lines to opponent's stones than the old location, while keeping number of adjacent opponent's stones the same.  
+            
+            To avoid forfeiting the game, a player must move at least once on a turn.  The second move can be voluntarily skipped.
+            The winner is last to play.
+            
+        The score shown is a count of the available moves at the beginning of a player's turn for use by the AI.")
+        (id "1762")
+        (version "1.3.7")
+        (classification "board/space/blocking")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "05-12-2020")
+        }
+    )
     
     (graphics 
         {

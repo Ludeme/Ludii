@@ -289,29 +289,29 @@
 
 (metadata 
     
-(info
-{
-(description "||Hus is a common name for four-row mancala-style board games that are popular throughout Namibia. This version is played by the Nama people, and was documented in the early twentieth century.")
-(aliases {"||Hus (Nama)" "Huts"})
-(rules "4x16-22 board. Two counters in each player's outer row and the right half of the holes in the inner row. The opening move is stylized; each player must make one of the following moves on their first turn:
-
-Take counters from the hole that is two to the right of the center of the board in the outer row. Sow them to the right starting in the hole third from the center in the inner row;
-
-Take counters from the hole that is three to the right of the center of the board in the outer row. Sown them to the right starting from the hole second from the center in the inner row;
-
-Take counters from the hole next to the center of the board in the inner row. Sow them to the right;
-
-Take counters from the hole next to the left of the center of the board in the outer row. Sow them to the right starting from the hole next to the right of the center of the board.
-
-Players then sow from any of their holes in an anti-clockwise direction. If the last counter of a sowing lands in an empty hole, the turn ends. If the last counter falls into an occupied hole, the counters in that hole are picked up and sowing continues, unless the hole in the inner row on the opponent's side opposite the one the player last sowed into is occupied, in which case any counters in this hole and any in the opponent's opposite outer row hole are captured. The captured counters are then sown on the player's side of the board, starting with the hole following the one from which the capture was made. Sowing cannot occur from holes with single counters. The game ends when one player can no longer move.")
-(source "Schultze 1907: 313-315.")
-(id "254")
-(version "1.3.7")
-(classification "board/sow/four rows")
-(credit "Eric Piette")
-(origin "This game was played in Namibia, around 1907.")
-}
-)
+    (info
+        {
+        (description "||Hus is a common name for four-row mancala-style board games that are popular throughout Namibia. This version is played by the Nama people, and was documented in the early twentieth century.")
+        (aliases {"||Hus (Nama)" "Huts"})
+        (rules "4x16-22 board. Two counters in each player's outer row and the right half of the holes in the inner row. The opening move is stylized; each player must make one of the following moves on their first turn:
+            
+            Take counters from the hole that is two to the right of the center of the board in the outer row. Sow them to the right starting in the hole third from the center in the inner row;
+            
+            Take counters from the hole that is three to the right of the center of the board in the outer row. Sown them to the right starting from the hole second from the center in the inner row;
+            
+            Take counters from the hole next to the center of the board in the inner row. Sow them to the right;
+            
+            Take counters from the hole next to the left of the center of the board in the outer row. Sow them to the right starting from the hole next to the right of the center of the board.
+            
+        Players then sow from any of their holes in an anti-clockwise direction. If the last counter of a sowing lands in an empty hole, the turn ends. If the last counter falls into an occupied hole, the counters in that hole are picked up and sowing continues, unless the hole in the inner row on the opponent's side opposite the one the player last sowed into is occupied, in which case any counters in this hole and any in the opponent's opposite outer row hole are captured. The captured counters are then sown on the player's side of the board, starting with the hole following the one from which the capture was made. Sowing cannot occur from holes with single counters. The game ends when one player can no longer move.")
+        (source "Schultze 1907: 313-315.")
+        (id "254")
+        (version "1.3.7")
+        (classification "board/sow/four rows")
+        (credit "Eric Piette")
+        (origin "This game was played in Namibia, around 1907.")
+        }
+    )
     
     (graphics {
         (board Style Mancala)

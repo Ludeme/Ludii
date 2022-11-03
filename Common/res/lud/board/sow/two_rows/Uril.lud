@@ -57,19 +57,19 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "Uril is a two-row mancala-style board game played in Cabo Verde. It is a popular game on the islands, and also was played by immigrants to Portugal. Men typically play in public, while women generally played in private spaces. ")
-(aliases {"Ouril" "Ouri"})
-(rules "2x6 board with a store on either end. Four counters in each hole. Players take turns sowing in an anti-clockwise direction from one of the holes in their row. Counters are captured when the final counter of a sowing is dropped into a hole in the opponent's row containing one or two counters, making it contain two or three counters. If the previous hole also contains two or three counters, they are also captured, in an unbroken line until a hole with a different number of counters is reached. If, while sowing, the hole from which the sowing originated is reached, this hole is skipped and sowing continues. If a player has no counters in their holes, the opponent must play so as to place counters in their row. The player who captures 25 coutners first wins.")
-(source "Braz Dias and Braz Dias 2020: 9-12")
-(id "1200")
-(version "1.3.7")
-(classification "board/sow/two rows")
-(credit "Eric Piette")
-(origin "This game was played in Cabo Verde, from around 2006 to 2017.")
-}
-)
+    (info
+        {
+        (description "Uril is a two-row mancala-style board game played in Cabo Verde. It is a popular game on the islands, and also was played by immigrants to Portugal. Men typically play in public, while women generally played in private spaces. ")
+        (aliases {"Ouril" "Ouri"})
+        (rules "2x6 board with a store on either end. Four counters in each hole. Players take turns sowing in an anti-clockwise direction from one of the holes in their row. Counters are captured when the final counter of a sowing is dropped into a hole in the opponent's row containing one or two counters, making it contain two or three counters. If the previous hole also contains two or three counters, they are also captured, in an unbroken line until a hole with a different number of counters is reached. If, while sowing, the hole from which the sowing originated is reached, this hole is skipped and sowing continues. If a player has no counters in their holes, the opponent must play so as to place counters in their row. The player who captures 25 coutners first wins.")
+        (source "Braz Dias and Braz Dias 2020: 9-12")
+        (id "1200")
+        (version "1.3.7")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin "This game was played in Cabo Verde, from around 2006 to 2017.")
+        }
+    )
     
     (graphics {
         (board Style Mancala)

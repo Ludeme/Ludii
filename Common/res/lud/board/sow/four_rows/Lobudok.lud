@@ -143,20 +143,20 @@
 
 (metadata 
     
-(info
-{
-(description "Lobuduok is a four-row mancala-style board game played by the Bari people in South Sudan. The holes are scooped out of the ground and the coutners are usually seeds or pebbles, which represent cows. It is an unusual mancala-style game because certain holes are out of play during portions of the game.")
-(aliases {"Lobudök" "Soro"})
-(rules "4x8 board. The counters begin in the following arrangement, starting from a player's left most hole in the outer row and proceeding anticlockwise: 0,0,1,0,0,1,6,0,8,0,1,0,0,1,6,8. To start, players may not sow into or sow from the leftmost and rightmost holes in both of their rows. When it is no longer possible for the player to make a legal move using only these twelve holes, they may then play using all of the holes. The opponent must continue using only twelve holes until they also cannot make a legal move with them. Sowing proceeds in an anti-clockwise direction. When the final counter falls into an occupied hole in the player's inner row and both of the opposite holes on the opponent's side of the board are occupied, the counters in the opposite holes are captured and sown beginning in the first hole that was sown into to begin the sowing that caused the capture. When the final counter falls into an occupied hole and a capture is not possible, the contents of the hole are picked up and sowing continues. When the final counter lands in an empty hole, the turn ends. Players cannot sow from a hole containing a single counter. The player who captures all of their opponent's counters wins.
-")
-(source "Beaton 1939: 141-142.")
-(id "1284")
-(version "1.3.7")
-(classification "board/sow/four rows")
-(credit "Eric Piette")
-(origin "This game was played in South Sudan, around 1939.")
-}
-)
+    (info
+        {
+        (description "Lobuduok is a four-row mancala-style board game played by the Bari people in South Sudan. The holes are scooped out of the ground and the coutners are usually seeds or pebbles, which represent cows. It is an unusual mancala-style game because certain holes are out of play during portions of the game.")
+        (aliases {"Lobudök" "Soro"})
+        (rules "4x8 board. The counters begin in the following arrangement, starting from a player's left most hole in the outer row and proceeding anticlockwise: 0,0,1,0,0,1,6,0,8,0,1,0,0,1,6,8. To start, players may not sow into or sow from the leftmost and rightmost holes in both of their rows. When it is no longer possible for the player to make a legal move using only these twelve holes, they may then play using all of the holes. The opponent must continue using only twelve holes until they also cannot make a legal move with them. Sowing proceeds in an anti-clockwise direction. When the final counter falls into an occupied hole in the player's inner row and both of the opposite holes on the opponent's side of the board are occupied, the counters in the opposite holes are captured and sown beginning in the first hole that was sown into to begin the sowing that caused the capture. When the final counter falls into an occupied hole and a capture is not possible, the contents of the hole are picked up and sowing continues. When the final counter lands in an empty hole, the turn ends. Players cannot sow from a hole containing a single counter. The player who captures all of their opponent's counters wins.
+        ")
+        (source "Beaton 1939: 141-142.")
+        (id "1284")
+        (version "1.3.7")
+        (classification "board/sow/four rows")
+        (credit "Eric Piette")
+        (origin "This game was played in South Sudan, around 1939.")
+        }
+    )
     
     (graphics {
         (board Style Mancala)

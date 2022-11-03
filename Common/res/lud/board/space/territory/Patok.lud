@@ -63,19 +63,19 @@
 
 (metadata 
     
-(info
-{
-(description "Patok is a game played in Korea that is very similar to Japanese Go and Chinese Wei-Qi. There is a customary opening phase, in which players place pieces on certain spaces before beginning.")
-(aliases {"Baduk"})
-(rules "19x19 intersecting lines. The central, as well as every third spot, in a square with the corners at the fourth point from the corners of the board, are marked. Players alternate turns placing a piece on the board on one of the marked spaces. When all of the marked spaces have been occupied, players may place a piece on any empty spot on the board. If a player surrounds one or more of the opponent's pieces orthogonally, they capture the opponent's pieces. The edge of the board can be included in such an enclosure. A group of pieces which contain two empty or more enclosures cannot be captured by the opponent. Pieces cannot be placed in an enclosure. When no further pieces can be placed, the players count the number of their pieces on the board and the number of empty spaces they enclose, and the player with the higher score wins.")
-(source "Culin 1895: 91-97.")
-(id "1046")
-(version "1.3.7")
-(classification "board/space/territory")
-(credit "Eric Piette")
-(origin "This game was played in Korea, around 1895.")
-}
-)
+    (info
+        {
+        (description "Patok is a game played in Korea that is very similar to Japanese Go and Chinese Wei-Qi. There is a customary opening phase, in which players place pieces on certain spaces before beginning.")
+        (aliases {"Baduk"})
+        (rules "19x19 intersecting lines. The central, as well as every third spot, in a square with the corners at the fourth point from the corners of the board, are marked. Players alternate turns placing a piece on the board on one of the marked spaces. When all of the marked spaces have been occupied, players may place a piece on any empty spot on the board. If a player surrounds one or more of the opponent's pieces orthogonally, they capture the opponent's pieces. The edge of the board can be included in such an enclosure. A group of pieces which contain two empty or more enclosures cannot be captured by the opponent. Pieces cannot be placed in an enclosure. When no further pieces can be placed, the players count the number of their pieces on the board and the number of empty spaces they enclose, and the player with the higher score wins.")
+        (source "Culin 1895: 91-97.")
+        (id "1046")
+        (version "1.3.7")
+        (classification "board/space/territory")
+        (credit "Eric Piette")
+        (origin "This game was played in Korea, around 1895.")
+        }
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)

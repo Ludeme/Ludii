@@ -107,31 +107,31 @@
 
 (metadata 
     
-(info
-{
-(description "In Geister, each player has four good ghosts and four evil ghosts – but only the player who owns a ghost can see whether it's good or evil (as with the pieces in Stratego). These ghosts start the game in the back rows of a 6x6 game board with the corners removed. Each turn, a player moves one of his ghosts one square orthogonally. Moving into an opponent's ghost kills that ghost. To win, you must get rid of your own evil ghosts, kill your opponent's good ghosts, or move one of your good ghosts off the board from one of your opponent's corner squares.")
-(rules "Geister is a two-player board game on a 6×6 game board.
-Each player has four good ghosts and four evil ghosts, whose
-type is not revealed to the opponent player. In each turn
-a player can move one of his ghosts one step vertically or
-horizontally. Moving into a square containing an opponent's
-ghost will capture the opponent's ghost and move it off from
-the board. Moving into a square containing an ally ghost
-is not allowed. A player can also move off one of his good
-ghosts from one of the opponent's corner squares. A player
-wins when one of the three conditions is satisfied:
-• All the player's evil ghosts are captured.
-• All the opponent's good ghosts are captured.
-• One of the player's good ghosts is moved off the board
-from one of the opponent's corner squares.")
-(id "1650")
-(source "<a href=\"https://boardgamegeek.com/boardgame/2290/good-bad-ghosts\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-(version "1.3.7")
-(classification "board/race/reach")
-(author "Alex Randolph")
-(credit "Matthew Stephenson")
-}
-)
+    (info
+        {
+        (description "In Geister, each player has four good ghosts and four evil ghosts – but only the player who owns a ghost can see whether it's good or evil (as with the pieces in Stratego). These ghosts start the game in the back rows of a 6x6 game board with the corners removed. Each turn, a player moves one of his ghosts one square orthogonally. Moving into an opponent's ghost kills that ghost. To win, you must get rid of your own evil ghosts, kill your opponent's good ghosts, or move one of your good ghosts off the board from one of your opponent's corner squares.")
+        (rules "Geister is a two-player board game on a 6×6 game board.
+            Each player has four good ghosts and four evil ghosts, whose
+            type is not revealed to the opponent player. In each turn
+            a player can move one of his ghosts one step vertically or
+            horizontally. Moving into a square containing an opponent's
+            ghost will capture the opponent's ghost and move it off from
+            the board. Moving into a square containing an ally ghost
+            is not allowed. A player can also move off one of his good
+            ghosts from one of the opponent's corner squares. A player
+            wins when one of the three conditions is satisfied:
+            • All the player's evil ghosts are captured.
+            • All the opponent's good ghosts are captured.
+            • One of the player's good ghosts is moved off the board
+        from one of the opponent's corner squares.")
+        (id "1650")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/2290/good-bad-ghosts\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.7")
+        (classification "board/race/reach")
+        (author "Alex Randolph")
+        (credit "Matthew Stephenson")
+        }
+    )
     
     (graphics {
         (piece Rename piece:"GhostGood" "disc")

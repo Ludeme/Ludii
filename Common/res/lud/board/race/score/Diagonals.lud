@@ -41,22 +41,22 @@
 
 (metadata 
     
-(info
-{
-(description "A scoring game involving diagonals of the board.")
-(rules "TURN - On each turn, each player drops a friendly stone on an empty cell. If a diagonal line is full (i.e., there are no empty cells on that diagonal), the player who dropped the last stone achieves so many points as the number of friendly stones on the finished line.
-
-Two lines can be finished on one turn, the player achieves points for both lines (the dropped stone counts twice, once for each diagonal).
-A diagonal line must have at least 2 stones. So, corner cells do not count as diagonals.
-
-GOAL - When all cells are occupied, wins the player with more points.")
-(id "1803")
-(source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/diagonals.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.di.fc.ul.pt</a>")
-(version "1.3.7")
-(classification "board/race/score")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "A scoring game involving diagonals of the board.")
+        (rules "TURN - On each turn, each player drops a friendly stone on an empty cell. If a diagonal line is full (i.e., there are no empty cells on that diagonal), the player who dropped the last stone achieves so many points as the number of friendly stones on the finished line.
+            
+            Two lines can be finished on one turn, the player achieves points for both lines (the dropped stone counts twice, once for each diagonal).
+            A diagonal line must have at least 2 stones. So, corner cells do not count as diagonals.
+            
+        GOAL - When all cells are occupied, wins the player with more points.")
+        (id "1803")
+        (source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/diagonals.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.di.fc.ul.pt</a>")
+        (version "1.3.7")
+        (classification "board/race/score")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (show Edges Diagonal (colour Hidden))

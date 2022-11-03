@@ -236,18 +236,18 @@
 
 (metadata 
     
-(info
-{
-(description "Sig wa Duqqan is a race game played on the island of Djerba, Tunisia. This game is a representation of the Hajj, where fathers attempt to reach the Ka'aba without being captured and buried by the Ghoula.")
-(rules "4x4 board, with an extension of four squares extending from the left of the bottom row. Two or more players, each with one piece. A piece of charcoal plays the part of the Ghoula. Four sticks, with one green side and one white side, used as dice. The throws are as follows: One white side up = 1, this throw is known as \"sig\"; two white sides up = 0; three white sides up = 3; four white sides up = 4; all green sides up = 6. Throws of sig, 6, and 4 grant the player another throw. All pieces begin on the top left square of the grid, proceed in a boustrophedon path down the grid, toward the space at the end of the extension, the Ka'aba. Players must throw a sig to move from the first space. When a player reaches the fifteenth space in the track, they must make seven throws of sig before moving on, moving to the sixteenth spot on the seventh throw. After reaching the sixteenth spot, only throws of sig and 3 are used; sig to move one space, and 3 to move the Ghoula three spaces. The goal for each player is to reach the Ka'aba. Upon reaching the Ka'aba, the player continues to throw, all throws used to control the Ghoula, but throws of 0 now counts as 2. The Ghoula, when reaching a space occupied by a player, continues their turn dragging the player back to the starting space. If the Ghoula succeeds in bringing the piece back to the starting space, that player loses. The Ghoula cannot move past the fifteenth space in the track.")
-(source "Akkari-Weriemmi 1990: 310-315.")
-(id "808")
-(version "1.3.7")
-(classification "board/race/reach")
-(credit "Eric Piette")
-(origin "This game was played in Tunisia, around 1990.")
-}
-)
+    (info
+        {
+        (description "Sig wa Duqqan is a race game played on the island of Djerba, Tunisia. This game is a representation of the Hajj, where fathers attempt to reach the Ka'aba without being captured and buried by the Ghoula.")
+        (rules "4x4 board, with an extension of four squares extending from the left of the bottom row. Two or more players, each with one piece. A piece of charcoal plays the part of the Ghoula. Four sticks, with one green side and one white side, used as dice. The throws are as follows: One white side up = 1, this throw is known as \"sig\"; two white sides up = 0; three white sides up = 3; four white sides up = 4; all green sides up = 6. Throws of sig, 6, and 4 grant the player another throw. All pieces begin on the top left square of the grid, proceed in a boustrophedon path down the grid, toward the space at the end of the extension, the Ka'aba. Players must throw a sig to move from the first space. When a player reaches the fifteenth space in the track, they must make seven throws of sig before moving on, moving to the sixteenth spot on the seventh throw. After reaching the sixteenth spot, only throws of sig and 3 are used; sig to move one space, and 3 to move the Ghoula three spaces. The goal for each player is to reach the Ka'aba. Upon reaching the Ka'aba, the player continues to throw, all throws used to control the Ghoula, but throws of 0 now counts as 2. The Ghoula, when reaching a space occupied by a player, continues their turn dragging the player back to the starting space. If the Ghoula succeeds in bringing the piece back to the starting space, that player loses. The Ghoula cannot move past the fifteenth space in the track.")
+        (source "Akkari-Weriemmi 1990: 310-315.")
+        (id "808")
+        (version "1.3.7")
+        (classification "board/race/reach")
+        (credit "Eric Piette")
+        (origin "This game was played in Tunisia, around 1990.")
+        }
+    )
     
     (graphics {
         (piece Colour "Die" state:1 fillColour:(colour Green))

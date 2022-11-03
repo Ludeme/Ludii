@@ -925,38 +925,38 @@
 
 (metadata 
     
-(info
-{
-(description "Rithmomachia is a mathematical game of capture played in medieval and early modern Europe. Its complex mathematical rules suggest that it was originally only played in learned circles. There are many treatises and fragments of the rules, which suggest several variations on the rules through time.")
-(aliases {"Rithmomachy" "Ludus Philosophorum" "Philosopher's GameRithmachia" "Philosopher's Table" "Rutimachie" "Rithmimachie" "Ryghtmadhye"})
-(rules "8x16 board. Two players, one black, one white. Each player has three types of pieces: Circles, triangle, squares, and one pyramid made up of multiple pieces stacked. Circles move one space orthogonally. Triangles move two spaces diagonally. Squares move three spaces orthogonally. Pyramids may move in any of the directions allowed by one of its constituent pieces. Each piece has a number. For white—circles: 2, 4, 6, 8, 4, 16, 36, 64; triangles: 6, 20 , 42, 72, 9, 25, 49, 81; squares: 15, 45, 153, 25, 81, 169, 289; pyramid (91) from the base: square 36, square 25, triangle 16, triangle 9, circle 4, circle 1. For black—circles: 3, 5, 7, 9, 9, 25, 49, 81; triangles: 12, 30, 56, 90, 16, 36, 64, 100; squares: 28, 66, 120, 49, 121, 225, 361; pyramid (190): from the base: square 64, square 49, triangle 36, triangle 25, circle 16. 
-
-Pieces capture other pieces by mathematical allowances based on the numbers on the pieces. There are nine scenarios in which pieces can be taken when a piece moves to a space occupied by an opponent's piece. 
-
-Multiplication with distance: If the value of the piece to be taken equals the value of the piece making the capture multiplied by the distance between the two pieces; 
-
-Division by distance: If the value of the piece to be taken equals the value of the piece making the capture divided by the distance between the pieces. 
-
-Addition: When two pieces can both move to the space of an opponent's piece, if the sum of the two pieces equals the value of the opponent's piece, it is captured and the player chooses which piece to move to that space. 
-
-Subtraction: When two pieces can both move to the space of an opponent's piece, if the difference between the value of these pieces equals the value of the opponent's piece, it is taken, and the player chooses which piece to move to the space. 
-
-Multiplication: When two pieces can both move to the space of an opponent's piece, if the product of the values of the two pieces equals the value of the opponent's piece, it is taken and the player chooses which piece to move to the space. 
-
-Division: When two pieces can both move to the space of an opponent's piece, if the quotient of the values of the two pieces equals the value of the opponent's piece, it is taken and the player chooses which piece to move to the space.
-
-Encirclement: If pieces are positioned such that there is no possible move or capture for the opponent's piece, the opponent's piece is taken.
-
-Pyramid capture: A pyramid can be captured by capturing its constituent pieces one-by-one according to the above methods; by encircling it so it cannot move, or by obtaining the sum of the constituent pieces or of its base pieces according to the above rules; A pyramid captures as a single one of its component pieces according to the above rules (the direction of the move is independent of the value chosen), or by using the sum of its pieces according to the above rules.
-
-The goal of the game is to capture the opponent's pyramid and to create an alignment on the opponent's half of the board forming a mathematical progression. The progression may be arithmetic (a sequence where the difference between the values is constant), geometric (where each value after the first is determined by multiplying the previous value by a fixed number), or harmonic (1/a, 1/a+d, 1/a+2d, 1/a+3d). The pieces in the progression must be in a straight orthogonal or diagonal line or in a chevron shape, and must be equally spaced.")
-(source "Stigter 2007: 265-268.")
-(id "165")
-(version "1.3.7")
-(classification "board/war/replacement/eliminate/target")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "Rithmomachia is a mathematical game of capture played in medieval and early modern Europe. Its complex mathematical rules suggest that it was originally only played in learned circles. There are many treatises and fragments of the rules, which suggest several variations on the rules through time.")
+        (aliases {"Rithmomachy" "Ludus Philosophorum" "Philosopher's GameRithmachia" "Philosopher's Table" "Rutimachie" "Rithmimachie" "Ryghtmadhye"})
+        (rules "8x16 board. Two players, one black, one white. Each player has three types of pieces: Circles, triangle, squares, and one pyramid made up of multiple pieces stacked. Circles move one space orthogonally. Triangles move two spaces diagonally. Squares move three spaces orthogonally. Pyramids may move in any of the directions allowed by one of its constituent pieces. Each piece has a number. For white—circles: 2, 4, 6, 8, 4, 16, 36, 64; triangles: 6, 20 , 42, 72, 9, 25, 49, 81; squares: 15, 45, 153, 25, 81, 169, 289; pyramid (91) from the base: square 36, square 25, triangle 16, triangle 9, circle 4, circle 1. For black—circles: 3, 5, 7, 9, 9, 25, 49, 81; triangles: 12, 30, 56, 90, 16, 36, 64, 100; squares: 28, 66, 120, 49, 121, 225, 361; pyramid (190): from the base: square 64, square 49, triangle 36, triangle 25, circle 16. 
+            
+            Pieces capture other pieces by mathematical allowances based on the numbers on the pieces. There are nine scenarios in which pieces can be taken when a piece moves to a space occupied by an opponent's piece. 
+            
+            Multiplication with distance: If the value of the piece to be taken equals the value of the piece making the capture multiplied by the distance between the two pieces; 
+            
+            Division by distance: If the value of the piece to be taken equals the value of the piece making the capture divided by the distance between the pieces. 
+            
+            Addition: When two pieces can both move to the space of an opponent's piece, if the sum of the two pieces equals the value of the opponent's piece, it is captured and the player chooses which piece to move to that space. 
+            
+            Subtraction: When two pieces can both move to the space of an opponent's piece, if the difference between the value of these pieces equals the value of the opponent's piece, it is taken, and the player chooses which piece to move to the space. 
+            
+            Multiplication: When two pieces can both move to the space of an opponent's piece, if the product of the values of the two pieces equals the value of the opponent's piece, it is taken and the player chooses which piece to move to the space. 
+            
+            Division: When two pieces can both move to the space of an opponent's piece, if the quotient of the values of the two pieces equals the value of the opponent's piece, it is taken and the player chooses which piece to move to the space.
+            
+            Encirclement: If pieces are positioned such that there is no possible move or capture for the opponent's piece, the opponent's piece is taken.
+            
+            Pyramid capture: A pyramid can be captured by capturing its constituent pieces one-by-one according to the above methods; by encircling it so it cannot move, or by obtaining the sum of the constituent pieces or of its base pieces according to the above rules; A pyramid captures as a single one of its component pieces according to the above rules (the direction of the move is independent of the value chosen), or by using the sum of its pieces according to the above rules.
+            
+        The goal of the game is to capture the opponent's pyramid and to create an alignment on the opponent's half of the board forming a mathematical progression. The progression may be arithmetic (a sequence where the difference between the values is constant), geometric (where each value after the first is determined by multiplying the previous value by a fixed number), or harmonic (1/a, 1/a+d, 1/a+2d, 1/a+3d). The pieces in the progression must be in a straight orthogonal or diagonal line or in a chevron shape, and must be equally spaced.")
+        (source "Stigter 2007: 265-268.")
+        (id "165")
+        (version "1.3.7")
+        (classification "board/war/replacement/eliminate/target")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (stackType None)

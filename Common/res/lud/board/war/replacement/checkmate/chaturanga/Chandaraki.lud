@@ -46,20 +46,20 @@
 
 (metadata 
     
-(info
-{
-(description "Chandaraki is a game with replacement captures played in Tibet since the eighteenth century. This version was reported in 1775.")
-(aliases {"Chandraki" "Chadraki"})
-(rules "Played on an 8x8 board with pieces with specialized moves: Pawns (8): can move one space orthogonally forward, or two steps orthogonally forward only if it is the first move of any of that player's pawns, capture one space diagonally forward; Rooks (2): can move any number of spaces orthogonally; Bishops (2): can move any number of spaces diagonally; Knight (2): moves in any direction, one space orthogonally with one space forward diagonally; Queens (1): can move any number of spaces orthogonally or diagonally; Kings (1): can move one space orthogonally or diagonally. An opponent's piece is captured by moving a player's own piece onto a space occupied by the opponent's piece. When a King can be captured on the next turn by an opponent's piece, it is in check. The King must not be in check at the end of the player's turn. If this is not possible, it is checkmate and the opponent wins. When a player is reduced to a King without any other pieces, the game is a draw.
-")
-(source "van der Linde 1874: 134-135.")
-(id "1411")
-(version "1.3.7")
-(classification "board/war/replacement/checkmate/chaturanga")
-(credit "Eric Piette")
-(origin "This game was played in Tibet, around 1775.")
-}
-)
+    (info
+        {
+        (description "Chandaraki is a game with replacement captures played in Tibet since the eighteenth century. This version was reported in 1775.")
+        (aliases {"Chandraki" "Chadraki"})
+        (rules "Played on an 8x8 board with pieces with specialized moves: Pawns (8): can move one space orthogonally forward, or two steps orthogonally forward only if it is the first move of any of that player's pawns, capture one space diagonally forward; Rooks (2): can move any number of spaces orthogonally; Bishops (2): can move any number of spaces diagonally; Knight (2): moves in any direction, one space orthogonally with one space forward diagonally; Queens (1): can move any number of spaces orthogonally or diagonally; Kings (1): can move one space orthogonally or diagonally. An opponent's piece is captured by moving a player's own piece onto a space occupied by the opponent's piece. When a King can be captured on the next turn by an opponent's piece, it is in check. The King must not be in check at the end of the player's turn. If this is not possible, it is checkmate and the opponent wins. When a player is reduced to a King without any other pieces, the game is a draw.
+        ")
+        (source "van der Linde 1874: 134-135.")
+        (id "1411")
+        (version "1.3.7")
+        (classification "board/war/replacement/checkmate/chaturanga")
+        (credit "Eric Piette")
+        (origin "This game was played in Tibet, around 1775.")
+        }
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

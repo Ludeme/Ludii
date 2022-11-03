@@ -74,24 +74,24 @@
 
 (metadata 
     
-(info
-{
-(description "Steven Meyers' BoxOff has the feel of a classic solitaire abstract game. Brightly coloured pieces are distributed on a rectangular grid of squares and removed in pairs of like colour until the board is empty. ")
-(rules "Start: The game starts with a piece in each cell, which defines the challenge to be solved. 
-
-Play: The player then makes a series of moves, each involving the removal of a pair of same-coloured pieces that occupy a box (rectangle) that includes no other pieces of any colour.
-
-End: The player wins by removing all pieces from the board. Conversely, the player loses if there are no legal moves at any point while pieces remain on the board.")
-(id "974")
-(source "<a href=\"http://www.abstractgames.org/boxoff.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.abstractgames.org</a>")
-(version "1.3.7")
-(classification "puzzle/planning")
-(author "Steven Meyers")
-(publisher "Google Play")
-(credit "Eric Piette")
-(date "01-2013")
-}
-)
+    (info
+        {
+        (description "Steven Meyers' BoxOff has the feel of a classic solitaire abstract game. Brightly coloured pieces are distributed on a rectangular grid of squares and removed in pairs of like colour until the board is empty. ")
+        (rules "Start: The game starts with a piece in each cell, which defines the challenge to be solved. 
+            
+            Play: The player then makes a series of moves, each involving the removal of a pair of same-coloured pieces that occupy a box (rectangle) that includes no other pieces of any colour.
+            
+        End: The player wins by removing all pieces from the board. Conversely, the player loses if there are no legal moves at any point while pieces remain on the board.")
+        (id "974")
+        (source "<a href=\"http://www.abstractgames.org/boxoff.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.abstractgames.org</a>")
+        (version "1.3.7")
+        (classification "puzzle/planning")
+        (author "Steven Meyers")
+        (publisher "Google Play")
+        (credit "Eric Piette")
+        (date "01-2013")
+        }
+    )
     
     (graphics {
         (piece Colour "Disc1" fillColour:(colour White))

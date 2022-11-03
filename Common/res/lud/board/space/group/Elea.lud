@@ -103,22 +103,22 @@
 //------------------------------------------------------------------------------
 
 (metadata
-(info
-{
-(description "Elea is a simple unification game of pure placement invented by Michael Amundsen in May 2022. There cannot be a tie in Elea.")
-(rules "Players take turns placing a stone of their own color on any empty cell of a hexagonal grid of hexagons (a hexhex board). 
-The game is over when the board is full, and the player with the lower score wins. 
-Your score is 1 point per odd-sized group and 2 points even-sized group.
-
-In this implementation, you get -1 per odd-sized group and -2 per even-sized group, so the winner will be the player with the higher score.")
-(id "1986")
-(version "1.3.7")
-(classification "board/space/group")
-(author "Michael Amundsen")
-(credit "Michael Amundsen")
-(date "2022")
-}
-)
+    (info
+        {
+        (description "Elea is a simple unification game of pure placement invented by Michael Amundsen in May 2022. There cannot be a tie in Elea.")
+        (rules "Players take turns placing a stone of their own color on any empty cell of a hexagonal grid of hexagons (a hexhex board). 
+            The game is over when the board is full, and the player with the lower score wins. 
+            Your score is 1 point per odd-sized group and 2 points even-sized group.
+            
+        In this implementation, you get -1 per odd-sized group and -2 per even-sized group, so the winner will be the player with the higher score.")
+        (id "1986")
+        (version "1.3.7")
+        (classification "board/space/group")
+        (author "Michael Amundsen")
+        (credit "Michael Amundsen")
+        (date "2022")
+        }
+    )
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))

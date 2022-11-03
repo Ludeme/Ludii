@@ -66,18 +66,18 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "Greater Loss is a theoretical game designed to demonstrate Monte Carlo resistance. There is one optimal (non-losing) move per turn against a competent opponent and always a losing move.")
-(rules "Players take turns removing a piece of their colour whose number is higher than the last piece they removed (free choice of first piece). The player who removes their highest numbered piece loses.")
-(id "1354")
-(version "1.3.7")
-(classification "experimental")
-(author "Cameron Browne")
-(credit "Cameron Browne")
-(date "2021")
-}
-)
+    (info
+        {
+        (description "Greater Loss is a theoretical game designed to demonstrate Monte Carlo resistance. There is one optimal (non-losing) move per turn against a competent opponent and always a losing move.")
+        (rules "Players take turns removing a piece of their colour whose number is higher than the last piece they removed (free choice of first piece). The player who removes their highest numbered piece loses.")
+        (id "1354")
+        (version "1.3.7")
+        (classification "experimental")
+        (author "Cameron Browne")
+        (credit "Cameron Browne")
+        (date "2021")
+        }
+    )
     
     (graphics {
         (player Colour P1 (colour White))

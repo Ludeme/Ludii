@@ -1,9 +1,13 @@
 package utils.recons;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -17,11 +21,13 @@ import game.Game;
 import grammar.Grammar;
 import main.FileHandling;
 import main.StringRoutines;
+import main.UnixPrintWriter;
 import main.grammar.Description;
 import main.grammar.Report;
 import main.grammar.Symbol;
 import other.GameLoader;
 import other.concept.Concept;
+import other.concept.ConceptDataType;
 
 /**
  * Reconstruction Generator.
@@ -205,6 +211,32 @@ public class ReconstructionGenerator
 
 			System.out.println("Num Attempts = " + numAttempts);
 			System.out.println(correctCompletions.size() + " recons generated");
+
+//			final String outputReconsData = outputPath + gameName + ".csv";
+//			try (final PrintWriter writer = new UnixPrintWriter(new File(outputReconsData), "UTF-8"))
+//			{
+//				for (int n = 0; n < correctCompletions.size(); n++) 
+//				{
+//					final List<String> lineToWrite = new ArrayList<String>();
+//					lineToWrite.add(gameName + n);
+//					lineToWrite.add(correctCompletions.get(n).score() +"");
+//					lineToWrite.add(correctCompletions.get(n).score() +"");
+//					lineToWrite.add(correctCompletions.get(n).score() +"");
+//					writer.println(StringRoutines.join(",", lineToWrite));
+//				}
+//				
+//				for (final ConceptDataType dataType : ConceptDataType.values())
+//				{
+//					final List<String> lineToWrite = new ArrayList<String>();
+//					lineToWrite.add(dataType.id() + "");
+//					lineToWrite.add("\"" + dataType.name() + "\"");
+//					writer.println(StringRoutines.join(",", lineToWrite));
+//				}
+//			}
+//			catch (final FileNotFoundException | UnsupportedEncodingException e)
+//			{
+//				e.printStackTrace();
+//			}
 		}
 		
 		final long stopAt = System.nanoTime();

@@ -295,26 +295,26 @@
 
 (metadata 
     
-(info
-{
-(description "Stratomic is a chess variant invented by Robert Montay-Marsais in 1972. The game is played on a 10×10 board with all the standard chess pieces present, and in addition, two nuclea pieces (representing nuclear missiles) and two extra pawns per side. The game brings the concept of modern warfare weaponry to chess.")
-(rules "The standard conventions of chess apply, including normal castling and en passant. Pawns promote on the 9th ranks and may promote to missile. The missile moves and captures as a chess king: one step in any direction. It may be captured like any other piece.
-
-Missile launches
-A player can launch a missile at any time to any board square, occupied or not. The launched missile \"destroys\" (eliminates from play) all pieces (except kings, which are immune) of either colour on the target square, as well as on all immediately surrounding squares. The missile itself is also destroyed in the launch.
-
-Launching a missile constitutes a turn. There are two prerequisites for launching a missile:
-- A non-pawn piece must have been captured at some point prior in the game.
-- The missile cannot be under attack by an enemy piece at time of launch.")
-(id "1780")
-(source "<a href=\"https://en.wikipedia.org/wiki/Stratomic\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-(version "1.3.7")
-(classification "board/war/replacement/checkmate/chess")
-(author "Robert Montay-Marsais")
-(credit "Eric Piette")
-(date "1972")
-}
-)
+    (info
+        {
+        (description "Stratomic is a chess variant invented by Robert Montay-Marsais in 1972. The game is played on a 10×10 board with all the standard chess pieces present, and in addition, two nuclea pieces (representing nuclear missiles) and two extra pawns per side. The game brings the concept of modern warfare weaponry to chess.")
+        (rules "The standard conventions of chess apply, including normal castling and en passant. Pawns promote on the 9th ranks and may promote to missile. The missile moves and captures as a chess king: one step in any direction. It may be captured like any other piece.
+            
+            Missile launches
+            A player can launch a missile at any time to any board square, occupied or not. The launched missile \"destroys\" (eliminates from play) all pieces (except kings, which are immune) of either colour on the target square, as well as on all immediately surrounding squares. The missile itself is also destroyed in the launch.
+            
+            Launching a missile constitutes a turn. There are two prerequisites for launching a missile:
+            - A non-pawn piece must have been captured at some point prior in the game.
+        - The missile cannot be under attack by an enemy piece at time of launch.")
+        (id "1780")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Stratomic\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.3.7")
+        (classification "board/war/replacement/checkmate/chess")
+        (author "Robert Montay-Marsais")
+        (credit "Eric Piette")
+        (date "1972")
+        }
+    )
     
     (graphics {
         (show Check "King")

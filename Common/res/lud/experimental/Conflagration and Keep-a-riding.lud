@@ -255,9 +255,9 @@
 (define "ColourBackground" (colour 245 245 245)) 
 
 (metadata
-(info
-{
-(description "Two of several Games inspired by Kanare Kato's 'Squish'
+    (info
+        {
+        (description "Two of several Games inspired by Kanare Kato's 'Squish'
             
             Originally 'Squish' was a unification game with step movement toward a friendly piece in-line, possibly involving a capture.  'Advanced Squish' added a requirement on non-capturing steps for the piece to become part of a larger group. (Singletons were exempted.)
             
@@ -270,10 +270,10 @@
             
             'Conflagration', is themed 'fighting fire with fire': Getting eliminated is a win. Containment, where none of your flame pieces can move, is also a win.
             
-        Conflagration has 2 subvariants 'Firestorm' and 'BackFire' in which the choice of moves that each flame piece can take are prioritized.
-        - BackFire is shorter, more aggressive, because a flame piece must capture (become a 'backfire') if it can. 
+            Conflagration has 2 subvariants 'Firestorm' and 'BackFire' in which the choice of moves that each flame piece can take are prioritized.
+            - BackFire is shorter, more aggressive, because a flame piece must capture (become a 'backfire') if it can. 
         - Firestorm requires a flame piece to step to join its own kind if it can, leading to a slower elimination of the flames in the end game.")
-(rules "Setup: Pieces of each color are distributed symmetrically on every 3rd cell of the board.
+        (rules "Setup: Pieces of each color are distributed symmetrically on every 3rd cell of the board.
             (For a game on an order 4 board, the outer cells are not used.)
             Four game options are provided:
             
@@ -287,15 +287,15 @@
             Rule restriction: A piece can only slide to capture when it cannot step to join a larger group.
             
             4. Conflagration, - Backfire Variant (shorter), 
-            Rule restriction: A piece can only step to join a larger group when it cannot slide to capture.")
-(id "1732")
-(version "1.3.7")
-(classification "experimental")
-(author "Dale W. Walton")
-(credit "Dale W. Walton")
-(date "14-10-2021")
-}
-)
+        Rule restriction: A piece can only step to join a larger group when it cannot slide to capture.")
+        (id "1732")
+        (version "1.3.7")
+        (classification "experimental")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "14-10-2021")
+        }
+    )
     
     (graphics 
         {

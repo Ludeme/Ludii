@@ -43,20 +43,20 @@
 //------------------------------------------------------------------------------
 
 (metadata
-(info
-{
-(description "Flume is a simple territory game made by Mark Steere. Its placement protocol bears some similarity to Dots and Boxes.")
-(rules "Players take turns placing stones of their color on empty squares. If you place orthogonally adjacent to more than 2 stones, regardless of their color, you must place again. You continue until you place orthogonally adjacent to 2 or fewer stones. When the board is full, the player with the most stones on the board is the winner.")
-(id "1504")
-(source "<a href=\"http://www.marksteeregames.com/Flume_Go_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.marksteeregames.com</a>")
-(version "1.3.7")
-(classification "board/space/territory")
-(author "Mark Steere")
-(publisher "<a href=\"http://www.marksteeregames.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a> (used with permission)")
-(credit "Michael Amundsen")
-(date "2010")
-}
-)
+    (info
+        {
+        (description "Flume is a simple territory game made by Mark Steere. Its placement protocol bears some similarity to Dots and Boxes.")
+        (rules "Players take turns placing stones of their color on empty squares. If you place orthogonally adjacent to more than 2 stones, regardless of their color, you must place again. You continue until you place orthogonally adjacent to 2 or fewer stones. When the board is full, the player with the most stones on the board is the winner.")
+        (id "1504")
+        (source "<a href=\"http://www.marksteeregames.com/Flume_Go_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.marksteeregames.com</a>")
+        (version "1.3.7")
+        (classification "board/space/territory")
+        (author "Mark Steere")
+        (publisher "<a href=\"http://www.marksteeregames.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a> (used with permission)")
+        (credit "Michael Amundsen")
+        (date "2010")
+        }
+    )
     (graphics
         (player Colour Neutral (colour Grey))
     )

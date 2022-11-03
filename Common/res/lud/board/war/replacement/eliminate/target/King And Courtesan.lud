@@ -75,43 +75,43 @@
 //------------------------------------------------------------------------------
 
 (metadata
-(info
-{
-(description "King and Courtesan is a drawless two player army game where each player seeks to get their king into the enemy home square, or kill the enemy king. King and Courtesan was invented by Mark Steere in May 2022.")
-(rules "GOAL
-Get your king into the enemy home square, or kill the enemy king.
-
-MOVES
-Players make one move per turn, starting with Red. There are three possible
-types of moves, explained below. Players will always have a move available,
-and must make one. Passing is not allowed.
-
-NON-CAPTURING MOVES
-Kings and courtesans can move to an adjacent, unoccupied square in any of
-the three forward directions.
-
-CAPTURING MOVES
-Kings and courtesans can move to an adjacent, enemy occupied square in any
-of eight directions, capturing the enemy king or courtesan by replacement.
-
-EXCHANGE MOVE
-You can transfer the top checker of your king onto an adjacent, friendly
-courtesan in any of the three forward directions, thus exchanging king and
-courtesan.
-
-In the Ludii implementation, the king is controlled like this: 
-To make an exchange move you must drag or click the top piece.
-To make a step/capture move, you must drag or click the bottom piece.")
-(id "1993")
-(source "<a href=\"http://www.marksteeregames.com/King_and_Courtesan_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a>")
-(version "1.3.7")
-(classification "board/war/replacement/eliminate/target")
-(author "Mark Steere")
-(publisher "<a href=\"http://www.marksteeregames.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a>")
-(credit "Michael Amundsen")
-(date "2022")
-}
-)
+    (info
+        {
+        (description "King and Courtesan is a drawless two player army game where each player seeks to get their king into the enemy home square, or kill the enemy king. King and Courtesan was invented by Mark Steere in May 2022.")
+        (rules "GOAL
+            Get your king into the enemy home square, or kill the enemy king.
+            
+            MOVES
+            Players make one move per turn, starting with Red. There are three possible
+            types of moves, explained below. Players will always have a move available,
+            and must make one. Passing is not allowed.
+            
+            NON-CAPTURING MOVES
+            Kings and courtesans can move to an adjacent, unoccupied square in any of
+            the three forward directions.
+            
+            CAPTURING MOVES
+            Kings and courtesans can move to an adjacent, enemy occupied square in any
+            of eight directions, capturing the enemy king or courtesan by replacement.
+            
+            EXCHANGE MOVE
+            You can transfer the top checker of your king onto an adjacent, friendly
+            courtesan in any of the three forward directions, thus exchanging king and
+            courtesan.
+            
+            In the Ludii implementation, the king is controlled like this: 
+            To make an exchange move you must drag or click the top piece.
+        To make a step/capture move, you must drag or click the bottom piece.")
+        (id "1993")
+        (source "<a href=\"http://www.marksteeregames.com/King_and_Courtesan_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a>")
+        (version "1.3.7")
+        (classification "board/war/replacement/eliminate/target")
+        (author "Mark Steere")
+        (publisher "<a href=\"http://www.marksteeregames.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a>")
+        (credit "Michael Amundsen")
+        (date "2022")
+        }
+    )
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))

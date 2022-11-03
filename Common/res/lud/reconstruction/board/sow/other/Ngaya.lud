@@ -49,29 +49,28 @@
 
 //------------------------------------------------------------------------------
 
-
 (rulesets { 
-
-(ruleset "Ruleset/Historical Information (Incomplete)" {
-
-})
-
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
 })
 
 (metadata 
     
-(info
-{
-(description "Ngaya is a children's game played in the Republic of Congo.")
-(rules "The board is a series of holes in the ground. Two or more players, five holes per player to start. Three counters per hole. Players sow from their first hole into the holes to its right. When the final counter lands in an empty hole, the player moves again. A player's holes are the first hole with their counters to the last hole in which they sowed a counter. A player who no longer owns holes is eliminated. The player who eliminates the last opponent wins.")
-(source "DLP evidence.")
-(id "1351")
-(version "1.3.7")
-(classification "board/sow/reconstruction")
-(credit "Eric Piette")
-(origin "This game was played in Republic of Congo, around 1971.")
-}
-)
+    (info
+        {
+        (description "Ngaya is a children's game played in the Republic of Congo.")
+        (rules "The board is a series of holes in the ground. Two or more players, five holes per player to start. Three counters per hole. Players sow from their first hole into the holes to its right. When the final counter lands in an empty hole, the player moves again. A player's holes are the first hole with their counters to the last hole in which they sowed a counter. A player who no longer owns holes is eliminated. The player who eliminates the last opponent wins.")
+        (source "DLP evidence.")
+        (id "1351")
+        (version "1.3.7")
+        (classification "board/sow/reconstruction")
+        (credit "Eric Piette")
+        (origin "This game was played in Republic of Congo, around 1971.")
+        }
+    )
     
     (graphics {
         (board Style Mancala)

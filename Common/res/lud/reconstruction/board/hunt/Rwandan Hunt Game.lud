@@ -10,28 +10,27 @@
 
 //------------------------------------------------------------------------------
 
-
 (rulesets { 
-
-(ruleset "Ruleset/Historical Information (Incomplete)" {
-
-})
-
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
 })
 
 (metadata 
     
-(info
-{
-(description "This hunt board game, played by the Hutu and Tutsi people of Rwanda, was played in the sand and is one of the rare examples of hunt games in Africa.")
-(rules "Two players. Hunt game. Four pieces.")
-(source "DLP evidence.")
-(id "1360")
-(version "1.3.7")
-(classification "board/hunt/reconstruction")
-(origin "This game was played in Rwanda, around 1971.")
-}
-)
+    (info
+        {
+        (description "This hunt board game, played by the Hutu and Tutsi people of Rwanda, was played in the sand and is one of the rare examples of hunt games in Africa.")
+        (rules "Two players. Hunt game. Four pieces.")
+        (source "DLP evidence.")
+        (id "1360")
+        (version "1.3.7")
+        (classification "board/hunt/reconstruction")
+        (origin "This game was played in Rwanda, around 1971.")
+        }
+    )
     
     (recon {
         (concept "NumStartComponents" 4)

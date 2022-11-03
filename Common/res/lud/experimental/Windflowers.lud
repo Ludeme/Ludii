@@ -200,9 +200,9 @@
 (define "ColourBackground" (colour 136 175 96)) //meadow (colour 146 175 86)) // tawny: (colour 175 146 86)) 
 
 (metadata
-(info
-{
-(description "Windflowers is a finite, 2-4 player, place-or-capture, connectivity game. 
+    (info
+        {
+        (description "Windflowers is a finite, 2-4 player, place-or-capture, connectivity game. 
             It is playable on a wide variety of grid and connectivity types.
             
             It is still experimental, as the best scoring and tiebreker combination needs to be resolved.
@@ -224,41 +224,41 @@
             
             If every thing is equal, the last to play wins. Thus on even boards, the first player is obligated to break mirror play to win.
             ----------------------           
-            The previous version had the goal of least number of groups. This goal was flawed, allowing the simple strategy of always passing to force a win.")
-(rules "Choose between two versions: 
-        -- Place the most stones, or 
-        -- Form the largest group. 
-        
-        Ties are broken by relying on a cascading comparison of largest groups; 
-        - With a standard choice of breaking the tie in favor of the underdog.
+        The previous version had the goal of least number of groups. This goal was flawed, allowing the simple strategy of always passing to force a win.")
+        (rules "Choose between two versions: 
+            -- Place the most stones, or 
+            -- Form the largest group. 
             
-        The board starts empty.
-        Players take turns in sequence. Passing is allowed. 
-        The game ends when all players have passed in succession. 
+            Ties are broken by relying on a cascading comparison of largest groups; 
+            - With a standard choice of breaking the tie in favor of the underdog.
             
-        On a turn, the mover either:
-        1: Places a stone on an empty site, - or -
-        2: Replaces an opponent's stone with their own,
-        ---- But replacing a stone is only allowed when there are more stones around that site of the captured stone's color than there are of the mover's own color.
-        
-        Note: On boards with diagonals, diagonally adjacent stones are part of the count used to allow or disallow capture.
+            The board starts empty.
+            Players take turns in sequence. Passing is allowed. 
+            The game ends when all players have passed in succession. 
             
-        At the end of the game, players count all their stones, or count the stones in their largest group, depending on the goal. Which stones belong to a given group are determined by orthogonal connections.
-        
-         In the case of a tie between the leading players, each pair of those players compares the size of their largest remaining group after any tied pairs have been removed. 
-         
-         This difference is added to the score of the player with the larger group in that pairing - (or to the score of other player in that pairing, in the case of underdog tie-breaking) 
-         
-         The winner of the game is decided by these amended scores.
-         Ties may still remain.  Also ties between non-leading players are not resolved.")
-(id "1549")
-(version "1.3.7")
-(classification "experimental")
-(author "Dale W. Walton")
-(credit "Dale W. Walton")
-(date "25-05-2021")
-}
-)
+            On a turn, the mover either:
+            1: Places a stone on an empty site, - or -
+            2: Replaces an opponent's stone with their own,
+            ---- But replacing a stone is only allowed when there are more stones around that site of the captured stone's color than there are of the mover's own color.
+            
+            Note: On boards with diagonals, diagonally adjacent stones are part of the count used to allow or disallow capture.
+            
+            At the end of the game, players count all their stones, or count the stones in their largest group, depending on the goal. Which stones belong to a given group are determined by orthogonal connections.
+            
+            In the case of a tie between the leading players, each pair of those players compares the size of their largest remaining group after any tied pairs have been removed. 
+            
+            This difference is added to the score of the player with the larger group in that pairing - (or to the score of other player in that pairing, in the case of underdog tie-breaking) 
+            
+            The winner of the game is decided by these amended scores.
+        Ties may still remain.  Also ties between non-leading players are not resolved.")
+        (id "1549")
+        (version "1.3.7")
+        (classification "experimental")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "25-05-2021")
+        }
+    )
     
     (graphics 
         {

@@ -60,18 +60,18 @@
 //-------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "Center is a strange little game invented by Alek Erickson and Michael Amundsen in February of 2022. The goal is to place a stone on the center of the board, but it's not as easy as it sounds.")
-(rules "Take turns placing stones on a hexhex board of size 4, or a square board of an odd size not larger than 9. The winner is the player who places a stone on the center cell. A placement N steps away from the perimeter must have at least N friendly pieces in sight. On the square board, pieces see in all 8 directions.")
-(id "1930")
-(version "1.3.7")
-(classification "board/race/reach")
-(author "Michael Amundsen")
-(credit "Michael Amundsen")
-(date "02-02-2022")
-}
-)
+    (info
+        {
+        (description "Center is a strange little game invented by Alek Erickson and Michael Amundsen in February of 2022. The goal is to place a stone on the center of the board, but it's not as easy as it sounds.")
+        (rules "Take turns placing stones on a hexhex board of size 4, or a square board of an odd size not larger than 9. The winner is the player who places a stone on the center cell. A placement N steps away from the perimeter must have at least N friendly pieces in sight. On the square board, pieces see in all 8 directions.")
+        (id "1930")
+        (version "1.3.7")
+        (classification "board/race/reach")
+        (author "Michael Amundsen")
+        (credit "Michael Amundsen")
+        (date "02-02-2022")
+        }
+    )
     
     (graphics {
         (player Colour P1 (colour Black))

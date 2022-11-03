@@ -369,31 +369,31 @@
 
 (metadata
     
-(info
-{
-(description "A chess variant played on a board made of hexagons invented by Yakov Brusky.")
-(aliases {"Brusky's Chess" "Hexagonal Chess"})
-(rules "Brusky Chess is played on a hexagonal board with sides of length 4, 5, and 9, and each space oriented vertically. It has 84 spaces.
-
-Piece Movement:
-  * Queens, Rooks, Bishops, and Knights move as in Glinski Chess.
-      - Queens slide in any of the 12 directions.
-      - Rooks slide in any of the 6 adjacent directions.
-      - Bishops slide in any of the 6 'diagonal' directions.
-      - Knights move two spaces in any adjacent direction, then one space in another direction.
-  * Kings step in any of the 12 direction, and castle either kingside (moving two spaces) or queenside (moving three spaces). Castling can only take place when neither the King nor the Rook being moved have moved before.
-  * Pawns, when moving from a Pawn start space, can advance without capturing to either of the two spaces slightly left of forward, or either of the two spaces slightly right of forward, unless they are 'blocked'. A Pawn on a Pawn start space is 'blocked' if an enemy piece is adjacent to it in either of the forward adjacent directions. Pawns not on a Pawn start space can only advance one space without capturing. Pawns capture in a forward diagonal direction (i.e., to a space one row forward and off to the side, to a space connected by an edge, and having the same colour). A Pawn on a Pawn start space can also capture forwards (i.e., to the space directly ahead, having the same colour). En passant capture and Pawn promotion take place as in Glinski Chess.
-
-The game ends on a checkmate or stalemate.")
-(id "856")
-(source "For a comparison of popular versions of hexagonal chess, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For more details on other chess variants, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).")
-(version "1.3.7")
-(classification "board/war/replacement/checkmate/chess")
-(author "Yakov Brusky")
-(credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
-(date "1966")
-}
-)
+    (info
+        {
+        (description "A chess variant played on a board made of hexagons invented by Yakov Brusky.")
+        (aliases {"Brusky's Chess" "Hexagonal Chess"})
+        (rules "Brusky Chess is played on a hexagonal board with sides of length 4, 5, and 9, and each space oriented vertically. It has 84 spaces.
+            
+            Piece Movement:
+            * Queens, Rooks, Bishops, and Knights move as in Glinski Chess.
+            - Queens slide in any of the 12 directions.
+            - Rooks slide in any of the 6 adjacent directions.
+            - Bishops slide in any of the 6 'diagonal' directions.
+            - Knights move two spaces in any adjacent direction, then one space in another direction.
+            * Kings step in any of the 12 direction, and castle either kingside (moving two spaces) or queenside (moving three spaces). Castling can only take place when neither the King nor the Rook being moved have moved before.
+            * Pawns, when moving from a Pawn start space, can advance without capturing to either of the two spaces slightly left of forward, or either of the two spaces slightly right of forward, unless they are 'blocked'. A Pawn on a Pawn start space is 'blocked' if an enemy piece is adjacent to it in either of the forward adjacent directions. Pawns not on a Pawn start space can only advance one space without capturing. Pawns capture in a forward diagonal direction (i.e., to a space one row forward and off to the side, to a space connected by an edge, and having the same colour). A Pawn on a Pawn start space can also capture forwards (i.e., to the space directly ahead, having the same colour). En passant capture and Pawn promotion take place as in Glinski Chess.
+            
+        The game ends on a checkmate or stalemate.")
+        (id "856")
+        (source "For a comparison of popular versions of hexagonal chess, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For more details on other chess variants, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).")
+        (version "1.3.7")
+        (classification "board/war/replacement/checkmate/chess")
+        (author "Yakov Brusky")
+        (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
+        (date "1966")
+        }
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.7)

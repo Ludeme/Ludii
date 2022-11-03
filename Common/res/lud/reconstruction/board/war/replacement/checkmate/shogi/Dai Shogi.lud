@@ -14,28 +14,27 @@
 
 //------------------------------------------------------------------------------
 
-
 (rulesets { 
-
-(ruleset "Ruleset/Historical Information (Incomplete)" {
-
-})
-
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
 })
 
 (metadata 
     
-(info
-{
-(description "Dai Shogi is a large version of Shogi played in Japan played in the thirteenth-fourteenth century.")
-(rules "15x15 board. 130 pieces.")
-(source "DLP evidence")
-(id "1336")
-(version "1.3.7")
-(classification "board/war/replacement/checkmate/shogi/reconstruction")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "Dai Shogi is a large version of Shogi played in Japan played in the thirteenth-fourteenth century.")
+        (rules "15x15 board. 130 pieces.")
+        (source "DLP evidence")
+        (id "1336")
+        (version "1.3.7")
+        (classification "board/war/replacement/checkmate/shogi/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (player Colour P1 (colour White))

@@ -80,20 +80,20 @@
 
 (metadata 
     
-(info
-{
-(description "Shatranj al-Mustatila is a version of Shatranj played on a 4x16 board. A die is used to determine which piece a player moves. The Persian Shatranj expert al-Adli states that this game was often made on textiles, with the game Nard on the other side.")
-(aliases {"Shatranj al-Mamdula" "Shatranj at-Tawila" "Shatranj al-Mamduda" "Oblong Chess"})
-(rules "4x16 board. The pieces move as follows, with the number per player: Shah (king)x1: moves one space orthogonally or diagonally. Fers (counselor)x1: one square diagonally; Rukh (rook)x2: any number of spaces orthogonally; Pil (elephant)x2: two squares diagonally, jumping over the first, cannot capture another Pil; Asb (horse)x2: moves orthogonally one space and then diagonally one space, jumping over any intervening pieces; Sarbaz (soldier)x8: moves one space forward orthogonally or one space forward diagonally to capture. No en passant, promoted to Fers when reaching the sixteenth rank. Pieces are placed with the Shah and Fers in the center of the row closest to the player (Shah to the right), a Pil on either side of them, the Asb on the two center squares in the second row, flanked by the Rukh, and the Sarbaz on the fifth and sixth rows. Movement of the pieces is determined by one six-sided die, with the following throws: 6=Shah, 5=Fers, 4=Pil, 3=Asb, 2=Rukh, 1=Sarbaz. No castling. Stalemate results in win for player causing it. When the Shah is in check, the opponent must roll a 6 for it to escape. The player who checkmates the Shah wins. 
-")
-(source "Murray 1913: 340.")
-(id "307")
-(version "1.3.7")
-(classification "board/war/replacement/checkmate/chaturanga")
-(credit "Eric Piette")
-(origin "This game was played in Persia, around 1140.")
-}
-)
+    (info
+        {
+        (description "Shatranj al-Mustatila is a version of Shatranj played on a 4x16 board. A die is used to determine which piece a player moves. The Persian Shatranj expert al-Adli states that this game was often made on textiles, with the game Nard on the other side.")
+        (aliases {"Shatranj al-Mamdula" "Shatranj at-Tawila" "Shatranj al-Mamduda" "Oblong Chess"})
+        (rules "4x16 board. The pieces move as follows, with the number per player: Shah (king)x1: moves one space orthogonally or diagonally. Fers (counselor)x1: one square diagonally; Rukh (rook)x2: any number of spaces orthogonally; Pil (elephant)x2: two squares diagonally, jumping over the first, cannot capture another Pil; Asb (horse)x2: moves orthogonally one space and then diagonally one space, jumping over any intervening pieces; Sarbaz (soldier)x8: moves one space forward orthogonally or one space forward diagonally to capture. No en passant, promoted to Fers when reaching the sixteenth rank. Pieces are placed with the Shah and Fers in the center of the row closest to the player (Shah to the right), a Pil on either side of them, the Asb on the two center squares in the second row, flanked by the Rukh, and the Sarbaz on the fifth and sixth rows. Movement of the pieces is determined by one six-sided die, with the following throws: 6=Shah, 5=Fers, 4=Pil, 3=Asb, 2=Rukh, 1=Sarbaz. No castling. Stalemate results in win for player causing it. When the Shah is in check, the opponent must roll a 6 for it to escape. The player who checkmates the Shah wins. 
+        ")
+        (source "Murray 1913: 340.")
+        (id "307")
+        (version "1.3.7")
+        (classification "board/war/replacement/checkmate/chaturanga")
+        (credit "Eric Piette")
+        (origin "This game was played in Persia, around 1140.")
+        }
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

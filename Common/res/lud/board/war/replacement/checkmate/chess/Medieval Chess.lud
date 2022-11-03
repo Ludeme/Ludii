@@ -49,30 +49,29 @@
 
 //------------------------------------------------------------------------------
 
-
 (rulesets { 
-
-(ruleset "Ruleset/Medieval Chess (Incomplete)" {
-
-})
-
+    
+    (ruleset "Ruleset/Medieval Chess (Incomplete)" {
+        
+    })
+    
 })
 
 (metadata 
     
-(info
-{
-(description "Chess first came to Europe in the Middle Ages, but at that time it was played differently than the modern game. Its rules more closely resemble the game of Shatranj, played in West Asia and probably the inspiration for the European game. New rules for the movement of the pieces started to become popular in the fifteenth century, which transformed the game into the rules played today.")
-(rules "8x8 board. The pieces move as follows, with the number per player: 1 x King (king): moves one space orthogonally or diagonally. 1 x Queen (counselor): One square diagonally. 2 x Rook (rook): Any number of spaces orthogonally. 2 x Fil (elephant): Two squares diagonally, jumping over the first. Cannot capture another Fil. 2 x Knight: Moves as a chess knight. 8 x Pawn: Moves one space forward orthogonally; one space forward diagonally to capture. No en passant. Promoted to Fers when reaching the eighth rank. No castling. An opponent's piece is captured by moving a player's own piece onto a space occupied by the opponent's piece. When a Shah can be captured on the next turn by an opponent's piece, it is in check. The Shah must not be in check at the end of the player's turn. If this is not possible, it is checkmate and the opponent wins. Stalemate results in a win for that player causing it.
-")
-(source "Murray 1913.")
-(id "1435")
-(version "1.3.7")
-(classification "board/war/replacement/checkmate/chess")
-(credit "Eric Piette")
-(origin "This game was played in Europe, from around 990 to 1450.")
-}
-)
+    (info
+        {
+        (description "Chess first came to Europe in the Middle Ages, but at that time it was played differently than the modern game. Its rules more closely resemble the game of Shatranj, played in West Asia and probably the inspiration for the European game. New rules for the movement of the pieces started to become popular in the fifteenth century, which transformed the game into the rules played today.")
+        (rules "8x8 board. The pieces move as follows, with the number per player: 1 x King (king): moves one space orthogonally or diagonally. 1 x Queen (counselor): One square diagonally. 2 x Rook (rook): Any number of spaces orthogonally. 2 x Fil (elephant): Two squares diagonally, jumping over the first. Cannot capture another Fil. 2 x Knight: Moves as a chess knight. 8 x Pawn: Moves one space forward orthogonally; one space forward diagonally to capture. No en passant. Promoted to Fers when reaching the eighth rank. No castling. An opponent's piece is captured by moving a player's own piece onto a space occupied by the opponent's piece. When a Shah can be captured on the next turn by an opponent's piece, it is in check. The Shah must not be in check at the end of the player's turn. If this is not possible, it is checkmate and the opponent wins. Stalemate results in a win for that player causing it.
+        ")
+        (source "Murray 1913.")
+        (id "1435")
+        (version "1.3.7")
+        (classification "board/war/replacement/checkmate/chess")
+        (credit "Eric Piette")
+        (origin "This game was played in Europe, from around 990 to 1450.")
+        }
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

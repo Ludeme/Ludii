@@ -112,30 +112,30 @@
 
 (metadata 
     
-(info
-{
-(description "Cavity is a finite Go variant with an elimination goal – a bit like Mark Steere's Redstone, but without red stones. This game inspired Lifeline.")
-(rules "Like Go, Cavity is played on the points of a square grid, and groups (chains, more precisely) and liberties are defined the same way. 
-An empty region is a group (chain) of empty points, and it is said to be adjacent to a stone if any of its points are.
-
-Setup: 
-Starting with Black, place one stone each on any empty point. 
-The setup is over as soon as the players have one stone each on the board.
-
-Play: 
-On your turn, place a stone of your color on any point in an empty region that's adjacent to a stone of your color.
-After placement, first remove all enemy groups that have no liberties, then remove all friendly groups that have no liberties.
-In this phase, as soon as one player is the only one with stones on the board, the game is over and that player is the winner.
-
-The game is balanced with the pie rule.")
-(id "1982")
-(version "1.3.7")
-(classification "board/space/territory")
-(author "Michael Amundsen")
-(credit "Michael Amundsen")
-(date "2022")
-}
-)
+    (info
+        {
+        (description "Cavity is a finite Go variant with an elimination goal – a bit like Mark Steere's Redstone, but without red stones. This game inspired Lifeline.")
+        (rules "Like Go, Cavity is played on the points of a square grid, and groups (chains, more precisely) and liberties are defined the same way. 
+            An empty region is a group (chain) of empty points, and it is said to be adjacent to a stone if any of its points are.
+            
+            Setup: 
+            Starting with Black, place one stone each on any empty point. 
+            The setup is over as soon as the players have one stone each on the board.
+            
+            Play: 
+            On your turn, place a stone of your color on any point in an empty region that's adjacent to a stone of your color.
+            After placement, first remove all enemy groups that have no liberties, then remove all friendly groups that have no liberties.
+            In this phase, as soon as one player is the only one with stones on the board, the game is over and that player is the winner.
+            
+        The game is balanced with the pie rule.")
+        (id "1982")
+        (version "1.3.7")
+        (classification "board/space/territory")
+        (author "Michael Amundsen")
+        (credit "Michael Amundsen")
+        (date "2022")
+        }
+    )
     
     (graphics {
         (player Colour P1 (colour Black))

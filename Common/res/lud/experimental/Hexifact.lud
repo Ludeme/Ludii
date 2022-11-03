@@ -125,45 +125,45 @@
 //---------------------------------------------
 
 (metadata
-(info
-{
-(description "Hexifact is a Hex grid based place-or-jump game with a goal of maximizing the product of one's largest 2 groups.
+    (info
+        {
+        (description "Hexifact is a Hex grid based place-or-jump game with a goal of maximizing the product of one's largest 2 groups.
             
-    It is fairly opaque, and thus suited to small boards. Large boards will work, but the games will be long, and it will be unclear how the outcome was derived from the earlier positions. 
-    The reason for the opacity is that connection of groups must be accomplished through jumping opponent's pieces, which themselves are frequently changing position.
+            It is fairly opaque, and thus suited to small boards. Large boards will work, but the games will be long, and it will be unclear how the outcome was derived from the earlier positions. 
+            The reason for the opacity is that connection of groups must be accomplished through jumping opponent's pieces, which themselves are frequently changing position.
             
-    To minimise this instability, no location on the board is allowed to have more than 3 adjacent friendly pieces. 
-    Also passing is allowed to avoid forced moves that de-optimise the scores.   
+            To minimise this instability, no location on the board is allowed to have more than 3 adjacent friendly pieces. 
+            Also passing is allowed to avoid forced moves that de-optimise the scores.   
             
-    Also, the standard version only allows a jump if the player made a placement on the previous turn.
-    This significantly reduced the game complexity compared to allowing each piece to move once before the next placement turn.")
-(rules "Goal:Score the product of the sizes of your two largest groups. Highest score wins. 
-    In case of a tie, the last to play wins.
+            Also, the standard version only allows a jump if the player made a placement on the previous turn.
+        This significantly reduced the game complexity compared to allowing each piece to move once before the next placement turn.")
+        (rules "Goal:Score the product of the sizes of your two largest groups. Highest score wins. 
+            In case of a tie, the last to play wins.
             
-    Groups are based on the orthogonal connections between adjacent pieces.
-        
-    Play:
-    Boards starts empty. The darker color starts by placing anywhere.
-    Thereafter, a turn is either a placement or a jump (but not both) according to the following rules. 
-    There are no captures. Passing is allowed.
-    
-    Placement: 
-    Pieces must be placed on an empty site that is BOTH:
-    - next to an opponent's stone(s) and 
-    - away from one's own stones. 
-    
-    Jumping:
-    Jumping is only allowed when a placement was made on the mover's last turn (but see Options) 
-    A stone jumps in a straight line over any number of opponent's stones. 
-    Jump Restrictions:
-    1) The piece must land at an empty site that is directly after the last opponent's piece in the jump. 
+            Groups are based on the orthogonal connections between adjacent pieces.
+            
+            Play:
+            Boards starts empty. The darker color starts by placing anywhere.
+            Thereafter, a turn is either a placement or a jump (but not both) according to the following rules. 
+            There are no captures. Passing is allowed.
+            
+            Placement: 
+            Pieces must be placed on an empty site that is BOTH:
+            - next to an opponent's stone(s) and 
+            - away from one's own stones. 
+            
+            Jumping:
+            Jumping is only allowed when a placement was made on the mover's last turn (but see Options) 
+            A stone jumps in a straight line over any number of opponent's stones. 
+            Jump Restrictions:
+        1) The piece must land at an empty site that is directly after the last opponent's piece in the jump. 
     2) The stone may not pass over empty sites nor over sites occupied by friendly stones.
-    3) The stone may not connect more than 3 of a player's stones, nor cause another stone to be connected to more than 3.
-    
-    The game ends when both players pass. 
-    
-    Available Options - Jumps:
-    No individual piece may jump more than once before the mover takes a placement turn.")
+3) The stone may not connect more than 3 of a player's stones, nor cause another stone to be connected to more than 3.
+
+The game ends when both players pass. 
+
+Available Options - Jumps:
+No individual piece may jump more than once before the mover takes a placement turn.")
 (id "1968")
 (version "1.3.7")
 (classification "experimental")

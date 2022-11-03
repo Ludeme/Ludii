@@ -169,18 +169,18 @@
 
 (metadata 
     
-(info
-{
-(description "Shatera is a game with replacement captures played by the Kalmyk people in the eighteenth century. It was typically played by adult men in their homes.")
-(rules "Played on an 8x8 board with pieces with specialized moves: Pawns (8): can move one space forward or two on their first turn, capture diagonally one space forward; Rooks (2): can move any number of spaces orthogonally; Bishops (2): can move any number of spaces diagonally; Knight (2): moves in any direction, one space orthogonally with one space forward diagonally; Queens (1): can move any number of spaces orthogonally or diagonally; Kings (1): can move one space orthogonally or diagonally. Players move three pieces on their first turn. Players capture pieces by moving onto a space occupied by an opponent's piece. When a king can be captured on the next turn, it is in check, and the king must not be in check at the beginning of the opponent's next turn. If this is not possible, it is checkmate, and the opponent wins.
-")
-(source "Pallas 1776: 157.")
-(id "1996")
-(version "1.3.7")
-(classification "board/war/replacement/checkmate/chess")
-(origin "This game was played in Russia, from around 1768 to 1769.")
-}
-)
+    (info
+        {
+        (description "Shatera is a game with replacement captures played by the Kalmyk people in the eighteenth century. It was typically played by adult men in their homes.")
+        (rules "Played on an 8x8 board with pieces with specialized moves: Pawns (8): can move one space forward or two on their first turn, capture diagonally one space forward; Rooks (2): can move any number of spaces orthogonally; Bishops (2): can move any number of spaces diagonally; Knight (2): moves in any direction, one space orthogonally with one space forward diagonally; Queens (1): can move any number of spaces orthogonally or diagonally; Kings (1): can move one space orthogonally or diagonally. Players move three pieces on their first turn. Players capture pieces by moving onto a space occupied by an opponent's piece. When a king can be captured on the next turn, it is in check, and the king must not be in check at the beginning of the opponent's next turn. If this is not possible, it is checkmate, and the opponent wins.
+        ")
+        (source "Pallas 1776: 157.")
+        (id "1996")
+        (version "1.3.7")
+        (classification "board/war/replacement/checkmate/chess")
+        (origin "This game was played in Russia, from around 1768 to 1769.")
+        }
+    )
     
     (graphics {
         (show Check "King")

@@ -23,18 +23,18 @@
 
 (metadata 
     
-(info
-{
-(description "This game, the name of which was unrecorded, is a game with leaping captures played in Ethiopia in the early twentieth century.")
-(rules "5x5 intersecting lines, with diagonals in the four quadrants. Twelve pieces per player, arranged on the two rows closest to the player and the two spots in the central row to the player's right, leaving the central space empty. Players alternate turns moving a piece to an empty adjacent spot along the lines of the board. A piece belonging to the opponent may be captured when a piece hops over it to an empty adjacent spot immediately on the opposite side of the piece, along the lines of the board. The player who reduces the opponent to five pieces wins.")
-(source "Griaule 1935: 177.")
-(id "1067")
-(version "1.3.7")
-(classification "board/war/leaping/lines")
-(credit "Eric Piette")
-(origin "This game was played in Ethiopia, around 1935.")
-}
-)
+    (info
+        {
+        (description "This game, the name of which was unrecorded, is a game with leaping captures played in Ethiopia in the early twentieth century.")
+        (rules "5x5 intersecting lines, with diagonals in the four quadrants. Twelve pieces per player, arranged on the two rows closest to the player and the two spots in the central row to the player's right, leaving the central space empty. Players alternate turns moving a piece to an empty adjacent spot along the lines of the board. A piece belonging to the opponent may be captured when a piece hops over it to an empty adjacent spot immediately on the opposite side of the piece, along the lines of the board. The player who reduces the opponent to five pieces wins.")
+        (source "Griaule 1935: 177.")
+        (id "1067")
+        (version "1.3.7")
+        (classification "board/war/leaping/lines")
+        (credit "Eric Piette")
+        (origin "This game was played in Ethiopia, around 1935.")
+        }
+    )
     
     (ai
         "Ethiopian Capture Game_ai"

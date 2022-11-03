@@ -140,43 +140,43 @@
 
 (metadata
     
-(info
-{
-(description "Redstone is a variation of Go in which red stones are used to capture. Red stones are permanent. They cannot themselves be captured. Draws cannot occur in Redstone. Mark Steere designed Redstone in February, 2012.")
-(rules "Starting with Black, the two players take turns placing stones onto unoccupied points on the board, subject to restrictions, one stone per turn.
-Passing is not allowed in Redstone. Players will always have a placement available and must make one.
-
-GROUPS AND LIBERTIES: 
-A group is an orthogonally interconnected collection of one or more like-colored stones. 
-Only black groups and white groups will be discussed here, not red groups. 
-A liberty is an unoccupied point adjacent to a (black or white) group
-
-CAPTURES:
-A capturing placement results in one or more groups, of either or both colors, having no liberties. 
-Such a placement can only be made with a red stone. 
-Conversely, a red stone can only be placed if it bounds (completely deprives of liberties) one or more groups of either or both colors. Red stones are permanent. They cannot themselves be captured.
-Self capture is allowed.
-
-When multiple groups without liberties result from a placement, all such groups are removed immediately following said placement, regardless of the groups' colors. Unlike Go, if you unbound your own temporarily bounded group by removing a neighboring enemy group, you must still remove your own temporarily bounded group.
-
-PIE RULE:
-Since Redstone is a game of annihilation, not of point score, Go’s komi can’t be used.
-Instead, Redstone uses the pie rule for balance. 
-
-OBJECT OF THE GAME:
-You must annihilate your opponent, removing all of his stones from the board. 
-If your placement eliminates all black and white stones from the board, you win. 
-If your placement eliminates all of your own stones while enemy stones remain on the board, you lose.")
-(id "1976")
-(source "<a href=\"https://boardgamegeek.com/boardgame/120533/redstone\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-(version "1.3.7")
-(classification "board/space/territory")
-(author "Mark Steere")
-(publisher "Mark Steere Games")
-(credit "Michael Amundsen")
-(date "2012")
-}
-)
+    (info
+        {
+        (description "Redstone is a variation of Go in which red stones are used to capture. Red stones are permanent. They cannot themselves be captured. Draws cannot occur in Redstone. Mark Steere designed Redstone in February, 2012.")
+        (rules "Starting with Black, the two players take turns placing stones onto unoccupied points on the board, subject to restrictions, one stone per turn.
+            Passing is not allowed in Redstone. Players will always have a placement available and must make one.
+            
+            GROUPS AND LIBERTIES: 
+            A group is an orthogonally interconnected collection of one or more like-colored stones. 
+            Only black groups and white groups will be discussed here, not red groups. 
+            A liberty is an unoccupied point adjacent to a (black or white) group
+            
+            CAPTURES:
+            A capturing placement results in one or more groups, of either or both colors, having no liberties. 
+            Such a placement can only be made with a red stone. 
+            Conversely, a red stone can only be placed if it bounds (completely deprives of liberties) one or more groups of either or both colors. Red stones are permanent. They cannot themselves be captured.
+            Self capture is allowed.
+            
+            When multiple groups without liberties result from a placement, all such groups are removed immediately following said placement, regardless of the groups' colors. Unlike Go, if you unbound your own temporarily bounded group by removing a neighboring enemy group, you must still remove your own temporarily bounded group.
+            
+            PIE RULE:
+            Since Redstone is a game of annihilation, not of point score, Go’s komi can’t be used.
+            Instead, Redstone uses the pie rule for balance. 
+            
+            OBJECT OF THE GAME:
+            You must annihilate your opponent, removing all of his stones from the board. 
+            If your placement eliminates all black and white stones from the board, you win. 
+        If your placement eliminates all of your own stones while enemy stones remain on the board, you lose.")
+        (id "1976")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/120533/redstone\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.7")
+        (classification "board/space/territory")
+        (author "Mark Steere")
+        (publisher "Mark Steere Games")
+        (credit "Michael Amundsen")
+        (date "2012")
+        }
+    )
     
     (graphics {
         (player Colour P1 (colour Black))

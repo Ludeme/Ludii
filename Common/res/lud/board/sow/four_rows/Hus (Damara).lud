@@ -143,24 +143,24 @@
 
 (metadata 
     
-(info
-{
-(description "||Hus is a four-row mancala-style game played among several groups in Southwest Africa, including the Damara. Hus is a word applied to several different games throughout the region, which were documented in the early twentieth century. ")
-(aliases {"||Hus (Damara)" "Huts" "Otjitoto"})
-(useFor "Ruleset/Damara (Observed)" (rules "4x12-24 (only even numbers allowed) board. Play begins with two counters in the outer row of each players' holes and two counter in each of the four holes on the right hand side of both players' inner row of holes. Player picks up contents of any hole containing two or more counters and sows them anti-clockwise. If the final counter of the sowing falls into an empty hole, the turn is over. If the last counter falls into an occupied hole, sowing continues by picking up the counters in that hole and continuing in the same direction. If the last counter falls into an occupied hole in the player's inner row, and the opponent's two holes opposite it are occupied, these are captured and sowing continues using these counters beginning at the next hole after the one which caused the capture. Play ends when one player cannot move; i.e. when they have only single counters in holes or all their counters have been captured."))
-(useFor "Ruleset/Damara (Observed)" (source "Vedder 1923: 95-96."))
-(useFor "Ruleset/Damara (Observed)" (id "375"))
-(useFor "Ruleset/Wagner (Observed)" (rules "Players cannot sow from holes with only a single counter. If a player only has holes with single counters or no counters, they are unable to play and lose the game."))
-(useFor "Ruleset/Wagner (Observed)" (source "Wagner 1918: 47-51."))
-(useFor "Ruleset/Wagner (Observed)" (id "613"))
-(source "Townshend 1977b: 88-89.")
-(id "375")
-(version "1.3.7")
-(classification "board/sow/four rows")
-(credit "Eric Piette")
-(origin "This game was played in Southwest Africa, from around 1916 to 1923.")
-}
-)
+    (info
+        {
+        (description "||Hus is a four-row mancala-style game played among several groups in Southwest Africa, including the Damara. Hus is a word applied to several different games throughout the region, which were documented in the early twentieth century. ")
+        (aliases {"||Hus (Damara)" "Huts" "Otjitoto"})
+        (useFor "Ruleset/Damara (Observed)" (rules "4x12-24 (only even numbers allowed) board. Play begins with two counters in the outer row of each players' holes and two counter in each of the four holes on the right hand side of both players' inner row of holes. Player picks up contents of any hole containing two or more counters and sows them anti-clockwise. If the final counter of the sowing falls into an empty hole, the turn is over. If the last counter falls into an occupied hole, sowing continues by picking up the counters in that hole and continuing in the same direction. If the last counter falls into an occupied hole in the player's inner row, and the opponent's two holes opposite it are occupied, these are captured and sowing continues using these counters beginning at the next hole after the one which caused the capture. Play ends when one player cannot move; i.e. when they have only single counters in holes or all their counters have been captured."))
+        (useFor "Ruleset/Damara (Observed)" (source "Vedder 1923: 95-96."))
+        (useFor "Ruleset/Damara (Observed)" (id "375"))
+        (useFor "Ruleset/Wagner (Observed)" (rules "Players cannot sow from holes with only a single counter. If a player only has holes with single counters or no counters, they are unable to play and lose the game."))
+        (useFor "Ruleset/Wagner (Observed)" (source "Wagner 1918: 47-51."))
+        (useFor "Ruleset/Wagner (Observed)" (id "613"))
+        (source "Townshend 1977b: 88-89.")
+        (id "375")
+        (version "1.3.7")
+        (classification "board/sow/four rows")
+        (credit "Eric Piette")
+        (origin "This game was played in Southwest Africa, from around 1916 to 1923.")
+        }
+    )
     
     (graphics {
         (board Style Mancala)

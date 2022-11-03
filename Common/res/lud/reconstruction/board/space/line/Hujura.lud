@@ -15,29 +15,28 @@
 
 //------------------------------------------------------------------------------
 
-
 (rulesets { 
-
-(ruleset "Ruleset/Historical information (Incomplete)" {
-
-})
-
+    
+    (ruleset "Ruleset/Historical information (Incomplete)" {
+        
+    })
+    
 })
 
 (metadata 
     
-(info
-{
-(description "Hujura is an alignment game played in seventeenth century Persia with six pieces per player.")
-(aliases {"Hugjure"})
-(rules "3x3 lines with diagonals, six pieces per player.")
-(source "DLP evidence.")
-(id "1370")
-(version "1.3.7")
-(classification "board/space/line/reconstruction")
-(origin "This game was played in Persia, around 1694.")
-}
-)
+    (info
+        {
+        (description "Hujura is an alignment game played in seventeenth century Persia with six pieces per player.")
+        (aliases {"Hugjure"})
+        (rules "3x3 lines with diagonals, six pieces per player.")
+        (source "DLP evidence.")
+        (id "1370")
+        (version "1.3.7")
+        (classification "board/space/line/reconstruction")
+        (origin "This game was played in Persia, around 1694.")
+        }
+    )
     
     (recon {
         (concept "NumStartComponents" 12)

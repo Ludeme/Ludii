@@ -62,18 +62,18 @@
 
 (metadata
     
-(info
-{
-(description "Players steer cellular automata to dominate the board.")
-(rules "Play on an equilateral hexagonal triangle-tessellated grid. The board is seeded randomly with a black stone, a white stone, and a neutral stone. Players take turn seeding new groups. Every placement triggers growth of all enemy groups, where growth is defined as adding a stone to all empty cells adjacent to a group. When the board fills up, the person who has more pieces on the board wins.")
-(id "710")
-(version "1.3.7")
-(classification "board/space/territory")
-(publisher "Michael Zapawa")
-(credit "Designer: Mihaw Zapawa. Implemented by Alek Erickson")
-(date "2020")
-}
-)
+    (info
+        {
+        (description "Players steer cellular automata to dominate the board.")
+        (rules "Play on an equilateral hexagonal triangle-tessellated grid. The board is seeded randomly with a black stone, a white stone, and a neutral stone. Players take turn seeding new groups. Every placement triggers growth of all enemy groups, where growth is defined as adding a stone to all empty cells adjacent to a group. When the board fills up, the person who has more pieces on the board wins.")
+        (id "710")
+        (version "1.3.7")
+        (classification "board/space/territory")
+        (publisher "Michael Zapawa")
+        (credit "Designer: Mihaw Zapawa. Implemented by Alek Erickson")
+        (date "2020")
+        }
+    )
     
     (graphics {
         (player Colour Neutral (colour Blue))

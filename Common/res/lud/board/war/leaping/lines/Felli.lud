@@ -94,31 +94,31 @@
 
 (metadata 
     
-(info
-{
-(description "Felli is a game with leaping captures from Morocco. It was documented by Moroccan immigrants to France who described the game as they played it in their childhood in Morocco.")
-(aliases {"Fich"})
-(useFor "Ruleset/Simplified (Suggested)" (rules "Each player's six pieces are set up on their respective triangle. 
-A piece is moved one space in any direction per turn onto an empty point along the lines of the board.
-A piece captures an enemy piece by hopping over it as in draughts.
-Only one piece may be used to move or capture per turn. Players alternate their turns throughout the game."))
-(useFor "Ruleset/Simplified (Suggested)" (source "<a href=\"https://en.wikipedia.org/wiki/Felli\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>"))
-(useFor "Ruleset/Simplified (Suggested)" (id "385"))
-(useFor "Ruleset/Board Game Geek (Suggested)" (rules "The same as the Wikipedia version, with the following additions:
-
-Pieces are promoted to Mullah upon reaching the other player's two corners on the first rank. The Mullahs may move any number of unoccupied spaces on the board, and capture an enemy piece from any distance and land any distance behind it provided no other pieces are in between. Multiple captures are allowed. If a non-Mullah piece captures enemy pieces in a sequence of multiple captures, and happens to land on the other player's first rank corners in the process, the player's piece does not become promoted to Mullah. Captures are compulsory."))
-(useFor "Ruleset/Board Game Geek (Suggested)" (source "<a href=\"https://boardgamegeek.com/boardgame/137830/felli\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>"))
-(useFor "Ruleset/Board Game Geek (Suggested)" (id "584"))
-(useFor "Ruleset/Bouhajbane (Observed)" (rules "Two triangles, joined at the apex, with a line running through the apices bisecting the bases of each triangle, and another line bisecting this line and the sides of the triangle in each triangle. Six pieces per player, which begin on the six points in the triangle closest to the player. The apex remains empty. Players alternate turns moving a piece to an empty adjacent spot on the board. A player may capture an opponent's piece by hopping over it to an empty space immediately on the opposite side of the opponent's piece, according to the lines on the board. When a player moves their piece to one of the corners of the opponent's triangle, the piece is promoted. The promoted piece can move any distance along the lines."))
-(useFor "Ruleset/Bouhajbane (Observed)" (source "Bouhajbane 1989: 29."))
-(useFor "Ruleset/Bouhajbane (Observed)" (id "1934"))
-(source "Lhôte 1994: 481.")
-(id "1934")
-(version "1.3.7")
-(classification "board/war/leaping/lines")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "Felli is a game with leaping captures from Morocco. It was documented by Moroccan immigrants to France who described the game as they played it in their childhood in Morocco.")
+        (aliases {"Fich"})
+        (useFor "Ruleset/Simplified (Suggested)" (rules "Each player's six pieces are set up on their respective triangle. 
+                A piece is moved one space in any direction per turn onto an empty point along the lines of the board.
+                A piece captures an enemy piece by hopping over it as in draughts.
+        Only one piece may be used to move or capture per turn. Players alternate their turns throughout the game."))
+        (useFor "Ruleset/Simplified (Suggested)" (source "<a href=\"https://en.wikipedia.org/wiki/Felli\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>"))
+        (useFor "Ruleset/Simplified (Suggested)" (id "385"))
+        (useFor "Ruleset/Board Game Geek (Suggested)" (rules "The same as the Wikipedia version, with the following additions:
+                
+        Pieces are promoted to Mullah upon reaching the other player's two corners on the first rank. The Mullahs may move any number of unoccupied spaces on the board, and capture an enemy piece from any distance and land any distance behind it provided no other pieces are in between. Multiple captures are allowed. If a non-Mullah piece captures enemy pieces in a sequence of multiple captures, and happens to land on the other player's first rank corners in the process, the player's piece does not become promoted to Mullah. Captures are compulsory."))
+        (useFor "Ruleset/Board Game Geek (Suggested)" (source "<a href=\"https://boardgamegeek.com/boardgame/137830/felli\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>"))
+        (useFor "Ruleset/Board Game Geek (Suggested)" (id "584"))
+        (useFor "Ruleset/Bouhajbane (Observed)" (rules "Two triangles, joined at the apex, with a line running through the apices bisecting the bases of each triangle, and another line bisecting this line and the sides of the triangle in each triangle. Six pieces per player, which begin on the six points in the triangle closest to the player. The apex remains empty. Players alternate turns moving a piece to an empty adjacent spot on the board. A player may capture an opponent's piece by hopping over it to an empty space immediately on the opposite side of the opponent's piece, according to the lines on the board. When a player moves their piece to one of the corners of the opponent's triangle, the piece is promoted. The promoted piece can move any distance along the lines."))
+        (useFor "Ruleset/Bouhajbane (Observed)" (source "Bouhajbane 1989: 29."))
+        (useFor "Ruleset/Bouhajbane (Observed)" (id "1934"))
+        (source "Lhôte 1994: 481.")
+        (id "1934")
+        (version "1.3.7")
+        (classification "board/war/leaping/lines")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)

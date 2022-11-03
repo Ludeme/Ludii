@@ -172,26 +172,26 @@
 
 (metadata 
     
-(info
-{
-(description "Inspired by a prototype game idea presented at GDC13.")
-(rules "Each player controls a tank with three health and an initial shooting range of two spaces. 
-        Each player gains one action point at the start of their turn. 
-        Players may use an action point during their turn to perform one of four actions:
-        - Move their tank to an adjacent space.
-        - Shoot at another tank within shooting range, deducting one point of health.
-        - Trade with another tank within shooting range, increasing the owning players action points by one.
-        - Increase the shooting range of their tank by one space.
-        Players can pass to conserve action points between turns.
+    (info
+        {
+        (description "Inspired by a prototype game idea presented at GDC13.")
+        (rules "Each player controls a tank with three health and an initial shooting range of two spaces. 
+            Each player gains one action point at the start of their turn. 
+            Players may use an action point during their turn to perform one of four actions:
+            - Move their tank to an adjacent space.
+            - Shoot at another tank within shooting range, deducting one point of health.
+            - Trade with another tank within shooting range, increasing the owning players action points by one.
+            - Increase the shooting range of their tank by one space.
+            Players can pass to conserve action points between turns.
         A player loses if their tank reaches zero health.")
-(id "1625")
-(source "<a href=\"https://www.youtube.com/watch?v=t9WMNuyjm4w\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Youtube</a>")
-(version "1.3.7")
-(classification "board/war/replacement/eliminate/all")
-(author "Luke Muscat and Joe Gatling")
-(credit "Matthew Stephenson")
-}
-)
+        (id "1625")
+        (source "<a href=\"https://www.youtube.com/watch?v=t9WMNuyjm4w\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Youtube</a>")
+        (version "1.3.7")
+        (classification "board/war/replacement/eliminate/all")
+        (author "Luke Muscat and Joe Gatling")
+        (credit "Matthew Stephenson")
+        }
+    )
     
     (graphics {
         (show Piece Value CornerLeft offsetImage:true valueOutline:true)

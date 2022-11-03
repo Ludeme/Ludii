@@ -22,30 +22,29 @@
 
 //------------------------------------------------------------------------------
 
-
 (rulesets { 
-
-(ruleset "Ruleset/Historical Information (Incomplete)" {
-
-})
-
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
 })
 
 (metadata 
     
-(info
-{
-(description "Barail is a European Tables game played in sixteenth century Italy.")
-(rules "Backgammon board. Fifteen pieces per player. Three six-sided dice. Both players proceed in the same track, which goes from one left-hand point in the corner of the board in an anti-clockwise direction, ending at the point opposite it. One player has one piece on the tenth point and fourteen on the eleventh; the other has fifteen on the twelfth point. Players bear off from the end of the track.
-")
-(source "DLP evidence.")
-(id "1301")
-(version "1.3.7")
-(classification "board/race/escape/reconstruction")
-(credit "Eric Piette")
-(origin "This game was played in Italy, from around 1275 to 1299.")
-}
-)
+    (info
+        {
+        (description "Barail is a European Tables game played in sixteenth century Italy.")
+        (rules "Backgammon board. Fifteen pieces per player. Three six-sided dice. Both players proceed in the same track, which goes from one left-hand point in the corner of the board in an anti-clockwise direction, ending at the point opposite it. One player has one piece on the tenth point and fourteen on the eleventh; the other has fifteen on the twelfth point. Players bear off from the end of the track.
+        ")
+        (source "DLP evidence.")
+        (id "1301")
+        (version "1.3.7")
+        (classification "board/race/escape/reconstruction")
+        (credit "Eric Piette")
+        (origin "This game was played in Italy, from around 1275 to 1299.")
+        }
+    )
     
     (graphics {
         (board Style backgammon)

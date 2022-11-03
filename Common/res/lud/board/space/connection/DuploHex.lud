@@ -67,28 +67,28 @@
 
 (metadata 
     
-(info
-{
-(description "Variant of Hex that includes disc and rings.")
-(rules "White starts by placing one disc or ring on any cell of the board. 
-
-Then, each player in turn must perform two actions: 
-
-1. add one of her discs to an empty cell or move one of her discs on the board into any ring located in a neighbor cell, and 
-
-2. add one of her rings to an empty cell or move one of her rings on the board to a neighbor cell occupied by a disc. 
-
-The disc-ring pair (a disc inside a ring) cannot be modified for the rest of the game.")
-(id "1272")
-(source "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>")
-(version "1.3.7")
-(classification "board/space/connection")
-(author "José Manuel Astilleros García-Monge")
-(publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a> (used with permission)")
-(credit "Fabio Barbero")
-(date "2015")
-}
-)
+    (info
+        {
+        (description "Variant of Hex that includes disc and rings.")
+        (rules "White starts by placing one disc or ring on any cell of the board. 
+            
+            Then, each player in turn must perform two actions: 
+            
+            1. add one of her discs to an empty cell or move one of her discs on the board into any ring located in a neighbor cell, and 
+            
+            2. add one of her rings to an empty cell or move one of her rings on the board to a neighbor cell occupied by a disc. 
+            
+        The disc-ring pair (a disc inside a ring) cannot be modified for the rest of the game.")
+        (id "1272")
+        (source "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>")
+        (version "1.3.7")
+        (classification "board/space/connection")
+        (author "José Manuel Astilleros García-Monge")
+        (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a> (used with permission)")
+        (credit "Fabio Barbero")
+        (date "2015")
+        }
+    )
     
     (graphics {
         (piece Families {"Defined" "Isometric"})

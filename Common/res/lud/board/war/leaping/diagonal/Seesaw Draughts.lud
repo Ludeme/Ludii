@@ -190,20 +190,20 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "Seesaw Draughts is a Draughts variant invented in 2021 by Alek Erickson and Michael Amundsen, and it is based on their game Seesaw.")
-(rules "In Seesaw Draughts, when a man reaches the rank farthest away in its stepping direction, its capture range is increased and it changes the direction it steps in. It can thereby promote again if it reaches the opposite rank.
+    (info
+        {
+        (description "Seesaw Draughts is a Draughts variant invented in 2021 by Alek Erickson and Michael Amundsen, and it is based on their game Seesaw.")
+        (rules "In Seesaw Draughts, when a man reaches the rank farthest away in its stepping direction, its capture range is increased and it changes the direction it steps in. It can thereby promote again if it reaches the opposite rank.
             
             The mechanism is implemented like this: All men are stacks. Single pieces are stacks of size 1. Every time a man promotes a piece is added to it, so it's stack size increases by 1. The following two-fold meaning of stack size is the key idea:
-            1) Odd stacks step forwards and even stacks step backwards.
-            2) A stack of size n can capture a piece up to n steps away in a straight line provided that there are no pieces between the capturing piece and its target, and that the square immediately behind the target in the capture direction is empty. The capturing piece must land there.
-            
-            Thus, the men gradually acquire the capturing power of a king in Thai Checkers as they seesaw up and down the board.
-            
-            There is no obligation to choose the capture sequence that maximizes the number of pieces captured. We deem this calculation a bit too demanding when a stack's range is a function of its size.
-            
-        Other than this, the rules are as in Brazillian Draughts/Checkers, which is like International Draughts, but on 8x8.")
+        1) Odd stacks step forwards and even stacks step backwards.
+    2) A stack of size n can capture a piece up to n steps away in a straight line provided that there are no pieces between the capturing piece and its target, and that the square immediately behind the target in the capture direction is empty. The capturing piece must land there.
+    
+    Thus, the men gradually acquire the capturing power of a king in Thai Checkers as they seesaw up and down the board.
+    
+    There is no obligation to choose the capture sequence that maximizes the number of pieces captured. We deem this calculation a bit too demanding when a stack's range is a function of its size.
+    
+Other than this, the rules are as in Brazillian Draughts/Checkers, which is like International Draughts, but on 8x8.")
 (id "1646")
 (version "1.3.7")
 (classification "board/war/leaping/diagonal")

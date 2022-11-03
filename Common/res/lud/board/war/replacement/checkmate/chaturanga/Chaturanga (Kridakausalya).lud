@@ -64,18 +64,18 @@
 
 (metadata 
     
-(info
-{
-(description "Chaturanga is a replacement capture game played in India. This version was described in the Kridakausalya of Harikrna during the nineteenth century.")
-(rules "8x8 board. Pieces move as follows: Raja (x1): moves one space in any direction; Mantri (x1): moves any distance orthogonally or diagonally; Ushtra (x2): moves diagonally any distance; Vaha (x2): move orthogonally one space and then diagonally another, jumping over any intervening pieces; Danti (x2): moves orthogonally any distance. Padati (x8): move forward orthogonally one space or one space diagonally forward to capture. When a Padati reaches the opposite edge of the board, it is promoted to a Mantri and is moved immediately to the space it last moved from. An opponent's piece is captured by moving one of the player's own pieces onto the space occupied by the opponent's piece. If the Raja can be captured on the opponent's next turn, it is in check. The Raja cannot be in check at the end of the player's turn. If this is impossible, the opponent wins. When a player is reduced to only their Raja and Padati, the opponent wins. In the case of a stalemate, the player in stalemate may remove any of the opponent's pieces (except their Raja). ")
-(source "Bock-Raming 1995: 319-320.")
-(id "1450")
-(version "1.3.7")
-(classification "board/war/replacement/checkmate/chaturanga")
-(credit "Eric Piette")
-(origin "This game was played in India, around 1871.")
-}
-)
+    (info
+        {
+        (description "Chaturanga is a replacement capture game played in India. This version was described in the Kridakausalya of Harikrna during the nineteenth century.")
+        (rules "8x8 board. Pieces move as follows: Raja (x1): moves one space in any direction; Mantri (x1): moves any distance orthogonally or diagonally; Ushtra (x2): moves diagonally any distance; Vaha (x2): move orthogonally one space and then diagonally another, jumping over any intervening pieces; Danti (x2): moves orthogonally any distance. Padati (x8): move forward orthogonally one space or one space diagonally forward to capture. When a Padati reaches the opposite edge of the board, it is promoted to a Mantri and is moved immediately to the space it last moved from. An opponent's piece is captured by moving one of the player's own pieces onto the space occupied by the opponent's piece. If the Raja can be captured on the opponent's next turn, it is in check. The Raja cannot be in check at the end of the player's turn. If this is impossible, the opponent wins. When a player is reduced to only their Raja and Padati, the opponent wins. In the case of a stalemate, the player in stalemate may remove any of the opponent's pieces (except their Raja). ")
+        (source "Bock-Raming 1995: 319-320.")
+        (id "1450")
+        (version "1.3.7")
+        (classification "board/war/replacement/checkmate/chaturanga")
+        (credit "Eric Piette")
+        (origin "This game was played in India, around 1871.")
+        }
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

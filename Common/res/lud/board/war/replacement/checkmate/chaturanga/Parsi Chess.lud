@@ -161,18 +161,18 @@
 
 (metadata 
     
-(info
-{
-(description "Parsi Chess is the name given by Murray to the style of Chess played in southern India in the nineteenth century. It has particular rules regarding pawn movement and promotion, as well as end of game situations.")
-(rules "8x8 board, marked as in Chaturanga. Pieces move according to specialized moves, as follows: Pawns (x8): can move one space forward, or one space diagonally to capture. The pawns in front of the Raja, Vizier, or Chariot may move two spaces on their first move, but only if the piece which began on the space behind them remains on that spot. Chariot (or Boat): any number of spaces orthogonally; Elephant (x2): can move any number of spaces diagonally; Horse (2): moves in any direction, one space orthogonally with one space forward diagonally; Vizier (x1): can move any number of spaces orthogonally or diagonally; Raja (x1): can move one space orthogonally or diagonally, but can also move like the horse once in the game, if it has not yet been checked. It cannot take a piece with this move. The pieces are arranged as in Chess, except the Vizier is place to the left of the Raja on both sides. Players capture pieces by moving onto a space occupied by an opponent's piece. When a Pawn reaches the opposite edge of the board from where it started, it may be promoted to the more powerful piece that begins the game in that position, but only if one of these belonging to the player has already been captured. If this has not happened, the pawn cannot move to the final row. When promoted to a Horse, the piece may immediately make a Horse's move. When a player can capture the opponent's Raja on the next turn, the Raja is in Check, the opponent's next move must free the Raja from Check. If the opponent cannot, it is Checkmate and the player wins. If a player captures all of the opponent's pieces aside from the Raja, it is a draw, or Boorj. When both players are left with only a Raja, it is a draw. Players are not allowed to stalemate the opponent. Perpetual check is not allowed, a player must make another move if such a state is entered.")
-(source "Shastree 1814: vii-x.")
-(id "297")
-(version "1.3.7")
-(classification "board/war/replacement/checkmate/chaturanga")
-(credit "Eric Piette")
-(origin "This game was played in South Asia, around 1814.")
-}
-)
+    (info
+        {
+        (description "Parsi Chess is the name given by Murray to the style of Chess played in southern India in the nineteenth century. It has particular rules regarding pawn movement and promotion, as well as end of game situations.")
+        (rules "8x8 board, marked as in Chaturanga. Pieces move according to specialized moves, as follows: Pawns (x8): can move one space forward, or one space diagonally to capture. The pawns in front of the Raja, Vizier, or Chariot may move two spaces on their first move, but only if the piece which began on the space behind them remains on that spot. Chariot (or Boat): any number of spaces orthogonally; Elephant (x2): can move any number of spaces diagonally; Horse (2): moves in any direction, one space orthogonally with one space forward diagonally; Vizier (x1): can move any number of spaces orthogonally or diagonally; Raja (x1): can move one space orthogonally or diagonally, but can also move like the horse once in the game, if it has not yet been checked. It cannot take a piece with this move. The pieces are arranged as in Chess, except the Vizier is place to the left of the Raja on both sides. Players capture pieces by moving onto a space occupied by an opponent's piece. When a Pawn reaches the opposite edge of the board from where it started, it may be promoted to the more powerful piece that begins the game in that position, but only if one of these belonging to the player has already been captured. If this has not happened, the pawn cannot move to the final row. When promoted to a Horse, the piece may immediately make a Horse's move. When a player can capture the opponent's Raja on the next turn, the Raja is in Check, the opponent's next move must free the Raja from Check. If the opponent cannot, it is Checkmate and the player wins. If a player captures all of the opponent's pieces aside from the Raja, it is a draw, or Boorj. When both players are left with only a Raja, it is a draw. Players are not allowed to stalemate the opponent. Perpetual check is not allowed, a player must make another move if such a state is entered.")
+        (source "Shastree 1814: vii-x.")
+        (id "297")
+        (version "1.3.7")
+        (classification "board/war/replacement/checkmate/chaturanga")
+        (credit "Eric Piette")
+        (origin "This game was played in South Asia, around 1814.")
+        }
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

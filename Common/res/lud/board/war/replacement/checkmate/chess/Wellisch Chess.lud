@@ -363,42 +363,42 @@
 
 (metadata
     
-(info
-{
-(description "A 3-player chess variant played on a board made of hexagons invented by Siegmund Wellisch.")
-(aliases {"Wellisch's Chess"})
-(rules "Wellisch Chess is played on a hexagonal board with each side having length 6 and each space oriented vertically. The board has 91 spaces. The board spaces are traditionally coloured red, yellow, and either gray or black.
-
-Capture and Pawn Promotion:
-  * When pieces other than Kings and Pawns are captured, they are set aside for later Pawn promotion. When a Pawn reaches the side of the board opposite its starting side, it is eligible for promotion.
-  * When a Pawn is eligible for promotion, and there are pieces of that colour available from previous capture, then the Pawn is promoted to one of the captured pieces, as the player chooses.
-  * If there are no pieces of the given colour when a Pawn reaches the far side, then the Pawn remains where it is (unless captured) until a piece of the given colour is captured. Then, on the player's next turn, the Pawn is promoted.
-
-Piece Movement:
-  * Rooks move as in Glinski Chess.
-      - They slide in any of the 6 adjacent direction.
-  * There are no Bishops in Wellisch Chess.
-  * Kings can move one space in any of the six adjacent directions from their current space---West, East, or 60 degrees off either of those. They castle by swapping locations with one of the Rooks belonging to the same player. Castling can only take place when neither the King nor the Rook being moved have moved before.
-  * Knights move one space 'diagonally' (i.e., along an edge, to any of the six nearest spaces of the same colour). Note that a Knight always moves to a space of the same colour as the space it moved from.
-  * Queens can make any move that would be available to a Rook or a Knight on the current space.
-  * Pawns can advance with or without capturing by moving one space forward to an adjacent space slightly left or right of forward. Pawns can never advance more than one space. There is no en passant capture. As mentioned above, Pawns can be promoted upon reaching the side of the board farthest from their starting side, but can only be promoted to a piece (Queen, Rook, or Knight) of the same colour that has already been captured. If a Pawn reaches the farthest side without any captured pieces available, then it remains in that position until a piece becomes available for its delayed promotion, on the player's next turn. (Note: Currently, on a turn where the delayed promotion takes place, the possible post-promotion movement of the Pawn is displayed before the promotion visually takes place.)
-
-The game ends when a King is captured, or there is a stalemate due to turns elapsed without a capture or Pawn move.
-  * When the game ends in checkmate, the checkmating player wins, the checkmated player loses, and the remaining player draws.
-  * When the game ends in stalemate, all players draw. (Note: A player not being able to escape check passes the current move, This does not result in a stalemate.)
-
-Variations: In Wellisch's version of the game, the first player to capture another's King takes possession of the other player's pieces. (The Pawns keep their direction of movement.) In another variant, some people play with a rule that if Player 1's move exposes a threat by Player 2 against Player 3's King, then Player 2 may not capture Player 3's King until Player 3 has had a chance to move.")
-(id "852")
-(source "For an overview, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For details, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).
-
-")
-(version "1.3.7")
-(classification "board/war/replacement/checkmate/chess")
-(author "Siegmund Wellisch")
-(credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
-(date "1912")
-}
-)
+    (info
+        {
+        (description "A 3-player chess variant played on a board made of hexagons invented by Siegmund Wellisch.")
+        (aliases {"Wellisch's Chess"})
+        (rules "Wellisch Chess is played on a hexagonal board with each side having length 6 and each space oriented vertically. The board has 91 spaces. The board spaces are traditionally coloured red, yellow, and either gray or black.
+            
+            Capture and Pawn Promotion:
+            * When pieces other than Kings and Pawns are captured, they are set aside for later Pawn promotion. When a Pawn reaches the side of the board opposite its starting side, it is eligible for promotion.
+            * When a Pawn is eligible for promotion, and there are pieces of that colour available from previous capture, then the Pawn is promoted to one of the captured pieces, as the player chooses.
+            * If there are no pieces of the given colour when a Pawn reaches the far side, then the Pawn remains where it is (unless captured) until a piece of the given colour is captured. Then, on the player's next turn, the Pawn is promoted.
+            
+            Piece Movement:
+            * Rooks move as in Glinski Chess.
+            - They slide in any of the 6 adjacent direction.
+            * There are no Bishops in Wellisch Chess.
+            * Kings can move one space in any of the six adjacent directions from their current space---West, East, or 60 degrees off either of those. They castle by swapping locations with one of the Rooks belonging to the same player. Castling can only take place when neither the King nor the Rook being moved have moved before.
+            * Knights move one space 'diagonally' (i.e., along an edge, to any of the six nearest spaces of the same colour). Note that a Knight always moves to a space of the same colour as the space it moved from.
+            * Queens can make any move that would be available to a Rook or a Knight on the current space.
+            * Pawns can advance with or without capturing by moving one space forward to an adjacent space slightly left or right of forward. Pawns can never advance more than one space. There is no en passant capture. As mentioned above, Pawns can be promoted upon reaching the side of the board farthest from their starting side, but can only be promoted to a piece (Queen, Rook, or Knight) of the same colour that has already been captured. If a Pawn reaches the farthest side without any captured pieces available, then it remains in that position until a piece becomes available for its delayed promotion, on the player's next turn. (Note: Currently, on a turn where the delayed promotion takes place, the possible post-promotion movement of the Pawn is displayed before the promotion visually takes place.)
+            
+            The game ends when a King is captured, or there is a stalemate due to turns elapsed without a capture or Pawn move.
+            * When the game ends in checkmate, the checkmating player wins, the checkmated player loses, and the remaining player draws.
+            * When the game ends in stalemate, all players draw. (Note: A player not being able to escape check passes the current move, This does not result in a stalemate.)
+            
+        Variations: In Wellisch's version of the game, the first player to capture another's King takes possession of the other player's pieces. (The Pawns keep their direction of movement.) In another variant, some people play with a rule that if Player 1's move exposes a threat by Player 2 against Player 3's King, then Player 2 may not capture Player 3's King until Player 3 has had a chance to move.")
+        (id "852")
+        (source "For an overview, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For details, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).
+            
+        ")
+        (version "1.3.7")
+        (classification "board/war/replacement/checkmate/chess")
+        (author "Siegmund Wellisch")
+        (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
+        (date "1912")
+        }
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.7)

@@ -14,29 +14,28 @@
 
 //------------------------------------------------------------------------------
 
-
 (rulesets { 
-
-(ruleset "Ruleset/Historical Information (Incomplete)" {
-
-})
-
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
 })
 
 (metadata 
     
-(info
-{
-(description "Tacanaco is a board game played with dice in seventeenth century South America.")
-(aliases {"Takanako"})
-(rules "Played with multicolored beans on a table and dice. \"Like backgammon.\"")
-(source "DLP evidence.")
-(id "1477")
-(version "1.3.7")
-(classification "board/race/escape/reconstruction")
-(origin "This game was played in South America, from around 1599 to 1653.")
-}
-)
+    (info
+        {
+        (description "Tacanaco is a board game played with dice in seventeenth century South America.")
+        (aliases {"Takanako"})
+        (rules "Played with multicolored beans on a table and dice. \"Like backgammon.\"")
+        (source "DLP evidence.")
+        (id "1477")
+        (version "1.3.7")
+        (classification "board/race/escape/reconstruction")
+        (origin "This game was played in South America, from around 1599 to 1653.")
+        }
+    )
     
     (graphics {
         (board Style backgammon)
