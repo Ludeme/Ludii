@@ -23,8 +23,6 @@ import main.grammar.Description;
 import main.grammar.Report;
 import parser.Expander;
 
-//-----------------------------------------------------------------------------
-
 /**
  * Completes partial game descriptions ready for expansion.
  * @author cambolbro and Eric.Piette
@@ -904,8 +902,8 @@ public class CompleterWithPrepro
 	public static double getAVGCommonExpectedConcept(final int reconsRulesetId, final int rulesetID)
 	{
 		// Load ruleset avg common true concepts from specific directory.
-		final String trueConceptsFilePath = "./res/recons/input/commonExpectedConcepts/CommonExpectedConcept_" + reconsRulesetId + ".csv";
-		File fileTrueConcept = new File(trueConceptsFilePath);
+		final String commonExpectedConceptsFilePath = "./res/recons/input/commonExpectedConcepts/CommonExpectedConcept_" + reconsRulesetId + ".csv";
+		File fileTrueConcept = new File(commonExpectedConceptsFilePath);
 		
 		if(!fileTrueConcept.exists() || (reconsRulesetId == rulesetID)) // If TrueConcept not computing or comparing the same rulesets, trueConceptsAvg is 0.
 			return 0.0;
@@ -913,7 +911,7 @@ public class CompleterWithPrepro
 		// Map of rulesetId (key) to common true concepts avg pairs.
 		final Map<Integer, Double> rulesetCommonTrueConcept = new HashMap<>();	
 		
-		try (BufferedReader br = new BufferedReader(new FileReader(trueConceptsFilePath))) 
+		try (BufferedReader br = new BufferedReader(new FileReader(commonExpectedConceptsFilePath))) 
 		{
 		    String line = br.readLine();	// column names
 		    

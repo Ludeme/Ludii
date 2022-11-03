@@ -15,10 +15,15 @@ import main.UnixPrintWriter;
 import main.options.Ruleset;
 import other.GameLoader;
 
+/**
+ * Format all the complete ruleset descriptions on a single line and place them in a CSV.
+ * @author Eric.Piette
+ *
+ */
 public class FormatRulesetAndIdOnOneLine
 {
      /**
-	 * Format all the complete ruleset descriptions on a single line and place them in a CSV.
+	 * Generate the CSVs
 	 */
 	public static void generateCSV()
 	{

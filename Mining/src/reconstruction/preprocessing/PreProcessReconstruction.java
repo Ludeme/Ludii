@@ -1,7 +1,7 @@
 package reconstruction.preprocessing;
 
 /**
- * To run the preprocessing steps of the recons process (not the CSN generation).
+ * Run the preprocessing steps of the recons process (not the CSN generation).
  * 
  * @author Eric.Piette
  */

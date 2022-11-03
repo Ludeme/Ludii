@@ -31,7 +31,7 @@ import other.concept.Concept;
 import reconstruction.completer.CompleterWithPrepro;
 
 /**
- * Generation of the CSV containing the average of common expected concepts between each reconstruction and each complete rulesets.
+ * Compute the average of common expected concepts between each reconstruction and each complete rulesets.
  * @author Eric.Piette
  */
 public class ComputeCommonExpectedConcepts

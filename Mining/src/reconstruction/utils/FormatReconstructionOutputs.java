@@ -6,7 +6,7 @@ import java.util.List;
 import main.StringRoutines;
 
 /**
- * To format the generation reconstructions.
+ * Format the generation reconstructions.
  * @author Eric.Piette
  */
 public class FormatReconstructionOutputs
