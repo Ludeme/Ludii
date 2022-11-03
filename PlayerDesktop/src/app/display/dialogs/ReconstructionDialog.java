@@ -73,7 +73,7 @@ public class ReconstructionDialog extends JDialog
 		final JButton okButton = new JButton("OK");
 		
 		txtcommonresoutput = new JTextField();
-		txtcommonresoutput.setText("/common/res/output/");
+		txtcommonresoutput.setText(".");
 		txtcommonresoutput.setBounds(167, 68, 220, 19);
 		contentPanel.add(txtcommonresoutput);
 		txtcommonresoutput.setColumns(10);
@@ -84,7 +84,7 @@ public class ReconstructionDialog extends JDialog
 		}
 		{
 			textFieldMaxRecons = new JTextField();
-			textFieldMaxRecons.setText("100");
+			textFieldMaxRecons.setText("10");
 			textFieldMaxRecons.setColumns(10);
 			textFieldMaxRecons.setBounds(280, 109, 130, 19);
 			contentPanel.add(textFieldMaxRecons);
