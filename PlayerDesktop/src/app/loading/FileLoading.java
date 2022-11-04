@@ -88,7 +88,7 @@ public class FileLoading
 	/**
 	 * Creates a File Chooser at a specified directory looking for a specific file extension.
 	 */
-	private static JFileChooser createFileChooser(final String defaultDir, final String extension, final String description)
+	public static JFileChooser createFileChooser(final String defaultDir, final String extension, final String description)
 	{
 		final JFileChooser fileChooser;
 

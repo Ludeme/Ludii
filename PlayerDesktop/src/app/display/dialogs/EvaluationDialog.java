@@ -9,6 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -32,13 +37,16 @@ import app.PlayerApp;
 import app.display.dialogs.util.DialogUtil;
 import app.display.util.DesktopGUIUtil;
 import app.display.views.tabs.TabView;
+import app.loading.FileLoading;
 import app.utils.AIPlayer;
 import app.utils.ReportMessengerGUI;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
+import main.UnixPrintWriter;
 import main.grammar.Report;
 import metrics.Evaluation;
 import metrics.Metric;
 import metrics.designer.IdealDuration;
+import metrics.designer.SkillTrace;
 
 /**
  * Dialog that is used to display various game evaluation options
@@ -51,6 +59,10 @@ public class EvaluationDialog extends JDialog
 	final JTextField textFieldThinkTime;
 	final JTextField textFieldMinIdealTurns;
 	final JTextField textFieldMaxIdealTurns;
+	final JTextField textFieldNumMatches;
+	final JTextField textFieldNumTrialsPerMatch;
+	final JTextField textFieldHardTimeLimit;
+	final JTextField txtcommonresoutput;
 	
 	//-------------------------------------------------------------------------
 
@@ -178,6 +190,82 @@ public class EvaluationDialog extends JDialog
 		textFieldMaxIdealTurns.setColumns(10);
 		textFieldMaxIdealTurns.setBounds(220, 380, 162, 19);
 		LeftPanel.add(textFieldMaxIdealTurns);
+		
+		
+		
+		
+		
+		final JLabel lblSkillTrace = new JLabel("Skill Trace");
+		lblSkillTrace.setBounds(26, 431, 175, 15);
+		LeftPanel.add(lblSkillTrace);
+		
+		final JLabel lblNumMatches = new JLabel("Levels");
+		lblNumMatches.setBounds(26, 457, 175, 15);
+		LeftPanel.add(lblNumMatches);
+		
+		final JLabel lblTrailsPerMatch = new JLabel("Trials");
+		lblTrailsPerMatch.setBounds(26, 483, 175, 15);
+		LeftPanel.add(lblTrailsPerMatch);
+		
+		final JLabel lblHardTimeLimit = new JLabel("Time Limit");
+		lblHardTimeLimit.setBounds(26, 509, 175, 15);
+		LeftPanel.add(lblHardTimeLimit);
+		
+		textFieldNumMatches = new JTextField();
+		textFieldNumMatches.setText("8");
+		textFieldNumMatches.setColumns(10);
+		textFieldNumMatches.setBounds(220, 454, 162, 19);
+		LeftPanel.add(textFieldNumMatches);
+		
+		textFieldNumTrialsPerMatch = new JTextField();
+		textFieldNumTrialsPerMatch.setText("100");
+		textFieldNumTrialsPerMatch.setColumns(10);
+		textFieldNumTrialsPerMatch.setBounds(220, 480, 162, 19);
+		LeftPanel.add(textFieldNumTrialsPerMatch);
+		
+		textFieldHardTimeLimit = new JTextField();
+		textFieldHardTimeLimit.setText("60");
+		textFieldHardTimeLimit.setColumns(10);
+		textFieldHardTimeLimit.setBounds(220, 506, 162, 19);
+		LeftPanel.add(textFieldHardTimeLimit);
+		
+		txtcommonresoutput = new JTextField();
+		txtcommonresoutput.setText("/Common/res");
+		txtcommonresoutput.setBounds(160, 430, 220, 19);
+		LeftPanel.add(txtcommonresoutput);
+		txtcommonresoutput.setColumns(10);
+		
+		final JButton buttonSelectDir = new JButton("");
+		buttonSelectDir.setBounds(385, 430, 25, 18);
+		final ActionListener buttonListener = new ActionListener()
+		{
+			@Override
+			public void actionPerformed(final ActionEvent arg0)
+			{
+				final JFileChooser fileChooser = FileLoading.createFileChooser(DesktopApp.lastSelectedJsonPath(), ".txt", "TXT files (.txt)");
+				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				fileChooser.setDialogTitle("Select output directory.");
+				final int jsonReturnVal = fileChooser.showOpenDialog(DesktopApp.frame());
+				final File directory;
+
+				if (jsonReturnVal == JFileChooser.APPROVE_OPTION)
+					directory = fileChooser.getSelectedFile();
+				else
+					directory = null;
+
+				if (directory != null && directory.exists())
+				{
+					txtcommonresoutput.setText(directory.getPath());
+				}
+				else
+				{
+					System.err.println("Could not find output directory.");
+				}
+			}
+		};
+		buttonSelectDir.addActionListener(buttonListener);
+		LeftPanel.add(buttonSelectDir);
+		
 		
 		final JButton btnCalculateTurnRange = new JButton("Calculate");
 		btnCalculateTurnRange.setBounds(220, 323, 162, 23);
@@ -346,6 +434,13 @@ public class EvaluationDialog extends JDialog
 						((IdealDuration)m).setMinTurn(Double.valueOf(textFieldMinIdealTurns.getText()).doubleValue());
 						((IdealDuration)m).setMaxTurn(Double.valueOf(textFieldMaxIdealTurns.getText()).doubleValue());
 					}
+					
+					if (m instanceof SkillTrace)
+					{
+						((SkillTrace)m).setNumMatches(Integer.valueOf(textFieldNumMatches.getText()).intValue());
+						((SkillTrace)m).setNumTrialsPerMatch(Integer.valueOf(textFieldNumTrialsPerMatch.getText()).intValue());
+						((SkillTrace)m).setHardTimeLimit(Integer.valueOf(textFieldHardTimeLimit.getText()).intValue());
+					}
 				}
 				
 				final Report report = new Report();
@@ -353,6 +448,18 @@ public class EvaluationDialog extends JDialog
 
 				AIPlayer.AIEvalution(app, report, numberIterations, maxTurns, thinkTime, AIName, metrics, weights, useDatabaseTrialsCheckBox.isSelected());
 				DesktopApp.view().tabPanel().select(TabView.PanelAnalysis);
+				
+				final String outputString = SkillTrace.outputString();
+				final String outputPath = txtcommonresoutput.getText() + File.separatorChar;
+				final String outputSkillTracePath = outputPath + app.manager().ref().context().game().name() + "_skillTrace.txt";
+				try (final PrintWriter writer = new UnixPrintWriter(new File(outputSkillTracePath), "UTF-8"))
+				{
+					writer.println(outputString);
+				}
+				catch (final FileNotFoundException | UnsupportedEncodingException e2)
+				{
+					e2.printStackTrace();
+				}
 			}
 		});
 
