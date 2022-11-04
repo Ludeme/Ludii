@@ -231,12 +231,12 @@ public class EvaluationDialog extends JDialog
 		
 		txtcommonresoutput = new JTextField();
 		txtcommonresoutput.setText("/Common/res");
-		txtcommonresoutput.setBounds(160, 430, 220, 19);
+		txtcommonresoutput.setBounds(161, 430, 220, 19);
 		LeftPanel.add(txtcommonresoutput);
 		txtcommonresoutput.setColumns(10);
 		
 		final JButton buttonSelectDir = new JButton("");
-		buttonSelectDir.setBounds(385, 430, 25, 18);
+		buttonSelectDir.setBounds(386, 430, 25, 18);
 		final ActionListener buttonListener = new ActionListener()
 		{
 			@Override
