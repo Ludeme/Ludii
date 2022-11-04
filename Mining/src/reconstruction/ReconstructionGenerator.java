@@ -36,7 +36,6 @@ public class ReconstructionGenerator
 	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 10000;
 	final static String defaultReconsPath        = "/lud/reconstruction/board/war/replacement/checkmate/chaturanga/Samantsy";
-	//final static String defaultReconsPath = "/lud/reconstruction/";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/hunt/Fortresse";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/space/line/Ashanti Alignment Game";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/war/other/Macheng";
@@ -118,12 +117,40 @@ public class ReconstructionGenerator
 			
 			// Extract the metadata.
 			final String metadata = desc.contains("(metadata") ? desc.substring(desc.indexOf("(metadata")) : "";
+			String reconsMetadata = "";
+			if(metadata.contains("(recon"))
+			{
+				reconsMetadata = metadata.substring(metadata.indexOf("(recon")); 
+				int countParenthesis = 0;
+				int charIndex = 0;
+				for(; charIndex < reconsMetadata.length(); charIndex++)
+				{
+					if(reconsMetadata.charAt(charIndex) == '(')
+						countParenthesis++;
+					else
+						if(reconsMetadata.charAt(charIndex) == ')')
+							countParenthesis--;
+					if(countParenthesis == -1)
+					{
+						charIndex--;
+						break;
+					}
+				}
+				reconsMetadata = reconsMetadata.substring(0, charIndex);
+				reconsMetadata = "(metadata " + reconsMetadata + ")";
+			}
 			
 			// Extract the id of the reconstruction.
 			String idStr = metadata.contains("(id") ? metadata.substring(metadata.indexOf("(id") + 5) : "";
 			idStr = idStr.substring(0, idStr.indexOf(')') - 1);
 			final int idRulesetToRecons = Integer.valueOf(idStr).intValue();
 
+			//System.out.println(desc);
+			final Description description = new Description(desc);
+			CompleterWithPrepro.expandRecons(description, "Variant/Incomplete");
+			desc = StringRoutines.formatOneLineDesc(description.expanded());
+//			System.out.println(desc);
+//			System.out.println(FormatReconstructionOutputs.indentNicely(StringRoutines.unformatOneLineDesc(desc)));
 			// To check the expected concepts detected.
 //			final List<Concept> expectedConcepts = ComputeCommonExpectedConcepts.computeCommonExpectedConcepts(desc);
 //			for(Concept c: expectedConcepts)
@@ -170,7 +197,7 @@ public class ReconstructionGenerator
 						// It compiles.
 						if(game != null)
 						{
-							final String rawDescMetadata = completionRaw + "\n" + metadata;
+							final String rawDescMetadata = completionRaw + "\n" + reconsMetadata;
 							completions.get(n).setRaw(rawDescMetadata);
 							System.out.print("One Completion found");
 							
@@ -180,8 +207,8 @@ public class ReconstructionGenerator
 								System.out.print( " with no warning");
 								
 								// Check if the concepts expected are present.
-								boolean expectedConcepts = Concept.isExpectedConcepts(rawDescMetadata);
-								if(expectedConcepts)
+								//System.out.println(rawDescMetadata);
+								if(Concept.isExpectedConcepts(rawDescMetadata))
 								{
 									// All good, add to the list of correct completions.
 									correctCompletions.add(completions.get(n));

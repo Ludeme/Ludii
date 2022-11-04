@@ -848,6 +848,7 @@ public final class StringRoutines
 	{
 		final StringBuffer formattedDesc = new StringBuffer("");
 		
+		// Remove the spaces at the beginning of the description.
 		String desc = originalDesc;
 		for(int i = 0; i < originalDesc.length(); i++)
 		{

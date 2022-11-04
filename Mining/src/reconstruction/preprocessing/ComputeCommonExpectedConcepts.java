@@ -198,7 +198,7 @@ public class ComputeCommonExpectedConcepts
 			descNoMetadata = descNoMetadata.substring(0, descNoMetadata.lastIndexOf(')'));
 
 			Description description = new Description(descNoMetadata);
-			CompleterWithPrepro.expandRecons(description);
+			CompleterWithPrepro.expandRecons(description, "");
 			descNoMetadata = description.expanded();
 			
 			// Get all the ludemeplexes between parenthesis.

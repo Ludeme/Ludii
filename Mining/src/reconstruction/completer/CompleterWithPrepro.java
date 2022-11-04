@@ -21,6 +21,7 @@ import main.UnixPrintWriter;
 import main.collections.FVector;
 import main.grammar.Description;
 import main.grammar.Report;
+import main.options.UserSelections;
 import parser.Expander;
 
 /**
@@ -120,7 +121,7 @@ public class CompleterWithPrepro
 
 		// Expand the defines of rulesets needed reconstruction.
 		Description description = new Description(raw);
-		expandRecons(description);
+		expandRecons(description, "");
 		
 		// Format the description.
 		final String rulesetDescriptionOneLine = StringRoutines.formatOneLineDesc(description.expanded()); // Same format of all other rulesets.
@@ -867,7 +868,7 @@ public class CompleterWithPrepro
 	 * 
 	 * @param description The description.
 	 */
-	public static void expandRecons(final Description  description)
+	public static void expandRecons(final Description description, final String selectedOptions)
 	{
 		final Report report = new Report();
 		String str = new String(description.raw());
@@ -881,6 +882,21 @@ public class CompleterWithPrepro
 			// Remove metadata
 			str = str.substring(0, c).trim();
 		}
+		final List<String> selectedOptionStrings = new ArrayList<String>();
+		if(!selectedOptions.isEmpty())
+			selectedOptionStrings.add(selectedOptions);
+		str = Expander.realiseOptions(str, description, new UserSelections(selectedOptionStrings), report);
+		if (report.isError())
+			return;
+		
+		if(str.contains("(rulesets"))
+		{
+			str = Expander.realiseRulesets(str, description, report);
+			str = str.substring(0,str.length()-1);
+			if (report.isError())
+				return;
+		}
+		
 		// Continue expanding defines for full description
 		str = Expander.expandDefines(str, report, description.defineInstances());
 

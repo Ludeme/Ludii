@@ -325,7 +325,7 @@ public class Expander
 	 * Realise options.
 	 * @return Game description with defines expanded in-place.
 	 */
-	private static String realiseOptions
+	public static String realiseOptions
 	(
 		final String          strIn, 
 		final Description     description,
@@ -532,7 +532,7 @@ public class Expander
 	/**
 	 * Realise rulesets.
 	 */
-	private static String realiseRulesets
+	public static String realiseRulesets
 	(
 		final String      strIn,
 		final Description description,
