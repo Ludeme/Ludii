@@ -11,14 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import compiler.Compiler;
+import game.Game;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
+import main.FileHandling;
 import main.StringRoutines;
 import main.UnixPrintWriter;
+import main.grammar.Description;
 
 /**
- * Update the GameRulesets Table with the outcome rulesets from the reconstruction process.
+ * To generate the new lines to add to GameRulesets Table with the outcome rulesets from the reconstruction process.
  * @author Eric.Piette
  */
 public class UpdateGameRulesetsTable
@@ -48,12 +52,13 @@ public class UpdateGameRulesetsTable
 	}
 	
 	/**
-	 * Generate the new GameRulesets.csv with the new rulesets.
+	 * Generate the new lines to add to GameRulesets.csv with the new rulesets.
 	 * @param nextId The next id to use.
 	 */
 	private static void updateGameRulesets(int nextId)
 	{
-		final String pathReportReconstrution = pathReconstructed + gameName+".csv";
+		final String pathReportReconstrution = pathReconstructed + gameName + ".csv";
+		final String pathFolderReconstrutions = pathReconstructed + gameName + "/";
 		
 		final List<String> rulesetNameList = new ArrayList<String>();
 		final TIntArrayList idReconsList = new TIntArrayList();
@@ -61,6 +66,7 @@ public class UpdateGameRulesetsTable
 		final TDoubleArrayList similaryScoreList = new TDoubleArrayList();
 		final TDoubleArrayList conceptualScoreList = new TDoubleArrayList();
 		final List<String> idsUsedList = new ArrayList<String>();
+		final List<String> toEnglishList = new ArrayList<String>();
 		
 		try (BufferedReader br = new BufferedReader(new FileReader(pathReportReconstrution))) 
 		{
@@ -97,6 +103,10 @@ public class UpdateGameRulesetsTable
 				final String ids = lineNoQuote.substring(1,lineNoQuote.length() - 1);
 				idsUsedList.add(ids);
 				
+				final String pathReconstruction = pathFolderReconstrutions + rulesetName + ".lud"; 
+				String desc = FileHandling.loadTextContentsFromFile(pathReconstruction);
+				final Game game = (Game) Compiler.compileTest(new Description(desc), false);
+				toEnglishList.add(game.toEnglish(game));
 				line = br.readLine();
 			}
 			br.close();
@@ -111,14 +121,6 @@ public class UpdateGameRulesetsTable
 		// Write the new CSV.
 		try (final PrintWriter writer = new UnixPrintWriter(new File(output), "UTF-8"))
 		{
-//			// Copy the previous CSV.
-//			try (BufferedReader br = new BufferedReader(new FileReader(gameRulesetsFilePath))) 
-//			{	
-//				String line;	// column names
-//			    while ((line = br.readLine()) != null) 
-//			    {
-//					writer.println(line);
-//			    }
 			    for(int i = 0; i < rulesetNameList.size(); i++)
 			    {
 					final List<String> lineToWrite = new ArrayList<String>();
@@ -126,10 +128,10 @@ public class UpdateGameRulesetsTable
 					lineToWrite.add("\"" + getGameReconsId(idReconsList.get(i)) + "\"");
 					lineToWrite.add("\"" + rulesetNameList.get(i) + "\"");
 					lineToWrite.add("NULL");
-					lineToWrite.add("NULL");
+					lineToWrite.add("\"Reconstructed with Ludii\"");
 					lineToWrite.add("\"2\"");
 					lineToWrite.add("NULL");
-					lineToWrite.add("NULL");
+					lineToWrite.add("\"" + toEnglishList.get(i) + "\"");
 					lineToWrite.add("NULL");
 					lineToWrite.add("NULL");
 					lineToWrite.add("NULL");
@@ -147,11 +149,6 @@ public class UpdateGameRulesetsTable
 					lineToWrite.add("\"" + idsUsedList.get(i) + "\"");
 					writer.println(StringRoutines.join(",", lineToWrite));
 			    }
-//			}
-//			catch (final Exception e)
-//			{
-//				e.printStackTrace();
-//			}
 		}
 		catch (FileNotFoundException e1)
 		{
