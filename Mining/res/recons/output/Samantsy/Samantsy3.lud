@@ -1,32 +1,86 @@
-(game "Samantsy" <Variant>)
-
-(option "Variant" <Variant> args:{ <variant>}
-    { 
-    (item "Incomplete" < 
-        (players { 
-            (player N)
-            
-            (player S)
-            }
+(game "Samantsy" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (square 8)
         )
         
-        (equipment { 
-            (board 
-                (square 8)
+        (piece "King" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
             )
-            
-            (piece "King" Each 
-                (move Step 
+        )
+        
+        (piece "Queen" Each 
+            (move Slide 
+                (to if:
+                    (and 
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (= 
+                            (what at:
+                                (to)
+                            )
+                            
+                            (id "King" Next)
+                        )
+                    )
+                    
+                    (apply 
+                        (if 
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (= 
+                                    (what at:
+                                        (to)
+                                    )
+                                    
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Pawn" Each 
+            (or { 
+                (move Step Forward 
                     (to if:
                         (is Empty 
                             (to)
                         )
                     )
                 )
-            )
-            
-            (piece "Queen" Each 
-                (move Slide 
+                
+                (move Step 
+                    (directions { FR FL}
+                    )
+                    
                     (to if:
                         (and 
                             (is Enemy 
@@ -45,204 +99,45 @@
                         )
                         
                         (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Pawn" Each 
-                (or { 
-                    (move Step Forward 
-                        (to if:
-                            (is Empty 
+                            (remove 
                                 (to)
                             )
                         )
                     )
-                    
-                    (move Step 
-                        (directions { FR FL}
+                )
+                }
+                
+                (then 
+                    (if 
+                        (is In 
+                            (last To)
+                            
+                            (sites Mover "Promotion")
                         )
                         
-                        (to if:
-                            (and 
-                                (is Enemy 
-                                    (who at:
-                                        (to)
-                                    )
-                                )
-                                
-                                (= 
-                                    (what at:
-                                        (to)
-                                    )
-                                    
-                                    (id "King" Next)
-                                )
-                            )
+                        (promote 
+                            (last To)
                             
-                            (apply 
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                    }
-                    
-                    (then 
-                        (if 
-                            (is In 
-                                (last To)
-                                
-                                (sites Mover "Promotion")
-                            )
-                            
-                            (promote 
-                                (last To)
-                                
-                                (piece 
-                                    (id "Queen" Mover)
-                                )
+                            (piece 
+                                (id "Queen" Mover)
                             )
                         )
                     )
                 )
             )
-            
-            (piece "Knight" Each 
-                (move Leap { { F F R F}
-                    { F F L F}
-                    }
-                    
-                    (to if:
-                        (or 
-                            (is Empty 
-                                (to)
-                            )
-                            
-                            (and 
-                                (is Enemy 
-                                    (who at:
-                                        (to)
-                                    )
-                                )
-                                
-                                (= 
-                                    (what at:
-                                        (to)
-                                    )
-                                    
-                                    (id "King" Next)
-                                )
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Rook" Each 
-                (move Slide Orthogonal 
-                    (to if:
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (= 
-                                (what at:
-                                    (to)
-                                )
-                                
-                                (id "King" Next)
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Bishop" Each 
-                (move Slide Diagonal 
-                    (between 
-                        (exact 2)
-                        if:
+        )
+        
+        (piece "Knight" Each 
+            (move Leap { { F F R F}
+                { F F L F}
+                }
+                
+                (to if:
+                    (or 
                         (is Empty 
-                            (between)
+                            (to)
                         )
-                    )
-                    
-                    (to if:
+                        
                         (and 
                             (is Enemy 
                                 (who at:
@@ -258,111 +153,222 @@
                                 (id "King" Next)
                             )
                         )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
+                    )
+                    
+                    (apply 
+                        (if 
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
                                     )
                                 )
                                 
-                                (remove 
-                                    (to)
+                                (= 
+                                    (what at:
+                                        (to)
+                                    )
+                                    
+                                    (id "King" Next)
                                 )
+                            )
+                            
+                            (remove 
+                                (to)
                             )
                         )
                     )
                 )
             )
-            
-            (regions "Promotion" P1 
-                (sites Top)
+        )
+        
+        (piece "Rook" Each 
+            (move Slide Orthogonal 
+                (to if:
+                    (and 
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (= 
+                            (what at:
+                                (to)
+                            )
+                            
+                            (id "King" Next)
+                        )
+                    )
+                    
+                    (apply 
+                        (if 
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (= 
+                                    (what at:
+                                        (to)
+                                    )
+                                    
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Bishop" Each 
+            (move Slide Diagonal 
+                (between 
+                    (exact 2)
+                    if:
+                    (is Empty 
+                        (between)
+                    )
+                )
+                
+                (to if:
+                    (and 
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (= 
+                            (what at:
+                                (to)
+                            )
+                            
+                            (id "King" Next)
+                        )
+                    )
+                    
+                    (apply 
+                        (if 
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (= 
+                                    (what at:
+                                        (to)
+                                    )
+                                    
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (regions "Promotion" P1 
+            (sites Top)
+        )
+        
+        (regions "Promotion" P2 
+            (sites Bottom)
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Pawn1" 
+                (sites Row 1)
             )
             
-            (regions "Promotion" P2 
-                (sites Bottom)
+            (place "Pawn2" 
+                (sites Row 6)
             )
+            
+            (place "Rook1" { "A1" "H1"}
+            )
+            
+            (place "Knight1" { "B1" "G1"}
+            )
+            
+            (place "Bishop1" { "C1" "F1"}
+            )
+            
+            (place "Queen1" coord:"D1")
+            
+            (place "King1" coord:"E1")
+            
+            (place "Rook2" { "A8" "H8"}
+            )
+            
+            (place "Knight2" { "B8" "G8"}
+            )
+            
+            (place "Bishop2" { "C8" "F8"}
+            )
+            
+            (place "Queen2" coord:"D8")
+            
+            (place "King2" coord:"E8")
             }
         )
         
-        (rules 
-            (start { 
-                (place "Pawn1" 
-                    (sites Row 1)
-                )
-                
-                (place "Pawn2" 
-                    (sites Row 6)
-                )
-                
-                (place "Rook1" { "A1" "H1"}
-                )
-                
-                (place "Knight1" { "B1" "G1"}
-                )
-                
-                (place "Bishop1" { "C1" "F1"}
-                )
-                
-                (place "Queen1" coord:"D1")
-                
-                (place "King1" coord:"E1")
-                
-                (place "Rook2" { "A8" "H8"}
-                )
-                
-                (place "Knight2" { "B8" "G8"}
-                )
-                
-                (place "Bishop2" { "C8" "F8"}
-                )
-                
-                (place "Queen2" coord:"D8")
-                
-                (place "King2" coord:"E8")
-                }
-            )
-            
-            (play 
-                (forEach Piece)
-            )
-            
-            (end { 
-                (if 
-                    (no Moves P2)
-                    
-                    (result P1 Win)
-                )
-                
-                (if 
-                    (no Pieces P1)
-                    
-                    (result P2 Win)
-                )
-                }
-            )
+        (play 
+            (forEach Piece)
         )
-    > "The incomplete ruleset.")
-    }
-)
-
-(rulesets { 
-    (ruleset "Ruleset/Historical Information 
-        (Incomplete)
-        " { "Variant/Incomplete"}
+        
+        (end { 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+            
+            (if 
+                (and 
+                    (= 
+                        (count Sites in:
+                            (difference 
+                                (sites Occupied by:P1)
+                                
+                                (sites P2)
+                            )
+                        )
+                    0 )
+                    
+                    (= 
+                        (count Sites in:
+                            (difference 
+                                (sites Occupied by:P2)
+                                
+                                (sites P1)
+                            )
+                        )
+                    0 )
+                )
+                
+                (result Mover Draw)
+            )
+            }
+        )
     )
-    }
 )
 
 (metadata 

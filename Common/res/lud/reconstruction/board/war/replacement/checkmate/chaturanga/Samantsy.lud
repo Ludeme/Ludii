@@ -20,17 +20,7 @@
 )
 
 //------------------------------------------------------------------------------
-
 (game "Samantsy"
-	<Variant>
-)
-
-//------------------------------------------------------------------------------
-
-(option "Variant" <Variant> args:{ <variant> }
-{
-(item "Incomplete"
-    <
     ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 8))
@@ -105,20 +95,7 @@
         (play (forEach Piece))
         (end [#])
     )
-    >
-    "The incomplete ruleset."
-) 
-})
-
-//------------------------------------------------------------------------------
-
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-    	"Variant/Incomplete"
-    })
-    
-})
+)
 
 //------------------------------------------------------------------------------
 

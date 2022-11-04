@@ -2,35 +2,35 @@
     (players 2) 
     (equipment { 
         (board
-        	(add
-        	(remove
-        	(remove
-        	(remove
-	            (add
-	                (merge {
-	                    (concentric {1 8})
-	                    (scale 6.5 (concentric {0 8}))
-	                    (rotate 15 (scale 7.5 (concentric {0 24})))
-	                })
-	                edges:{
-	                {1 9} {8 16} {7 15} {6 14} {5 13} {4 12} {11 3} {10 2} 
-	                {17 9} {9 19} {16 40} {16 38} {15 37} 
-	                {15 35} {14 34} {14 32} {13 31} {13 29} {12 28}
-	                {12 26} {11 25}{11 23} {10 22} {10 20}
-	                }
-	            )
-	            vertices:{0}
+            (add
+                (remove
+                    (remove
+                        (remove
+                            (add
+                                (merge {
+                                    (concentric {1 8})
+                                    (scale 6.5 (concentric {0 8}))
+                                    (rotate 15 (scale 7.5 (concentric {0 24})))
+                                })
+                                edges:{
+                                {1 9} {8 16} {7 15} {6 14} {5 13} {4 12} {11 3} {10 2} 
+                                {17 9} {9 19} {16 40} {16 38} {15 37} 
+                                {15 35} {14 34} {14 32} {13 31} {13 29} {12 28}
+                                {12 26} {11 25}{11 23} {10 22} {10 20}
+                                }
+                            )
+                            vertices:{0}
+                        )
+                        edges:{
+                        {8 15} {15 14} {14 13} {13 12} {12 11} {11 10} {10 9} {9 8}
+                        }
+                    )
+                    vertices:{17 20 23 26 29 32 35 38}
+                )
+                edges:{
+                {17 16} {31 30} {29 28} {27 26} {25 24} {23 22} {21 20} {19 18}
+                }
             )
-        	edges:{
-        		{8 15} {15 14} {14 13} {13 12} {12 11} {11 10} {10 9} {9 8}
-        	}
-        	)
-        	vertices:{17 20 23 26 29 32 35 38}
-        	)
-        	edges:{
-        		{17 16} {31 30} {29 28} {27 26} {25 24} {23 22} {21 20} {19 18}
-        	}
-        	)
             use:Vertex
         )
         (piece "Marker" Each ("StepToEmpty"))
@@ -64,7 +64,7 @@
         (rules "The board is a circle, with eight radii meeting in the center, or a square with lines connecting the midpoints of the sides and the corners with the center. The intersections of the lines are rendered as semi-circles and as a circle in the center. One player plays as three gendarmes, the other plays as one thief. Players alternate turns moving their one of their pieces to an empty adjacent spot along the lines of the board. The goal is for the gendarmes to surround the thief so it cannot move.")
         (source "Edeine 1974: 607.")
         (id "1164")
-        (version "1.3.7")
+        (version "1.3.6")
         (classification "board/space/blocking/reconstruction")
         (credit "Eric Piette")
         (origin "This game was played in France, around 1974.")
