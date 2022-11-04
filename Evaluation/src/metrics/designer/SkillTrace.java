@@ -1,5 +1,9 @@
 package metrics.designer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -7,6 +11,7 @@ import java.util.stream.IntStream;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import main.UnixPrintWriter;
 import main.math.LinearRegression;
 import metrics.Evaluation;
 import metrics.Metric;
@@ -36,7 +41,7 @@ public class SkillTrace extends Metric
 	// A hard time limit in seconds, after which any future trials are aborted
 	private int hardTimeLimit = 300;
 	
-	private static String outputString = "";
+	private String outputPath = "";
 
 	//-------------------------------------------------------------------------
 
@@ -66,7 +71,7 @@ public class SkillTrace extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		outputString = "";
+		String outputString = "";
 		
 		final List<Double> strongAIResults = new ArrayList<>();
 		double areaEstimate = 0.0;
@@ -155,6 +160,20 @@ public class SkillTrace extends Metric
 		
 		final double skillTrace = yValueNextStep + (1-yValueNextStep)*(areaEstimate/matchCount);
 		
+		// Store outputString in a text file if specified.
+		if (outputPath.length() > 1)
+		{
+			final String outputSkillTracePath = outputPath + game.name() + "_skillTrace.txt";
+			try (final PrintWriter writer = new UnixPrintWriter(new File(outputSkillTracePath), "UTF-8"))
+			{
+				writer.println(outputString);
+			}
+			catch (final FileNotFoundException | UnsupportedEncodingException e2)
+			{
+				e2.printStackTrace();
+			}
+		}
+		
 		return Double.valueOf(skillTrace);
 	}
 
@@ -173,9 +192,9 @@ public class SkillTrace extends Metric
 		this.hardTimeLimit = hardTimeLimit;
 	}
 
-	public static String outputString() 
+	public void setOutputPath(final String s) 
 	{
-		return outputString;
+		outputPath = s;
 	}
 
 	//-------------------------------------------------------------------------

@@ -10,9 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +38,6 @@ import app.loading.FileLoading;
 import app.utils.AIPlayer;
 import app.utils.ReportMessengerGUI;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
-import main.UnixPrintWriter;
 import main.grammar.Report;
 import metrics.Evaluation;
 import metrics.Metric;
@@ -230,7 +226,7 @@ public class EvaluationDialog extends JDialog
 		LeftPanel.add(textFieldHardTimeLimit);
 		
 		txtcommonresoutput = new JTextField();
-		txtcommonresoutput.setText("/Common/res");
+		txtcommonresoutput.setText("");
 		txtcommonresoutput.setBounds(161, 430, 220, 19);
 		LeftPanel.add(txtcommonresoutput);
 		txtcommonresoutput.setColumns(10);
@@ -440,6 +436,7 @@ public class EvaluationDialog extends JDialog
 						((SkillTrace)m).setNumMatches(Integer.valueOf(textFieldNumMatches.getText()).intValue());
 						((SkillTrace)m).setNumTrialsPerMatch(Integer.valueOf(textFieldNumTrialsPerMatch.getText()).intValue());
 						((SkillTrace)m).setHardTimeLimit(Integer.valueOf(textFieldHardTimeLimit.getText()).intValue());
+						((SkillTrace)m).setOutputPath(txtcommonresoutput.getText() + File.separatorChar);
 					}
 				}
 				
@@ -448,18 +445,6 @@ public class EvaluationDialog extends JDialog
 
 				AIPlayer.AIEvalution(app, report, numberIterations, maxTurns, thinkTime, AIName, metrics, weights, useDatabaseTrialsCheckBox.isSelected());
 				DesktopApp.view().tabPanel().select(TabView.PanelAnalysis);
-				
-				final String outputString = SkillTrace.outputString();
-				final String outputPath = txtcommonresoutput.getText() + File.separatorChar;
-				final String outputSkillTracePath = outputPath + app.manager().ref().context().game().name() + "_skillTrace.txt";
-				try (final PrintWriter writer = new UnixPrintWriter(new File(outputSkillTracePath), "UTF-8"))
-				{
-					writer.println(outputString);
-				}
-				catch (final FileNotFoundException | UnsupportedEncodingException e2)
-				{
-					e2.printStackTrace();
-				}
 			}
 		});
 
