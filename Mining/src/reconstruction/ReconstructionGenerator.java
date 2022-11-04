@@ -36,6 +36,7 @@ public class ReconstructionGenerator
 	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 10000;
 	final static String defaultReconsPath        = "/lud/reconstruction/board/war/replacement/checkmate/chaturanga/Samantsy";
+	final static String defaultOptionName        = "Variant/Incomplete";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/hunt/Fortresse";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/space/line/Ashanti Alignment Game";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/war/other/Macheng";
@@ -56,8 +57,9 @@ public class ReconstructionGenerator
 		double conceptualWeight = args.length < 3 ?                 defaultConceptualWeight : Double.parseDouble(args[3]);
 		double historicalWeight = args.length < 4 ?                 defaultHistoricalWeight : Double.parseDouble(args[4]);
 		String reconsPath = args.length < 5 ?                       defaultReconsPath : args[5];
+		String optionName = args.length < 6 ?                       defaultOptionName : args[6];
 	
-		reconstruction(outputPath, numReconsNoWarningExpectedConcepts, maxNumberAttempts, conceptualWeight, historicalWeight, reconsPath);
+		reconstruction(outputPath, numReconsNoWarningExpectedConcepts, maxNumberAttempts, conceptualWeight, historicalWeight, reconsPath, optionName);
 	}
 	
 	/**
@@ -75,7 +77,8 @@ public class ReconstructionGenerator
 		int    maxNumberAttempts,
 		double conceptualWeight,
 		double historicalWeight,
-		String reconsPath
+		String reconsPath,
+		String optionName
 	)
 	{
 		System.out.println("\n=========================================\nStart reconstruction:\n");
@@ -147,7 +150,7 @@ public class ReconstructionGenerator
 
 			//System.out.println(desc);
 			final Description description = new Description(desc);
-			CompleterWithPrepro.expandRecons(description, "Variant/Incomplete");
+			CompleterWithPrepro.expandRecons(description, optionName);
 			desc = StringRoutines.formatOneLineDesc(description.expanded());
 //			System.out.println(desc);
 //			System.out.println(FormatReconstructionOutputs.indentNicely(StringRoutines.unformatOneLineDesc(desc)));

@@ -336,9 +336,9 @@
         
         (end 
             (if 
-                (no Pieces Enemy)
+                (no Pieces Next)
                 
-                (result TeamMover Win)
+                (result Next Loss)
             )
         )
     )

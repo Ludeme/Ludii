@@ -334,35 +334,20 @@
             (forEach Piece)
         )
         
-        (end { 
-            (if 
-                (no Moves P1)
-                
-                (result P2 Win)
-            )
-            
-            (if 
-                (and 
-                    (all Sites 
-                        (difference 
-                            (sites Occupied by:P2)
-                            
-                            (sites Bottom)
-                        )
-                        if:
-                        (= 0 
-                            (count at:
-                                (site)
-                            )
+        (end 
+            (forEach NonMover if:
+                (all Sites 
+                    (sites Player)
+                    if:
+                    (= 0 
+                        (count at:
+                            (site)
                         )
                     )
-                    
-                    (no Moves P2)
                 )
                 
-                (result P1 Win)
+                (result Player Loss)
             )
-            }
         )
     )
 )

@@ -335,18 +335,10 @@
         )
         
         (end 
-            (forEach Player if:
-                (all Sites 
-                    (sites Player)
-                    if:
-                    (>= 1 
-                        (count at:
-                            (site)
-                        )
-                    )
-                )
+            (if 
+                (is Line 3)
                 
-                (result Player Loss)
+                (result Mover Win)
             )
         )
     )
