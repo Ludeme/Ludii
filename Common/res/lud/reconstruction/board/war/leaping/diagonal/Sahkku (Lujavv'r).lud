@@ -1,0 +1,30 @@
+(game "Sahkku (Lujavv'r)"
+    (players 2) 
+    (equipment {
+        (board (square 8))
+        (piece "Marker" Each (move [#]))
+    }) 
+    (rules
+        (start [#])
+        (play [#]) 
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Symbol "thinCross" (forEach (sites Board) if:(= 0 (phase of:(site)))) scale:1)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)
