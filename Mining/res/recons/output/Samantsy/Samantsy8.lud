@@ -342,7 +342,32 @@
                 (if 
                     (no Moves Next)
                     
-                    (result Next Loss)
+                    (byScore { 
+                        (score P1 
+                            (+ 
+                                (count in:
+                                    (sites P1)
+                                )
+                                
+                                (count at:
+                                    (mapEntry P1)
+                                )
+                            )
+                        )
+                        
+                        (score P2 
+                            (+ 
+                                (count in:
+                                    (sites P2)
+                                )
+                                
+                                (count at:
+                                    (mapEntry P2)
+                                )
+                            )
+                        )
+                        }
+                    )
                 )
             )
         )

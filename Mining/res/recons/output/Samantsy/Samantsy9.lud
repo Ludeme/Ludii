@@ -338,31 +338,12 @@
                 (forEach Piece)
             )
             
-            (end { 
+            (end 
                 (if 
-                    (= 8 
-                        (count at:0)
-                    )
+                    (is Line 3)
                     
                     (result Mover Win)
                 )
-                
-                (if 
-                    (and 
-                        (= 1 
-                            (count at:
-                                (last To afterConsequence:True)
-                            )
-                        )
-                        
-                        (= 
-                            (last To afterConsequence:True)
-                        0)
-                    )
-                    
-                    (result Mover Loss)
-                )
-                }
             )
         )
     > "The incomplete ruleset.")

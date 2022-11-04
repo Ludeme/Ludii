@@ -338,12 +338,21 @@
                 (forEach Piece)
             )
             
-            (end 
+            (end { 
                 (if 
-                    (no Moves Next)
+                    (= 1 
+                        (count Pieces P1)
+                    )
                     
                     (result Mover Win)
                 )
+                
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+                }
             )
         )
     > "The incomplete ruleset.")

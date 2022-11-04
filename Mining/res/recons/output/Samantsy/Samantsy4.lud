@@ -340,11 +340,9 @@
             
             (end 
                 (if 
-                    (= 
-                        (score Mover)
-                    3)
+                    (no Pieces Next)
                     
-                    (result Mover Win)
+                    (result Next Loss)
                 )
             )
         )
