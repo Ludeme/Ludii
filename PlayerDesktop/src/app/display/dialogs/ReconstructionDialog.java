@@ -240,7 +240,7 @@ public class ReconstructionDialog extends JDialog
 						double csnWeight = csnScore.doubleValue() / totalWeight;
 						double conceptWeight = conceptScore.doubleValue() / totalWeight;
 						
-						ReconstructionGenerator.reconstruction(outputPath + File.separatorChar, numRecons.intValue(), maxTries.intValue(), conceptWeight, csnWeight, selectedLudPath);
+						ReconstructionGenerator.reconstruction(outputPath + File.separatorChar, numRecons.intValue(), maxTries.intValue(), conceptWeight, csnWeight, selectedLudPath, "");
 					}
 					catch (final Exception e)
 					{
