@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.list.array.TIntArrayList;
+import main.Constants;
 import main.StringRoutines;
 import main.UnixPrintWriter;
 
@@ -25,12 +26,21 @@ public class UpdateGameRulesetsTable
 	// Load ruleset avg common true concepts from specific directory.
 	final static String gameRulesetsFilePath = "./res/recons/input/GameRulesets.csv";
 	
-	// rulesets reconstructed.
+	// The rulesets reconstructed.
 	final static String pathReconstructed    = "./res/recons/output/";
 	
-	// game name.
+	// The game name.
 	final static String gameName        = "Samantsy";
 	
+	// The precision of the double to use.
+	final static int DOUBLE_PRECISION = 5;
+
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Main method.
+	 * @param args
+	 */
 	public static void main(final String[] args)
 	{
 		final int nextId = 1 + getMaxId();
@@ -70,21 +80,21 @@ public class UpdateGameRulesetsTable
 
 				lineNoQuote = lineNoQuote.substring(idReconsStr.length() + 1);
 				separatorIndex = lineNoQuote.indexOf(',');
-				final String scoreStr = lineNoQuote.substring(0, separatorIndex);
-				scoreList.add(Double.parseDouble(scoreStr));
+				String scoreStr = lineNoQuote.substring(0, separatorIndex);
+				scoreList.add(Double.parseDouble(scoreStr.length() > DOUBLE_PRECISION ? scoreStr.substring(0, DOUBLE_PRECISION) : scoreStr));
 				
 				lineNoQuote = lineNoQuote.substring(scoreStr.length() + 1);
 				separatorIndex = lineNoQuote.indexOf(',');
-				final String similarityScoreStr = lineNoQuote.substring(0, separatorIndex);
-				similaryScoreList.add(Double.parseDouble(similarityScoreStr));
+				String similarityScoreStr = lineNoQuote.substring(0, separatorIndex);
+				similaryScoreList.add(Double.parseDouble(similarityScoreStr.length() > DOUBLE_PRECISION ? similarityScoreStr.substring(0, DOUBLE_PRECISION) : similarityScoreStr));
 				
 				lineNoQuote = lineNoQuote.substring(similarityScoreStr.length() + 1);
 				separatorIndex = lineNoQuote.indexOf(',');
-				final String culturalScoreStr = lineNoQuote.substring(0, separatorIndex);
-				conceptualScoreList.add(Double.parseDouble(culturalScoreStr));
+				String culturalScoreStr = lineNoQuote.substring(0, separatorIndex);
+				conceptualScoreList.add(Double.parseDouble(culturalScoreStr.length() > DOUBLE_PRECISION ? culturalScoreStr.substring(0, DOUBLE_PRECISION) : culturalScoreStr));
 				
 				lineNoQuote = lineNoQuote.substring(culturalScoreStr.length() + 1);
-				final String ids = lineNoQuote;
+				final String ids = lineNoQuote.substring(1,lineNoQuote.length() - 1);
 				idsUsedList.add(ids);
 				
 				line = br.readLine();
@@ -101,34 +111,34 @@ public class UpdateGameRulesetsTable
 		// Write the new CSV.
 		try (final PrintWriter writer = new UnixPrintWriter(new File(output), "UTF-8"))
 		{
-			// Copy the previous CSV.
-			try (BufferedReader br = new BufferedReader(new FileReader(gameRulesetsFilePath))) 
-			{	
-				String line;	// column names
-			    while ((line = br.readLine()) != null) 
-			    {
-					writer.println(line);
-			    }
+//			// Copy the previous CSV.
+//			try (BufferedReader br = new BufferedReader(new FileReader(gameRulesetsFilePath))) 
+//			{	
+//				String line;	// column names
+//			    while ((line = br.readLine()) != null) 
+//			    {
+//					writer.println(line);
+//			    }
 			    for(int i = 0; i < rulesetNameList.size(); i++)
 			    {
 					final List<String> lineToWrite = new ArrayList<String>();
 					lineToWrite.add("\"" + (nextId + i) + "\"");
-					lineToWrite.add("\"" + idReconsList.get(i) + "\"");
+					lineToWrite.add("\"" + getGameReconsId(idReconsList.get(i)) + "\"");
 					lineToWrite.add("\"" + rulesetNameList.get(i) + "\"");
-					lineToWrite.add("\"NULL\"");
-					lineToWrite.add("\"NULL\"");
+					lineToWrite.add("NULL");
+					lineToWrite.add("NULL");
 					lineToWrite.add("\"2\"");
-					lineToWrite.add("\"NULL\"");
-					lineToWrite.add("\"NULL\"");
-					lineToWrite.add("\"NULL\"");
-					lineToWrite.add("\"NULL\"");
-					lineToWrite.add("\"NULL\"");
-					lineToWrite.add("\"NULL\"");
-					lineToWrite.add("\"NULL\"");
-					lineToWrite.add("\"NULL\"");
-					lineToWrite.add("\"NULL\"");
+					lineToWrite.add("NULL");
+					lineToWrite.add("NULL");
+					lineToWrite.add("NULL");
+					lineToWrite.add("NULL");
+					lineToWrite.add("NULL");
+					lineToWrite.add("NULL");
+					lineToWrite.add("NULL");
+					lineToWrite.add("NULL");
+					lineToWrite.add("NULL");
 					lineToWrite.add("\"0\"");
-					lineToWrite.add("\"NULL\"");
+					lineToWrite.add("NULL");
 					lineToWrite.add("\"0\"");
 					lineToWrite.add("\"0\"");
 					lineToWrite.add("\"" + scoreList.get(i) + "\"");
@@ -137,11 +147,11 @@ public class UpdateGameRulesetsTable
 					lineToWrite.add("\"" + idsUsedList.get(i) + "\"");
 					writer.println(StringRoutines.join(",", lineToWrite));
 			    }
-			}
-			catch (final Exception e)
-			{
-				e.printStackTrace();
-			}
+//			}
+//			catch (final Exception e)
+//			{
+//				e.printStackTrace();
+//			}
 		}
 		catch (FileNotFoundException e1)
 		{
@@ -188,5 +198,49 @@ public class UpdateGameRulesetsTable
 		}
 		
 		return ids.max();
+	}
+	
+	/**
+	 * @return the id of the game to recons.
+	 */
+	private static int getGameReconsId(final int reconsRulesetId)
+	{
+		try (BufferedReader br = new BufferedReader(new FileReader(gameRulesetsFilePath))) 
+		{
+		    String line;	// column names
+		    while ((line = br.readLine()) != null) 
+		    {
+		    	if(line.length() > 2 &&  line.charAt(0) == '"' && Character.isDigit(line.charAt(1)))
+		    	{
+		    		String subLine = line.substring(1);
+		    		int i = 0;
+		    		char c = subLine.charAt(i);
+		    		while(c != '"')
+		    		{
+		    			i++;
+		    			c = subLine.charAt(i);
+		    		}
+		    		final int rulesetId = Integer.parseInt(subLine.substring(0, i));
+		    		if(rulesetId == reconsRulesetId)
+		    		{
+		    			subLine = subLine.substring(i+3);
+			    		i = 0;
+			    		c = subLine.charAt(i);
+			    		while(c != '"')
+			    		{
+			    			i++;
+			    			c = subLine.charAt(i);
+			    		}
+			    		return Integer.parseInt(subLine.substring(0, i));
+		    		}
+		    	}
+		    }
+		}
+		catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return Constants.UNDEFINED;
 	}
 }

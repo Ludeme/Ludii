@@ -61,7 +61,6 @@ public class ReconstructionGenerator
 		reconstruction(outputPath, numReconsNoWarningExpectedConcepts, maxNumberAttempts, conceptualWeight, historicalWeight, reconsPath);
 	}
 	
-	
 	/**
 	 * @param outputPath         The path of the folder to place the reconstructions.
 	 * @param numReconsExpected  The number of reconstruction expected to generate.
@@ -199,10 +198,10 @@ public class ReconstructionGenerator
 			// We rank the completions.
 			Collections.sort(correctCompletions, (c1, c2) -> c1.score() < c2.score() ? 1 : c1.score() == c2.score() ? 0 : -1);
 			
-			for (int n = 0; n < correctCompletions.size(); n++) 
+			for (int n = 1; n < correctCompletions.size() + 1; n++) 
 			{
-				System.out.println("Completion " + n + " has a score of " + correctCompletions.get(n).score() + " similarity Score = " + correctCompletions.get(n).similarityScore() + " true concepts score = " + correctCompletions.get(n).commonExpectedConceptsScore() + " IDS used = " + correctCompletions.get(n).idsUsed());
-				CompleterWithPrepro.saveCompletion(outputPath + gameName + "/", gameName + n, correctCompletions.get(n).raw());
+				System.out.println("Completion " + n  + " has a score of " + correctCompletions.get(n -1).score() + " similarity Score = " + correctCompletions.get(n -1).similarityScore() + " true concepts score = " + correctCompletions.get(n - 1).commonExpectedConceptsScore() + " IDS used = " + correctCompletions.get(n -1).idsUsed());
+				CompleterWithPrepro.saveCompletion(outputPath + gameName + "/", gameName + n, correctCompletions.get(n -1).raw());
 			}
 
 			System.out.println("Num Attempts = " + numAttempts);
@@ -211,15 +210,15 @@ public class ReconstructionGenerator
 			final String outputReconsData = outputPath + gameName + ".csv";
 			try (final PrintWriter writer = new UnixPrintWriter(new File(outputReconsData), "UTF-8"))
 			{
-				for (int n = 0; n < correctCompletions.size(); n++) 
+				for (int n = 1; n < correctCompletions.size() + 1; n++) 
 				{
 					final List<String> lineToWrite = new ArrayList<String>();
 					lineToWrite.add(gameName + n);
 					lineToWrite.add(idRulesetToRecons+"");
-					lineToWrite.add(correctCompletions.get(n).score() +"");
-					lineToWrite.add(correctCompletions.get(n).similarityScore() +"");
-					lineToWrite.add(correctCompletions.get(n).commonExpectedConceptsScore() +"");
-					lineToWrite.add(correctCompletions.get(n).idsUsed() +"");
+					lineToWrite.add(correctCompletions.get(n-1).score() +"");
+					lineToWrite.add(correctCompletions.get(n-1).similarityScore() +"");
+					lineToWrite.add(correctCompletions.get(n-1).commonExpectedConceptsScore() +"");
+					lineToWrite.add(correctCompletions.get(n-1).idsUsed() +"");
 					writer.println(StringRoutines.join(",", lineToWrite));
 				}
 			}
