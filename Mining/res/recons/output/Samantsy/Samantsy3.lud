@@ -334,12 +334,25 @@
             (forEach Piece)
         )
         
-        (end 
+        (end { 
             (if 
-                (no Pieces Next)
+                (= 
+                    (sites P1)
+                    
+                    (sites Occupied by:P1)
+                )
                 
-                (result Next Loss)
+                (result P1 Win)
             )
+            
+            (if 
+                (= 
+                    (count Pieces P1)
+                11)
+                
+                (result P2 Win)
+            )
+            }
         )
     )
 )

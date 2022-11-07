@@ -334,37 +334,13 @@
             (forEach Piece)
         )
         
-        (end 
+        (end { 
             (if 
-                (all Passed)
+                (no Moves P1)
                 
-                (byScore { 
-                    (score P1 
-                        (+ 
-                            (count Cell at:
-                                (handSite P1)
-                            )
-                            
-                            (count in:
-                                (sites P1)
-                            )
-                        )
-                    )
-                    
-                    (score P2 
-                        (+ 
-                            (count Cell at:
-                                (handSite P2)
-                            )
-                            
-                            (count in:
-                                (sites P2)
-                            )
-                        )
-                    )
-                    }
-                )
+                (result P2 Win)
             )
+            }
         )
     )
 )

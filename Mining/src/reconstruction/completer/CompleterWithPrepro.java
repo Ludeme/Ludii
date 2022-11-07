@@ -16,6 +16,7 @@ import java.util.Map;
 
 import completer.Completion;
 import gameDistance.utils.DistanceUtils;
+import gnu.trove.list.array.TIntArrayList;
 import main.StringRoutines;
 import main.UnixPrintWriter;
 import main.collections.FVector;
@@ -309,6 +310,7 @@ public class CompleterWithPrepro
 			for(int i = 0; i < completions.size(); i++)
 				vectorCompletions.add((float) completions.get(i).score());
 			Completion returnCompletion = completions.get(vectorCompletions.sampleProportionally());
+			
 			return returnCompletion;
 		}
 	
@@ -377,7 +379,7 @@ public class CompleterWithPrepro
 				
 //				final int r = secondPart.indexOf(parent[1]);
 				
-				// Eric: I rewrote the detection or the r index, because the previous code did not work for many cases.
+				// We get the right parent index.
 				int countParenthesis = 0;
 				int r = 0;
 				for(; r < secondPart.length(); r++)
@@ -430,7 +432,7 @@ public class CompleterWithPrepro
 					newCompletion.setCommonTrueConceptsScore(newCommonTrueConceptsAvgScore);
 					//System.out.println("SCORE IS " + completion.score());
 					
-					if (!queue.contains(newCompletion))
+					if (!queue.contains(newCompletion) && !historyContainIds(newCompletion))
 						queue.add(newCompletion);
 				}
 			}	
@@ -944,4 +946,36 @@ public class CompleterWithPrepro
 		return avgCommonTrueConcepts;
 	}
 
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param newCompletion The new completion computed
+	 * @return True if this new completion is in the history list.
+	 */
+	public boolean historyContainIds(final Completion newCompletion)
+	{
+		final TIntArrayList idsUsedNewRecons = newCompletion.idsUsed();
+		
+		for(Completion completion: history)
+		{
+			final TIntArrayList idsUsed = completion.idsUsed(); 
+			if(idsUsed.size() == idsUsedNewRecons.size())
+			{
+				boolean equalIds = true;
+				for(int i = 0; i < idsUsed.size(); i++)
+				{
+					if(idsUsed.get(i) != idsUsedNewRecons.get(i))
+					{
+						equalIds = false;
+						break;
+					}
+				}
+				if(equalIds)
+					return true;
+			}
+		}
+		
+		return false;
+	}
+	
 }

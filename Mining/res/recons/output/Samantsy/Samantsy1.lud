@@ -336,27 +336,9 @@
         
         (end 
             (if 
-                (and 
-                    (is Threatened 
-                        (id "King" Next)
-                    )
-                    
-                    (not 
-                        (can Move 
-                            (do 
-                                (forEach Piece Next)
-                                ifAfterwards:
-                                (not 
-                                    (is Threatened 
-                                        (id "King" Next)
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
+                (no Pieces Mover)
                 
-                (result Mover Win)
+                (result Mover Loss)
             )
         )
     )

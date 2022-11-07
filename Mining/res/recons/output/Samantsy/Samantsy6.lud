@@ -336,9 +336,7 @@
         
         (end 
             (if 
-                (= 
-                    (count Pieces Next)
-                1)
+                (no Pieces Mover)
                 
                 (result Mover Win)
             )

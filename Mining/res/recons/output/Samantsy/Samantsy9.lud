@@ -335,18 +335,35 @@
         )
         
         (end 
-            (forEach NonMover if:
-                (all Sites 
-                    (sites Player)
-                    if:
-                    (= 0 
-                        (count at:
-                            (site)
+            (if 
+                (no Moves Mover)
+                
+                (byScore { 
+                    (score P1 
+                        (+ 
+                            (count Cell at:
+                                (handSite P1)
+                            )
+                            
+                            (count in:
+                                (sites P1)
+                            )
                         )
                     )
+                    
+                    (score P2 
+                        (+ 
+                            (count Cell at:
+                                (handSite P2)
+                            )
+                            
+                            (count in:
+                                (sites P2)
+                            )
+                        )
+                    )
+                    }
                 )
-                
-                (result Player Loss)
             )
         )
     )

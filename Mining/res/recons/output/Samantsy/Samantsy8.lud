@@ -334,29 +334,20 @@
             (forEach Piece)
         )
         
-        (end { 
-            (if 
+        (end 
+            (forEach Player if:
                 (all Sites 
-                    (expand 
-                        (sites Bottom)
-                    steps:2)
+                    (sites Player)
                     if:
-                    (= 
-                        (who at:
+                    (= 0 
+                        (count at:
                             (site)
                         )
-                    P2)
+                    )
                 )
                 
-                (result P2 Win)
+                (result Player Loss)
             )
-            
-            (if 
-                (no Pieces P2)
-                
-                (result P1 Win)
-            )
-            }
         )
     )
 )
