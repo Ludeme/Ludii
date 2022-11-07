@@ -116,14 +116,12 @@ public class CompleterWithPrepro
 	/**
 	 * Creates list of completions irrespective of previous completions.
 	 * @param raw            Partial raw game description.
-	 * @param maxCompletions Maximum number of completions to make (default is 1, e.g. for Travis tests).
 	 * @param rulesetReconId Id of the ruleset to recons.
 	 * @return List of completed (raw) game descriptions ready for expansion and parsing.        
 	 */
 	public List<Completion> completeSampled
 	(
 		final String raw, 
-		final int maxCompletions, 
 		final int rulesetReconId
 	)
 	{
@@ -140,16 +138,13 @@ public class CompleterWithPrepro
 		
 		final List<Completion> completions = new ArrayList<Completion>();
 
-		for (int n = 0; n < maxCompletions; n++)
+		Completion comp = new Completion(rulesetDescriptionOneLine);
+		while (needsCompleting(comp.raw()))
 		{
-			Completion comp = new Completion(rulesetDescriptionOneLine);
-			while (needsCompleting(comp.raw()))
-			{
-				//System.out.println(comp.raw());
-				comp = nextCompletionSampled(comp, rulesetReconId);	
-			}
-			completions.add(comp);
+			//System.out.println(comp.raw());
+			comp = nextCompletionSampled(comp, rulesetReconId);	
 		}
+		completions.add(comp);
 		
 //		System.out.println("\nList of completions:");
 //		for (final Completion comp : completions)

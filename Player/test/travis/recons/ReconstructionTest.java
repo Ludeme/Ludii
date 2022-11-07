@@ -77,7 +77,7 @@ public class ReconstructionTest
 			List<Completion> completions = null;
 			try
 			{
-				completions = completer.completeSampled(desc, 1, idRulesetToRecons);
+				completions = completer.completeSampled(desc, idRulesetToRecons);
 			}
 			catch (final Exception e)
 			{

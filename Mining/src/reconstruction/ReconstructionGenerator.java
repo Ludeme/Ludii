@@ -170,7 +170,7 @@ public class ReconstructionGenerator
 				// Run the completer.
 				try
 				{
-					completions = completer.completeSampled(desc, 1, idRulesetToRecons);
+					completions = completer.completeSampled(desc, idRulesetToRecons);
 				}
 				catch (final Exception e)
 				{
