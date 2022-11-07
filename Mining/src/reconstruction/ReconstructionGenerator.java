@@ -88,7 +88,7 @@ public class ReconstructionGenerator
 
 		// Load from memory
 		final String[] choices = FileHandling.listGames();
-		CompleterWithPrepro completer = new CompleterWithPrepro();
+		CompleterWithPrepro completer = new CompleterWithPrepro(conceptualWeight, historicalWeight);
 		for (final String fileName : choices)
 		{
 			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains(reconsPath))
@@ -170,7 +170,7 @@ public class ReconstructionGenerator
 				// Run the completer.
 				try
 				{
-					completions = completer.completeSampled(desc, 1, idRulesetToRecons, null);
+					completions = completer.completeSampled(desc, 1, idRulesetToRecons);
 				}
 				catch (final Exception e)
 				{

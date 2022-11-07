@@ -334,7 +334,7 @@
             (forEach Piece)
         )
         
-        (end 
+        (end { 
             (if 
                 (and 
                     (is Threatened 
@@ -358,6 +358,13 @@
                 
                 (result Mover Win)
             )
+            
+            (if 
+                (no Moves Next)
+                
+                (result Mover Draw)
+            )
+            }
         )
     )
 )

@@ -335,10 +335,10 @@
         )
         
         (end 
-            (forEach NonMover if:
-                (no Pieces Player)
+            (if 
+                (no Moves Next)
                 
-                (result Player Loss)
+                (result Next Loss)
             )
         )
     )

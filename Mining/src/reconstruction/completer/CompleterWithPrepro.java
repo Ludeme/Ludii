@@ -42,13 +42,25 @@ public class CompleterWithPrepro
 	/** The ruleset id and their corresponding description formatted on one line */
 	private final Map<Integer, String> ludMap;
 	
+	/** The weight of the expected concepts. */
+	private final double conceptualWeight;
+
+	/** The weight of the historical similarity. */
+	private final double historicalWeight;
+	
 	//-------------------------------------------------------------------------
 		
 	/**
 	 * Constructor getting the rulesets expanded description on one line and rulesets ids.
 	 */
-	public CompleterWithPrepro()
+	public CompleterWithPrepro
+	(
+		final double conceptualWeight,
+		final double historicalWeight
+	)
 	{
+		this.conceptualWeight = conceptualWeight;
+		this.historicalWeight = historicalWeight;
 		ludMap = new HashMap<Integer, String>();
 		
 		// Get the ids and descriptions of the rulesets.
@@ -105,7 +117,6 @@ public class CompleterWithPrepro
 	 * Creates list of completions irrespective of previous completions.
 	 * @param raw            Partial raw game description.
 	 * @param maxCompletions Maximum number of completions to make (default is 1, e.g. for Travis tests).
-	 * @param report         Report log for warnings and errors.
 	 * @param rulesetReconId Id of the ruleset to recons.
 	 * @return List of completed (raw) game descriptions ready for expansion and parsing.        
 	 */
@@ -113,8 +124,7 @@ public class CompleterWithPrepro
 	(
 		final String raw, 
 		final int maxCompletions, 
-		final int rulesetReconId, 
-		final Report report
+		final int rulesetReconId
 	)
 	{
 //		System.out.println("\nCompleter.complete(): Completing at most " + maxCompletions + " descriptions...");
@@ -136,7 +146,7 @@ public class CompleterWithPrepro
 			while (needsCompleting(comp.raw()))
 			{
 				//System.out.println(comp.raw());
-				comp = nextCompletionSampled(comp, rulesetReconId, report);	
+				comp = nextCompletionSampled(comp, rulesetReconId);	
 			}
 			completions.add(comp);
 		}
@@ -155,13 +165,11 @@ public class CompleterWithPrepro
 		 * Process next completion and add results to queue.
 		 * Solves the next completion independently by sampling from candidates.
 		 * @param rulesetReconId Id of the ruleset to recons.
-		 * @param report         Report log for warnings and errors.
 		 */
 		public Completion nextCompletionSampled
 		(
 			final Completion completion,
-			final int        rulesetReconId,  
-			final Report     report
+			final int        rulesetReconId
 		)
 		{
 //			System.out.println("\nCompleting next completion for raw string:\n" + completion.raw());
@@ -298,12 +306,7 @@ public class CompleterWithPrepro
 			}		
 						
 			if (completions.isEmpty())
-			{
-				// No valid completions for this completion point
-				if (report != null)
-					report.addError("No completions for: " + raw);
 				return null;
-			}
 
 			// Get a random completion according to the score of each completion.
 			FVector vectorCompletions = new FVector(completions.size());
@@ -356,13 +359,11 @@ public class CompleterWithPrepro
 					commonExpectedConcepts = getAVGCommonExpectedConcept(rulesetReconId, rulesetId);
 				}
 				
-				// We ignore all the ludemes coming from a negative similarity value.
-				if(similarity < 0)
+				// We ignore all the ludemes coming from a negative similarity value or 0.
+				if(similarity <= 0)
 					continue;
 				
-				final double weightSimilarity = 0.5;
-				final double weightCommonTrueConcepts = 0.5; 
-				final double score = weightSimilarity * similarity + weightCommonTrueConcepts * commonExpectedConcepts;
+				final double score = historicalWeight * similarity + conceptualWeight * commonExpectedConcepts;
 				
 				final int l = candidate.indexOf(parent[0]);
 				

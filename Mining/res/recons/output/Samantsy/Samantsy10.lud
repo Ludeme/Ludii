@@ -335,10 +335,12 @@
         )
         
         (end 
-            (forEach NonMover if:
-                (no Pieces Player)
+            (if 
+                (= 1 
+                    (count Pieces All)
+                )
                 
-                (result Player Loss)
+                (result P1 Win)
             )
         )
     )
