@@ -336,38 +336,9 @@
         
         (end 
             (if 
-                (or 
-                    (no Moves Mover)
-                    
-                    (is Decided "End")
-                )
+                (no Pieces TeamMover)
                 
-                (byScore { 
-                    (score P1 
-                        (+ 
-                            (count Cell at:
-                                (handSite P1)
-                            )
-                            
-                            (count in:
-                                (sites P1)
-                            )
-                        )
-                    )
-                    
-                    (score P2 
-                        (+ 
-                            (count Cell at:
-                                (handSite P2)
-                            )
-                            
-                            (count in:
-                                (sites P2)
-                            )
-                        )
-                    )
-                    }
-                )
+                (result TeamMover Win)
             )
         )
     )

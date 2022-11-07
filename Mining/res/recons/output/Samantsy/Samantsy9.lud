@@ -335,10 +335,18 @@
         )
         
         (end 
-            (if 
-                (no Moves Next)
+            (forEach NonMover if:
+                (all Sites 
+                    (sites Player)
+                    if:
+                    (= 0 
+                        (count at:
+                            (site)
+                        )
+                    )
+                )
                 
-                (result Next Loss)
+                (result Player Loss)
             )
         )
     )

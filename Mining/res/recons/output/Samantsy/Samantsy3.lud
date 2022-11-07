@@ -336,9 +336,9 @@
         
         (end 
             (if 
-                (is Line 5)
+                (no Pieces Next)
                 
-                (result Mover Win)
+                (result Next Loss)
             )
         )
     )

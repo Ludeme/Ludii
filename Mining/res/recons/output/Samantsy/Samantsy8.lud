@@ -334,12 +334,29 @@
             (forEach Piece)
         )
         
-        (end 
+        (end { 
             (if 
-                (is Line 3)
+                (all Sites 
+                    (expand 
+                        (sites Bottom)
+                    steps:2)
+                    if:
+                    (= 
+                        (who at:
+                            (site)
+                        )
+                    P2)
+                )
                 
-                (result Mover Win)
+                (result P2 Win)
             )
+            
+            (if 
+                (no Pieces P2)
+                
+                (result P1 Win)
+            )
+            }
         )
     )
 )

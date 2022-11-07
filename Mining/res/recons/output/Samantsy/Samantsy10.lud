@@ -336,11 +336,34 @@
         
         (end 
             (if 
-                (= 1 
-                    (count Pieces All)
-                )
+                (all Passed)
                 
-                (result P1 Win)
+                (byScore { 
+                    (score P1 
+                        (+ 
+                            (count Cell at:
+                                (handSite P1)
+                            )
+                            
+                            (count in:
+                                (sites P1)
+                            )
+                        )
+                    )
+                    
+                    (score P2 
+                        (+ 
+                            (count Cell at:
+                                (handSite P2)
+                            )
+                            
+                            (count in:
+                                (sites P2)
+                            )
+                        )
+                    )
+                    }
+                )
             )
         )
     )

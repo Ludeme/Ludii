@@ -334,12 +334,19 @@
             (forEach Piece)
         )
         
-        (end 
+        (end { 
             (if 
-                (no Pieces Next)
+                (no Moves Next)
                 
                 (result Next Loss)
             )
+            
+            (if 
+                (no Pieces P2)
+                
+                (result P2 Win)
+            )
+            }
         )
     )
 )
