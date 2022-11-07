@@ -74,10 +74,10 @@ public class ReconstructionTest
 			}
 
 			// Parse and reconstruct one instance of a game which is respected the expected concepts.
-			List<Completion> completions = null;
+			Completion completion = null;
 			try
 			{
-				completions = completer.completeSampled(desc, idRulesetToRecons);
+				completion = completer.completeSampled(desc, idRulesetToRecons);
 			}
 			catch (final Exception e)
 			{
@@ -85,7 +85,7 @@ public class ReconstructionTest
 				e.printStackTrace();
 			}
 
-			if (completions != null)
+			if (completion != null)
 			{
 				System.out.println("Reconstruction(s) of " + fileName);
 				

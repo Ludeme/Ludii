@@ -48,6 +48,9 @@ public class CompleterWithPrepro
 	/** The weight of the historical similarity. */
 	private final double historicalWeight;
 	
+	/** The list of completions already tried. */
+	private final List<Completion> history = new ArrayList<Completion>();
+	
 	//-------------------------------------------------------------------------
 		
 	/**
@@ -114,12 +117,12 @@ public class CompleterWithPrepro
 	//-------------------------------------------------------------------------
 
 	/**
-	 * Creates list of completions irrespective of previous completions.
-	 * @param raw            Partial raw game description.
+	 * Create a completion.
+	 * @param raw            Incomplete raw game description.
 	 * @param rulesetReconId Id of the ruleset to recons.
-	 * @return List of completed (raw) game descriptions ready for expansion and parsing.        
+	 * @return A (raw) game description.        
 	 */
-	public List<Completion> completeSampled
+	public Completion completeSampled
 	(
 		final String raw, 
 		final int rulesetReconId
@@ -136,22 +139,20 @@ public class CompleterWithPrepro
 				
 		//System.out.println(rulesetDescriptionOneLine);
 		
-		final List<Completion> completions = new ArrayList<Completion>();
-
 		Completion comp = new Completion(rulesetDescriptionOneLine);
 		while (needsCompleting(comp.raw()))
 		{
 			//System.out.println(comp.raw());
 			comp = nextCompletionSampled(comp, rulesetReconId);	
 		}
-		completions.add(comp);
 		
 //		System.out.println("\nList of completions:");
 //		for (final Completion comp : completions)
 //			System.out.println(comp.raw());
 //		System.out.println();
 		
-		return completions;
+		history.add(comp);
+		return comp;
 	}
 	
 	//-------------------------------------------------------------------------

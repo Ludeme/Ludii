@@ -165,12 +165,12 @@ public class ReconstructionGenerator
 			// Run the recons process until enough attempts are executed or all reconstructions are generated.
 			while(numAttempts < maxNumberAttempts && correctCompletions.size() < numReconsExpected)
 			{
-				List<Completion> completions = null;
+				Completion completion = null;
 				
 				// Run the completer.
 				try
 				{
-					completions = completer.completeSampled(desc, idRulesetToRecons);
+					completion = completer.completeSampled(desc, idRulesetToRecons);
 				}
 				catch (final Exception e)
 				{
@@ -178,11 +178,8 @@ public class ReconstructionGenerator
 				}
 
 				// Check the completions.
-				if (completions != null)
+				if (completion != null)
 				{
-					for (int n = 0; n < completions.size(); n++) 
-					{
-						final Completion completion = completions.get(n);
 						final String completionRaw = FormatReconstructionOutputs.indentNicely(StringRoutines.unformatOneLineDesc(completion.raw()));
 						
 						// Test if the completion compiles.
@@ -201,7 +198,7 @@ public class ReconstructionGenerator
 						if(game != null)
 						{
 							final String rawDescMetadata = completionRaw + "\n" + reconsMetadata;
-							completions.get(n).setRaw(rawDescMetadata);
+							completion.setRaw(rawDescMetadata);
 							System.out.print("One Completion found");
 							
 							// Check if no warning and if no potential crash.
@@ -214,13 +211,12 @@ public class ReconstructionGenerator
 								if(Concept.isExpectedConcepts(rawDescMetadata))
 								{
 									// All good, add to the list of correct completions.
-									correctCompletions.add(completions.get(n));
+									correctCompletions.add(completion);
 									System.out.print( " and with the expected concepts");
 								}
 							}
 							System.out.println();
 						}
-					}
 				}
 				numAttempts++;
 			}
