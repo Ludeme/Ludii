@@ -36,11 +36,12 @@ public class ReconstructionGenerator
 	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 10000;
 	//final static String defaultReconsPath        = "/lud/reconstruction/board/war/replacement/checkmate/chaturanga/Samantsy";
-	final static String defaultReconsPath        = "/lud/reconstruction/board/race/other/Coptic Game";
+	//final static String defaultReconsPath        = "/lud/reconstruction/board/race/other/Coptic Game";
+	//final static String defaultReconsPath        = "/lud/test/eric/recons/Hnefatafl";
 	final static String defaultOptionName        = "Variant/Incomplete";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/hunt/Fortresse";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/space/line/Ashanti Alignment Game";
-	//final static String defaultReconsPath = "/lud/reconstruction/board/war/other/Macheng";
+	final static String defaultReconsPath = "/lud/reconstruction/board/war/other/Macheng";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/hunt/Bagh Bukree";
 	
 	final static double defaultConceptualWeight = 0.5;
@@ -215,6 +216,7 @@ public class ReconstructionGenerator
 									// All good, add to the list of correct completions.
 									correctCompletions.add(completion);
 									System.out.print( " and with the expected concepts");
+									System.out.println(correctCompletions.size() + " COMPLETIONS GENERATED.");
 								}
 							}
 							System.out.println();

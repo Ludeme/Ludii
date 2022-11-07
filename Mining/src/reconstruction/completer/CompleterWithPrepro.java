@@ -338,8 +338,9 @@ public class CompleterWithPrepro
 		{
 			Map<Integer, String> copyLudMap = new HashMap<Integer, String>();
 			
-			// To use the thresholds.
 			do {
+
+				// To use the thresholds.
 				for (Map.Entry<Integer, String> entry : ludMap.entrySet()) 
 				{
 					final int rulesetId = entry.getKey().intValue();
@@ -370,10 +371,8 @@ public class CompleterWithPrepro
 					if(score >= threshold)
 						copyLudMap.put(entry.getKey(), entry.getValue());
 				}
-				
-				System.out.println("threshold = " + threshold);
-				System.out.println("nums rulesets ok = " + copyLudMap.size());
 			
+				// Check only the luds respecting the threshold.
 				for (Map.Entry<Integer, String> entry : copyLudMap.entrySet()) 
 				{
 					final String otherDescription = entry.getValue();
@@ -479,7 +478,17 @@ public class CompleterWithPrepro
 				}
 
 				if(queue.isEmpty())
+				{
 					threshold = threshold - 0.01;
+					System.out.println("new threshold = " + threshold);
+				}
+//				else
+//				{
+//					System.out.println("Queue size = " + queue.size());
+//					System.out.println("Ids used in Completions are: ");
+//					for(Completion completionInQueue: queue)
+//						System.out.println(completionInQueue.idsUsed());
+//				}
 			} while(queue.isEmpty());
 		}
 		
