@@ -334,25 +334,30 @@
             (forEach Piece)
         )
         
-        (end { 
+        (end 
             (if 
-                (= 
-                    (sites P1)
+                (and 
+                    (is Threatened 
+                        (id "King" Next)
+                    )
                     
-                    (sites Occupied by:P1)
+                    (not 
+                        (can Move 
+                            (do 
+                                (forEach Piece Next)
+                                ifAfterwards:
+                                (not 
+                                    (is Threatened 
+                                        (id "King" Next)
+                                    )
+                                )
+                            )
+                        )
+                    )
                 )
                 
-                (result P1 Win)
+                (result Mover Win)
             )
-            
-            (if 
-                (= 
-                    (count Pieces P1)
-                11)
-                
-                (result P2 Win)
-            )
-            }
         )
     )
 )

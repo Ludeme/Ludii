@@ -335,18 +335,28 @@
         )
         
         (end 
-            (forEach Player if:
-                (all Sites 
-                    (sites Player)
-                    if:
-                    (= 0 
-                        (count at:
-                            (site)
+            (if 
+                (and 
+                    (is Threatened 
+                        (id "King" Next)
+                    )
+                    
+                    (not 
+                        (can Move 
+                            (do 
+                                (forEach Piece Next)
+                                ifAfterwards:
+                                (not 
+                                    (is Threatened 
+                                        (id "King" Next)
+                                    )
+                                )
+                            )
                         )
                     )
                 )
                 
-                (result Player Loss)
+                (result Mover Win)
             )
         )
     )

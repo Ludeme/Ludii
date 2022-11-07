@@ -334,37 +334,45 @@
             (forEach Piece)
         )
         
-        (end 
+        (end { 
             (if 
-                (no Moves Mover)
-                
-                (byScore { 
-                    (score P1 
-                        (+ 
-                            (count Cell at:
-                                (handSite P1)
-                            )
-                            
-                            (count in:
-                                (sites P1)
-                            )
-                        )
+                (and 
+                    (is Threatened 
+                        (id "King" Next)
                     )
                     
-                    (score P2 
-                        (+ 
-                            (count Cell at:
-                                (handSite P2)
-                            )
-                            
-                            (count in:
-                                (sites P2)
+                    (not 
+                        (can Move 
+                            (do 
+                                (forEach Piece Next)
+                                ifAfterwards:
+                                (not 
+                                    (is Threatened 
+                                        (id "King" Next)
+                                    )
+                                )
                             )
                         )
                     )
-                    }
                 )
+                
+                (result Mover Win)
             )
+            
+            (if 
+                (= 1 
+                    (count Pieces Next)
+                )
+                
+                (result Mover Win)
+            )
+            
+            (if 
+                (no Moves Next)
+                
+                (result Mover Win)
+            )
+            }
         )
     )
 )

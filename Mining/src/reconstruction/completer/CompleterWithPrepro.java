@@ -52,6 +52,9 @@ public class CompleterWithPrepro
 	/** The list of completions already tried. */
 	private final List<Completion> history = new ArrayList<Completion>();
 	
+	/** threshold used to look first the top similarities scores. */
+	private double threshold = 0.99;
+	
 	//-------------------------------------------------------------------------
 		
 	/**
@@ -333,109 +336,151 @@ public class CompleterWithPrepro
 			final int              rulesetReconId
 		)
 		{
-			for (Map.Entry<Integer, String> entry : ludMap.entrySet()) 
-			{
-				final String otherDescription = entry.getValue();
-				final int rulesetId = entry.getKey().intValue();
-				final String candidate = new String(otherDescription);
-				
-				double similarity = 0.0;
-				double commonExpectedConcepts = 0.0;
-				if(rulesetReconId == -1) // We do not use the CSN.
-					similarity = 1.0;
-				else
+			Map<Integer, String> copyLudMap = new HashMap<Integer, String>();
+			
+			// To use the thresholds.
+			do {
+				for (Map.Entry<Integer, String> entry : ludMap.entrySet()) 
 				{
-					final String similaryFilePath = "./res/recons/input/contextualiser/similarity_";
-					File fileSimilarity1 = new File(similaryFilePath + rulesetReconId + ".csv");
-					File fileSimilarity2 = new File(similaryFilePath + entry.getKey().intValue() + ".csv");
-					
-					if(!fileSimilarity1.exists() || !fileSimilarity2.exists() || (rulesetReconId == rulesetId)) // If CSN not computing or comparing the same rulesets, similarity is 0.
-						similarity = 0.0;
+					final int rulesetId = entry.getKey().intValue();
+					double culturalSimilarity = 0.0;
+					double conceptualSimilarity = 0.0;
+					if(rulesetReconId == -1) // We do not use the CSN.
+						culturalSimilarity = 1.0;
 					else
-						similarity = DistanceUtils.getRulesetCSNDistance(rulesetId, rulesetReconId);
+					{
+						final String similaryFilePath = "./res/recons/input/contextualiser/similarity_";
+						File fileSimilarity1 = new File(similaryFilePath + rulesetReconId + ".csv");
+						File fileSimilarity2 = new File(similaryFilePath + entry.getKey().intValue() + ".csv");
+						
+						if(!fileSimilarity1.exists() || !fileSimilarity2.exists() || (rulesetReconId == rulesetId)) // If CSN not computing or comparing the same rulesets, similarity is 0.
+							culturalSimilarity = 0.0;
+						else
+							culturalSimilarity = DistanceUtils.getRulesetCSNDistance(rulesetId, rulesetReconId);
+						
+						conceptualSimilarity = getAVGCommonExpectedConcept(rulesetReconId, rulesetId);
+					}
+
+					// We ignore all the ludemes coming from a negative similarity value or 0.
+					if(culturalSimilarity <= 0)
+						continue;
 					
-					commonExpectedConcepts = getAVGCommonExpectedConcept(rulesetReconId, rulesetId);
+					final double score = historicalWeight * culturalSimilarity + conceptualWeight * conceptualSimilarity;
+					
+					if(score >= threshold)
+						copyLudMap.put(entry.getKey(), entry.getValue());
 				}
 				
-				// We ignore all the ludemes coming from a negative similarity value or 0.
-				if(similarity <= 0)
-					continue;
-				
-				final double score = historicalWeight * similarity + conceptualWeight * commonExpectedConcepts;
-				
-				final int l = candidate.indexOf(parent[0]);
-				
-				if (l < 0)
-					continue;  // not a match
-				
-				String secondPart = candidate.substring(l + parent[0].length());  //.trim();
-				
-//				System.out.println("\notherDescription is: " + otherDescription);
-//				System.out.println("parent[0] is: " + parent[0]);
-//				System.out.println("parent[1] is: " + parent[1]);
-//				System.out.println("secondPart is: " + secondPart);
-//				System.out.println("left  is: " + left);
-//				System.out.println("right is: " + right);
-				
-//				final int r = secondPart.indexOf(parent[1]);
-				
-				// We get the right parent index.
-				int countParenthesis = 0;
-				int r = 0;
-				for(; r < secondPart.length(); r++)
+				System.out.println("threshold = " + threshold);
+				System.out.println("nums rulesets ok = " + copyLudMap.size());
+			
+				for (Map.Entry<Integer, String> entry : copyLudMap.entrySet()) 
 				{
-					if(secondPart.charAt(r) == '(')
-						countParenthesis++;
+					final String otherDescription = entry.getValue();
+					final int rulesetId = entry.getKey().intValue();
+					final String candidate = new String(otherDescription);
+					
+					double culturalSimilarity = 0.0;
+					double conceptualSimilarity = 0.0;
+					if(rulesetReconId == -1) // We do not use the CSN.
+						culturalSimilarity = 1.0;
 					else
-						if(secondPart.charAt(r) == ')')
-							countParenthesis--;
-					if(countParenthesis == -1)
 					{
-						r--;
-						break;
+						final String similaryFilePath = "./res/recons/input/contextualiser/similarity_";
+						File fileSimilarity1 = new File(similaryFilePath + rulesetReconId + ".csv");
+						File fileSimilarity2 = new File(similaryFilePath + entry.getKey().intValue() + ".csv");
+						
+						if(!fileSimilarity1.exists() || !fileSimilarity2.exists() || (rulesetReconId == rulesetId)) // If CSN not computing or comparing the same rulesets, similarity is 0.
+							culturalSimilarity = 0.0;
+						else
+							culturalSimilarity = DistanceUtils.getRulesetCSNDistance(rulesetId, rulesetReconId);
+						
+						conceptualSimilarity = getAVGCommonExpectedConcept(rulesetReconId, rulesetId);
+					}
+					
+					// We ignore all the ludemes coming from a negative similarity value or 0.
+					if(culturalSimilarity <= 0)
+						continue;
+					
+					final double score = historicalWeight * culturalSimilarity + conceptualWeight * conceptualSimilarity;
+					
+					final int l = candidate.indexOf(parent[0]);
+					
+					if (l < 0)
+						continue;  // not a match
+					
+					String secondPart = candidate.substring(l + parent[0].length());  //.trim();
+					
+	//				System.out.println("\notherDescription is: " + otherDescription);
+	//				System.out.println("parent[0] is: " + parent[0]);
+	//				System.out.println("parent[1] is: " + parent[1]);
+	//				System.out.println("secondPart is: " + secondPart);
+	//				System.out.println("left  is: " + left);
+	//				System.out.println("right is: " + right);
+					
+	//				final int r = secondPart.indexOf(parent[1]);
+					
+					// We get the right parent index.
+					int countParenthesis = 0;
+					int r = 0;
+					for(; r < secondPart.length(); r++)
+					{
+						if(secondPart.charAt(r) == '(')
+							countParenthesis++;
+						else
+							if(secondPart.charAt(r) == ')')
+								countParenthesis--;
+						if(countParenthesis == -1)
+						{
+							r--;
+							break;
+						}
+					}
+					
+	//				final int r = (StringRoutines.isBracket(secondPart.charAt(0)))
+	//								? StringRoutines.matchingBracketAt(secondPart, 0)
+	//								: secondPart.indexOf(parent[1]) - 1;
+	
+					if (r >= 0)
+					{
+						// Is a match
+						//final String match = mapString.substring(l, l + parent[0].length() + r + parent[1].length());
+						final String match = secondPart.substring(0, r + 1);  //l, l + parent[0].length() + r + parent[1].length());
+						//System.out.println("match is: " + match);
+						
+	//					final String str = 
+	//							left.substring(0, left.length() - parent[0].length())
+	//							+
+	//							match
+	//							+
+	//							right.substring(parent[1].length());
+	
+						//final String str = left + " " + match + " " + right;
+						String str = left + match + right;
+						//System.out.println(right);
+						final Completion newCompletion = new Completion(str);
+						//System.out.println("completion is:\n" + completion.raw());
+							
+						//System.out.println("Adding completion:\n" + completion.raw());
+						final double newScore = (completion.idsUsed().size() == 0) ? score : ((completion.score() * completion.idsUsed().size() + score) / (1 + completion.idsUsed().size()));
+						final double newSimilarityScore = (completion.idsUsed().size() == 0) ? culturalSimilarity : ((completion.score() * completion.idsUsed().size() + culturalSimilarity) / (1 + completion.idsUsed().size()));
+						final double newCommonTrueConceptsAvgScore = (completion.idsUsed().size() == 0) ? conceptualSimilarity : ((completion.score() * completion.idsUsed().size() + conceptualSimilarity) / (1 + completion.idsUsed().size()));
+						
+						newCompletion.setIdsUsed(completion.idsUsed());
+						newCompletion.addId(rulesetId);
+						newCompletion.setScore(newScore);
+						newCompletion.setSimilarityScore(newSimilarityScore);
+						newCompletion.setCommonTrueConceptsScore(newCommonTrueConceptsAvgScore);
+						//System.out.println("SCORE IS " + completion.score());
+						
+						if (!queue.contains(newCompletion) && !historyContainIds(newCompletion))
+							queue.add(newCompletion);
 					}
 				}
-				
-//				final int r = (StringRoutines.isBracket(secondPart.charAt(0)))
-//								? StringRoutines.matchingBracketAt(secondPart, 0)
-//								: secondPart.indexOf(parent[1]) - 1;
 
-				if (r >= 0)
-				{
-					// Is a match
-					//final String match = mapString.substring(l, l + parent[0].length() + r + parent[1].length());
-					final String match = secondPart.substring(0, r + 1);  //l, l + parent[0].length() + r + parent[1].length());
-					//System.out.println("match is: " + match);
-					
-//					final String str = 
-//							left.substring(0, left.length() - parent[0].length())
-//							+
-//							match
-//							+
-//							right.substring(parent[1].length());
-
-					//final String str = left + " " + match + " " + right;
-					String str = left + match + right;
-					//System.out.println(right);
-					final Completion newCompletion = new Completion(str);
-					//System.out.println("completion is:\n" + completion.raw());
-						
-					//System.out.println("Adding completion:\n" + completion.raw());
-					final double newScore = (completion.idsUsed().size() == 0) ? score : ((completion.score() * completion.idsUsed().size() + score) / (1 + completion.idsUsed().size()));
-					final double newSimilarityScore = (completion.idsUsed().size() == 0) ? similarity : ((completion.score() * completion.idsUsed().size() + similarity) / (1 + completion.idsUsed().size()));
-					final double newCommonTrueConceptsAvgScore = (completion.idsUsed().size() == 0) ? commonExpectedConcepts : ((completion.score() * completion.idsUsed().size() + commonExpectedConcepts) / (1 + completion.idsUsed().size()));
-					
-					newCompletion.setIdsUsed(completion.idsUsed());
-					newCompletion.addId(rulesetId);
-					newCompletion.setScore(newScore);
-					newCompletion.setSimilarityScore(newSimilarityScore);
-					newCompletion.setCommonTrueConceptsScore(newCommonTrueConceptsAvgScore);
-					//System.out.println("SCORE IS " + completion.score());
-					
-					if (!queue.contains(newCompletion) && !historyContainIds(newCompletion))
-						queue.add(newCompletion);
-				}
-			}	
+				if(queue.isEmpty())
+					threshold = threshold - 0.01;
+			} while(queue.isEmpty());
 		}
 		
 	//-------------------------------------------------------------------------
