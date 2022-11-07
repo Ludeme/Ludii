@@ -35,7 +35,8 @@ public class ReconstructionGenerator
 	final static String defaultOutputPath        = "./res/recons/output/";
 	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 10000;
-	final static String defaultReconsPath        = "/lud/reconstruction/board/war/replacement/checkmate/chaturanga/Samantsy";
+	//final static String defaultReconsPath        = "/lud/reconstruction/board/war/replacement/checkmate/chaturanga/Samantsy";
+	final static String defaultReconsPath        = "/lud/reconstruction/board/race/other/Coptic Game";
 	final static String defaultOptionName        = "Variant/Incomplete";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/hunt/Fortresse";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/space/line/Ashanti Alignment Game";
@@ -118,6 +119,11 @@ public class ReconstructionGenerator
 				e1.printStackTrace();
 			}
 			
+			// To check the expected concepts detected.
+//			final List<Concept> expectedConcepts = ComputeCommonExpectedConcepts.computeCommonExpectedConcepts(desc);
+//			for(Concept c: expectedConcepts)
+//				System.out.println(c.name());
+			
 			// Extract the metadata.
 			final String metadata = desc.contains("(metadata") ? desc.substring(desc.indexOf("(metadata")) : "";
 			String reconsMetadata = "";
@@ -154,10 +160,6 @@ public class ReconstructionGenerator
 			desc = StringRoutines.formatOneLineDesc(description.expanded());
 //			System.out.println(desc);
 //			System.out.println(FormatReconstructionOutputs.indentNicely(StringRoutines.unformatOneLineDesc(desc)));
-			// To check the expected concepts detected.
-//			final List<Concept> expectedConcepts = ComputeCommonExpectedConcepts.computeCommonExpectedConcepts(desc);
-//			for(Concept c: expectedConcepts)
-//				System.out.println(c.name());
 			
 			int numAttempts = 0;
 			List<Completion> correctCompletions = new ArrayList<Completion>();

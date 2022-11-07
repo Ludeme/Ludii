@@ -59,9 +59,11 @@
     
     (rules 
         (start { 
-            (place Stack "Disc1" 0 count:15)
+            (place Stack "Disc1" 12 count:15)
             
-            (place Stack "Disc2" 13 count:15)
+            (place Stack "Disc2" 11 count:14)
+            
+            (place Stack "Disc2" 10)
             }
         )
         
@@ -101,9 +103,26 @@
         
         (end 
             (if 
-                (no Pieces Mover)
+                (all Passed)
                 
-                (result Mover Win)
+                (byScore { 
+                    (score P1 
+                        (+ 
+                            (count Pieces P1)
+                            
+                            (size Territory P1)
+                        )
+                    )
+                    
+                    (score P2 
+                        (+ 
+                            (count Pieces P2)
+                            
+                            (size Territory P2)
+                        )
+                    )
+                    }
+                )
             )
         )
     )

@@ -59,9 +59,11 @@
     
     (rules 
         (start { 
-            (place Stack "Disc1" 0 count:15)
+            (place Stack "Disc1" 12 count:15)
             
-            (place Stack "Disc2" 13 count:15)
+            (place Stack "Disc2" 11 count:14)
+            
+            (place Stack "Disc2" 10)
             }
         )
         

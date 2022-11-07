@@ -209,7 +209,7 @@ public class ComputeCommonExpectedConcepts
 				if(c == '(')
 				{
 					int countParenthesis = 1;
-					int indexCorrespondingParenthesis = i+1;
+					int indexCorrespondingParenthesis = i + 1;
 					for(; indexCorrespondingParenthesis < descNoMetadata.length(); indexCorrespondingParenthesis++)
 					{
 						if(descNoMetadata.charAt(indexCorrespondingParenthesis) == '(')
