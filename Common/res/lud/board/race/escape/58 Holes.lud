@@ -2049,6 +2049,9 @@
         "Board/Crossover Three Race Track" "Variant/Carter Crossover 3" "Dice/D4"
     })
     
+    (ruleset "Ruleset/Carter Crossover 4 D4 (Suggested)" {
+        "Board/Crossover Four Race Track" "Variant/Carter Crossover 4" "Dice/D4"
+    })
     
     
     
@@ -2129,10 +2132,6 @@
     })
     
     (ruleset "Ruleset/Carter Crossover 5 D4 (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Carter Crossover 4 D4 (Suggested)" {
         
     })
     
@@ -2528,6 +2527,12 @@
         (useFor "Ruleset/Carter Crossover 3 D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
         (useFor "Ruleset/Carter Crossover 3 D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
         (useFor "Ruleset/Carter Crossover 3 D4 (Suggested)" (show Line {{0 31} {29 2} {4 33} {5 14} {43 34} {19 4} {48 33} {24 0} {53 29}}))
+        
+        (useFor "Ruleset/Carter Crossover 4 D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
+        (useFor "Ruleset/Carter Crossover 4 D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
+        (useFor "Ruleset/Carter Crossover 4 D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Crossover 4 D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Crossover 4 D4 (Suggested)" (show Line {{0 29} {1 32} {30 3} {4 33} {5 38} {34 9} {5 14} {34 43} {33 48} {4 19} {4 20} {29 53} {0 24} {25 57} {54 28}}))
     })
     
     (ai 
