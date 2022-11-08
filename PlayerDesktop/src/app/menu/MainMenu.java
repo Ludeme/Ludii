@@ -1276,7 +1276,7 @@ public class MainMenu extends JMenuBar
 				{
 					final Ruleset ruleset = rulesets.get(rs);
 								
-					if (!ruleset.optionSettings().isEmpty() || ruleset.heading().contains("Incomplete"))	// Eric wants to hide unimplemented and incomplete rulesets
+					if (!ruleset.optionSettings().isEmpty() && !ruleset.heading().contains("Incomplete"))	// Eric wants to hide unimplemented and incomplete rulesets
 					{
 						if (ruleset.variations().isEmpty())
 						{
