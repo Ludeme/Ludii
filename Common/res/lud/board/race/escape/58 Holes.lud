@@ -173,6 +173,33 @@
     )
 )
 
+(define "HoundsAndJackalsCrossoverFive"
+	    (graph
+	            vertices:{ 
+	            { 9 27} { 9 24} { 9 21} { 9 18} { 9 15} { 9 12} { 9 9} { 9 6} 
+	            { 9 3} { 9 0} { 3 0} { 3 2} { 3 4} { 3 6} { 3 8} { 3 10} 
+	            { 3 12} { 3 14} { 3 16} { 3 18} { 3 20} { 3 22} { 3 24} { 3 26} 
+	            { 3 28} { 4 30} { 6 31} { 8 32} {10 33} {15 27} {15 24} {15 21} 
+	            {15 18} {15 15} {15 12} {15 9} {15 6} {15 3} {15 0} {21 0} 
+	            {21 2} {21 4} {21 6} {21 8} {21 10} {21 12} {21 14} {21 16} 
+	            {21 18} {21 20} {21 22} {21 24} {21 26} {21 28} {20 30} {18 31}
+	            {16 32} {14 33} 
+	            
+	            {12 33}
+	            }
+	            edges:{ 
+	            { 0 1} { 1 2} { 2 3} { 3 4} { 4 5} { 5 6} { 6 7} { 7 8} 
+	            { 8 9} { 9 10} {10 11} {11 12} {12 13} {13 14} {14 15} {15 16} 
+	            {16 17} {17 18} {18 19} {19 20} {20 21} {21 22} {22 23} {23 24} 
+	            {24 25} {25 26} {26 27} {27 28} {28 58} {29 30} {30 31} {31 32} 
+	            {32 33} {33 34} {34 35} {35 36} {36 37} {37 38} {38 39} {39 40} 
+	            {40 41} {41 42} {42 43} {43 44} {44 45} {45 46} {46 47} {47 48} 
+	            {48 49} {49 50} {50 51} {51 52} {52 53} {53 54} {54 55} {55 56} 
+	            {56 57} {57 58}
+	            } 
+	        )
+	)
+
 //------------------------------------------------------------------------------
 
 (game "58 Holes" 
@@ -344,6 +371,19 @@
         )
         > 
     "crossover 4 board.")
+    
+    (item "Crossover Five Race Track" 
+            <
+            (board 
+                ("HoundsAndJackalsCrossoverFive")
+                {
+                (track "Track1" {59 0..28 58} P1 directed:True)
+                (track "Track2" {60 29..58  } P2 directed:True)
+                }
+                use:Vertex
+            )
+            > 
+        "crossover 5 board.")
     
     (item "Crossover Four Capture Track" 
         <
@@ -769,6 +809,76 @@
         
         "Rules from Carter Crossover 4."
     )
+    
+    (item "Carter Crossover 5" 
+            
+            <(hand Each)>
+            
+            <> 
+            
+            <
+            (if (= "ProgressOnTrack" 58)
+                "RemovePiece"
+                (if ("IsNotOffBoard" "ProgressOnTrack") 	 			
+                    (if (not ("IsFriendAt" "ProgressOnTrack"))
+                        (move 
+                            (from) 
+                            (to "ProgressOnTrack"
+                                (apply
+                                    (if ("IsEnemyAt" (to)) (move (from (to)) (to (handSite (who at:(to))))))
+                                )
+                            )
+                            (then
+                                (if (!= (last To) (mapEntry (last To))) (moveAgain))
+                            )
+                        )
+                    )
+                )
+            )
+            > 
+            
+            <(map {(pair 5 34) (pair 36 7) (pair 14 19) (pair 19 24) (pair 43 48) (pair 48 53) })>
+            
+            <
+            
+            (define "ProgressOnTrack" 
+                (if (or (= (from) 59) (<= (from) 28))
+                    ("NextSiteOnTrack" (count Pips) "Track1")
+                    ("NextSiteOnTrack" (count Pips) "Track2")
+                )
+            )
+            
+            (rules 
+                (start {
+                    (place "Marker1" (handSite P1) count:5)
+                    (place "Marker2" (handSite P2) count:5)
+                })
+                
+                (play 
+                    (if ("SameTurn")
+                        (or
+                            (move Pass)
+                            (move 
+                                (from (last To))
+                                (to (mapEntry (last To))
+                                    (apply
+                                        (if ("IsEnemyAt" (to)) (move (from (to)) (to (handSite (who at:(to))))))
+                                    )		
+                                )
+                                (then
+                                    (if (!= (last To) (mapEntry (last To))) (moveAgain))
+                                )
+                            )
+                        )
+                        ("RollMove" (or (forEach Piece) (forEach Piece container:(mover))))
+                    )
+                )
+                (end ("EscapeWin"))
+            )
+            >
+            
+            "Rules from Carter Crossover 5."
+        )
     
     (item "Tab No Marked Holes" 
         <>
@@ -1688,6 +1798,98 @@
 
 (rulesets { 
     
+    (ruleset "Ruleset/Carnarvon and Carter (Suggested)" {
+        "Board/Parallel Connections Race tracks" "Variant/Carnarvon and Carter" "Dice/D2"
+    })
+    
+    (ruleset "Ruleset/Carter Unmarked (Suggested)" {
+        "Board/Holes Race tracks" "Variant/Carter Unmarked" "Dice/D2"
+    })
+    
+    (ruleset "Ruleset/Carter Marked Holes (Suggested)" {
+        "Board/Holes Race tracks" "Variant/Carter Marked" "Dice/D2"
+    })
+    
+    (ruleset "Ruleset/Carter Crossover 1 (Suggested)" {
+        "Board/Crossover One Race Track" "Variant/Carter Crossover 1" "Dice/D2"
+    })
+    
+    (ruleset "Ruleset/Carter Crossover 2 (Suggested)" {
+        "Board/Crossover Two Race Track" "Variant/Carter Crossover 2" "Dice/D2"
+    })
+    
+    (ruleset "Ruleset/Carter Crossover 3 (Suggested)" {
+        "Board/Crossover Three Race Track" "Variant/Carter Crossover 3" "Dice/D2"
+    })
+    
+    (ruleset "Ruleset/Carter Crossover 4 (Suggested)" {
+        "Board/Crossover Four Race Track" "Variant/Carter Crossover 4""Dice/D2"
+    })
+    
+    (ruleset "Ruleset/Carter Crossover 5 (Suggested)" {
+        "Board/Crossover Five Race Track" "Variant/Carter Crossover 5" "Dice/D2"
+    })
+    
+    (ruleset "Ruleset/Tab Unmarked (Suggested)" {
+        "Board/Holes Capture tracks" "Variant/Tab No Marked Holes" "Dice/D2"
+    })
+    
+    (ruleset "Ruleset/Tab Marked (Throw) (Suggested)" {
+        "Board/Holes Capture tracks" "Variant/Tab Marked Throw""Dice/D2"
+    })
+    
+    (ruleset "Ruleset/Tab Marked (Safe) (Suggested)" {
+        "Board/Holes Capture tracks" "Variant/Tab Marked Safe" "Dice/D2"
+    })
+    
+    (ruleset "Ruleset/Tab Parallel Connections (Suggested)" {
+        "Board/Parallel Connections Capture tracks" "Variant/Tab Parallel Connections" "Dice/D2"
+    })
+    
+    (ruleset "Ruleset/Tab Crosssover 1 (Suggested)" {
+        "Board/Crossover One Capture Track" "Variant/Tab Crossover 1""Dice/D2"
+    })
+    
+    (ruleset "Ruleset/Tab Crossover 2 (Suggested)" {
+        "Board/Crossover Two Capture Track" "Variant/Tab Crossover 2" "Dice/D2"
+    })
+    
+    (ruleset "Ruleset/Tab Crossover 3 (Suggested)" {
+        "Board/Crossover Three Capture Track" "Variant/Tab Crossover 3" "Dice/D2"
+    })
+    
+    (ruleset "Ruleset/Tab Crossover 4 (Suggested)" {
+        "Board/Crossover Four Capture Track" "Variant/Tab Crossover 4" "Dice/D2"
+    })
+    
+    (ruleset "Ruleset/Carnarvon and Carter D6 (Suggested)" {
+        "Board/Parallel Connections Race tracks" "Variant/Carnarvon and Carter" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Carter Unmarked D6 (Suggested)" {
+        "Board/Holes Race tracks" "Variant/Carter Unmarked" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Carter Marked Holes D6 (Suggested)" {
+        "Board/Holes Race tracks" "Variant/Carter Marked" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Carter Crossover 1 D6 (Suggested)" {
+        "Board/Crossover One Race Track" "Variant/Carter Crossover 1" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Carter Crossover 2 D6 (Suggested)" {
+        "Board/Crossover Two Race Track" "Variant/Carter Crossover 2" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Carter Crossover 3 D6 (Suggested)" {
+        "Board/Crossover Three Race Track" "Variant/Carter Crossover 3" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Carter Crossover 4 D6 (Suggested)" {
+        "Board/Crossover Four Race Track" "Variant/Carter Crossover 4""Dice/D6"
+    })
+    
     (ruleset "Ruleset/Tab Crossover 5 D6 (Suggested)" {
         
     })
@@ -1800,9 +2002,9 @@
         
     })
     
-    (ruleset "Ruleset/Carter Crossover 5 (Suggested)" {
-        
-    })
+    
+    
+    
     
     (ruleset "Ruleset/Labyrinth (Incomplete)" {
         
@@ -1838,94 +2040,6 @@
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         
-    })
-    
-    (ruleset "Ruleset/Carnarvon and Carter (Suggested)" {
-        "Board/Parallel Connections Race tracks" "Variant/Carnarvon and Carter" "Dice/D2"
-    })
-    
-    (ruleset "Ruleset/Carter Unmarked (Suggested)" {
-        "Board/Holes Race tracks" "Variant/Carter Unmarked" "Dice/D2"
-    })
-    
-    (ruleset "Ruleset/Carter Marked Holes (Suggested)" {
-        "Board/Holes Race tracks" "Variant/Carter Marked" "Dice/D2"
-    })
-    
-    (ruleset "Ruleset/Carter Crossover 1 (Suggested)" {
-        "Board/Crossover One Race Track" "Variant/Carter Crossover 1" "Dice/D2"
-    })
-    
-    (ruleset "Ruleset/Carter Crossover 2 (Suggested)" {
-        "Board/Crossover Two Race Track" "Variant/Carter Crossover 2" "Dice/D2"
-    })
-    
-    (ruleset "Ruleset/Carter Crossover 3 (Suggested)" {
-        "Board/Crossover Three Race Track" "Variant/Carter Crossover 3" "Dice/D2"
-    })
-    
-    (ruleset "Ruleset/Carter Crossover 4 (Suggested)" {
-        "Board/Crossover Four Race Track" "Variant/Carter Crossover 4""Dice/D2"
-    })
-    
-    (ruleset "Ruleset/Tab Unmarked (Suggested)" {
-        "Board/Holes Capture tracks" "Variant/Tab No Marked Holes" "Dice/D2"
-    })
-    
-    (ruleset "Ruleset/Tab Marked (Throw) (Suggested)" {
-        "Board/Holes Capture tracks" "Variant/Tab Marked Throw""Dice/D2"
-    })
-    
-    (ruleset "Ruleset/Tab Marked (Safe) (Suggested)" {
-        "Board/Holes Capture tracks" "Variant/Tab Marked Safe" "Dice/D2"
-    })
-    
-    (ruleset "Ruleset/Tab Parallel Connections (Suggested)" {
-        "Board/Parallel Connections Capture tracks" "Variant/Tab Parallel Connections" "Dice/D2"
-    })
-    
-    (ruleset "Ruleset/Tab Crosssover 1 (Suggested)" {
-        "Board/Crossover One Capture Track" "Variant/Tab Crossover 1""Dice/D2"
-    })
-    
-    (ruleset "Ruleset/Tab Crossover 2 (Suggested)" {
-        "Board/Crossover Two Capture Track" "Variant/Tab Crossover 2" "Dice/D2"
-    })
-    
-    (ruleset "Ruleset/Tab Crossover 3 (Suggested)" {
-        "Board/Crossover Three Capture Track" "Variant/Tab Crossover 3" "Dice/D2"
-    })
-    
-    (ruleset "Ruleset/Tab Crossover 4 (Suggested)" {
-        "Board/Crossover Four Capture Track" "Variant/Tab Crossover 4" "Dice/D2"
-    })
-    
-    (ruleset "Ruleset/Carnarvon and Carter D6 (Suggested)" {
-        "Board/Parallel Connections Race tracks" "Variant/Carnarvon and Carter" "Dice/D6"
-    })
-    
-    (ruleset "Ruleset/Carter Unmarked D6 (Suggested)" {
-        "Board/Holes Race tracks" "Variant/Carter Unmarked" "Dice/D6"
-    })
-    
-    (ruleset "Ruleset/Carter Marked Holes D6 (Suggested)" {
-        "Board/Holes Race tracks" "Variant/Carter Marked" "Dice/D6"
-    })
-    
-    (ruleset "Ruleset/Carter Crossover 1 D6 (Suggested)" {
-        "Board/Crossover One Race Track" "Variant/Carter Crossover 1" "Dice/D6"
-    })
-    
-    (ruleset "Ruleset/Carter Crossover 2 D6 (Suggested)" {
-        "Board/Crossover Two Race Track" "Variant/Carter Crossover 2" "Dice/D6"
-    })
-    
-    (ruleset "Ruleset/Carter Crossover 3 D6 (Suggested)" {
-        "Board/Crossover Three Race Track" "Variant/Carter Crossover 3" "Dice/D6"
-    })
-    
-    (ruleset "Ruleset/Carter Crossover 4 D6 (Suggested)" {
-        "Board/Crossover Four Race Track" "Variant/Carter Crossover 4""Dice/D6"
     })
     
 })
@@ -2228,6 +2342,14 @@
         (useFor "Ruleset/Carter Crossover 4 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
         (useFor "Ruleset/Carter Crossover 4 D6 (Suggested)" (show Line {{0 29} {1 32} {30 3} {4 33} {5 38} {34 9} {5 14} {34 43} {33 48} {4 19} {4 20} {29 53} {0 24} {25 57} {54 28}}))
         
+        (useFor "Ruleset/Carter Crossover 5 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
+        (useFor "Ruleset/Carter Crossover 5 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
+        (useFor "Ruleset/Carter Crossover 5 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Crossover 5 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Crossover 5 (Suggested)" (show Line {{5 34} {7 36}}))
+        (useFor "Ruleset/Carter Crossover 5 (Suggested)" (show Line {{43 48} {48 53}} curve:{-0.5 0 -0.5 0}))
+        (useFor "Ruleset/Carter Crossover 5 (Suggested)" (show Line {{14 19} {19 24}} curve:{0.5 0 0.5 0}))
+        (useFor "Ruleset/Carter Crossover 5 (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
     })
     
     (ai 
