@@ -2057,6 +2057,11 @@
         "Board/Crossover Five Race Track" "Variant/Carter Crossover 5" "Dice/D4"
     })
     
+   (ruleset "Ruleset/Carter Marked Holes D4 (Suggested)" {
+       "Board/Holes Race tracks" "Variant/Carter Marked" "Dice/D4"
+    })
+    
+    
     
     (ruleset "Ruleset/Tab Crossover 5 D6 (Suggested)" {
         
@@ -2130,9 +2135,6 @@
         
     })
     
-    (ruleset "Ruleset/Carter Marked Holes D4 (Suggested)" {
-        
-    })
     
     
     
@@ -2540,6 +2542,12 @@
         (useFor "Ruleset/Carter Crossover 5 D4 (Suggested)" (show Line {{5 34} {7 36}}))
         (useFor "Ruleset/Carter Crossover 5 D4 (Suggested)" (show Line {{43 48} {48 53}} curve:{-0.5 0 -0.5 0}))
         (useFor "Ruleset/Carter Crossover 5 D4 (Suggested)" (show Line {{14 19} {19 24}} curve:{0.5 0 0.5 0}))
+        
+        (useFor "Ruleset/Carter Marked Holes D4 (Suggested)" (show Symbol "Disc" (sites {0 5 7 9 14 19 24 58 53  48 43 38 36 34 29}) scale:2))        
+        (useFor "Ruleset/Carter Marked Holes D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
+        (useFor "Ruleset/Carter Marked Holes D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
+        (useFor "Ruleset/Carter Marked Holes D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Marked Holes D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
     })
     
     (ai 
