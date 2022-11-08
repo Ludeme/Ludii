@@ -223,6 +223,7 @@
 (option "Dice" <Dice> args:{ <die>}
     {
     (item "D2" <("StickDice" 4)> "The game is using stick dices.")
+    (item "D4" <(dice d:4 num:1)> "The game is using one D4 die.")
     (item "D6" <(dice d:6 num:1)> "The game is using one D6 die.")
     }
 )
@@ -2021,11 +2022,15 @@
     })
     
     (ruleset "Ruleset/Carter Crossover 4 D6 (Suggested)" {
-        "Board/Crossover Four Race Track" "Variant/Carter Crossover 4""Dice/D6"
+        "Board/Crossover Four Race Track" "Variant/Carter Crossover 4" "Dice/D6"
     })
     
     (ruleset "Ruleset/Carter Crossover 5 D6 (Suggested)" {
-        "Board/Crossover Five Race Track" "Variant/Carter Crossover 5""Dice/D6"
+        "Board/Crossover Five Race Track" "Variant/Carter Crossover 5" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Carter and Carnarvon D4 (Suggested)" {
+        "Board/Parallel Connections Race tracks" "Variant/Carnarvon and Carter" "Dice/D4"
     })
     
     
@@ -2128,10 +2133,6 @@
     })
     
     (ruleset "Ruleset/Carter Unmarked D4 (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Carter and Carnarvon D4 (Suggested)" {
         
     })
     
@@ -2341,6 +2342,7 @@
         (useFor "Ruleset/Carnarvon and Carter (Suggested)" (board Style HoundsAndJackals))  
         (useFor "Ruleset/Carnarvon and Carter (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
         (useFor "Ruleset/Carnarvon and Carter D6 (Suggested)" (board Style HoundsAndJackals))  
+        (useFor "Ruleset/Carter and Carnarvon D4 (Suggested)" (board Style HoundsAndJackals))  
         
         (useFor "Ruleset/Tab Parallel Connections (Suggested)" (board Style HoundsAndJackals))   
         (useFor "Ruleset/Tab Parallel Connections (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
