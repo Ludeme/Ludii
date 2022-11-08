@@ -59,13 +59,17 @@
     
     (rules 
         (start { 
-            (place Stack "Disc1" 7 count:8)
+            (place Stack "Disc1" 10 count:5)
             
-            (place Stack "Disc1" 5 count:7)
+            (place Stack "Disc1" 11 count:5)
             
-            (place Stack "Disc2" 20 count:8)
+            (place Stack "Disc1" 12 count:5)
             
-            (place Stack "Disc2" 18 count:7)
+            (place Stack "Disc2" 23 count:5)
+            
+            (place Stack "Disc2" 24 count:5)
+            
+            (place Stack "Disc2" 25 count:5)
             }
         )
         
@@ -105,15 +109,9 @@
         
         (end 
             (if 
-                (= 
-                    (count Pieces Mover)
-                    
-                    (- 
-                        (count Pieces All)
-                    2)
-                )
+                (no Pieces Mover)
                 
-                (byScore)
+                (result Mover Win)
             )
         )
     )

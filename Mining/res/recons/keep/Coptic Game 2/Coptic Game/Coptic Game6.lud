@@ -105,15 +105,9 @@
         
         (end 
             (if 
-                (= 
-                    (count Pieces Mover)
-                    
-                    (- 
-                        (count Pieces All)
-                    2)
-                )
+                (no Pieces Mover)
                 
-                (byScore)
+                (result Mover Win)
             )
         )
     )

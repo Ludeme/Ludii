@@ -11429,8 +11429,16 @@ public enum Concept
 				{
 					if(concept.dataType().equals(ConceptDataType.BooleanData))
 					{
-						if(!booleanConcepts.get(concept.id()))
-								return false;
+						if(minValue == 1)
+						{
+							if(!booleanConcepts.get(concept.id()))
+									return false;
+						}
+						else
+						{
+							if(booleanConcepts.get(concept.id()))
+									return false;
+						}
 					}
 					else if(concept.type.equals(ConceptType.Start))
 					{
