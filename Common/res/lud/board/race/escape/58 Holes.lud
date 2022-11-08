@@ -2068,6 +2068,10 @@
    (ruleset "Ruleset/Tab Marked (Throw) D4 (Suggested)" {
        "Board/Holes Capture tracks" "Variant/Tab Marked Throw" "Dice/D4"
    })
+   
+   (ruleset "Ruleset/Tab Marked (Safe) D4 (Suggested)" {
+       "Board/Holes Capture tracks" "Variant/Tab Marked Safe" "Dice/D4"
+   })
     
     
     
@@ -2128,10 +2132,6 @@
     })
     
     (ruleset "Ruleset/Tab Parallel Connections D4 (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Tab Marked (Safe) D4 (Suggested)" {
         
     })
     
@@ -2561,6 +2561,13 @@
         (useFor "Ruleset/Tab Marked (Throw) D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
         (useFor "Ruleset/Tab Marked (Throw) D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
         (useFor "Ruleset/Tab Marked (Throw) D4 (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
+        
+        (useFor "Ruleset/Tab Marked (Safe) D4 (Suggested)" (show Symbol "Disc" (sites {0 5 7 9 14 19 24 58 53  48 43 38 36 34 29}) scale:2))        
+        (useFor "Ruleset/Tab Marked (Safe) D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
+        (useFor "Ruleset/Tab Marked (Safe) D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
+        (useFor "Ruleset/Tab Marked (Safe) D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
+        (useFor "Ruleset/Tab Marked (Safe) D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
+        (useFor "Ruleset/Tab Marked (Safe) D4 (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
     })
     
     (ai 
