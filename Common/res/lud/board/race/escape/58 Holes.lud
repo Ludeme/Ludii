@@ -174,31 +174,31 @@
 )
 
 (define "HoundsAndJackalsCrossoverFive"
-	    (graph
-	            vertices:{ 
-	            { 9 27} { 9 24} { 9 21} { 9 18} { 9 15} { 9 12} { 9 9} { 9 6} 
-	            { 9 3} { 9 0} { 3 0} { 3 2} { 3 4} { 3 6} { 3 8} { 3 10} 
-	            { 3 12} { 3 14} { 3 16} { 3 18} { 3 20} { 3 22} { 3 24} { 3 26} 
-	            { 3 28} { 4 30} { 6 31} { 8 32} {10 33} {15 27} {15 24} {15 21} 
-	            {15 18} {15 15} {15 12} {15 9} {15 6} {15 3} {15 0} {21 0} 
-	            {21 2} {21 4} {21 6} {21 8} {21 10} {21 12} {21 14} {21 16} 
-	            {21 18} {21 20} {21 22} {21 24} {21 26} {21 28} {20 30} {18 31}
-	            {16 32} {14 33} 
-	            
-	            {12 33}
-	            }
-	            edges:{ 
-	            { 0 1} { 1 2} { 2 3} { 3 4} { 4 5} { 5 6} { 6 7} { 7 8} 
-	            { 8 9} { 9 10} {10 11} {11 12} {12 13} {13 14} {14 15} {15 16} 
-	            {16 17} {17 18} {18 19} {19 20} {20 21} {21 22} {22 23} {23 24} 
-	            {24 25} {25 26} {26 27} {27 28} {28 58} {29 30} {30 31} {31 32} 
-	            {32 33} {33 34} {34 35} {35 36} {36 37} {37 38} {38 39} {39 40} 
-	            {40 41} {41 42} {42 43} {43 44} {44 45} {45 46} {46 47} {47 48} 
-	            {48 49} {49 50} {50 51} {51 52} {52 53} {53 54} {54 55} {55 56} 
-	            {56 57} {57 58}
-	            } 
-	        )
-	)
+    (graph
+        vertices:{ 
+        { 9 27} { 9 24} { 9 21} { 9 18} { 9 15} { 9 12} { 9 9} { 9 6} 
+        { 9 3} { 9 0} { 3 0} { 3 2} { 3 4} { 3 6} { 3 8} { 3 10} 
+        { 3 12} { 3 14} { 3 16} { 3 18} { 3 20} { 3 22} { 3 24} { 3 26} 
+        { 3 28} { 4 30} { 6 31} { 8 32} {10 33} {15 27} {15 24} {15 21} 
+        {15 18} {15 15} {15 12} {15 9} {15 6} {15 3} {15 0} {21 0} 
+        {21 2} {21 4} {21 6} {21 8} {21 10} {21 12} {21 14} {21 16} 
+        {21 18} {21 20} {21 22} {21 24} {21 26} {21 28} {20 30} {18 31}
+        {16 32} {14 33} 
+        
+        {12 33}
+        }
+        edges:{ 
+        { 0 1} { 1 2} { 2 3} { 3 4} { 4 5} { 5 6} { 6 7} { 7 8} 
+        { 8 9} { 9 10} {10 11} {11 12} {12 13} {13 14} {14 15} {15 16} 
+        {16 17} {17 18} {18 19} {19 20} {20 21} {21 22} {22 23} {23 24} 
+        {24 25} {25 26} {26 27} {27 28} {28 58} {29 30} {30 31} {31 32} 
+        {32 33} {33 34} {34 35} {35 36} {36 37} {37 38} {38 39} {39 40} 
+        {40 41} {41 42} {42 43} {43 44} {44 45} {45 46} {46 47} {47 48} 
+        {48 49} {49 50} {50 51} {51 52} {52 53} {53 54} {54 55} {55 56} 
+        {56 57} {57 58}
+        } 
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -374,17 +374,17 @@
     "crossover 4 board.")
     
     (item "Crossover Five Race Track" 
-            <
-            (board 
-                ("HoundsAndJackalsCrossoverFive")
-                {
-                (track "Track1" {59 0..28 58} P1 directed:True)
-                (track "Track2" {60 29..58  } P2 directed:True)
-                }
-                use:Vertex
-            )
-            > 
-        "crossover 5 board.")
+        <
+        (board 
+            ("HoundsAndJackalsCrossoverFive")
+            {
+            (track "Track1" {59 0..28 58} P1 directed:True)
+            (track "Track2" {60 29..58  } P2 directed:True)
+            }
+            use:Vertex
+        )
+        > 
+    "crossover 5 board.")
     
     (item "Crossover Four Capture Track" 
         <
@@ -400,17 +400,17 @@
     "crossover 4 board with capture.")
     
     (item "Crossover Five Capture Track" 
-            <
-            (board 
-                ("HoundsAndJackalsCrossoverFive")
-                {
-                (track "Track1" {0..28 58..29} loop:True P1)
-                (track "Track2" {29..58 28..0 } loop:True P2)
-                }
-                use:Vertex
-            )
-            > 
-        "crossover 5 board with capture.")
+        <
+        (board 
+            ("HoundsAndJackalsCrossoverFive")
+            {
+            (track "Track1" {0..28 58..29} loop:True P1)
+            (track "Track2" {29..58 28..0 } loop:True P2)
+            }
+            use:Vertex
+        )
+        > 
+    "crossover 5 board with capture.")
     }
 )
 
@@ -825,74 +825,74 @@
     )
     
     (item "Carter Crossover 5" 
+        
+        <(hand Each)>
+        
+        <> 
+        
+        <
+        (if (= "ProgressOnTrack" 58)
+            "RemovePiece"
+            (if ("IsNotOffBoard" "ProgressOnTrack") 	 			
+                (if (not ("IsFriendAt" "ProgressOnTrack"))
+                    (move 
+                        (from) 
+                        (to "ProgressOnTrack"
+                            (apply
+                                (if ("IsEnemyAt" (to)) (move (from (to)) (to (handSite (who at:(to))))))
+                            )
+                        )
+                        (then
+                            (if (!= (last To) (mapEntry (last To))) (moveAgain))
+                        )
+                    )
+                )
+            )
+        )
+        > 
+        
+        <(map {(pair 5 34) (pair 36 7) (pair 14 19) (pair 19 24) (pair 43 48) (pair 48 53) })>
+        
+        <
+        
+        (define "ProgressOnTrack" 
+            (if (or (= (from) 59) (<= (from) 28))
+                ("NextSiteOnTrack" (count Pips) "Track1")
+                ("NextSiteOnTrack" (count Pips) "Track2")
+            )
+        )
+        
+        (rules 
+            (start {
+                (place "Marker1" (handSite P1) count:5)
+                (place "Marker2" (handSite P2) count:5)
+            })
             
-            <(hand Each)>
-            
-            <> 
-            
-            <
-            (if (= "ProgressOnTrack" 58)
-                "RemovePiece"
-                (if ("IsNotOffBoard" "ProgressOnTrack") 	 			
-                    (if (not ("IsFriendAt" "ProgressOnTrack"))
+            (play 
+                (if ("SameTurn")
+                    (or
+                        (move Pass)
                         (move 
-                            (from) 
-                            (to "ProgressOnTrack"
+                            (from (last To))
+                            (to (mapEntry (last To))
                                 (apply
                                     (if ("IsEnemyAt" (to)) (move (from (to)) (to (handSite (who at:(to))))))
-                                )
+                                )		
                             )
                             (then
                                 (if (!= (last To) (mapEntry (last To))) (moveAgain))
                             )
                         )
                     )
+                    ("RollMove" (or (forEach Piece) (forEach Piece container:(mover))))
                 )
             )
-            > 
-            
-            <(map {(pair 5 34) (pair 36 7) (pair 14 19) (pair 19 24) (pair 43 48) (pair 48 53) })>
-            
-            <
-            
-            (define "ProgressOnTrack" 
-                (if (or (= (from) 59) (<= (from) 28))
-                    ("NextSiteOnTrack" (count Pips) "Track1")
-                    ("NextSiteOnTrack" (count Pips) "Track2")
-                )
-            )
-            
-            (rules 
-                (start {
-                    (place "Marker1" (handSite P1) count:5)
-                    (place "Marker2" (handSite P2) count:5)
-                })
-                
-                (play 
-                    (if ("SameTurn")
-                        (or
-                            (move Pass)
-                            (move 
-                                (from (last To))
-                                (to (mapEntry (last To))
-                                    (apply
-                                        (if ("IsEnemyAt" (to)) (move (from (to)) (to (handSite (who at:(to))))))
-                                    )		
-                                )
-                                (then
-                                    (if (!= (last To) (mapEntry (last To))) (moveAgain))
-                                )
-                            )
-                        )
-                        ("RollMove" (or (forEach Piece) (forEach Piece container:(mover))))
-                    )
-                )
-                (end ("EscapeWin"))
-            )
-            >
-            
-            "Rules from Carter Crossover 5."
+            (end ("EscapeWin"))
         )
+        >
+        
+        "Rules from Carter Crossover 5."
+    )
     
     (item "Tab No Marked Holes" 
         <>
@@ -1807,32 +1807,31 @@
     )
     
     (item "Tab Crossover 5" 
-            <>
-            <> 
-            
-            <
-            (if (if ("InOpponentHome" (from)) ("AllPiecesInOpponentHome") True)
-                (if (= 0 (state at:(from)))
-                    (forEach Site (sites (values Remembered "Throws"))
+        <>
+        <> 
+        
+        <
+        (if (if ("InOpponentHome" (from)) ("AllPiecesInOpponentHome") True)
+            (if (= 0 (state at:(from)))
+                (forEach Site (sites (values Remembered "Throws"))
+                    (if ("CaptureCondition")
+                        (move 
+                            (from) 
+                            (to ("NextSiteOnTrack" (site)) (apply (forget Value "Throws" (site))))
+                            (then ("Teleportation"))
+                        )
+                    )
+                )
+                (forEach Site (sites (values Remembered "Throws"))
+                    (if (= 1 (site))
                         (if ("CaptureCondition")
                             (move 
                                 (from) 
                                 (to ("NextSiteOnTrack" (site)) (apply (forget Value "Throws" (site))))
-                                (then ("Teleportation"))
-                            )
-                        )
-                    )
-                    (forEach Site (sites (values Remembered "Throws"))
-                        (if (= 1 (site))
-                            (if ("CaptureCondition")
-                                (move 
-                                    (from) 
-                                    (to ("NextSiteOnTrack" (site)) (apply (forget Value "Throws" (site))))
-                                    (then 
-                                        (and
-                                            (set State at:(last To) 0)
-                                            ("Teleportation")
-                                        )
+                                (then 
+                                    (and
+                                        (set State at:(last To) 0)
+                                        ("Teleportation")
                                     )
                                 )
                             )
@@ -1840,88 +1839,89 @@
                     )
                 )
             )
-            > 
-            <
-            (map "ConnectionP1" {(pair 5 34) (pair 36 7) (pair 14 19) (pair 19 24) (pair 53 48) (pair 48 43) })
-            (map "ConnectionP2" {(pair 34 5) (pair 7 36) (pair 19 14) (pair 24 19) (pair 48 53) (pair 43 48) })
-            (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)  })
-            >
-            
-            <
-            (define "ThrowValue" (mapEntry "Throw" (count Pips)))
-            (define "IsSpecialThrow" (is In ("ThrowValue") (sites {1 4 6})))
-            (define "ThrowToPlay" (sites (values Remembered "Throws")))
-            (define "CaptureCondition"
-                (or 
-                    (is Empty ("NextSiteOnTrack" (site))) 
-                    (is Enemy (who at:("NextSiteOnTrack" (site)))) 
-                )		
-            )
-            
-            (define "Connection" (if (is Mover P1) (mapEntry "ConnectionP1" #1) (mapEntry "ConnectionP2" #1)))
-            
-            (define "Teleportation"
-                (if (!= (last To) ("Connection" (last To)))
-                    (if (not ("IsFriendAt" ("Connection" (last To))))
-                        (move (from (last To)) (to ("Connection" (last To))))
-                    )
-                )		
-            )
-            
-            (define "InOpponentHome" (is In #1 (sites Start (piece (id "Marker" Next)))))
-            (define "AllPiecesInOpponentHome" (all Sites (sites Occupied by:Mover) if:(is In (site) (sites Start (piece (id "Marker" Next))))))
-            
-            (rules 
-                (start {
-                    (place "Marker1" (sites {0..4}) state:1)
-                    (place "Marker2" (sites {29..33}) state:1)
-                })
-                
-                phases:{
-                (phase "GetMoves"
-                    (play 
-                        ("RollMove"
-                            (move Pass
-                                (then
-                                    (remember Value "Throws" "ThrowValue")
-                                )
-                            )
-                            (then (moveAgain))
-                        )
-                    )
-                    
-                    (nextPhase
-                        (not ("IsSpecialThrow"))
-                        "Movement"
-                    )
-                    
-                )
-                (phase "Movement"
-                    (play
-                        (if (can Move (forEach Piece))
-                            (forEach Piece
-                                (then
-                                    (if ("HasToPlay") (moveAgain))	
-                                )
-                            )
-                            (move Pass (then (forget Value "Throws" All)))
-                        )
-                    )
-                    
-                    (nextPhase
-                        (not ("HasToPlay"))
-                        "GetMoves"
-                    )
-                )
-                
-                }
-                
-                (end ("CaptureAll" Next))
-            )
-            >
-            
-            "Rules from Tab Crossover 5."
         )
+        > 
+        <
+        (map "ConnectionP1" {(pair 5 34) (pair 36 7) (pair 14 19) (pair 19 24) (pair 53 48) (pair 48 43) })
+        (map "ConnectionP2" {(pair 34 5) (pair 7 36) (pair 19 14) (pair 24 19) (pair 48 53) (pair 43 48) })
+        (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)  })
+        >
+        
+        <
+        (define "ThrowValue" (mapEntry "Throw" (count Pips)))
+        (define "IsSpecialThrow" (is In ("ThrowValue") (sites {1 4 6})))
+        (define "ThrowToPlay" (sites (values Remembered "Throws")))
+        (define "CaptureCondition"
+            (or 
+                (is Empty ("NextSiteOnTrack" (site))) 
+                (is Enemy (who at:("NextSiteOnTrack" (site)))) 
+            )		
+        )
+        
+        (define "Connection" (if (is Mover P1) (mapEntry "ConnectionP1" #1) (mapEntry "ConnectionP2" #1)))
+        
+        (define "Teleportation"
+            (if (!= (last To) ("Connection" (last To)))
+                (if (not ("IsFriendAt" ("Connection" (last To))))
+                    (move (from (last To)) (to ("Connection" (last To))))
+                )
+            )		
+        )
+        
+        (define "InOpponentHome" (is In #1 (sites Start (piece (id "Marker" Next)))))
+        (define "AllPiecesInOpponentHome" (all Sites (sites Occupied by:Mover) if:(is In (site) (sites Start (piece (id "Marker" Next))))))
+        
+        (rules 
+            (start {
+                (place "Marker1" (sites {0..4}) state:1)
+                (place "Marker2" (sites {29..33}) state:1)
+            })
+            
+            phases:{
+            (phase "GetMoves"
+                (play 
+                    ("RollMove"
+                        (move Pass
+                            (then
+                                (remember Value "Throws" "ThrowValue")
+                            )
+                        )
+                        (then (moveAgain))
+                    )
+                )
+                
+                (nextPhase
+                    (not ("IsSpecialThrow"))
+                    "Movement"
+                )
+                
+            )
+            (phase "Movement"
+                (play
+                    (if (can Move (forEach Piece))
+                        (forEach Piece
+                            (then
+                                (if ("HasToPlay") (moveAgain))	
+                            )
+                        )
+                        (move Pass (then (forget Value "Throws" All)))
+                    )
+                )
+                
+                (nextPhase
+                    (not ("HasToPlay"))
+                    "GetMoves"
+                )
+            )
+            
+            }
+            
+            (end ("CaptureAll" Next))
+        )
+        >
+        
+        "Rules from Tab Crossover 5."
+    )
     }
 )
 
@@ -2057,83 +2057,83 @@
         "Board/Crossover Five Race Track" "Variant/Carter Crossover 5" "Dice/D4"
     })
     
-   (ruleset "Ruleset/Carter Marked Holes D4 (Suggested)" {
-       "Board/Holes Race tracks" "Variant/Carter Marked" "Dice/D4"
+    (ruleset "Ruleset/Carter Marked Holes D4 (Suggested)" {
+        "Board/Holes Race tracks" "Variant/Carter Marked" "Dice/D4"
     })
-   
-   (ruleset "Ruleset/Tab Unmarked D4 (Suggested)" {
-       "Board/Holes Capture tracks" "Variant/Tab No Marked Holes" "Dice/D4"
-   })
-   
-   (ruleset "Ruleset/Tab Marked (Throw) D4 (Suggested)" {
-       "Board/Holes Capture tracks" "Variant/Tab Marked Throw" "Dice/D4"
-   })
-   
-   (ruleset "Ruleset/Tab Marked (Safe) D4 (Suggested)" {
-       "Board/Holes Capture tracks" "Variant/Tab Marked Safe" "Dice/D4"
-   })
-   
-   (ruleset "Ruleset/Tab Parallel Connections D4 (Suggested)" {
-       "Board/Parallel Connections Capture tracks" "Variant/Tab Parallel Connections" "Dice/D4"
-   })
-   
-   (ruleset "Ruleset/Tab Crossover 1 D4 (Suggested)" {
-       "Board/Crossover One Capture Track" "Variant/Tab Crossover 1" "Dice/D4"
-   })
-   
-   (ruleset "Ruleset/Tab Crossover 2 D4 (Suggested)" {
-       "Board/Crossover Two Capture Track" "Variant/Tab Crossover 2" "Dice/D4"
-   })
-   
-   (ruleset "Ruleset/Tab Crossover 3 D4 (Suggested)" {
-       "Board/Crossover Three Capture Track" "Variant/Tab Crossover 3" "Dice/D4"
-   })
-   
-   (ruleset "Ruleset/Tab Crossover 4 D4 (Suggested)" {
-       "Board/Crossover Four Capture Track" "Variant/Tab Crossover 4" "Dice/D4"
-   })
-   
-   (ruleset "Ruleset/Tab Crossover 5 D4 (Suggested)" {
-       "Board/Crossover Five Capture Track" "Variant/Tab Crossover 5" "Dice/D4"
-   })
-   
-   (ruleset "Ruleset/Tab Unmarked D6 (Suggested)" {
-       "Board/Holes Capture tracks" "Variant/Tab No Marked Holes" "Dice/D6"
-   })
-   
-   (ruleset "Ruleset/Tab Marked (Throw) D6 (Suggested)" {
-       "Board/Holes Capture tracks" "Variant/Tab Marked Throw" "Dice/D6"
-   })
-   
-   (ruleset "Ruleset/Tab Marked (Safe) D6 (Suggested)" {
-       "Board/Holes Capture tracks" "Variant/Tab Marked Safe" "Dice/D6"
-   })
-   
-   (ruleset "Ruleset/Tab Parallel Connections D6 (Suggested)" {
-       "Board/Parallel Connections Capture tracks" "Variant/Tab Parallel Connections" "Dice/D6"
-   })
-   
-   (ruleset "Ruleset/Tab Crossover 1 D6 (Suggested)" {
-       "Board/Crossover One Capture Track" "Variant/Tab Crossover 1" "Dice/D6"
-   })
-   
-   (ruleset "Ruleset/Tab Crossover 2 D6 (Suggested)" {
-       "Board/Crossover Two Capture Track" "Variant/Tab Crossover 2" "Dice/D6"
-   })
-   
-   (ruleset "Ruleset/Tab Crossover 3 D6 (Suggested)" {
-       "Board/Crossover Three Capture Track" "Variant/Tab Crossover 3" "Dice/D6"
-   })
-   
-   (ruleset "Ruleset/Tab Crossover 4 D6 (Suggested)" {
-       "Board/Crossover Four Capture Track" "Variant/Tab Crossover 4" "Dice/D6"
-   })
-   
-   (ruleset "Ruleset/Tab Crossover 5 D6 (Suggested)" {
-       "Board/Crossover Five Capture Track" "Variant/Tab Crossover 5" "Dice/D6"
-   })
     
-   // ----------- From here only incomplete rulesets 
+    (ruleset "Ruleset/Tab Unmarked D4 (Suggested)" {
+        "Board/Holes Capture tracks" "Variant/Tab No Marked Holes" "Dice/D4"
+    })
+    
+    (ruleset "Ruleset/Tab Marked (Throw) D4 (Suggested)" {
+        "Board/Holes Capture tracks" "Variant/Tab Marked Throw" "Dice/D4"
+    })
+    
+    (ruleset "Ruleset/Tab Marked (Safe) D4 (Suggested)" {
+        "Board/Holes Capture tracks" "Variant/Tab Marked Safe" "Dice/D4"
+    })
+    
+    (ruleset "Ruleset/Tab Parallel Connections D4 (Suggested)" {
+        "Board/Parallel Connections Capture tracks" "Variant/Tab Parallel Connections" "Dice/D4"
+    })
+    
+    (ruleset "Ruleset/Tab Crossover 1 D4 (Suggested)" {
+        "Board/Crossover One Capture Track" "Variant/Tab Crossover 1" "Dice/D4"
+    })
+    
+    (ruleset "Ruleset/Tab Crossover 2 D4 (Suggested)" {
+        "Board/Crossover Two Capture Track" "Variant/Tab Crossover 2" "Dice/D4"
+    })
+    
+    (ruleset "Ruleset/Tab Crossover 3 D4 (Suggested)" {
+        "Board/Crossover Three Capture Track" "Variant/Tab Crossover 3" "Dice/D4"
+    })
+    
+    (ruleset "Ruleset/Tab Crossover 4 D4 (Suggested)" {
+        "Board/Crossover Four Capture Track" "Variant/Tab Crossover 4" "Dice/D4"
+    })
+    
+    (ruleset "Ruleset/Tab Crossover 5 D4 (Suggested)" {
+        "Board/Crossover Five Capture Track" "Variant/Tab Crossover 5" "Dice/D4"
+    })
+    
+    (ruleset "Ruleset/Tab Unmarked D6 (Suggested)" {
+        "Board/Holes Capture tracks" "Variant/Tab No Marked Holes" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Tab Marked (Throw) D6 (Suggested)" {
+        "Board/Holes Capture tracks" "Variant/Tab Marked Throw" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Tab Marked (Safe) D6 (Suggested)" {
+        "Board/Holes Capture tracks" "Variant/Tab Marked Safe" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Tab Parallel Connections D6 (Suggested)" {
+        "Board/Parallel Connections Capture tracks" "Variant/Tab Parallel Connections" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Tab Crossover 1 D6 (Suggested)" {
+        "Board/Crossover One Capture Track" "Variant/Tab Crossover 1" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Tab Crossover 2 D6 (Suggested)" {
+        "Board/Crossover Two Capture Track" "Variant/Tab Crossover 2" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Tab Crossover 3 D6 (Suggested)" {
+        "Board/Crossover Three Capture Track" "Variant/Tab Crossover 3" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Tab Crossover 4 D6 (Suggested)" {
+        "Board/Crossover Four Capture Track" "Variant/Tab Crossover 4" "Dice/D6"
+    })
+    
+    (ruleset "Ruleset/Tab Crossover 5 D6 (Suggested)" {
+        "Board/Crossover Five Capture Track" "Variant/Tab Crossover 5" "Dice/D6"
+    })
+    
+    // ----------- From here only incomplete rulesets 
     
     (ruleset "Ruleset/Labyrinth (Incomplete)" {
         
@@ -2548,7 +2548,7 @@
         (useFor "Ruleset/Carter Marked Holes D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
         (useFor "Ruleset/Carter Marked Holes D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
         (useFor "Ruleset/Carter Marked Holes D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
-    
+        
         (useFor "Ruleset/Tab Unmarked D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
         (useFor "Ruleset/Tab Unmarked D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
         (useFor "Ruleset/Tab Unmarked D4 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))

@@ -364,7 +364,7 @@ NEW CTOR
 (is <isAngleType> [<siteType>] at:<int> <boolean> <boolean>)
 PARAM JAVADOC: <isAngleType>: The type of query to perform.
 PARAM JAVADOC: [<siteType>]: The graph element type [default of the board].
-PARAM JAVADOC: at:<int>: The site to look the angle
+PARAM JAVADOC: at:<int>: The site to look the angle.
 PARAM JAVADOC: <boolean>: The condition on the left site.
 PARAM JAVADOC: <boolean>: The condition on the right site.
 EXAMPLE: (is Acute at:(last To) (is Enemy (who at:(site))) (is Enemy (who at:(site))))
@@ -5180,7 +5180,7 @@ PARAM JAVADOC: [offsetY:<float>]: Y offset for board center.
 EXAMPLE: (board Placement scale:0.8)
 NEW CTOR
 (board Curvature <float>)
-PARAM JAVADOC: <float>: 
+PARAM JAVADOC: <float>: The curve offest.
 EXAMPLE: (board Curvature 0.45)
 TYPE: metadata.graphics.board.BoardBooleanType
 TYPE JAVADOC: Defines the types of Board metadata depending only of a boolean.
