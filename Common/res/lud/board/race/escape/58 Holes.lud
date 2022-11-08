@@ -2024,6 +2024,13 @@
         "Board/Crossover Four Race Track" "Variant/Carter Crossover 4""Dice/D6"
     })
     
+    (ruleset "Ruleset/Carter Crossover 5 D6 (Suggested)" {
+        "Board/Crossover Five Race Track" "Variant/Carter Crossover 5""Dice/D6"
+    })
+    
+    
+    
+    
     (ruleset "Ruleset/Tab Crossover 5 D6 (Suggested)" {
         
     })
@@ -2125,10 +2132,6 @@
     })
     
     (ruleset "Ruleset/Carter and Carnarvon D4 (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Carter Crossover 5 D6 (Suggested)" {
         
     })
     
@@ -2489,6 +2492,14 @@
         (useFor "Ruleset/Tab Crossover 5 (Suggested)" (show Line {{43 48} {48 53}} curve:{-0.5 0 -0.5 0}))
         (useFor "Ruleset/Tab Crossover 5 (Suggested)" (show Line {{14 19} {19 24}} curve:{0.5 0 0.5 0}))
         (useFor "Ruleset/Tab Crossover 5 (Suggested)" (piece Colour "Die" state:0 fillColour:(colour Yellow)))
+        
+        (useFor "Ruleset/Carter Crossover 5 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:-0.52))
+        (useFor "Ruleset/Carter Crossover 5 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.6 scaleY:0.01 offsetX:0 offsetY:0.52))
+        (useFor "Ruleset/Carter Crossover 5 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Crossover 5 D6 (Suggested)" (board Background image:"rectangle.svg" fillColour:(colour VeryDarkGrey) edgeColour:(colour VeryDarkGrey) scaleX:0.01 scaleY:1.675 offsetX:-0.295 offsetY:-0.001))
+        (useFor "Ruleset/Carter Crossover 5 D6 (Suggested)" (show Line {{5 34} {7 36}}))
+        (useFor "Ruleset/Carter Crossover 5 D6 (Suggested)" (show Line {{43 48} {48 53}} curve:{-0.5 0 -0.5 0}))
+        (useFor "Ruleset/Carter Crossover 5 D6 (Suggested)" (show Line {{14 19} {19 24}} curve:{0.5 0 0.5 0}))
     })
     
     (ai 
