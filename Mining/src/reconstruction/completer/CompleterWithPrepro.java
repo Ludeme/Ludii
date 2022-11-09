@@ -63,11 +63,13 @@ public class CompleterWithPrepro
 	public CompleterWithPrepro
 	(
 		final double conceptualWeight,
-		final double historicalWeight
+		final double historicalWeight,
+		final double threshold
 	)
 	{
 		this.conceptualWeight = conceptualWeight;
 		this.historicalWeight = historicalWeight;
+		this.threshold = threshold;
 		ludMap = new HashMap<Integer, String>();
 		
 		// Get the ids and descriptions of the rulesets.
@@ -376,7 +378,7 @@ public class CompleterWithPrepro
 						if(score >= threshold)
 							copyLudMap.put(entry.getKey(), entry.getValue());
 					}
-					System.out.println("rulesets used to recons = " + copyLudMap.size());
+					System.out.println("num Rulesets used to recons = " + copyLudMap.size());
 				}
 			
 				// Check only the luds respecting the threshold.
