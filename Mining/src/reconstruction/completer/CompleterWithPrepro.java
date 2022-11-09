@@ -150,7 +150,7 @@ public class CompleterWithPrepro
 		
 		Completion comp = new Completion(rulesetDescriptionOneLine);
 		System.out.println("new threshold = " + threshold);
-		updateLudMapUsed(rulesetReconId);
+		applyThresholdToLudMap(rulesetReconId);
 		while (needsCompleting(comp.raw()))
 		{
 			//System.out.println(comp.raw());
@@ -166,7 +166,7 @@ public class CompleterWithPrepro
 					threshold = threshold - 0.01;
 					System.out.println("new threshold = " + threshold);
 					comp = new Completion(rulesetDescriptionOneLine);
-					updateLudMapUsed(rulesetReconId);
+					applyThresholdToLudMap(rulesetReconId);
 			}
 		}
 		
@@ -1003,7 +1003,7 @@ public class CompleterWithPrepro
 	}
 	
 	/** To update the list of luds to use for recons after each update of the threshold.*/
-	public void updateLudMapUsed(final int rulesetReconId)
+	public void applyThresholdToLudMap(final int rulesetReconId)
 	{
 		ludMapUsed = new HashMap<Integer, String>();
 		for (Map.Entry<Integer, String> entry : ludMap.entrySet()) 
