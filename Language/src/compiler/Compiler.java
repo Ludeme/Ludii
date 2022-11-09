@@ -378,6 +378,73 @@ public class Compiler
 //			compileTask(strIn, symbolName, className, true);
 //		return result;
 	}
+	
+	//-------------------------------------------------------------------------
+
+	/**
+	 * Compile option for reconstruction testing purposes. Does not interact with UI settings. Not
+	 * for release! Create and throws away GameOptions each time.
+	 * 
+	 * Cast the returned object to (Game) in order to use it!
+	 * 
+	 * @param description The description.
+	 * @param isVerbose   True if this is verbose.
+	 * @return Executable Game object if can be compiled, else null.
+	 */
+	public static Object compileReconsTest
+	(
+		final Description description, 
+		final boolean     isVerbose
+	)
+	{
+		final Object game = 	compileRecons
+							(
+								description, 
+								new UserSelections(new ArrayList<String>()), 
+								new Report(),
+								isVerbose
+							);
+		if (game == null)
+			System.out.println("** Compiler.compileTest(): Game compiled but returned null after initialisation.");
+		
+		return game;
+	}
+	
+	//-------------------------------------------------------------------------
+
+	/**
+	 * Cast the returned object to (Game) in order to use it! Do not print any exception.
+	 * 
+	 * @param description    The description.
+	 * @param userSelections The user selections.
+	 * @param report         The report.
+	 * @param isVerbose      True if this is verbose.
+	 * @return Executable Game object if can be compiled, else null.
+	 */
+	public static Object compileRecons
+	(
+		final Description    description,
+		final UserSelections userSelections,
+		final Report         report,
+		final boolean        isVerbose
+	)
+	{
+		try
+		{
+			return compileActual(description, userSelections, report, isVerbose);
+		} 
+		catch (final CompilerException e)
+		{
+			//if (isVerbose)
+//				e.printStackTrace();
+			throw new CompilerException(e.getMessageBody(description.raw()), e);
+		}
+		catch (final Exception e)
+		{
+//			e.printStackTrace();
+			throw new IllegalArgumentException(e);
+		}
+	}
 
 	//-------------------------------------------------------------------------
 
