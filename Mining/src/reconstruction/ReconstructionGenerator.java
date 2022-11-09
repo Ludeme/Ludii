@@ -46,6 +46,7 @@ public class ReconstructionGenerator
 	
 	final static double defaultConceptualWeight = 0.3;
 	final static double defaultHistoricalWeight = 0.7;
+	final static double defaultThreshold = 0.00;
 	
 	/**
 	 * Main method to call the reconstruction with command lines.
@@ -90,7 +91,7 @@ public class ReconstructionGenerator
 
 		// Load from memory
 		final String[] choices = FileHandling.listGames();
-		CompleterWithPrepro completer = new CompleterWithPrepro(conceptualWeight, historicalWeight);
+		CompleterWithPrepro completer = new CompleterWithPrepro(conceptualWeight, historicalWeight, defaultThreshold);
 		for (final String fileName : choices)
 		{
 			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains(reconsPath))
@@ -216,6 +217,9 @@ public class ReconstructionGenerator
 									// All good, add to the list of correct completions.
 									correctCompletions.add(completion);
 									System.out.print( " and with the expected concepts");
+									System.out.println("Score = " + completion.score() + " Cultural Score = " + completion.similarityScore() + " conceptual Score = " + completion.commonExpectedConceptsScore()) ; 
+									System.out.println("ids used = " + completion.idsUsed());
+									System.out.println(completion.raw());
 									System.out.println(correctCompletions.size() + " COMPLETIONS GENERATED.");
 								}
 							}
