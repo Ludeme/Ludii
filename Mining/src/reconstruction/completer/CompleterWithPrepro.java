@@ -43,6 +43,9 @@ public class CompleterWithPrepro
 	/** The ruleset id and their corresponding description formatted on one line */
 	private final Map<Integer, String> ludMap;
 	
+	/** The ruleset ids greater than the threshold. */
+	private Map<Integer, String> ludMapUsed;
+	
 	/** The weight of the expected concepts. */
 	private final double conceptualWeight;
 
@@ -146,10 +149,25 @@ public class CompleterWithPrepro
 		//System.out.println(rulesetDescriptionOneLine);
 		
 		Completion comp = new Completion(rulesetDescriptionOneLine);
+		System.out.println("new threshold = " + threshold);
+		updateLudMapUsed(rulesetReconId);
 		while (needsCompleting(comp.raw()))
 		{
 			//System.out.println(comp.raw());
 			comp = nextCompletionSampled(comp, rulesetReconId);	
+			
+			if(comp == null)
+			{
+				if(threshold == 0.0)
+				{
+					System.out.println("All combinations tried, no result.");
+					return null;
+				}
+					threshold = threshold - 0.01;
+					System.out.println("new threshold = " + threshold);
+					comp = new Completion(rulesetDescriptionOneLine);
+					updateLudMapUsed(rulesetReconId);
+			}
 		}
 		
 //		System.out.println("\nList of completions:");
@@ -338,51 +356,8 @@ public class CompleterWithPrepro
 			final int              rulesetReconId
 		)
 		{
-			Map<Integer, String> copyLudMap = new HashMap<Integer, String>();
-			boolean updateMapList = true;
-			
-			do {
-
-				// To use the thresholds.
-				if(updateMapList)
-				{
-					updateMapList = false;
-					copyLudMap = new HashMap<Integer, String>();
-					for (Map.Entry<Integer, String> entry : ludMap.entrySet()) 
-					{
-						final int rulesetId = entry.getKey().intValue();
-						double culturalSimilarity = 0.0;
-						double conceptualSimilarity = 0.0;
-						if(rulesetReconId == -1) // We do not use the CSN.
-							culturalSimilarity = 1.0;
-						else
-						{
-							final String similaryFilePath = "./res/recons/input/contextualiser/similarity_";
-							File fileSimilarity1 = new File(similaryFilePath + rulesetReconId + ".csv");
-							File fileSimilarity2 = new File(similaryFilePath + entry.getKey().intValue() + ".csv");
-							
-							if(!fileSimilarity1.exists() || !fileSimilarity2.exists() || (rulesetReconId == rulesetId)) // If CSN not computing or comparing the same rulesets, similarity is 0.
-								culturalSimilarity = 0.0;
-							else
-								culturalSimilarity = DistanceUtils.getRulesetCSNDistance(rulesetId, rulesetReconId);
-							
-							conceptualSimilarity = getAVGCommonExpectedConcept(rulesetReconId, rulesetId);
-						}
-	
-						// We ignore all the ludemes coming from a negative similarity value or 0.
-						if(culturalSimilarity <= 0)
-							continue;
-						
-						final double score = historicalWeight * culturalSimilarity + conceptualWeight * conceptualSimilarity;
-						
-						if(score >= threshold)
-							copyLudMap.put(entry.getKey(), entry.getValue());
-					}
-					System.out.println("num Rulesets used to recons = " + copyLudMap.size());
-				}
-			
 				// Check only the luds respecting the threshold.
-				for (Map.Entry<Integer, String> entry : copyLudMap.entrySet()) 
+				for (Map.Entry<Integer, String> entry : ludMapUsed.entrySet()) 
 				{
 					final String otherDescription = entry.getValue();
 					final int rulesetId = entry.getKey().intValue();
@@ -485,21 +460,6 @@ public class CompleterWithPrepro
 							queue.add(newCompletion);
 					}
 				}
-
-				if(queue.isEmpty())
-				{
-					threshold = threshold - 0.01;
-					System.out.println("new threshold = " + threshold);
-					updateMapList = true;
-				}
-//				else
-//				{
-//					System.out.println("Queue size = " + queue.size());
-//					System.out.println("Ids used in Completions are: ");
-//					for(Completion completionInQueue: queue)
-//						System.out.println(completionInQueue.idsUsed());
-//				}
-			} while(queue.isEmpty());
 		}
 		
 	//-------------------------------------------------------------------------
@@ -1040,6 +1000,43 @@ public class CompleterWithPrepro
 		}
 		
 		return false;
+	}
+	
+	/** To update the list of luds to use for recons after each update of the threshold.*/
+	public void updateLudMapUsed(final int rulesetReconId)
+	{
+		ludMapUsed = new HashMap<Integer, String>();
+		for (Map.Entry<Integer, String> entry : ludMap.entrySet()) 
+		{
+			final int rulesetId = entry.getKey().intValue();
+			double culturalSimilarity = 0.0;
+			double conceptualSimilarity = 0.0;
+			if(rulesetReconId == -1) // We do not use the CSN.
+				culturalSimilarity = 1.0;
+			else
+			{
+				final String similaryFilePath = "./res/recons/input/contextualiser/similarity_";
+				File fileSimilarity1 = new File(similaryFilePath + rulesetReconId + ".csv");
+				File fileSimilarity2 = new File(similaryFilePath + entry.getKey().intValue() + ".csv");
+				
+				if(!fileSimilarity1.exists() || !fileSimilarity2.exists() || (rulesetReconId == rulesetId)) // If CSN not computing or comparing the same rulesets, similarity is 0.
+					culturalSimilarity = 0.0;
+				else
+					culturalSimilarity = DistanceUtils.getRulesetCSNDistance(rulesetId, rulesetReconId);
+				
+				conceptualSimilarity = getAVGCommonExpectedConcept(rulesetReconId, rulesetId);
+			}
+
+			// We ignore all the ludemes coming from a negative similarity value or 0.
+			if(culturalSimilarity <= 0)
+				continue;
+			
+			final double score = historicalWeight * culturalSimilarity + conceptualWeight * conceptualSimilarity;
+			
+			if(score >= threshold)
+				ludMapUsed.put(entry.getKey(), entry.getValue());
+		}
+		System.out.println("num Rulesets used to recons = " + ludMapUsed.size());
 	}
 	
 }
