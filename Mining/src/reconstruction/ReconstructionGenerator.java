@@ -16,12 +16,15 @@ import java.util.regex.Pattern;
 import compiler.Compiler;
 import completer.Completion;
 import game.Game;
+import game.rules.play.moves.Moves;
 import main.FileHandling;
 import main.StringRoutines;
 import main.UnixPrintWriter;
 import main.grammar.Description;
 import other.GameLoader;
 import other.concept.Concept;
+import other.context.Context;
+import other.trial.Trial;
 import reconstruction.completer.CompleterWithPrepro;
 import reconstruction.utils.FormatReconstructionOutputs;
 
@@ -33,7 +36,7 @@ import reconstruction.utils.FormatReconstructionOutputs;
 public class ReconstructionGenerator
 {
 	final static String defaultOutputPath        = "./res/recons/output/";
-	final static int    defaultNumReconsExpected = 1;
+	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 10000;
 	//final static String defaultReconsPath        = "/lud/reconstruction/board/war/replacement/checkmate/chaturanga/Samantsy";
 	final static String defaultReconsPath        = "/lud/reconstruction/board/race/other/Coptic Game";
@@ -46,7 +49,7 @@ public class ReconstructionGenerator
 	
 	final static double defaultConceptualWeight = 0.3;
 	final static double defaultHistoricalWeight = 0.7;
-	final static double defaultThreshold = 0.00;
+	final static double defaultThreshold = 0.99;
 	
 	/**
 	 * Main method to call the reconstruction with command lines.
@@ -214,13 +217,19 @@ public class ReconstructionGenerator
 								//System.out.println(rawDescMetadata);
 								if(Concept.isExpectedConcepts(rawDescMetadata))
 								{
-									// All good, add to the list of correct completions.
-									correctCompletions.add(completion);
 									System.out.print( " and with the expected concepts");
-									System.out.println("Score = " + completion.score() + " Cultural Score = " + completion.similarityScore() + " conceptual Score = " + completion.commonExpectedConceptsScore()) ; 
-									System.out.println("ids used = " + completion.idsUsed());
-									System.out.println(completion.raw());
-									System.out.println(correctCompletions.size() + " COMPLETIONS GENERATED.");
+									final Context context = new Context(game, new Trial(game));
+									final Moves legalMoves = context.game().moves(context);
+									if(!legalMoves.moves().isEmpty())
+									{
+										System.out.print( " and with legal moves");
+										// All good, add to the list of correct completions.
+										correctCompletions.add(completion);
+										System.out.println("Score = " + completion.score() + " Cultural Score = " + completion.similarityScore() + " conceptual Score = " + completion.commonExpectedConceptsScore()) ; 
+										System.out.println("ids used = " + completion.idsUsed());
+										System.out.println(completion.raw());
+										System.out.println(correctCompletions.size() + " COMPLETIONS GENERATED.");
+									}
 								}
 							}
 							System.out.println();
