@@ -48,8 +48,8 @@ public class ReconstructionGenerator
 	//final static String defaultReconsPath = "/lud/reconstruction/board/war/other/Macheng";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/hunt/Bagh Bukree";
 	
-	final static double defaultConceptualWeight = 0.0;
-	final static double defaultHistoricalWeight = 1.0;
+	final static double defaultConceptualWeight = 1.0;
+	final static double defaultHistoricalWeight = 0.0;
 	final static double defaultThreshold = 0.99;
 	
 	/**
