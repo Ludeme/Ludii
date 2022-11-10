@@ -50,7 +50,7 @@ public class ReconstructionGenerator
 	
 	final static double defaultConceptualWeight = 0.0;
 	final static double defaultHistoricalWeight = 1.0;
-	final static double defaultThreshold = 0.00;
+	final static double defaultThreshold = 0.99;
 	
 	/**
 	 * Main method to call the reconstruction with command lines.
@@ -189,7 +189,6 @@ public class ReconstructionGenerator
 				if (completion != null)
 				{
 						final String completionRaw = FormatReconstructionOutputs.indentNicely(StringRoutines.unformatOneLineDesc(completion.raw()));
-						System.out.println(completionRaw);
 						// Test if the completion compiles.
 						Game game = null;
 						//System.out.println(completionRaw);
