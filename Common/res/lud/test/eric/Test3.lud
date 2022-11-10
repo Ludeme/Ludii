@@ -53,13 +53,69 @@
             )
         use:Vertex)
         
-        (piece "Disc" Each 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
+        (piece "Marker" Each 
+            (or 
+                (move Hop Orthogonal 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (can Move 
+                                (hop 
+                                    (from 
+                                        (last To)
+                                    )
+                                    Orthogonal 
+                                    (between if:
+                                        (and 
+                                            (not 
+                                                (is In 
+                                                    (between)
+                                                    
+                                                    (sites ToClear)
+                                                )
+                                            )
+                                            
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Empty 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
                     )
                 )
+                
+                (move Slide Orthogonal)
             )
         )
         }
@@ -67,280 +123,42 @@
     
     (rules 
         (start { 
-            (set Count 6 to:
-                (sites { "G4" "B1"}
+            (place "Marker1" 
+                (union 
+                    (expand 
+                        (sites Bottom)
+                    steps:1)
+                    
+                    (expand origin:
+                        (coord "I3")
+                    steps:5 W)
                 )
             )
             
-            (set Count 17 to:
-                (sites { "H1" "A4"}
-                )
-            )
-            
-            (set Count 3 to:
-                (sites { "G2" "E2" "C2" "B3" "D3" "F3"}
+            (place "Marker2" 
+                (union 
+                    (expand 
+                        (sites Top)
+                    steps:1)
+                    
+                    (expand origin:
+                        (coord "A7")
+                    steps:5 E)
                 )
             )
             }
         )
         
         (play 
-            (if 
-                (is Prev Mover)
-                
-                (or { 
-                    (move Hop 
-                        (from 
-                            (last To)
-                        )
-                        Diagonal 
-                        (between if:
-                            (is Enemy 
-                                (who at:
-                                    (between)
-                                )
-                            )
-                            
-                            (apply 
-                                (remove 
-                                    (between)
-                                )
-                            )
-                        )
-                        
-                        (to if:
-                            (is Empty 
-                                (to)
-                            )
-                        )
-                        
-                        (then 
-                            (if 
-                                (can Move 
-                                    (or 
-                                        (move Hop 
-                                            (from 
-                                                (last To)
-                                            )
-                                            Diagonal 
-                                            (between if:
-                                                (is Enemy 
-                                                    (who at:
-                                                        (between)
-                                                    )
-                                                )
-                                                
-                                                (apply 
-                                                    (remove 
-                                                        (between)
-                                                    )
-                                                )
-                                            )
-                                            
-                                            (to if:
-                                                (is Empty 
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                        
-                                        (do 
-                                            (move Hop 
-                                                (from 
-                                                    (last To)
-                                                )
-                                                Orthogonal 
-                                                (between before:2 after:2 if:
-                                                    (and 
-                                                        (= 2 
-                                                            (count Steps 
-                                                                (from)
-                                                                
-                                                                (between)
-                                                            )
-                                                        )
-                                                        
-                                                        (is Enemy 
-                                                            (who at:
-                                                                (between )
-                                                            )
-                                                        )
-                                                    )
-                                                    
-                                                    (apply 
-                                                        (remove 
-                                                            (between)
-                                                        )
-                                                    )
-                                                )
-                                                
-                                                (to if:
-                                                    (is Empty 
-                                                        (to)
-                                                    )
-                                                )
-                                            )
-                                            ifAfterwards:
-                                            (is In 
-                                                (last To)
-                                                
-                                                (sites Phase 1)
-                                            )
-                                        )
-                                    )
-                                )
-                                
-                                (moveAgain)
-                            )
-                        )
-                    )
-                    
-                    (do 
-                        (move Hop 
-                            (from 
-                                (last To)
-                            )
-                            Orthogonal 
-                            (between before:2 after:2 if:
-                                (and 
-                                    (= 2 
-                                        (count Steps 
-                                            (from)
-                                            
-                                            (between)
-                                        )
-                                    )
-                                    
-                                    (is Enemy 
-                                        (who at:
-                                            (between)
-                                        )
-                                    )
-                                )
-                                
-                                (apply 
-                                    (remove 
-                                        (between)
-                                    )
-                                )
-                            )
-                            
-                            (to if:
-                                (is Empty 
-                                    (to)
-                                )
-                            )
-                        )
-                        ifAfterwards:
-                        (is In 
-                            (last To)
-                            
-                            (sites Phase 1)
-                        )
-                        
-                        (then 
-                            (if 
-                                (can Move 
-                                    (or 
-                                        (move Hop 
-                                            (from 
-                                                (last To)
-                                            )
-                                            Diagonal 
-                                            (between if:
-                                                (is Enemy 
-                                                    (who at:
-                                                        (between)
-                                                    )
-                                                )
-                                                
-                                                (apply 
-                                                    (remove 
-                                                        (between)
-                                                    )
-                                                )
-                                            )
-                                            
-                                            (to if:
-                                                (is Empty 
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                        
-                                        (do 
-                                            (move Hop 
-                                                (from 
-                                                    (last To)
-                                                )
-                                                Orthogonal 
-                                                (between before:2 after:2 if:
-                                                    (and 
-                                                        (= 2 
-                                                            (count Steps 
-                                                                (from)
-                                                                
-                                                                (between)
-                                                            )
-                                                        )
-                                                        
-                                                        (is Enemy 
-                                                            (who at:
-                                                                (between )
-                                                            )
-                                                        )
-                                                    )
-                                                    
-                                                    (apply 
-                                                        (remove 
-                                                            (between)
-                                                        )
-                                                    )
-                                                )
-                                                
-                                                (to if:
-                                                    (is Empty 
-                                                        (to)
-                                                    )
-                                                )
-                                            )
-                                            ifAfterwards:
-                                            (is In 
-                                                (last To)
-                                                
-                                                (sites Phase 1)
-                                            )
-                                        )
-                                    )
-                                )
-                                
-                                (moveAgain)
-                            )
-                        )
-                    )
-                    
-                    (move Pass)
-                    }
-                )
-                
-                (forEach Piece)
-            )
+            (forEach Piece)
         )
         
         (end 
             (if 
-                (<= 
-                    (count Pieces Next)
-                2)
+                (no Pieces Next)
                 
                 (result Next Loss)
             )
         )
     )
 )
-
-
-(metadata (recon {
-        (concept "StackState" False)
-    })
-    )

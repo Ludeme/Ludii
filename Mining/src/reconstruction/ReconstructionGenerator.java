@@ -36,19 +36,20 @@ import reconstruction.utils.FormatReconstructionOutputs;
 public class ReconstructionGenerator
 {
 	final static String defaultOutputPath        = "./res/recons/output/";
-	final static int    defaultNumReconsExpected = 1;
+	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 10000;
 	//final static String defaultReconsPath        = "/lud/reconstruction/board/war/replacement/checkmate/chaturanga/Samantsy";
-	final static String defaultReconsPath        = "/lud/reconstruction/board/race/other/Coptic Game";
+	//final static String defaultReconsPath        = "/lud/reconstruction/board/race/other/Coptic Game";
 	//final static String defaultReconsPath        = "/lud/test/eric/recons/Hnefatafl";
+	final static String defaultReconsPath        = "/lud/test/eric/recons/Senet";
 	final static String defaultOptionName        = "Variant/Incomplete";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/hunt/Fortresse";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/space/line/Ashanti Alignment Game";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/war/other/Macheng";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/hunt/Bagh Bukree";
 	
-	final static double defaultConceptualWeight = 0.3;
-	final static double defaultHistoricalWeight = 0.7;
+	final static double defaultConceptualWeight = 0.0;
+	final static double defaultHistoricalWeight = 1.0;
 	final static double defaultThreshold = 0.00;
 	
 	/**
@@ -188,7 +189,7 @@ public class ReconstructionGenerator
 				if (completion != null)
 				{
 						final String completionRaw = FormatReconstructionOutputs.indentNicely(StringRoutines.unformatOneLineDesc(completion.raw()));
-						
+						System.out.println(completionRaw);
 						// Test if the completion compiles.
 						Game game = null;
 						//System.out.println(completionRaw);
