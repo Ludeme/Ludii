@@ -15,10 +15,11 @@ import utils.DBGameInfo;
 /**
  * Detects all ludemes and ludemeplexes within all games in Ludii.
  * 
- * Ouput .csv files are stored in Ludii/Mining/res/ludemeplexDetection/output/
- * These files should be uploaded to the Ludii database.
+ * The database csv tables will be created in "Mining/res/ludemeplexDetection/output"
+ * Import all of these (except for "NOTFOUNDLUDEMES.csv") to the Ludii database.
  * 
  * Make sure the file located at "Ludii/Mining/res/concepts/input/GameRulesets.csv" is up to date.
+ * You can run the SQL command inside the "SQL_command.txt" file on the Ludii database to export the required file.
  *
  * @author matthew.stephenson
  */
