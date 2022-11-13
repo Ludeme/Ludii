@@ -197,7 +197,6 @@ public class ComputeCommonExpectedConcepts
 			String descNoMetadata = desc.substring(0,desc.lastIndexOf("(metadata"));
 			descNoMetadata = descNoMetadata.substring(0, descNoMetadata.lastIndexOf(')') + 1);
 
-			System.out.println(descNoMetadata);
 			Description description = new Description(descNoMetadata);
 			CompleterWithPrepro.expandRecons(description, "");
 			descNoMetadata = description.expanded();
