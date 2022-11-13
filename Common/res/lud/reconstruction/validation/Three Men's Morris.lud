@@ -3,7 +3,7 @@
     (equipment {
         ("ThreeMensMorrisBoard")
         (hand Each)
-        (piece "Marker" Each <Piece>)
+        (piece "Marker" Each ("StepToEmpty"))
     }) 
     (rules 
         (start (place "Marker" "Hand" count:3))
@@ -18,15 +18,6 @@
         }
         (end [#])
     )
-)
-
-//------------------------------------------------------------------------------
-
-(option "Version" <Piece> args:{<move>}
-    {
-    (item "Nine Holes" <(move (from) (to (sites Empty)))> "The pieces can move to any empty sites.")
-    (item "Small Merels" <"StepToEmpty">    "The pieces can move to any empty adjacent sites.")**
-    }
 )
 
 //------------------------------------------------------------------------------

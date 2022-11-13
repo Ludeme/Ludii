@@ -1,0 +1,140 @@
+(game "Fox and Geese" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge 
+                (shift 0 
+                    (/ 
+                        (- 7 3)
+                    2)
+                    
+                    (rectangle 3 7 diagonals:Alternating)
+                )
+                
+                (shift 
+                    (/ 
+                        (- 7 3)
+                    2)
+                    0 
+                    (rectangle 7 3 diagonals:Alternating)
+                )
+            )
+        use:Vertex)
+        
+        (hand P1)
+        
+        (piece "Fox" P1 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Goose" P2 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Goose2" 
+                (union 
+                    (expand 
+                        (sites Bottom)
+                    )
+                    
+                    (sites Row 2)
+                )
+            )
+            
+            (place "Fox1" 
+                (handSite P1)
+            )
+            }
+        )
+        phases:{ 
+        (phase "Placement" P1 
+            (play 
+                (move 
+                    (from 
+                        (handSite P1)
+                    )
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            
+            (nextPhase 
+                (all Sites 
+                    (sites Hand P1)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (forEach Piece)
+            )
+        )
+        }
+        
+        (end { 
+            (if 
+                (no Moves P2)
+                
+                (result P1 Win)
+            )
+            
+            (if 
+                (no Pieces P1)
+                
+                (result P2 Win)
+            )
+            }
+        )
+    )
+)
+

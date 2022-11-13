@@ -1,0 +1,316 @@
+(game "Bosh" 
+    (players 2)
+    
+    (equipment { 
+        (mancalaBoard 2 5 store:None 
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        
+        (regions P1 
+            (sites Bottom)
+        )
+        
+        (regions P2 
+            (sites Top)
+        )
+        
+        (piece "Seed" Shared)
+        
+        (hand Each)
+        }
+    )
+    
+    (rules 
+        (start { 
+            (set Count 4 to:
+                (sites Track)
+            )
+            
+            (set RememberValue "OwnedP1" 
+                (sites Bottom)
+            )
+            
+            (set RememberValue "OwnedP2" 
+                (sites Top)
+            )
+            }
+        )
+        phases:{ 
+        (phase "Sowing" 
+            (play 
+                (or { 
+                    (move Select 
+                        (from 
+                            (if 
+                                (is Prev Mover)
+                                
+                                (sites { 
+                                    (trackSite Move from:
+                                        (last To afterConsequence:True)
+                                    steps:1)
+                                    }
+                                )
+                                
+                                (if 
+                                    (is Mover P1)
+                                    
+                                    (sites 
+                                        (values Remembered "OwnedP1")
+                                    )
+                                    
+                                    (sites 
+                                        (values Remembered "OwnedP2")
+                                    )
+                                )
+                            )
+                            if:
+                            (> 
+                                (count at:
+                                    (from)
+                                )
+                            0)
+                        )
+                        
+                        (then 
+                            (sow apply:
+                                (if 
+                                    (and 
+                                        (= 
+                                            (count at:
+                                                (trackSite Move from:
+                                                    (to)
+                                                steps:1)
+                                            )
+                                        0)
+                                        
+                                        (> 
+                                            (count at:
+                                                (trackSite Move from:
+                                                    (to)
+                                                steps:2)
+                                            )
+                                        0)
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (trackSite Move from:
+                                                (to)
+                                            steps:2)
+                                        )
+                                        
+                                        (to 
+                                            (handSite Mover)
+                                        )
+                                        count:
+                                        (count at:
+                                            (trackSite Move from:
+                                                (to)
+                                            steps:2)
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (> 
+                                            (count at:
+                                                (trackSite Move from:
+                                                    (to)
+                                                steps:1)
+                                            )
+                                        0)
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                                skipIf:
+                                (not 
+                                    (is In 
+                                        (to)
+                                        
+                                        (union 
+                                            (values Remembered "OwnedP1")
+                                            
+                                            (values Remembered "OwnedP2")
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    }
+                    
+                    (then 
+                        (if 
+                            (or 
+                                (no Pieces All in:
+                                    (sites P1)
+                                )
+                                
+                                (no Pieces All in:
+                                    (sites P2)
+                                )
+                            )
+                            
+                            (and 
+                                (forEach Site 
+                                    (sites P1)
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (site)
+                                        )
+                                        
+                                        (to 
+                                            (handSite P1)
+                                        )
+                                        count:
+                                        (count at:
+                                            (site)
+                                        )
+                                    )
+                                )
+                                
+                                (forEach Site 
+                                    (sites P2)
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (site)
+                                        )
+                                        
+                                        (to 
+                                            (handSite P2)
+                                        )
+                                        count:
+                                        (count at:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase 
+                (all Sites 
+                    (sites Board)
+                    if:
+                    (= 0 
+                        (count at:
+                            (site)
+                        )
+                    )
+                )
+            "BetweenRounds")
+        )
+        
+        (phase "BetweenRounds" 
+            (play 
+                (if 
+                    (<= 4 
+                        (count Cell at:
+                            (handSite Mover)
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (intersection 
+                                (sites Empty)
+                                
+                                (sites Mover)
+                            )
+                        )
+                    count:4)
+                    
+                    (move Pass 
+                        (then 
+                            (forEach Site 
+                                (if 
+                                    (is Mover P1)
+                                    
+                                    (sites 
+                                        (values Remembered "OwnedP1")
+                                    )
+                                    
+                                    (sites 
+                                        (values Remembered "OwnedP2")
+                                    )
+                                )
+                                
+                                (if 
+                                    (is Empty 
+                                        (site)
+                                    )
+                                    
+                                    (if 
+                                        (is Mover P1)
+                                        
+                                        (forget Value "OwnedP1" 
+                                            (site)
+                                        )
+                                        
+                                        (forget Value "OwnedP2" 
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (all Sites 
+                        (difference 
+                            (sites Board)
+                            
+                            (sites Centre)
+                        )
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    { 
+                    (if 
+                        (= 0 
+                            (count Cell at:
+                                (handSite P1)
+                            )
+                        )
+                        
+                        (result P2 Win)
+                    )
+                    
+                    (if 
+                        (= 0 
+                            (count Cell at:
+                                (handSite P2)
+                            )
+                        )
+                        
+                        (result P1 Win)
+                    )
+                    }
+                )
+            )
+            
+            (nextPhase 
+                (all Passed)
+            "Sowing")
+        )
+        }
+    )
+)
+
