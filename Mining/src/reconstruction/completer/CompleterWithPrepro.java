@@ -915,7 +915,7 @@ public class CompleterWithPrepro
 		if(str.contains("(rulesets"))
 		{
 			str = Expander.realiseRulesets(str, description, report);
-			str = str.substring(0,str.length()-1);
+			str = str.substring(0, str.length()-1);
 			if (report.isError())
 				return;
 		}

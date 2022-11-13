@@ -117,7 +117,7 @@ public class ComputeCommonExpectedConcepts
 			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
 				continue;
 			
-			final String gameName = fileName.substring(fileName.lastIndexOf("/")+1,fileName.length()-4);
+			final String gameName = fileName.substring(fileName.lastIndexOf("/") + 1, fileName.length() - 4);
 	
 			String path = fileName.replaceAll(Pattern.quote("\\"), "/");
 			path = path.substring(path.indexOf("/lud/"));
@@ -195,8 +195,9 @@ public class ComputeCommonExpectedConcepts
 			
 			// Keep only the game description.
 			String descNoMetadata = desc.substring(0,desc.lastIndexOf("(metadata"));
-			descNoMetadata = descNoMetadata.substring(0, descNoMetadata.lastIndexOf(')'));
+			descNoMetadata = descNoMetadata.substring(0, descNoMetadata.lastIndexOf(')') + 1);
 
+			System.out.println(descNoMetadata);
 			Description description = new Description(descNoMetadata);
 			CompleterWithPrepro.expandRecons(description, "");
 			descNoMetadata = description.expanded();
