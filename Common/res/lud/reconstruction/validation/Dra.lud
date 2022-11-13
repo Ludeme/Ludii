@@ -1,0 +1,66 @@
+(define "NoLine3" 
+    (not (is Line 3 Orthogonal))
+)
+
+//------------------------------------------------------------------------------
+
+(game "Dra"
+    (players 2)
+    
+    (equipment { 
+        (board (rectangle 5 6))
+        (hand Each)
+        (piece "Marker" Each 
+            ("StepToEmpty" Orthogonal 
+                (then ("ReplayIfLine3" Orthogonal exact:True))
+            )
+        )
+    }) 
+    (rules 
+        (start (place "Marker" "Hand" count:12))
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (do
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                    )
+                    ifAfterwards:"NoLine3"
+                )
+            )
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        
+        (phase "Movement"
+            (play   
+                (if "SameTurn"
+                    "RemoveAnyEnemyPiece" 
+                    (forEach Piece) 
+                )
+            )
+            
+            (end [#])
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (id "384")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)
