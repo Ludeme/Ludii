@@ -133,13 +133,7 @@
                     )
                 )
             )
-            (end (if (all Passed)
-                    {
-                    (if ("NoOwnedHoles" 1) (result P2 Win))
-                    (if ("NoOwnedHoles" 2) (result P1 Win))
-                    }
-                )
-            )
+            (end [#])
             (nextPhase (all Passed) "Sowing")
         )
         }
