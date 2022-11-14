@@ -2,24 +2,32 @@ package supplementary.experiments.speed;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
+import decision_trees.classifiers.DecisionTreeNode;
+import features.Feature;
 import features.WeightVector;
+import features.aspatial.AspatialFeature;
 import features.feature_sets.BaseFeatureSet;
 import features.feature_sets.LegacyFeatureSet;
 import features.feature_sets.NaiveFeatureSet;
 import features.feature_sets.network.JITSPatterNetFeatureSet;
 import features.feature_sets.network.SPatterNetFeatureSet;
 import features.generation.AtomicFeatureGenerator;
+import features.spatial.SpatialFeature;
 import function_approx.LinearFunction;
 import game.Game;
+import game.types.play.RoleType;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
@@ -27,10 +35,14 @@ import main.FileHandling;
 import main.StringRoutines;
 import main.UnixPrintWriter;
 import main.collections.FVector;
+import main.grammar.Report;
+import metadata.ai.features.trees.FeatureTrees;
+import metadata.ai.features.trees.classifiers.DecisionTree;
 import other.GameLoader;
 import other.context.Context;
 import other.playout.PlayoutMoveSelector;
 import other.trial.Trial;
+import playout_move_selectors.DecisionTreeMoveSelector;
 import playout_move_selectors.FeaturesSoftmaxMoveSelector;
 import policies.softmax.SoftmaxFromMetadataSelection;
 import policies.softmax.SoftmaxPolicy;
@@ -616,6 +628,179 @@ public final class PlayoutsPerSec
 							false
 						);
 			}
+			else if (featuresToUse.startsWith("latest-trained-"))
+			{
+				// We'll take the latest trained weights from specified directory, 
+				// including weights (i.e. not playing uniformly random)
+				String trainedDirPath = featuresToUse.substring("latest-trained-".length());
+				if (!trainedDirPath.endsWith("/"))
+					trainedDirPath += "/";
+				final File trainedDir = new File(trainedDirPath);
+				
+				int lastCheckpoint = -1;
+				for (final File file : trainedDir.listFiles())
+				{
+					if (!file.isDirectory())
+					{
+						if (file.getName().startsWith("FeatureSet_P") && file.getName().endsWith(".fs"))
+						{
+							final int checkpoint = 
+									Integer.parseInt
+									(
+										file
+										.getName()
+										.split(Pattern.quote("_"))[2]
+										.replaceFirst(Pattern.quote(".fs"), "")
+									);
+							
+							if (checkpoint > lastCheckpoint)
+								lastCheckpoint = checkpoint;
+						}
+					}
+				}
+				
+				final BaseFeatureSet[] playerFeatureSets = new BaseFeatureSet[game.players().count() + 1];
+				for (int p = 1; p < playerFeatureSets.length; ++p)
+				{
+					final BaseFeatureSet featureSet;
+					
+					if (featureSetType.equals("SPatterNet"))
+					{
+						featureSet = 
+								new SPatterNetFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P" + p, 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else if (featureSetType.equals("Legacy"))
+					{
+						featureSet = 
+								new LegacyFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P" + p, 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else if (featureSetType.equals("Naive"))
+					{
+						featureSet = 
+								new NaiveFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P" + p, 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else if (featureSetType.equals("JITSPatterNet"))
+					{
+						featureSet = 
+								JITSPatterNetFeatureSet.construct
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P" + p, 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else
+					{
+						throw new IllegalArgumentException("Cannot recognise --feature-set-type: " + featureSetType);
+					}
+					
+					playerFeatureSets[p] = featureSet;
+				}
+				
+				final WeightVector[] weightVectors = new WeightVector[playerFeatureSets.length];
+				for (int p = 1; p < playerFeatureSets.length; ++p)
+				{
+					playerFeatureSets[p].init(game, new int[]{p}, null);	// Still null since we won't do thresholding
+					
+					final LinearFunction linearFunc = 
+							LinearFunction.fromFile
+							(
+								trainedDirPath +
+								String.format
+								(
+									"%s_%05d.%s", 
+									"PolicyWeightsCE_P" + p, 
+									Integer.valueOf(lastCheckpoint), 
+									"txt"
+								)
+							);
+					weightVectors[p] = linearFunc.effectiveParams();
+				}
+				
+				playoutMoveSelector = 
+						new FeaturesSoftmaxMoveSelector
+						(
+							playerFeatureSets, 
+							weightVectors,
+							false
+						);
+			}
+			else if (featuresToUse.startsWith("decision-trees-"))
+			{
+				// We'll take a given decision tree
+				final String treePath = featuresToUse.substring("decision-trees-".length());
+				
+				try 
+				{
+					final List<BaseFeatureSet> featureSetsList = new ArrayList<BaseFeatureSet>();
+					final List<DecisionTreeNode> roots = new ArrayList<DecisionTreeNode>();
+					
+					final BaseFeatureSet[] featureSets;
+					final DecisionTreeNode[] decisionTreeRoots;
+					
+					final String featureTreesString = FileHandling.loadTextContentsFromFile(treePath);
+					final FeatureTrees featureTrees = 
+							(FeatureTrees)compiler.Compiler.compileObject
+							(
+								featureTreesString, 
+								"metadata.ai.features.trees.FeatureTrees",
+								new Report()
+							);
+							
+					for (final DecisionTree decisionTree : featureTrees.decisionTrees())
+					{
+						if (decisionTree.role() == RoleType.Shared || decisionTree.role() == RoleType.Neutral)
+							addFeatureSetRoot(0, decisionTree.root(), featureSetsList, roots);
+						else
+							addFeatureSetRoot(decisionTree.role().owner(), decisionTree.root(), featureSetsList, roots);
+					}
+					
+					featureSets = featureSetsList.toArray(new BaseFeatureSet[featureSetsList.size()]);
+					decisionTreeRoots = roots.toArray(new DecisionTreeNode[roots.size()]);
+					
+					playoutMoveSelector = new DecisionTreeMoveSelector(featureSets, decisionTreeRoots, false);
+				} 
+				catch (final IOException e) 
+				{
+					e.printStackTrace();
+					return null;
+				}
+			}
 			else
 			{
 				throw new IllegalArgumentException("Cannot understand --features-to-use: " + featuresToUse);
@@ -632,7 +817,57 @@ public final class PlayoutsPerSec
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Main metohd
+	 * Helper method that adds a Feature Set and a Decision Tree Root for the 
+	 * given player index
+	 * 
+	 * @param playerIdx
+	 * @param rootNode
+	 * @param outFeatureSets
+	 * @param outRoots
+	 */
+	private static void addFeatureSetRoot
+	(
+		final int playerIdx, 
+		final metadata.ai.features.trees.classifiers.DecisionTreeNode rootNode,
+		final List<BaseFeatureSet> outFeatureSets, 
+		final List<DecisionTreeNode> outRoots
+	)
+	{
+		while (outFeatureSets.size() <= playerIdx)
+		{
+			outFeatureSets.add(null);
+		}
+		
+		while (outRoots.size() <= playerIdx)
+		{
+			outRoots.add(null);
+		}
+		
+		final List<AspatialFeature> aspatialFeatures = new ArrayList<AspatialFeature>();
+		final List<SpatialFeature> spatialFeatures = new ArrayList<SpatialFeature>();
+		
+		final Set<String> featureStrings = new HashSet<String>();
+		rootNode.collectFeatureStrings(featureStrings);
+		
+		for (final String featureString : featureStrings)
+		{
+			final Feature feature = Feature.fromString(featureString);
+			
+			if (feature instanceof AspatialFeature)
+				aspatialFeatures.add((AspatialFeature)feature);
+			else
+				spatialFeatures.add((SpatialFeature)feature);
+		}
+		
+		final BaseFeatureSet featureSet = JITSPatterNetFeatureSet.construct(aspatialFeatures, spatialFeatures);
+		outFeatureSets.set(playerIdx, featureSet);
+		outRoots.set(playerIdx, DecisionTreeNode.fromMetadataNode(rootNode, featureSet));
+	}
+
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Main method
 	 * @param args
 	 */
 	@SuppressWarnings("unchecked")

@@ -472,7 +472,7 @@ public class ProportionalPolicyClassificationTree extends Policy
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Helper method that adds a Feature Set and a Linear Function for the 
+	 * Helper method that adds a Feature Set and a Decision Tree Root for the 
 	 * given player index
 	 * 
 	 * @param playerIdx
