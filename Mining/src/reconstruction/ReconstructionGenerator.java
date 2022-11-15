@@ -36,7 +36,7 @@ import reconstruction.utils.FormatReconstructionOutputs;
 public class ReconstructionGenerator
 {
 	final static String defaultOutputPath        = "./res/recons/output/";
-	final static int    defaultNumReconsExpected = 9;
+	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 10000;
 	final static String defaultReconsPath        = "/lud/reconstruction/board/hunt/Ijil Buga";
 	//final static String defaultReconsPath        = "/lud/reconstruction/board/war/replacement/checkmate/chaturanga/Samantsy";

@@ -320,6 +320,11 @@ public class CompleterWithPrepro
 					
 					//queue.add(newCompletion);
 					
+					newCompletion.setIdsUsed(completion.idsUsed());
+					newCompletion.setScore(completion.score());
+					newCompletion.setSimilarityScore(completion.similarityScore());
+					newCompletion.setCommonTrueConceptsScore(completion.commonExpectedConceptsScore());
+					
 					completions.add(newCompletion);
 				}
 			}		
@@ -745,8 +750,6 @@ public class CompleterWithPrepro
 		final String[] subs = str.split(" ");
 		for (final String sub : subs)
 			choices.add(sub);
-		
-		System.out.println(choices);
 		
 		return choices;
 	}
