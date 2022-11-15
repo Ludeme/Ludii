@@ -1,53 +1,67 @@
 (game "Buga Nokhoi"
-    (players 2) 
-    (equipment { 
-        (board 
-            (merge {
-                (rotate 45 (shift 1.5 4.2 (square 2 diagonals:Solid)))
-                (rotate 45 (shift 1.5 -1.2 (square 2 diagonals:Solid)))
-                (square 5 diagonals:Alternating)
-            })
-            use:Vertex
-        )
-        (piece "Deer" P2 (and ("StepToEmpty") ("HopCapture")))
-        (piece "Dog" P1 ("StepToEmpty"))
-        (hand P1)
-    }) 
-    
-    (rules 
-        (start {
-            (place "Deer2" (sites {"C3" "C7"}))
-            (place "Dog1" #) 
-        })
-        
-        phases:{
-        (phase "Placement" P1
-            (play
-                (move 
-                    (from (handSite Mover)) 
-                    (to (sites Empty)) 
-                    (then (if (is Occupied (handSite P1)) (moveAgain)))
-                ) 
-            ) 
-            (nextPhase Mover ("HandEmpty" P1) "Movement")
-        )
-        
-        ("PhaseMovePiece" "Movement")
-        }
-        
-        (end ("NoMovesP2NoPiecesP1"))
-    )
+    <Variant>
 )
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
+(option "Variant" <Variant> args:{ <variant> }
+{
+	    (item "Incomplete"
+	            <
+	            (players 2) 
+	            (equipment { 
+	                (board 
+	                    (merge {
+	                        (rotate 45 (shift 1.5 4.2 (square 2 diagonals:Solid)))
+	                        (rotate 45 (shift 1.5 -1.2 (square 2 diagonals:Solid)))
+	                        (square 5 diagonals:Alternating)
+	                    })
+	                    use:Vertex
+	                )
+	                (piece "Deer" P2 (and ("StepToEmpty") ("HopCapture")))
+	                (piece "Dog" P1 ("StepToEmpty"))
+	                (hand P1)
+	            }) 
+	            
+	            (rules 
+	                (start {
+	                    (place "Deer2" (sites {"C3" "C7"}))
+	                    (place "Dog1" (sites [#])) 
+	                })
+	                
+	                phases:{
+	                (phase "Placement" P1
+	                    (play
+	                        (move 
+	                            (from (handSite Mover)) 
+	                            (to (sites Empty)) 
+	                            (then (if (is Occupied (handSite P1)) (moveAgain)))
+	                        ) 
+	                    ) 
+	                    (nextPhase Mover ("HandEmpty" P1) "Movement")
+	                )
+	                
+	                ("PhaseMovePiece" "Movement")
+	                }
+	                
+	                (end ("NoMovesP2NoPiecesP1"))
+	            )
+	            >
+      "The incomplete ruleset."
+	    )
 })
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+  
+  (ruleset "Ruleset/Historical Information (Incomplete)" {
+      "Variant/Incomplete"
+  })
+  
+})
+
+//------------------------------------------------------------------------------
 
 (metadata 
     

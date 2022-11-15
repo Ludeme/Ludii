@@ -356,7 +356,6 @@ public class CompleterWithPrepro
 			final int              rulesetReconId
 		)
 		{
-				// Check only the luds respecting the threshold.
 				for (Map.Entry<Integer, String> entry : ludMapUsed.entrySet()) 
 				{
 					final String otherDescription = entry.getValue();
