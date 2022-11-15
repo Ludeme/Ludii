@@ -10,9 +10,14 @@ import utils.DBGameInfo;
 
 public class ContextualSimilarity 
 {
+	
+	//-------------------------------------------------------------------------
+	
 	private static final String rulesetIdsFilePath = "../Mining/res/concepts/input/GameRulesets.csv";
-	// private static final String rulesetLudemesOutputFilePath = "../../LudiiPrivate/DataMiningScripts/Geacron/GeacronDistance/res/output/contextualiser/similarity_";
-	private static final String rulesetLudemesOutputFilePath = "../Mining/res/recons/input/contextualiser/similarity_";
+	private static final String rulesetContextualiserFilePath = "../Mining/res/recons/input/contextualiser/similarity_";
+	private static final String rulesetGeographicDistanceFilePath = "../Mining/res/recons/input/GeographicalDistances.csv";
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param game Game to compare similarity against.
@@ -28,7 +33,7 @@ public class ContextualSimilarity
 		
 		final Map<Integer, Double> rulesetSimilaritiesIds = new HashMap<>();			// Map of ruleset ids to similarity
 		final Map<String, Double> rulesetSimilaritiesNames = new HashMap<>();			// Map of game/ruleset names to similarity
-		final String fileName = rulesetLudemesOutputFilePath + rulesetId + ".csv";
+		final String fileName = rulesetContextualiserFilePath + rulesetId + ".csv";
 				
 		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) 
 		{
@@ -46,8 +51,8 @@ public class ContextualSimilarity
 		        
 		        rulesetSimilaritiesIds.put(Integer.valueOf(values[0]), Double.valueOf(similarity));
 		        
-//		        if (!rulesetIds.containsValue(Integer.valueOf(values[0])))
-//		        	System.out.println("ERROR, two rulesets with the same name. ruleset id: " + Integer.valueOf(values[0]));
+		        if (!rulesetIds.containsValue(Integer.valueOf(values[0])))
+		        	System.out.println("ERROR, two rulesets with the same name. ruleset id: " + Integer.valueOf(values[0]));
 
 		        // Convert ruleset ids to corresponding names.
 		        for (final Map.Entry<String, Integer> entry : rulesetIds.entrySet()) 
@@ -63,5 +68,55 @@ public class ContextualSimilarity
 
 		return rulesetSimilaritiesNames;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param game Game to compare similarity against.
+	 * @return Map of game/ruleset names to similarity values.
+	 */
+	public static final Map<String, Double> getRulesetGeographicSimilarities(final Game game)
+	{
+		// Get all ruleset ids from DB
+		final String name = DBGameInfo.getUniqueName(game);
+		final Map<String, Integer> rulesetIds = DBGameInfo.getRulesetIds(rulesetIdsFilePath);
+		final int rulesetId = rulesetIds.get(name).intValue();
+		
+		final Map<Integer, Double> rulesetSimilaritiesIds = new HashMap<>();			// Map of ruleset ids to similarity
+		final Map<String, Double> rulesetSimilaritiesNames = new HashMap<>();			// Map of game/ruleset names to similarity
+				
+		try (BufferedReader br = new BufferedReader(new FileReader(rulesetGeographicDistanceFilePath))) 
+		{
+			br.readLine();		// Skip first line of column headers.
+		    String line;
+		    while ((line = br.readLine()) != null) 
+		    {
+		        final String[] values = line.split(",");
+		        
+		        if (Integer.valueOf(values[0]).intValue() != rulesetId)
+		        	continue;
+		        
+		        final double similarity = Math.max((20000 - Double.valueOf(values[2]).doubleValue()) / 20000, 0);	// 20000km is the maximum possible distance
+		        rulesetSimilaritiesIds.put(Integer.valueOf(values[1]), Double.valueOf(similarity));
+		        
+		        if (!rulesetIds.containsValue(Integer.valueOf(values[0])))
+		        	System.out.println("ERROR, two rulesets with the same name. ruleset id: " + Integer.valueOf(values[0]));
+
+		        // Convert ruleset ids to corresponding names.
+		        for (final Map.Entry<String, Integer> entry : rulesetIds.entrySet()) 
+		        	if (entry.getValue().equals(Integer.valueOf(values[1])))
+		        		rulesetSimilaritiesNames.put(entry.getKey(), Double.valueOf(similarity));
+		    }
+		}
+		catch (final Exception e)
+		{
+			System.out.println("Could not find similarity file, ruleset probably has no evidence.");
+			e.printStackTrace();
+		}
+
+		return rulesetSimilaritiesNames;
+	}
+	
+	//-------------------------------------------------------------------------
 	
 }
