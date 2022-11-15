@@ -1,37 +1,49 @@
-(game "Fortresse" 
-    (players 2) 
-    (equipment { 
-        ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
-        (piece "Marker" P1 (or ("HopCapture") "StepToEmpty"))
-        (piece "Marker" P2 "StepToEmpty") 
-    }) 
-    (rules 
-        (start {
-            (place "Marker1" [#]) // We do not know where start the pieces of P1
-            (place "Marker2" (union (sites Row 2) (expand (sites Bottom) steps:2)))
-        })
-        
-        (play (forEach Piece))
-        
-        (end {
-            (if (no Pieces P2) (result P1 Win))
-            (if
-                (or
-                    (or (no Pieces P1) (no Moves P1))
-                    (= 0 (count Sites in:(difference (expand (sites Top) steps:2) (sites Occupied by:P2)))) 
-                )
-                (result P2 Win)
-            )
-        }) 
-    )
+(game "Fortresse" // Hunt game
+    <Variant>
 )
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
+            (piece "Marker" P1 (or ("HopCapture") "StepToEmpty"))
+            (piece "Marker" P2 "StepToEmpty") 
+        }) 
+        (rules 
+            (start {
+                (place "Marker1" [#]) // We do not know where start the pieces of P1
+                (place "Marker2" (union (sites Row 2) (expand (sites Bottom) steps:2)))
+            })
+            
+            (play (forEach Piece))
+            
+            (end {
+                (if (no Pieces P2) (result P1 Win))
+                (if
+                    (or
+                        (or (no Pieces P1) (no Moves P1))
+                        (= 0 (count Sites in:(difference (expand (sites Top) steps:2) (sites Occupied by:P2)))) 
+                    )
+                    (result P2 Win)
+                )
+            }) 
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Fortresse (Incomplete)" {
-        
+        "Variant/Incomplete"
     })
     
 })

@@ -1,43 +1,43 @@
 (game "Dintja le Nmutla"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	  {
-		    (item "Incomplete"
-		            <
-		            ("TwoPlayersNorthSouth") 
-		            (equipment {
-		                (board [#]) // The board is a grid of vertical and horizontal lines
-		                (piece "Hound" P1 (move [#])) // Move only forward.
-		                (piece "Rabbit" P2 (move [#])) // Move forward and backward.
-		            }) 
-		            (rules
-		                (start [#])
-		                (play [#])
-		                (end {
-		                    (if (no Moves P2) (result P1 Win))
-		                    (if [#] (result P2 Win)) // the rabbit wins by moving behind the line of dogs so they are unable to block it (BUT DEPEND WHERE ARE THE DOGS).
-		                })
-		            )
-		            >
-	        "The incomplete ruleset."
-		    )
-	  })
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        ("TwoPlayersNorthSouth") 
+        (equipment {
+            (board [#]) // The board is a grid of vertical and horizontal lines
+            (piece "Hound" P1 (move [#])) // Move only forward.
+            (piece "Rabbit" P2 (move [#])) // Move forward and backward.
+        }) 
+        (rules
+            (start [#])
+            (play [#])
+            (end {
+                (if (no Moves P2) (result P1 Win))
+                (if [#] (result P2 Win)) // the rabbit wins by moving behind the line of dogs so they are unable to block it (BUT DEPEND WHERE ARE THE DOGS).
+            })
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 (metadata 
     

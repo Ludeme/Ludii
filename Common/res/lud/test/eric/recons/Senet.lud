@@ -11,11 +11,11 @@
         (players 2) 
         (equipment { 
             (board (rectangle 3 10) 
-                    { 
+                { 
                 (track "Track1" "20,E,S1,W,S1,E,End" P1 directed:True)
                 (track "Track2" "20,E,S1,W,S1,E,End" P2 directed:True)
-                    }
-                )
+                }
+            )
             (piece "SenetPiece" Each (move [#]))
             ("StickDice" 4)
             (hand Each)
@@ -23,22 +23,22 @@
             (regions [#])
         })
         (rules   
-             (start 
-                 [ 
-            		{ 	
-                 (place "SenetPiece1" (sites {"B3" "D3" "F3" "H3" "J3" "I2" "G2"}))
-                 (place "SenetPiece2" (sites {"A3" "C3" "E3" "G3" "I3" "J2" "H2"}))
-            		}
-                    |	
-                    { 	
-                        (place "SenetPiece1" (sites {"B3" "D3" "F3" "H3" "J3"}))
-                        (place "SenetPiece2" (sites {"A3" "C3" "E3" "G3" "I3"}))
-                    }
-                    
-                    |
-                    (start (place "SenetPiece" "Hand" count:5))
-                    |
-                    (start (place "SenetPiece" "Hand" count:7))
+            (start 
+                [ 
+                { 	
+                (place "SenetPiece1" (sites {"B3" "D3" "F3" "H3" "J3" "I2" "G2"}))
+                (place "SenetPiece2" (sites {"A3" "C3" "E3" "G3" "I3" "J2" "H2"}))
+                }
+                |	
+                { 	
+                (place "SenetPiece1" (sites {"B3" "D3" "F3" "H3" "J3"}))
+                (place "SenetPiece2" (sites {"A3" "C3" "E3" "G3" "I3"}))
+                }
+                
+                |
+                (start (place "SenetPiece" "Hand" count:5))
+                |
+                (start (place "SenetPiece" "Hand" count:7))
                 ]
             )
             (play [#])
