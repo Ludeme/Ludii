@@ -5,7 +5,268 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-    {
+{
+(item "Fortresse1" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge 
+                (shift 0 
+                    (/ 
+                        (- 7 3)
+                    2)
+                    
+                    (rectangle 3 7 diagonals:Alternating)
+                )
+                
+                (shift 
+                    (/ 
+                        (- 7 3)
+                    2)
+                    0 
+                    (rectangle 7 3 diagonals:Alternating)
+                )
+            )
+        use:Vertex)
+        
+        (piece "Marker" P1 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Marker" P2 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (sites { "C6" "E6"}
+                )
+            )
+            
+            (place "Marker2" 
+                (union 
+                    (sites Row 2)
+                    
+                    (expand 
+                        (sites Bottom)
+                    steps:2)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end { 
+            (if 
+                (no Pieces P2)
+                
+                (result P1 Win)
+            )
+            
+            (if 
+                (or 
+                    (or 
+                        (no Pieces P1)
+                        
+                        (no Moves P1)
+                    )
+                    
+                    (= 0 
+                        (count Sites in:
+                            (difference 
+                                (expand 
+                                    (sites Top)
+                                steps:2)
+                                
+                                (sites Occupied by:P2)
+                            )
+                        )
+                    )
+                )
+                
+                (result P2 Win)
+            )
+            }
+        )
+    )
+
+ > "The Fortresse1 ruleset.")
+
+(item "Fortresse2" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge 
+                (shift 0 
+                    (/ 
+                        (- 7 3)
+                    2)
+                    
+                    (rectangle 3 7 diagonals:Alternating)
+                )
+                
+                (shift 
+                    (/ 
+                        (- 7 3)
+                    2)
+                    0 
+                    (rectangle 7 3 diagonals:Alternating)
+                )
+            )
+        use:Vertex)
+        
+        (piece "Marker" P1 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Marker" P2 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (sites { "A4" "E4"}
+                )
+            )
+            
+            (place "Marker2" 
+                (union 
+                    (sites Row 2)
+                    
+                    (expand 
+                        (sites Bottom)
+                    steps:2)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end { 
+            (if 
+                (no Pieces P2)
+                
+                (result P1 Win)
+            )
+            
+            (if 
+                (or 
+                    (or 
+                        (no Pieces P1)
+                        
+                        (no Moves P1)
+                    )
+                    
+                    (= 0 
+                        (count Sites in:
+                            (difference 
+                                (expand 
+                                    (sites Top)
+                                steps:2)
+                                
+                                (sites Occupied by:P2)
+                            )
+                        )
+                    )
+                )
+                
+                (result P2 Win)
+            )
+            }
+        )
+    )
+
+ > "The Fortresse2 ruleset.")
+
+
     (item "Incomplete"
         <
         (players 2) 
@@ -36,11 +297,19 @@
         >
         "The incomplete ruleset."
     )
-})
+
+ })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
+(rulesets {
+
+(ruleset "Ruleset/Fortresse1 (Reconstructed)" {
+     "Variant/Fortresse1"
+})
+(ruleset "Ruleset/Fortresse2 (Reconstructed)" {
+     "Variant/Fortresse2"
+}) 
     
     (ruleset "Ruleset/Fortresse (Incomplete)" {
         "Variant/Incomplete"
@@ -50,7 +319,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+ (metadata 
     
     (info
         {
@@ -75,3 +344,4 @@
     })
     
 )
+

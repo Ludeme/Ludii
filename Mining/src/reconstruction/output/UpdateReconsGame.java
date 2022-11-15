@@ -154,13 +154,13 @@ public class UpdateReconsGame
 			}
 			
 			String descRecons = descReconsBuffer.toString();
+			// Remove the metadata if it is there
+			if(descRecons.contains("(metadata"))
+				descRecons = descRecons.substring(0, descRecons.indexOf("(metadata"));
 			// Remove the last closing parenthesis
 			descRecons = descRecons.substring(0, descRecons.lastIndexOf(')'));
 			// Remove the first line with the (game "...)
 			descRecons = descRecons.substring(8 + gameName.length());
-			// Remove the metadata if it is there
-			if(descRecons.contains("(metadata"))
-				descRecons = descRecons.substring(0, descRecons.indexOf("(metadata"));
 			
 			// Compute the option to add to the list of option
 			final String optionToAdd = "(item \""+reconsName+"\" <\n" + descRecons + "\n > \"The " +  reconsName + " ruleset.\")\n\n";
