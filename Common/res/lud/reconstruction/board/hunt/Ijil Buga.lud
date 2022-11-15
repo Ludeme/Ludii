@@ -1,43 +1,57 @@
 (game "Ijil Buga"
-    (players 2) 
-    (equipment { 
-        (board 
-            (merge {
-                (rotate 45 (shift 1.5 8.2 (square 2 diagonals:Solid)))
-                (shift 0.67 -1.32 (scale 0.66 (wedge 3)))
-                (rectangle 9 5 diagonals:Alternating)
-                (rotate 45 (shift 4.2 5.5 (square 2 diagonals:Solid)))
-                (rotate 45 (shift 4.2 1.5 (square 2 diagonals:Solid)))
-                (shift -1.99 1.34 (rotate -90 (scale 0.66 (wedge 3))))
-                (shift -1.98 5.35 (rotate -90 (scale 0.66 (wedge 3))))
-            })
-            use:Vertex
-        )
-        (piece "Deer" P1 (and ("StepToEmpty") ("HopCapture")))
-        (piece "Dog" P2 ("StepToEmpty"))
-        (hand P2)
-    }) 
-    
-    (rules 
-        (start {
-            (place "Deer1" (sites {"E11" "G9" "C9" "C5" "G5" "E3"}))
-            (place "Dog2" (forEach (sites [#]) if:(not (is In (site) (expand (union (sites Top) (sites Bottom)) steps:2))))) // Some have to be on the board at the init.
-            (place "Dog2" (handSite P2) count:[12..80]) // Some can be introduced later.
-        })
-        (play (forEach Piece))
-        (end ("NoMovesP1NoPiecesP2"))
-    )
+    <Variant>
 )
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board 
+                (merge {
+                    (rotate 45 (shift 1.5 8.2 (square 2 diagonals:Solid)))
+                    (shift 0.67 -1.32 (scale 0.66 (wedge 3)))
+                    (rectangle 9 5 diagonals:Alternating)
+                    (rotate 45 (shift 4.2 5.5 (square 2 diagonals:Solid)))
+                    (rotate 45 (shift 4.2 1.5 (square 2 diagonals:Solid)))
+                    (shift -1.99 1.34 (rotate -90 (scale 0.66 (wedge 3))))
+                    (shift -1.98 5.35 (rotate -90 (scale 0.66 (wedge 3))))
+                })
+                use:Vertex
+            )
+            (piece "Deer" P1 (and ("StepToEmpty") ("HopCapture")))
+            (piece "Dog" P2 ("StepToEmpty"))
+            (hand P2)
+        }) 
+        
+        (rules 
+            (start {
+                (place "Deer1" (sites {"E11" "G9" "C9" "C5" "G5" "E3"}))
+                (place "Dog2" (forEach (sites [#]) if:(not (is In (site) (expand (union (sites Top) (sites Bottom)) steps:2))))) // Some have to be on the board at the init.
+                (place "Dog2" (handSite P2) count:[12..80]) // Some can be introduced later.
+            })
+            (play (forEach Piece))
+            (end ("NoMovesP1NoPiecesP2"))
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+        "Variant/Incomplete"
     })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
