@@ -33,7 +33,17 @@
                 (place "Dog2" (forEach (sites [#]) if:(not (is In (site) (expand (union (sites Top) (sites Bottom)) steps:2))))) // Some have to be on the board at the init.
                 (place "Dog2" (handSite P2) count:[12..80]) // Some can be introduced later.
             })
-            (play (forEach Piece))
+            (play
+            	(or
+            		(forEach Piece)
+            		(if (is Mover P2)
+	                    (move 
+	                        (from (handSite P2)) 
+	                        (to (sites Empty)) 
+	                    )
+                    )
+            	)
+            )
             (end ("NoMovesP1NoPiecesP2"))
         )
         >
