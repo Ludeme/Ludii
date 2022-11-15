@@ -6,6 +6,372 @@
 
 (option "Variant" <Variant> args:{ <variant> }
     {
+    (item "Ikh Buga1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (shift 0.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (shift 4.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (square 9 diagonals:Alternating)
+                    
+                    (shift -1.99 1.34 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift -1.98 5.35 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift 0.67 8 
+                        (rotate 180 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift 4.67 8 
+                        (rotate 180 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift 7.34 1.34 
+                        (rotate 90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift 7.34 5.34 
+                        (rotate 90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Deer" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (hand P2)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Deer1" 
+                    (sites { "E11" "I11" "K9" "C9" "C5" "K5" "I3" "E3"}
+                    )
+                )
+                
+                (place "Dog2" 
+                    (forEach 
+                        (sites Corners)
+                        if:
+                        (not 
+                            (is In 
+                                (site)
+                                
+                                (expand 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                steps:2)
+                            )
+                        )
+                    )
+                )
+                
+                (place "Dog2" 
+                    (handSite P2)
+                count:68)
+                }
+            )
+            
+            (play
+                (or
+                    (forEach Piece)
+                    (if (is Mover P2)
+                        (move 
+                            (from (handSite P2)) 
+                            (to (sites Empty)) 
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Ikh Buga1 ruleset.")
+    
+    (item "Ikh Buga2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (shift 0.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (shift 4.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (square 9 diagonals:Alternating)
+                    
+                    (shift -1.99 1.34 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift -1.98 5.35 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift 0.67 8 
+                        (rotate 180 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift 4.67 8 
+                        (rotate 180 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift 7.34 1.34 
+                        (rotate 90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift 7.34 5.34 
+                        (rotate 90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Deer" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (hand P2)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Deer1" 
+                    (sites { "E11" "I11" "K9" "C9" "C5" "K5" "I3" "E3"}
+                    )
+                )
+                
+                (place "Dog2" 
+                    (forEach 
+                        (sites Outer)
+                        if:
+                        (not 
+                            (is In 
+                                (site)
+                                
+                                (expand 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                steps:2)
+                            )
+                        )
+                    )
+                )
+                
+                (place "Dog2" 
+                    (handSite P2)
+                count:36)
+                }
+            )
+            
+            (play
+                (or
+                    (forEach Piece)
+                    (if (is Mover P2)
+                        (move 
+                            (from (handSite P2)) 
+                            (to (sites Empty)) 
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Ikh Buga2 ruleset.")
+    
     (item "Incomplete"
         <
         (players 2) 
@@ -35,17 +401,35 @@
                 (place "Dog2" (forEach (sites [#]) if:(not (is In (site) (expand (union (sites Top) (sites Bottom)) steps:2))))) // Some have to be on the board at the init.
                 (place "Dog2" (handSite P2) count:[1..80]) // Some can be introduced later.
             })
-            (play (forEach Piece))
+            (play
+                (or
+                    (forEach Piece)
+                    (if (is Mover P2)
+                        (move 
+                            (from (handSite P2)) 
+                            (to (sites Empty)) 
+                        )
+                    )
+                )
+            )
             (end ("NoMovesP1NoPiecesP2"))
         )
         >
         "The incomplete ruleset."
     )
+    
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
+(rulesets {
+    
+    (ruleset "Ruleset/Ikh Buga1 (Reconstructed)" {
+        "Variant/Ikh Buga1"
+    })
+    (ruleset "Ruleset/Ikh Buga2 (Reconstructed)" {
+        "Variant/Ikh Buga2"
+    }) 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -79,3 +463,4 @@
     })
     
 )
+

@@ -37,8 +37,8 @@ public class ReconstructionGenerator
 {
 	final static String defaultOutputPath        = "./res/recons/output/";
 	final static int    defaultNumReconsExpected = 10;
-	final static int    defaultNumAttempts       = 10000;
-	final static String defaultReconsPath        = "/lud/reconstruction/board/hunt/Ijil Buga";
+	final static int    defaultNumAttempts       = 100000;
+	final static String defaultReconsPath        = "/lud/reconstruction/board/hunt/Ikh Buga";
 	//final static String defaultReconsPath        = "/lud/reconstruction/board/war/replacement/checkmate/chaturanga/Samantsy";
 	//final static String defaultReconsPath        = "/lud/reconstruction/board/race/other/Coptic Game";
 	//final static String defaultReconsPath        = "/lud/test/eric/recons/Hnefatafl";
