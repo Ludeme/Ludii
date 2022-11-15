@@ -31,7 +31,7 @@ public class UpdateReconsGame
 	final static String pathReconstructed    = "./res/recons/output/";
 	
 	// game name.
-	final static String gameName             = "Samantsy";
+	final static String gameName             = "Fortresse";
 	
 	public static void main(final String[] args)
 	{
@@ -97,7 +97,6 @@ public class UpdateReconsGame
 		String options = temp.substring(0, indexChar+1);
 		
 		//System.out.println(options);
-		
 
 		temp = temp.substring(temp.indexOf("(rulesets"));
 		countParenthesis = 0;
@@ -126,7 +125,6 @@ public class UpdateReconsGame
 		for (int i = 0; i < listOfFiles.length; i++)
 			recons.add(listOfFiles[i]);
 		Collections.sort(recons, (r1, r2) -> extractInt(r1.getName()) < extractInt(r2.getName()) ? -1 : extractInt(r1.getName()) > extractInt(r2.getName()) ? 1 : 0);
-		
 		
 		// We update the rulesets and options
 		final StringBuffer newRulesets = new StringBuffer("(rulesets {\n");
@@ -160,7 +158,10 @@ public class UpdateReconsGame
 			descRecons = descRecons.substring(0, descRecons.lastIndexOf(')'));
 			// Remove the first line with the (game "...)
 			descRecons = descRecons.substring(8 + gameName.length());
-
+			// Remove the metadata if it is there
+			if(descRecons.contains("(metadata"))
+				descRecons = descRecons.substring(0, descRecons.indexOf("(metadata"));
+			
 			// Compute the option to add to the list of option
 			final String optionToAdd = "(item \""+reconsName+"\" <\n" + descRecons + "\n > \"The " +  reconsName + " ruleset.\")\n\n";
 			newOptions.append(optionToAdd);
