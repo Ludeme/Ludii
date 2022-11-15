@@ -283,7 +283,6 @@ public class CompleterWithPrepro
 				for (int n = 0; n < choices.size(); n++)
 				{
 					final String choice = choices.get(n);
-					
 					if (!exclusions.isEmpty())
 					{
 						// Check whether this choice contains excluded text
@@ -622,6 +621,8 @@ public class CompleterWithPrepro
 			final char ch = clause.charAt(c);
 			if (depth == 0 && (c >= clause.length() - 1 || ch == CHOICE_DIVIDER_CHAR))
 			{
+				if(ch != CHOICE_DIVIDER_CHAR)
+					sb.append(ch);
 				// Store this choice and reset sb
 				final String choice = sb.toString().trim();
 //				System.out.println("extractChoices choice is: " + choice);
@@ -744,6 +745,8 @@ public class CompleterWithPrepro
 		final String[] subs = str.split(" ");
 		for (final String sub : subs)
 			choices.add(sub);
+		
+		System.out.println(choices);
 		
 		return choices;
 	}
