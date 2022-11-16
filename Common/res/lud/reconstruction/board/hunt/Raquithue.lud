@@ -1,39 +1,53 @@
-(game "Raquithue"
-    (players 2) 	 
-    (equipment { 
-        (board 
-            (add
-                (merge {
-                    (rectangle 4 7)
-                    (shift 1 4.5 (rectangle 4 5))
-                })
-                edges:{{24 30}}
-            )
-            use:Vertex
-        )
-        (piece "Lion" P1 (move [#])) // Pieces move along the lines of the board.
-        (piece "Dog" P2 (move [#])) // Pieces move along the lines of the board.
-    }) 
-    
-    (rules 
-        (start { 
-            (place "Lion1" (sites {"D8"}))
-            (place "Dog2" (expand (sites Bottom)))
-        })
-        (play [#])
-        (end [#])
-    )
-)
+(game "Raquithue" // Hunt game
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Hsitorical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 	 
+	        (equipment { 
+	            (board 
+	                (add
+	                    (merge {
+	                        (rectangle 4 7)
+	                        (shift 1 4.5 (rectangle 4 5))
+	                    })
+	                    edges:{{24 30}}
+	                )
+	                use:Vertex
+	            )
+	            (piece "Lion" P1 (move [#])) // Pieces move along the lines of the board.
+	            (piece "Dog" P2 (move [#])) // Pieces move along the lines of the board.
+	        }) 
+	        
+	        (rules 
+	            (start { 
+	                (place "Lion1" (sites {"D8"}))
+	                (place "Dog2" (expand (sites Bottom)))
+	            })
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
 
 (metadata 
     
