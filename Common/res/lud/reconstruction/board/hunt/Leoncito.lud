@@ -1,34 +1,48 @@
-(game "Leoncito"
-    (players 2) 
-    (equipment {
-        (board [#])
-        (piece "Dog" P1 (move Step Orthogonal (to if:(is (to) Empty))))
-        (piece "Lion" P2 
-            (or
-                (move Step Orthogonal (to if:(is (to) Empty)))		
-                (move Hop Orthogonal 
-                    (between if:("IsEnemyAt" (between)))
-                    (to if:(is (to) Empty))
+(game "Leoncito" // Hunt game
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment {
+            (board [#])
+            (piece "Dog" P1 (move Step Orthogonal (to if:(is (to) Empty))))
+            (piece "Lion" P2 
+                (or
+                    (move Step Orthogonal (to if:(is (to) Empty)))		
+                    (move Hop Orthogonal 
+                        (between if:("IsEnemyAt" (between)))
+                        (to if:(is (to) Empty))
+                    )
                 )
             )
+        })
+        (rules
+            (start [#])
+            (play (forEach Piece)) 
+            (end ("NoMovesP2NoPiecesP1"))
         )
-    })
-    (rules
-        (start [#])
-        (play (forEach Piece)) 
-        (end ("NoMovesP2NoPiecesP1"))
+        >
+        "The incomplete ruleset."
     )
-)
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Leoncito (Incomplete)" {
-        
+        "Variant/Incomplete"
     })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
