@@ -793,6 +793,12 @@ public final class PlayoutsPerSec
 					featureSets = featureSetsList.toArray(new BaseFeatureSet[featureSetsList.size()]);
 					decisionTreeRoots = roots.toArray(new DecisionTreeNode[roots.size()]);
 					
+					for (int p = 0; p < featureSets.length; ++p)
+					{
+						if (featureSets[p] != null)
+							featureSets[p].init(game, new int[]{p}, null);
+					}
+					
 					playoutMoveSelector = new DecisionTreeMoveSelector(featureSets, decisionTreeRoots, false);
 				} 
 				catch (final IOException e) 
