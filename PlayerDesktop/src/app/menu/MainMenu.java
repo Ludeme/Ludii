@@ -512,7 +512,7 @@ public class MainMenu extends JMenuBar
 									menuItem.addActionListener(al);
 									submenuAgentClaComp.add(menuItem);
 								}
-								else
+								else if (s.contains("False"))
 								{
 									menuItem = new JMenuItem(s.split("-")[0]);
 									menuItem.addActionListener(al);
@@ -527,7 +527,7 @@ public class MainMenu extends JMenuBar
 									menuItem.addActionListener(al);
 									submenuAgentRegComp.add(menuItem);
 								}
-								else
+								else if (s.contains("False"))
 								{
 									menuItem = new JMenuItem(s.split("-")[0]);
 									menuItem.addActionListener(al);
@@ -575,7 +575,7 @@ public class MainMenu extends JMenuBar
 									menuItem.addActionListener(al);
 									submenuHeuristicClaComp.add(menuItem);
 								}
-								else
+								else if (s.contains("False"))
 								{
 									menuItem = new JMenuItem(s.split("-")[0]);
 									menuItem.addActionListener(al);
@@ -590,7 +590,7 @@ public class MainMenu extends JMenuBar
 									menuItem.addActionListener(al);
 									submenuHeuristicRegComp.add(menuItem);
 								}
-								else
+								else if (s.contains("False"))
 								{
 									menuItem = new JMenuItem(s.split("-")[0]);
 									menuItem.addActionListener(al);
@@ -623,7 +623,7 @@ public class MainMenu extends JMenuBar
 								menuItem.addActionListener(al);
 								submenuComp.add(menuItem);
 							}
-							else
+							else if (s.contains("False"))
 							{
 								menuItem = new JMenuItem(s.split("-")[0]);
 								menuItem.addActionListener(al);
@@ -635,8 +635,15 @@ public class MainMenu extends JMenuBar
 				
 				submenu.add(submenuComp);
 				submenu.add(submenuAll);
-				
 				menu.add(submenu);
+				
+				//---------------------------------------------------------------------
+				// Portfolio parameter prediction
+				
+				menuItem = new JMenuItem("Portfolio Parameters (external)");
+				menuItem.addActionListener(al);
+				menu.add(menuItem);
+				
 			}
 		}
 		

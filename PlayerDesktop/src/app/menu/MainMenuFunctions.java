@@ -1346,6 +1346,11 @@ public class MainMenuFunctions extends JMenuBar
 				System.out.println("This game no longer exists");
 			}
 		}
+		else if (source.getText().equals("Portfolio Parameters (external)"))
+		{
+			final Map<String, Map<String, Double>> portfolioParameterPredictions = AgentPredictionExternal.predictPortfolioParameters(game);
+			System.out.println(portfolioParameterPredictions);
+		}
 		else if (getParentTitle(source, 2).equals("Predict Metrics (external)"))
 		{
 			final boolean useCompilationOnly = getParentTitle(source, 1).equals("Compilation");
