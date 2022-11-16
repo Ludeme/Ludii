@@ -1,30 +1,44 @@
 (game "Jagga Harran pi Tappin"
-    (players 2) 
-    (equipment { 
-        ("ThreeMensMorrisGraphWithLeftAndRightTriangles")
-        (piece "Hare" P1 (move [#])) // Missing knowledge on the movements of the pieces.
-        (piece "Dog" P2 (move [#])) // Missing knowledge on the movements of the pieces.
-    }) 
-    
-    (rules 
-        (start {
-            (place "Hare1" (sites Left))
-            (place "Dog2" (difference (expand (sites Right)) 5))
-        })
-        (play (forEach Piece))
-        (end (if (no Moves P1) (result P2 Win)))
-    )
+    <Variant>
 )
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            ("ThreeMensMorrisGraphWithLeftAndRightTriangles")
+            (piece "Hare" P1 (move [#])) // Missing knowledge on the movements of the pieces.
+            (piece "Dog" P2 (move [#])) // Missing knowledge on the movements of the pieces.
+        }) 
+        
+        (rules 
+            (start {
+                (place "Hare1" (sites Left))
+                (place "Dog2" (difference (expand (sites Right)) 5))
+            })
+            (play (forEach Piece))
+            (end (if (no Moves P1) (result P2 Win)))
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+        "Variant/Incomplete"
     })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
