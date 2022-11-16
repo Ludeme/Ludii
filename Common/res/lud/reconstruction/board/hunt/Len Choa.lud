@@ -1,22 +1,36 @@
-(game "Len Choa" 
-    (players 2) 
-    (equipment [#]) // Triangular shape board and 6 pieces per player.
-    (rules
-        (start [#]) 
-        (play [#])
-        (end ("BlockWin"))
-    )
+(game "Len Choa" // Hunt game
+    <Variant>
 )
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment [#]) // Triangular shape board and 6 pieces per player.
+        (rules
+            (start [#]) 
+            (play [#])
+            (end ("BlockWin"))
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })*
+        "Variant/Incomplete"
+    })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
