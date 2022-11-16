@@ -16,12 +16,17 @@ import java.util.List;
 
 import main.UnixPrintWriter;
 
+/**
+ * Code to add a Swedish description to all the games in the Games table.
+ * @author Eric.Piette
+ */
 public class TranslateToSwedish
 {
 	final static String defaultInputPath        = "./res/Games.csv";
 	
 	public static void main(String[] args) throws IOException {
-
+		
+		// Read the CSV line by line.
 		final List<String> CSVlines = new ArrayList<String>();
 		StringBuffer tempLine = new StringBuffer();
 		try (BufferedReader br = new BufferedReader(new FileReader(defaultInputPath))) 
@@ -43,6 +48,7 @@ public class TranslateToSwedish
 			CSVlines.add(tempLine.toString());
 		}
 
+		// Translate all the description from English to Swedish.
 		final List<String> swedishDescriptions = new ArrayList<String>();
 		for(int i = 1; i < CSVlines.size(); i++)
 		{
@@ -94,6 +100,14 @@ public class TranslateToSwedish
 		}
     }
 
+	/**
+	 * Translate any String to another language.
+	 * @param langFrom The language from.
+	 * @param langTo the language to.
+	 * @param text The string to translate.
+	 * @return The translated string.
+	 * @throws IOException
+	 */
     private static String translate(String langFrom, String langTo, String text) throws IOException {
         // INSERT YOU URL HERE
         String urlStr = "https://script.google.com/macros/s/AKfycbxohIwAG-uJMG864Rc_yoDkZvJhJe3vpxcWSGNomLC62LNK1xaY89-UU2b7RddEYq8HXA/exec" +
