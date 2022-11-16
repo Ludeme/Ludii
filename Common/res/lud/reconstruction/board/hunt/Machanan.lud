@@ -1,22 +1,36 @@
-(game "Machanan"
-    (players 2) 
-    (equipment [#]) // 2 tigers, 23 cows, each player has a tiger.
-    (rules
-        (start [#])
-        (play [#]) 
-        (end [#]) // capturing the most cows wins.
-    )
+(game "Machanan" // Hunt game
+    <Variant>
 )
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment [#]) // 2 tigers, 23 cows, each player has a tiger.
+        (rules
+            (start [#])
+            (play [#]) 
+            (end [#]) // capturing the most cows wins.
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+        "Variant/Incomplete"
     })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
