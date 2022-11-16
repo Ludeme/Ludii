@@ -8,6 +8,7 @@ import java.util.List;
 
 import app.PlayerApp;
 import app.utils.GameUtil;
+import app.utils.SettingsExhibition;
 import app.views.View;
 import app.views.tools.buttons.ButtonBack;
 import app.views.tools.buttons.ButtonEnd;
@@ -100,16 +101,21 @@ public class ToolView extends View
 		buttons.add(new ButtonForward(app, cx, cy, sx, sy, FORWARD_BUTTON_INDEX));
 		buttons.add(new ButtonEnd(app, cx, cy, sx, sy, END_BUTTON_INDEX));
 		buttons.add(new ButtonPass(app, cx, cy, sx, sy, PASS_BUTTON_INDEX));
+		
 		if (otherButtonShown(app.manager().ref().context()))
 			buttons.add(new ButtonOther(app, cx, cy, sx, sy, OTHER_BUTTON_INDEX));
 		else
-			buttons.add(null);  
-		buttons.add(new ButtonShow(app, cx, cy, sx, sy, SHOW_BUTTON_INDEX));
+			buttons.add(null);
 		
-		if (!app.manager().isWebApp())
+		if (!SettingsExhibition.exhibitionVersion)
 		{
-			buttons.add(new ButtonSettings(app, cx, cy, sx, sy, SETTINGS_BUTTON_INDEX));
-			buttons.add(new ButtonInfo(app, cx, cy, sx, sy, INFO_BUTTON_INDEX));
+			buttons.add(new ButtonShow(app, cx, cy, sx, sy, SHOW_BUTTON_INDEX));
+			
+			if (!app.manager().isWebApp())
+			{
+				buttons.add(new ButtonSettings(app, cx, cy, sx, sy, SETTINGS_BUTTON_INDEX));
+				buttons.add(new ButtonInfo(app, cx, cy, sx, sy, INFO_BUTTON_INDEX));
+			}
 		}
 	
 		final double spacing = placement.width / (double) buttons.size();

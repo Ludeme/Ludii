@@ -38,6 +38,7 @@ import app.DesktopApp;
 import app.PlayerApp;
 import app.loading.MiscLoading;
 import app.utils.PuzzleSelectionType;
+import app.utils.SettingsExhibition;
 import game.equipment.container.board.Track;
 import game.types.play.RepetitionType;
 import main.Constants;
@@ -73,7 +74,7 @@ public class MainMenu extends JMenuBar
 	public MainMenu(final PlayerApp app)
 	{
 		// No menu for exhibition app.
-		if (app.settingsPlayer().usingExhibitionApp())
+		if (app.settingsPlayer().usingMYOGApp() || SettingsExhibition.exhibitionVersion)
 			return;
 		
 		final ActionListener al = app;

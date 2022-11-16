@@ -28,6 +28,7 @@ import app.DesktopApp;
 import app.PlayerApp;
 import app.display.views.tabs.pages.InfoPage;
 import app.display.views.tabs.pages.RulesPage;
+import app.utils.SettingsExhibition;
 import app.views.View;
 import other.context.Context;
 
@@ -327,6 +328,9 @@ public abstract class TabPage extends View
 	 */
 	private void drawTabPageTitle(final Graphics2D g2d)
 	{
+		if (SettingsExhibition.exhibitionVersion)
+			return;
+		
 		final Font oldFont = g2d.getFont();
 		final Font font = new Font("Arial", Font.BOLD, TabView.fontSize);
 		g2d.setFont(font);

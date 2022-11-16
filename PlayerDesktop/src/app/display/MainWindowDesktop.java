@@ -30,6 +30,7 @@ import app.loading.FileLoading;
 import app.move.MouseHandler;
 import app.utils.GUIUtil;
 import app.utils.MVCSetup;
+import app.utils.SettingsExhibition;
 import app.utils.sandbox.SandboxValueType;
 import app.views.BoardView;
 import app.views.View;
@@ -181,8 +182,10 @@ public class MainWindowDesktop extends JPanel implements MouseListener, MouseMot
 			app.updateTabs(app.contextSnapshot().getContext(app));
 
 			// Set application background colour.
-			if (app.settingsPlayer().usingExhibitionApp())
+			if (app.settingsPlayer().usingMYOGApp())
 				g2d.setColor(new Color(146,223,243));
+			else if (SettingsExhibition.exhibitionVersion)
+				g2d.setColor(Color.black);
 			else
 				g2d.setColor(Color.white);
 			

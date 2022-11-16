@@ -100,7 +100,7 @@ public class MouseHandler
 				(
 					!app.settingsPlayer().componentIsSelected() 
 					&&
-					!app.settingsPlayer().usingExhibitionApp()
+					!app.settingsPlayer().usingMYOGApp()
 					&&
 					app.bridge().settingsVC().lastClickedSite().equals(selectedFromLocation)
 				)
@@ -110,7 +110,7 @@ public class MouseHandler
 				else
 				{
 					// Special exhibition code for making move piece to hands move / removing pieces.
-					if (app.settingsPlayer().usingExhibitionApp())
+					if (app.settingsPlayer().usingMYOGApp())
 					{
 						if (GUIUtil.pointOverlapsRectangle(releasedPoint, app.settingsPlayer().boardMarginPlacement()))
 						{
@@ -200,7 +200,7 @@ public class MouseHandler
 		if (context.game().isDeductionPuzzle())
 			return;
 		
-		if (app.settingsPlayer().usingExhibitionApp())
+		if (app.settingsPlayer().usingMYOGApp())
 		{
 			// repaint the whole view for exhibition mode.
 			app.repaint();

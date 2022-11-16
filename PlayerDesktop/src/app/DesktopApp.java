@@ -44,6 +44,7 @@ import app.util.SettingsDesktop;
 import app.util.Sound;
 import app.util.UserPreferences;
 import app.utils.GameSetup;
+import app.utils.SettingsExhibition;
 import app.views.View;
 import game.Game;
 import game.rules.phase.Phase;
@@ -380,6 +381,13 @@ public class DesktopApp extends PlayerApp
 			frame.setContentPane(view);
 			frame.setSize(SettingsDesktop.defaultWidth, SettingsDesktop.defaultHeight);
 			
+			if (SettingsExhibition.exhibitionVersion)
+			{
+				frame.setUndecorated(true);
+				frame.setResizable(false);
+				frame.setSize(SettingsExhibition.exhibitionDisplayWidth, SettingsExhibition.exhibitionDisplayHeight);
+			}
+			
 			try
 			{
 				if (settingsPlayer().defaultX() == -1 || settingsPlayer().defaultY() == -1)
@@ -397,7 +405,7 @@ public class DesktopApp extends PlayerApp
 
 			frame.setVisible(true);
 			frame.setMinimumSize(new Dimension(minimumViewWidth, minimumViewHeight));
-			
+
 			FileLoading.createFileChoosers();
 			setCurrentGraphicsDevice(frame.getGraphicsConfiguration().getDevice());
 			
@@ -430,6 +438,18 @@ public class DesktopApp extends PlayerApp
 	{
 		try
 		{
+			if (SettingsExhibition.exhibitionVersion)
+			{
+				GameLoading.loadGameFromMemory(this, SettingsExhibition.exhibitionGamePath, false);
+				
+				if (SettingsExhibition.againstAI)
+					AIUtil.updateSelectedAI(manager(), manager().aiSelected()[2].object(), 2, manager().aiSelected()[2].menuItemName());
+				
+				bridge().settingsVC().setShowPossibleMoves(true);
+				
+				return;
+			}
+			
 			if (firstTry)
 				TrialLoading.loadStartTrial(this);
 			
@@ -452,8 +472,7 @@ public class DesktopApp extends PlayerApp
 	
 			for (int i = 1; i <=  manager().ref().context().game().players().count(); i++)
 				if (aiSelected()[i] != null)
-					AIUtil.updateSelectedAI(manager(), manager().aiSelected()[i].object(), i,
-							manager().aiSelected()[i].menuItemName());
+					AIUtil.updateSelectedAI(manager(), manager().aiSelected()[i].object(), i, manager().aiSelected()[i].menuItemName());
 		}
 		catch (final Exception e)
 		{

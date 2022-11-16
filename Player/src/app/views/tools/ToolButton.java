@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import app.PlayerApp;
+import app.utils.SettingsExhibition;
 import game.rules.play.moves.Moves;
 import other.action.Action;
 import other.context.Context;
@@ -26,13 +27,13 @@ public abstract class ToolButton
 	protected String name = "?";
 
 	/** Default Button colour. */
-	protected final static Color buttonColour = new Color(50, 50, 50);
+	protected static Color buttonColour = new Color(50, 50, 50);
 
 	/** Rollover button colour */
-	protected final static Color rolloverButtonColour = new Color(127, 127, 127);
+	protected static Color rolloverButtonColour = new Color(127, 127, 127);
 
 	/** Default grayed out / invalid Button colour. */
-	protected final static Color invalidButtonColour = new Color(220,220,220);
+	protected static Color invalidButtonColour = new Color(220,220,220);
 
 	/** Rectangle bounding box for button */
 	protected Rectangle rect = new Rectangle();
@@ -64,6 +65,12 @@ public abstract class ToolButton
 		rect.y = cy;
 		rect.width = sx;
 		rect.height = sy;
+		
+		if (SettingsExhibition.exhibitionVersion)
+		{
+			buttonColour = new Color(220,220,220);
+			invalidButtonColour = new Color(100,100,100);
+		}
 	}
 
 	//-------------------------------------------------------------------------

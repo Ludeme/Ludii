@@ -98,7 +98,7 @@ public class PlayerView extends View
 			Rectangle place = new Rectangle(0, 0, boardSize, boardSize/10);
 			
 			// Place the shared hand in different location for exhibition app.
-			if (app.settingsPlayer().usingExhibitionApp())
+			if (app.settingsPlayer().usingMYOGApp())
 				place = new Rectangle(350, 300, 180, 130);		// Last argument changes piece size.
 			
 			final PlayerViewShared naturePlayerPage = new PlayerViewShared(app, place, numPlayers + 1, this);

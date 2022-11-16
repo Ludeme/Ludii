@@ -21,6 +21,7 @@ import app.move.animation.MoveAnimation;
 import app.utils.BufferedImageUtil;
 import app.utils.DrawnImageInfo;
 import app.utils.EnglishSwedishTranslations;
+import app.utils.SettingsExhibition;
 import app.views.View;
 import app.views.tools.ToolView;
 import game.equipment.container.Container;
@@ -73,11 +74,11 @@ public final class OverlayView extends View
 		
 		final Context context = app.contextSnapshot().getContext(app);
 			
-		if (!app.settingsPlayer().isPerformingTutorialVisualisation() && !app.settingsPlayer().usingExhibitionApp())
+		if (!app.settingsPlayer().isPerformingTutorialVisualisation() && !app.settingsPlayer().usingMYOGApp() && !SettingsExhibition.exhibitionVersion)
 			drawLoginDisc(app, g2d);
 
 		// Draw unique section text for exhibition app.
-		if (app.settingsPlayer().usingExhibitionApp())
+		if (app.settingsPlayer().usingMYOGApp())
 		{
 			final Font exhbitionTitleFont = new Font("Cantarell", Font.BOLD, 52);
 			g2d.setFont(exhbitionTitleFont);
@@ -247,7 +248,7 @@ public final class OverlayView extends View
 		}
 		
 		// Game over message for exhibition
-		if (app.settingsPlayer().usingExhibitionApp() && context.trial().over())	
+		if (app.settingsPlayer().usingMYOGApp() && context.trial().over())	
 		{
 			String message = "          Draw";
 			if (context.winners().size() > 0)
