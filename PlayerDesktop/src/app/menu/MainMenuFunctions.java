@@ -1349,7 +1349,21 @@ public class MainMenuFunctions extends JMenuBar
 		else if (source.getText().equals("Portfolio Parameters (external)"))
 		{
 			final Map<String, Map<String, Double>> portfolioParameterPredictions = AgentPredictionExternal.predictPortfolioParameters(game);
-			System.out.println(portfolioParameterPredictions);
+			System.out.println("\n" + portfolioParameterPredictions + "\n");
+			for (final String parameterName : portfolioParameterPredictions.keySet())
+			{
+				double highestPredictionProb = -1.0;
+				String bestPredictionLabel = "";
+				for (final String paramValue : portfolioParameterPredictions.get(parameterName).keySet())
+				{ 
+					if (portfolioParameterPredictions.get(parameterName).get(paramValue).doubleValue() > highestPredictionProb)
+					{
+						highestPredictionProb = portfolioParameterPredictions.get(parameterName).get(paramValue).doubleValue();
+						bestPredictionLabel = paramValue;
+					}
+				}
+				System.out.println(parameterName + ": " + bestPredictionLabel + " (" + highestPredictionProb + ")");
+			}
 		}
 		else if (getParentTitle(source, 2).equals("Predict Metrics (external)"))
 		{
