@@ -1,31 +1,48 @@
-(game "Mamatjang-Matjang" 
-    (players 2) 
-    (equipment { 
-        (board [#]) 
-        (piece "Tiger" P1 (or "HopCapture" (move [#])))
-        (piece "Human" P2 (move [#])) 
-    }) 
-    (rules 
-        (start [#])
-        
-        (play (forEach Piece)) 
-        
-        (end {
-            ("NoMoves" Loss)
-            (if (no Pieces P2) (result P1 Win))
-        })
-    )
+(game "Mamatjang-Matjang" // Hunt game
+    <Variant>
 )
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board [#]) 
+            (piece "Tiger" P1 (or "HopCapture" (move [#])))
+            (piece "Human" P2 (move [#])) 
+        }) 
+        (rules 
+            (start {
+            	(place "Tiger1" (sites {[#]}))
+            	(place "Human2" (sites {[#]}))
+            })
+            
+            (play (forEach Piece)) 
+            
+            (end {
+                ("NoMoves" Loss)
+                (if (no Pieces P2) (result P1 Win))
+            })
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+        "Variant/Incomplete"
     })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
