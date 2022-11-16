@@ -75,7 +75,7 @@ public class TrainedFeaturesAndDecisionTreesPlayoutTimingScriptsGen
 				"Knightthrough.lud",
 				"Konane.lud",
 				"Lines of Action.lud",
-				"Omega",
+				"Omega.lud",
 				"Pentalath.lud",
 				"Pretwa.lud",
 				"Reversi.lud",
@@ -160,13 +160,45 @@ public class TrainedFeaturesAndDecisionTreesPlayoutTimingScriptsGen
 					final ProcessData processData = processDataList.get(processIdx);
 					
 					String featuresToUseStr = null;
-					if (processData.featuresToUse.equals(""))
+					if (processData.featuresToUse.equals("FullPolicy"))
 					{
-						
+						featuresToUseStr = 
+								StringRoutines.quote
+								(
+									"latest-trained-" + StringRoutines.join
+									(
+										"/",
+										"",
+										"home",
+										userName,
+										"TrainFeaturesSnellius4",
+										"Out",
+										StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + "_Baseline"
+									)
+								);
+					}
+					else if (processData.featuresToUse.startsWith("Tree"))
+					{
+						featuresToUseStr = 
+								StringRoutines.quote
+								(
+									"decision-trees-" + StringRoutines.join
+									(
+										"/",
+										"",
+										"home",
+										userName,
+										"TrainFeaturesSnellius4",
+										"Out",
+										"Trees",
+										StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")),
+										"IQRTree_Playout_" + processData.featuresToUse.substring("Tree".length()) + ".txt"
+									)
+								);
 					}
 					else
 					{
-						
+						System.err.println("Cannot recognise features to use: " + processData.featuresToUse);
 					}
 					
 					// Write Java call for this process
@@ -204,19 +236,7 @@ public class TrainedFeaturesAndDecisionTreesPlayoutTimingScriptsGen
 								),
 								//"--suppress-prints",
 								"--features-to-use",
-								StringRoutines.quote		// TODO fix
-								(
-									processData.featuresToUse + StringRoutines.join
-									(
-										"/", 
-										"",
-										"home",
-										userName,
-										"TrainFeatures",
-										"Out",
-										StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), ""))
-									)
-								),
+								featuresToUseStr,
 								">",
 								"/home/" + userName + "/BenchmarkTrainedFeaturesAndDecisionTrees/Out/Out_${SLURM_JOB_ID}_" + numJobProcesses + ".out",
 								"2>",
