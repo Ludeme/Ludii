@@ -1,35 +1,49 @@
-(game "Solitario"
-    (players 2) 
-    (equipment { 
-        (board 
-            (merge 
-                { 
-                (square 5)
-                (shift 0.5 4 (rotate 180 (scale 0.75 1.5 (wedge 3)))) 
-                } 
-            ) 
-            use:Vertex
-        )
-        (piece "Marker" P1 (move [#]))
-        (piece "Marker" P2 (move [#]))
-    }) 
-    
-    (rules 
-        (start [#])
-        (play [#])
-        (end [#])
-    )
-)
+(game "Solitario" // Hunt game
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (board 
+	                (merge 
+	                    { 
+	                    (square 5)
+	                    (shift 0.5 4 (rotate 180 (scale 0.75 1.5 (wedge 3)))) 
+	                    } 
+	                ) 
+	                use:Vertex
+	            )
+	            (piece "Marker" P1 (move [#]))
+	            (piece "Marker" P2 (move [#]))
+	        }) 
+	        
+	        (rules 
+	            (start [#])
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
 
 (metadata 
     
@@ -48,7 +62,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
 )
