@@ -1,46 +1,60 @@
-(game "Lay Gwet Kyah"
-    (players 2) 
-    (equipment { 
-        (board 
-            (square 4)
-            use:[Vertex | Cell]
-        )
-        (piece "Tiger" P1 (and ("StepToEmpty") ("HopCapture")))
-        (piece "Marker" P2 ("StepToEmpty"))
-        (hand Each)
-    }) 
-    
-    (rules 
-        (start {
-            (place "Tiger1" (handSite P1) count:3)
-            (place "Marker2" (handSite P2) count:[11..12])
-        })
-        phases:{
-        (phase "Placement" // To check if the pieces should not be on the board at the initial state or not?
-            (play
-                (move 
-                    (from (handSite Mover)) 
-                    (to (sites Empty)) 
-                ) 
-            ) 
-            (nextPhase (and ("HandEmpty" P1)("HandEmpty" P2)) "Movement")
-        )
-        ("PhaseMovePiece" "Movement"
-            (end ("NoMovesP1NoPiecesP2"))
-        )
-        }
-    )
+(game "Lay Gwet Kyah" // Hunt game
+    <Variant>
 )
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board 
+                (square 4)
+                use:[Vertex | Cell]
+            )
+            (piece "Tiger" P1 (and ("StepToEmpty") ("HopCapture")))
+            (piece "Marker" P2 ("StepToEmpty"))
+            (hand Each)
+        }) 
+        
+        (rules 
+            (start {
+                (place "Tiger1" (handSite P1) count:3)
+                (place "Marker2" (handSite P2) count:[11..12])
+            })
+            phases:{
+            (phase "Placement" // To check if the pieces should not be on the board at the initial state or not?
+                (play
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                    ) 
+                ) 
+                (nextPhase (and ("HandEmpty" P1)("HandEmpty" P2)) "Movement")
+            )
+            ("PhaseMovePiece" "Movement"
+                (end ("NoMovesP1NoPiecesP2"))
+            )
+            }
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+        "Variant/Incomplete"
     })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
