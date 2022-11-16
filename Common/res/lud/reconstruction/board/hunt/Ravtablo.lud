@@ -1,29 +1,43 @@
-(game "Ravtablo" 
-    (players 2) 
-    (equipment { 
-        (board 
-            (rectangle 9 5 diagonals:Alternating)
-            use:Vertex
-        )
-        (piece "Marker" P1 (move [#]))
-        (piece "Marker" P2 (move [#]))
-    }) 
-    (rules 
-        (start [#])
-        (play [#])
-        (end [#])
-    )
-)
+(game "Ravtablo" // Hunt game
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (board 
+	                (rectangle 9 5 diagonals:Alternating)
+	                use:Vertex
+	            )
+	            (piece "Marker" P1 (move [#]))
+	            (piece "Marker" P2 (move [#]))
+	        }) 
+	        (rules 
+	            (start [#])
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
 
 (metadata 
     

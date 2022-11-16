@@ -10,12 +10,15 @@
         <
         (players 2) 
         (equipment {
-            (board [#]) // Board shape is squared OR board tilings are squared.
+            (board (square [#])) // Board shape is squared OR board tilings are squared.
             (piece "Marker" P1 (or ("StepToEmpty" ("HopCapture")))) // One black. 
             (piece "Marker" P2 ("StepToEmpty")) // Many black pieces.
         }) 
         (rules
-            (start [#])
+            (start {
+                (place "Marker1" [#])
+                (place "Marker2" (sites [#]))
+            })
             (play (forEach Piece))
             (end ("NoMovesP1NoPiecesP2"))
         )
