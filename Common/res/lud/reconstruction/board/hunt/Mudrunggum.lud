@@ -1,39 +1,53 @@
-(game "Mudrunggum"
-    (players 2) 
-    (equipment { 
-        (board 
-            (merge 
-                { 
-                (shift 0 2 (square 5 diagonals:Alternating)) 
-                (wedge 3) 
-                (shift 0 6 (rotate 180 (wedge 3))) 
-                } 
-            ) 
-            use:Vertex
-        )
-        (piece "Tiger" P1 (move [#]))
-        (piece "Sheep" P2 (move [#]))
-    }) 
-    
-    (rules 
-        (start {
-            (place "Tiger1" (sites [#])) // 4 Tigers !
-            (place "Sheep2" (sites [#])) // 16 Sheeps !
-        })
-        (play [#])
-        (end [#])
-    )
+(game "Mudrunggum" // Hunt game
+    <Variant>
 )
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board 
+                (merge 
+                    { 
+                    (shift 0 2 (square 5 diagonals:Alternating)) 
+                    (wedge 3) 
+                    (shift 0 6 (rotate 180 (wedge 3))) 
+                    } 
+                ) 
+                use:Vertex
+            )
+            (piece "Tiger" P1 (move [#]))
+            (piece "Sheep" P2 (move [#]))
+        }) 
+        
+        (rules 
+            (start {
+                (place "Tiger1" (sites [#])) // 4 Tigers !
+                (place "Sheep2" (sites [#])) // 16 Sheeps !
+            })
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+        "Variant/Incomplete"
     })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
