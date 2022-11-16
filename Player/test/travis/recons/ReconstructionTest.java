@@ -43,7 +43,7 @@ public class ReconstructionTest
 		for (final String fileName : choices)
 		{
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/"))
-			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
+			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/pending/"))
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/war/leaping/lines/Manipur Capturing Game"))
 				continue;
 			
