@@ -52,7 +52,7 @@ public class ReconstructionGenerator
 	
 	final static double defaultConceptualWeight = 0.5;
 	final static double defaultHistoricalWeight = 0.5;
-	final static double defaultThreshold = 0.50;
+	final static double defaultThreshold = 0.99;
 	
 	/**
 	 * Main method to call the reconstruction with command lines.
