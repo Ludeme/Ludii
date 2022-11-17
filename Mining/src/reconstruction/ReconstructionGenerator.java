@@ -57,6 +57,7 @@ public class ReconstructionGenerator
 	final static double defaultThreshold = 0.99;
 	
 	final static boolean checkTimeoutRandomPlayout = true;
+	final static int     defaultPlayoutsAttempts = 10;
 	
 	/**
 	 * Main method to call the reconstruction with command lines.
@@ -237,7 +238,7 @@ public class ReconstructionGenerator
 											// Run 10 random playouts and check if at least one of them is not timeout.
 											allGood = false;
 											int playoutAttempts = 0;
-											while (!allGood && playoutAttempts <= 10)
+											while (!allGood && playoutAttempts <= defaultPlayoutsAttempts)
 											{
 												final Context contextRandomPlayout = new Context(game, new Trial(game));
 												final List<AI> ais = new ArrayList<AI>();
