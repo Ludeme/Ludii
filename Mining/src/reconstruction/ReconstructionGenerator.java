@@ -38,21 +38,21 @@ public class ReconstructionGenerator
 	final static String defaultOutputPath        = "./res/recons/output/";
 	final static int    defaultNumReconsExpected = 1;
 	final static int    defaultNumAttempts       = 100000;
-	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/hunt/Talyn Buga";
+	//final static String defaultReconsPath        = "/lud/reconstruction/pending/board/hunt/Uulyn Buga";
 	//final static String defaultReconsPath        = "/lud/reconstruction/board/war/replacement/checkmate/chaturanga/Samantsy";
 	//final static String defaultReconsPath        = "/lud/reconstruction/board/race/other/Coptic Game";
 	//final static String defaultReconsPath        = "/lud/test/eric/recons/Hnefatafl";
 	//final static String defaultReconsPath        = "/lud/test/eric/recons/Senet";
-	//final static String defaultReconsPath        = "/lud/reconstruction/validation/Three Men's Morris";
+	final static String defaultReconsPath        = "/lud/reconstruction/validation/Three Men's Morris";
 	final static String defaultOptionName        = "Variant/Incomplete";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/hunt/Fortresse";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/space/line/Ashanti Alignment Game";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/war/other/Macheng";
 	//final static String defaultReconsPath = "/lud/reconstruction/board/hunt/Bagh Bukree";
 	
-	final static double defaultConceptualWeight = 0.5;
-	final static double defaultHistoricalWeight = 0.5;
-	final static double defaultThreshold = 0.50;
+	final static double defaultConceptualWeight = 0.0;
+	final static double defaultHistoricalWeight = 1.0;
+	final static double defaultThreshold = 0.99;
 	
 	/**
 	 * Main method to call the reconstruction with command lines.
