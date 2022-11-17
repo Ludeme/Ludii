@@ -5,33 +5,66 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-{
-(item "Talyn Buga1" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (rotate 45 
-                    (shift 1.5 8.2 
-                        (square 2 diagonals:Solid)
-                    )
-                )
-                
-                (shift 0.67 -1.32 
-                    (scale 0.66 
-                        (wedge 3)
-                    )
-                )
-                
-                (rectangle 9 5 diagonals:Alternating)
-                }
-            )
-        use:Vertex)
+    {
+    (item "Talyn Buga1" <
         
-        (piece "Deer" P1 
-            (and 
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rotate 45 
+                        (shift 1.5 8.2 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift 0.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (rectangle 9 5 diagonals:Alternating)
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Deer" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
                 (move Step 
                     (to if:
                         (is Empty 
@@ -39,126 +72,126 @@
                         )
                     )
                 )
+            )
+            
+            (hand P2)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Deer1" 
+                    (sites { "C11" "C3"}
+                    )
+                )
                 
-                (move Hop 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
+                (place "Dog2" 
+                    (forEach 
+                        (sites Outer)
+                        if:
+                        (not 
+                            (is In 
+                                (site)
+                                
+                                (expand 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                steps:2)
                             )
                         )
-                        
-                        (apply 
-                            (remove 
-                                (between)
+                    )
+                )
+                
+                (place "Dog2" 
+                    (handSite P2)
+                count:13)
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Talyn Buga1 ruleset.")
+    
+    (item "Talyn Buga2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rotate 45 
+                        (shift 1.5 8.2 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift 0.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (rectangle 9 5 diagonals:Alternating)
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Deer" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
                             )
                         )
                     )
                     
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        
-        (piece "Dog" P2 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        
-        (hand P2)
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Deer1" 
-                (sites { "C11" "C3"}
-                )
-            )
-            
-            (place "Dog2" 
-                (forEach 
-                    (sites Outer)
-                    if:
-                    (not 
-                        (is In 
-                            (site)
-                            
-                            (expand 
-                                (union 
-                                    (sites Top)
-                                    
-                                    (sites Bottom)
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
                                 )
-                            steps:2)
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
                         )
                     )
                 )
             )
             
-            (place "Dog2" 
-                (handSite P2)
-            count:13)
-            }
-        )
-        
-        (play 
-            (forEach Piece)
-        )
-        
-        (end { 
-            (if 
-                (no Moves P1)
-                
-                (result P2 Win)
-            )
-            
-            (if 
-                (no Pieces P2)
-                
-                (result P1 Win)
-            )
-            }
-        )
-    )
-
- > "The Talyn Buga1 ruleset.")
-
-(item "Talyn Buga2" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (rotate 45 
-                    (shift 1.5 8.2 
-                        (square 2 diagonals:Solid)
-                    )
-                )
-                
-                (shift 0.67 -1.32 
-                    (scale 0.66 
-                        (wedge 3)
-                    )
-                )
-                
-                (rectangle 9 5 diagonals:Alternating)
-                }
-            )
-        use:Vertex)
-        
-        (piece "Deer" P1 
-            (and 
+            (piece "Dog" P2 
                 (move Step 
                     (to if:
                         (is Empty 
@@ -166,126 +199,126 @@
                         )
                     )
                 )
+            )
+            
+            (hand P2)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Deer1" 
+                    (sites { "C11" "C3"}
+                    )
+                )
                 
-                (move Hop 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
+                (place "Dog2" 
+                    (forEach 
+                        (sites Outer)
+                        if:
+                        (not 
+                            (is In 
+                                (site)
+                                
+                                (expand 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                steps:2)
                             )
                         )
-                        
-                        (apply 
-                            (remove 
-                                (between)
+                    )
+                )
+                
+                (place "Dog2" 
+                    (handSite P2)
+                count:13)
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Talyn Buga2 ruleset.")
+    
+    (item "Talyn Buga3" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rotate 45 
+                        (shift 1.5 8.2 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift 0.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (rectangle 9 5 diagonals:Alternating)
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Deer" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
                             )
                         )
                     )
                     
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        
-        (piece "Dog" P2 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        
-        (hand P2)
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Deer1" 
-                (sites { "C11" "C3"}
-                )
-            )
-            
-            (place "Dog2" 
-                (forEach 
-                    (sites Outer)
-                    if:
-                    (not 
-                        (is In 
-                            (site)
-                            
-                            (expand 
-                                (union 
-                                    (sites Top)
-                                    
-                                    (sites Bottom)
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
                                 )
-                            steps:2)
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
                         )
                     )
                 )
             )
             
-            (place "Dog2" 
-                (handSite P2)
-            count:13)
-            }
-        )
-        
-        (play 
-            (forEach Piece)
-        )
-        
-        (end { 
-            (if 
-                (no Moves P1)
-                
-                (result P2 Win)
-            )
-            
-            (if 
-                (no Pieces P2)
-                
-                (result P1 Win)
-            )
-            }
-        )
-    )
-
- > "The Talyn Buga2 ruleset.")
-
-(item "Talyn Buga3" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (rotate 45 
-                    (shift 1.5 8.2 
-                        (square 2 diagonals:Solid)
-                    )
-                )
-                
-                (shift 0.67 -1.32 
-                    (scale 0.66 
-                        (wedge 3)
-                    )
-                )
-                
-                (rectangle 9 5 diagonals:Alternating)
-                }
-            )
-        use:Vertex)
-        
-        (piece "Deer" P1 
-            (and 
+            (piece "Dog" P2 
                 (move Step 
                     (to if:
                         (is Empty 
@@ -293,101 +326,67 @@
                         )
                     )
                 )
+            )
+            
+            (hand P2)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Deer1" 
+                    (sites { "C11" "C3"}
+                    )
+                )
                 
-                (move Hop 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
-                            )
-                        )
-                        
-                        (apply 
-                            (remove 
-                                (between)
+                (place "Dog2" 
+                    (forEach 
+                        (sites Outer)
+                        if:
+                        (not 
+                            (is In 
+                                (site)
+                                
+                                (expand 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                steps:2)
                             )
                         )
                     )
+                )
+                
+                (place "Dog2" 
+                    (handSite P2)
+                count:11)
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
                     
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
+                    (result P2 Win)
                 )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
             )
         )
         
-        (piece "Dog" P2 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        
-        (hand P2)
-        }
-    )
+    > "The Talyn Buga3 ruleset.")
     
-    (rules 
-        (start { 
-            (place "Deer1" 
-                (sites { "C11" "C3"}
-                )
-            )
-            
-            (place "Dog2" 
-                (forEach 
-                    (sites Outer)
-                    if:
-                    (not 
-                        (is In 
-                            (site)
-                            
-                            (expand 
-                                (union 
-                                    (sites Top)
-                                    
-                                    (sites Bottom)
-                                )
-                            steps:2)
-                        )
-                    )
-                )
-            )
-            
-            (place "Dog2" 
-                (handSite P2)
-            count:11)
-            }
-        )
-        
-        (play 
-            (forEach Piece)
-        )
-        
-        (end { 
-            (if 
-                (no Moves P1)
-                
-                (result P2 Win)
-            )
-            
-            (if 
-                (no Pieces P2)
-                
-                (result P1 Win)
-            )
-            }
-        )
-    )
-
- > "The Talyn Buga3 ruleset.")
-
-
     (item "Incomplete"
         <
         (players 2) 
@@ -419,22 +418,22 @@
         >
         "The incomplete ruleset."
     )
-
- })
+    
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets {
-
-(ruleset "Ruleset/Talyn Buga1 (Reconstructed)" {
-     "Variant/Talyn Buga1"
-})
-(ruleset "Ruleset/Talyn Buga2 (Reconstructed)" {
-     "Variant/Talyn Buga2"
-})
-(ruleset "Ruleset/Talyn Buga3 (Reconstructed)" {
-     "Variant/Talyn Buga3"
-}) 
+    
+    (ruleset "Ruleset/Talyn Buga1 (Reconstructed)" {
+        "Variant/Talyn Buga1"
+    })
+    (ruleset "Ruleset/Talyn Buga2 (Reconstructed)" {
+        "Variant/Talyn Buga2"
+    })
+    (ruleset "Ruleset/Talyn Buga3 (Reconstructed)" {
+        "Variant/Talyn Buga3"
+    }) 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -444,7 +443,7 @@
 
 //------------------------------------------------------------------------------
 
- (metadata 
+(metadata 
     
     (info
         {
