@@ -3,42 +3,56 @@
 // - Pieces can "kill" one another, but we do not know how.
 // - Not sure of the ending rules.
 
-(game "Aasha"
-    (players 2) 
-    (equipment { 
-        (board 
-            (merge {
-                (shift -1 5.5 (scale 1 3 (square 1)))
-                (rectangle 5 3)
-                (shift 1 0 (rectangle 10 1))
-                (shift 3 5.5 (scale 1 3 (square 1)))
-            })
-            {
-            (track "Track1" "22,0,4,S,E1,N" P1 directed:True)
-            (track "Track2" "23,21,16,S,W1,N" P2 directed:True)
-            }
-        )
-        ("StickDice" 5)
-        (hand Each)
-        (piece "Marker" Each (move [#]))
-    }) 
-    
-    (rules 
-        (start (place "Marker" "Hand" count:12))
-        (play ("RollMove" [#]))
-        (end [#])
-    )
+(game "Aasha" // Hunt game
+    <Variant>
 )
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board 
+                (merge {
+                    (shift -1 5.5 (scale 1 3 (square 1)))
+                    (rectangle 5 3)
+                    (shift 1 0 (rectangle 10 1))
+                    (shift 3 5.5 (scale 1 3 (square 1)))
+                })
+                {
+                (track "Track1" "22,0,4,S,E1,N" P1 directed:True)
+                (track "Track2" "23,21,16,S,W1,N" P2 directed:True)
+                }
+            )
+            ("StickDice" 5)
+            (hand Each)
+            (piece "Marker" Each (move [#]))
+        }) 
+        
+        (rules 
+            (start (place "Marker" "Hand" count:12))
+            (play ("RollMove" [#]))
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Ruby Daniel (Incomplete)" {
-        
-    })*
+        "Variant/Incomplete"
+    })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
