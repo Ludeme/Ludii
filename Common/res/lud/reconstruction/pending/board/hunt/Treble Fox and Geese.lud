@@ -1,26 +1,40 @@
-(game "Treble Fox and Geese"
-    (players 2) 
-    (equipment {
-        (board [#] use:Vertex) // More than 33 vertices on this board
-        (piece "Fox" #)
-        (piece "Geese" #)
-    })
-    (rules
-        (start [#]) // 3 or 4 foxes and 50 to 60 geese
-        (play [#])
-        (end [#])
-    )
+(game "Treble Fox and Geese" // Hunt game
+    <Variant>
 )
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment {
+            (board [#] use:Vertex) // More than 33 vertices on this board
+            (piece "Fox" #)
+            (piece "Geese" #)
+        })
+        (rules
+            (start [#]) // 3 or 4 foxes and 50 to 60 geese
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })*
+        "Variant/Incomplete"
+    })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     

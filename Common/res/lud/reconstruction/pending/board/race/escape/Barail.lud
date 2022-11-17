@@ -1,34 +1,51 @@
 (game "Barail"
-    (players 2)
-    (equipment {
-        ("BackgammonBoard"
-            {
-            (track "Track" {25..20 18..13 0..5 7..12 End} P1 directed:True)
-            } 
-        ) 
-        (dice d:6 num:3)
-        (piece "Disc" Each (move [#]))
-    })
-    (rules 
-        (start {
-            (place Stack "Disc1" 15 count:1)
-            (place Stack "Disc1" 14 count:14)
-            (place Stack "Disc2" 13 count:15)
-        })
-        (play ("RollMove" [#]))
-        (end ("EscapeWin"))
-    )
+    <Variant>
 )
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2)
+        (equipment {
+            ("BackgammonBoard"
+                {
+                (track "Track" {25..20 18..13 0..5 7..12 End} P1 directed:True)
+                } 
+            ) 
+            (dice d:6 num:3)
+            (piece "Disc" Each [#])
+            (regions P1 [#])
+            (regions P2 [#])
+            (map [#])
+        })
+        (rules 
+            (start {
+                (place Stack "Disc1" 15 count:1)
+                (place Stack "Disc1" 14 count:14)
+                (place Stack "Disc2" 13 count:15)
+            })
+            (play ("RollMove" [#]))
+            (end ("EscapeWin"))
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+        "Variant/Incomplete"
     })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     

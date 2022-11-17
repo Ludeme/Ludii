@@ -1,30 +1,44 @@
-(game "Yasasukari Musashi"
-    (players 2) 
-    (equipment { 
-        ("AlquerqueBoard" 5 5)
-        (piece "Marker" P1 (move [#]))
-        (piece "Marker" P2 (move [#]))
-    }) 
-    
-    (rules 
-        (start {
-            (place "Marker1" (sites Centre))
-            (place "Marker2" (sites Outer))
-        })
-        (play [#])
-        (end [#])
-    )
+(game "Yasasukari Musashi" // Hunt game
+    <Variant>
 )
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            ("AlquerqueBoard" 5 5)
+            (piece "Marker" P1 (move [#]))
+            (piece "Marker" P2 (move [#]))
+        }) 
+        
+        (rules 
+            (start {
+                (place "Marker1" (sites Centre))
+                (place "Marker2" (sites Outer))
+            })
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })*
+        "Variant/Incomplete"
+    })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     

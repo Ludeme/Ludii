@@ -21,12 +21,14 @@ import main.FileHandling;
 import main.StringRoutines;
 import main.UnixPrintWriter;
 import main.grammar.Description;
+import other.AI;
 import other.GameLoader;
 import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
 import reconstruction.completer.CompleterWithPrepro;
 import reconstruction.utils.FormatReconstructionOutputs;
+import utils.RandomAI;
 
 /**
  * Reconstruction Generator.
@@ -38,8 +40,8 @@ public class ReconstructionGenerator
 	final static String defaultOutputPath        = "./res/recons/output/";
 	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 100000;
-	final static String defaultReconsPath        = "/lud/reconstruction/board/hunt/Moo (Hunt)";
-	//final static String defaultReconsPath        = "/lud/reconstruction/board/war/replacement/checkmate/chaturanga/Samantsy";
+	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/race/escape/Barail";
+	//final static String defaultReconsPath        = "/lud/reconstruction/pending/board/war/replacement/checkmate/chaturanga/Samantsy";
 	//final static String defaultReconsPath        = "/lud/reconstruction/board/race/other/Coptic Game";
 	//final static String defaultReconsPath        = "/lud/test/eric/recons/Hnefatafl";
 	//final static String defaultReconsPath        = "/lud/test/eric/recons/Senet";
@@ -53,6 +55,9 @@ public class ReconstructionGenerator
 	final static double defaultConceptualWeight = 0.5;
 	final static double defaultHistoricalWeight = 0.5;
 	final static double defaultThreshold = 0.99;
+	
+	final static boolean checkTimeoutRandomPlayout = true;
+	final static int     defaultPlayoutsAttempts = 10;
 	
 	/**
 	 * Main method to call the reconstruction with command lines.
@@ -225,12 +230,50 @@ public class ReconstructionGenerator
 									if(!legalMoves.moves().isEmpty())
 									{
 										System.out.print( " and with legal moves");
+										
+										boolean allGood = true;
+										
+										if(checkTimeoutRandomPlayout)
+										{
+											// Run 10 random playouts and check if at least one of them is not timeout.
+											allGood = false;
+											int playoutAttempts = 0;
+											while (!allGood && playoutAttempts <= defaultPlayoutsAttempts)
+											{
+												final Context contextRandomPlayout = new Context(game, new Trial(game));
+												final List<AI> ais = new ArrayList<AI>();
+												ais.add(null);
+												// Init the ais.
+												for (int p = 1; p <= game.players().count(); ++p)
+												{
+													ais.add(new RandomAI());
+													ais.get(p).initAI(game, p);
+												}
+												game.playout(contextRandomPlayout, ais, 1.0, null, 0, -1, null);
+												final Trial trial = context.trial();
+//												System.out.println("run playout");
+//												System.out.println("num Turns = " + trial.numTurns());
+//												System.out.println("num real moves = " + trial.numberRealMoves());
+//												System.out.println("game max Turn limits = " + game.getMaxTurnLimit());
+												boolean trialTimedOut = trial.numTurns() > game.getMaxTurnLimit() || trial.numberRealMoves() > game.getMaxMoveLimit();
+												if(!trialTimedOut)
+													allGood = true;
+											}
+										}
+										else
+										{
+											System.out.print( " and with at least a complete playout");
+										}
+										
 										// All good, add to the list of correct completions.
-										correctCompletions.add(completion);
-										System.out.println("Score = " + completion.score() + " Cultural Score = " + completion.similarityScore() + " conceptual Score = " + completion.commonExpectedConceptsScore()) ; 
-										System.out.println("ids used = " + completion.idsUsed());
-										System.out.println(completion.raw());
-										System.out.println(correctCompletions.size() + " COMPLETIONS GENERATED.");
+										if(allGood)
+										{
+											correctCompletions.add(completion);
+											System.out.println("Score = " + completion.score() + " Cultural Score = " + completion.similarityScore() + " conceptual Score = " + completion.commonExpectedConceptsScore()) ; 
+											System.out.println("ids used = " + completion.idsUsed());
+											System.out.println(completion.raw());
+											System.out.println(correctCompletions.size() + " COMPLETIONS GENERATED.");
+										}
 									}
 								}
 							}
