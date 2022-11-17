@@ -13,7 +13,7 @@ import other.concept.Concept;
 import other.trial.Trial;
 
 /**
- * Number of turns in a game.
+ * Number of turns in a game (std dev).
  * 
  * @author matthew.stephenson
  */
@@ -30,7 +30,7 @@ public class DurationTurnsStdDev extends Metric
 		super
 		(
 			"Duration Turns Std Dev", 
-			"Number or turns in a game (std dev).", 
+			"Number of turns in a game (std dev).", 
 			0.0, 
 			Constants.INFINITY,
 			Concept.DurationTurns

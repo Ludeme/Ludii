@@ -819,11 +819,13 @@ public class ExportDbCsvConcepts
 		
 		final List<Concept> reconstructionConcepts = new ArrayList<Concept>();
 		reconstructionConcepts.add(Concept.DurationTurns);
+		reconstructionConcepts.add(Concept.DurationTurnsStdDev);
 		reconstructionConcepts.add(Concept.DecisionMoves);
 		reconstructionConcepts.add(Concept.BoardCoverageDefault);
 		reconstructionConcepts.add(Concept.AdvantageP1);
 		reconstructionConcepts.add(Concept.Balance);
 		reconstructionConcepts.add(Concept.Completion);
+		reconstructionConcepts.add(Concept.Timeouts);
 		reconstructionConcepts.add(Concept.Drawishness);
 		reconstructionConcepts.add(Concept.PieceNumberAverage);
 		reconstructionConcepts.add(Concept.BoardSitesOccupiedAverage);

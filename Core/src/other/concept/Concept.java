@@ -16,7 +16,7 @@ import main.grammar.Description;
  * computed if that's leaf. If that's not a leaf, the concept is true if any
  * child is true.
  * 
- * Remarks: The next id in case of a new concept is the id 798.
+ * Remarks: The next id in case of a new concept is the id 799.
  * 
  * @author Eric.Piette
  */
@@ -7734,6 +7734,20 @@ public enum Concept
 		"4.2.3",
 		531, 
 		"Number of turns in a game.",
+		ConceptType.Behaviour,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Duration
+	),
+	
+	/** Computed with playouts. */
+	DurationTurnsStdDev
+	(
+		"4.2.4",
+		798, 
+		"Number of turns in a game (std dev).",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
