@@ -1,40 +1,53 @@
-(game "Uulyn Buga"
-    (players 2) 
-    (equipment { 
-        (board 
-            (merge {
-                (rotate 45 (shift 1.5 4.2 (square 2 diagonals:Solid)))
-                (rotate 45 (shift 1.5 -1.2 (square 2 diagonals:Solid)))
-                (square 5 diagonals:Alternating)
-            })
-            use:Vertex
-        )
-        (piece "Deer" P1 (and ("StepToEmpty") ("HopCapture")))
-        (piece "Dog" P2 ("StepToEmpty"))
-        (hand P2)
-    }) 
-    
-    (rules 
-        (start {
-            (place "Deer1" (sites {"C7" "C3"}))
-            (place "Dog2" (forEach (sites [#]) if:(not (is In (site) (expand (union (sites Top) (sites Bottom)) steps:2))))) // 10 or 11.
-            (place "Dog2" (handSite P2) count:[10 | 11]) // Some can be introduced later.
-        })
-        (play (forEach Piece))
-        (end ("NoMovesP1NoPiecesP2"))
-    )
-    
+(game "Uulyn Buga" // Hunt game
+    <Variant>
 )
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board 
+                (merge {
+                    (rotate 45 (shift 1.5 4.2 (square 2 diagonals:Solid)))
+                    (rotate 45 (shift 1.5 -1.2 (square 2 diagonals:Solid)))
+                    (square 5 diagonals:Alternating)
+                })
+                use:Vertex
+            )
+            (piece "Deer" P1 (and ("StepToEmpty") ("HopCapture")))
+            (piece "Dog" P2 ("StepToEmpty"))
+            (hand P2)
+        }) 
+        
+        (rules 
+            (start {
+                (place "Deer1" (sites {"C7" "C3"}))
+                (place "Dog2" (forEach (sites [#]) if:(not (is In (site) (expand (union (sites Top) (sites Bottom)) steps:2))))) // 10 or 11.
+                (place "Dog2" (handSite P2) count:[10 | 11]) // Some can be introduced later.
+            })
+            (play (forEach Piece))
+            (end ("NoMovesP1NoPiecesP2"))
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+        "Variant/Incomplete"
     })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
