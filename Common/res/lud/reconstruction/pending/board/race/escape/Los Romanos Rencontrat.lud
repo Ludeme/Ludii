@@ -11,74 +11,88 @@
 
 //------------------------------------------------------------------------------
 
-(game "Los Romanos Rencontrat" 
-    (players 2)
-    (equipment {
-        ("TableBoard"
-            {
-            (track "Track1" {23..18 17..12 0..5 6..11 End} P1 directed:True)
-            (track "Track2" {11..6 5..0 12..17 18..23 End} P2 directed:True)
-            }
-        )
-        (dice d:6 num:3)
-        (piece "Disc" Each
-            (move
-                (from (from) level:(level))
-                (to ("NextSiteFrom" (from))
-                    if:(if (is In (to) (sites Next))
-                        (or 
-                            (is Empty (to))
-                            (and ("IsEnemyAt" (to)) (= 1 (size Stack at:(to))))
-                        )
-                        (or 
-                            (not ("IsEnemyAt" (to))) 
-                            (and ("IsEnemyAt" (to)) (= 1 (size Stack at:(to))))
-                        )
-                    )
-                    (apply 
-                        (if ("IsEnemyAt" (to)) 
-                            (fromTo
-                                (from (to))
-                                (to (mapEntry Next))
-                            )
-                        )	
-                    )
-                )
-            )	
-        )
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-        (map {(pair 1 23) (pair 2 11)}) // starting point
-    })
-    (rules
-        (start {
-            (place Stack "Disc1" 23 count:("NumPieces"))
-            (place Stack "Disc2" 11 count:("NumPieces"))
-        })
-        (play 
-            (do 
-                (if ("NewTurn") (roll))
-                next:(forEach Die 
-                    if:("DieNotUsed")
-                    (forEach Piece top:True    
-                        (then ("ReplayNotAllDiceUsed"))
-                    )
-                )
-            )		
-        )
-        (end [#])
-    )
+(game "Los Romanos Rencontrat"
+    <Variant>
 )
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2)
+        (equipment {
+            ("TableBoard"
+                {
+                (track "Track1" {23..18 17..12 0..5 6..11 End} P1 directed:True)
+                (track "Track2" {11..6 5..0 12..17 18..23 End} P2 directed:True)
+                }
+            )
+            (dice d:6 num:3)
+            (piece "Disc" Each
+                (move
+                    (from (from) level:(level))
+                    (to ("NextSiteFrom" (from))
+                        if:(if (is In (to) (sites Next))
+                            (or 
+                                (is Empty (to))
+                                (and ("IsEnemyAt" (to)) (= 1 (size Stack at:(to))))
+                            )
+                            (or 
+                                (not ("IsEnemyAt" (to))) 
+                                (and ("IsEnemyAt" (to)) (= 1 (size Stack at:(to))))
+                            )
+                        )
+                        (apply 
+                            (if ("IsEnemyAt" (to)) 
+                                (fromTo
+                                    (from (to))
+                                    (to (mapEntry Next))
+                                )
+                            )	
+                        )
+                    )
+                )	
+            )
+            (regions P1 (sites Bottom))
+            (regions P2 (sites Top))
+            (map {(pair 1 23) (pair 2 11)}) // starting point
+        })
+        (rules
+            (start {
+                (place Stack "Disc1" 23 count:("NumPieces"))
+                (place Stack "Disc2" 11 count:("NumPieces"))
+            })
+            (play 
+                (do 
+                    (if ("NewTurn") (roll))
+                    next:(forEach Die 
+                        if:("DieNotUsed")
+                        (forEach Piece top:True    
+                            (then ("ReplayNotAllDiceUsed"))
+                        )
+                    )
+                )		
+            )
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+        "Variant/Incomplete"
     })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
