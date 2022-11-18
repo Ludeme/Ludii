@@ -35,75 +35,89 @@
 //------------------------------------------------------------------------------
 
 (game "Macheng"
-    (players 2)
-    
-    (equipment { 
-        (board (concentric Square rings:[#]) use:Vertex) 
-        (hand Each)
-        (piece "Marker" Each 
-            (move
-                Step 
-                (to if:(is Empty (to))) 
-                (then
-                    (and {
-                        "Custodial"
-                        "Intervene"
-                        "IfLine3MoveAgain" 
-                    })
-                )
-            )
-        ) 
-    }) 
-    (rules 
-        (start (place "Marker" "Hand" count:[#]))
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2)
         
-        phases:{
-        (phase "Placement"
-            (play
-                (if "SameTurn"
-                    "RemoveEnemyPiece"
-                    (move 
-                        (from (handSite Mover)) 
-                        (to (sites Empty)) 
-                        (then
-                            (and {
-                                "Custodial"
-                                "Intervene"
-                                "IfLine3MoveAgain" 
-                            })
-                        )
-                    ) 
+        (equipment { 
+            (board (concentric Square rings:[#]) use:Vertex) 
+            (hand Each)
+            (piece "Marker" Each 
+                (move
+                    Step 
+                    (to if:(is Empty (to))) 
+                    (then
+                        (and {
+                            "Custodial"
+                            "Intervene"
+                            "IfLine3MoveAgain" 
+                        })
+                    )
                 )
             ) 
-            (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
-        
-        (phase "Movement" 
-            (play 
-                (if "SameTurn"
-                    "RemoveEnemyPiece"
-                    (move 
-                        (from (sites Occupied by:Mover))
-                        (to (sites Empty))
+        }) 
+        (rules 
+            (start (place "Marker" "Hand" count:[#]))
+            
+            phases:{
+            (phase "Placement"
+                (play
+                    (if "SameTurn"
+                        "RemoveEnemyPiece"
+                        (move 
+                            (from (handSite Mover)) 
+                            (to (sites Empty)) 
+                            (then
+                                (and {
+                                    "Custodial"
+                                    "Intervene"
+                                    "IfLine3MoveAgain" 
+                                })
+                            )
+                        ) 
+                    )
+                ) 
+                (nextPhase Mover ("HandEmpty" Mover) "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if "SameTurn"
+                        "RemoveEnemyPiece"
+                        (move 
+                            (from (sites Occupied by:Mover))
+                            (to (sites Empty))
+                        )
                     )
                 )
             )
+            }
+            
+            (end [#])
         )
-        }
-        
-        (end [#])
+        >
+        "The incomplete ruleset."
     )
-)
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+        "Variant/Incomplete"
     })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
