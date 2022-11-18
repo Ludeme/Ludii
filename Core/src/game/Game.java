@@ -1896,6 +1896,8 @@ public class Game extends BaseLudeme implements API, Serializable
 			if (rules.end() != null)
 				concept.or(rules.end().concepts(this));
 
+			concept.set(Concept.End.id(), true);
+
 			// Look if the game uses a stack state.
 			if (isStacking())
 			{
