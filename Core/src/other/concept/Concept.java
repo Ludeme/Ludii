@@ -11482,6 +11482,8 @@ public enum Concept
 		}
 		catch(Exception e) // In case the starting rules can not be applied, the concepts are not correct.
 		{
+			System.err.println("Start Concepts have a problem");
+			//e.printStackTrace();
 			return false;
 		}
 		
