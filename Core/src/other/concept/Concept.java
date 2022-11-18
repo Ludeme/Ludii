@@ -16,7 +16,7 @@ import main.grammar.Description;
  * computed if that's leaf. If that's not a leaf, the concept is true if any
  * child is true.
  * 
- * Remarks: The next id in case of a new concept is the id 800.
+ * Remarks: The next id in case of a new concept is the id 803.
  * 
  * @author Eric.Piette
  */
@@ -2262,6 +2262,48 @@ public enum Concept
 		"3.2.10",
 		141,
 		"Number of components at start.",
+		ConceptType.Start, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[]{ ConceptPurpose.Reconstruction, ConceptPurpose.AI },
+		true,
+		Concept.Start
+	),
+	
+	/** Compute the average of number of pieces at the start per player. */
+	NumStartComponentsBoardPerPlayer
+	(
+		"3.2.11",
+		800,
+		"Average number of components on board at start per player.",
+		ConceptType.Start, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[]{ ConceptPurpose.Reconstruction, ConceptPurpose.AI },
+		true,
+		Concept.Start
+	),
+	
+	/** Compute the average of number of pieces in the players hand at the start per player. */
+	NumStartComponentsHandPerPlayer
+	(
+		"3.2.12",
+		801,
+		"Average number of components in player hands at start per player.",
+		ConceptType.Start, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[]{ ConceptPurpose.Reconstruction, ConceptPurpose.AI },
+		true,
+		Concept.Start
+	),
+	
+	/** Compute the average of number of pieces on board at the start per player. */
+	NumStartComponentsPerPlayer
+	(
+		"3.2.13",
+		802,
+		"Average number of components at start per player.",
 		ConceptType.Start, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
