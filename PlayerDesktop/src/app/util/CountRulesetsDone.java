@@ -51,7 +51,10 @@ public final class CountRulesetsDone
 			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("subgame"))
 				continue;
 
-			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction"))
+			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction/pending/"))
+				continue;
+			
+			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction/validation/"))
 				continue;
 
 			final Game game = GameLoader.loadGameFromName(gameName);
@@ -84,7 +87,7 @@ public final class CountRulesetsDone
 				for (int rs = 0; rs < rulesetsInGame.size(); rs++)
 				{
 					final Ruleset ruleset = rulesetsInGame.get(rs);
-					if (!ruleset.optionSettings().isEmpty()) // We check if the ruleset is implemented.
+					if (!ruleset.optionSettings().isEmpty()&& !ruleset.heading().contains("Incomplete")) // We check if the ruleset is implemented.
 						count++;
 				}
 			}

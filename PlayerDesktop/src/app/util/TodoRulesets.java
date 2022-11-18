@@ -45,7 +45,10 @@ public final class TodoRulesets
 			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("subgame"))
 				continue;
 
-			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction"))
+			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction/pending/"))
+				continue;
+			
+			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction/validation/"))
 				continue;
 
 			final Game game = GameLoader.loadGameFromName(gameName);
@@ -58,7 +61,7 @@ public final class TodoRulesets
 				{
 					final Ruleset ruleset = rulesetsInGame.get(rs);
 					if (ruleset.optionSettings().isEmpty()) // We check if the ruleset is implemented.
-						if(!ruleset.heading().contains("(Reconstructed)") && !ruleset.heading().contains("(Incomplete)"))
+						if(!ruleset.heading().contains("Incomplete"))
 						{
 							System.out.println("TODO: " + game.name() + " " + ruleset.heading());
 							count++;

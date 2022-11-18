@@ -56,7 +56,10 @@ public class CreateSneliusClusterConceptScript
 				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("subgame"))
 					continue;
 
-				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction"))
+				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction/pending/"))
+					continue;
+				
+				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction/validation/"))
 					continue;
 
 				// For the museum game.
