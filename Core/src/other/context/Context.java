@@ -1392,7 +1392,7 @@ public class Context
 		if (subcontext != null)
 			return subcontext.containerState(cid);
 
-		return state().containerStates()[cid];
+		return cid < state().containerStates().length ? state().containerStates()[cid] : null;
 	}
 
 	/**
