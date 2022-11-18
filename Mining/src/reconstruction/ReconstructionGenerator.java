@@ -41,7 +41,8 @@ public class ReconstructionGenerator
 	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 100000;
 	//final static String defaultReconsPath        = "/lud/reconstruction/pending/board/race/escape/Barail";
-	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/war/other/Macheng";
+	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/race/escape/Los Romanos Rencontrat";
+	//final static String defaultReconsPath        = "/lud/reconstruction/pending/board/war/other/Macheng";
 	//final static String defaultReconsPath        = "/lud/test/eric/recons/Hnefatafl";
 	//final static String defaultReconsPath        = "/lud/test/eric/recons/Senet";
 	//final static String defaultReconsPath        = "/lud/reconstruction/validation/Three Men's Morris";
@@ -248,6 +249,7 @@ public class ReconstructionGenerator
 													ais.add(new RandomAI());
 													ais.get(p).initAI(game, p);
 												}
+												game.start(contextRandomPlayout);
 												game.playout(contextRandomPlayout, ais, 1.0, null, 0, -1, null);
 												final Trial trial = context.trial();
 //												System.out.println("run playout");
