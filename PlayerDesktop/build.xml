@@ -468,7 +468,8 @@
 		<jar destfile="build/Ludii.jar" basedir="bin" duplicate="preserve">
 			<exclude name="**/lud/bad/**" />
 			<exclude name="**/lud/bad_playout/**" />
-			<exclude name="**/lud/reconstruction/**" />
+			<exclude name="**/lud/reconstruction/pending/**" />
+			<exclude name="**/lud/reconstruction/validation/**" />
 			<exclude name="**/lud/proprietary/**" />
 			<exclude name="**/lud/test/**" />
 			<exclude name="**/lud/wip/**" />
@@ -546,7 +547,8 @@
 			<jar destfile="build/Ludii.jar" basedir="bin" duplicate="preserve">
 				<exclude name="**/lud/bad/**" />
 				<exclude name="**/lud/bad_playout/**" />
-				<exclude name="**/lud/reconstruction/**" />
+				<exclude name="**/lud/reconstruction/pending/**" />
+				<exclude name="**/lud/reconstruction/validation/**" />
 				<exclude name="**/lud/proprietary/**" />
 				<exclude name="**/lud/test/**" />
 				<exclude name="**/lud/wip/**" />
