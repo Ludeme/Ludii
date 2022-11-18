@@ -425,7 +425,9 @@ public final class Custodial extends Effect
 		if (then() != null)
 			thenString = " then " + then().toEnglish(game);
 		
-		return "for all flanked pieces on " + type.name() + StringRoutines.getPlural(type.name()) + fromString + directionString + limitString + targetString + friendString + targetEffect.toEnglish(game) + thenString;
+		final SiteType realType = (type != null) ? type : game.board().defaultSite();
+		
+		return "for all flanked pieces on " + realType.name() + StringRoutines.getPlural(realType.name()) + fromString + directionString + limitString + targetString + friendString + targetEffect.toEnglish(game) + thenString;
 	}
 
 	//-------------------------------------------------------------------------
