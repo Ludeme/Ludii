@@ -369,7 +369,7 @@ public enum Concept
 		797,
 		"Players are using directions.",
 		ConceptType.Properties,
-		ConceptDataType.IntegerData,
+		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
