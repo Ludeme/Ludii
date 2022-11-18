@@ -26,6 +26,7 @@ import metrics.single.complexity.StateSpaceComplexity;
 import metrics.single.duration.DurationActions;
 import metrics.single.duration.DurationMoves;
 import metrics.single.duration.DurationTurns;
+import metrics.single.duration.DurationTurnsNotTimeouts;
 import metrics.single.duration.DurationTurnsStdDev;
 import metrics.single.outcome.AdvantageP1;
 import metrics.single.outcome.Balance;
@@ -101,6 +102,7 @@ public class Evaluation
 	{
 		reconstructionMetrics.add(new DurationTurns());
 		reconstructionMetrics.add(new DurationTurnsStdDev());
+		reconstructionMetrics.add(new DurationTurnsNotTimeouts());
 		reconstructionMetrics.add(new Timeouts());
 		reconstructionMetrics.add(new DecisionMoves());
 		reconstructionMetrics.add(new BoardCoverageDefault());
