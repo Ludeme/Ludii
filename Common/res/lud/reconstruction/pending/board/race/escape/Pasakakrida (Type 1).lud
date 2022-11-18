@@ -2,10 +2,58 @@
     (players 2) 
     (equipment { 
         ("TableBoard"
-            {
-            (track [#] P1)
-            (track [#] P2)
-            }
+        	[
+        	{
+        	   (track "Track1" {0..11 23..12 End} P1 directed:True)
+        	   (track "Track2" {12..23 11..0 End} P2 directed:True)
+        	}
+        	|
+        	{
+         	   (track "Track1" {12..23 11..0 End} P1 directed:True)
+         	   (track "Track2" {0..11 23..12 End} P2 directed:True)
+         	}
+        	|
+        	{
+         	   (track "Track1" {12..23 11..0 End} P1 directed:True)
+         	   (track "Track2" {12..23 11..0 End} P2 directed:True)
+         	}
+        	|
+        	{
+         	   (track "Track1" {0..11 23..12 End} P1 directed:True)
+         	   (track "Track2" {0..11 23..12 End} P2 directed:True)
+         	}
+        	|
+        	{
+         	   (track "Track1" {11..0 12..23 End} P1 directed:True)
+         	   (track "Track2" {23..12 0..11 End} P2 directed:True)
+         	}
+         	|
+         	{
+          	   (track "Track1" {23..12 0..11 End} P1 directed:True)
+          	   (track "Track2" {11..0 12..23 End} P2 directed:True)
+          	}
+         	|
+         	{
+          	   (track "Track1" {23..12 0..11 End} P1 directed:True)
+          	   (track "Track2" {23..12 0..11 End} P2 directed:True)
+          	}
+         	|
+         	{
+          	   (track "Track1" {11..0 12..23 End} P1 directed:True)
+          	   (track "Track2" {11..0 12..23 End} P2 directed:True)
+          	}
+            ]   
+            |
+         	{
+           	   (track "Track1" {12..23 0..11 End} P1 directed:True)
+           	   (track "Track2" {0..11 12..23 End} P2 directed:True)
+           	}
+            |
+         	{
+           	   (track "Track1" {23..12 11..0 End} P1 directed:True)
+           	   (track "Track2" {11..0 23..12 End} P2 directed:True)
+           	}
+             ]
         )
         <Dice:dice>
         (piece "Disc" Each
@@ -27,7 +75,7 @@
                 )
             )			
         ) 
-        (map {(pair 1 [1..23]) (pair 2 [1..23])}) // starting point
+        (map {(pair 1 [1 | 23]) (pair 2 [1 | 23])}) // starting point
     }) 
     (rules 
         (start {
