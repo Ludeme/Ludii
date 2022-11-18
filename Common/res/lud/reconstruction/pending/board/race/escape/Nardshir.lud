@@ -1,39 +1,53 @@
-(game "Nardshir" 
-    (players 2)
-    (equipment {
-        ("TableBoard"
-            [
-            {
-            (track "Track1" {24 11..0 12..23} P1 directed:True)
-            (track "Track2" {25 23..12 0..11} P2 directed:True)
-            } 
-            {
-            (track "Track1" {24 0..23} P1 directed:True)
-            (track "Track2" {25 23..0} P2 directed:True)
-            } 
-            | 
-            ]
-        )
-        (dice d:[2..6] num:2)
-        (piece "Disc" Each)
-        (hand Each)
-    })
-    (rules
-        (start (place "Disc" "Hand" count:15))
-        (play [#]) // I can't describe this alone: "Single pieces are removed from the board and must reenter when an opposing piece lands on the same space."
-        (end [#])
-    )
+(game "Nardshir"
+    <Variant>
 )
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2)
+        (equipment {
+            ("TableBoard"
+                [
+                {
+                (track "Track1" {24 11..0 12..23} P1 directed:True)
+                (track "Track2" {25 23..12 0..11} P2 directed:True)
+                } 
+                {
+                (track "Track1" {24 0..23} P1 directed:True)
+                (track "Track2" {25 23..0} P2 directed:True)
+                } 
+                | 
+                ]
+            )
+            (dice d:[2..6] num:2)
+            (piece "Disc" Each)
+            (hand Each)
+        })
+        (rules
+            (start (place "Disc" "Hand" count:15))
+            (play [#]) // I can't describe this alone: "Single pieces are removed from the board and must reenter when an opposing piece lands on the same space."
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })*
+        "Variant/Incomplete"
+    })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
