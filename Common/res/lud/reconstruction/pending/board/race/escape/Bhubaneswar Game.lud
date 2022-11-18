@@ -1,30 +1,44 @@
 (game "Bhubaneswar Game"
-    (players 2) 
-    (equipment { 
-        (board 
-            (merge {
-                (rectangle 6 3)
-                (shift 1 0 (rectangle 12 1))
-            })
-        )
-        (piece "Disc" Each (move [#]))
-    })
-    (rules
-        (start [#])
-        (play [#])
-        (end [#])
-    )
+    <Variant>
 )
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board 
+                (merge {
+                    (rectangle 6 3)
+                    (shift 1 0 (rectangle 12 1))
+                })
+            )
+            (piece "Disc" Each (move [#]))
+        })
+        (rules
+            (start [#])
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })*
+        "Variant/Incomplete"
+    })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
