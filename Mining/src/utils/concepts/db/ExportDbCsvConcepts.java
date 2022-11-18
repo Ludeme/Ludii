@@ -820,6 +820,7 @@ public class ExportDbCsvConcepts
 		final List<Concept> reconstructionConcepts = new ArrayList<Concept>();
 		reconstructionConcepts.add(Concept.DurationTurns);
 		reconstructionConcepts.add(Concept.DurationTurnsStdDev);
+		reconstructionConcepts.add(Concept.DurationTurnsNotTimeouts);
 		reconstructionConcepts.add(Concept.DecisionMoves);
 		reconstructionConcepts.add(Concept.BoardCoverageDefault);
 		reconstructionConcepts.add(Concept.AdvantageP1);
