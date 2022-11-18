@@ -18,6 +18,7 @@ import completer.Completion;
 import game.Game;
 import game.rules.play.moves.Moves;
 import main.FileHandling;
+import main.Status.EndType;
 import main.StringRoutines;
 import main.UnixPrintWriter;
 import main.grammar.Description;
@@ -56,7 +57,7 @@ public class ReconstructionGenerator
 	final static double defaultHistoricalWeight = 0.5;
 	final static double defaultThreshold = 0.99;
 	
-	final static boolean checkTimeoutRandomPlayout = true;
+	final static boolean checkTimeoutRandomPlayout = false;
 	final static int     defaultPlayoutsAttempts = 10;
 	
 	/**
@@ -256,7 +257,7 @@ public class ReconstructionGenerator
 //												System.out.println("num Turns = " + trial.numTurns());
 //												System.out.println("num real moves = " + trial.numberRealMoves());
 //												System.out.println("game max Turn limits = " + game.getMaxTurnLimit());
-												boolean trialTimedOut = trial.numTurns() > game.getMaxTurnLimit() || trial.numberRealMoves() > game.getMaxMoveLimit();
+												boolean trialTimedOut = trial.status().endType() == EndType.MoveLimit || trial.status().endType() == EndType.TurnLimit;
 												if(!trialTimedOut)
 													allGood = true;
 											}
