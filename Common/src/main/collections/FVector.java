@@ -746,11 +746,21 @@ public final class FVector implements Serializable
 	 * that has been transformed to a proper probability distribution using a
 	 * non-linear transformation (such as softmax).
 	 * 
+	 * Implicitly assumes that all values in the vector are >= 0.0, but does
+	 * not check for this!
+	 * 
 	 * @return An index sampled proportionally to the values in this vector.
 	 */
 	public int sampleProportionally()
 	{
 		final float sum = sum();
+		
+		if (sum == 0.0)
+		{
+			// Special case: just sample uniformly if the values sum up to 0.0
+			return ThreadLocalRandom.current().nextInt(floats.length);
+		}
+		
 		final float rand = ThreadLocalRandom.current().nextFloat();
 		final int d = floats.length;
 		
