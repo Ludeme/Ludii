@@ -1,50 +1,63 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
-//------------------------------------------------------------------------------
-
 (game "Sig (Rehamna)" // Capture should be there.
-    (players 2)
-    (equipment {
-        (board 
-            (rectangle 4 12) 	
-            {
-            [?]
-            }
-            use:Vertex
-        )
-        (piece "Stick" Each (move [#]))
-        (dice d:2 from:0 num:6)  
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-        (map "Throw" {(pair 0 0) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 1) (pair 6 6)})
-    })
-    (rules 
-        (start { 
-            (place "Stick1" (sites Bottom) state:1)
-            (place "Stick2" (sites Top) state:1)
-        })
-        (play ("RollMove" [#])) // A throw of 1 is required for each piece's first move.
-        (end 
-            (if 
-                (and
-                    (all Sites (difference (sites Next) (sites Occupied by:Mover)) if:(not ("IsFriendAt" (site)))) 
-                    (not (no Pieces Mover))
-                )
-                (result Mover Win)
-            )
-        )
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })*
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2)
+	        (equipment {
+	            (board 
+	                (rectangle 4 12) 	
+	                {
+	                [?]
+	                }
+	                use:Vertex
+	            )
+	            (piece "Stick" Each [#])
+	            (dice d:2 from:0 num:6)  
+	            (regions P1 (sites Bottom))
+	            (regions P2 (sites Top))
+	            (map "Throw" {(pair 0 0) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 1) (pair 6 6)})
+	        })
+	        (rules 
+	            (start { 
+	                (place "Stick1" (sites Bottom) state:1)
+	                (place "Stick2" (sites Top) state:1)
+	            })
+	            (play [#]) // A throw of 1 is required for each piece's first move.
+	            (end 
+	                (if 
+	                    (and
+	                        (all Sites (difference (sites Next) (sites Occupied by:Mover)) if:(not ("IsFriendAt" (site)))) 
+	                        (not (no Pieces Mover))
+	                    )
+	                    (result Mover Win)
+	                )
+	            )
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
