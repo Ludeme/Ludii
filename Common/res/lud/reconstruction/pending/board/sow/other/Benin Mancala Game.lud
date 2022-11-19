@@ -1,27 +1,42 @@
 (game "Benin Mancala Game"
-    (players 1)
-    (equipment {
-        (mancalaBoard 3 4 store:None
-            (track "Track" {0..3 7 11..8 4} loop:True)		
-        )
-        (piece "Seed" Shared)
-    })
-    (rules
-        (start [#])
-        (play [#])
-        (end [#])
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2)
+	        (equipment {
+	            (mancalaBoard 3 4 store:None
+	                (track "Track" {0..3 7 11..8 4} loop:True)		
+	            )
+	            (piece "Seed" Shared)
+	        })
+	        (rules
+	            (start [#])
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
