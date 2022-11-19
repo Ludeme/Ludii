@@ -1,25 +1,39 @@
 (game "Mandinka Game"
-    (players 2) 
-    (equipment { 
-        (board [#]) // Large holes in the board
-        (piece "Seed" Each) // around 30 counters
-    })
-    (rules
-        (start [#])
-        (play [#]) // Capture involved
-        (end [#]) // The player who capture the most wins.
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (board [#]) // Large holes in the board
+	            (piece "Seed" Each) // around 30 counters
+	        })
+	        (rules
+	            (start [#])
+	            (play [#]) // Capture involved
+	            (end [#]) // The player who capture the most wins.
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+	
+	//------------------------------------------------------------------------------
 
 (metadata 
     
