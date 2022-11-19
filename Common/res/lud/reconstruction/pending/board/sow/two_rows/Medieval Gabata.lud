@@ -1,29 +1,44 @@
-(game "Medieval Gabata" 
-    (players 2) 
-    
-    (equipment { 
-        (mancalaBoard 2 9 store:None
-            (track [#])
-        )
-        (piece "Seed" Shared)
-        (hand Each)
-    }) 
-    (rules 
-        (start [#])
-        (play [#])
-        (end [#])
-    )
-)
+(game "Medieval Gabata"
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        
+	        (equipment { 
+	            (mancalaBoard 2 9 store:None
+	                (track [#])
+	            )
+	            (piece "Seed" Shared)
+	            (hand Each)
+	        }) 
+	        (rules 
+	            (start [#])
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     (info
