@@ -17,35 +17,50 @@
 //------------------------------------------------------------------------------
 
 (game "Alquerque de Nueve"
-    (players 2)
-    
-    (equipment { 
-        ("NineMensMorrisBoard")
-        (hand Each)
-        (dice d:6 num:3)
-        (piece "Marker" Each) 
-    }) 
-    (rules 
-        (start (place "Marker" "Hand" count:9))
-        (play 
-            (if "SameTurn"
-                "RemoveEnemyPiece"
-            ("RollMove" [#]) //([#] ("IfLine3MoveAgain")))
-        )
-    )
-    (end [#])
-)
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2)
+	        
+	        (equipment { 
+	            ("NineMensMorrisBoard")
+	            (hand Each)
+	            (dice d:6 num:3)
+	            (piece "Marker" Each) 
+	        }) 
+	        (rules 
+	            (start (place "Marker" "Hand" count:9))
+	            (play 
+	                (if "SameTurn"
+	                    "RemoveEnemyPiece"
+	                ("RollMove" [#]) //([#] ("IfLine3MoveAgain")))
+	            )
+	        )
+	        (end [#])
+	    )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
