@@ -1,47 +1,46 @@
 (game "Chungani"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment { 
-	            (board (rectangle 1 5) 
-	                {
-	                [?] // I put a ? because if I put a # no match exist. 
-	                }
-	                use:Vertex
-	            )
-	            (piece "Bean" Each (move [#]))
-	            (dice [#])
-	        }) 
-	        
-	        (rules 
-	            (start [#])
-	            (play [#]) // Players moved the beans from one space to another according to the dice. The first space is worth ten, the second twenty, the third thirty, up to fifty.
-	            (end [#])
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board (rectangle 1 5) 
+                {
+                [?] // I put a ? because if I put a # no match exist. 
+                }
+                use:Vertex
+            )
+            (piece "Bean" Each (move [#]))
+            (dice [#])
+        }) 
+        
+        (rules 
+            (start [#])
+            (play [#]) // Players moved the beans from one space to another according to the dice. The first space is worth ten, the second twenty, the third thirty, up to fifty.
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     

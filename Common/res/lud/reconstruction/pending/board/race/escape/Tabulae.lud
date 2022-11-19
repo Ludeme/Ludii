@@ -1,45 +1,44 @@
 (game "Tabulae"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2)
-	        (equipment {
-	            ("BackgammonBoard"
-	                {
-	                [#]
-	                } 
-	            ) 
-	            (dice d:6 num:[#])
-	            (piece "Disc" Each [#])
-	        })
-	        (rules 
-	            (start [#])
-	            (play [#])
-	            (end ("EscapeWin"))
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2)
+        (equipment {
+            ("BackgammonBoard"
+                {
+                [#]
+                } 
+            ) 
+            (dice d:6 num:[#])
+            (piece "Disc" Each [#])
+        })
+        (rules 
+            (start [#])
+            (play [#])
+            (end ("EscapeWin"))
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     

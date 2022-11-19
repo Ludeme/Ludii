@@ -1,47 +1,46 @@
 (game "Manddiare"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        
-	        (equipment { 
-	            (mancalaBoard 2 [3..10]
-	                (track "Track" "1,E,N,W" loop:True)
-	            )
-	            (piece "Seed" Shared)
-	            }
-	        ) 
-	        (rules 
-	            
-	            (start [#])
-	            
-	            (play [#]) // When the final counter of the sowing lands in a hole, making it contain an even number of counters, these are captured.
-	            
-	            (end [#])
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        
+        (equipment { 
+            (mancalaBoard 2 [3..10]
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            (piece "Seed" Shared)
+            }
+        ) 
+        (rules 
+            
+            (start [#])
+            
+            (play [#]) // When the final counter of the sowing lands in a hole, making it contain an even number of counters, these are captured.
+            
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Manddiare (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Manddiare (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     (info

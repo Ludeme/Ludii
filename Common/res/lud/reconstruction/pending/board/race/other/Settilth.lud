@@ -1,42 +1,41 @@
 (game "Settilth"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players [2..16])
-	        (equipment {
-	            ("FortyStonesWithFourGapsBoard")
-	            (piece "Stick" Each [#])
-	            ("StickDice" 3)
-	            (map "Throw" {(pair 0 5) (pair 1 0) (pair 2 0) (pair 3 10)})
-	        })
-	        (rules 
-	            (start [#]) // One stick per player, all of which begin in one of the larger gaps (but we dunno which one).
-	            (play [#])
-	            (end [#])
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players [2..16])
+        (equipment {
+            ("FortyStonesWithFourGapsBoard")
+            (piece "Stick" Each [#])
+            ("StickDice" 3)
+            (map "Throw" {(pair 0 5) (pair 1 0) (pair 2 0) (pair 3 10)})
+        })
+        (rules 
+            (start [#]) // One stick per player, all of which begin in one of the larger gaps (but we dunno which one).
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     

@@ -1,42 +1,41 @@
 (game "Barjiss"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 4) 
-	        (equipment { 
-	            ("PachisiBoard")
-	            (hand Each) 
-	            ("StickDice" 6)
-	            (piece "Pawn" Each [#]) // 4 pieces per player
-	        }) 
-	        (rules 
-	            (start [#])
-	            (play [#]) // One mouth up alows a piece to enter the board, six mouths up grants the player another throw.
-	            (end [#])
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 4) 
+        (equipment { 
+            ("PachisiBoard")
+            (hand Each) 
+            ("StickDice" 6)
+            (piece "Pawn" Each [#]) // 4 pieces per player
+        }) 
+        (rules 
+            (start [#])
+            (play [#]) // One mouth up alows a piece to enter the board, six mouths up grants the player another throw.
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     

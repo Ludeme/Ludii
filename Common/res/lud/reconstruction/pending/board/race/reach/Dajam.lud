@@ -1,56 +1,55 @@
 (game "Dajam"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 4) 
-	        (equipment { 
-	            (board 
-	                (add
-	                    (hole
-	                        (merge 
-	                            (shift 0 5 (rectangle 3 13)) 
-	                            (shift 5 0 (rectangle 13 3))
-	                        )
-	                        (poly {{5 5} {5 8} {8 8} {8 5}})
-	                    )
-	                    cells:{ { 5 6 7 8 22 36 50 49 48 47 33 19 } }
-	                )	
-	                {
-	                [?]
-	                }
-	            )
-	            (hand Each) 
-	            (dice d:2 from:0 num:[#])
-	            (piece "Pawn" Each [#]) 
-	        }) 
-	        (rules 
-	            (start [#])
-	            (play [#]) // The number of mouths up equals the value of the throw; no mouths up = 12
-	            (end [#])
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 4) 
+        (equipment { 
+            (board 
+                (add
+                    (hole
+                        (merge 
+                            (shift 0 5 (rectangle 3 13)) 
+                            (shift 5 0 (rectangle 13 3))
+                        )
+                        (poly {{5 5} {5 8} {8 8} {8 5}})
+                    )
+                    cells:{ { 5 6 7 8 22 36 50 49 48 47 33 19 } }
+                )	
+                {
+                [?]
+                }
+            )
+            (hand Each) 
+            (dice d:2 from:0 num:[#])
+            (piece "Pawn" Each [#]) 
+        }) 
+        (rules 
+            (start [#])
+            (play [#]) // The number of mouths up equals the value of the throw; no mouths up = 12
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     

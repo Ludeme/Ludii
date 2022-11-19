@@ -1,46 +1,45 @@
 (game "Sakko"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment { 
-	            (board 
-	                (rectangle 3 13)
-	                use:Vertex
-	            )
-	            (dice d:6 from:0 num:3)
-	            (piece "Marker" Each)
-	            (piece "King" Each)
-	        }) 
-	        
-	        (rules 
-	            (start [#]) // 13 pieces per player + a king per player.
-	            (play [#])
-	            (end [#])
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board 
+                (rectangle 3 13)
+                use:Vertex
+            )
+            (dice d:6 from:0 num:3)
+            (piece "Marker" Each)
+            (piece "King" Each)
+        }) 
+        
+        (rules 
+            (start [#]) // 13 pieces per player + a king per player.
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     

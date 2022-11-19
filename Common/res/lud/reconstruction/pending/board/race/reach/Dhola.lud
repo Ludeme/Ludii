@@ -1,56 +1,55 @@
 (game "Dhola"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 4) 
-	        (equipment { 
-	            (board 
-	                (add
-	                    (hole
-	                        (merge 
-	                            (shift 0 8 (rectangle 3 19)) 
-	                            (shift 8 0 (rectangle 19 3))
-	                        )
-	                        (poly {{8 8} {8 11} {11 11} {11 8}})
-	                    )
-	                    cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
-	                )	
-	                {
-	                [?]
-	                }
-	            )
-	            (hand Each) 
-	            ("StickDice" 5)
-	            (piece "Pawn" Each [#]) // 4 pieces per player
-	        }) 
-	        (rules 
-	            (start [#])
-	            (play [#])
-	            (end [#])
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 4) 
+        (equipment { 
+            (board 
+                (add
+                    (hole
+                        (merge 
+                            (shift 0 8 (rectangle 3 19)) 
+                            (shift 8 0 (rectangle 19 3))
+                        )
+                        (poly {{8 8} {8 11} {11 11} {11 8}})
+                    )
+                    cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
+                )	
+                {
+                [?]
+                }
+            )
+            (hand Each) 
+            ("StickDice" 5)
+            (piece "Pawn" Each [#]) // 4 pieces per player
+        }) 
+        (rules 
+            (start [#])
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     

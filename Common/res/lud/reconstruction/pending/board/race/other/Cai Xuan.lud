@@ -1,37 +1,36 @@
 (game "Cai Xuan"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment [#]) // Players use dice to navigate through a board with the different positions of the Chinese bureaucrcy. Spaces are the different positions in the bureaucracy, and the dice rolls determine to which spaces a player moves.
-	        (rules
-	            (start [#])
-	            (play [#]) 
-	            (end [#]) 
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment [#]) // Players use dice to navigate through a board with the different positions of the Chinese bureaucrcy. Spaces are the different positions in the bureaucracy, and the dice rolls determine to which spaces a player moves.
+        (rules
+            (start [#])
+            (play [#]) 
+            (end [#]) 
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     

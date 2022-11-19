@@ -1,50 +1,49 @@
 (game "Kuba Game"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment { 
-	            (mancalaBoard 3 [3 | #] 
-	                {
-	                (track [#])
-	                (track [#])
-	                }
-	            )
-	            (piece "Seed" Shared)
-	        }) 
-	        (rules 
-	            (start [#])
-	            (play 
-	                (move Select 
-	                    (from [#])
-	                    (then (sow [#]))
-	                )
-	            )
-	            (end [#])
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (mancalaBoard 3 [3 | #] 
+                {
+                (track [#])
+                (track [#])
+                }
+            )
+            (piece "Seed" Shared)
+        }) 
+        (rules 
+            (start [#])
+            (play 
+                (move Select 
+                    (from [#])
+                    (then (sow [#]))
+                )
+            )
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     (info

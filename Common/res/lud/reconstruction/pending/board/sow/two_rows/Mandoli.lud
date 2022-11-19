@@ -2,64 +2,78 @@
 
 //------------------------------------------------------------------------------
 
-(game "Mandoli" 
-    (players 2) 
-    
-    (equipment { 
-        (mancalaBoard 2 6 store:None
-            [(track "Track" "0,E,N,W" loop:True) | (track "Track" "5,W,N,E" loop:True) ] // Unknown which direction the sowing occurs.
-        )
-        (regions P1 (sites Bottom))      // P1 home
-        (regions P2 (sites Top))      // P2 home
-        (piece "Seed" Shared)
-        (hand Each)
-    }) 
-    (rules 
-        (start (set Count 6 to:(sites Track)))
+(game "Mandoli"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
         
-        (play 
-            (move Select 
-                (from 
-                    (sites Mover) 
-                    if:(< 0 (count at:(from)))
-                )
-                (then 
-                    (sow 
-                        if:(and 
-                            (is In (to) (sites Next)) 
-                            (is Even (count at:(to))) 
-                        ) 
-                        apply:(fromTo 
-                            (from (to)) 
-                            (to (handSite (mover))) 
-                            count:(count at:(to))
-                        )
-                        backtracking:True
+        (equipment { 
+            (mancalaBoard 2 6 store:None
+                [(track "Track" "0,E,N,W" loop:True) | (track "Track" "5,W,N,E" loop:True) ] // Unknown which direction the sowing occurs.
+            )
+            (regions P1 (sites Bottom))      // P1 home
+            (regions P2 (sites Top))      // P2 home
+            (piece "Seed" Shared)
+            (hand Each)
+        }) 
+        (rules 
+            (start (set Count 6 to:(sites Track)))
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover) 
+                        if:(< 0 (count at:(from)))
                     )
+                    (then 
+                        (sow 
+                            if:(and 
+                                (is In (to) (sites Next)) 
+                                (is Even (count at:(to))) 
+                            ) 
+                            apply:(fromTo 
+                                (from (to)) 
+                                (to (handSite (mover))) 
+                                count:(count at:(to))
+                            )
+                            backtracking:True
+                        )
+                    )
+                )		
+            ) 
+            
+            (end
+                (if (no Moves Mover)
+                    (byScore {
+                        (score P1 ("PiecesOwnedBy" P1)) 
+                        (score P2 ("PiecesOwnedBy" P2))
+                    })
                 )
-            )		
-        ) 
-        
-        (end
-            (if (no Moves Mover)
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
             )
         )
+        >
+        "The incomplete ruleset."
     )
-)
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Hydra (Incomplete)" {
-        
+        "Variant/Incomplete"
     })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     (info

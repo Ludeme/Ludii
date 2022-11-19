@@ -1,39 +1,39 @@
 (game "Mandinka Game"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment { 
-	            (mancalaBoard [#]) // Large holes in the board
-	            (piece "Seed" Each) // around 30 counters
-	        })
-	        (rules
-	            (start [#])
-	            (play [#]) // Capture involved
-	            (end [#]) // The player who capture the most wins.
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (mancalaBoard [#]) // Large holes in the board
+            (piece "Seed" Each) // around 30 counters
+        })
+        (rules
+            (start [#])
+            (play [#]) // Capture involved
+            (end [#]) // The player who capture the most wins.
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
-	
-	//------------------------------------------------------------------------------
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
