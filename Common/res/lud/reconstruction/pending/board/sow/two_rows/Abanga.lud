@@ -1,35 +1,50 @@
-(game "Abanga" 
-    (players 2) 
-    (equipment { 
-        (mancalaBoard 2 9 store:None
-            {
-            (track [#])
-            (track [#])
-            }
-        )
-        (piece "Seed" Shared)
-    }) 
-    (rules 
-        (start [#]) // 24 counters per player....
-        (play 
-            (move Select 
-                (from [#])
-                (then (sow [#]))
-            )
-        )
-        (end [#])
-    )
-)
+(game "Abanga"
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (mancalaBoard 2 9 store:None
+	                {
+	                (track [#])
+	                (track [#])
+	                }
+	            )
+	            (piece "Seed" Shared)
+	        }) 
+	        (rules 
+	            (start [#]) // 24 counters per player....
+	            (play 
+	                (move Select 
+	                    (from [#])
+	                    (then (sow [#]))
+	                )
+	            )
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     (info
