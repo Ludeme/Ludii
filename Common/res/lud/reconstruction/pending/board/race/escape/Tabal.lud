@@ -1,26 +1,110 @@
-(game "Tabal" 
-    (players 2)
-    (equipment {
-        ("TableBoard" {[#]})
-        (dice d:6 num:2)
-        (piece "Disc" Each (move [#]))
-    })
-    (rules
-        (start [#])
-        (play [#])
-        (end [#])
-    )
+(game "Tabal"
+    <Variant>
 )
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2)
+        (equipment {
+            [
+            ("TableBoard"
+                {
+                (track "Track1" {0..11 23..12 End} P1 directed:True)
+                (track "Track2" {12..23 11..0 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 11..0 End} P1 directed:True)
+                (track "Track2" {0..11 23..12 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 11..0 End} P1 directed:True)
+                (track "Track2" {12..23 11..0 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {0..11 23..12 End} P1 directed:True)
+                (track "Track2" {0..11 23..12 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {11..0 12..23 End} P1 directed:True)
+                (track "Track2" {23..12 0..11 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 0..11 End} P1 directed:True)
+                (track "Track2" {11..0 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 0..11 End} P1 directed:True)
+                (track "Track2" {23..12 0..11 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {11..0 12..23 End} P1 directed:True)
+                (track "Track2" {11..0 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 0..11 End} P1 directed:True)
+                (track "Track2" {0..11 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 11..0 End} P1 directed:True)
+                (track "Track2" {11..0 23..12 End} P2 directed:True)
+                }
+            )
+            ]
+            (dice d:6 num:2)
+            (piece "Disc" Each [#])
+        })
+        (rules
+            (start [#])
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+        "Variant/Incomplete"
     })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
