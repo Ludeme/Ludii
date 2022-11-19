@@ -1,59 +1,77 @@
-(game "Edris a Jin" 
-    (players 2) 
-    (equipment { 
-        (board 
-            (add
-                (merge {
-                    (shift 0 8 (rectangle 4 20)) 
-                    (shift 8 0 (rectangle 20 4))
-                    (shift 12 3.5 (rotate 45 (scale 1.4 1 (rectangle 1 6))))
-                    (shift -0.5 3.5 (rotate -45 (scale 1.4 1 (rectangle 1 6))))
-                    (shift 12 15.5 (rotate -45 (scale 1.4 1 (rectangle 1 6))))
-                    (shift -0.5 15.5 (rotate 45 (scale 1.4 1 (rectangle 1 6))))
-                })
-                edges:{
-                {114 192} {109 185}
-                {19 198} {191 20}
-                {103 219} {226 104}
-                {220 184} {179 213}
-                {240 180} {233 175}
-                {234 84} {227 85}
-                {1 206} {0 199}
-                {205 105} {212 110}
-                }
-                cells:{
-                {114 109 185 192}
-                {19 198 191 20}
-                {103 104 226 219}
-                {220 184 179 213}
-                {240 180 175 233}
-                {234 84 85 227}
-                {0 1 206 199}
-                {205 105 110 212}
-                }
-            )
-        )
-        (hand Each) 
-        ("StickDice" 4)
-        (piece "Chief" Each (move [#])) // 1 chief
-        (piece "Soldier" Each (move [#])) // 2 soldiers 
-    }) 
-    (rules
-        (start [#])
-        (play [#])
-        (end [#])
-    )
-)
+(game "Edris a Jin"
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (board 
+	                (add
+	                    (merge {
+	                        (shift 0 8 (rectangle 4 20)) 
+	                        (shift 8 0 (rectangle 20 4))
+	                        (shift 12 3.5 (rotate 45 (scale 1.4 1 (rectangle 1 6))))
+	                        (shift -0.5 3.5 (rotate -45 (scale 1.4 1 (rectangle 1 6))))
+	                        (shift 12 15.5 (rotate -45 (scale 1.4 1 (rectangle 1 6))))
+	                        (shift -0.5 15.5 (rotate 45 (scale 1.4 1 (rectangle 1 6))))
+	                    })
+	                    edges:{
+	                    {114 192} {109 185}
+	                    {19 198} {191 20}
+	                    {103 219} {226 104}
+	                    {220 184} {179 213}
+	                    {240 180} {233 175}
+	                    {234 84} {227 85}
+	                    {1 206} {0 199}
+	                    {205 105} {212 110}
+	                    }
+	                    cells:{
+	                    {114 109 185 192}
+	                    {19 198 191 20}
+	                    {103 104 226 219}
+	                    {220 184 179 213}
+	                    {240 180 175 233}
+	                    {234 84 85 227}
+	                    {0 1 206 199}
+	                    {205 105 110 212}
+	                    }
+	                )
+	                {
+	            	[?]
+	                }
+	            )
+	            (hand Each) 
+	            ("StickDice" 4)
+	            (piece "Chief" Each (move [#])) // 1 chief
+	            (piece "Soldier" Each (move [#])) // 2 soldiers 
+	        }) 
+	        (rules
+	            (start [#])
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
