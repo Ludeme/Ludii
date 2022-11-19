@@ -10,52 +10,64 @@
 //------------------------------------------------------------------------------
 
 (game "Ngaya"
-    (players ("NumPlayers")) 
-    (equipment { 
-        (board 
-            (concentric {"NumHolesCircle"}) 
-            { 
-            (track [#] loop:True) // Circuit track.
-            }
-            use:Vertex
-        )
-        (piece "Seed" Each)
-    }) 
-    
-    (rules
-        
-        (start (set Count 3 to:(sites Board)))
-        
-        (play 
-            (move
-                Select 
-                (from 
-                    ("LeftMost") 
-                )
-                (then
-                    (sow [#])	// When the final counter lands in an empty hole, the player moves again
-                )
-            )
-        )
-        
-        (end 
-            (forEach NonMover 
-                if:(no Pieces Player) 
-                (result Player Loss)
-            )
-        )
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players ("NumPlayers")) 
+	        (equipment { 
+	            (board 
+	                (concentric {"NumHolesCircle"}) 
+	                { 
+	                (track [#] loop:True) // Circuit track.
+	                }
+	                use:Vertex
+	            )
+	            (piece "Seed" Each)
+	        }) 
+	        
+	        (rules
+	            
+	            (start (set Count 3 to:(sites Board)))
+	            
+	            (play 
+	                (move
+	                    Select 
+	                    (from 
+	                        ("LeftMost") 
+	                    )
+	                    (then
+	                        (sow [#])	// When the final counter lands in an empty hole, the player moves again
+	                    )
+	                )
+	            )
+	            
+	            (end 
+	                (forEach NonMover 
+	                    if:(no Pieces Player) 
+	                    (result Player Loss)
+	                )
+	            )
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
 
 (metadata 
     
