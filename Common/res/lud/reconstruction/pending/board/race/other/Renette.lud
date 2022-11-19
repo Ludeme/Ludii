@@ -1,33 +1,46 @@
 (game "Renette"
-    (players 2) 
-    (equipment 
-        (board (rectangle 2 13) 
-            {
-            (track [#] P1 directed:True)
-            (track [#] P2 directed:True)
-            } 
-            use:Vertex
-        ) 	
-        {
-        [?]
-        }
-    )
-    (rules
-        (start [#])
-        (play [#]) 
-        (end ("CaptureAll" Next))
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment 
+	            (board (rectangle 2 13) 
+	                {
+	                (track [#] P1 directed:True)
+	                (track [#] P2 directed:True)
+	                } 
+	                use:Vertex
+	            ) 	
+	            (piece [#])
+	        )
+	        (rules
+	            (start [#])
+	            (play [#]) 
+	            (end ("CaptureAll" Next))
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
