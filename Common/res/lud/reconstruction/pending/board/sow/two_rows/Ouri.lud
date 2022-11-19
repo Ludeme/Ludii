@@ -1,74 +1,89 @@
-(game "Ouri" 
-    (players 2) 
-    
-    (equipment { 
-        (mancalaBoard 2 5
-            (track "Track" "1,E,N,W" loop:True)
-        )
-        (piece "Seed" Shared)
-        (hand Each)
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-    }) 
-    (rules 
-        (start {
-            (place "Seed" (handSite P1) count:21)
-            (place "Seed" (handSite P2) count:21)
-        })
-        
-        phases:{
-        (phase "FirstMove"
-            (play
-                (forEach Value min:1 max:(count Cell at:(handSite Mover))
-                    (move
-                        (from (handSite Mover))
-                        (to (sites Mover))
-                        count:(value)
-                        (then (set Value Mover (count at:(last To))))
-                    )
-                )
-            )
-            (nextPhase "SecondMove")
-        )
-        (phase "SecondMove"
-            (play
-                (forEach Value min:(+ 1 (count at:(last To))) max:(count Cell at:(handSite Mover))
-                    (move
-                        (from (handSite Mover))
-                        (to (sites Mover))
-                        count:(value)
-                        (then (set Value Mover (count at:(last To))))
-                    )
-                )
-            )
-            (nextPhase "MainMove")
-        )
-        
-        (phase "MainMove"
-            (play [#]) // The first player must then place an even number of counters if they first played an odd number, and vice versa. If a player starts with an odd move, they must end with an even move (and vice versa) and use all their remaining counters
-            
-        )
-        }
-        
-        (end {
-            (if (no Moves Next)
-                (result Mover Win)
-            )
-            [?] // The game ends when a player has used all of their holes, and placed all of their counters in the sixth hole on their side.
-            }
-        )
-    )
-)
+(game "Ouri"
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        
+	        (equipment { 
+	            (mancalaBoard 2 5
+	                (track "Track" "1,E,N,W" loop:True)
+	            )
+	            (piece "Seed" Shared)
+	            (hand Each)
+	            (regions P1 (sites Bottom))
+	            (regions P2 (sites Top))
+	        }) 
+	        (rules 
+	            (start {
+	                (place "Seed" (handSite P1) count:21)
+	                (place "Seed" (handSite P2) count:21)
+	            })
+	            
+	            phases:{
+	            (phase "FirstMove"
+	                (play
+	                    (forEach Value min:1 max:(count Cell at:(handSite Mover))
+	                        (move
+	                            (from (handSite Mover))
+	                            (to (sites Mover))
+	                            count:(value)
+	                            (then (set Value Mover (count at:(last To))))
+	                        )
+	                    )
+	                )
+	                (nextPhase "SecondMove")
+	            )
+	            (phase "SecondMove"
+	                (play
+	                    (forEach Value min:(+ 1 (count at:(last To))) max:(count Cell at:(handSite Mover))
+	                        (move
+	                            (from (handSite Mover))
+	                            (to (sites Mover))
+	                            count:(value)
+	                            (then (set Value Mover (count at:(last To))))
+	                        )
+	                    )
+	                )
+	                (nextPhase "MainMove")
+	            )
+	            
+	            (phase "MainMove"
+	                (play [#]) // The first player must then place an even number of counters if they first played an odd number, and vice versa. If a player starts with an odd move, they must end with an even move (and vice versa) and use all their remaining counters
+	                
+	            )
+	            }
+	            
+	            (end {
+	                (if (no Moves Next)
+	                    (result Mover Win)
+	                )
+	                [?] // The game ends when a player has used all of their holes, and placed all of their counters in the sixth hole on their side.
+	                }
+	            )
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     (info
