@@ -2,46 +2,51 @@
 
 //------------------------------------------------------------------------------
 
-(game "Mbangbi" 
-    (players 2) 
-    (equipment { 
-        (mancalaBoard 2 5
-            (track "Track" <Track> loop:True)
-        )
-        (regions P1 (sites {1..5}))
-        (regions P2 (sites {6..10}))
-        (map {(pair 1 0) (pair 2 11)})
-        (piece "Seed" Shared)
-    }) 
-    (rules 
-        
-        (start (set Count 8 to:(sites Track)))
-        
-        (play [#]) // When sowing, if the final counter makes two or four counters, these are taken.
-        
-        (end [#])
-    )
-)
+(game "Mbangbi"
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(option "Play Rules" <Track> args:{ <direction> }
-    {
-    (item "Sowing in CCW" <"1,E,N,W"> "The players sow in counter clockwise.")* 
-    (item "Sowing in CW" <"5,W,N,E"> "The players sow in clockwise.")
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (mancalaBoard 2 5
+	                (track "Track" ["1,E,N,W" | "5,W,N,E"]  loop:True)
+	            )
+	            (regions P1 (sites {1..5}))
+	            (regions P2 (sites {6..10}))
+	            (map {(pair 1 0) (pair 2 11)})
+	            (piece "Seed" Shared)
+	        }) 
+	        (rules 
+	            
+	            (start (set Count 8 to:(sites Track)))
+	            
+	            (play [#]) // When sowing, if the final counter makes two or four counters, these are taken.
+	            
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
 
-// TODO option with 4 players
+	//------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Steiber and Steiber (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Steiber and Steiber (Incomplete)" {
-        
-    })*
-    
-})
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
