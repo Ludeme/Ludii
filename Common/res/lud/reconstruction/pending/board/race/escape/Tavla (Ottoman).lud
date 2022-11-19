@@ -1,26 +1,41 @@
-(game "Tavla (Ottoman)" 
-    (players 2)
-    (equipment {
-        ("BackgammonBoard" [#])
-        (dice d:6 num:2)
-        (piece "Disc" Each (move [#]))
-    })
-    (rules
-        (start [#])
-        (play [#])
-        (end [#])
-    )
-)
+(game "Tavla (Ottoman)"
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2)
+	        (equipment {
+	            ("BackgammonBoard" [#])
+	            (dice d:6 num:2)
+	            (piece "Disc" Each [#])
+	        })
+	        (rules
+	            (start [#])
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
