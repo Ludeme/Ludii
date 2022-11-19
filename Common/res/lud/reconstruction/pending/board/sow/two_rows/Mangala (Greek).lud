@@ -1,30 +1,45 @@
-(game "Mangala (Greek)" 
-    (players 2) 
-    
-    (equipment { 
-        (mancalaBoard 2 [3..40] store:None
-            (track "Track" "1,E,N,W" loop:True)
-        )
-        (piece "Seed" Shared)
-        (hand Each)
-    }) 
-    
-    (rules 
-        (start (set Count [2..16] to:(sites Board)))
-        (play [#])
-        (end [#])
-    )
-)
+(game "Mangala (Greek)"
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        
+	        (equipment { 
+	            (mancalaBoard 2 [3..40] store:None
+	                (track "Track" "1,E,N,W" loop:True)
+	            )
+	            (piece "Seed" Shared)
+	            (hand Each)
+	        }) 
+	        
+	        (rules 
+	            (start (set Count [2..16] to:(sites Board)))
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     (info
