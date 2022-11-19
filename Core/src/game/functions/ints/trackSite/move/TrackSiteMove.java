@@ -334,7 +334,7 @@ public final class TrackSiteMove extends BaseIntFunction
 	@Override
 	public String toEnglish(final Game game)
 	{		
-		return steps.toEnglish(game) + " steps forward from site " + currentLocation.toEnglish(game) + " on track \"" + name + "\"";
+		return steps.toEnglish(game) + " steps forward from site " + currentLocation.toEnglish(game) + " on track " + name;
 	}
 
 	//-------------------------------------------------------------------------

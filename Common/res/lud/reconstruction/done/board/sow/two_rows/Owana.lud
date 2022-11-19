@@ -1,0 +1,2627 @@
+(define "NoPieces" (all Sites (sites #1) if:(= 0 (count at:(site)))))
+
+//------------------------------------------------------------------------------
+
+(game "Owana"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Owana1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 4 
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 4 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (if 
+                    (is Proposed "End")
+                    
+                    (or 
+                        (move Vote "End")
+                        
+                        (move Vote "No")
+                    )
+                    
+                    (or 
+                        (if 
+                            (is Cycle)
+                            
+                            (move Propose "End")
+                        )
+                        
+                        (move Select 
+                            (from 
+                                (if 
+                                    (is Prev Mover)
+                                    
+                                    (sites { 
+                                        (last To afterConsequence:True)
+                                        }
+                                    )
+                                    
+                                    (sites Mover)
+                                )
+                                if:
+                                (< 0 
+                                    (count at:
+                                        (from)
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (sow apply:
+                                    (if 
+                                        (and 
+                                            (is In 
+                                                (to)
+                                                
+                                                (sites Next)
+                                            )
+                                            
+                                            (or 
+                                                (= 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                2)
+                                                
+                                                (= 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                3)
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (handSite Mover)
+                                            )
+                                            count:
+                                            (count at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (if 
+                                            (< 1 
+                                                (count at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (moveAgain)
+                                            
+                                            (if 
+                                                (and 
+                                                    (is In 
+                                                        (to)
+                                                        
+                                                        (sites Mover)
+                                                    )
+                                                    
+                                                    (< 1 
+                                                        (count at:
+                                                            (if 
+                                                                (is Mover P1)
+                                                                
+                                                                (+ 
+                                                                    (to)
+                                                                6)
+                                                                
+                                                                (- 
+                                                                    (to)
+                                                                6)
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (fromTo 
+                                                    (from 
+                                                        (if 
+                                                            (is Mover P1)
+                                                            
+                                                            (+ 
+                                                                (to)
+                                                            6)
+                                                            
+                                                            (- 
+                                                                (to)
+                                                            6)
+                                                        )
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite Mover)
+                                                    )
+                                                    count:
+                                                    (count at:
+                                                        (if 
+                                                            (is Mover P1)
+                                                            
+                                                            (+ 
+                                                                (to)
+                                                            6)
+                                                            
+                                                            (- 
+                                                                (to)
+                                                            6)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    includeSelf:False backtracking:
+                                    (and 
+                                        (is In 
+                                            (from)
+                                            
+                                            (sites Next)
+                                        )
+                                        
+                                        (or 
+                                            (= 
+                                                (count at:
+                                                    (from)
+                                                )
+                                            2)
+                                            
+                                            (= 
+                                                (count at:
+                                                    (from)
+                                                )
+                                            3)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (all Sites 
+                        (sites P1)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (all Sites 
+                        (sites P2)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Owana1 ruleset.")
+    
+    (item "Owana2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 4 
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 4 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (do 
+                    (move Select 
+                        (from 
+                            (if 
+                                (is Prev Mover)
+                                
+                                (sites { 
+                                    (last To afterConsequence:True)
+                                    }
+                                )
+                                
+                                (sites Mover)
+                            )
+                            if:
+                            (< 0 
+                                (count at:
+                                    (from)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (sow apply:
+                                (if 
+                                    (and 
+                                        (is In 
+                                            (to)
+                                            
+                                            (sites Next)
+                                        )
+                                        
+                                        (= 
+                                            (count at:
+                                                (to)
+                                            )
+                                        4)
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite Mover)
+                                        )
+                                        count:
+                                        (count at:
+                                            (to)
+                                        )
+                                        
+                                        (then 
+                                            (forEach Site 
+                                                (if 
+                                                    (is Mover P1)
+                                                    
+                                                    (sites P2)
+                                                    
+                                                    (sites P1)
+                                                )
+                                                
+                                                (if 
+                                                    (= 
+                                                        (count at:
+                                                            (site)
+                                                        )
+                                                    4)
+                                                    
+                                                    (fromTo 
+                                                        (from 
+                                                            (site)
+                                                        )
+                                                        
+                                                        (to 
+                                                            (handSite Mover)
+                                                        )
+                                                        count:
+                                                        (count at:
+                                                            (site)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (< 1 
+                                            (count at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                            includeSelf:False )
+                        )
+                    )
+                    ifAfterwards:
+                    (< 0 
+                        (count in:
+                            (if 
+                                (is Mover P1)
+                                
+                                (sites P2)
+                                
+                                (sites P1)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (all Sites 
+                        (sites P1)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (all Sites 
+                        (sites P2)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Owana2 ruleset.")
+    
+    (item "Owana3" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 4 
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 4 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (if 
+                    (is Proposed "End")
+                    
+                    (or 
+                        (move Vote "End")
+                        
+                        (move Vote "No")
+                    )
+                    
+                    (or 
+                        (if 
+                            (is Cycle)
+                            
+                            (move Propose "End")
+                        )
+                        
+                        (do 
+                            (move Select 
+                                (from 
+                                    (sites Mover)
+                                    if:
+                                    (< 0 
+                                        (count at:
+                                            (from)
+                                        )
+                                    )
+                                )
+                                
+                                (then 
+                                    (sow if:
+                                        (and 
+                                            (is In 
+                                                (to)
+                                                
+                                                (sites Next)
+                                            )
+                                            
+                                            (or 
+                                                (= 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                2)
+                                                
+                                                (= 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                3)
+                                            )
+                                        )
+                                        apply:
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (handSite Mover)
+                                            )
+                                            count:
+                                            (count at:
+                                                (to)
+                                            )
+                                        )
+                                    includeSelf:False backtracking:True )
+                                )
+                            )
+                            ifAfterwards:
+                            (< 0 
+                                (count in:
+                                    (sites Next)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (all Sites 
+                        (sites P1)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (all Sites 
+                        (sites P2)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Owana3 ruleset.")
+    
+    (item "Owana4" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 4 
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 4 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 10)
+                    
+                    (then 
+                        (sow count:2)
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (all Sites 
+                        (sites P1)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (all Sites 
+                        (sites P2)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Owana4 ruleset.")
+    
+    (item "Owana5" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 4 
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 4 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (or { 
+                    (move Select 
+                        (from 
+                            (if 
+                                (= 0 
+                                    (count Moves)
+                                )
+                                
+                                (sites { 5}
+                                )
+                                
+                                (if 
+                                    (is Prev Mover)
+                                    
+                                    (sites { 
+                                        (var "Replay")
+                                        }
+                                    )
+                                    
+                                    (sites Mover)
+                                )
+                            )
+                            if:
+                            (and 
+                                (is Occupied 
+                                    (from)
+                                )
+                                
+                                (= 0 
+                                    (state at:
+                                        (from)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (sow apply:
+                                (if 
+                                    (< 1 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (= 0 
+                                            (state at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (and 
+                                            (moveAgain)
+                                            
+                                            (set Var "Replay" 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (is In 
+                                            (to)
+                                            
+                                            (sites Mover)
+                                        )
+                                        
+                                        (if 
+                                            (!= 3 
+                                                (count at:
+                                                    (if 
+                                                        (is In 
+                                                            (to)
+                                                            
+                                                            (sites Bottom)
+                                                        )
+                                                        
+                                                        (+ 
+                                                            (to)
+                                                        6)
+                                                        
+                                                        (- 
+                                                            (to)
+                                                        6)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (if 
+                                                (!= 0 
+                                                    (count at:
+                                                        (if 
+                                                            (is In 
+                                                                (to)
+                                                                
+                                                                (sites Bottom)
+                                                            )
+                                                            
+                                                            (+ 
+                                                                (to)
+                                                            6)
+                                                            
+                                                            (- 
+                                                                (to)
+                                                            6)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (fromTo 
+                                                    (from 
+                                                        (if 
+                                                            (is In 
+                                                                (to)
+                                                                
+                                                                (sites Bottom)
+                                                            )
+                                                            
+                                                            (+ 
+                                                                (to)
+                                                            6)
+                                                            
+                                                            (- 
+                                                                (to)
+                                                            6)
+                                                        )
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite Mover)
+                                                    )
+                                                    count:
+                                                    (count at:
+                                                        (if 
+                                                            (is In 
+                                                                (to)
+                                                                
+                                                                (sites Bottom)
+                                                            )
+                                                            
+                                                            (+ 
+                                                                (to)
+                                                            6)
+                                                            
+                                                            (- 
+                                                                (to)
+                                                            6)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (and { 
+                                                (fromTo 
+                                                    (from 
+                                                        (if 
+                                                            (is In 
+                                                                (to)
+                                                                
+                                                                (sites Bottom )
+                                                            )
+                                                            
+                                                            (+ 
+                                                                (to)
+                                                            6)
+                                                            
+                                                            (- 
+                                                                (to)
+                                                            6)
+                                                        )
+                                                    )
+                                                    
+                                                    (to 
+                                                        (to)
+                                                    )
+                                                count:1 )
+                                                
+                                                (set State at:
+                                                    (to)
+                                                    
+                                                    (mover)
+                                                )
+                                                
+                                                (set State at:
+                                                    (if 
+                                                        (is In 
+                                                            (to)
+                                                            
+                                                            (sites Bottom)
+                                                        )
+                                                        
+                                                        (+ 
+                                                            (to)
+                                                        6)
+                                                        
+                                                        (- 
+                                                            (to)
+                                                        6)
+                                                    )
+                                                    
+                                                    (mover)
+                                                )
+                                                }
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    }
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (not 
+                                    (is Next Mover)
+                                )
+                                
+                                (or 
+                                    (all Sites 
+                                        (sites P1)
+                                        if:
+                                        (or 
+                                            (!= 0 
+                                                (state at:
+                                                    (site)
+                                                )
+                                            )
+                                            
+                                            (is Empty 
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (all Sites 
+                                        (sites P2)
+                                        if:
+                                        (or 
+                                            (!= 0 
+                                                (state at:
+                                                    (site)
+                                                )
+                                            )
+                                            
+                                            (is Empty 
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (and { 
+                                (forEach Site 
+                                    (sites P1)
+                                    
+                                    (if 
+                                        (= 0 
+                                            (state at:
+                                                (site)
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (site)
+                                            )
+                                            
+                                            (to 
+                                                (handSite P1)
+                                            )
+                                            count:
+                                            (count at:
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (forEach Site 
+                                    (sites P2)
+                                    
+                                    (if 
+                                        (= 0 
+                                            (state at:
+                                                (site)
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (site)
+                                            )
+                                            
+                                            (to 
+                                                (handSite P2)
+                                            )
+                                            count:
+                                            (count at:
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (forEach Site 
+                                    (sites Board)
+                                    
+                                    (if 
+                                        (= 
+                                            (state at:
+                                                (site)
+                                            )
+                                        P1)
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (site)
+                                            )
+                                            
+                                            (to 
+                                                (handSite P1)
+                                            )
+                                            count:
+                                            (count at:
+                                                (site)
+                                            )
+                                        )
+                                        
+                                        (if 
+                                            (= 
+                                                (state at:
+                                                    (site)
+                                                )
+                                            P2)
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (site)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite P2)
+                                                )
+                                                count:
+                                                (count at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                }
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (all Sites 
+                        (sites P1)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (all Sites 
+                        (sites P2)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Owana5 ruleset.")
+    
+    (item "Owana6" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 4 
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 4 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (or { 
+                    (move Select 
+                        (from 
+                            (if 
+                                (is Prev Mover)
+                                
+                                (sites { 
+                                    (var "Replay")
+                                    }
+                                )
+                                
+                                (difference 
+                                    (sites Mover)
+                                    
+                                    (sites Centre)
+                                )
+                            )
+                            if:
+                            (and 
+                                (is Occupied 
+                                    (from)
+                                )
+                                
+                                (is In 
+                                    (from)
+                                    
+                                    (sites 
+                                        (values Remembered "Playable")
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (sow apply:
+                                (if 
+                                    (is Occupied 
+                                        (trackSite Move from:
+                                            (to)
+                                        "Track" steps:1 )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "Replay" 
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (is In 
+                                            (trackSite Move from:
+                                                (to)
+                                            "Track" steps:2 )
+                                            
+                                            (sites Centre)
+                                        )
+                                        
+                                        (set Value Mover 1)
+                                        
+                                        (and 
+                                            (if 
+                                                (is Occupied 
+                                                    (trackSite Move from:
+                                                        (to)
+                                                    "Track" steps:2 )
+                                                )
+                                                
+                                                (fromTo 
+                                                    (from 
+                                                        (trackSite Move from:
+                                                            (to)
+                                                        "Track" steps:2 )
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite Mover )
+                                                    )
+                                                    count:
+                                                    (count at:
+                                                        (trackSite Move from:
+                                                            (to)
+                                                        "Track" steps:2 )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (if 
+                                                (is Occupied 
+                                                    (if 
+                                                        (is In 
+                                                            (trackSite Move from:
+                                                                (to )
+                                                            "Track" steps:2 )
+                                                            
+                                                            (sites Bottom )
+                                                        )
+                                                        
+                                                        (+ 
+                                                            (trackSite Move from:
+                                                                (to )
+                                                            "Track" steps:2 )
+                                                        7 )
+                                                        
+                                                        (- 
+                                                            (trackSite Move from:
+                                                                (to )
+                                                            "Track" steps:2 )
+                                                        7 )
+                                                    )
+                                                )
+                                                
+                                                (fromTo 
+                                                    (from 
+                                                        (if 
+                                                            (is In 
+                                                                (trackSite Move from:
+                                                                    (to )
+                                                                "Track" steps:2 )
+                                                                
+                                                                (sites Bottom )
+                                                            )
+                                                            
+                                                            (+ 
+                                                                (trackSite Move from:
+                                                                    (to )
+                                                                "Track" steps:2 )
+                                                            7 )
+                                                            
+                                                            (- 
+                                                                (trackSite Move from:
+                                                                    (to )
+                                                                "Track" steps:2 )
+                                                            7 )
+                                                        )
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite Mover )
+                                                    )
+                                                    count:
+                                                    (count at:
+                                                        (if 
+                                                            (is In 
+                                                                (trackSite Move from:
+                                                                    (to )
+                                                                "Track" steps:2 )
+                                                                
+                                                                (sites Bottom )
+                                                            )
+                                                            
+                                                            (+ 
+                                                                (trackSite Move from:
+                                                                    (to )
+                                                                "Track" steps:2 )
+                                                            7 )
+                                                            
+                                                            (- 
+                                                                (trackSite Move from:
+                                                                    (to )
+                                                                "Track" steps:2 )
+                                                            7 )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                skipIf:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (to)
+                                            
+                                            (sites Centre)
+                                        )
+                                    )
+                                    
+                                    (not 
+                                        (is In 
+                                            (to)
+                                            
+                                            (sites 
+                                                (values Remembered "Playable" )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    }
+                    
+                    (then 
+                        (if 
+                            (all Sites 
+                                (difference 
+                                    (sites Board)
+                                    
+                                    (sites Centre)
+                                )
+                                if:
+                                (= 0 
+                                    (count at:
+                                        (site)
+                                    )
+                                )
+                            )
+                            
+                            (and { 
+                                (forget Value "Playable" All)
+                                
+                                (if 
+                                    (!= 0 
+                                        (+ 
+                                            (count at:3)
+                                            
+                                            (count at:10)
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (and 
+                                            (= 1 
+                                                (value Player P1)
+                                            )
+                                            
+                                            (= 1 
+                                                (value Player P2)
+                                            )
+                                        )
+                                        
+                                        (if 
+                                            (is Even 
+                                                (+ 
+                                                    (count at:3)
+                                                    
+                                                    (count at:10)
+                                                )
+                                            )
+                                            
+                                            (and { 
+                                                (fromTo 
+                                                    (from 3)
+                                                    
+                                                    (to Cell 
+                                                        (handSite P1 )
+                                                    )
+                                                    count:
+                                                    (- 
+                                                        (count at:3 )
+                                                    1 )
+                                                )
+                                                
+                                                (fromTo 
+                                                    (from 10)
+                                                    
+                                                    (to Cell 
+                                                        (handSite P1 )
+                                                    )
+                                                    count:
+                                                    (- 
+                                                        (count at:10 )
+                                                    1 )
+                                                )
+                                                
+                                                (fromTo 
+                                                    (from Cell 
+                                                        (handSite P1 )
+                                                    )
+                                                    
+                                                    (to Cell 
+                                                        (handSite P2 )
+                                                    )
+                                                    count:
+                                                    (/ 
+                                                        (- 
+                                                            (+ 
+                                                                (count at:3 )
+                                                                
+                                                                (count at:10 )
+                                                            )
+                                                        2 )
+                                                    2 )
+                                                )
+                                                }
+                                            )
+                                            
+                                            (and { 
+                                                (fromTo 
+                                                    (from 3)
+                                                    
+                                                    (to Cell 
+                                                        (handSite P1 )
+                                                    )
+                                                    count:
+                                                    (- 
+                                                        (count at:3 )
+                                                    1 )
+                                                )
+                                                
+                                                (fromTo 
+                                                    (from 10)
+                                                    
+                                                    (to Cell 
+                                                        (handSite P1 )
+                                                    )
+                                                    count:
+                                                    (count at:10 )
+                                                )
+                                                
+                                                (fromTo 
+                                                    (from Cell 
+                                                        (handSite P1 )
+                                                    )
+                                                    
+                                                    (to Cell 
+                                                        (handSite P2 )
+                                                    )
+                                                    count:
+                                                    (/ 
+                                                        (- 
+                                                            (+ 
+                                                                (count at:3 )
+                                                                
+                                                                (count at:10 )
+                                                            )
+                                                        1 )
+                                                    2 )
+                                                )
+                                                }
+                                            )
+                                        )
+                                        
+                                        (if 
+                                            (= 1 
+                                                (value Player P1)
+                                            )
+                                            
+                                            (and 
+                                                (fromTo 
+                                                    (from 3)
+                                                    
+                                                    (to Cell 
+                                                        (handSite P1)
+                                                    )
+                                                    count:
+                                                    (- 
+                                                        (count at:3)
+                                                    1 )
+                                                )
+                                                
+                                                (fromTo 
+                                                    (from 10)
+                                                    
+                                                    (to Cell 
+                                                        (handSite P1)
+                                                    )
+                                                    count:
+                                                    (- 
+                                                        (count at:10)
+                                                    1 )
+                                                )
+                                            )
+                                            
+                                            (if 
+                                                (= 1 
+                                                    (value Player P2)
+                                                )
+                                                
+                                                (and 
+                                                    (fromTo 
+                                                        (from 3)
+                                                        
+                                                        (to Cell 
+                                                            (handSite P2 )
+                                                        )
+                                                        count:
+                                                        (- 
+                                                            (count at:3 )
+                                                        1 )
+                                                    )
+                                                    
+                                                    (fromTo 
+                                                        (from 10)
+                                                        
+                                                        (to Cell 
+                                                            (handSite P2 )
+                                                        )
+                                                        count:
+                                                        (- 
+                                                            (count at:10 )
+                                                        1 )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                }
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (all Sites 
+                        (sites P1)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (all Sites 
+                        (sites P2)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Owana6 ruleset.")
+    
+    (item "Owana7" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 4 
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 4 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (if 
+                            (is Prev Mover)
+                            
+                            (sites { 
+                                (trackSite Move from:
+                                    (last To afterConsequence:True)
+                                steps:1 )
+                                }
+                            )
+                            
+                            (sites Mover)
+                        )
+                        if:
+                        (< 0 
+                            (count at:
+                                (from)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (sow apply:
+                            (if 
+                                (> 
+                                    (count at:
+                                        (trackSite Move from:
+                                            (to)
+                                        steps:1)
+                                    )
+                                0 )
+                                
+                                (moveAgain)
+                                
+                                (if 
+                                    (> 
+                                        (count at:
+                                            (if 
+                                                (is In 
+                                                    (trackSite Move from:
+                                                        (to)
+                                                    steps:1 )
+                                                    
+                                                    (sites Bottom)
+                                                )
+                                                
+                                                (+ 
+                                                    (trackSite Move from:
+                                                        (to)
+                                                    steps:1 )
+                                                7 )
+                                                
+                                                (- 
+                                                    (trackSite Move from:
+                                                        (to)
+                                                    steps:1 )
+                                                7 )
+                                            )
+                                        )
+                                    0 )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (if 
+                                                (is In 
+                                                    (trackSite Move from:
+                                                        (to)
+                                                    steps:1 )
+                                                    
+                                                    (sites Bottom)
+                                                )
+                                                
+                                                (+ 
+                                                    (trackSite Move from:
+                                                        (to)
+                                                    steps:1 )
+                                                7 )
+                                                
+                                                (- 
+                                                    (trackSite Move from:
+                                                        (to)
+                                                    steps:1 )
+                                                7 )
+                                            )
+                                        )
+                                        
+                                        (to 
+                                            (handSite Mover)
+                                        )
+                                        count:
+                                        (count at:
+                                            (if 
+                                                (is In 
+                                                    (trackSite Move from:
+                                                        (to)
+                                                    steps:1 )
+                                                    
+                                                    (sites Bottom)
+                                                )
+                                                
+                                                (+ 
+                                                    (trackSite Move from:
+                                                        (to)
+                                                    steps:1 )
+                                                7 )
+                                                
+                                                (- 
+                                                    (trackSite Move from:
+                                                        (to)
+                                                    steps:1 )
+                                                7 )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (all Sites 
+                        (sites P1)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (all Sites 
+                        (sites P2)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Owana7 ruleset.")
+    
+    (item "Owana8" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 4 
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 4 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (or { 
+                    (move Select 
+                        (from 
+                            (if 
+                                (is Prev Mover)
+                                
+                                (sites { 
+                                    (var "Replay")
+                                    }
+                                )
+                                
+                                (sites Mover)
+                            )
+                            if:
+                            (and { 
+                                (is Occupied 
+                                    (from)
+                                )
+                                
+                                (is In 
+                                    (from)
+                                    
+                                    (sites 
+                                        (values Remembered "Playable" )
+                                    )
+                                )
+                                
+                                (!= 
+                                    (next)
+                                    
+                                    (state at:
+                                        (from)
+                                    )
+                                )
+                                }
+                            )
+                        )
+                        
+                        (then 
+                            (do 
+                                (and 
+                                    (set Var "NumSowed" 
+                                        (count at:
+                                            (last To)
+                                        )
+                                    )
+                                    
+                                    (set Var "StateSowFrom" 
+                                        (state at:
+                                            (last To)
+                                        )
+                                    )
+                                )
+                                next:
+                                (sow "TrackCW" apply:
+                                    (if 
+                                        (is Occupied 
+                                            (trackSite Move from:
+                                                (to)
+                                            "Track" steps:1 )
+                                        )
+                                        
+                                        (and 
+                                            (moveAgain)
+                                            
+                                            (set Var "Replay" 
+                                                (trackSite Move from:
+                                                    (to)
+                                                "Track" steps:1 )
+                                            )
+                                        )
+                                        
+                                        (if 
+                                            (is Occupied 
+                                                (if 
+                                                    (is In 
+                                                        (trackSite Move from:
+                                                            (to)
+                                                        "Track" steps:1 )
+                                                        
+                                                        (sites Bottom)
+                                                    )
+                                                    
+                                                    (+ 
+                                                        (trackSite Move from:
+                                                            (to)
+                                                        "Track" steps:1 )
+                                                    7 )
+                                                    
+                                                    (- 
+                                                        (trackSite Move from:
+                                                            (to)
+                                                        "Track" steps:1 )
+                                                    7 )
+                                                )
+                                            )
+                                            
+                                            (and 
+                                                (fromTo 
+                                                    (from 
+                                                        (if 
+                                                            (is In 
+                                                                (trackSite Move from:
+                                                                    (to )
+                                                                "Track" steps:1 )
+                                                                
+                                                                (sites Bottom )
+                                                            )
+                                                            
+                                                            (+ 
+                                                                (trackSite Move from:
+                                                                    (to )
+                                                                "Track" steps:1 )
+                                                            7 )
+                                                            
+                                                            (- 
+                                                                (trackSite Move from:
+                                                                    (to )
+                                                                "Track" steps:1 )
+                                                            7 )
+                                                        )
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite Mover )
+                                                    )
+                                                    count:
+                                                    (count at:
+                                                        (if 
+                                                            (is In 
+                                                                (trackSite Move from:
+                                                                    (to )
+                                                                "Track" steps:1 )
+                                                                
+                                                                (sites Bottom )
+                                                            )
+                                                            
+                                                            (+ 
+                                                                (trackSite Move from:
+                                                                    (to )
+                                                                "Track" steps:1 )
+                                                            7 )
+                                                            
+                                                            (- 
+                                                                (trackSite Move from:
+                                                                    (to )
+                                                                "Track" steps:1 )
+                                                            7 )
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (set State at:
+                                                    (if 
+                                                        (is In 
+                                                            (trackSite Move from:
+                                                                (to )
+                                                            "Track" steps:1 )
+                                                            
+                                                            (sites Bottom )
+                                                        )
+                                                        
+                                                        (+ 
+                                                            (trackSite Move from:
+                                                                (to )
+                                                            "Track" steps:1 )
+                                                        7 )
+                                                        
+                                                        (- 
+                                                            (trackSite Move from:
+                                                                (to )
+                                                            "Track" steps:1 )
+                                                        7 )
+                                                    )
+                                                    
+                                                    (state at:
+                                                        (if 
+                                                            (is In 
+                                                                (trackSite Move from:
+                                                                    (to )
+                                                                "Track" steps:1 )
+                                                                
+                                                                (sites Bottom )
+                                                            )
+                                                            
+                                                            (+ 
+                                                                (trackSite Move from:
+                                                                    (to )
+                                                                "Track" steps:1 )
+                                                            7 )
+                                                            
+                                                            (- 
+                                                                (trackSite Move from:
+                                                                    (to )
+                                                                "Track" steps:1 )
+                                                            7 )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    skipIf:
+                                    (or 
+                                        (and 
+                                            (!= 
+                                                (state at:
+                                                    (to)
+                                                )
+                                                
+                                                (mover)
+                                            )
+                                            
+                                            (!= 
+                                                (state at:
+                                                    (to)
+                                                )
+                                            0)
+                                        )
+                                        
+                                        (not 
+                                            (is In 
+                                                (to)
+                                                
+                                                (sites 
+                                                    (values Remembered "Playable" )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (then 
+                                    (and { 
+                                        (forEach Site 
+                                            (sites Track from:
+                                                (last From)
+                                                to:
+                                                (trackSite Move from:
+                                                    (last From )
+                                                    "Track" steps:
+                                                    (var "NumSowed" )
+                                                )
+                                            )
+                                            
+                                            (if 
+                                                (and 
+                                                    (= 
+                                                        (value Player Mover )
+                                                        
+                                                        (count at:
+                                                            (site )
+                                                        )
+                                                    )
+                                                    
+                                                    (or 
+                                                        (= 
+                                                            (state at:
+                                                                (site )
+                                                            )
+                                                            
+                                                            (mover )
+                                                        )
+                                                        
+                                                        (= 
+                                                            (state at:
+                                                                (site )
+                                                            )
+                                                        0 )
+                                                    )
+                                                )
+                                                
+                                                (and 
+                                                    (fromTo 
+                                                        (from 
+                                                            (site)
+                                                        )
+                                                        
+                                                        (to 
+                                                            (handSite Mover )
+                                                        )
+                                                        count:
+                                                        (value Player Mover )
+                                                    )
+                                                    
+                                                    (set State at:
+                                                        (site)
+                                                        
+                                                        (state at:
+                                                            (site )
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (if 
+                                                    (and 
+                                                        (is Occupied 
+                                                            (site)
+                                                        )
+                                                        
+                                                        (= 
+                                                            (mover )
+                                                            
+                                                            (state at:
+                                                                (site )
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (and 
+                                                        (fromTo 
+                                                            (from 
+                                                                (site )
+                                                            )
+                                                            
+                                                            (to 
+                                                                (handSite Mover )
+                                                            )
+                                                        count:1 )
+                                                        
+                                                        (set State at:
+                                                            (site )
+                                                            
+                                                            (state at:
+                                                                (site )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (set Var "NumSowed" 0)
+                                        
+                                        (if 
+                                            (< 0 
+                                                (var "StateSowFrom" )
+                                            )
+                                            
+                                            (set State at:
+                                                (last From)
+                                                
+                                                (var "StateSowFrom" )
+                                            )
+                                        )
+                                        }
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    }
+                    
+                    (then 
+                        (if 
+                            (all Sites 
+                                (forEach 
+                                    (sites Board)
+                                    if:
+                                    (= 0 
+                                        (state at:
+                                            (site)
+                                        )
+                                    )
+                                )
+                                if:
+                                (= 0 
+                                    (count at:
+                                        (site)
+                                    )
+                                )
+                            )
+                            
+                            (and { 
+                                (forEach Site 
+                                    (sites Board)
+                                    
+                                    (and 
+                                        (if 
+                                            (= 
+                                                (state at:
+                                                    (site)
+                                                )
+                                            1)
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (site)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite P1)
+                                                )
+                                                count:
+                                                (count at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (if 
+                                            (= 
+                                                (state at:
+                                                    (site)
+                                                )
+                                            2)
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (site)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite P2)
+                                                )
+                                                count:
+                                                (count at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (forget Value "Playable" All)
+                                
+                                (if 
+                                    (>= 
+                                        (count Cell at:
+                                            (handSite P1)
+                                        )
+                                        
+                                        (count Cell at:
+                                            (handSite P2)
+                                        )
+                                    )
+                                    
+                                    (set Var "CurrentWinner" 1)
+                                    
+                                    (set Var "CurrentWinner" 2)
+                                )
+                                
+                                (set Value P2 0)
+                                
+                                (set Value P1 0)
+                                
+                                (forEach Site 
+                                    (sites Board)
+                                    
+                                    (if 
+                                        (!= 0 
+                                            (state at:
+                                                (site)
+                                            )
+                                        )
+                                        
+                                        (set State at:
+                                            (site)
+                                        0)
+                                    )
+                                )
+                                }
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (all Sites 
+                        (sites P1)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (all Sites 
+                        (sites P2)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Owana8 ruleset.")
+    
+    (item "Owana9" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 4 
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 4 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (if 
+                            (is Prev Mover)
+                            
+                            (sites { 
+                                (value Pending)
+                                }
+                            )
+                            
+                            (sites Mover)
+                        )
+                        if:
+                        (> 
+                            (count at:
+                                (from)
+                            )
+                        0)
+                    )
+                    
+                    (then 
+                        (sow if:True apply:
+                            (if 
+                                (is Occupied 
+                                    (trackSite Move from:
+                                        (to)
+                                    steps:1)
+                                )
+                                
+                                (and { 
+                                    (set Pending 
+                                        (to)
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (trackSite Move from:
+                                                (to)
+                                            steps:1)
+                                        )
+                                        
+                                        (to 
+                                            (handSite Mover)
+                                        )
+                                        count:
+                                        (count at:
+                                            (trackSite Move from:
+                                                (to)
+                                            steps:1 )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                    }
+                                )
+                                
+                                (if 
+                                    (is Occupied 
+                                        (trackSite Move from:
+                                            (to)
+                                        steps:2)
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (trackSite Move from:
+                                                (to)
+                                            steps:2)
+                                        )
+                                        
+                                        (to 
+                                            (handSite Mover)
+                                        )
+                                        count:
+                                        (count at:
+                                            (trackSite Move from:
+                                                (to)
+                                            steps:2)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (all Sites 
+                        (sites P1)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (all Sites 
+                        (sites P2)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Owana9 ruleset.")
+    
+    (item "Owana10" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 4 
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 4 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover)
+                        if:
+                        (> 
+                            (count at:
+                                (from)
+                            )
+                        0)
+                    )
+                    
+                    (then 
+                        (sow apply:
+                            (if 
+                                (or 
+                                    (= 2 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (= 4 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (handSite Mover)
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (all Sites 
+                        (sites P1)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (all Sites 
+                        (sites P2)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Owana10 ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2) 
+        
+        (equipment { 
+            (mancalaBoard 2 4
+                (track "Track" "1,E,N,W" loop:True)
+            )  
+            (regions P1 (sites Bottom))      // P1 home
+            (regions P2 (sites Top))      // P2 home
+            (piece "Seed" Shared)
+            (hand Each)
+        }) 
+        (rules 
+            (start (set Count 4 to:(sites Track)))
+            
+            (play [#])
+            
+            (end {
+                (if ("NoPieces" P1) (result P2 Win)) 
+                (if ("NoPieces" P2) (result P1 Win)) 
+            })
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Owana1 (Reconstructed)" {
+        "Variant/Owana1"
+    })
+    (ruleset "Ruleset/Owana2 (Reconstructed)" {
+        "Variant/Owana2"
+    })
+    (ruleset "Ruleset/Owana3 (Reconstructed)" {
+        "Variant/Owana3"
+    })
+    (ruleset "Ruleset/Owana4 (Reconstructed)" {
+        "Variant/Owana4"
+    })
+    (ruleset "Ruleset/Owana5 (Reconstructed)" {
+        "Variant/Owana5"
+    })
+    (ruleset "Ruleset/Owana6 (Reconstructed)" {
+        "Variant/Owana6"
+    })
+    (ruleset "Ruleset/Owana7 (Reconstructed)" {
+        "Variant/Owana7"
+    })
+    (ruleset "Ruleset/Owana8 (Reconstructed)" {
+        "Variant/Owana8"
+    })
+    (ruleset "Ruleset/Owana9 (Reconstructed)" {
+        "Variant/Owana9"
+    })
+    (ruleset "Ruleset/Owana10 (Reconstructed)" {
+        "Variant/Owana10"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Owana is a two-row mancala-style board game played by children in the Republic of Congo.")
+        (rules "2x4 holes board with two stores. Four counters per hole. Players sow in an anti-clockwise direction. The player who captures all of the opponent's counters wins.")
+        (source "DLP evidence.")
+        (id "1349")
+        (version "1.3.7")
+        (classification "board/sow/two rows/reconstruction")
+        (credit "Eric Piette")
+        (origin "This game was played in Republic of Congo, around 1971.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+    (recon {
+        (concept "Sow" True)
+    })
+)
+

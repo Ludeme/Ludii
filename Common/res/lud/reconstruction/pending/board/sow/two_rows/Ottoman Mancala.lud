@@ -1,43 +1,42 @@
 (game "Ottoman Mancala"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        
-	        (equipment { 
-	            (mancalaBoard 2 6 store:None
-	                (track "Track" "1,E,N,W" loop:True)
-	            )
-	            (piece "Seed" Shared)
-	        }) 
-	        (rules 
-	            (start (set Count [2..16] to:(sites Track)))
-	            (play [#])
-	            (end [#])
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        
+        (equipment { 
+            (mancalaBoard 2 6 store:None
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            (piece "Seed" Shared)
+        }) 
+        (rules 
+            (start (set Count [2..16] to:(sites Track)))
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     (info

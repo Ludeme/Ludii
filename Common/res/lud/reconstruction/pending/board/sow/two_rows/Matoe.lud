@@ -1,50 +1,49 @@
 (game "Matoe"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment { 
-	            (mancalaBoard 2 [3..40] store:None
-	                {
-	                (track [#])
-	                (track [#])
-	                }
-	            )
-	            (piece "Seed" Shared)
-	        }) 
-	        (rules 
-	            (start [#])
-	            (play 
-	                (move Select 
-	                    (from [#])
-	                    (then (sow [#]))
-	                )
-	            )
-	            (end [#])
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (mancalaBoard 2 [3..40] store:None
+                {
+                (track [#])
+                (track [#])
+                }
+            )
+            (piece "Seed" Shared)
+        }) 
+        (rules 
+            (start [#])
+            (play 
+                (move Select 
+                    (from [#])
+                    (then (sow [#]))
+                )
+            )
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     (info
