@@ -17,54 +17,69 @@
 //------------------------------------------------------------------------------
 
 (game "Adzua (Children)"
-    (players 2) 
-    (equipment { 
-        (board (square 3)
-            use:Vertex		
-        )
-        (piece "Marker" Each (move [#])) // Missing knowledge is here !
-        (hand Each)
-    })
-    
-    (rules 
-        (start (place "Marker" "Hand" count:4))
-        phases:{
-        (phase "Placement"
-            (play
-                (if "SameTurn"
-                    "RemoveEnemyPiece"
-                    (move 
-                        (from (handSite Mover)) 
-                        (to (sites Empty)) 
-                        "IfLine3MoveAgain" 
-                    ) 
-                )
-            ) 
-            (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
-        
-        (phase "Movement" 
-            (play 
-                (if "SameTurn"
-                    "RemoveEnemyPiece"
-                    (forEach Piece)
-                )
-            )
-        )
-        }
-        (end (if (<= (count Pieces Next) 2) (result Mover Win)))
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information. (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (board (square 3)
+	                use:Vertex		
+	            )
+	            (piece "Marker" Each (move [#])) // Missing knowledge is here !
+	            (hand Each)
+	        })
+	        
+	        (rules 
+	            (start (place "Marker" "Hand" count:4))
+	            phases:{
+	            (phase "Placement"
+	                (play
+	                    (if "SameTurn"
+	                        "RemoveEnemyPiece"
+	                        (move 
+	                            (from (handSite Mover)) 
+	                            (to (sites Empty)) 
+	                            "IfLine3MoveAgain" 
+	                        ) 
+	                    )
+	                ) 
+	                (nextPhase Mover ("HandEmpty" Mover) "Movement")
+	            )
+	            
+	            (phase "Movement" 
+	                (play 
+	                    (if "SameTurn"
+	                        "RemoveEnemyPiece"
+	                        (forEach Piece)
+	                    )
+	                )
+	            )
+	            }
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
