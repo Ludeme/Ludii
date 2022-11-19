@@ -10,73 +10,88 @@
 //------------------------------------------------------------------------------
 
 (game "Ga"
-    (players ("NumPlayers")) 
-    (equipment { 
-        (board 
-            (concentric {"NumHolesCircle"}) 
-            { 
-            (track [#] loop:True)
-            }
-            use:Vertex
-        )
-        (piece "Seed" Each)
-    }) 
-    
-    (rules
-        
-        (start [#])
-        
-        (play 
-            (if (!= 1 (count Pieces Mover))
-                (move
-                    Select 
-                    (from 
-                        ("LeftMost") 
-                    )
-                    (then
-                        (sow
-                            sowEffect:(if (and (!= (mover) (what at:(to))) (is Occupied (to)))
-                                (and
-                                    (remove (to) count:(count at:(to)))
-                                    (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
-                                )
-                            )		
-                        )
-                    )
-                )
-                (move
-                    (from ("LeftMost"))
-                    (to 
-                        (trackSite FirstSite from:(from) if:("IsEnemyAt" (to)))
-                        (apply
-                            (and
-                                (remove (to) count:(count at:(to)))
-                                (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
-                            )	
-                        )	
-                    )
-                )
-            )
-        )
-        
-        (end 
-            (forEach NonMover 
-                if:(no Pieces Player) 
-                (result Player Loss)
-            )
-        )
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players ("NumPlayers")) 
+	        (equipment { 
+	            (board 
+	                (concentric {"NumHolesCircle"}) 
+	                { 
+	                (track [#] loop:True)
+	                }
+	                use:Vertex
+	            )
+	            (piece "Seed" Each)
+	        }) 
+	        
+	        (rules
+	            
+	            (start [#])
+	            
+	            (play 
+	                (if (!= 1 (count Pieces Mover))
+	                    (move
+	                        Select 
+	                        (from 
+	                            ("LeftMost") 
+	                        )
+	                        (then
+	                            (sow
+	                                sowEffect:(if (and (!= (mover) (what at:(to))) (is Occupied (to)))
+	                                    (and
+	                                        (remove (to) count:(count at:(to)))
+	                                        (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
+	                                    )
+	                                )		
+	                            )
+	                        )
+	                    )
+	                    (move
+	                        (from ("LeftMost"))
+	                        (to 
+	                            (trackSite FirstSite from:(from) if:("IsEnemyAt" (to)))
+	                            (apply
+	                                (and
+	                                    (remove (to) count:(count at:(to)))
+	                                    (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
+	                                )	
+	                            )	
+	                        )
+	                    )
+	                )
+	            )
+	            
+	            (end 
+	                (forEach NonMover 
+	                    if:(no Pieces Player) 
+	                    (result Player Loss)
+	                )
+	            )
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
