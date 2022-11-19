@@ -1,49 +1,64 @@
 (game "Quechucague"
-    (players 2)
-    (equipment {
-        (board
-            (merge
-                (add
-                    (remove
-                        (concentric {4 4 4 16})
-                        vertices:{1 5 9 16..26 2 6 10}
-                    )
-                    vertices:{{0 0}}
-                )
-                (shift 1 0
-                    (add
-                        (remove
-                            (concentric {4 4 4 16})
-                            vertices:{12..22 0 4 8 1 5 9}
-                        )
-                        vertices:{{0 0}}
-                    )
-                )
-            )
-            {
-            [?]
-            }
-            use:Vertex
-        )
-        (dice d:5 faces:{1 2 3 5 0} num:1)
-        (piece "Marker" Each (move [#]))
-    })
-    (rules
-        (start [#])
-        (play ("RollMove" [#])) // Captures are made when landing on a space occupied by the opponent.
-        (end [#])
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/HIstorical Information (Incomplete)" {
-        
-    })*
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2)
+	        (equipment {
+	            (board
+	                (merge
+	                    (add
+	                        (remove
+	                            (concentric {4 4 4 16})
+	                            vertices:{1 5 9 16..26 2 6 10}
+	                        )
+	                        vertices:{{0 0}}
+	                    )
+	                    (shift 1 0
+	                        (add
+	                            (remove
+	                                (concentric {4 4 4 16})
+	                                vertices:{12..22 0 4 8 1 5 9}
+	                            )
+	                            vertices:{{0 0}}
+	                        )
+	                    )
+	                )
+	                {
+	                [?]
+	                }
+	                use:Vertex
+	            )
+	            (dice d:5 faces:{1 2 3 5 0} num:1)
+	            (piece "Disc" Each [#])
+	        })
+	        (rules
+	            (start [#])
+	            (play [#]) // Captures are made when landing on a space occupied by the opponent.
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/HIstorical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
