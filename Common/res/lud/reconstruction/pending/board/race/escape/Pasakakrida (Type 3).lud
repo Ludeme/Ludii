@@ -1,69 +1,536 @@
+(define "NextSiteFrom" ("NextSiteOnTrack" (pips) from:#1))
+
+(define "RemoveAPiece" (move Remove (from)))
+
+//------------------------------------------------------------------------------
+
 (game "Pasakakrida (Type 3)" 
-    (players 2) 
-    (equipment { 
-        ("TableBoard"
-            {
-            (track [#] P1)
-            (track [#] P2)
-            }
-        )
-        <Dice:dice>
-        (piece "Disc" Each
-            (move
-                (from (from) level:(level))
-                (to ("NextSiteFrom" (from))
-                    if:(or 
-                        (not ("IsEnemyAt" (to))) 
-                        (and ("IsEnemyAt" (to)) (= 1 (size Stack at:(to))))
-                    )
-                    (apply 
-                        (if ("IsEnemyAt" (to)) 
-                            (fromTo
-                                (from (to))
-                                (to (mapEntry Next))
-                            )
-                        )	
-                    )
-                )
-            )			
-        )
-    }) 
-    (rules 
-        (start {
-            (place Stack "Disc2" 0 count:5)
-            (place Stack "Disc1" 6 count:2)
-            (place Stack "Disc1" 7 count:2)
-            (place Stack "Disc1" 8 count:2)
-            (place Stack "Disc1" 9 count:2)
-            (place Stack "Disc1" 10 count:2)
-            (place Stack "Disc1" 11 count:2)
-            (place Stack "Disc1" 23 count:2)
-            (place Stack "Disc1" 22 count:1)
-            (place Stack "Disc2" 18 count:5)
-            (place Stack "Disc2" 17 count:5)
-        })
-        (play 
-            (do 
-                (if ("NewTurn") (roll))
-                next:(forEach Die 
-                    if:("DieNotUsed")
-                    (forEach Piece top:True   
-                        (then ("ReplayNotAllDiceUsed"))
-                    )
-                )
-            )		
-        )
-        (end [#])
-    )
+    <Variant>
 )
 
 //------------------------------------------------------------------------------
 
-(option "Dice" <Dice> args:{ <dice> } {
-    (item "Two Four-Sided Dice" <(dice d:4 faces:{2 3 4 5} num:2) > "The game is played with two four-sided dice.") 
-    (item "Three Four-Sided Dice" <(dice d:4 faces:{2 3 4 5} num:3) > "The game is played with three four-sided dice.") 
-    (item "Two Cubic Dice" <(dice d:6 num:2) > "The game is played with two cubic dice.") 
-    (item "Three Cubic Dice" <(dice d:6 num:3)> "The game is played with three cubic dice.") 
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Two Four-Sided Dice" 
+        <
+        (players 2) 
+        (equipment { 
+            [
+            ("TableBoard"
+                {
+                (track "Track1" {0..11 23..12 End} P1 directed:True)
+                (track "Track2" {12..23 11..0 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 11..0 End} P1 directed:True)
+                (track "Track2" {0..11 23..12 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 11..0 End} P1 directed:True)
+                (track "Track2" {12..23 11..0 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {0..11 23..12 End} P1 directed:True)
+                (track "Track2" {0..11 23..12 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {11..0 12..23 End} P1 directed:True)
+                (track "Track2" {23..12 0..11 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 0..11 End} P1 directed:True)
+                (track "Track2" {11..0 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 0..11 End} P1 directed:True)
+                (track "Track2" {23..12 0..11 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {11..0 12..23 End} P1 directed:True)
+                (track "Track2" {11..0 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 0..11 End} P1 directed:True)
+                (track "Track2" {0..11 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 11..0 End} P1 directed:True)
+                (track "Track2" {11..0 23..12 End} P2 directed:True)
+                }
+            )
+            ]
+            (dice d:4 faces:{2 3 4 5} num:2) 
+            (piece "Disc" Each
+                (if ("IsOffBoard" ("NextSiteFrom" (from)))
+                    "RemoveAPiece"
+                    (move
+                        (from (from) level:(level))
+                        (to ("NextSiteFrom" (from))
+                            if:(or 
+                                (not ("IsEnemyAt" (to))) 
+                                (and ("IsEnemyAt" (to)) (= 1 (size Stack at:(to))))
+                            )
+                            (apply 
+                                (if ("IsEnemyAt" (to)) 
+                                    (fromTo
+                                        (from (to))
+                                        (to (mapEntry Next))
+                                    )
+                                )	
+                            )
+                        )
+                    )
+                )
+            )
+            (map {(pair 1 [1 | 11 | 12 | 23]) (pair 2 [1 | 11 | 12 | 23])}) // starting point
+        }) 
+        (rules 
+            (start {
+                (place Stack "Disc2" 0 count:5)
+                (place Stack "Disc1" 6 count:2)
+                (place Stack "Disc1" 7 count:2)
+                (place Stack "Disc1" 8 count:2)
+                (place Stack "Disc1" 9 count:2)
+                (place Stack "Disc1" 10 count:2)
+                (place Stack "Disc1" 11 count:2)
+                (place Stack "Disc1" 23 count:2)
+                (place Stack "Disc1" 22 count:1)
+                (place Stack "Disc2" 18 count:5)
+                (place Stack "Disc2" 17 count:5)
+            })
+            (play 
+                (do 
+                    (if ("NewTurn") (roll))
+                    next:(forEach Die 
+                        if:("DieNotUsed")
+                        (forEach Piece top:True    
+                            (then ("ReplayNotAllDiceUsed"))
+                        )
+                    )
+                )		
+            )
+            (end [#])
+        )
+        >
+    "The game is played with two four-sided dice (incomplete).") 
+    
+    (item "Three Four-Sided Dice" 
+        <
+        (players 2) 
+        (equipment { 
+            [
+            ("TableBoard"
+                {
+                (track "Track1" {0..11 23..12 End} P1 directed:True)
+                (track "Track2" {12..23 11..0 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 11..0 End} P1 directed:True)
+                (track "Track2" {0..11 23..12 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 11..0 End} P1 directed:True)
+                (track "Track2" {12..23 11..0 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {0..11 23..12 End} P1 directed:True)
+                (track "Track2" {0..11 23..12 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {11..0 12..23 End} P1 directed:True)
+                (track "Track2" {23..12 0..11 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 0..11 End} P1 directed:True)
+                (track "Track2" {11..0 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 0..11 End} P1 directed:True)
+                (track "Track2" {23..12 0..11 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {11..0 12..23 End} P1 directed:True)
+                (track "Track2" {11..0 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 0..11 End} P1 directed:True)
+                (track "Track2" {0..11 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 11..0 End} P1 directed:True)
+                (track "Track2" {11..0 23..12 End} P2 directed:True)
+                }
+            )
+            ]
+            (dice d:4 faces:{2 3 4 5} num:3) 
+            (piece "Disc" Each
+                (if ("IsOffBoard" ("NextSiteFrom" (from)))
+                    "RemoveAPiece"
+                    (move
+                        (from (from) level:(level))
+                        (to ("NextSiteFrom" (from))
+                            if:(or 
+                                (not ("IsEnemyAt" (to))) 
+                                (and ("IsEnemyAt" (to)) (= 1 (size Stack at:(to))))
+                            )
+                            (apply 
+                                (if ("IsEnemyAt" (to)) 
+                                    (fromTo
+                                        (from (to))
+                                        (to (mapEntry Next))
+                                    )
+                                )	
+                            )
+                        )
+                    )
+                )
+            )
+            (map {(pair 1 [1 | 11 | 12 | 23]) (pair 2 [1 | 11 | 12 | 23])}) // starting point
+        }) 
+        (rules 
+            (start {
+                (place Stack "Disc2" 0 count:5)
+                (place Stack "Disc1" 6 count:2)
+                (place Stack "Disc1" 7 count:2)
+                (place Stack "Disc1" 8 count:2)
+                (place Stack "Disc1" 9 count:2)
+                (place Stack "Disc1" 10 count:2)
+                (place Stack "Disc1" 11 count:2)
+                (place Stack "Disc1" 23 count:2)
+                (place Stack "Disc1" 22 count:1)
+                (place Stack "Disc2" 18 count:5)
+                (place Stack "Disc2" 17 count:5)
+            })
+            (play 
+                (do 
+                    (if ("NewTurn") (roll))
+                    next:(forEach Die 
+                        if:("DieNotUsed")
+                        (forEach Piece top:True    
+                            (then ("ReplayNotAllDiceUsed"))
+                        )
+                    )
+                )		
+            )
+            (end [#])
+        )
+        >
+    "The game is played with three four-sided dice (incomplete).")
+    
+    (item "Two Cubic Dice" 
+        <
+        (players 2) 
+        (equipment { 
+            [
+            ("TableBoard"
+                {
+                (track "Track1" {0..11 23..12 End} P1 directed:True)
+                (track "Track2" {12..23 11..0 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 11..0 End} P1 directed:True)
+                (track "Track2" {0..11 23..12 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 11..0 End} P1 directed:True)
+                (track "Track2" {12..23 11..0 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {0..11 23..12 End} P1 directed:True)
+                (track "Track2" {0..11 23..12 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {11..0 12..23 End} P1 directed:True)
+                (track "Track2" {23..12 0..11 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 0..11 End} P1 directed:True)
+                (track "Track2" {11..0 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 0..11 End} P1 directed:True)
+                (track "Track2" {23..12 0..11 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {11..0 12..23 End} P1 directed:True)
+                (track "Track2" {11..0 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 0..11 End} P1 directed:True)
+                (track "Track2" {0..11 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 11..0 End} P1 directed:True)
+                (track "Track2" {11..0 23..12 End} P2 directed:True)
+                }
+            )
+            ]
+            (dice d:6 num:2) 
+            (piece "Disc" Each
+                (if ("IsOffBoard" ("NextSiteFrom" (from)))
+                    "RemoveAPiece"
+                    (move
+                        (from (from) level:(level))
+                        (to ("NextSiteFrom" (from))
+                            if:(or 
+                                (not ("IsEnemyAt" (to))) 
+                                (and ("IsEnemyAt" (to)) (= 1 (size Stack at:(to))))
+                            )
+                            (apply 
+                                (if ("IsEnemyAt" (to)) 
+                                    (fromTo
+                                        (from (to))
+                                        (to (mapEntry Next))
+                                    )
+                                )	
+                            )
+                        )
+                    )
+                )
+            )
+            (map {(pair 1 [1 | 11 | 12 | 23]) (pair 2 [1 | 11 | 12 | 23])}) // starting point
+        }) 
+        (rules 
+            (start {
+                (place Stack "Disc2" 0 count:5)
+                (place Stack "Disc1" 6 count:2)
+                (place Stack "Disc1" 7 count:2)
+                (place Stack "Disc1" 8 count:2)
+                (place Stack "Disc1" 9 count:2)
+                (place Stack "Disc1" 10 count:2)
+                (place Stack "Disc1" 11 count:2)
+                (place Stack "Disc1" 23 count:2)
+                (place Stack "Disc1" 22 count:1)
+                (place Stack "Disc2" 18 count:5)
+                (place Stack "Disc2" 17 count:5)
+            })
+            (play 
+                (do 
+                    (if ("NewTurn") (roll))
+                    next:(forEach Die 
+                        if:("DieNotUsed")
+                        (forEach Piece top:True    
+                            (then ("ReplayNotAllDiceUsed"))
+                        )
+                    )
+                )		
+            )
+            (end [#])
+        )
+        >
+    "The game is played with two cubic dice (incomplete).")
+    
+    (item "Three Cubic Dice" 
+        <
+        (players 2) 
+        (equipment { 
+            [
+            ("TableBoard"
+                {
+                (track "Track1" {0..11 23..12 End} P1 directed:True)
+                (track "Track2" {12..23 11..0 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 11..0 End} P1 directed:True)
+                (track "Track2" {0..11 23..12 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 11..0 End} P1 directed:True)
+                (track "Track2" {12..23 11..0 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {0..11 23..12 End} P1 directed:True)
+                (track "Track2" {0..11 23..12 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {11..0 12..23 End} P1 directed:True)
+                (track "Track2" {23..12 0..11 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 0..11 End} P1 directed:True)
+                (track "Track2" {11..0 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 0..11 End} P1 directed:True)
+                (track "Track2" {23..12 0..11 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {11..0 12..23 End} P1 directed:True)
+                (track "Track2" {11..0 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 0..11 End} P1 directed:True)
+                (track "Track2" {0..11 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 11..0 End} P1 directed:True)
+                (track "Track2" {11..0 23..12 End} P2 directed:True)
+                }
+            )
+            ]
+            (dice d:6 num:3) 
+            (piece "Disc" Each
+                (if ("IsOffBoard" ("NextSiteFrom" (from)))
+                    "RemoveAPiece"
+                    (move
+                        (from (from) level:(level))
+                        (to ("NextSiteFrom" (from))
+                            if:(or 
+                                (not ("IsEnemyAt" (to))) 
+                                (and ("IsEnemyAt" (to)) (= 1 (size Stack at:(to))))
+                            )
+                            (apply 
+                                (if ("IsEnemyAt" (to)) 
+                                    (fromTo
+                                        (from (to))
+                                        (to (mapEntry Next))
+                                    )
+                                )	
+                            )
+                        )
+                    )
+                )
+            )
+            (map {(pair 1 [1 | 11 | 12 | 23]) (pair 2 [1 | 11 | 12 | 23])}) // starting point
+        }) 
+        (rules 
+            (start {
+                (place Stack "Disc2" 0 count:5)
+                (place Stack "Disc1" 6 count:2)
+                (place Stack "Disc1" 7 count:2)
+                (place Stack "Disc1" 8 count:2)
+                (place Stack "Disc1" 9 count:2)
+                (place Stack "Disc1" 10 count:2)
+                (place Stack "Disc1" 11 count:2)
+                (place Stack "Disc1" 23 count:2)
+                (place Stack "Disc1" 22 count:1)
+                (place Stack "Disc2" 18 count:5)
+                (place Stack "Disc2" 17 count:5)
+            })
+            (play 
+                (do 
+                    (if ("NewTurn") (roll))
+                    next:(forEach Die 
+                        if:("DieNotUsed")
+                        (forEach Piece top:True    
+                            (then ("ReplayNotAllDiceUsed"))
+                        )
+                    )
+                )		
+            )
+            (end [#])
+        )
+        >
+    "The game is played with three cubic dice (incomplete).")
 })
 
 //------------------------------------------------------------------------------
@@ -71,19 +538,19 @@
 (rulesets { 
     
     (ruleset "Ruleset/Two Four-Sided Dice (Incomplete)" {
-        "Dice/Two Four-Sided Dice"
+        "Variant/Two Four-Sided Dice"
     })
     
     (ruleset "Ruleset/Three Four-Sided Dice (Incomplete)" {
-        "Dice/Three Four-Sided Dice"
+        "Variant/Three Four-Sided Dice"
     })
     
     (ruleset "Ruleset/Two Six-Sided Dice (Incomplete)" {
-        "Dice/Two Cubic Dice"
+        "Variant/Two Cubic Dice"
     })
     
     (ruleset "Ruleset/Three Six-Sided Dice (Incomplete)" {
-        "Dice/Three Cubic Dice"
+        "Variant/Three Cubic Dice"
     })
     
 })
