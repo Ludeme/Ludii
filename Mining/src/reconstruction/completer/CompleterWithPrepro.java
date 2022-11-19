@@ -153,20 +153,21 @@ public class CompleterWithPrepro
 		applyThresholdToLudMap(rulesetReconId);
 		while (needsCompleting(comp.raw()))
 		{
-			//System.out.println(comp.raw());
+			//System.out.println("before \n" + comp.raw());
 			comp = nextCompletionSampled(comp, rulesetReconId);	
+			//System.out.println("after \n" + comp.raw());
 			
 			if(comp == null)
 			{
-				if(threshold == 0.0)
+				if(threshold <= 0.0)
 				{
 					System.out.println("All combinations tried, no result.");
 					return null;
 				}
-					threshold = threshold - 0.01;
-					System.out.println("new threshold = " + threshold);
-					comp = new Completion(rulesetDescriptionOneLine);
-					applyThresholdToLudMap(rulesetReconId);
+				threshold = threshold - 0.01;
+				System.out.println("new threshold = " + threshold);
+				comp = new Completion(rulesetDescriptionOneLine);
+				applyThresholdToLudMap(rulesetReconId);
 			}
 		}
 		
@@ -223,6 +224,8 @@ public class CompleterWithPrepro
 			//final List<String> enumerations = new ArrayList<String>();
 			int enumeration = 0;
 
+			//System.out.println(choices);
+			
 			for (int c = choices.size() - 1; c >= 0; c--)
 			{
 				final String choice = choices.get(c);
@@ -630,9 +633,9 @@ public class CompleterWithPrepro
 					sb.append(ch);
 				// Store this choice and reset sb
 				final String choice = sb.toString().trim();
-//				System.out.println("extractChoices choice is: " + choice);
+				//System.out.println("extractChoices choice is: " + choice);
 				 
-				if (choice.contains(".."))
+				if (choice.contains("..") && !choice.contains("("))
 				{
 					// Handle range
 					final List<String> rangeChoices = expandRanges(new String(choice), null);
@@ -668,6 +671,7 @@ public class CompleterWithPrepro
 				sb.append(ch);
 			}
 		}
+		
 		return choices;
 	}
 		
