@@ -1,32 +1,47 @@
 (game "Udat Pagada (Historical)"
-    (players 2) 
-    (equipment { 
-        (board 
-            (merge {
-                (shift 0 2 (scale 2 1 (square 2)))
-                (shift 3 2 (scale 2 1 (square 2)))
-                (shift 2 0 (scale 1 2 (square 2)))
-                (shift 2 3 (scale 1 2 (square 2)))
-            })
-        )
-        (piece "Disc" Each (move [#])) 
-    })
-    (rules
-        (start [#])
-        (play [#])
-        (end [#])
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Hitorical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (board 
+	                (merge {
+	                    (shift 0 2 (scale 2 1 (square 2)))
+	                    (shift 3 2 (scale 2 1 (square 2)))
+	                    (shift 2 0 (scale 1 2 (square 2)))
+	                    (shift 2 3 (scale 1 2 (square 2)))
+	                })
+	            )
+	            (piece "Disc" Each [#])
+	        })
+	        (rules
+	            (start [#])
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
