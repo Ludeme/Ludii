@@ -1,56 +1,71 @@
 (game "Kanga"
-    (players 2) 
-    (equipment { 
-        (board 
-            (add
-                (merge {
-                    (rectangle 1 5)
-                    (rectangle 3 1)
-                    (shift 0 2 (rectangle 1 5))
-                    (shift 4 0 (rectangle 3 1))
-                })
-                vertices:{{2 1}}
-            )
-            use:Vertex
-        )
-        (hand Each)
-        (piece "Seed" Shared)
-        (regions P1 (union (sites Bottom) (sites {11})))
-        (regions P2 (union (sites Top) (sites {5})))
-    }) 
-    
-    (rules 
-        (start {
-            (place "Seed" (handSite P1) count:6)
-            (place "Seed" (handSite P2) count:6)
-        })
-        phases:{
-        (phase "Placement"
-            (play 
-                (move 
-                    (from (sites Hand Mover))
-                    (to (sites Mover))
-                )
-            )
-            (nextPhase Mover (is Empty (handSite Mover)) "Play")
-        )
-        (phase "Play"
-            (play [#]) // Players capture holes from the other player Any holes with a single counter on the player's side are vulnerable to capture.
-            (end [#])
-        )
-        }
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (board 
+	                (add
+	                    (merge {
+	                        (rectangle 1 5)
+	                        (rectangle 3 1)
+	                        (shift 0 2 (rectangle 1 5))
+	                        (shift 4 0 (rectangle 3 1))
+	                    })
+	                    vertices:{{2 1}}
+	                )
+	                use:Vertex
+	            )
+	            (hand Each)
+	            (piece "Seed" Shared)
+	            (regions P1 (union (sites Bottom) (sites {11})))
+	            (regions P2 (union (sites Top) (sites {5})))
+	        }) 
+	        
+	        (rules 
+	            (start {
+	                (place "Seed" (handSite P1) count:6)
+	                (place "Seed" (handSite P2) count:6)
+	            })
+	            phases:{
+	            (phase "Placement"
+	                (play 
+	                    (move 
+	                        (from (sites Hand Mover))
+	                        (to (sites Mover))
+	                    )
+	                )
+	                (nextPhase Mover (is Empty (handSite Mover)) "Play")
+	            )
+	            (phase "Play"
+	                (play [#]) // Players capture holes from the other player Any holes with a single counter on the player's side are vulnerable to capture.
+	                (end [#])
+	            )
+	            }
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
