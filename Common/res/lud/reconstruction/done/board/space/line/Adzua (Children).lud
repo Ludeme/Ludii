@@ -1,0 +1,1478 @@
+(define "RemoveEnemyPiece" 
+    (move
+        Remove
+        (sites Occupied by:Next container:"Board") 
+    )
+)
+
+(define "IfLine3MoveAgain" 
+    (then 
+        (if 
+            (is Line 3 Orthogonal exact:True) 
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Adzua (Children)"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Adzua (Children)1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:4)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Adzua (Children)1 ruleset.")
+    
+    (item "Adzua (Children)2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:4)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Adzua (Children)2 ruleset.")
+    
+    (item "Adzua (Children)3" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (and { 
+                            (if 
+                                (and 
+                                    (!= 
+                                        (last From)
+                                        
+                                        (ahead 
+                                            (last From)
+                                        N)
+                                    )
+                                    
+                                    (= 
+                                        (mover)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (last From)
+                                            N)
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (is Line 3 Orthogonal through:
+                                        (ahead 
+                                            (last From)
+                                        N)
+                                    exact:True )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (addScore Mover 1)
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (and 
+                                    (!= 
+                                        (last From)
+                                        
+                                        (ahead 
+                                            (last From)
+                                        S)
+                                    )
+                                    
+                                    (= 
+                                        (mover)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (last From)
+                                            S)
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (is Line 3 Orthogonal through:
+                                        (ahead 
+                                            (last From)
+                                        S)
+                                    exact:True )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (addScore Mover 1)
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (and 
+                                    (!= 
+                                        (last From)
+                                        
+                                        (ahead 
+                                            (last From)
+                                        E)
+                                    )
+                                    
+                                    (= 
+                                        (mover)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (last From)
+                                            E)
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (is Line 3 Orthogonal through:
+                                        (ahead 
+                                            (last From)
+                                        E)
+                                    exact:True )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (addScore Mover 1)
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (and 
+                                    (!= 
+                                        (last From)
+                                        
+                                        (ahead 
+                                            (last From)
+                                        W)
+                                    )
+                                    
+                                    (= 
+                                        (mover)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (last From)
+                                            W)
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (is Line 3 Orthogonal through:
+                                        (ahead 
+                                            (last From)
+                                        W)
+                                    exact:True )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (addScore Mover 1)
+                                    )
+                                )
+                            )
+                            }
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:4)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Adzua (Children)3 ruleset.")
+    
+    (item "Adzua (Children)4" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:4)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Adzua (Children)4 ruleset.")
+    
+    (item "Adzua (Children)5" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:4)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Adzua (Children)5 ruleset.")
+    
+    (item "Adzua (Children)6" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (and { 
+                            (if 
+                                (and 
+                                    (!= 
+                                        (last From)
+                                        
+                                        (ahead 
+                                            (last From)
+                                        N)
+                                    )
+                                    
+                                    (= 
+                                        (mover)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (last From)
+                                            N)
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (is Line 3 Orthogonal through:
+                                        (ahead 
+                                            (last From)
+                                        N)
+                                    exact:True )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (addScore Mover 1)
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (and 
+                                    (!= 
+                                        (last From)
+                                        
+                                        (ahead 
+                                            (last From)
+                                        S)
+                                    )
+                                    
+                                    (= 
+                                        (mover)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (last From)
+                                            S)
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (is Line 3 Orthogonal through:
+                                        (ahead 
+                                            (last From)
+                                        S)
+                                    exact:True )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (addScore Mover 1)
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (and 
+                                    (!= 
+                                        (last From)
+                                        
+                                        (ahead 
+                                            (last From)
+                                        E)
+                                    )
+                                    
+                                    (= 
+                                        (mover)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (last From)
+                                            E)
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (is Line 3 Orthogonal through:
+                                        (ahead 
+                                            (last From)
+                                        E)
+                                    exact:True )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (addScore Mover 1)
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (and 
+                                    (!= 
+                                        (last From)
+                                        
+                                        (ahead 
+                                            (last From)
+                                        W)
+                                    )
+                                    
+                                    (= 
+                                        (mover)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (last From)
+                                            W)
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (is Line 3 Orthogonal through:
+                                        (ahead 
+                                            (last From)
+                                        W)
+                                    exact:True )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (addScore Mover 1)
+                                    )
+                                )
+                            )
+                            }
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:4)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Adzua (Children)6 ruleset.")
+    
+    (item "Adzua (Children)7" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:4)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Adzua (Children)7 ruleset.")
+    
+    (item "Adzua (Children)8" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:4)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Adzua (Children)8 ruleset.")
+    
+    (item "Adzua (Children)9" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:4)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Adzua (Children)9 ruleset.")
+    
+    (item "Adzua (Children)10" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:4)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Adzua (Children)10 ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board (square 3)
+                use:Vertex		
+            )
+            (piece "Marker" Each (move [#])) // Missing knowledge is here !
+            (hand Each)
+        })
+        
+        (rules 
+            (start (place "Marker" "Hand" count:4))
+            phases:{
+            (phase "Placement"
+                (play
+                    (if "SameTurn"
+                        "RemoveEnemyPiece"
+                        (move 
+                            (from (handSite Mover)) 
+                            (to (sites Empty)) 
+                            "IfLine3MoveAgain" 
+                        ) 
+                    )
+                ) 
+                (nextPhase Mover ("HandEmpty" Mover) "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if "SameTurn"
+                        "RemoveEnemyPiece"
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Adzua (Children)1 (Reconstructed)" {
+        "Variant/Adzua (Children)1"
+    })
+    (ruleset "Ruleset/Adzua (Children)2 (Reconstructed)" {
+        "Variant/Adzua (Children)2"
+    })
+    (ruleset "Ruleset/Adzua (Children)3 (Reconstructed)" {
+        "Variant/Adzua (Children)3"
+    })
+    (ruleset "Ruleset/Adzua (Children)4 (Reconstructed)" {
+        "Variant/Adzua (Children)4"
+    })
+    (ruleset "Ruleset/Adzua (Children)5 (Reconstructed)" {
+        "Variant/Adzua (Children)5"
+    })
+    (ruleset "Ruleset/Adzua (Children)6 (Reconstructed)" {
+        "Variant/Adzua (Children)6"
+    })
+    (ruleset "Ruleset/Adzua (Children)7 (Reconstructed)" {
+        "Variant/Adzua (Children)7"
+    })
+    (ruleset "Ruleset/Adzua (Children)8 (Reconstructed)" {
+        "Variant/Adzua (Children)8"
+    })
+    (ruleset "Ruleset/Adzua (Children)9 (Reconstructed)" {
+        "Variant/Adzua (Children)9"
+    })
+    (ruleset "Ruleset/Adzua (Children)10 (Reconstructed)" {
+        "Variant/Adzua (Children)10"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Adzua is a word used for several games by the Jukun people of Nigeria. This version is an alignment game played by children.")
+        (rules "3x3 board rendered as holes in the ground. Four pieces per player. When a player makes a line of three holes with their pieces, they remove one of the opponent's pieces.")
+        (source "DLP evidence.")
+        (id "1416")
+        (version "1.3.7")
+        (classification "board/space/line/reconstruction")
+        (credit "Eric Piette")
+        (origin "This game was played in Nigeria, around 1931.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+        (show Symbol "disc" Vertex (sites Board Vertex) fillColour:(colour White) edgeColour:(colour Black) scale:0.5)
+    })
+    
+)
+

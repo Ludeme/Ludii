@@ -17,69 +17,68 @@
 //------------------------------------------------------------------------------
 
 (game "Adzua"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment { 
-	            (board (rectangle 5 6)
-	                use:Vertex		
-	            )
-	            (piece "Marker" Each (move [#])) // Missing knowledge is here !
-	            (hand Each)
-	        })
-	        
-	        (rules 
-	            (start (place "Marker" "Hand" count:12))
-	            phases:{
-	            (phase "Placement"
-	                (play
-	                    (if "SameTurn"
-	                        "RemoveEnemyPiece"
-	                        (move 
-	                            (from (handSite Mover)) 
-	                            (to (sites Empty)) 
-	                            "IfLine3MoveAgain" 
-	                        ) 
-	                    )
-	                ) 
-	                (nextPhase Mover ("HandEmpty" Mover) "Movement")
-	            )
-	            
-	            (phase "Movement" 
-	                (play 
-	                    (if "SameTurn"
-	                        "RemoveEnemyPiece"
-	                        (forEach Piece)
-	                    )
-	                )
-	            )
-	            }
-	            (end (if (<= (count Pieces Next) 2) (result Mover Win)))
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board (rectangle 5 6)
+                use:Vertex		
+            )
+            (piece "Marker" Each (move [#])) // Missing knowledge is here !
+            (hand Each)
+        })
+        
+        (rules 
+            (start (place "Marker" "Hand" count:12))
+            phases:{
+            (phase "Placement"
+                (play
+                    (if "SameTurn"
+                        "RemoveEnemyPiece"
+                        (move 
+                            (from (handSite Mover)) 
+                            (to (sites Empty)) 
+                            "IfLine3MoveAgain" 
+                        ) 
+                    )
+                ) 
+                (nextPhase Mover ("HandEmpty" Mover) "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if "SameTurn"
+                        "RemoveEnemyPiece"
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     

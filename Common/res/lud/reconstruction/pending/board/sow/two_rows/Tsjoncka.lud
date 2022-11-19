@@ -1,50 +1,49 @@
 (game "Tsjoncka"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment { 
-	            (mancalaBoard 2 7 store:None
-	                {
-	                (track [#])
-	                (track [#])
-	                }
-	            )
-	            (piece "Seed" Shared)
-	        }) 
-	        (rules 
-	            (start [#]) 
-	            (play 
-	                (move Select 
-	                    (from [#])
-	                    (then (sow [#]))
-	                )
-	            )
-	            (end (if (no Moves Mover) (byScore)))
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (mancalaBoard 2 7 store:None
+                {
+                (track [#])
+                (track [#])
+                }
+            )
+            (piece "Seed" Shared)
+        }) 
+        (rules 
+            (start [#]) 
+            (play 
+                (move Select 
+                    (from [#])
+                    (then (sow [#]))
+                )
+            )
+            (end (if (no Moves Mover) (byScore)))
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Evidence (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Evidence (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     (info

@@ -1,56 +1,55 @@
 (game "Lievre"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment { 
-	            (board
-	                (add
-	                    (remove
-	                        (merge {
-	                            (concentric {1 4 4 12})
-	                        })
-	                        edges:{{8 5} {5 6} {6 7} {7 8}}
-	                    )
-	                    edges:{{12 5} {5 10} {9 8} {8 19} {18 7} {7 16} {15 6} {6 13}}
-	                )
-	                use:Vertex
-	            )
-	            (piece "Hare" P1 ("StepToEmpty"))
-	            (piece "Dog" P2 ("StepToEmpty"))
-	        }) 
-	        
-	        (rules 
-	            (start {
-	                (place "Hare1" (sites [#])) // 1 hare
-	                (place "Dog2" (sites [#])) // 3 dogs
-	            })
-	            (play (forEach Piece))
-	            (end (if (no Moves P1) (result Mover P2)))
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board
+                (add
+                    (remove
+                        (merge {
+                            (concentric {1 4 4 12})
+                        })
+                        edges:{{8 5} {5 6} {6 7} {7 8}}
+                    )
+                    edges:{{12 5} {5 10} {9 8} {8 19} {18 7} {7 16} {15 6} {6 13}}
+                )
+                use:Vertex
+            )
+            (piece "Hare" P1 ("StepToEmpty"))
+            (piece "Dog" P2 ("StepToEmpty"))
+        }) 
+        
+        (rules 
+            (start {
+                (place "Hare1" (sites [#])) // 1 hare
+                (place "Dog2" (sites [#])) // 3 dogs
+            })
+            (play (forEach Piece))
+            (end (if (no Moves P1) (result Mover P2)))
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     
