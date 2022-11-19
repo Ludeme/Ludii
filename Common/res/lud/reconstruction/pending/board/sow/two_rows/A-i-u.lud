@@ -1,35 +1,50 @@
-(game "A-i-u" 
-    (players 2) 
-    (equipment { 
-        (mancalaBoard 2 6 store:None
-            {
-            (track [#])
-            (track [#])
-            }
-        )
-        (piece "Seed" Shared)
-    }) 
-    (rules 
-        (start [#])
-        (play 
-            (move Select 
-                (from [#])
-                (then (sow [#]))
-            )
-        )
-        (end [#])
-    )
-)
+(game "A-i-u"
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (mancalaBoard 2 6 store:None
+	                {
+	                (track [#])
+	                (track [#])
+	                }
+	            )
+	            (piece "Seed" Shared)
+	        }) 
+	        (rules 
+	            (start [#])
+	            (play 
+	                (move Select 
+	                    (from [#])
+	                    (then (sow [#]))
+	                )
+	            )
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     (info
