@@ -2,28 +2,43 @@
 
 //------------------------------------------------------------------------------
 
-(game "Gabatta" 
-    (players 2) 
-    (equipment { 
-        (mancalaBoard 3 "Columns")
-        (piece "Seed" Shared)
-    }) 
-    (rules 
-        (start (set Count 3 to:(difference (sites Board) (union (sites Right) (sites Left)))))
-        (play [#])
-        (end [#])
-    )
-)
+(game "Gabatta"
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (mancalaBoard 3 "Columns")
+	            (piece "Seed" Shared)
+	        }) 
+	        (rules 
+	            (start (set Count 3 to:(difference (sites Board) (union (sites Right) (sites Left)))))
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     (info
