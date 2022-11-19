@@ -1,38 +1,53 @@
-(game "Hopi Game" 
-    (players 4) 
-    (equipment { 
-        (board
-            (add
-                (remove
-                    (remove
-                        (scale 1 5 (rectangle 1 13))
-                        cells:{5 6 7}
-                    )
-                    vertices:{6 7 20 21}
-                )
-                edges:{{5 6} {17 18}}
-                cells:{{5 6 18 17}}
-            )
-        )
-        (hand Each) 
-        (piece "Disc" Each (move [#])) 
-    })
-    (rules
-        (start [#])
-        (play [#])
-        (end [#])
-    )
-)
+(game "Hopi Game"
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 4) 
+	        (equipment { 
+	            (board
+	                (add
+	                    (remove
+	                        (remove
+	                            (scale 1 5 (rectangle 1 13))
+	                            cells:{5 6 7}
+	                        )
+	                        vertices:{6 7 20 21}
+	                    )
+	                    edges:{{5 6} {17 18}}
+	                    cells:{{5 6 18 17}}
+	                )
+	            )
+	            (hand Each) 
+	            (piece "Disc" Each [#])
+	        })
+	        (rules
+	            (start [#])
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
