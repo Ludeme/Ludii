@@ -2,39 +2,54 @@
 
 //------------------------------------------------------------------------------
 
-(game "Owana" 
-    (players 2) 
-    
-    (equipment { 
-        (mancalaBoard 2 4
-            (track "Track" "1,E,N,W" loop:True)
-        )  
-        (regions P1 (sites Bottom))      // P1 home
-        (regions P2 (sites Top))      // P2 home
-        (piece "Seed" Shared)
-        (hand Each)
-    }) 
-    (rules 
-        (start (set Count 4 to:(sites Track)))
-        
-        (play [#])
-        
-        (end {
-            (if (= 0 ("PiecesOwnedBy" P1)) (result P2 Win)) 
-            (if (= 0 ("PiecesOwnedBy" P2)) (result P1 Win)) 
-        })
-    )
-)
+(game "Owana"
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        
+	        (equipment { 
+	            (mancalaBoard 2 4
+	                (track "Track" "1,E,N,W" loop:True)
+	            )  
+	            (regions P1 (sites Bottom))      // P1 home
+	            (regions P2 (sites Top))      // P2 home
+	            (piece "Seed" Shared)
+	            (hand Each)
+	        }) 
+	        (rules 
+	            (start (set Count 4 to:(sites Track)))
+	            
+	            (play [#])
+	            
+	            (end {
+	                (if (= 0 ("PiecesOwnedBy" P1)) (result P2 Win)) 
+	                (if (= 0 ("PiecesOwnedBy" P2)) (result P1 Win)) 
+	            })
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     (info
