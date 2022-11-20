@@ -27,67 +27,82 @@
 //------------------------------------------------------------------------------
 
 (game "Dimraw"
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (add
-                (remove
-                    (concentric Square rings:3 joinCorners:True)
-                    vertices:{16 11 12 7}
-                )
-                edges:{{6 7} {7 13} {13 12} {6 12}}
-            )
-            use:Vertex
-        ) 
-        (hand Each)
-        (piece "Marker" Each (move [#])) // Do not know the movement of the pieces
-    }) 
-    (rules 
-        (start {
-            (place "Marker1" (handSite P1) count:12)
-            (place "Marker2" (handSite P2) count:16)
-        })
-        phases:{
-        (phase "Placement"
-            (play
-                (if "SameTurn"
-                    "RemoveEnemyPiece"
-                    (move 
-                        (from (handSite Mover)) 
-                        (to (sites Empty)) 
-                        "IfLineMoveAgain" 
-                    ) 
-                )
-            ) 
-            (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
-        
-        (phase "Movement" 
-            (play 
-                (if "SameTurn"
-                    "RemoveEnemyPiece"
-                    (forEach Piece
-                        ("IfLineMoveAgain")		
-                    )
-                )
-            )
-        )
-        }
-        
-        (end (if (<= (count Pieces Next) 2) (result Mover Win)))
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Dimraw (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2)
+	        
+	        (equipment { 
+	            (board 
+	                (add
+	                    (remove
+	                        (concentric Square rings:3 joinCorners:True)
+	                        vertices:{16 11 12 7}
+	                    )
+	                    edges:{{6 7} {7 13} {13 12} {6 12}}
+	                )
+	                use:Vertex
+	            ) 
+	            (hand Each)
+	            (piece "Marker" Each (move [#])) // Do not know the movement of the pieces
+	        }) 
+	        (rules 
+	            (start {
+	                (place "Marker1" (handSite P1) count:12)
+	                (place "Marker2" (handSite P2) count:16)
+	            })
+	            phases:{
+	            (phase "Placement"
+	                (play
+	                    (if "SameTurn"
+	                        "RemoveEnemyPiece"
+	                        (move 
+	                            (from (handSite Mover)) 
+	                            (to (sites Empty)) 
+	                            "IfLineMoveAgain" 
+	                        ) 
+	                    )
+	                ) 
+	                (nextPhase Mover ("HandEmpty" Mover) "Movement")
+	            )
+	            
+	            (phase "Movement" 
+	                (play 
+	                    (if "SameTurn"
+	                        "RemoveEnemyPiece"
+	                        (forEach Piece
+	                            ("IfLineMoveAgain")		
+	                        )
+	                    )
+	                )
+	            )
+	            }
+	            
+	            (end (if (<= (count Pieces Next) 2) (result Mover Win)))
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Dimraw (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
