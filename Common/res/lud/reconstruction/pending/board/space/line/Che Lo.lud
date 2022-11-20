@@ -1,28 +1,43 @@
-(game "Che Lo" 
-    (players 2) 
-    (equipment { 
-        ("AlquerqueBoard" 3 3)
-        (piece "Disc" Each) 
-    }) 
-    (rules 
-        (start {
-            (place "Disc1" (sites Bottom))
-            (place "Disc2" (sites Top))
-        })
-        (play [#])
-        (end [#])
-    )
-)
+(game "Che Lo"
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            ("AlquerqueBoard" 3 3)
+	            (piece "Disc" Each) 
+	        }) 
+	        (rules 
+	            (start {
+	                (place "Disc1" (sites Bottom))
+	                (place "Disc2" (sites Top))
+	            })
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     (info
