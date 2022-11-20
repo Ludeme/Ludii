@@ -1,25 +1,40 @@
-(game "Yi" 
-    (players 2) 
-    (equipment { 
-        (board (square 17) use:Vertex) 
-        (piece "Disc" P1 (move [#])) 
-        (piece "Disc" P2 (move [#])) 
-    }) 
-    (rules 
-        (play [#]) // "Players make groups on the board, opponents may capture groups" NEED CONCEPT
-        (end [#])
-    )
-)
+(game "Yi"
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (board (square 17) use:Vertex) 
+	            (piece "Disc" P1 (move [#])) 
+	            (piece "Disc" P2 (move [#])) 
+	        }) 
+	        (rules 
+	            (play [#]) // "Players make groups on the board, opponents may capture groups" NEED CONCEPT
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
