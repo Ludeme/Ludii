@@ -1,60 +1,75 @@
 (game "Umrabaraba"
-    (players 2)
-    
-    (equipment { 
-        (board (square [#]) use:Vertex) 
-        (hand Each)
-        (piece "Marker" Each 
-            (move [#])
-        ) 
-    }) 
-    (rules 
-        (start (place "Marker" "Hand" count:10))
-        
-        phases:{
-        (phase "Placement"
-            (play [#])
-            //                (if "SameTurn"
-                //                    [#]
-                //                    (move 
-                    //                        (from (handSite Mover)) 
-                    //                        (to (sites Empty)) 
-                    //                        (then [#])
-                //                    ) 
-            //                )
-        //            ) 
-        (nextPhase Mover ("HandEmpty" Mover) "Movement")
-    )
-    
-    (phase "Movement" 
-        (play [#])
-        //                (if "SameTurn"
-            //                    [#]
-            //                    (if (> (count Pieces Mover) 3)
-                //                        (forEach Piece)
-                //                        (move 
-                    //                            (from (sites Occupied by:Mover))
-                    //                            (to (sites Empty))
-                //                        )
-            //                    )
-        //                )
-    //            )
-)
-}
+	    <Variant>
+	)
 
-(end (if (<= (count Pieces Next) 2) (result Mover Win)))
-)
-)
+	//------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2)
+	        
+	        (equipment { 
+	            (board (square [#]) use:Vertex) 
+	            (hand Each)
+	            (piece "Marker" Each 
+	                (move [#])
+	            ) 
+	        }) 
+	        (rules 
+	            (start (place "Marker" "Hand" count:10))
+	            
+	            phases:{
+	            (phase "Placement"
+	                (play [#])
+	                //                (if "SameTurn"
+	                    //                    [#]
+	                    //                    (move 
+	                        //                        (from (handSite Mover)) 
+	                        //                        (to (sites Empty)) 
+	                        //                        (then [#])
+	                    //                    ) 
+	                //                )
+	            //            ) 
+	            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+	        )
+	        
+	        (phase "Movement" 
+	            (play [#])
+	            //                (if "SameTurn"
+	                //                    [#]
+	                //                    (if (> (count Pieces Mover) 3)
+	                    //                        (forEach Piece)
+	                    //                        (move 
+	                        //                            (from (sites Occupied by:Mover))
+	                        //                            (to (sites Empty))
+	                    //                        )
+	                //                    )
+	            //                )
+	        //            )
+	    )
+	    }
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	    (end (if (<= (count Pieces Next) 2) (result Mover Win)))
+	    )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
