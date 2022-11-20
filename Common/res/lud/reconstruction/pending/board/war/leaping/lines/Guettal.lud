@@ -1,35 +1,50 @@
 (game "Guettal"
-    ("TwoPlayersNorthSouth") 
-    (equipment {
-        ("AlquerqueBoard" 5 5)
-        (piece "Counter" Each
-            (or {
-                (move [#]) // This movement must be a capture move (I would suggest a hop...) 
-                ("StepToEmpty" 
-                    (directions {Rightward Leftward Forwards} of:All) 
-                )
-            })		
-        )
-    })
-    (rules  
-        (start { 
-            (place "Counter1" (union {(expand (sites Bottom)) (sites {"D3" "E3"}) }))
-            (place "Counter2" (union {(sites {"A3" "B3"}) (expand (sites Top)) }))
-        })
-        (play (forEach Piece))
-        (end [#])
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        ("TwoPlayersNorthSouth") 
+	        (equipment {
+	            ("AlquerqueBoard" 5 5)
+	            (piece "Counter" Each
+	                (or {
+	                    (move [#]) // This movement must be a capture move (I would suggest a hop...) 
+	                    ("StepToEmpty" 
+	                        (directions {Rightward Leftward Forwards} of:All) 
+	                    )
+	                })		
+	            )
+	        })
+	        (rules  
+	            (start { 
+	                (place "Counter1" (union {(expand (sites Bottom)) (sites {"D3" "E3"}) }))
+	                (place "Counter2" (union {(sites {"A3" "B3"}) (expand (sites Top)) }))
+	            })
+	            (play (forEach Piece))
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
