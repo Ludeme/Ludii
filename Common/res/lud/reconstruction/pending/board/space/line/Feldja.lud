@@ -17,59 +17,74 @@
 //------------------------------------------------------------------------------
 
 (game "Feldja"
-    (players 2)
-    (equipment { 
-        ("NineMensMorrisBoard")
-        (hand Each)
-        (piece "Marker" Each (move [#])) // Probably stepping or sliding.... That's the most obvious....
-    }) 
-    (rules 
-        (start (place "Marker" "Hand" count:12))
-        
-        phases:{
-        (phase "Placement"
-            (play
-                (if "SameTurn"
-                    "RemoveEnemyPiece"
-                    (move 
-                        (from (handSite Mover)) 
-                        (to (sites Empty)) 
-                        "IfLine3MoveAgain" 
-                    ) 
-                )
-            ) 
-            (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
-        
-        (phase "Movement" 
-            (play 
-                (if "SameTurn"
-                    "RemoveEnemyPiece"
-                    (if (> (count Pieces Mover) 3)
-                        (forEach Piece)
-                        (move 
-                            (from (sites Occupied by:Mover))
-                            (to (sites Empty))
-                        )
-                    )
-                )
-            )
-        )
-        }
-        
-        (end (if (<= (count Pieces Next) 2) (result Mover Win)))
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2)
+	        (equipment { 
+	            ("NineMensMorrisBoard")
+	            (hand Each)
+	            (piece "Marker" Each (move [#])) // Probably stepping or sliding.... That's the most obvious....
+	        }) 
+	        (rules 
+	            (start (place "Marker" "Hand" count:12))
+	            
+	            phases:{
+	            (phase "Placement"
+	                (play
+	                    (if "SameTurn"
+	                        "RemoveEnemyPiece"
+	                        (move 
+	                            (from (handSite Mover)) 
+	                            (to (sites Empty)) 
+	                            "IfLine3MoveAgain" 
+	                        ) 
+	                    )
+	                ) 
+	                (nextPhase Mover ("HandEmpty" Mover) "Movement")
+	            )
+	            
+	            (phase "Movement" 
+	                (play 
+	                    (if "SameTurn"
+	                        "RemoveEnemyPiece"
+	                        (if (> (count Pieces Mover) 3)
+	                            (forEach Piece)
+	                            (move 
+	                                (from (sites Occupied by:Mover))
+	                                (to (sites Empty))
+	                            )
+	                        )
+	                    )
+	                )
+	            )
+	            }
+	            
+	            (end (if (<= (count Pieces Next) 2) (result Mover Win)))
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
