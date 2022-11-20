@@ -1,30 +1,45 @@
-(game "Dablo (Small)" 
-    (players 2) 
-    (equipment { 
-        (board 
-            (square 5 diagonals:Solid)
-            use:Vertex
-        )
-        (piece "Prince" Each) // 1
-        (piece "King" Each) // 1
-        (piece "Disc" Each) // 16
-    }) 
-    (rules 
-        (start [#])
-        (play [#])
-        (end [#]) // "Players may choose at the beginning of the game that if a king is captured, the game ends." Not sure what that means, they choose?
-    )
-)
+(game "Dablo (Small)"
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (board 
+	                (square 5 diagonals:Solid)
+	                use:Vertex
+	            )
+	            (piece "Prince" Each) // 1
+	            (piece "King" Each) // 1
+	            (piece "Disc" Each) // 16
+	        }) 
+	        (rules 
+	            (start [#])
+	            (play [#])
+	            (end [#]) // "Players may choose at the beginning of the game that if a king is captured, the game ends." Not sure what that means, they choose?
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     (info
