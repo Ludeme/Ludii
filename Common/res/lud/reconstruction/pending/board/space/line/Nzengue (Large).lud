@@ -10,73 +10,72 @@
 //------------------------------------------------------------------------------
 
 (game "Nzengue (Large)"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment {
-	            (board
-	                (square [#])
-	                use:Vertex
-	            )
-	            (hand Each)
-	            ("StepToEmpty" ~
-	                "IfLine3MoveAgain" 
-	            )
-	        }) 
-	        (rules 
-	            (start (place "Marker" "Hand" count:12))
-	            
-	            phases:{
-	            (phase "Placement"
-	                (play [#])
-	                //                (if "SameTurn"
-	                    //                    [#]
-	                    //                    (move 
-	                        //                        (from (handSite Mover)) 
-	                        //                        (to (sites Empty)) 
-	                        //                        "IfLine3MoveAgain" 
-	                    //                    ) 
-	                //                )
-	            //) 
-	            (nextPhase Mover ("HandEmpty" Mover) "Movement")
-	        )
-	        
-	        (phase "Movement" 
-	            (play [#])
-	            //                (if "SameTurn"
-	                //                    [?]
-	                //                    (forEach Piece)
-	            //                )
-	        //            )
-	    )
-	    }
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment {
+            (board
+                (square [#])
+                use:Vertex
+            )
+            (hand Each)
+            ("StepToEmpty" ~
+                "IfLine3MoveAgain" 
+            )
+        }) 
+        (rules 
+            (start (place "Marker" "Hand" count:12))
+            
+            phases:{
+            (phase "Placement"
+                (play [#])
+                //                (if "SameTurn"
+                    //                    [#]
+                    //                    (move 
+                        //                        (from (handSite Mover)) 
+                        //                        (to (sites Empty)) 
+                        //                        "IfLine3MoveAgain" 
+                    //                    ) 
+                //                )
+            //) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play [#])
+            //                (if "SameTurn"
+                //                    [?]
+                //                    (forEach Piece)
+            //                )
+        //            )
+    )
+    }
+    
+    (end [#])
+)
+>
+"The incomplete ruleset."
+)
+})
 
-	    (end [#])
-	    )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+//------------------------------------------------------------------------------
 
-	//------------------------------------------------------------------------------
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
-
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     

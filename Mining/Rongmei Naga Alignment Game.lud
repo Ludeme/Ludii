@@ -1,0 +1,1647 @@
+(define "RemoveEnemyPieceNotInLine3" 
+    (move
+        Remove
+        (forEach 
+            (sites Occupied by:Next container:"Board") 
+            if:(not (is Line 3 Orthogonal through:(site)))
+        )
+    )
+)
+
+(define "IfLine3MoveAgain" 
+    (then 
+        (if 
+            (is Line 3 Orthogonal exact:True) 
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Rongmei Naga Alignment Game"
+	    <Variant>
+	)
+
+	//------------------------------------------------------------------------------
+
+	(option "Variant" <Variant> args:{ <variant> }
+{
+(item "Rongmei Naga Alignment Game1" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3 joinCorners:True)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 Orthogonal exact:True)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:10)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (> 
+                            (count Pieces Mover)
+                        3)
+                        
+                        (forEach Piece)
+                        
+                        (move 
+                            (from 
+                                (sites Occupied by:Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Rongmei Naga Alignment Game1 ruleset.")
+
+(item "Rongmei Naga Alignment Game2" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3 joinCorners:True)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 Orthogonal exact:True)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:12)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (> 
+                            (count Pieces Mover)
+                        3)
+                        
+                        (forEach Piece)
+                        
+                        (move 
+                            (from 
+                                (sites Occupied by:Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Rongmei Naga Alignment Game2 ruleset.")
+
+(item "Rongmei Naga Alignment Game3" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3 joinCorners:True)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 Orthogonal exact:True)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:11)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (> 
+                            (count Pieces Mover)
+                        3)
+                        
+                        (forEach Piece)
+                        
+                        (move 
+                            (from 
+                                (sites Occupied by:Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Rongmei Naga Alignment Game3 ruleset.")
+
+(item "Rongmei Naga Alignment Game4" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3 joinCorners:True)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 Orthogonal exact:True)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:9)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (> 
+                            (count Pieces Mover)
+                        3)
+                        
+                        (forEach Piece)
+                        
+                        (move 
+                            (from 
+                                (sites Occupied by:Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Rongmei Naga Alignment Game4 ruleset.")
+
+(item "Rongmei Naga Alignment Game5" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3 joinCorners:True)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 Orthogonal exact:True)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:8)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (> 
+                            (count Pieces Mover)
+                        3)
+                        
+                        (forEach Piece)
+                        
+                        (move 
+                            (from 
+                                (sites Occupied by:Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Rongmei Naga Alignment Game5 ruleset.")
+
+(item "Rongmei Naga Alignment Game6" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3 joinCorners:True)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 Orthogonal exact:True)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:7)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (> 
+                            (count Pieces Mover)
+                        3)
+                        
+                        (forEach Piece)
+                        
+                        (move 
+                            (from 
+                                (sites Occupied by:Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Rongmei Naga Alignment Game6 ruleset.")
+
+(item "Rongmei Naga Alignment Game7" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3 joinCorners:True)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 Orthogonal exact:True)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:6)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (> 
+                            (count Pieces Mover)
+                        3)
+                        
+                        (forEach Piece)
+                        
+                        (move 
+                            (from 
+                                (sites Occupied by:Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Rongmei Naga Alignment Game7 ruleset.")
+
+(item "Rongmei Naga Alignment Game8" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3 joinCorners:True)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 Orthogonal exact:True)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:5)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (> 
+                            (count Pieces Mover)
+                        3)
+                        
+                        (forEach Piece)
+                        
+                        (move 
+                            (from 
+                                (sites Occupied by:Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Rongmei Naga Alignment Game8 ruleset.")
+
+(item "Rongmei Naga Alignment Game9" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3 joinCorners:True)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 Orthogonal exact:True)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:13)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (> 
+                            (count Pieces Mover)
+                        3)
+                        
+                        (forEach Piece)
+                        
+                        (move 
+                            (from 
+                                (sites Occupied by:Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Rongmei Naga Alignment Game9 ruleset.")
+
+(item "Rongmei Naga Alignment Game10" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3 joinCorners:True)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 Orthogonal exact:True)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:4)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (> 
+                            (count Pieces Mover)
+                        3)
+                        
+                        (forEach Piece)
+                        
+                        (move 
+                            (from 
+                                (sites Occupied by:Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Rongmei Naga Alignment Game10 ruleset.")
+
+(item "Rongmei Naga Alignment Game11" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3 joinCorners:True)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 Orthogonal exact:True)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:3)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Next container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (> 
+                            (count Pieces Mover)
+                        3)
+                        
+                        (forEach Piece)
+                        
+                        (move 
+                            (from 
+                                (sites Occupied by:Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Rongmei Naga Alignment Game11 ruleset.")
+
+
+	    (item "Incomplete"
+	        <
+	        (players 2)
+	        
+	        (equipment { 
+	            (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
+	            (hand Each)
+	            (piece "Marker" Each 
+	                (move
+	                    Step 
+	                    (to if:(is Empty (to))) 
+	                    "IfLine3MoveAgain" 
+	                )
+	            ) 
+	        }) 
+	        (rules 
+	            (start (place "Marker" "Hand" count:[3..13]))
+	            
+	            phases:{
+	            (phase "Placement"
+	                (play
+	                    (if "SameTurn"
+	                        "RemoveEnemyPieceNotInLine3"
+	                        (move 
+	                            (from (handSite Mover)) 
+	                            (to (sites Empty)) 
+	                            "IfLine3MoveAgain" 
+	                        ) 
+	                    )
+	                ) 
+	                (nextPhase Mover ("HandEmpty" Mover) "Movement")
+	            )
+	            
+	            (phase "Movement" 
+	                (play 
+	                    (if "SameTurn"
+	                        "RemoveEnemyPieceNotInLine3"
+	                        (if (> (count Pieces Mover) 3)
+	                            (forEach Piece)
+	                            (move 
+	                                (from (sites Occupied by:Mover))
+	                                (to (sites Empty))
+	                            )
+	                        )
+	                    )
+	                )
+	            )
+	            }
+	            
+	            (end ("CaptureAll" Next))
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	
+ })
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+
+(ruleset "Ruleset/Rongmei Naga Alignment Game1 (Reconstructed)" {
+     "Variant/Rongmei Naga Alignment Game1"
+})
+(ruleset "Ruleset/Rongmei Naga Alignment Game2 (Reconstructed)" {
+     "Variant/Rongmei Naga Alignment Game2"
+})
+(ruleset "Ruleset/Rongmei Naga Alignment Game3 (Reconstructed)" {
+     "Variant/Rongmei Naga Alignment Game3"
+})
+(ruleset "Ruleset/Rongmei Naga Alignment Game4 (Reconstructed)" {
+     "Variant/Rongmei Naga Alignment Game4"
+})
+(ruleset "Ruleset/Rongmei Naga Alignment Game5 (Reconstructed)" {
+     "Variant/Rongmei Naga Alignment Game5"
+})
+(ruleset "Ruleset/Rongmei Naga Alignment Game6 (Reconstructed)" {
+     "Variant/Rongmei Naga Alignment Game6"
+})
+(ruleset "Ruleset/Rongmei Naga Alignment Game7 (Reconstructed)" {
+     "Variant/Rongmei Naga Alignment Game7"
+})
+(ruleset "Ruleset/Rongmei Naga Alignment Game8 (Reconstructed)" {
+     "Variant/Rongmei Naga Alignment Game8"
+})
+(ruleset "Ruleset/Rongmei Naga Alignment Game9 (Reconstructed)" {
+     "Variant/Rongmei Naga Alignment Game9"
+})
+(ruleset "Ruleset/Rongmei Naga Alignment Game10 (Reconstructed)" {
+     "Variant/Rongmei Naga Alignment Game10"
+})
+(ruleset "Ruleset/Rongmei Naga Alignment Game11 (Reconstructed)" {
+     "Variant/Rongmei Naga Alignment Game11"
+}) 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+//------------------------------------------------------------------------------
+
+ (metadata 
+    
+    (info
+        {
+        (description "This alignment game was played by the Rongmei Naga people in India in the early twentieth century. ")
+        (rules "Three concentric squares, with lines connecting the corners and the midpoints of two opposite sides. Players alternate turns placing pieces on an empty point on the board. When all the pieces are placed, players alternate turns moving a piece to an empty adjacent spot along the lines of the board. When three of a player's pieces form a line, the player removes one of the opponent's pieces. Pieces which are in a line of three cannot be removed. The player who removes all of the opponent's pieces wins.
+        ")
+        (source "DLP evidence.")
+        (id "1095")
+        (version "1.3.7")
+        (classification "board/space/line/reconstruction")
+        (credit "Eric Piette")
+        (origin "This game was played in India, around 1911.")
+        }
+    )
+    
+)
+
