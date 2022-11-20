@@ -1,30 +1,45 @@
-(game "Mbenga Alignment Game" 
-    (players 2) 
-    
-    (equipment { 
-        ("AlquerqueBoard" 3 3)
-        (hand Each)
-        (piece "Marker" Each)
-    }) 
-    
-    (rules 
-        (start (place "Marker" "Hand" count:[3..9]))
-        
-        (play (move (from (handSite Mover)) (to (sites Empty))))
-        
-        (end (if (is Line 3) (result Mover Win)))
-    )
-)
+(game "Mbenga Alignment Game"
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        
+	        (equipment { 
+	            ("AlquerqueBoard" 3 3)
+	            (hand Each)
+	            (piece "Marker" Each)
+	        }) 
+	        
+	        (rules 
+	            (start (place "Marker" "Hand" count:[3..9]))
+	            
+	            (play (move (from (handSite Mover)) (to (sites Empty))))
+	            
+	            (end (if (is Line 3) (result Mover Win)))
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     (info
