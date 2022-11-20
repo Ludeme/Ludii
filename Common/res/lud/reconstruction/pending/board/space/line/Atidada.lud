@@ -1,55 +1,54 @@
 (game "Atidada"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2)
-	        
-	        (equipment { 
-	            (board (concentric Square rings:[#]) use:Vertex) 
-	            (hand Each)
-	            (piece "Marker" Each 
-	                (move [#])
-	            ) 
-	        }) 
-	        (rules 
-	            (start (place "Marker" "Hand" count:[3 | 6 | 20]))
-	            
-	            phases:{
-	            (phase "Placement"
-	                (play [#]) 
-	                (nextPhase Mover ("HandEmpty" Mover) "Movement")
-	            )
-	            
-	            (phase "Movement" 
-	                (play [#])
-	            )
-	            }
-	            
-	            (end [#])
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2)
+        
+        (equipment { 
+            (board (concentric Square rings:[#]) use:Vertex) 
+            (hand Each)
+            (piece "Marker" Each 
+                (move [#])
+            ) 
+        }) 
+        (rules 
+            (start (place "Marker" "Hand" count:[3 | 6 | 20]))
+            
+            phases:{
+            (phase "Placement"
+                (play [#]) 
+                (nextPhase Mover ("HandEmpty" Mover) "Movement")
+            )
+            
+            (phase "Movement" 
+                (play [#])
+            )
+            }
+            
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     
