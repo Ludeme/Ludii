@@ -1,41 +1,40 @@
 (game "Draughts (12x12)"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment { 
-	            (board (square 12))
-	            (piece "Disc" P1 (move [#])) 
-	            (piece "Disc" P2 (move [#])) 
-	        }) 
-	        (rules 
-	            (start [#]) // 30 pieces per player.
-	            (play [#])
-	            (end [#])
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board (square 12))
+            (piece "Disc" P1 (move [#])) 
+            (piece "Disc" P2 (move [#])) 
+        }) 
+        (rules 
+            (start [#]) // 30 pieces per player.
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     
