@@ -1,29 +1,44 @@
-(game "Aiyawatstani" 
-    (players 2) 
-    (equipment { 
-        (board 
-            (square 5 diagonals:Solid)
-            use:Vertex
-        )
-        (piece "Disc" Each (move [#])) 
-        }
-    ) 
-    (rules 
-        ("BeforeAfterCentreSetup" "Disc1" "Disc2")
-        (play [#])
-        (end [#])
-    )
-)
+(game "Aiyawatstani"
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })*
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (board 
+	                (square 5 diagonals:Solid)
+	                use:Vertex
+	            )
+	            (piece "Disc" Each (move [#])) 
+	            }
+	        ) 
+	        (rules 
+	            ("BeforeAfterCentreSetup" "Disc1" "Disc2")
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     (info
