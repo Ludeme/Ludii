@@ -1,34 +1,49 @@
 (game "Banyarwanda Mill Game"
-    (players 2) 
-    (equipment {
-        ("AlquerqueBoard" 3 3)
-        (hand Each)
-        (piece "Marker" Each (move (from (from)) (to (sites Empty))))
-    }) 
-    (rules 
-        (start (place "Marker" "Hand" count:6))
-        
-        phases:{
-        (phase "Placement"
-            (play (move (from (handSite Mover)) (to (sites Empty))))
-            (nextPhase ("HandEmpty" P2) "Movement")
-        )
-        
-        ("PhaseMovePiece" "Movement")
-        }
-        (end (if (is Line 3) (result Mover Win)))
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment {
+	            ("AlquerqueBoard" 3 3)
+	            (hand Each)
+	            (piece "Marker" Each (move (from (from)) (to (sites Empty))))
+	        }) 
+	        (rules 
+	            (start (place "Marker" "Hand" count:6))
+	            
+	            phases:{
+	            (phase "Placement"
+	                (play (move (from (handSite Mover)) (to (sites Empty))))
+	                (nextPhase ("HandEmpty" P2) "Movement")
+	            )
+	            
+	            ("PhaseMovePiece" "Movement")
+	            }
+	            (end (if (is Line 3) (result Mover Win)))
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
