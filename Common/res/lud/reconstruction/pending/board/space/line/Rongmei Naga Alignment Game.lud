@@ -20,66 +20,81 @@
 //------------------------------------------------------------------------------
 
 (game "Rongmei Naga Alignment Game"
-    (players 2)
-    
-    (equipment { 
-        (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
-        (hand Each)
-        (piece "Marker" Each 
-            (move
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
-            )
-        ) 
-    }) 
-    (rules 
-        (start (place "Marker" "Hand" count:[3..12]))
-        
-        phases:{
-        (phase "Placement"
-            (play
-                (if "SameTurn"
-                    "RemoveEnemyPiece"
-                    (move 
-                        (from (handSite Mover)) 
-                        (to (sites Empty)) 
-                        "IfLine3MoveAgain" 
-                    ) 
-                )
-            ) 
-            (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
-        
-        (phase "Movement" 
-            (play 
-                (if "SameTurn"
-                    "RemoveEnemyPieceNotInLine3"
-                    (if (> (count Pieces Mover) 3)
-                        (forEach Piece)
-                        (move 
-                            (from (sites Occupied by:Mover))
-                            (to (sites Empty))
-                        )
-                    )
-                )
-            )
-        )
-        }
-        
-        (end ("CaptureAll" Next))
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })*
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2)
+	        
+	        (equipment { 
+	            (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
+	            (hand Each)
+	            (piece "Marker" Each 
+	                (move
+	                    Step 
+	                    (to if:(is Empty (to))) 
+	                    "IfLine3MoveAgain" 
+	                )
+	            ) 
+	        }) 
+	        (rules 
+	            (start (place "Marker" "Hand" count:[3..12]))
+	            
+	            phases:{
+	            (phase "Placement"
+	                (play
+	                    (if "SameTurn"
+	                        "RemoveEnemyPiece"
+	                        (move 
+	                            (from (handSite Mover)) 
+	                            (to (sites Empty)) 
+	                            "IfLine3MoveAgain" 
+	                        ) 
+	                    )
+	                ) 
+	                (nextPhase Mover ("HandEmpty" Mover) "Movement")
+	            )
+	            
+	            (phase "Movement" 
+	                (play 
+	                    (if "SameTurn"
+	                        "RemoveEnemyPieceNotInLine3"
+	                        (if (> (count Pieces Mover) 3)
+	                            (forEach Piece)
+	                            (move 
+	                                (from (sites Occupied by:Mover))
+	                                (to (sites Empty))
+	                            )
+	                        )
+	                    )
+	                )
+	            )
+	            }
+	            
+	            (end ("CaptureAll" Next))
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
