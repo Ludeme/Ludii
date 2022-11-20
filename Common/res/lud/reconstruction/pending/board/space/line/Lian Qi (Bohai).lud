@@ -1,25 +1,40 @@
 (game "Lian Qi (Bohai)"
-    (players 2) 
-    (equipment {
-        (board (concentric Square rings:2 joinCorners:True) use:Vertex) 
-        (piece "Disc" Each (move [#])) 
-    })
-    (rules
-        (start [#])
-        (play [#])
-        (end [#])
-    )			
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment {
+	            (board (concentric Square rings:2 joinCorners:True) use:Vertex) 
+	            (piece "Disc" Each (move [#])) 
+	        })
+	        (rules
+	            (start [#])
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
