@@ -1,40 +1,55 @@
 (game "Malomjatek"
-    (players 2)
-    
-    (equipment { 
-        (board (concentric Square rings:[#]) use:Vertex) 
-        (hand Each)
-        (piece "Marker" Each 
-            (move [#])
-        ) 
-    }) 
-    (rules 
-        (start (place "Marker" "Hand" count:[3..40]))
-        
-        phases:{
-        (phase "Placement"
-            (play [#]) 
-            (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
-        
-        (phase "Movement" 
-            (play [#])
-        )
-        }
-        
-        (end [#])
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2)
+	        
+	        (equipment { 
+	            (board (concentric Square rings:[#]) use:Vertex) 
+	            (hand Each)
+	            (piece "Marker" Each 
+	                (move [#])
+	            ) 
+	        }) 
+	        (rules 
+	            (start (place "Marker" "Hand" count:[3..40]))
+	            
+	            phases:{
+	            (phase "Placement"
+	                (play [#]) 
+	                (nextPhase Mover ("HandEmpty" Mover) "Movement")
+	            )
+	            
+	            (phase "Movement" 
+	                (play [#])
+	            )
+	            }
+	            
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
