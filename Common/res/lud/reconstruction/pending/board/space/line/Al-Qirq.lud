@@ -1,41 +1,40 @@
 (game "Al-Qirq"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2)
-	        (equipment { 
-	            (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
-	            (hand Each) // Do we need an hand?
-	            (piece "Marker" Each) 
-	        }) 
-	        (rules 
-	            (start [#]) // 9 pieces per player.
-	            (play [#]) // Maybe the line has to be used to capture like in nine men morris?
-	            (end (if [(is Line 3) | #] (result Mover Win)))
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2)
+        (equipment { 
+            (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
+            (hand Each) // Do we need an hand?
+            (piece "Marker" Each) 
+        }) 
+        (rules 
+            (start [#]) // 9 pieces per player.
+            (play [#]) // Maybe the line has to be used to capture like in nine men morris?
+            (end (if [(is Line 3) | #] (result Mover Win)))
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     

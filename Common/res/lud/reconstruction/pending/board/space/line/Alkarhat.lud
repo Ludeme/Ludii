@@ -1,42 +1,41 @@
 (game "Alkarhat"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2)
-	        
-	        (equipment { 
-	            (board (square 6)) 
-	            (hand Each) // Do we have an hand here?
-	            (piece "Marker" Each) 
-	        }) 
-	        (rules 
-	            (start [#]) // 13 pieces per player
-	            (play [#]) // Surrounding the opponent in an alignement game?
-	            (end [#]) // Alignement game so (is Line ...)?
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2)
+        
+        (equipment { 
+            (board (square 6)) 
+            (hand Each) // Do we have an hand here?
+            (piece "Marker" Each) 
+        }) 
+        (rules 
+            (start [#]) // 13 pieces per player
+            (play [#]) // Surrounding the opponent in an alignement game?
+            (end [#]) // Alignement game so (is Line ...)?
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     
