@@ -18,68 +18,83 @@
 //------------------------------------------------------------------------------
 
 (game "Yup'ik Checkers"
-    (players 2) 
-    ("DraughtsEquipment" (square 8))
-    
-    (rules 
-        (start [#])
-        
-        (play 
-            (if "SameTurn"
-                (if "IsUnpromoted"
-                    ("HopMan" (last To) 
-                        (then 
-                            (if "JumpToPromotionZone" 
-                                (move Promote (last To) (piece "DoubleCounter") Mover)
-                                (if (can Move ("HopMan" (last To))) (moveAgain)) 
-                            ) 
-                        ) 
-                    )
-                    ("HopDiagonalSequenceCaptureAgain")
-                )
-                (priority {
-                    (or 
-                        (forEach Piece "Counter" 
-                            ("HopMan" (from) 
-                                (then 
-                                    (if "JumpToPromotionZone"
-                                        (move Promote (last To) (piece "DoubleCounter") Mover) 
-                                        (if (can Move ("HopMan" (last To))) (moveAgain)) 
-                                    ) 
-                                ) 
-                            ) 
-                        )
-                        (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture"))
-                    )
-                    
-                    (or 
-                        (forEach Piece "Counter" 
-                            ("StepToEmpty" (directions {FR FL})) 
-                            (then 
-                                (if "JumpToPromotionZone"
-                                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            )
-                        )
-                        (forEach Piece "DoubleCounter" "StepDiagonalToEmpty")
-                    )
-                })
-            )
-        ) 
-        
-        (end ("CaptureAll Next"))
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        ("DraughtsEquipment" (square 8))
+	        
+	        (rules 
+	            (start [#])
+	            
+	            (play 
+	                (if "SameTurn"
+	                    (if "IsUnpromoted"
+	                        ("HopMan" (last To) 
+	                            (then 
+	                                (if "JumpToPromotionZone" 
+	                                    (move Promote (last To) (piece "DoubleCounter") Mover)
+	                                    (if (can Move ("HopMan" (last To))) (moveAgain)) 
+	                                ) 
+	                            ) 
+	                        )
+	                        ("HopDiagonalSequenceCaptureAgain")
+	                    )
+	                    (priority {
+	                        (or 
+	                            (forEach Piece "Counter" 
+	                                ("HopMan" (from) 
+	                                    (then 
+	                                        (if "JumpToPromotionZone"
+	                                            (move Promote (last To) (piece "DoubleCounter") Mover) 
+	                                            (if (can Move ("HopMan" (last To))) (moveAgain)) 
+	                                        ) 
+	                                    ) 
+	                                ) 
+	                            )
+	                            (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture"))
+	                        )
+	                        
+	                        (or 
+	                            (forEach Piece "Counter" 
+	                                ("StepToEmpty" (directions {FR FL})) 
+	                                (then 
+	                                    (if "JumpToPromotionZone"
+	                                        (move Promote (last To) (piece "DoubleCounter") Mover)
+	                                    )
+	                                )
+	                            )
+	                            (forEach Piece "DoubleCounter" "StepDiagonalToEmpty")
+	                        )
+	                    })
+	                )
+	            ) 
+	            
+	            (end ("CaptureAll Next"))
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
