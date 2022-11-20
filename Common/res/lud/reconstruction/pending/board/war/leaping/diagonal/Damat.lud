@@ -19,65 +19,80 @@
 //------------------------------------------------------------------------------
 
 (game "Damat"
-    (players 2) 
-    (equipment { 
-        (board (square 12))
-        (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
-        (piece "DoubleCounter" Each)
-        (regions P1 (sites Bottom))
-        (regions P2 (sites Top))
-    }) 
-    
-    (rules 
-        (start { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:4) (sites Phase 1)))
-            (place "Counter2" (difference (expand (sites Top) steps:4) (sites Phase 1)))
-        })
-        (play 
-            (or { 
-                (forEach Piece "Counter"
-                    ("HopCounter" (from) 
-                        (then 
-                            (if (can Move ("HopCounter" (last To))) 
-                                (moveAgain) 
-                                (if "JumpToPromotionZone" 
-                                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                                )
-                            ) 
-                        ) 
-                    ) 
-                )
-                (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
-                (forEach Piece "Counter" 
-                    (move
-                        Step 
-                        (directions {FR FL}) 
-                        (to if:(is Empty (to)))
-                    )
-                    (then 
-                        (if "JumpToPromotionZone"
-                            (promote (last To) (piece "DoubleCounter") Mover)
-                        )
-                    )
-                )
-                (forEach Piece "DoubleCounter" (move Slide Diagonal))
-            })
-        )
-        
-        (end [#])
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (board (square 12))
+	            (piece "Counter" P1 N)
+	            (piece "Counter" P2 S) 
+	            (piece "DoubleCounter" Each)
+	            (regions P1 (sites Bottom))
+	            (regions P2 (sites Top))
+	        }) 
+	        
+	        (rules 
+	            (start { 
+	                (place "Counter1" (difference (expand (sites Bottom) steps:4) (sites Phase 1)))
+	                (place "Counter2" (difference (expand (sites Top) steps:4) (sites Phase 1)))
+	            })
+	            (play 
+	                (or { 
+	                    (forEach Piece "Counter"
+	                        ("HopCounter" (from) 
+	                            (then 
+	                                (if (can Move ("HopCounter" (last To))) 
+	                                    (moveAgain) 
+	                                    (if "JumpToPromotionZone" 
+	                                        (move Promote (last To) (piece "DoubleCounter") Mover)
+	                                    )
+	                                ) 
+	                            ) 
+	                        ) 
+	                    )
+	                    (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
+	                    (forEach Piece "Counter" 
+	                        (move
+	                            Step 
+	                            (directions {FR FL}) 
+	                            (to if:(is Empty (to)))
+	                        )
+	                        (then 
+	                            (if "JumpToPromotionZone"
+	                                (promote (last To) (piece "DoubleCounter") Mover)
+	                            )
+	                        )
+	                    )
+	                    (forEach Piece "DoubleCounter" (move Slide Diagonal))
+	                })
+	            )
+	            
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
