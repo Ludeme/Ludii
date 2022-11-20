@@ -40,65 +40,80 @@
 //------------------------------------------------------------------------------
 
 (game "Davxar Zirge (Type 1)"
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (add
-                (concentric Square rings:4 joinCorners:True)
-                edges:{
-                {14 20} {20 24} {24 22} {22 17} {17 11} {11 7} {7 9} {9 14} {6 4} {4 8} {5 1}
-                {1 3} {23 27} {27 25} {26 30} {30 28}
-                }
-            )
-            use:Vertex
-        ) 
-        (hand Each)
-        (piece "Marker" Each "StepToEmpty") 
-    }) 
-    (rules 
-        (start (place "Marker" "Hand" count:[1..32])) // The unknow information is the number of pieces.
-        
-        phases:{
-        (phase "Placement"
-            (play
-                (if "SameTurn"
-                    "RemoveEnemyPiece"
-                    (move 
-                        (from (handSite Mover)) 
-                        (to (sites Empty)) 
-                        "IfLineMoveAgain" 
-                    ) 
-                )
-            ) 
-            (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
-        
-        (phase "Movement" 
-            (play 
-                (if "SameTurn"
-                    "RemoveEnemyPiece"
-                    (forEach Piece
-                        ("IfLineMoveAgain")		
-                    )
-                )
-            )
-        )
-        }
-        
-        (end ("CaptureAll" Next))
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2)
+	        
+	        (equipment { 
+	            (board 
+	                (add
+	                    (concentric Square rings:4 joinCorners:True)
+	                    edges:{
+	                    {14 20} {20 24} {24 22} {22 17} {17 11} {11 7} {7 9} {9 14} {6 4} {4 8} {5 1}
+	                    {1 3} {23 27} {27 25} {26 30} {30 28}
+	                    }
+	                )
+	                use:Vertex
+	            ) 
+	            (hand Each)
+	            (piece "Marker" Each "StepToEmpty") 
+	        }) 
+	        (rules 
+	            (start (place "Marker" "Hand" count:[1..32])) // The unknow information is the number of pieces.
+	            
+	            phases:{
+	            (phase "Placement"
+	                (play
+	                    (if "SameTurn"
+	                        "RemoveEnemyPiece"
+	                        (move 
+	                            (from (handSite Mover)) 
+	                            (to (sites Empty)) 
+	                            "IfLineMoveAgain" 
+	                        ) 
+	                    )
+	                ) 
+	                (nextPhase Mover ("HandEmpty" Mover) "Movement")
+	            )
+	            
+	            (phase "Movement" 
+	                (play 
+	                    (if "SameTurn"
+	                        "RemoveEnemyPiece"
+	                        (forEach Piece
+	                            ("IfLineMoveAgain")		
+	                        )
+	                    )
+	                )
+	            )
+	            }
+	            
+	            (end ("CaptureAll" Next))
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
