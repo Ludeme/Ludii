@@ -1,27 +1,42 @@
 (game "Hujura"
-    (players 2)
-    (equipment { 
-        ("NineMensMorrisBoard")
-        (hand Each)
-        (piece "Disc" P1 (move [#])) 
-        (piece "Disc" P2 (move [#])) 
-    }) 
-    (rules 
-        (start [#]) // 6 pieces per player.
-        (play [#])
-        (end [#])
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2)
+	        (equipment { 
+	            ("NineMensMorrisBoard")
+	            (hand Each)
+	            (piece "Disc" P1 (move [#])) 
+	            (piece "Disc" P2 (move [#])) 
+	        }) 
+	        (rules 
+	            (start [#]) // 6 pieces per player.
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
