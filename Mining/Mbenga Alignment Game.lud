@@ -1,0 +1,198 @@
+(game "Mbenga Alignment Game"
+	    <Variant>
+	)
+
+	//------------------------------------------------------------------------------
+
+	(option "Variant" <Variant> args:{ <variant> }
+{
+(item "Mbenga Alignment Game1" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 3 3 diagonals:Alternating)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each)
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:5)
+        )
+        
+        (play 
+            (move 
+                (from 
+                    (handSite Mover)
+                )
+                
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+
+ > "The Mbenga Alignment Game1 ruleset.")
+
+(item "Mbenga Alignment Game2" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 3 3 diagonals:Alternating)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each)
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:4)
+        )
+        
+        (play 
+            (move 
+                (from 
+                    (handSite Mover)
+                )
+                
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+
+ > "The Mbenga Alignment Game2 ruleset.")
+
+(item "Mbenga Alignment Game3" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 3 3 diagonals:Alternating)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each)
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:3)
+        )
+        
+        (play 
+            (move 
+                (from 
+                    (handSite Mover)
+                )
+                
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+
+ > "The Mbenga Alignment Game3 ruleset.")
+
+
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        
+	        (equipment { 
+	            ("AlquerqueBoard" 3 3)
+	            (hand Each)
+	            (piece "Marker" Each)
+	        }) 
+	        
+	        (rules 
+	            (start (place "Marker" "Hand" count:[3..5]))
+	            
+	            (play (move (from (handSite Mover)) (to (sites Empty))))
+	            
+	            (end (if (is Line 3) (result Mover Win)))
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	
+ })
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+
+(ruleset "Ruleset/Mbenga Alignment Game1 (Reconstructed)" {
+     "Variant/Mbenga Alignment Game1"
+})
+(ruleset "Ruleset/Mbenga Alignment Game2 (Reconstructed)" {
+     "Variant/Mbenga Alignment Game2"
+})
+(ruleset "Ruleset/Mbenga Alignment Game3 (Reconstructed)" {
+     "Variant/Mbenga Alignment Game3"
+}) 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+//------------------------------------------------------------------------------
+
+ (metadata 
+    (info
+        {
+        (description "This game was played by the Mbenga people of central Africa in the late nineteenth and early twentieth century. It is a simple alignment game similar to others played throughout the world.")
+        (rules "3x3 intersecting lines with diagonals. Players alternate turns placing a piece on the board. The first player to place three of their pieces in a row wins.")
+        (source "DLP evidence.")
+        (id "1374")
+        (version "1.3.7")
+        (classification "board/space/line/reconstruction")
+        (credit "Eric Piette")
+        (origin "This game was played in Central Africa, from around 1903 to 1907.")
+        }
+    )
+)
+
