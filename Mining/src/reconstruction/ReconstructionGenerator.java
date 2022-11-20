@@ -39,9 +39,9 @@ import utils.RandomAI;
 public class ReconstructionGenerator
 {
 	final static String defaultOutputPath        = "./res/recons/output/";
-	final static int    defaultNumReconsExpected = 13;
+	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 100000;
-	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/space/line/Davxar Zirge (Type 2)";
+	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/space/line/Dimraw";
 	//final static String defaultReconsPath        = "/lud/reconstruction/pending/board/war/other/Macheng";
 	//final static String defaultReconsPath        = "/lud/test/eric/recons/Hnefatafl";
 	//final static String defaultReconsPath        = "/lud/test/eric/recons/Senet";
