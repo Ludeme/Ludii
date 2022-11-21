@@ -258,6 +258,49 @@ public class MainMenuFunctions extends JMenuBar
 		    	Thumbnails.generateThumbnails(app, true);
 	    	});
 		}
+		else if (source.getText().equals("Export Thumbnails (complete rulesets)"))
+		{
+			DesktopApp.frame().setSize(464, 464);
+			final ArrayList<List<String>> gameOptions = new ArrayList<>();
+			System.out.println("Getting rulesets from game:");
+			final List<Ruleset> rulesets = game.description().rulesets();
+			if (rulesets != null && !rulesets.isEmpty())
+				for (int rs = 0; rs < rulesets.size(); rs++)
+					if (!rulesets.get(rs).optionSettings().isEmpty() && !rulesets.get(rs).heading().contains("Incomplete"))
+						gameOptions.add(rulesets.get(rs).optionSettings());
+			
+			final Timer t = new Timer( );
+			t.scheduleAtFixedRate(new TimerTask()
+			{
+				int gameChoice = 0;
+			    @Override
+			    public void run()
+			    {
+			    	if (gameChoice >= gameOptions.size()) 
+			    	{
+			            t.cancel();
+			            t.purge();
+			            return;
+			        }
+			    	
+			    	EventQueue.invokeLater(() -> 
+			    	{
+			    		GameLoading.loadGameFromName(app, game.name(), gameOptions.get(gameChoice), false);
+			    		gameChoice++;
+			    	});
+			    }
+			}, 1000,50000);
+
+			final Timer t2 = new Timer( );
+			t2.scheduleAtFixedRate(new TimerTask()
+			{
+			    @Override
+			    public void run()
+			    {
+			    	Thumbnails.generateThumbnails(app, true);
+			    }
+			}, 24000,50000);
+		}
 		else if (source.getText().equals("Export All Thumbnails"))
 		{			
 			DesktopApp.frame().setSize(464, 464);

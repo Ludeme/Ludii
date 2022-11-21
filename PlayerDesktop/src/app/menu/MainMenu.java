@@ -879,6 +879,10 @@ public class MainMenu extends JMenuBar
 				menuItem.addActionListener(al);
 				menu.add(menuItem);
 				
+				menuItem = new JMenuItem("Export Thumbnails (complete rulesets)");
+				menuItem.addActionListener(al);
+				menu.add(menuItem);
+				
 				menuItem = new JMenuItem("Export All Thumbnails (rulesets)");
 				menuItem.addActionListener(al);
 				menu.add(menuItem);
@@ -890,7 +894,7 @@ public class MainMenu extends JMenuBar
 				menuItem = new JMenuItem("Export All Board Thumbnails");
 				menuItem.addActionListener(al);
 				menu.add(menuItem);
-				
+
 				menu.addSeparator();
 			}
 			
