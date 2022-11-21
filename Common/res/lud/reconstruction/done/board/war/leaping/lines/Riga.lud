@@ -2408,7 +2408,9 @@
         <
         (players 2) 
         (equipment { 
-            ("ThreeMensMorrisBoardWithLeftAndRightTriangles")
+            (board 
+                    (rectangle 5 5 diagonals:Alternating)
+                use:Vertex)
             (piece "Counter" Each [#])
         }) 
         
