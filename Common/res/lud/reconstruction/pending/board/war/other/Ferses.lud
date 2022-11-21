@@ -1,22 +1,37 @@
 (game "Ferses"
-    (players 2) 
-    (equipment [#]) // 12 pieces per player.
-    (rules
-        (start [#])
-        (play [#]) // Pieces move forward one space diagonally. Pieces may be promoted. 
-        (end ("CaptureAll" Next))
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment [#]) // 12 pieces per player.
+	        (rules
+	            (start [#])
+	            (play [#]) // Pieces move forward one space diagonally. Pieces may be promoted. 
+	            (end ("CaptureAll" Next))
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
