@@ -1,4 +1,4 @@
-(game "Riga Game" // Hunt game
+(game "Riga Game (Small)" // Hunt game
     <Variant>
 )
 
@@ -2409,12 +2409,36 @@
         (players 2) 
         (equipment { 
             ("ThreeMensMorrisBoardWithLeftAndRightTriangles")
-            (piece [#])
-            (piece [#])
+            (piece "Counter" Each [#])
         }) 
         
         (rules 
-            (start [#])
+                (start { 
+                    (place "Counter1" 
+                        (union { 
+                            (expand 
+                                (sites Bottom)
+                            )
+                            
+                            (sites { "D3" "E3"}
+                            )
+                            }
+                        )
+                    )
+                    
+                    (place "Counter2" 
+                        (union { 
+                            (sites { "A3" "B3"}
+                            )
+                            
+                            (expand 
+                                (sites Top)
+                            )
+                            }
+                        )
+                    )
+                    }
+                )
             (play [#])
             (end [#])
         )
