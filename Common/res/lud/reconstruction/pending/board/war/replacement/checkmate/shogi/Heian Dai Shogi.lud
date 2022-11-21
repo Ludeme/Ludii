@@ -26,86 +26,101 @@
 //------------------------------------------------------------------------------
 
 (game "Heian Dai Shogi"
-    ("TwoPlayersNorthSouth") 
-    (equipment { 
-        (board (square 13))
-        (piece "Pawn" Each (move [#]))
-        
-        (piece "King" Each (move [#]))
-        
-        (piece "GoldGeneral" Each (move [#]))
-        
-        (piece "SilverGeneral" Each (move [#]))
-        
-        (piece "CopperGeneral" Each (move [#])) // Does not move diagonally
-        
-        (piece "IronGeneral" Each (move [#])) // Does not move backward ortho or backward diago
-        
-        (piece "Lance" Each (move [#]))
-        
-        (piece "Knight" Each (move [#]))
-        
-        (piece "SideMover" Each // Moves ortho forward one space OR slide ortho left and right
-            (or
-                ("StepMove" (directions Forward))
-                ("SlideMove" (directions (directions {Leftward Rightward})))
-                (then [#])
-            )
-        ) 
-        
-        (piece "SavageTiger" Each // Diago one space
-            ("StepMove" (directions Diagonal) (then [#]))
-        ) 
-        
-        (piece "FlyingDragon" Each // Slide diago
-            ("SlideMove" (directions Diagonal) (then [#]))
-        ) 
-        
-        (piece "RunningChariot" Each // slide forward and backward
-            ("SlideMove" (directions {Forward Backward}) (then [#]))
-        ) 
-        
-        (piece "Chunin" Each // step forward or backward
-            ("StepMove" (directions {Forward Backward}) (then [#]))
-        ) 
-    })
-    (rules
-        (start {
-            // Row 1
-            (place "King1" (coord "G1")) (place "King2" (coord "G13"))
-            (place "GoldGeneral1" (sites {"F1" "H1"})) (place "GoldGeneral2" (sites {"F13" "H13"}))
-            (place "SilverGeneral1" (sites {"E1" "I1"})) (place "SilverGeneral2" (sites {"E13" "I13"}))
-            (place "CopperGeneral1" (sites {"D1" "J1"})) (place "CopperGeneral2" (sites {"D13" "J13"}))
-            (place "IronGeneral1" (sites {"C1" "K1"})) (place "IronGeneral2" (sites {"C13" "K13"}))
-            (place "Lance1" (sites {"B1" "L1"})) (place "Lance2" (sites {"B13" "L13"}))
-            (place "Knight1" (sites {"A1" "M1"})) (place "Knight2" (sites {"A13" "M13"}))
-            
-            // Row 2
-            (place "SideMover1" (coord "G2")) (place "SideMover2" (coord "G12"))
-            (place "SavageTiger1" (sites {"E2" "I2"})) (place "SavageTiger2" (sites {"E12" "I12"}))
-            (place "FlyingDragon1" (sites {"A2" "M2"})) (place "FlyingDragon2" (sites {"A12" "M12"}))
-            (place "RunningChariot1" (sites {"B2" "L2"})) (place "RunningChariot2" (sites {"B12" "L12"}))
-            
-            // Row 3
-            (place "Pawn1" (sites Row 2)) (place "Pawn2" (sites Row 10))
-            
-            // Row 4
-            (place "Chunin1" (coord "G4")) (place "Chunin2" (coord "G10"))
-        })
-        (play [#])
-        (end [#])
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        ("TwoPlayersNorthSouth") 
+	        (equipment { 
+	            (board (square 13))
+	            (piece "Pawn" Each (move [#]))
+	            
+	            (piece "King" Each (move [#]))
+	            
+	            (piece "GoldGeneral" Each (move [#]))
+	            
+	            (piece "SilverGeneral" Each (move [#]))
+	            
+	            (piece "CopperGeneral" Each (move [#])) // Does not move diagonally
+	            
+	            (piece "IronGeneral" Each (move [#])) // Does not move backward ortho or backward diago
+	            
+	            (piece "Lance" Each (move [#]))
+	            
+	            (piece "Knight" Each (move [#]))
+	            
+	            (piece "SideMover" Each // Moves ortho forward one space OR slide ortho left and right
+	                (or
+	                    ("StepMove" (directions Forward))
+	                    ("SlideMove" (directions (directions {Leftward Rightward})))
+	                    (then [#])
+	                )
+	            ) 
+	            
+	            (piece "SavageTiger" Each // Diago one space
+	                ("StepMove" (directions Diagonal) (then [#]))
+	            ) 
+	            
+	            (piece "FlyingDragon" Each // Slide diago
+	                ("SlideMove" (directions Diagonal) (then [#]))
+	            ) 
+	            
+	            (piece "RunningChariot" Each // slide forward and backward
+	                ("SlideMove" (directions {Forward Backward}) (then [#]))
+	            ) 
+	            
+	            (piece "Chunin" Each // step forward or backward
+	                ("StepMove" (directions {Forward Backward}) (then [#]))
+	            ) 
+	        })
+	        (rules
+	            (start {
+	                // Row 1
+	                (place "King1" (coord "G1")) (place "King2" (coord "G13"))
+	                (place "GoldGeneral1" (sites {"F1" "H1"})) (place "GoldGeneral2" (sites {"F13" "H13"}))
+	                (place "SilverGeneral1" (sites {"E1" "I1"})) (place "SilverGeneral2" (sites {"E13" "I13"}))
+	                (place "CopperGeneral1" (sites {"D1" "J1"})) (place "CopperGeneral2" (sites {"D13" "J13"}))
+	                (place "IronGeneral1" (sites {"C1" "K1"})) (place "IronGeneral2" (sites {"C13" "K13"}))
+	                (place "Lance1" (sites {"B1" "L1"})) (place "Lance2" (sites {"B13" "L13"}))
+	                (place "Knight1" (sites {"A1" "M1"})) (place "Knight2" (sites {"A13" "M13"}))
+	                
+	                // Row 2
+	                (place "SideMover1" (coord "G2")) (place "SideMover2" (coord "G12"))
+	                (place "SavageTiger1" (sites {"E2" "I2"})) (place "SavageTiger2" (sites {"E12" "I12"}))
+	                (place "FlyingDragon1" (sites {"A2" "M2"})) (place "FlyingDragon2" (sites {"A12" "M12"}))
+	                (place "RunningChariot1" (sites {"B2" "L2"})) (place "RunningChariot2" (sites {"B12" "L12"}))
+	                
+	                // Row 3
+	                (place "Pawn1" (sites Row 2)) (place "Pawn2" (sites Row 10))
+	                
+	                // Row 4
+	                (place "Chunin1" (coord "G4")) (place "Chunin2" (coord "G10"))
+	            })
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
