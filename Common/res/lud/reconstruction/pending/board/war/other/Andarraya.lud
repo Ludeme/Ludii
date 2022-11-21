@@ -1,35 +1,50 @@
 (game "Andarraya"
-    (players 2) 
-    // (equipment { 
-        //  (board 
-            //   (rotate 45
-                //    (merge {
-                    //     (rectangle 5 4)
-                    //     (shift -1 1 (rectangle 3 6))
-                    //     (shift -2 2 (rectangle 1 8))
-                    //     (shift 1 -1 (rectangle 7 2))
-                //    })
-            //   )
-            //   use:Vertex
-        //  ) 
-    // })
-    (equipment [#])
-    (rules
-        (start [#])
-        (play [#]) // Involve capture
-        (end [#])
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        // (equipment { 
+	            //  (board 
+	                //   (rotate 45
+	                    //    (merge {
+	                        //     (rectangle 5 4)
+	                        //     (shift -1 1 (rectangle 3 6))
+	                        //     (shift -2 2 (rectangle 1 8))
+	                        //     (shift 1 -1 (rectangle 7 2))
+	                    //    })
+	                //   )
+	                //   use:Vertex
+	            //  ) 
+	        // })
+	        (equipment [#])
+	        (rules
+	            (start [#])
+	            (play [#]) // Involve capture
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
