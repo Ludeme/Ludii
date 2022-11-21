@@ -115,141 +115,156 @@
 
 //------------------------------------------------------------------------------
 
-(game "Skak" 
-    ("TwoPlayersNorthSouth") 
-    (equipment { 
-        (board (square 8)) 
-        
-        (piece "Pawn" Each 
-            (or {
-                (if (is In (from) (sites Start (piece (what at:(from)))))
-                    ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
-                )
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
-                "EnPassant"
-                }
-                (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (moveAgain)
-                    )
-                )
-            )
-        )
-        
-        (piece "Rook" Each 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
-        (piece "King" Each 
-            (move
-                Step 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
-        (piece "Bishop" Each 
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Knight" Each 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not ("IsFriendAt" (to))) 
-                    "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "Queen" Each 
-            (move
-                Slide 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    "CaptureToPiece"
-                ) 
-            ) 
-        )
-        
-        (map "King" {(pair 1 "E1") (pair 2 "E8")})
-        (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
-        (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
-        (regions "Promotion" P1 (sites Top))
-        (regions "Promotion" P2 (sites Bottom))
-    }) 
-    (rules 
-        (start [#])
-        
-        (play 
-            (if "SameTurn"
-                (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover)
-                (do 
-                    (or 
-                        (forEach Piece)
-                        (if (and 
-                                ("HasNeverMoved" "King")
-                                (not ("IsInCheck" "King" Mover)) 
-                            )
-                            (or
-                                (if (and 
-                                        ("HasNeverMoved" "RookLeft")
-                                        (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
-                                    )
-                                    "BigCastling"
-                                )
-                                (if (and 
-                                        ("HasNeverMoved" "RookRight")
-                                        (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
-                                    )
-                                    "SmallCastling"
-                                )
-                            )
-                        )
-                    )
-                    ifAfterwards:(not ("IsInCheck" "King" Mover))
-                )
-            )
-        )
-        
-        (end {
-            (if (and 
-                    ("IsInCheck" "King" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-            (if (= 1 (count Pieces Next)) (result Mover Win))
-            (if (no Moves Mover) (result Mover Draw)) 
-        })
-    )
-)
+(game "Skak"
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Skak (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        ("TwoPlayersNorthSouth") 
+	        (equipment { 
+	            (board (square 8)) 
+	            
+	            (piece "Pawn" Each 
+	                (or {
+	                    (if (is In (from) (sites Start (piece (what at:(from)))))
+	                        ("DoubleStepForwardToEmpty" "SetEnPassantLocation")
+	                    )
+	                    "StepForwardToEmpty" 
+	                    "CaptureForwardDiagonal"
+	                    "EnPassant"
+	                    }
+	                    (then
+	                        (if (is In (last To) (sites Mover "Promotion")) 
+	                            (moveAgain)
+	                        )
+	                    )
+	                )
+	            )
+	            
+	            (piece "Rook" Each 
+	                (move
+	                    Slide 
+	                    Orthogonal 
+	                    (to 
+	                        if:("IsEnemyAt" (to)) 
+	                        "CaptureToPiece"
+	                    ) 
+	                    "RememberPieceHasMoved"
+	                )
+	            )
+	            (piece "King" Each 
+	                (move
+	                    Step 
+	                    (to 
+	                        if:(not ("IsFriendAt" (to))) 
+	                        "CaptureToPiece"
+	                    ) 
+	                    "RememberPieceHasMoved"
+	                )
+	            )
+	            (piece "Bishop" Each 
+	                (move
+	                    Slide 
+	                    Diagonal 
+	                    (to 
+	                        if:("IsEnemyAt" (to)) 
+	                        "CaptureToPiece"
+	                    ) 
+	                )
+	            )
+	            (piece "Knight" Each 
+	                (move
+	                    Leap 
+	                    "KnightWalk" 
+	                    (to 
+	                        if:(not ("IsFriendAt" (to))) 
+	                        "CaptureToPiece"
+	                    ) 
+	                )
+	            )
+	            (piece "Queen" Each 
+	                (move
+	                    Slide 
+	                    (to 
+	                        if:("IsEnemyAt" (to)) 
+	                        "CaptureToPiece"
+	                    ) 
+	                ) 
+	            )
+	            
+	            (map "King" {(pair 1 "E1") (pair 2 "E8")})
+	            (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
+	            (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
+	            (regions "Promotion" P1 (sites Top))
+	            (regions "Promotion" P2 (sites Bottom))
+	        }) 
+	        (rules 
+	            (start [#])
+	            
+	            (play 
+	                (if "SameTurn"
+	                    (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover)
+	                    (do 
+	                        (or 
+	                            (forEach Piece)
+	                            (if (and 
+	                                    ("HasNeverMoved" "King")
+	                                    (not ("IsInCheck" "King" Mover)) 
+	                                )
+	                                (or
+	                                    (if (and 
+	                                            ("HasNeverMoved" "RookLeft")
+	                                            (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
+	                                        )
+	                                        "BigCastling"
+	                                    )
+	                                    (if (and 
+	                                            ("HasNeverMoved" "RookRight")
+	                                            (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
+	                                        )
+	                                        "SmallCastling"
+	                                    )
+	                                )
+	                            )
+	                        )
+	                        ifAfterwards:(not ("IsInCheck" "King" Mover))
+	                    )
+	                )
+	            )
+	            
+	            (end {
+	                (if (and 
+	                        ("IsInCheck" "King" Next)
+	                        ("NextCanNotMove")
+	                    ) 
+	                    (result Mover Win)
+	                ) 
+	                (if (= 1 (count Pieces Next)) (result Mover Win))
+	                (if (no Moves Mover) (result Mover Draw)) 
+	            })
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Skak (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
