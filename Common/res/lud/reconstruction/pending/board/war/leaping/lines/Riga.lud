@@ -1,29 +1,44 @@
 (game "Riga"
-    (players 2) 
-    (equipment { 
-        ("AlquerqueBoard" 5 5)
-        (piece "Counter" Each (move [#]))
-    }) 
-    
-    (rules 
-        (start { 
-            (place "Counter1" (union {(expand (sites Bottom)) (sites {"D3" "E3"}) }))
-            (place "Counter2" (union {(sites {"A3" "B3"}) (expand (sites Top)) }))
-        })
-        (play [#])
-        (end [#])
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            ("AlquerqueBoard" 5 5)
+	            (piece "Counter" Each (move [#]))
+	        }) 
+	        
+	        (rules 
+	            (start { 
+	                (place "Counter1" (union {(expand (sites Bottom)) (sites {"D3" "E3"}) }))
+	                (place "Counter2" (union {(sites {"A3" "B3"}) (expand (sites Top)) }))
+	            })
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
