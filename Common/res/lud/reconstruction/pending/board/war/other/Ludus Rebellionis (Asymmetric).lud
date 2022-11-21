@@ -1,33 +1,45 @@
 (game "Ludus Rebellionis (Asymmetric)"
-    (players 2) 
-    (equipment { 
-        (board (square 8)) 	
-        (piece "Queen" P1 (move [#]))
-        (piece "King" P1 (move [#]))
-        (piece "Pawn" P2 (move [#]))
-    })
-    (rules 
-        (start {
-            (place "King1" coord:"H8")
-            (place "Queen1" coord:"B8")
-            (place "Pawn2" (difference (expand (sites Bottom) steps:3) (sites Phase 1) ))
-        })
-        (play [#])
-        (end [#])
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (board (square 8)) 	
+	            (piece "Queen" P1 (move [#]))
+	            (piece "King" P1 (move [#]))
+	            (piece "Pawn" P2 (move [#]))
+	        })
+	        (rules 
+	            (start {
+	                (place "King1" coord:"H8")
+	                (place "Queen1" coord:"B8")
+	                (place "Pawn2" (difference (expand (sites Bottom) steps:3) (sites Phase 1) ))
+	            })
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
 
 (metadata 
     
