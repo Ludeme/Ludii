@@ -34,99 +34,98 @@
 //------------------------------------------------------------------------------
 
 (game "Heian Sho Shogi"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment { 
-	            (board [(square 8) | (rectangle 8 9)])
-	            (piece "King" Each (move [#]))
-	            (piece "GoldGeneral" Each (move [#])) // does not move left, right, or backward
-	            (piece "Keima" Each 
-	                (forEach Direction 
-	                    Forward 
-	                    (to 
-	                        if:True 
-	                        (apply 
-	                            (forEach Direction 
-	                                (from (to)) 
-	                                (directions {FR FL}) 
-	                                (if (not ("IsFriendAt" (to))) 
-	                                    (move 
-	                                        (from) 
-	                                        (to 
-	                                            (apply 
-	                                                if:("IsEnemyAt" (to))
-	                                                (add 
-	                                                    (piece (mapEntry "Captured" (what at:(to)))) 
-	                                                    (to (mapEntry "Where" (what at:(to))))
-	                                                )
-	                                            )
-	                                        )
-	                                    )
-	                                )
-	                            )
-	                        )
-	                    ) 
-	                ) 
-	            )
-	            
-	            // Lance
-	            (piece "Kyosha" Each
-	                ("SlideMove" 
-	                    Forward 
-	                ) 
-	            )
-	            //Pawn 
-	            (piece "Fuhyo" Each 
-	                ("StepMove" 
-	                    Forward 
-	                    (then 
-	                        (if ("InPromotionZone" (last To))
-	                            ("Promote") 
-	                        ) 
-	                    )
-	                )
-	            )
-	            [?]
-	            (regions "Promotion" P1 (expand (sites Top) steps:2))
-	            (regions "Promotion" P2 (expand (sites Bottom) steps:2))
-	            (map "Promoted" { 
-	                (pair (id "Fuhyo" P1) (id "GoldGeneral" P1)) (pair (id "Fuhyo" P2) (id "GoldGeneral" P2)) [?] 
-	            })
-	        })
-	        (rules
-	            (start [#])
-	            (play [#])
-	            (end 
-	                (if (= 2 (count Pieces Next)) 
-	                    (result Mover Win)
-	                )
-	            )
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board [(square 8) | (rectangle 8 9)])
+            (piece "King" Each (move [#]))
+            (piece "GoldGeneral" Each (move [#])) // does not move left, right, or backward
+            (piece "Keima" Each 
+                (forEach Direction 
+                    Forward 
+                    (to 
+                        if:True 
+                        (apply 
+                            (forEach Direction 
+                                (from (to)) 
+                                (directions {FR FL}) 
+                                (if (not ("IsFriendAt" (to))) 
+                                    (move 
+                                        (from) 
+                                        (to 
+                                            (apply 
+                                                if:("IsEnemyAt" (to))
+                                                (add 
+                                                    (piece (mapEntry "Captured" (what at:(to)))) 
+                                                    (to (mapEntry "Where" (what at:(to))))
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    ) 
+                ) 
+            )
+            
+            // Lance
+            (piece "Kyosha" Each
+                ("SlideMove" 
+                    Forward 
+                ) 
+            )
+            //Pawn 
+            (piece "Fuhyo" Each 
+                ("StepMove" 
+                    Forward 
+                    (then 
+                        (if ("InPromotionZone" (last To))
+                            ("Promote") 
+                        ) 
+                    )
+                )
+            )
+            [?]
+            (regions "Promotion" P1 (expand (sites Top) steps:2))
+            (regions "Promotion" P2 (expand (sites Bottom) steps:2))
+            (map "Promoted" { 
+                (pair (id "Fuhyo" P1) (id "GoldGeneral" P1)) (pair (id "Fuhyo" P2) (id "GoldGeneral" P2)) [?] 
+            })
+        })
+        (rules
+            (start [#])
+            (play [#])
+            (end 
+                (if (= 2 (count Pieces Next)) 
+                    (result Mover Win)
+                )
+            )
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     
