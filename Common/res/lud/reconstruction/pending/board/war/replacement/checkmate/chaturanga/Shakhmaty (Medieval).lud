@@ -1,45 +1,44 @@
 (game "Shakhmaty (Medieval)"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment { 
-	            (board [#]) 
-	            (piece "King" Each (move [#])) // 2
-	            (piece "Queen" Each (move [#])) // 2
-	            (piece "Bishop" Each (move [#])) // 2
-	            (piece "Knight" Each (move [#])) // 2
-	            (piece "Rook" Each (move [#])) // 2
-	            (piece "Pawn" Each (move [#])) // 8 per player
-	        })
-	        (rules
-	            (start [#])
-	            (play [#])
-	            (end [#])
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board [#]) 
+            (piece "King" Each (move [#])) // 2
+            (piece "Queen" Each (move [#])) // 2
+            (piece "Bishop" Each (move [#])) // 2
+            (piece "Knight" Each (move [#])) // 2
+            (piece "Rook" Each (move [#])) // 2
+            (piece "Pawn" Each (move [#])) // 8 per player
+        })
+        (rules
+            (start [#])
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     

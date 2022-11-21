@@ -11,65 +11,64 @@
 //------------------------------------------------------------------------------
 
 (game "Shakhmaty (Early Modern)"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment { // Each player has one king, one queen, two bishops, two knights, two rooks, and eight pawns.
-	            (board (square 8))
-	            (piece "King" Each (move [#])) 
-	            (piece "Queen" Each 
-	                (or
-	                    (move
-	                        Slide 
-	                        (to 
-	                            if:("IsEnemyAt" (to)) 
-	                            "CaptureToPiece"
-	                        ) 
-	                    ) 
-	                    (move
-	                        Leap 
-	                        "KnightWalk" 
-	                        (to 
-	                            if:(not ("IsFriendAt" (to))) 
-	                            "CaptureToPiece"
-	                        ) 
-	                    )
-	                )
-	            )
-	            (piece "Knight" Each (move [#]))
-	            (piece "Pawn" Each (move [#]))
-	            (piece "Rook" Each (move [#]))
-	            (piece "Bishop" Each (move [#]))
-	        })
-	        (rules
-	            (start [#])
-	            (play [#])
-	            (end [#])
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { // Each player has one king, one queen, two bishops, two knights, two rooks, and eight pawns.
+            (board (square 8))
+            (piece "King" Each (move [#])) 
+            (piece "Queen" Each 
+                (or
+                    (move
+                        Slide 
+                        (to 
+                            if:("IsEnemyAt" (to)) 
+                            "CaptureToPiece"
+                        ) 
+                    ) 
+                    (move
+                        Leap 
+                        "KnightWalk" 
+                        (to 
+                            if:(not ("IsFriendAt" (to))) 
+                            "CaptureToPiece"
+                        ) 
+                    )
+                )
+            )
+            (piece "Knight" Each (move [#]))
+            (piece "Pawn" Each (move [#]))
+            (piece "Rook" Each (move [#]))
+            (piece "Bishop" Each (move [#]))
+        })
+        (rules
+            (start [#])
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     
