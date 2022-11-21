@@ -1,41 +1,56 @@
 (game "Manipur Capturing Game"
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (add
-                (square 5) 
-                edges:{{0 6} {6 12} {12 18} {18 24} {20 16} {16 12} {8 4} {12 8}}
-            )
-            use:Vertex
-        ) 
-        (hand Each)
-        (piece "Marker" Each
-            (or
-                ("StepToEmpty")
-                ("HopOrthogonalCapture")
-            )
-        ) 
-    }) 
-    (rules 
-        (start {
-            (place "Marker1" [#])
-            (place "Marker2" [#])
-        })
-        (play (forEach Piece))
-        (end ("CaptureAll" Next))
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })*
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2)
+	        
+	        (equipment { 
+	            (board 
+	                (add
+	                    (square 5) 
+	                    edges:{{0 6} {6 12} {12 18} {18 24} {20 16} {16 12} {8 4} {12 8}}
+	                )
+	                use:Vertex
+	            ) 
+	            (hand Each)
+	            (piece "Marker" Each
+	                (or
+	                    ("StepToEmpty")
+	                    ("HopOrthogonalCapture")
+	                )
+	            ) 
+	        }) 
+	        (rules 
+	            (start {
+	                (place "Marker1" [#])
+	                (place "Marker2" [#])
+	            })
+	            (play (forEach Piece))
+	            (end ("CaptureAll" Next))
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
