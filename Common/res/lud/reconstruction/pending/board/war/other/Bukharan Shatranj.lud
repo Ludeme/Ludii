@@ -1,42 +1,41 @@
 (game "Bukharan Shatranj"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment {
-	            (board (square 8))
-	            (piece "Queen" Each (move [#])) // The first move is by the queen, which jumps two spaces forward orthogonally, and then is reduced to a weak piece
-	            (piece "Bishop" Each (move Hop Diagonal (between if:True) (to if:(not ("IsFriendAt" (to))) (apply (if ("IsEnemyAt" (to)) (remove (to)))))))
-	            [?]
-	        }) 
-	        (rules
-	            (start [#])
-	            (play [#]) // No castling.
-	            (end [#]) 
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment {
+            (board (square 8))
+            (piece "Queen" Each (move [#])) // The first move is by the queen, which jumps two spaces forward orthogonally, and then is reduced to a weak piece
+            (piece "Bishop" Each (move Hop Diagonal (between if:True) (to if:(not ("IsFriendAt" (to))) (apply (if ("IsEnemyAt" (to)) (remove (to)))))))
+            [?]
+        }) 
+        (rules
+            (start [#])
+            (play [#]) // No castling.
+            (end [#]) 
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     

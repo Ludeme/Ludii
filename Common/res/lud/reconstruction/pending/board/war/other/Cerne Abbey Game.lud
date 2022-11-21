@@ -1,47 +1,46 @@
 (game "Cerne Abbey Game"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment { 
-	            (board 
-	                (rectangle 12 3) 
-	                use:Vertex
-	            )
-	            (piece "Marker" Each (move [#]))
-	        }) 
-	        
-	        (rules 
-	            (start {
-	                (place "Marker1" (sites Left))
-	                (place "Marker2" (sites Right))
-	            })
-	            (play [#])
-	            (end [#])
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board 
+                (rectangle 12 3) 
+                use:Vertex
+            )
+            (piece "Marker" Each (move [#]))
+        }) 
+        
+        (rules 
+            (start {
+                (place "Marker1" (sites Left))
+                (place "Marker2" (sites Right))
+            })
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical INformation (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical INformation (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     

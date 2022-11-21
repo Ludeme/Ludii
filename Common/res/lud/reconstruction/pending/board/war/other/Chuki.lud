@@ -9,59 +9,58 @@
 //------------------------------------------------------------------------------
 
 (game "Chuki"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment { 
-	            (board (square 13) use:Vertex)
-	            (dice d:[#] num:3)
-	            (piece "Marker" Each)
-	        })
-	        (rules
-	            (start {
-	                (place "Marker1" 
-	                    (difference 
-	                        ("InitSitesP1")
-	                        (sites Outer)
-	                    )
-	                )
-	                (place "Marker2" 
-	                    (difference 
-	                        (sites Board)
-	                        (union
-	                            ("InitSitesP1")
-	                            (union (sites Centre) (sites Outer))
-	                        )
-	                    )
-	                )
-	            })
-	            (play [#]) // Dice is supposed to be roll to remove piece?
-	            (end [#])
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board (square 13) use:Vertex)
+            (dice d:[#] num:3)
+            (piece "Marker" Each)
+        })
+        (rules
+            (start {
+                (place "Marker1" 
+                    (difference 
+                        ("InitSitesP1")
+                        (sites Outer)
+                    )
+                )
+                (place "Marker2" 
+                    (difference 
+                        (sites Board)
+                        (union
+                            ("InitSitesP1")
+                            (union (sites Centre) (sites Outer))
+                        )
+                    )
+                )
+            })
+            (play [#]) // Dice is supposed to be roll to remove piece?
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Culin (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Culin (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     
