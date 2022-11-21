@@ -1,0 +1,2938 @@
+(define "CaptureToPiece"
+    (apply 
+        (remove 
+            (to) 
+        )
+    ) 
+)
+
+(define "CaptureForwardDiagonal"
+    (move Step 
+        (directions {FR FL}) 
+        (to 
+            if:("IsEnemyAt" (to)) 
+            (apply (remove (to)))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Chaturanga (Payagunda)"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Chaturanga (Payagunda)1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Pawn" Each 
+                (or 
+                    (move Step Forward 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { FR FL}
+                        )
+                        
+                        (to if:
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Mover "Promotion")
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Rook" Each 
+                (move Slide Orthogonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "KingnoCross" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Elephant" Each 
+                (move Slide Diagonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Knight" Each 
+                (move Leap { { F F R F}
+                    { F F L F}
+                    }
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "FerznoCross" Each 
+                (move Hop Diagonal 
+                    (between if:True)
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "Promotion" P1 
+                (sites Top)
+            )
+            
+            (regions "Promotion" P2 
+                (sites Bottom)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Pawn1" 
+                    (sites Row 1)
+                )
+                
+                (place "Pawn2" 
+                    (sites Row 6)
+                )
+                
+                (place "FerznoCross1" { "A1" "H1"}
+                )
+                
+                (place "Knight1" { "B1" "G1"}
+                )
+                
+                (place "Rook1" { "C1" "F1"}
+                )
+                
+                (place "KingnoCross1" coord:"D1")
+                
+                (place "Elephant1" coord:"E1")
+                
+                (place "FerznoCross2" { "A8" "H8"}
+                )
+                
+                (place "Knight2" { "B8" "G8"}
+                )
+                
+                (place "Rook2" { "C8" "F8"}
+                )
+                
+                (place "KingnoCross2" coord:"E8")
+                
+                (place "Elephant2" coord:"D8")
+                }
+            )
+            
+            (play 
+                (forEach Piece "FerznoCross" 
+                    (move Hop Forward 
+                        (between if:True)
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (and 
+                        (is Threatened 
+                            (id "KingnoCross" Next)
+                        )
+                        
+                        (not 
+                            (can Move 
+                                (do 
+                                    (forEach Piece Next)
+                                    ifAfterwards:
+                                    (not 
+                                        (is Threatened 
+                                            (id "KingnoCross" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+                }
+            )
+        )
+        
+    > "The Chaturanga (Payagunda)1 ruleset.")
+    
+    (item "Chaturanga (Payagunda)2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Pawn" Each 
+                (or 
+                    (move Step Forward 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { FR FL}
+                        )
+                        
+                        (to if:
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Mover "Promotion")
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Rook" Each 
+                (move Slide Orthogonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "KingnoCross" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Elephant" Each 
+                (move Slide Diagonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Knight" Each 
+                (move Leap { { F F R F}
+                    { F F L F}
+                    }
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "FerznoCross" Each 
+                (move Hop Diagonal 
+                    (between if:True)
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "Promotion" P1 
+                (sites Top)
+            )
+            
+            (regions "Promotion" P2 
+                (sites Bottom)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Pawn1" 
+                    (sites Row 1)
+                )
+                
+                (place "Pawn2" 
+                    (sites Row 6)
+                )
+                
+                (place "FerznoCross1" { "A1" "H1"}
+                )
+                
+                (place "Knight1" { "B1" "G1"}
+                )
+                
+                (place "Rook1" { "C1" "F1"}
+                )
+                
+                (place "KingnoCross1" coord:"D1")
+                
+                (place "Elephant1" coord:"E1")
+                
+                (place "FerznoCross2" { "A8" "H8"}
+                )
+                
+                (place "Knight2" { "B8" "G8"}
+                )
+                
+                (place "Rook2" { "C8" "F8"}
+                )
+                
+                (place "KingnoCross2" coord:"E8")
+                
+                (place "Elephant2" coord:"D8")
+                }
+            )
+            
+            (play 
+                (forEach Piece "FerznoCross" 
+                    (move Hop Forward 
+                        (between if:True)
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (or 
+                        (and 
+                            (is Threatened 
+                                (id "KingnoCross" Next)
+                            )
+                            
+                            (not 
+                                (can Move 
+                                    (do 
+                                        (forEach Piece Next)
+                                        ifAfterwards:
+                                        (not 
+                                            (is Threatened 
+                                                (id "KingnoCross" Next)
+                                                
+                                                (forEach Piece)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (= 1 
+                            (count Pieces Next)
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (= 
+                        (value Player P1)
+                    64)
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (= 
+                        (value Player P2)
+                    64)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Chaturanga (Payagunda)2 ruleset.")
+    
+    (item "Chaturanga (Payagunda)3" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Pawn" Each 
+                (or 
+                    (move Step Forward 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { FR FL}
+                        )
+                        
+                        (to if:
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Mover "Promotion")
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Rook" Each 
+                (move Slide Orthogonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "KingnoCross" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Elephant" Each 
+                (move Slide Diagonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Knight" Each 
+                (move Leap { { F F R F}
+                    { F F L F}
+                    }
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "FerznoCross" Each 
+                (move Hop Diagonal 
+                    (between if:True)
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "Promotion" P1 
+                (sites Top)
+            )
+            
+            (regions "Promotion" P2 
+                (sites Bottom)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Pawn1" 
+                    (sites Row 1)
+                )
+                
+                (place "Pawn2" 
+                    (sites Row 6)
+                )
+                
+                (place "FerznoCross1" { "A1" "H1"}
+                )
+                
+                (place "Knight1" { "B1" "G1"}
+                )
+                
+                (place "Rook1" { "C1" "F1"}
+                )
+                
+                (place "KingnoCross1" coord:"D1")
+                
+                (place "Elephant1" coord:"E1")
+                
+                (place "FerznoCross2" { "A8" "H8"}
+                )
+                
+                (place "Knight2" { "B8" "G8"}
+                )
+                
+                (place "Rook2" { "C8" "F8"}
+                )
+                
+                (place "KingnoCross2" coord:"E8")
+                
+                (place "Elephant2" coord:"D8")
+                }
+            )
+            
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Promote 
+                        (last To)
+                        
+                        (piece { "Knight" "Elephant" "Rook" "FerznoCross"}
+                        )
+                    Mover )
+                    
+                    (do 
+                        (forEach Piece)
+                        ifAfterwards:
+                        (not 
+                            (is Threatened 
+                                (id "KingnoCross" Mover)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (!= 
+                                    (next)
+                                    
+                                    (value Player Next)
+                                )
+                                
+                                (if 
+                                    (is Threatened 
+                                        (id "KingnoCross" Next)
+                                    )
+                                    
+                                    (set Value Next 
+                                        (next)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (and 
+                        (is Threatened 
+                            (id "KingnoCross" Next)
+                        )
+                        
+                        (not 
+                            (can Move 
+                                (do 
+                                    (forEach Piece Next)
+                                    ifAfterwards:
+                                    (not 
+                                        (is Threatened 
+                                            (id "KingnoCross" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+                }
+            )
+        )
+        
+    > "The Chaturanga (Payagunda)3 ruleset.")
+    
+    (item "Chaturanga (Payagunda)4" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Pawn" Each 
+                (or 
+                    (move Step Forward 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { FR FL}
+                        )
+                        
+                        (to if:
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Mover "Promotion")
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Rook" Each 
+                (move Slide Orthogonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "KingnoCross" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Elephant" Each 
+                (move Slide Diagonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Knight" Each 
+                (move Leap { { F F R F}
+                    { F F L F}
+                    }
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "FerznoCross" Each 
+                (move Hop Diagonal 
+                    (between if:True)
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "Promotion" P1 
+                (sites Top)
+            )
+            
+            (regions "Promotion" P2 
+                (sites Bottom)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Pawn1" 
+                    (sites Row 1)
+                )
+                
+                (place "Pawn2" 
+                    (sites Row 6)
+                )
+                
+                (place "FerznoCross1" { "A1" "H1"}
+                )
+                
+                (place "Knight1" { "B1" "G1"}
+                )
+                
+                (place "Rook1" { "C1" "F1"}
+                )
+                
+                (place "KingnoCross1" coord:"D1")
+                
+                (place "Elephant1" coord:"E1")
+                
+                (place "FerznoCross2" { "A8" "H8"}
+                )
+                
+                (place "Knight2" { "B8" "G8"}
+                )
+                
+                (place "Rook2" { "C8" "F8"}
+                )
+                
+                (place "KingnoCross2" coord:"E8")
+                
+                (place "Elephant2" coord:"D8")
+                }
+            )
+            
+            (play 
+                (forEach Piece "FerznoCross" 
+                    (move Hop Forward 
+                        (between if:True)
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (and 
+                        (is Threatened 
+                            (id "KingnoCross" Next)
+                        )
+                        
+                        (not 
+                            (can Move 
+                                (do 
+                                    (forEach Piece Next)
+                                    ifAfterwards:
+                                    (not 
+                                        (is Threatened 
+                                            (id "KingnoCross" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (no Moves Mover)
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (= 
+                        (count Pieces Next)
+                    1)
+                    
+                    (result Mover Win)
+                )
+                }
+            )
+        )
+        
+    > "The Chaturanga (Payagunda)4 ruleset.")
+    
+    (item "Chaturanga (Payagunda)5" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Pawn" Each 
+                (or 
+                    (move Step Forward 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { FR FL}
+                        )
+                        
+                        (to if:
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Mover "Promotion")
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Rook" Each 
+                (move Slide Orthogonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "KingnoCross" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Elephant" Each 
+                (move Slide Diagonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Knight" Each 
+                (move Leap { { F F R F}
+                    { F F L F}
+                    }
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "FerznoCross" Each 
+                (move Hop Diagonal 
+                    (between if:True)
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "Promotion" P1 
+                (sites Top)
+            )
+            
+            (regions "Promotion" P2 
+                (sites Bottom)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Pawn1" 
+                    (sites Row 1)
+                )
+                
+                (place "Pawn2" 
+                    (sites Row 6)
+                )
+                
+                (place "FerznoCross1" { "A1" "H1"}
+                )
+                
+                (place "Knight1" { "B1" "G1"}
+                )
+                
+                (place "Rook1" { "C1" "F1"}
+                )
+                
+                (place "KingnoCross1" coord:"D1")
+                
+                (place "Elephant1" coord:"E1")
+                
+                (place "FerznoCross2" { "A8" "H8"}
+                )
+                
+                (place "Knight2" { "B8" "G8"}
+                )
+                
+                (place "Rook2" { "C8" "F8"}
+                )
+                
+                (place "KingnoCross2" coord:"E8")
+                
+                (place "Elephant2" coord:"D8")
+                }
+            )
+            
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Promote 
+                        (last To)
+                        
+                        (piece { "Knight" "Elephant" "Rook" "FerznoCross"}
+                        )
+                    Mover )
+                    
+                    (do 
+                        (forEach Piece)
+                        ifAfterwards:
+                        (not 
+                            (is Threatened 
+                                (id "KingnoCross" Mover)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (!= 
+                                    (next)
+                                    
+                                    (value Player Next)
+                                )
+                                
+                                (if 
+                                    (is Threatened 
+                                        (id "KingnoCross" Next)
+                                    )
+                                    
+                                    (set Value Next 
+                                        (next)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (or 
+                        (and 
+                            (is Threatened 
+                                (id "KingnoCross" Next)
+                            )
+                            
+                            (not 
+                                (can Move 
+                                    (do 
+                                        (forEach Piece Next)
+                                        ifAfterwards:
+                                        (not 
+                                            (is Threatened 
+                                                (id "KingnoCross" Next)
+                                                
+                                                (forEach Piece)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (= 1 
+                            (count Pieces Next)
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (= 
+                        (value Player P1)
+                    64)
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (= 
+                        (value Player P2)
+                    64)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Chaturanga (Payagunda)5 ruleset.")
+    
+    (item "Chaturanga (Payagunda)6" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Pawn" Each 
+                (or 
+                    (move Step Forward 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { FR FL}
+                        )
+                        
+                        (to if:
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Mover "Promotion")
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Rook" Each 
+                (move Slide Orthogonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "KingnoCross" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Elephant" Each 
+                (move Slide Diagonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Knight" Each 
+                (move Leap { { F F R F}
+                    { F F L F}
+                    }
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "FerznoCross" Each 
+                (move Hop Diagonal 
+                    (between if:True)
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "Promotion" P1 
+                (sites Top)
+            )
+            
+            (regions "Promotion" P2 
+                (sites Bottom)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Pawn1" 
+                    (sites Row 1)
+                )
+                
+                (place "Pawn2" 
+                    (sites Row 6)
+                )
+                
+                (place "FerznoCross1" { "A1" "H1"}
+                )
+                
+                (place "Knight1" { "B1" "G1"}
+                )
+                
+                (place "Rook1" { "C1" "F1"}
+                )
+                
+                (place "KingnoCross1" coord:"D1")
+                
+                (place "Elephant1" coord:"E1")
+                
+                (place "FerznoCross2" { "A8" "H8"}
+                )
+                
+                (place "Knight2" { "B8" "G8"}
+                )
+                
+                (place "Rook2" { "C8" "F8"}
+                )
+                
+                (place "KingnoCross2" coord:"E8")
+                
+                (place "Elephant2" coord:"D8")
+                }
+            )
+            
+            (play 
+                (if 
+                    (can Move 
+                        (do 
+                            (forEach Piece)
+                            ifAfterwards:
+                            (not 
+                                (is Threatened 
+                                    (id "KingnoCross" Mover)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Threatened 
+                                        (id "KingnoCross" Next)
+                                    )
+                                    
+                                    (set Value Mover 
+                                        (+ 1 
+                                            (value Player Mover)
+                                        )
+                                    )
+                                    
+                                    (set Value Mover 0)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (do 
+                        (forEach Piece)
+                        ifAfterwards:
+                        (not 
+                            (is Threatened 
+                                (id "KingnoCross" Mover)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Threatened 
+                                    (id "KingnoCross" Next)
+                                )
+                                
+                                (set Value Mover 
+                                    (+ 1 
+                                        (value Player Mover)
+                                    )
+                                )
+                                
+                                (set Value Mover 0)
+                            )
+                        )
+                    )
+                    
+                    (move Remove 
+                        (difference 
+                            (sites Occupied by:Next)
+                            
+                            (sites Occupied by:Next component:"KingnoCross")
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (and 
+                        (is Threatened 
+                            (id "KingnoCross" Next)
+                        )
+                        
+                        (not 
+                            (can Move 
+                                (do 
+                                    (forEach Piece Next)
+                                    ifAfterwards:
+                                    (not 
+                                        (is Threatened 
+                                            (id "KingnoCross" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (no Moves Mover)
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (= 
+                        (count Pieces Next)
+                    1)
+                    
+                    (result Mover Win)
+                )
+                }
+            )
+        )
+        
+    > "The Chaturanga (Payagunda)6 ruleset.")
+    
+    (item "Chaturanga (Payagunda)7" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Pawn" Each 
+                (or 
+                    (move Step Forward 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { FR FL}
+                        )
+                        
+                        (to if:
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Mover "Promotion")
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Rook" Each 
+                (move Slide Orthogonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "KingnoCross" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Elephant" Each 
+                (move Slide Diagonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Knight" Each 
+                (move Leap { { F F R F}
+                    { F F L F}
+                    }
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "FerznoCross" Each 
+                (move Hop Diagonal 
+                    (between if:True)
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "Promotion" P1 
+                (sites Top)
+            )
+            
+            (regions "Promotion" P2 
+                (sites Bottom)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Pawn1" 
+                    (sites Row 1)
+                )
+                
+                (place "Pawn2" 
+                    (sites Row 6)
+                )
+                
+                (place "FerznoCross1" { "A1" "H1"}
+                )
+                
+                (place "Knight1" { "B1" "G1"}
+                )
+                
+                (place "Rook1" { "C1" "F1"}
+                )
+                
+                (place "KingnoCross1" coord:"D1")
+                
+                (place "Elephant1" coord:"E1")
+                
+                (place "FerznoCross2" { "A8" "H8"}
+                )
+                
+                (place "Knight2" { "B8" "G8"}
+                )
+                
+                (place "Rook2" { "C8" "F8"}
+                )
+                
+                (place "KingnoCross2" coord:"E8")
+                
+                (place "Elephant2" coord:"D8")
+                }
+            )
+            
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Promote 
+                        (last To)
+                        
+                        (piece { "Knight" "Elephant" "Rook" "FerznoCross"}
+                        )
+                    Mover )
+                    
+                    (do 
+                        (forEach Piece)
+                        ifAfterwards:
+                        (not 
+                            (is Threatened 
+                                (id "KingnoCross" Mover)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (!= 
+                                    (next)
+                                    
+                                    (value Player Next)
+                                )
+                                
+                                (if 
+                                    (is Threatened 
+                                        (id "KingnoCross" Next)
+                                    )
+                                    
+                                    (set Value Next 
+                                        (next)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (and 
+                        (is Threatened 
+                            (id "KingnoCross" Next)
+                        )
+                        
+                        (not 
+                            (can Move 
+                                (do 
+                                    (forEach Piece Next)
+                                    ifAfterwards:
+                                    (not 
+                                        (is Threatened 
+                                            (id "KingnoCross" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (no Moves Mover)
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (= 
+                        (count Pieces Next)
+                    1)
+                    
+                    (result Mover Win)
+                )
+                }
+            )
+        )
+        
+    > "The Chaturanga (Payagunda)7 ruleset.")
+    
+    (item "Chaturanga (Payagunda)8" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Pawn" Each 
+                (or 
+                    (move Step Forward 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { FR FL}
+                        )
+                        
+                        (to if:
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Mover "Promotion")
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Rook" Each 
+                (move Slide Orthogonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "KingnoCross" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Elephant" Each 
+                (move Slide Diagonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Knight" Each 
+                (move Leap { { F F R F}
+                    { F F L F}
+                    }
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "FerznoCross" Each 
+                (move Hop Diagonal 
+                    (between if:True)
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "Promotion" P1 
+                (sites Top)
+            )
+            
+            (regions "Promotion" P2 
+                (sites Bottom)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Pawn1" 
+                    (sites Row 1)
+                )
+                
+                (place "Pawn2" 
+                    (sites Row 6)
+                )
+                
+                (place "FerznoCross1" { "A1" "H1"}
+                )
+                
+                (place "Knight1" { "B1" "G1"}
+                )
+                
+                (place "Rook1" { "C1" "F1"}
+                )
+                
+                (place "KingnoCross1" coord:"D1")
+                
+                (place "Elephant1" coord:"E1")
+                
+                (place "FerznoCross2" { "A8" "H8"}
+                )
+                
+                (place "Knight2" { "B8" "G8"}
+                )
+                
+                (place "Rook2" { "C8" "F8"}
+                )
+                
+                (place "KingnoCross2" coord:"E8")
+                
+                (place "Elephant2" coord:"D8")
+                }
+            )
+            
+            (play 
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:
+                    (not 
+                        (is Threatened 
+                            (id "KingnoCross" Mover)
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (or 
+                        (and 
+                            (is Threatened 
+                                (id "KingnoCross" Next)
+                            )
+                            
+                            (not 
+                                (can Move 
+                                    (do 
+                                        (forEach Piece Next)
+                                        ifAfterwards:
+                                        (not 
+                                            (is Threatened 
+                                                (id "KingnoCross" Next)
+                                                
+                                                (forEach Piece)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (= 1 
+                            (count Pieces Next)
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (= 
+                        (value Player P1)
+                    64)
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (= 
+                        (value Player P2)
+                    64)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Chaturanga (Payagunda)8 ruleset.")
+    
+    (item "Chaturanga (Payagunda)9" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Pawn" Each 
+                (or 
+                    (move Step Forward 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { FR FL}
+                        )
+                        
+                        (to if:
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Mover "Promotion")
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Rook" Each 
+                (move Slide Orthogonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "KingnoCross" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Elephant" Each 
+                (move Slide Diagonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Knight" Each 
+                (move Leap { { F F R F}
+                    { F F L F}
+                    }
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "FerznoCross" Each 
+                (move Hop Diagonal 
+                    (between if:True)
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "Promotion" P1 
+                (sites Top)
+            )
+            
+            (regions "Promotion" P2 
+                (sites Bottom)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Pawn1" 
+                    (sites Row 1)
+                )
+                
+                (place "Pawn2" 
+                    (sites Row 6)
+                )
+                
+                (place "FerznoCross1" { "A1" "H1"}
+                )
+                
+                (place "Knight1" { "B1" "G1"}
+                )
+                
+                (place "Rook1" { "C1" "F1"}
+                )
+                
+                (place "KingnoCross1" coord:"D1")
+                
+                (place "Elephant1" coord:"E1")
+                
+                (place "FerznoCross2" { "A8" "H8"}
+                )
+                
+                (place "Knight2" { "B8" "G8"}
+                )
+                
+                (place "Rook2" { "C8" "F8"}
+                )
+                
+                (place "KingnoCross2" coord:"E8")
+                
+                (place "Elephant2" coord:"D8")
+                }
+            )
+            
+            (play 
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:
+                    (not 
+                        (is Threatened 
+                            (id "KingnoCross" Mover)
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (or 
+                        (and 
+                            (is Threatened 
+                                (id "KingnoCross" Next)
+                            )
+                            
+                            (not 
+                                (can Move 
+                                    (do 
+                                        (forEach Piece Next)
+                                        ifAfterwards:
+                                        (not 
+                                            (is Threatened 
+                                                (id "KingnoCross" Next)
+                                                
+                                                (forEach Piece)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (= 1 
+                            (count Pieces Next)
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (= 
+                        (value Player P1)
+                    64)
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (= 
+                        (value Player P2)
+                    64)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Chaturanga (Payagunda)9 ruleset.")
+    
+    (item "Chaturanga (Payagunda)10" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Pawn" Each 
+                (or 
+                    (move Step Forward 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { FR FL}
+                        )
+                        
+                        (to if:
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Mover "Promotion")
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Rook" Each 
+                (move Slide Orthogonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "KingnoCross" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Elephant" Each 
+                (move Slide Diagonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Knight" Each 
+                (move Leap { { F F R F}
+                    { F F L F}
+                    }
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "FerznoCross" Each 
+                (move Hop Diagonal 
+                    (between if:True)
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "Promotion" P1 
+                (sites Top)
+            )
+            
+            (regions "Promotion" P2 
+                (sites Bottom)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Pawn1" 
+                    (sites Row 1)
+                )
+                
+                (place "Pawn2" 
+                    (sites Row 6)
+                )
+                
+                (place "FerznoCross1" { "A1" "H1"}
+                )
+                
+                (place "Knight1" { "B1" "G1"}
+                )
+                
+                (place "Rook1" { "C1" "F1"}
+                )
+                
+                (place "KingnoCross1" coord:"D1")
+                
+                (place "Elephant1" coord:"E1")
+                
+                (place "FerznoCross2" { "A8" "H8"}
+                )
+                
+                (place "Knight2" { "B8" "G8"}
+                )
+                
+                (place "Rook2" { "C8" "F8"}
+                )
+                
+                (place "KingnoCross2" coord:"E8")
+                
+                (place "Elephant2" coord:"D8")
+                }
+            )
+            
+            (play 
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:
+                    (not 
+                        (is Threatened 
+                            (id "KingnoCross" Mover)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (and 
+                        (is Threatened 
+                            (id "KingnoCross" Next)
+                        )
+                        
+                        (not 
+                            (can Move 
+                                (do 
+                                    (forEach Piece Next)
+                                    ifAfterwards:
+                                    (not 
+                                        (is Threatened 
+                                            (id "KingnoCross" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    { 
+                    (if 
+                        (no Pieces Next "Pawn")
+                        
+                        (result Mover Win)
+                    )
+                    
+                    (if 
+                        (!= 
+                            (count Pieces Next "Pawn")
+                        0)
+                        
+                        (result Mover Draw)
+                    )
+                    }
+                )
+            )
+        )
+        
+    > "The Chaturanga (Payagunda)10 ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board (square 8)) 
+            (piece "Pawn" Each // Padati 
+                (or 
+                    "StepForwardToEmpty" 
+                    "CaptureForwardDiagonal"
+                    (then
+                        (if (is In (last To) (sites Mover "Promotion")) 
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            (piece "Rook" Each // Dvipa 
+                (move
+                    Slide 
+                    Orthogonal 
+                    (to 
+                        if:("IsEnemyAt" (to)) 
+                        "CaptureToPiece"
+                    ) 
+                )
+            )
+            (piece "King_noCross" Each // Raja 
+                (move
+                    Step 
+                    (to 
+                        if:(not ("IsFriendAt" (to))) 
+                        "CaptureToPiece" 
+                    )
+                )
+            )
+            (piece "Elephant" Each // Mantri
+                (move
+                    Slide 
+                    Diagonal 
+                    (to 
+                        if:("IsEnemyAt" (to)) 
+                        "CaptureToPiece"
+                    ) 
+                )		
+            ) 
+            (piece "Knight" Each // Turaja 
+                (move
+                    Leap 
+                    "KnightWalk" 
+                    (to 
+                        if:(not ("IsFriendAt" (to))) 
+                        "CaptureToPiece"
+                    ) 
+                )
+            )
+            (piece "Ferz_noCross" Each // Ratha 
+                (move Hop Diagonal 
+                    (between if:True) 
+                    (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))) 
+                )
+            )
+            (regions "Promotion" P1 (sites Top))
+            (regions "Promotion" P2 (sites Bottom))
+        })
+        
+        (rules 
+            (start { 
+                (place "Pawn1" (sites Row 1))
+                (place "Pawn2" (sites Row 6))
+                (place "Ferz_noCross1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Rook1" {"C1" "F1"}) (place "King_noCross1" coord:"D1") (place "Elephant1" coord:"E1") 
+                (place "Ferz_noCross2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Rook2" {"C8" "F8"}) (place "King_noCross2" coord:"E8") (place "Elephant2" coord:"D8") 
+            })
+            (play [(forEach Piece) | #])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Chaturanga (Payagunda)1 (Reconstructed)" {
+        "Variant/Chaturanga (Payagunda)1"
+    })
+    (ruleset "Ruleset/Chaturanga (Payagunda)2 (Reconstructed)" {
+        "Variant/Chaturanga (Payagunda)2"
+    })
+    (ruleset "Ruleset/Chaturanga (Payagunda)3 (Reconstructed)" {
+        "Variant/Chaturanga (Payagunda)3"
+    })
+    (ruleset "Ruleset/Chaturanga (Payagunda)4 (Reconstructed)" {
+        "Variant/Chaturanga (Payagunda)4"
+    })
+    (ruleset "Ruleset/Chaturanga (Payagunda)5 (Reconstructed)" {
+        "Variant/Chaturanga (Payagunda)5"
+    })
+    (ruleset "Ruleset/Chaturanga (Payagunda)6 (Reconstructed)" {
+        "Variant/Chaturanga (Payagunda)6"
+    })
+    (ruleset "Ruleset/Chaturanga (Payagunda)7 (Reconstructed)" {
+        "Variant/Chaturanga (Payagunda)7"
+    })
+    (ruleset "Ruleset/Chaturanga (Payagunda)8 (Reconstructed)" {
+        "Variant/Chaturanga (Payagunda)8"
+    })
+    (ruleset "Ruleset/Chaturanga (Payagunda)9 (Reconstructed)" {
+        "Variant/Chaturanga (Payagunda)9"
+    })
+    (ruleset "Ruleset/Chaturanga (Payagunda)10 (Reconstructed)" {
+        "Variant/Chaturanga (Payagunda)10"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Chaturanga is the name of a replacement capture game from India. This particular version was played in the early eighteenth century, and shows movement from the older version of the game toward the modern version.")
+        (rules "8x8 board. Ratha start on the corers, with the Turaja next to them and the Dvipa next to the Horses. The Raja and Mantri are in the center. Ratha jump diagonally to the second space; Turaja move orthogonally one space and then diagonally another space, jumping over any intervening pieces; Dvipa moves orthogonally any distance; Mantri moves diagonally any distance; Raja moves one space orthogonally or diagonally, Padati move forward orthogonally one square or forward diagonally to capture.")
+        (source "DLP evidence.")
+        (id "1447")
+        (version "1.3.7")
+        (classification "board/war/replacement/checkmate/chaturanga/reconstruction")
+        (credit "Eric Piette")
+        (origin "This game was played in India, from around 1700 to 1750.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)
+

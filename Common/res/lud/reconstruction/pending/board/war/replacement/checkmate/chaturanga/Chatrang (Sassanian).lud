@@ -1,46 +1,45 @@
 (game "Chatrang (Sassanian)"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment { 
-	            (board (square 8)) 
-	            (piece "King" Each [#]) // Shah
-	            (piece "Queen" Each [#]) // Ferz
-	            (piece "Rook" Each [#]) // Rukh
-	            (piece "Elephant" Each [#])
-	            (piece "Knight" Each [#]) // Asp
-	            (piece "Pawn" Each [#]) // Piyadak
-	        })
-	        
-	        (rules 
-	            (start [#])
-	            (play [(forEach Piece) | #])
-	            (end [#])
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board (square 8)) 
+            (piece "King" Each [#]) // Shah
+            (piece "Queen" Each [#]) // Ferz
+            (piece "Rook" Each [#]) // Rukh
+            (piece "Elephant" Each [#])
+            (piece "Knight" Each [#]) // Asp
+            (piece "Pawn" Each [#]) // Piyadak
+        })
+        
+        (rules 
+            (start [#])
+            (play [(forEach Piece) | #])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     
