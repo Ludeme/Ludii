@@ -1,22 +1,37 @@
 (game "Polis"
-    (players 2) 
-    (equipment [#]) 
-    (rules
-        (start [#]) 
-        (play [#]) // Custodial capture
-        (end [#])
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/HIstorical Information (Incomplete)" {
-        
-    })*
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment [#]) 
+	        (rules
+	            (start [#]) 
+	            (play [#]) // Custodial capture
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/HIstorical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
