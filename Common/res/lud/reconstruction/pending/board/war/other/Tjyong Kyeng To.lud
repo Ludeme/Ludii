@@ -1,26 +1,41 @@
 (game "Tjyong Kyeng To"
-    (players 2) 
-    (equipment { 
-        (board [#]) // 108 squares, probably to express in the concepts.
-        (dice d:5 from:1 num:5)
-        (piece "Disc" Each (move [#]))
-    })
-    (rules
-        (start [#])
-        (play [#])
-        (end [#])
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (board [#]) // 108 squares, probably to express in the concepts.
+	            (dice d:5 from:1 num:5)
+	            (piece "Disc" Each (move [#]))
+	        })
+	        (rules
+	            (start [#])
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
