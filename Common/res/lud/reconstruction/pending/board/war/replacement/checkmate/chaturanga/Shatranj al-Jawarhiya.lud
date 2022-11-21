@@ -1,30 +1,45 @@
 (game "Shatranj al-Jawarhiya"
-    (players 2) 
-    (equipment { 
-        (board (rectangle 8 7)) 		
-        (piece "Mouth" Each (move [#]))
-        (piece "Eye" Each (move [#]))
-        (piece "Ear" Each (move [#]))
-        (piece "Hand" Each (move [#]))
-        (piece "Foot" Each (move [#]))
-        (piece "Heart" Each (move [#]))
-    })
-    (rules 
-        (start [#])
-        (play [#])
-        (end [#])
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })*
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (board (rectangle 8 7)) 		
+	            (piece "Mouth" Each (move [#]))
+	            (piece "Eye" Each (move [#]))
+	            (piece "Ear" Each (move [#]))
+	            (piece "Hand" Each (move [#]))
+	            (piece "Foot" Each (move [#]))
+	            (piece "Heart" Each (move [#]))
+	        })
+	        (rules 
+	            (start [#])
+	            (play [#])
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
