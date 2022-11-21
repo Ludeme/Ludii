@@ -278,6 +278,7 @@ public class MainMenuFunctions extends JMenuBar
 			    {
 			    	if (gameChoice >= gameOptions.size()) 
 			    	{
+			    		System.out.println("Thumbnails Done.");
 			            t.cancel();
 			            t.purge();
 			            return;
