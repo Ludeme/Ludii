@@ -14,11 +14,14 @@
                 (square 5 diagonals:Solid)
                 use:Vertex
             )
-            (piece "Disc" Each (move [#])) 
+            (piece "Counter" Each [#]) 
             }
         ) 
         (rules 
-            ("BeforeAfterCentreSetup" "Disc1" "Disc2")
+        	(start {
+        		(place "Counter1" (union { (sites {"C5" "G5"}) (sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3)}))
+        		(place "Counter2" (union { (sites {"A5" "I5"}) (sites Row 5) (sites Row 6) (sites Row 7) (sites Row 8)}))
+        	})
             (play [#])
             (end [#])
         )
