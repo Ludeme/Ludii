@@ -2409,38 +2409,38 @@
         (players 2) 
         (equipment { 
             (board 
-                    (rectangle 5 5 diagonals:Alternating)
-                use:Vertex)
+                (rectangle 5 5 diagonals:Alternating)
+            use:Vertex)
             (piece "Counter" Each [#])
         }) 
         
         (rules 
-                (start { 
-                    (place "Counter1" 
-                        (union { 
-                            (expand 
-                                (sites Bottom)
-                            )
-                            
-                            (sites { "D3" "E3"}
-                            )
-                            }
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
                         )
-                    )
-                    
-                    (place "Counter2" 
-                        (union { 
-                            (sites { "A3" "B3"}
-                            )
-                            
-                            (expand 
-                                (sites Top)
-                            )
-                            }
+                        
+                        (sites { "D3" "E3"}
                         )
+                        }
                     )
-                    }
                 )
+                
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
             (play [#])
             (end [#])
         )
