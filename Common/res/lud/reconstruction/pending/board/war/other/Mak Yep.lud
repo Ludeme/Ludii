@@ -1,37 +1,36 @@
 (game "Mak Yep"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment [#]) // 16 squares for the board (but no 4x4 for sure). 7 pieces per player.
-	        (rules
-	            (start [#]) 
-	            (play [#])
-	            (end [#]) // One player must remove five counters so that at no point can the other player capture one of the pieces by hopping over it.
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment [#]) // 16 squares for the board (but no 4x4 for sure). 7 pieces per player.
+        (rules
+            (start [#]) 
+            (play [#])
+            (end [#]) // One player must remove five counters so that at no point can the other player capture one of the pieces by hopping over it.
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     
