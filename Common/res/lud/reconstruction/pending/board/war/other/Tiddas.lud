@@ -1,47 +1,46 @@
 (game "Tiddas"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2) 
-	        (equipment { 
-	            (board 
-	                (merge {
-	                    (square 3)
-	                    (shift -1 1 (rectangle 1 5)) 
-	                    (shift 1 -1 (rectangle 5 1))
-	                }) 
-	                use:Vertex
-	            )
-	            (piece "Marker" Each (move [#])) // "Pieces move vertically or horizontally. Replacement capture." NEED CONCEPT
-	        }) 
-	        (rules 
-	            (start [#]) // 11 pieces.
-	            (play [#])
-	            (end ("CaptureAll" Next)) 
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board 
+                (merge {
+                    (square 3)
+                    (shift -1 1 (rectangle 1 5)) 
+                    (shift 1 -1 (rectangle 5 1))
+                }) 
+                use:Vertex
+            )
+            (piece "Marker" Each (move [#])) // "Pieces move vertically or horizontally. Replacement capture." NEED CONCEPT
+        }) 
+        (rules 
+            (start [#]) // 11 pieces.
+            (play [#])
+            (end ("CaptureAll" Next)) 
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     

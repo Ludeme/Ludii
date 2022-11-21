@@ -1,46 +1,45 @@
 (game "Selayar Game"
-	    <Variant>
-	)
+    <Variant>
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(option "Variant" <Variant> args:{ <variant> }
-	    {
-	    (item "Incomplete"
-	        <
-	        (players 2)
-	        
-	        (equipment 
-	            { 
-	            ("AlquerqueBoardWithBottomAndTopTriangles") 
-	            (hand Each)
-	            (piece "Marker" Each (move [#])) 
-	        }) 
-	        (rules 
-	            (start {
-	                (place "Marker1" (union (sites Bottom) (expand (sites Row 2))))
-	                (place "Marker2" (union (sites Top) (expand (sites Row 6))))
-	            })
-	            (play [#])
-	            (end [#])
-	        )
-	        >
-	        "The incomplete ruleset."
-	    )
-	})
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2)
+        
+        (equipment 
+            { 
+            ("AlquerqueBoardWithBottomAndTopTriangles") 
+            (hand Each)
+            (piece "Marker" Each (move [#])) 
+        }) 
+        (rules 
+            (start {
+                (place "Marker1" (union (sites Bottom) (expand (sites Row 2))))
+                (place "Marker2" (union (sites Top) (expand (sites Row 6))))
+            })
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(rulesets { 
-	    
-	    (ruleset "Ruleset/Historical Information (Incomplete)" {
-	        "Variant/Incomplete"
-	    })
-	    
-	})
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
 
-	//------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 (metadata 
     

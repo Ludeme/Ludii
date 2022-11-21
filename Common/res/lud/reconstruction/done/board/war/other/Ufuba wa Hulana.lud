@@ -1,0 +1,1678 @@
+(game "Ufuba wa Hulana"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Ufuba wa Hulana1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            )
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Ufuba wa Hulana1 ruleset.")
+    
+    (item "Ufuba wa Hulana2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            )
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (and 
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between 
+                                    (max 1)
+                                    if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (surround 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (and 
+                                        (is Enemy 
+                                            (who at:
+                                                (between)
+                                            )
+                                        )
+                                        
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites Corners)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ufuba wa Hulana2 ruleset.")
+    
+    (item "Ufuba wa Hulana3" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            )
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (and 
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between 
+                                    (max 1)
+                                    if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (surround 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (and 
+                                        (is Enemy 
+                                            (who at:
+                                                (between)
+                                            )
+                                        )
+                                        
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites Corners)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end { 
+                (if 
+                    (no Moves P2)
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (< 
+                        (count Pieces P1)
+                    2)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Ufuba wa Hulana3 ruleset.")
+    
+    (item "Ufuba wa Hulana4" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            )
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Ufuba wa Hulana4 ruleset.")
+    
+    (item "Ufuba wa Hulana5" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            )
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (and 
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between 
+                                    (max 1)
+                                    if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (surround 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (and 
+                                        (is Enemy 
+                                            (who at:
+                                                (between)
+                                            )
+                                        )
+                                        
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites Corners)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (and 
+                        (all Sites 
+                            (sites Hand Next)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                        
+                        (no Pieces Next)
+                    )
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Ufuba wa Hulana5 ruleset.")
+    
+    (item "Ufuba wa Hulana6" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            )
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (centrePoint)
+                                        
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (and 
+                                        (remove 
+                                            (between)
+                                        )
+                                        
+                                        (if 
+                                            (or { 
+                                                (can Move 
+                                                    (custodial 
+                                                        (from 
+                                                            (ahead 
+                                                                (last To)
+                                                            N )
+                                                        )
+                                                        Orthogonal 
+                                                        (between 
+                                                            (max 1)
+                                                            if:
+                                                            (and 
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (between )
+                                                                    )
+                                                                )
+                                                                
+                                                                (!= 
+                                                                    (centrePoint )
+                                                                    
+                                                                    (between )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (to if:
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (to )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (can Move 
+                                                    (custodial 
+                                                        (from 
+                                                            (ahead 
+                                                                (last To)
+                                                            E )
+                                                        )
+                                                        Orthogonal 
+                                                        (between 
+                                                            (max 1)
+                                                            if:
+                                                            (and 
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (between )
+                                                                    )
+                                                                )
+                                                                
+                                                                (!= 
+                                                                    (centrePoint )
+                                                                    
+                                                                    (between )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (to if:
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (to )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (can Move 
+                                                    (custodial 
+                                                        (from 
+                                                            (ahead 
+                                                                (last To)
+                                                            W )
+                                                        )
+                                                        Orthogonal 
+                                                        (between 
+                                                            (max 1)
+                                                            if:
+                                                            (and 
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (between )
+                                                                    )
+                                                                )
+                                                                
+                                                                (!= 
+                                                                    (centrePoint )
+                                                                    
+                                                                    (between )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (to if:
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (to )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (can Move 
+                                                    (custodial 
+                                                        (from 
+                                                            (ahead 
+                                                                (last To)
+                                                            S )
+                                                        )
+                                                        Orthogonal 
+                                                        (between 
+                                                            (max 1)
+                                                            if:
+                                                            (and 
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (between )
+                                                                    )
+                                                                )
+                                                                
+                                                                (!= 
+                                                                    (centrePoint )
+                                                                    
+                                                                    (between )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (to if:
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (to )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                }
+                                            )
+                                            
+                                            (moveAgain)
+                                            
+                                            (if 
+                                                (no Moves Next)
+                                                
+                                                (and 
+                                                    (set Pending)
+                                                    
+                                                    (moveAgain)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ufuba wa Hulana6 ruleset.")
+    
+    (item "Ufuba wa Hulana7" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            )
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (step 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Orthogonal 
+                                            (to if:
+                                                (and 
+                                                    (is Empty 
+                                                        (to)
+                                                    )
+                                                    
+                                                    (or { 
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    W )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 W )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    E )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 E )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    N )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 N )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    S )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 S )
+                                                                )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ufuba wa Hulana7 ruleset.")
+    
+    (item "Ufuba wa Hulana8" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            )
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (step 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Orthogonal 
+                                            (to if:
+                                                (and 
+                                                    (is Empty 
+                                                        (to)
+                                                    )
+                                                    
+                                                    (or { 
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    W )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 W )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    E )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 E )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    N )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 N )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    S )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 S )
+                                                                )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Ufuba wa Hulana8 ruleset.")
+    
+    (item "Ufuba wa Hulana9" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            )
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step Orthogonal 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop Orthogonal 
+                        (between 
+                            (range 1 
+                                (count Rows)
+                            )
+                            if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (or 
+                                (and 
+                                    (is In 
+                                        (to)
+                                        
+                                        (sites Outer)
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Ufuba wa Hulana9 ruleset.")
+    
+    (item "Ufuba wa Hulana10" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            )
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step Orthogonal 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop Orthogonal 
+                        (between 
+                            (range 1 
+                                (count Rows)
+                            )
+                            if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (or 
+                                (and 
+                                    (is In 
+                                        (to)
+                                        
+                                        (sites Outer)
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ufuba wa Hulana10 ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board (square 5))
+            (piece "Marker" Each [#]) // Capture involved.
+            (hand Each)
+        })
+        (rules
+            (start (place "Marker" "Hand" count:12))
+            
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                    )
+                ) 
+                (nextPhase Mover ("HandEmpty" Mover) "Movement")
+            )
+            
+            ("PhaseMovePiece" "Movement")
+            }
+            
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Ufuba wa Hulana1 (Reconstructed)" {
+        "Variant/Ufuba wa Hulana1"
+    })
+    (ruleset "Ruleset/Ufuba wa Hulana2 (Reconstructed)" {
+        "Variant/Ufuba wa Hulana2"
+    })
+    (ruleset "Ruleset/Ufuba wa Hulana3 (Reconstructed)" {
+        "Variant/Ufuba wa Hulana3"
+    })
+    (ruleset "Ruleset/Ufuba wa Hulana4 (Reconstructed)" {
+        "Variant/Ufuba wa Hulana4"
+    })
+    (ruleset "Ruleset/Ufuba wa Hulana5 (Reconstructed)" {
+        "Variant/Ufuba wa Hulana5"
+    })
+    (ruleset "Ruleset/Ufuba wa Hulana6 (Reconstructed)" {
+        "Variant/Ufuba wa Hulana6"
+    })
+    (ruleset "Ruleset/Ufuba wa Hulana7 (Reconstructed)" {
+        "Variant/Ufuba wa Hulana7"
+    })
+    (ruleset "Ruleset/Ufuba wa Hulana8 (Reconstructed)" {
+        "Variant/Ufuba wa Hulana8"
+    })
+    (ruleset "Ruleset/Ufuba wa Hulana9 (Reconstructed)" {
+        "Variant/Ufuba wa Hulana9"
+    })
+    (ruleset "Ruleset/Ufuba wa Hulana10 (Reconstructed)" {
+        "Variant/Ufuba wa Hulana10"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Ufuba wa Hulana is a game that was played in Comoros during the seventeenth century. ")
+        (aliases {"Ufuba"})
+        (rules "5x5 board. Twelve pieces per player. Players alternate turns placing a piece on the board. When the pieces are placed, pieces are captured. ")
+        (source "DLP evidence.")
+        (id "960")
+        (version "1.3.7")
+        (classification "board/war/reconstruction")
+        (credit "Eric Piette")
+        (origin "This game was played in Comoros, around 1694.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+    (recon {
+        (concept "Capture" True)
+    })
+    
+)
+
