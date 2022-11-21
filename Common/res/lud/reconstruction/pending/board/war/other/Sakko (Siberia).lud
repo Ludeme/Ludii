@@ -3,35 +3,50 @@
 //------------------------------------------------------------------------------
 
 (game "Sakko (Siberia)"
-    (players 2) 
-    (equipment { 
-        (board (rectangle 3 13) {[?]} use:Vertex)
-        (dice d:6 from:0 num:3)
-        (piece "Marker" Each [#])
-        (piece "King" Each [#])
-        (piece "King" Neutral)
-    }) 
-    
-    (rules 
-        (start {
-            (place "King0" (centrePoint))
-            [?]
-        })
-        (play ("RollMove" [#])) // Sakko can activate a piece. Replacement capture. // Conversion of the king (but we dunno what happens to the piece landing on it). 
-        
-        (end ("CaptureAll" Next))
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (board (rectangle 3 13) {[?]} use:Vertex)
+	            (dice d:6 from:0 num:3)
+	            (piece "Marker" Each [#])
+	            (piece "King" Each [#])
+	            (piece "King" Neutral)
+	        }) 
+	        
+	        (rules 
+	            (start {
+	                (place "King0" (centrePoint))
+	                [?]
+	            })
+	            (play [#]) // Sakko can activate a piece. Replacement capture. // Conversion of the king (but we dunno what happens to the piece landing on it). 
+	            
+	            (end ("CaptureAll" Next))
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 //------------------------------------------------------------------------------
 
