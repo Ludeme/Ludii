@@ -1,56 +1,71 @@
-(game "Xiangqi (Trigault)" 
-    (players 2) 
-    (equipment { 
-        (board (scale 2 1 (rectangle 8 5)))
-        (piece "King" Each (move [#])) // The king cannot be in check.
-        (piece "Pawn" Each (move [#]))
-        (piece "Knight" Each (move [#]))
-        (piece "Queen" Each (move [#])) // Need to check with WALTER: The scholars move as queens (either one space diagonally or any number of spaces diagonally or orthogonally).
-        (piece "Rook" Each 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:("IsEnemyAt" (to)) 
-                    (apply 
-                        (if ("IsEnemyAt" (to))
-                            (remove 
-                                (to) 
-                            )
-                        )
-                    ) 
-                ) 
-            )		
-        )
-    })
-    
-    (rules 
-        (start {
-            (place "King1" coord:"C1")
-            (place "King2" coord:"C8")
-            (place "Queen1" {"B1" "D1"})
-            (place "Queen2" {"B8" "D8"})
-            (place "Knight1" {"A1" "E1"})
-            (place "Knight2" {"A8" "E8"})
-            (place "Rook1" {"A2" "E2"})
-            (place "Rook2" {"A7" "E7"})
-            (place "Pawn1" {"A3" "B2" "C2" "D2" "E3"})
-            (place "Pawn2" {"A6" "B7" "C7" "D7" "E6"})
-        })
-        (play (forEach Piece))
-        (end [#])
-    )
-)
+(game "Xiangqi (Trigault)"
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment { 
+	            (board (scale 2 1 (rectangle 8 5)))
+	            (piece "King" Each (move [#])) // The king cannot be in check.
+	            (piece "Pawn" Each (move [#]))
+	            (piece "Knight" Each (move [#]))
+	            (piece "Queen" Each (move [#])) // Need to check with WALTER: The scholars move as queens (either one space diagonally or any number of spaces diagonally or orthogonally).
+	            (piece "Rook" Each 
+	                (move
+	                    Slide 
+	                    Orthogonal 
+	                    (to 
+	                        if:("IsEnemyAt" (to)) 
+	                        (apply 
+	                            (if ("IsEnemyAt" (to))
+	                                (remove 
+	                                    (to) 
+	                                )
+	                            )
+	                        ) 
+	                    ) 
+	                )		
+	            )
+	        })
+	        
+	        (rules 
+	            (start {
+	                (place "King1" coord:"C1")
+	                (place "King2" coord:"C8")
+	                (place "Queen1" {"B1" "D1"})
+	                (place "Queen2" {"B8" "D8"})
+	                (place "Knight1" {"A1" "E1"})
+	                (place "Knight2" {"A8" "E8"})
+	                (place "Rook1" {"A2" "E2"})
+	                (place "Rook2" {"A7" "E7"})
+	                (place "Pawn1" {"A3" "B2" "C2" "D2" "E3"})
+	                (place "Pawn2" {"A6" "B7" "C7" "D7" "E6"})
+	            })
+	            (play (forEach Piece))
+	            (end [#])
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
