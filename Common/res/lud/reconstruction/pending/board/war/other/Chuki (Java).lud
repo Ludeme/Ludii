@@ -1,22 +1,37 @@
 (game "Chuki (Java)"
-    (players 2) 
-    (equipment [#]) // probably 12x10 lines 
-    (rules
-        (start [#]) // Pieces are starting on the board and 60 pieces per player. Pieces move in all directions.
-        (play [#]) // Players capture one, three, or five of the opponent's pieces at a time, and continue their turn until they are unable to do so
-        (end ("CaptureAll" Next))
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        (players 2) 
+	        (equipment [#]) // probably 12x10 lines 
+	        (rules
+	            (start [#]) // Pieces are starting on the board and 60 pieces per player. Pieces move in all directions.
+	            (play [#]) // Players capture one, three, or five of the opponent's pieces at a time, and continue their turn until they are unable to do so
+	            (end ("CaptureAll" Next))
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
