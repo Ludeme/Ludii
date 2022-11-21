@@ -1,34 +1,49 @@
 (game "Smasandyutakankarikrida"
-    ("TwoPlayersNorthSouth") 
-    (equipment { 
-        ("AlquerqueGraphWithBottomAndTopTriangles")
-        (piece "Marker" Each
-            (or {
-                ("HopCapture") 
-                (move [#]) // Even if Step and slide are the most likely moves.
-            })		
-        )
-    }) 
-    
-    (rules 
-        (start { 
-            (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3)}))
-            (place "Marker2" (union {(sites Row 5) (sites Row 6) (sites Row 7) (sites Row 8)}))
-        })
-        (play (forEach Piece))
-        (end (if (<= (count Pieces Next) 4) (result Mover Win)))
-    )
-)
+	    <Variant>
+	)
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-})
+	(option "Variant" <Variant> args:{ <variant> }
+	    {
+	    (item "Incomplete"
+	        <
+	        ("TwoPlayersNorthSouth") 
+	        (equipment { 
+	            ("AlquerqueGraphWithBottomAndTopTriangles")
+	            (piece "Marker" Each
+	                (or {
+	                    ("HopCapture") 
+	                    (move [#]) // Even if Step and slide are the most likely moves.
+	                })		
+	            )
+	        }) 
+	        
+	        (rules 
+	            (start { 
+	                (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3)}))
+	                (place "Marker2" (union {(sites Row 5) (sites Row 6) (sites Row 7) (sites Row 8)}))
+	            })
+	            (play (forEach Piece))
+	            (end (if (<= (count Pieces Next) 4) (result Mover Win)))
+	        )
+	        >
+	        "The incomplete ruleset."
+	    )
+	})
+
+	//------------------------------------------------------------------------------
+
+	(rulesets { 
+	    
+	    (ruleset "Ruleset/Historical Information (Incomplete)" {
+	        "Variant/Incomplete"
+	    })
+	    
+	})
+
+	//------------------------------------------------------------------------------
+
 
 (metadata 
     
