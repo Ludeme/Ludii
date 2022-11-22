@@ -26,6 +26,7 @@ import other.AI;
 import other.GameLoader;
 import other.concept.Concept;
 import other.context.Context;
+import other.move.Move;
 import other.trial.Trial;
 import reconstruction.completer.CompleterWithPrepro;
 import reconstruction.utils.FormatReconstructionOutputs;
@@ -41,7 +42,7 @@ public class ReconstructionGenerator
 	final static String defaultOutputPath        = "./res/recons/output/";
 	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 100000;
-	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/war/leaping/lines/Aiyawatstani";
+	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/war/leaping/lines/Alquerque de Doze (Portugal)";
 	//final static String defaultReconsPath        = "/lud/reconstruction/pending/board/war/other/Macheng";
 	//final static String defaultReconsPath        = "/lud/test/eric/recons/Hnefatafl";
 	//final static String defaultReconsPath        = "/lud/test/eric/recons/Senet";
@@ -226,8 +227,20 @@ public class ReconstructionGenerator
 								{
 									System.out.print( " and with the expected concepts");
 									final Context context = new Context(game, new Trial(game));
+									game.start(context);
 									final Moves legalMoves = context.game().moves(context);
-									if(!legalMoves.moves().isEmpty())
+									
+									System.out.println(legalMoves.moves());
+									// Check if a non pass move is part of the first legal moves (BE CAREFUL WITH DICE GAMES)
+									boolean aNonPassMove = false;
+									for(Move move: legalMoves.moves())
+										if(!move.isPass())
+										{
+											aNonPassMove = true;
+											break;
+										}
+									
+									if(aNonPassMove)
 									{
 										System.out.print( " and with legal moves");
 										
