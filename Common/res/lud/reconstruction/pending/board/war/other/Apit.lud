@@ -11,7 +11,7 @@
         (players 2) 
         (equipment { 
             (board (square 8))
-            (piece "Marker" Each) // An opponent's piece may be captured when it is surrounded on opposite sides by two of the player's pieces. When a player moves a piece between two of the opponent's pieces, both of the opponent's pieces are taken.
+            (piece [#]) // An opponent's piece may be captured when it is surrounded on opposite sides by two of the player's pieces. When a player moves a piece between two of the opponent's pieces, both of the opponent's pieces are taken.
         })
         (rules
             (start [#])
