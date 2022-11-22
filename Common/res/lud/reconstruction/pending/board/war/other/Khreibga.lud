@@ -11,7 +11,7 @@
         (players 2) 
         (equipment {
             (board [#] use:Vertex) // probably similar to Alquerque board but Walter is not sure.
-            (piece "Marker" Each (move [#])) // 12 pieces for each player.
+            (piece [#]) // 12 pieces for each player.
         })
         (rules
             (start [#])
