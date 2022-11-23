@@ -1560,7 +1560,7 @@ public class State implements Serializable
 	 */
 	public boolean isPending()
 	{
-		return !pendingValues.isEmpty();
+		return (pendingValues == null) ? false : !pendingValues.isEmpty();
 	}
 	
 	/**
