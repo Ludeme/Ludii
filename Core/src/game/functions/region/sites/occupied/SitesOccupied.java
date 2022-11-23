@@ -365,7 +365,7 @@ public final class SitesOccupied extends BaseRegionFunction
 			}
 			
 			final int numPlayers = game.players().count();
-			if(numPlayers < role.ordinal())
+			if(!RoleType.manyIds(role) &&  numPlayers < role.owner())
 			{
 				game.addRequirementToReport(
 						"(sites Occupied ...): A roletype corresponding to a player not existed is used: "
