@@ -229,6 +229,8 @@ public final class Sow extends Effect
 			for (int index = 0; index < count; index++)
 			{
 				context.setValue(count - index);
+				if(i >= track.elems().length)
+					return moves;
 				int to = track.elems()[i].next;
 				context.setTo(to);
 				
