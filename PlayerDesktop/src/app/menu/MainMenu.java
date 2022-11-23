@@ -1255,18 +1255,21 @@ public class MainMenu extends JMenuBar
 				for (int i = 0; i < options.size(); i++)
 				{
 					final Option option = options.get(i);
-
+					
 					if (option.menuHeadings().size() < 2)
 					{
 						System.out.println("** Not enough headings for menu option: " + option.menuHeadings());
 						return;
 					}
-
-					final JRadioButtonMenuItem rbMenuItem = new JRadioButtonMenuItem(option.menuHeadings().get(1));
-					rbMenuItem.setSelected(currentOptions.contains(StringRoutines.join("/", option.menuHeadings())));
-					rbMenuItem.addItemListener(app);
-					group.add(rbMenuItem);
-					submenu.add(rbMenuItem);
+					
+					if (!option.menuHeadings().contains("Incomplete"))	// Eric wants to hide incomplete options
+					{
+						final JRadioButtonMenuItem rbMenuItem = new JRadioButtonMenuItem(option.menuHeadings().get(1));
+						rbMenuItem.setSelected(currentOptions.contains(StringRoutines.join("/", option.menuHeadings())));
+						rbMenuItem.addItemListener(app);
+						group.add(rbMenuItem);
+						submenu.add(rbMenuItem);
+					}
 				}
 				
 				MenuScroller.setScrollerFor(submenu, 20, 50, 0, 0);
