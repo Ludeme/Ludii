@@ -42,7 +42,7 @@ public class ReconstructionGenerator
 	final static String defaultOutputPath        = "./res/recons/output/";
 	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 100000;
-	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/race/escape/Nardshir";
+	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/sow/four_rows/Tswana Game";
 	//final static String defaultReconsPath        = "/lud/reconstruction/pending/board/war/other/Macheng";
 	//final static String defaultReconsPath        = "/lud/test/eric/recons/Hnefatafl";
 	//final static String defaultReconsPath        = "/lud/test/eric/recons/Senet";
@@ -58,7 +58,7 @@ public class ReconstructionGenerator
 	final static double defaultThreshold = 0.99;
 	
 	final static boolean checkTimeoutRandomPlayout = false;
-	final static int     defaultPlayoutsAttempts = 10;
+	final static int     defaultPlayoutsAttempts = 100;
 	
 	/**
 	 * Main method to call the reconstruction with command lines.
@@ -230,7 +230,6 @@ public class ReconstructionGenerator
 									game.start(context);
 									final Moves legalMoves = context.game().moves(context);
 									
-									System.out.println(legalMoves.moves());
 									// Check if a non pass move is part of the first legal moves (BE CAREFUL WITH DICE GAMES)
 									boolean aNonPassMove = false;
 									for(Move move: legalMoves.moves())
@@ -264,7 +263,7 @@ public class ReconstructionGenerator
 												}
 												game.start(contextRandomPlayout);
 												game.playout(contextRandomPlayout, ais, 1.0, null, 0, -1, null);
-												final Trial trial = context.trial();
+												final Trial trial = contextRandomPlayout.trial();
 //												System.out.println("run playout");
 //												System.out.println("num Turns = " + trial.numTurns());
 //												System.out.println("num real moves = " + trial.numberRealMoves());
