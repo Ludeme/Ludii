@@ -1,0 +1,1743 @@
+(game "Cheng Fang Cheng Long"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Cheng Fang Cheng Long1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (> 
+                                (count Sites in:
+                                    (forEach 
+                                        (sites Around 
+                                            (last To)
+                                        )
+                                        if:
+                                        (if 
+                                            (is Empty 
+                                                (site)
+                                            )
+                                            
+                                            (or 
+                                                (and { 
+                                                    (is In 
+                                                        (last To)
+                                                        
+                                                        (sites { 
+                                                            (ahead 
+                                                                (site)
+                                                            N )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            S )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            W )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            E )
+                                                            }
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            N )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            S )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            W )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            E )
+                                                        )
+                                                    )
+                                                    }
+                                                )
+                                                
+                                                (and { 
+                                                    (is In 
+                                                        (last To)
+                                                        
+                                                        (sites { 
+                                                            (ahead 
+                                                                (site)
+                                                            NE )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            SE )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            SW )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            NW )
+                                                            }
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            NE )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            SE )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            SW )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            NW )
+                                                        )
+                                                    )
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            0 )
+                            
+                            (and 
+                                (set Value Mover 
+                                    (count Sites in:
+                                        (forEach 
+                                            (sites Around 
+                                                (last To)
+                                            )
+                                            if:
+                                            (if 
+                                                (is Empty 
+                                                    (site)
+                                                )
+                                                
+                                                (or 
+                                                    (and { 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites { 
+                                                                (ahead 
+                                                                    (site )
+                                                                N )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                S )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                W )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                E )
+                                                                }
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                N )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                S )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                W )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                E )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                    
+                                                    (and { 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites { 
+                                                                (ahead 
+                                                                    (site )
+                                                                NE )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                SE )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                SW )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                NW )
+                                                                }
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                NE )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                SE )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                SW )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                NW )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "FirstPlacement" P1 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Centre)
+                        )
+                    )
+                )
+                
+                (nextPhase "Placement")
+            )
+            
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Playing" )
+            )
+            
+            (phase "Playing" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next)
+                            
+                            (then 
+                                (if 
+                                    (> 
+                                        (value Player Mover)
+                                    1)
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Value Mover 
+                                            (- 
+                                                (value Player Mover)
+                                            1)
+                                        )
+                                    )
+                                    
+                                    (set Value Mover 0)
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Cheng Fang Cheng Long1 ruleset.")
+    
+    (item "Cheng Fang Cheng Long2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or 
+                    (if 
+                        (= 1 
+                            (+ 
+                                (count Cell at:
+                                    (handSite Mover)
+                                )
+                                
+                                (count Pieces Mover)
+                            )
+                        )
+                        
+                        (move Hop 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Slide 
+                        (then 
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                
+                                (between 
+                                    (range 1 
+                                        (count Rows)
+                                    )
+                                    if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (and 
+                                            (remove 
+                                                (between)
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (handSite Mover)
+                                                )
+                                                
+                                                (to 
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "FirstPlacement" P1 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Centre)
+                        )
+                    )
+                )
+                
+                (nextPhase "Placement")
+            )
+            
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Playing" )
+            )
+            
+            (phase "Playing" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next)
+                            
+                            (then 
+                                (if 
+                                    (> 
+                                        (value Player Mover)
+                                    1)
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Value Mover 
+                                            (- 
+                                                (value Player Mover)
+                                            1)
+                                        )
+                                    )
+                                    
+                                    (set Value Mover 0)
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Cheng Fang Cheng Long2 ruleset.")
+    
+    (item "Cheng Fang Cheng Long3" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (> 
+                                (count Sites in:
+                                    (forEach 
+                                        (sites Around 
+                                            (last To)
+                                        )
+                                        if:
+                                        (if 
+                                            (is Empty 
+                                                (site)
+                                            )
+                                            
+                                            (or 
+                                                (and { 
+                                                    (is In 
+                                                        (last To)
+                                                        
+                                                        (sites { 
+                                                            (ahead 
+                                                                (site)
+                                                            N )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            S )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            W )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            E )
+                                                            }
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            N )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            S )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            W )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            E )
+                                                        )
+                                                    )
+                                                    }
+                                                )
+                                                
+                                                (and { 
+                                                    (is In 
+                                                        (last To)
+                                                        
+                                                        (sites { 
+                                                            (ahead 
+                                                                (site)
+                                                            NE )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            SE )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            SW )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            NW )
+                                                            }
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            NE )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            SE )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            SW )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            NW )
+                                                        )
+                                                    )
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            0 )
+                            
+                            (and 
+                                (set Value Mover 
+                                    (count Sites in:
+                                        (forEach 
+                                            (sites Around 
+                                                (last To)
+                                            )
+                                            if:
+                                            (if 
+                                                (is Empty 
+                                                    (site)
+                                                )
+                                                
+                                                (or 
+                                                    (and { 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites { 
+                                                                (ahead 
+                                                                    (site )
+                                                                N )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                S )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                W )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                E )
+                                                                }
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                N )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                S )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                W )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                E )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                    
+                                                    (and { 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites { 
+                                                                (ahead 
+                                                                    (site )
+                                                                NE )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                SE )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                SW )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                NW )
+                                                                }
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                NE )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                SE )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                SW )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                NW )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker" "Hand" count:16)
+                
+                (place "Marker1" 
+                    (union 
+                        (sites Top)
+                        
+                        (difference 
+                            (sites Right)
+                            
+                            (sites Bottom)
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (sites Bottom)
+                        
+                        (difference 
+                            (sites Left)
+                            
+                            (sites Top)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Cheng Fang Cheng Long3 ruleset.")
+    
+    (item "Cheng Fang Cheng Long4" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or 
+                    (if 
+                        (= 1 
+                            (+ 
+                                (count Cell at:
+                                    (handSite Mover)
+                                )
+                                
+                                (count Pieces Mover)
+                            )
+                        )
+                        
+                        (move Hop 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Slide 
+                        (then 
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                
+                                (between 
+                                    (range 1 
+                                        (count Rows)
+                                    )
+                                    if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (and 
+                                            (remove 
+                                                (between)
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (handSite Mover)
+                                                )
+                                                
+                                                (to 
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker" "Hand" count:16)
+                
+                (place "Marker1" 
+                    (union 
+                        (sites Top)
+                        
+                        (difference 
+                            (sites Right)
+                            
+                            (sites Bottom)
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (sites Bottom)
+                        
+                        (difference 
+                            (sites Left)
+                            
+                            (sites Top)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Cheng Fang Cheng Long4 ruleset.")
+    
+    (item "Cheng Fang Cheng Long5" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (or 
+                                (is Line 3 All)
+                                
+                                (is Pattern { F R F R F R F }
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Cheng Fang Cheng Long5 ruleset.")
+    
+    (item "Cheng Fang Cheng Long6" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Cheng Fang Cheng Long6 ruleset.")
+    
+    (item "Cheng Fang Cheng Long7" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Cheng Fang Cheng Long7 ruleset.")
+    
+    (item "Cheng Fang Cheng Long8" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Cheng Fang Cheng Long8 ruleset.")
+    
+    (item "Cheng Fang Cheng Long9" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Cheng Fang Cheng Long9 ruleset.")
+    
+    (item "Cheng Fang Cheng Long10" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Cheng Fang Cheng Long10 ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board 
+                (square 5)
+                use:Vertex
+            )
+            (piece "Marker" Each [#]) 
+            (hand Each)
+        }) 
+        
+        (rules [#])
+        
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Cheng Fang Cheng Long1 (Reconstructed)" {
+        "Variant/Cheng Fang Cheng Long1"
+    })
+    (ruleset "Ruleset/Cheng Fang Cheng Long2 (Reconstructed)" {
+        "Variant/Cheng Fang Cheng Long2"
+    })
+    (ruleset "Ruleset/Cheng Fang Cheng Long3 (Reconstructed)" {
+        "Variant/Cheng Fang Cheng Long3"
+    })
+    (ruleset "Ruleset/Cheng Fang Cheng Long4 (Reconstructed)" {
+        "Variant/Cheng Fang Cheng Long4"
+    })
+    (ruleset "Ruleset/Cheng Fang Cheng Long5 (Reconstructed)" {
+        "Variant/Cheng Fang Cheng Long5"
+    })
+    (ruleset "Ruleset/Cheng Fang Cheng Long6 (Reconstructed)" {
+        "Variant/Cheng Fang Cheng Long6"
+    })
+    (ruleset "Ruleset/Cheng Fang Cheng Long7 (Reconstructed)" {
+        "Variant/Cheng Fang Cheng Long7"
+    })
+    (ruleset "Ruleset/Cheng Fang Cheng Long8 (Reconstructed)" {
+        "Variant/Cheng Fang Cheng Long8"
+    })
+    (ruleset "Ruleset/Cheng Fang Cheng Long9 (Reconstructed)" {
+        "Variant/Cheng Fang Cheng Long9"
+    })
+    (ruleset "Ruleset/Cheng Fang Cheng Long10 (Reconstructed)" {
+        "Variant/Cheng Fang Cheng Long10"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Cheng Fang Cheng Long is a game played in Chine in the twentieth century. Though its rules were not completely described, it is likely to be similar to the game Fang played by the Uighur people.")
+        (aliases {"Five-Fang"})
+        (rules "5x5 intersecting lines. Forming squares on the board with a player's pieces is considered beneficial. ")
+        (source "DLP evidence.")
+        (id "1136")
+        (version "1.3.7")
+        (classification "board/war/reconstruction")
+        (origin "This game was played in China, from around 1997 to 1999.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+    })
+    
+)
+
