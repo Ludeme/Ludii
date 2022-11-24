@@ -33,7 +33,7 @@ public class DurationTurnsStdDev extends Metric
 			"Number of turns in a game (std dev).", 
 			0.0, 
 			Constants.INFINITY,
-			Concept.DurationTurns
+			Concept.DurationTurnsStdDev
 		);
 	}
 	

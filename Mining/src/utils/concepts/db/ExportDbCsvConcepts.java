@@ -1630,11 +1630,14 @@ public class ExportDbCsvConcepts
 		// We add all the metrics corresponding to a concept to the returned map.
 		final List<Metric> metrics = new Evaluation().conceptMetrics();
 		for (final Metric metric : metrics)
+		{
 			if (metric.concept() != null)
 			{
 				Double value;
 				if(reconstructionConcepts.contains(metric.concept()))
+				{
 					value = metric.apply(game, evaluation, trialsMetrics, rngTrials);
+				}
 				else
 					value = null; // If that's not a reconstruction metrics we put NULL for it.
 					
@@ -1649,6 +1652,7 @@ public class ExportDbCsvConcepts
 							System.out.println(metric.concept().name() + ": " + metricValue);
 				}
 			}
+		}
 
 		final double allMilliSecond = System.currentTimeMillis() - startTime;
 		final double allSeconds = allMilliSecond / 1000.0;
