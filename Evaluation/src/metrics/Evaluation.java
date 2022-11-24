@@ -127,6 +127,8 @@ public class Evaluation
 		conceptMetrics.add(new DurationActions());
 		conceptMetrics.add(new DurationMoves());
 		conceptMetrics.add(new DurationTurns());
+		conceptMetrics.add(new DurationTurnsStdDev());
+		conceptMetrics.add(new DurationTurnsNotTimeouts());
 		
 		// State Repetition
 		conceptMetrics.add(new PositionalRepetition());
