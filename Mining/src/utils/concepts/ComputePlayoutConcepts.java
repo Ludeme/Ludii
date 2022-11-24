@@ -437,9 +437,9 @@ public class ComputePlayoutConcepts
 		mapStarting.put(Concept.NumStartComponentsHand.name(), Double.valueOf(numStartComponentsHands / allStoredRNG.size()));
 		mapStarting.put(Concept.NumStartComponentsBoard.name(), Double.valueOf(numStartComponentsBoard / allStoredRNG.size()));
 		
-		mapStarting.put(Concept.NumStartComponentsPerPlayer.name(), Double.valueOf((numStartComponents / allStoredRNG.size()) / game.players().count()));
-		mapStarting.put(Concept.NumStartComponentsHandPerPlayer.name(), Double.valueOf((numStartComponentsHands / allStoredRNG.size()) / game.players().count()));
-		mapStarting.put(Concept.NumStartComponentsBoardPerPlayer.name(), Double.valueOf((numStartComponentsBoard / allStoredRNG.size()) / game.players().count()));
+		mapStarting.put(Concept.NumStartComponentsPerPlayer.name(), Double.valueOf((numStartComponents / allStoredRNG.size()) / (game.players().count() == 0 ? 1 : game.players().count())));
+		mapStarting.put(Concept.NumStartComponentsHandPerPlayer.name(), Double.valueOf((numStartComponentsHands / allStoredRNG.size()) / (game.players().count() == 0 ? 1 : game.players().count())));
+		mapStarting.put(Concept.NumStartComponentsBoardPerPlayer.name(), Double.valueOf((numStartComponentsBoard / allStoredRNG.size()) / (game.players().count() == 0 ? 1 : game.players().count())));
 		
 		return mapStarting;
 	}

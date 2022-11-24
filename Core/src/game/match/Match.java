@@ -709,13 +709,13 @@ public class Match extends Game
 						nonBooleanConcepts.put(Integer.valueOf(concept.id()), numStartComponentsBoard + "");
 						break;
 					case NumStartComponentsPerPlayer:
-						nonBooleanConcepts.put(Integer.valueOf(concept.id()), numStartComponents / players().count() + "");
+						nonBooleanConcepts.put(Integer.valueOf(concept.id()), numStartComponents / (players().count() == 0 ? 1 : players().count()) + "");
 						break;
 					case NumStartComponentsHandPerPlayer:
-						nonBooleanConcepts.put(Integer.valueOf(concept.id()), numStartComponentsHands / players().count() + "");
+						nonBooleanConcepts.put(Integer.valueOf(concept.id()), numStartComponentsHands / (players().count() == 0 ? 1 : players().count()) + "");
 						break;
 					case NumStartComponentsBoardPerPlayer:
-						nonBooleanConcepts.put(Integer.valueOf(concept.id()), numStartComponentsBoard / players().count() + "");
+						nonBooleanConcepts.put(Integer.valueOf(concept.id()), numStartComponentsBoard / (players().count() == 0 ? 1 : players().count()) + "");
 						break;
 					default:
 						break;
