@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import completer.Completion;
+import contextualiser.ContextualSimilarity;
 import gameDistance.utils.DistanceUtils;
 import gnu.trove.list.array.TIntArrayList;
 import main.StringRoutines;
@@ -140,7 +141,7 @@ public class CompleterWithPrepro
 //		System.out.println("\nCompleter.complete(): Completing at most " + maxCompletions + " descriptions...");
 
 		// Expand the defines of rulesets needed reconstruction.
-		Description description = new Description(raw);
+		final Description description = new Description(raw);
 		expandRecons(description, "");
 		
 		// Format the description.
@@ -336,10 +337,10 @@ public class CompleterWithPrepro
 				return null;
 
 			// Get a random completion according to the score of each completion.
-			FVector vectorCompletions = new FVector(completions.size());
+			final FVector vectorCompletions = new FVector(completions.size());
 			for(int i = 0; i < completions.size(); i++)
 				vectorCompletions.add((float) completions.get(i).score());
-			Completion returnCompletion = completions.get(vectorCompletions.sampleProportionally());
+			final Completion returnCompletion = completions.get(vectorCompletions.sampleProportionally());
 			
 			return returnCompletion;
 		}
@@ -363,7 +364,7 @@ public class CompleterWithPrepro
 			final int              rulesetReconId
 		)
 		{
-				for (Map.Entry<Integer, String> entry : ludMapUsed.entrySet()) 
+				for (final Map.Entry<Integer, String> entry : ludMapUsed.entrySet()) 
 				{
 					final String otherDescription = entry.getValue();
 					final int rulesetId = entry.getKey().intValue();
@@ -375,9 +376,9 @@ public class CompleterWithPrepro
 						culturalSimilarity = 1.0;
 					else
 					{
-						final String similaryFilePath = "./res/recons/input/contextualiser/similarity_";
-						File fileSimilarity1 = new File(similaryFilePath + rulesetReconId + ".csv");
-						File fileSimilarity2 = new File(similaryFilePath + entry.getKey().intValue() + ".csv");
+						final String similaryFilePath = ContextualSimilarity.rulesetContextualiserFilePath;
+						final File fileSimilarity1 = new File(similaryFilePath + rulesetReconId + ".csv");
+						final File fileSimilarity2 = new File(similaryFilePath + entry.getKey().intValue() + ".csv");
 						
 						if(!fileSimilarity1.exists() || !fileSimilarity2.exists() || (rulesetReconId == rulesetId)) // If CSN not computing or comparing the same rulesets, similarity is 0.
 							culturalSimilarity = 0.0;
@@ -398,7 +399,7 @@ public class CompleterWithPrepro
 					if (l < 0)
 						continue;  // not a match
 					
-					String secondPart = candidate.substring(l + parent[0].length());  //.trim();
+					final String secondPart = candidate.substring(l + parent[0].length());  //.trim();
 					
 	//				System.out.println("\notherDescription is: " + otherDescription);
 	//				System.out.println("parent[0] is: " + parent[0]);
@@ -445,7 +446,7 @@ public class CompleterWithPrepro
 	//							right.substring(parent[1].length());
 	
 						//final String str = left + " " + match + " " + right;
-						String str = left + match + right;
+						final String str = left + match + right;
 						//System.out.println(right);
 						final Completion newCompletion = new Completion(str);
 						//System.out.println("completion is:\n" + completion.raw());
@@ -540,7 +541,7 @@ public class CompleterWithPrepro
 				break;
 			
 			// Step forwards to next bracket on right side
-			boolean curly = left.charAt(l + 1) == '{';
+			final boolean curly = left.charAt(l + 1) == '{';
 			while 
 			(
 				r < right.length() 
@@ -869,7 +870,7 @@ public class CompleterWithPrepro
 		final String outFileName = savePath + name + ".lud";
 		
 		// Create the file if it is not existing.
-		File folder = new File(path);
+		final File folder = new File(path);
 		if(!folder.exists())
 			folder.mkdirs();
 		
@@ -951,7 +952,7 @@ public class CompleterWithPrepro
 	{
 		// Load ruleset avg common true concepts from specific directory.
 		final String commonExpectedConceptsFilePath = "./res/recons/input/commonExpectedConcepts/CommonExpectedConcept_" + reconsRulesetId + ".csv";
-		File fileTrueConcept = new File(commonExpectedConceptsFilePath);
+		final File fileTrueConcept = new File(commonExpectedConceptsFilePath);
 		
 		if(!fileTrueConcept.exists() || (reconsRulesetId == rulesetID)) // If TrueConcept not computing or comparing the same rulesets, trueConceptsAvg is 0.
 			return 0.0;
@@ -989,7 +990,7 @@ public class CompleterWithPrepro
 	{
 		final TIntArrayList idsUsedNewRecons = newCompletion.idsUsed();
 		
-		for(Completion completion: history)
+		for(final Completion completion: history)
 		{
 			final TIntArrayList idsUsed = completion.idsUsed(); 
 			if(idsUsed.size() == idsUsedNewRecons.size())
@@ -1015,7 +1016,7 @@ public class CompleterWithPrepro
 	public void applyThresholdToLudMap(final int rulesetReconId)
 	{
 		ludMapUsed = new HashMap<Integer, String>();
-		for (Map.Entry<Integer, String> entry : ludMap.entrySet()) 
+		for (final Map.Entry<Integer, String> entry : ludMap.entrySet()) 
 		{
 			final int rulesetId = entry.getKey().intValue();
 			double culturalSimilarity = 0.0;
@@ -1024,9 +1025,9 @@ public class CompleterWithPrepro
 				culturalSimilarity = 1.0;
 			else
 			{
-				final String similaryFilePath = "./res/recons/input/contextualiser/similarity_";
-				File fileSimilarity1 = new File(similaryFilePath + rulesetReconId + ".csv");
-				File fileSimilarity2 = new File(similaryFilePath + entry.getKey().intValue() + ".csv");
+				final String similaryFilePath = ContextualSimilarity.rulesetContextualiserFilePath;
+				final File fileSimilarity1 = new File(similaryFilePath + rulesetReconId + ".csv");
+				final File fileSimilarity2 = new File(similaryFilePath + entry.getKey().intValue() + ".csv");
 				
 				if(!fileSimilarity1.exists() || !fileSimilarity2.exists() || (rulesetReconId == rulesetId)) // If CSN not computing or comparing the same rulesets, similarity is 0.
 					culturalSimilarity = 0.0;
