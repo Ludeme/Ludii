@@ -62,7 +62,7 @@ public class CountGames
 					part.equals("bad") ||
 					part.equals("bad_playout") ||
 							part.equals("wip") || part.equals("wishlist") || part.equals("WishlistDLP")
-							|| part.equals("reconstruction")
+							|| part.equals("pending") || part.equals("validation")
 						||
 							part.equals("test") || part.equals("subgame") || part.equals("proprietary")
 				)
