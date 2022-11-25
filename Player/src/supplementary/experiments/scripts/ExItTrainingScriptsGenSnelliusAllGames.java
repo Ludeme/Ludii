@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import features.spatial.Walk;
 import game.Game;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.list.array.TIntArrayList;
@@ -50,7 +51,7 @@ public class ExItTrainingScriptsGenSnelliusAllGames
 	private static final int MEM_PER_NODE = 256;
 	
 	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
-	private static final int MAX_REQUEST_MEM = 234;
+	private static final int MAX_REQUEST_MEM = 224;
 	
 	/** Max number of self-play trials */
 	private static final int MAX_SELFPLAY_TRIALS = 200;
@@ -196,9 +197,11 @@ public class ExItTrainingScriptsGenSnelliusAllGames
 				if (game.isBoardless())
 					continue;
 				
-				// TODO skip imperfect info games
-				// TODO skip games played on edges
-				// TODO skip games with Walk.allGameRotations(game).length == 0
+				if (game.hiddenInformation())
+					continue;
+				
+				if (Walk.allGameRotations(game).length == 0)
+					continue;
 				
 				double expectedTrialDuration = RulesetConceptsUCT.getValue(RulesetNames.gameRulesetName(game), "DurationMoves");
 				if (Double.isNaN(expectedTrialDuration))
@@ -324,7 +327,7 @@ public class ExItTrainingScriptsGenSnelliusAllGames
 								"--playout-features-epsilon 0.5",
 								"--no-value-learning",
 								"--train-tspg",
-								"--checkpoint-freq 5",
+								"--checkpoint-freq 20",
 								"--num-agent-threads",
 								String.valueOf(numPlayingThreads),
 								"--num-feature-discovery-threads",
@@ -358,6 +361,8 @@ public class ExItTrainingScriptsGenSnelliusAllGames
 								" ",
 								">",
 								"/home/" + userName + "/TrainFeaturesSnelliusAllGames/Out/Out_${SLURM_JOB_ID}_" + numJobProcesses + ".out",
+								"2>",
+								"/home/" + userName + "/TrainFeaturesSnelliusAllGames/Out/Err_${SLURM_JOB_ID}_" + numJobProcesses + ".err",
 								"&"		// Run processes in parallel
 							);
 					
