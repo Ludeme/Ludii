@@ -24,7 +24,8 @@ public final class TodoRulesets
 
 	private static void missingRulesets()
 	{
-		int count = 0;
+		int countNotIncomplete = 0;
+		int countIncomplete = 0;
 		final String[] gameNames = FileHandling.listGames();
 
 		for (int index = 0; index < gameNames.length; index++)
@@ -61,15 +62,18 @@ public final class TodoRulesets
 				{
 					final Ruleset ruleset = rulesetsInGame.get(rs);
 					if (ruleset.optionSettings().isEmpty()) // We check if the ruleset is implemented.
-						if(!ruleset.heading().contains("Incomplete"))
-						{
-							System.out.println("TODO: " + game.name() + " " + ruleset.heading());
-							count++;
-						}
+					{
+						System.out.println("TODO: " + game.name() + " " + ruleset.heading());
+						if(ruleset.heading().contains("Incomplete"))
+							countNotIncomplete++;
+						else
+							countIncomplete++;
+					}
 				}
 			}
 		}
 
-		System.out.println(count + " rulesets TODO.");
+		System.out.println(countNotIncomplete + " complete rulesets TODO.");
+		System.out.println(countIncomplete + " incomplete rulesets TODO.");
 	}
 }
