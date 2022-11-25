@@ -65,9 +65,9 @@ public final class TodoRulesets
 					{
 						System.out.println("TODO: " + game.name() + " " + ruleset.heading());
 						if(ruleset.heading().contains("Incomplete"))
-							countNotIncomplete++;
-						else
 							countIncomplete++;
+						else
+							countNotIncomplete++;
 					}
 				}
 			}
