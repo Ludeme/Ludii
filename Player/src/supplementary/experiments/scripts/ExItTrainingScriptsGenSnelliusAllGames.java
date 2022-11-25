@@ -203,6 +203,12 @@ public class ExItTrainingScriptsGenSnelliusAllGames
 				if (Walk.allGameRotations(game).length == 0)
 					continue;
 				
+				if (game.players().count() == 0)
+					continue;
+				
+				if (game.isSimultaneousMoveGame())
+					continue;
+				
 				double expectedTrialDuration = RulesetConceptsUCT.getValue(RulesetNames.gameRulesetName(game), "DurationMoves");
 				if (Double.isNaN(expectedTrialDuration))
 					expectedTrialDuration = Double.MAX_VALUE;
