@@ -1585,16 +1585,26 @@
         <
         (players 2) 
         (equipment { 
-            ("ThreeMensMorrisBoardWithLeftAndRightTriangles")
-            (piece [#])
-            (piece [#])
-        }) 
-        
-        (rules 
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+            (board 
+                (add 
+                    (concentric Square rings:3)
+                    vertices:{ { 0 0}
+                    }
+                    edges:{ { 6 24}
+                    { 11 24}
+                    { 15 24}
+                    { 16 24}
+                    { 17 24}
+                    { 12 24}
+                    { 8 24}
+                    { 7 24}
+                    }
+                )
+            use:Vertex)
+            (hand Each)
+            (piece "Marker" Each [#])
+        })
+        (rules [#])
         >
         "The incomplete ruleset."
     )
