@@ -1,0 +1,843 @@
+(game "Roman Small Merels"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Roman Small Merels1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move 
+                    (from)
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Roman Small Merels1 ruleset.")
+    
+    (item "Roman Small Merels2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move 
+                    (from)
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Roman Small Merels2 ruleset.")
+    
+    (item "Roman Small Merels3" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step All 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Roman Small Merels3 ruleset.")
+    
+    (item "Roman Small Merels4" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Roman Small Merels4 ruleset.")
+    
+    (item "Roman Small Merels5" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Roman Small Merels5 ruleset.")
+    
+    (item "Roman Small Merels6" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Roman Small Merels6 ruleset.")
+    
+    (item "Roman Small Merels7" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (meta 
+                (no Repeat)
+            )
+            
+            (play 
+                (or 
+                    (move Add 
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (enclose 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+            )
+            
+            (end 
+                (if 
+                    (all Passed)
+                    
+                    (byScore { 
+                        (score P1 
+                            (+ 
+                                (count Pieces P1)
+                                
+                                (size Territory P1)
+                            )
+                        )
+                        
+                        (score P2 
+                            (+ 
+                                (count Pieces P2)
+                                
+                                (size Territory P2)
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Roman Small Merels7 ruleset.")
+    
+    (item "Roman Small Merels8" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Roman Small Merels8 ruleset.")
+    
+    (item "Roman Small Merels9" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Roman Small Merels9 ruleset.")
+    
+    (item "Roman Small Merels10" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move 
+                    (from)
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Roman Small Merels10 ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2)
+        
+        (equipment 
+            { 
+            (board (square 3) use:Vertex) 
+            (hand Each)
+            (piece [#])
+        })
+        (rules [#])
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Roman Small Merels1 (Reconstructed)" {
+        "Variant/Roman Small Merels1"
+    })
+    (ruleset "Ruleset/Roman Small Merels2 (Reconstructed)" {
+        "Variant/Roman Small Merels2"
+    })
+    (ruleset "Ruleset/Roman Small Merels3 (Reconstructed)" {
+        "Variant/Roman Small Merels3"
+    })
+    (ruleset "Ruleset/Roman Small Merels4 (Reconstructed)" {
+        "Variant/Roman Small Merels4"
+    })
+    (ruleset "Ruleset/Roman Small Merels5 (Reconstructed)" {
+        "Variant/Roman Small Merels5"
+    })
+    (ruleset "Ruleset/Roman Small Merels6 (Reconstructed)" {
+        "Variant/Roman Small Merels6"
+    })
+    (ruleset "Ruleset/Roman Small Merels7 (Reconstructed)" {
+        "Variant/Roman Small Merels7"
+    })
+    (ruleset "Ruleset/Roman Small Merels8 (Reconstructed)" {
+        "Variant/Roman Small Merels8"
+    })
+    (ruleset "Ruleset/Roman Small Merels9 (Reconstructed)" {
+        "Variant/Roman Small Merels9"
+    })
+    (ruleset "Ruleset/Roman Small Merels10 (Reconstructed)" {
+        "Variant/Roman Small Merels10"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Small Merels games are some of the most common game known throughout the world. These board are known from the Roman Empire, though the particular rules for them are undocumented.")
+        (rules "3x3 intersecting lines.")
+        (source "DLP evidence.")
+        (id "1081")
+        (version "1.3.7")
+        (classification "board/space/line/reconstruction")
+        (credit "Eric Piette")
+        (origin "This game was played in Roman Empire, from around 122 to 674.")
+        }
+    )
+    
+    (recon {
+        (concept "NumStartComponents" minValue:0 maxValue:10)
+    })
+    
+)
+
