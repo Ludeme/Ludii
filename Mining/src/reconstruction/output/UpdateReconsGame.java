@@ -31,7 +31,7 @@ public class UpdateReconsGame
 	final static String pathReconstructed    = "./res/recons/output/";
 	
 	// game name.
-	final static String gameName             = "Lian Qi (A-Type)";
+	final static String gameName             = "Li'b al-Sidr";
 	
 	public static void main(final String[] args)
 	{
