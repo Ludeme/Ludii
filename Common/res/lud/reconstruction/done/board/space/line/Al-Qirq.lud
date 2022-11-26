@@ -1,0 +1,1193 @@
+(game "Al-Qirq"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Al-Qirq1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Al-Qirq1 ruleset.")
+    
+    (item "Al-Qirq2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Al-Qirq2 ruleset.")
+    
+    (item "Al-Qirq3" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Al-Qirq3 ruleset.")
+    
+    (item "Al-Qirq4" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Al-Qirq4 ruleset.")
+    
+    (item "Al-Qirq5" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Al-Qirq5 ruleset.")
+    
+    (item "Al-Qirq6" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Al-Qirq6 ruleset.")
+    
+    (item "Al-Qirq7" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Al-Qirq7 ruleset.")
+    
+    (item "Al-Qirq8" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (or { 
+                                        (is Line 3 N exact:True)
+                                        
+                                        (is Line 3 S exact:True)
+                                        
+                                        (is Line 3 E exact:True)
+                                        
+                                        (is Line 3 W exact:True)
+                                        }
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            4)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Al-Qirq8 ruleset.")
+    
+    (item "Al-Qirq9" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (and 
+                                    (is Line 3)
+                                    
+                                    (not 
+                                        (all Sites 
+                                            (sites Hand Mover)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (all Sites 
+                            (sites Hand P1)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                        
+                        (all Sites 
+                            (sites Hand P2)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+                
+                (nextPhase Mover 
+                    (is Line 3)
+                "Capture")
+            )
+            
+            (phase "Capture" 
+                (play 
+                    (move Remove 
+                        (sites Occupied by:Enemy container:"Board")
+                        
+                        (then 
+                            (moveAgain)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover "Movement")
+            )
+            }
+            
+            (end 
+                (forEach Player if:
+                    (<= 
+                        (count Pieces Player)
+                    2)
+                    
+                    (result Player Loss)
+                )
+            )
+        )
+        
+    > "The Al-Qirq9 ruleset.")
+    
+    (item "Al-Qirq10" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Al-Qirq10 ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2)
+        (equipment { 
+            (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
+            (hand Each)
+            (piece "Marker" Each [#])
+        })
+        (rules [#])
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Al-Qirq1 (Reconstructed)" {
+        "Variant/Al-Qirq1"
+    })
+    (ruleset "Ruleset/Al-Qirq2 (Reconstructed)" {
+        "Variant/Al-Qirq2"
+    })
+    (ruleset "Ruleset/Al-Qirq3 (Reconstructed)" {
+        "Variant/Al-Qirq3"
+    })
+    (ruleset "Ruleset/Al-Qirq4 (Reconstructed)" {
+        "Variant/Al-Qirq4"
+    })
+    (ruleset "Ruleset/Al-Qirq5 (Reconstructed)" {
+        "Variant/Al-Qirq5"
+    })
+    (ruleset "Ruleset/Al-Qirq6 (Reconstructed)" {
+        "Variant/Al-Qirq6"
+    })
+    (ruleset "Ruleset/Al-Qirq7 (Reconstructed)" {
+        "Variant/Al-Qirq7"
+    })
+    (ruleset "Ruleset/Al-Qirq8 (Reconstructed)" {
+        "Variant/Al-Qirq8"
+    })
+    (ruleset "Ruleset/Al-Qirq9 (Reconstructed)" {
+        "Variant/Al-Qirq9"
+    })
+    (ruleset "Ruleset/Al-Qirq10 (Reconstructed)" {
+        "Variant/Al-Qirq10"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Al-Qirq is an alignment game played in southwest Asia.")
+        (aliases {"Riz" "Sudder" "Sudra" "Ka'b al-Baidar" "Tubn" "Tubna"})
+        (rules "Three concentric squares, with lines connecting the corners and the midpoints of the sides. Nine pieces per player. Players attempt to place three pieces in a line.
+        ")
+        (source "DLP evidence.")
+        (id "1503")
+        (version "1.3.7")
+        (classification "board/space/line/reconstruction")
+        (credit "Eric Piette")
+        (origin "This game was played in Southwest Asia, around 1694.")
+        }
+    )
+    
+    (recon {
+        (concept "NumStartComponents" 18)
+        (concept "Line" True)
+    })
+    
+)
+
