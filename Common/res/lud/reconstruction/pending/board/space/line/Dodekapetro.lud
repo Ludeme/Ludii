@@ -13,14 +13,9 @@
         (equipment { 
             (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
             (hand Each)
-            (piece "Disc" P1 (move [#])) 
-            (piece "Disc" P2 (move [#])) 
-        }) 
-        (rules 
-            (start [#]) // 12 pieces per player.
-            (play [#])
-            (end [#])
-        )
+            (piece "Marker" Each [#])
+        })
+        (rules [#])
         >
         "The incomplete ruleset."
     )
