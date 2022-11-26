@@ -16923,3 +16923,113 @@ Aim:
      If a player places 3 of their pieces in an adjacent direction line, the moving player wins.
 
 ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.986","0.979","0.993","1289, 1289"
+"2858","1142","Atidada1",NULL,"Reconstructed with Ludii","2",NULL,"The game Atidada is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of null owned by Player the next player is less than or equal to 2, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.973","0.965","0.982","723, 951, 563"
+"2859","1142","Atidada2",NULL,"Reconstructed with Ludii","2",NULL,"The game Atidada is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+Aim: 
+     If a player places 3 of their pieces in an adjacent direction line, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.973","0.964","0.982","739, 563, 1289"
+"2860","1142","Atidada3",NULL,"Reconstructed with Ludii","2",NULL,"The game Atidada is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if not in the same turn and a player places 3 of their pieces in an adjacent direction line, move again, else if the next player cannot move, move again and set pending.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true or move one of your pieces.
+Aim: 
+     If all sites in the sites in Player the next player's hand satisfy the condition 0 is equal to the total number of cell in current site and there are no pieces owned by Player the next player, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.973","0.964","0.982","188, 789, 777"
+"2861","1142","Atidada4",NULL,"Reconstructed with Ludii","2",NULL,"The game Atidada is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of null owned by Player the next player is less than or equal to 2, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.973","0.964","0.982","563, 775, 563"
+"2862","1142","Atidada5",NULL,"Reconstructed with Ludii","2",NULL,"The game Atidada is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true or move one of your pieces.
+Aim: 
+     If all sites in the sites in Player the next player's hand satisfy the condition 0 is equal to the total number of cell in current site and there are no pieces owned by Player the next player, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.973","0.964","0.982","941, 908, 777"
+"2863","1142","Atidada6",NULL,"Reconstructed with Ludii","2",NULL,"The game Atidada is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers if the location of the piece is in the corner sites of the board, from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true, else step adjacent.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+Aim: 
+     If a player places 3 of their pieces in an adjacent direction line, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.973","0.963","0.982","955, 1612, 1563"
+"2864","1142","Atidada7",NULL,"Reconstructed with Ludii","2",NULL,"The game Atidada is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true or move one of your pieces.
+Aim: 
+     If all sites in the sites in Player the next player's hand satisfy the condition 0 is equal to the total number of cell in current site and there are no pieces owned by Player the next player, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.973","0.964","0.982","1612, 589, 777"
+"2865","1142","Atidada8",NULL,"Reconstructed with Ludii","2",NULL,"The game Atidada is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true or move one of your pieces.
+Aim: 
+     If all sites in the sites in Player the next player's hand satisfy the condition 0 is equal to the total number of cell in current site and there are no pieces owned by Player the next player, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.972","0.963","0.981","817, 740, 777"
+"2866","1142","Atidada9",NULL,"Reconstructed with Ludii","2",NULL,"The game Atidada is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true or move one of your pieces.
+Aim: 
+     If all sites in the sites in Player the next player's hand satisfy the condition 0 is equal to the total number of cell in current site and there are no pieces owned by Player the next player, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.972","0.963","0.981","1612, 1289, 777"
+"2867","1142","Atidada10",NULL,"Reconstructed with Ludii","2",NULL,"The game Atidada is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in the difference between the set of empty vertexs and the centre sites of the board expanded by 3 divided by 2 minus if 3 is even then 1 otherwise 0 steps moveRule: true move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.971","0.962","0.981","1612, 1944, 778"
