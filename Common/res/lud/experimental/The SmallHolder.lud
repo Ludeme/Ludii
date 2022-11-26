@@ -78,15 +78,15 @@
 ))
 
 (define "PiecewiseCapture" 
- (forEach Group Orthogonal
-  if:(is In (to) (intersection (sites Board) (sites Occupied by:Next)))
-  (remove (intersection (sites) (sites (values Remembered #2))))
-  (then
-   (seq
-    {
-     (forget Value #1 All)
-     ("UpdateAllTerritoryOfNext")
-    }    
+    (forEach Group Orthogonal
+        if:(is In (to) (intersection (sites Board) (sites Occupied by:Next)))
+        (remove (intersection (sites) (sites (values Remembered #2))))
+        (then
+            (seq
+                {
+                (forget Value #1 All)
+                ("UpdateAllTerritoryOfNext")
+                }    
 ))))
 
 (define "CaptureGroupsWithin" 
@@ -151,130 +151,130 @@
 )
 
 (define "MakeCapture"
- (if 
-  (= (mover) 1)
-  (<Capture:cVariant> "P2" "P1")
-  (<Capture:cVariant> "P1" "P2")
+    (if 
+        (= (mover) 1)
+        (<Capture:cVariant> "P2" "P1")
+        (<Capture:cVariant> "P1" "P2")
 ))
 
 (define "MakeAnyCaptures"
- (if
-  ("IsNotAnIsolatedPlacement")
-  (seq
-   {
-    ("RecordTerritoryOfRevisedGroup")
-    ("MakeCapture")
-   }
+    (if
+        ("IsNotAnIsolatedPlacement")
+        (seq
+            {
+            ("RecordTerritoryOfRevisedGroup")
+            ("MakeCapture")
+            }
 )))
 
 (define "PlayWithoutSizeRestriction"
- (move Add
-  (to <Capture:playableSites> )
-  (then "MakeAnyCaptures")
+    (move Add
+        (to <Capture:playableSites> )
+        (then "MakeAnyCaptures")
 ))
 
 (define "Isolated"
- (all Sites
-  (sites Around (to) Orthogonal)
-  if:(not (is Mover (who at:(site))))
+    (all Sites
+        (sites Around (to) Orthogonal)
+        if:(not (is Mover (who at:(site))))
 ))
 
 (define "SmallestPlayable"
- (min
-  (results
-   from:(difference (sites Occupied by:Mover) (sites State 1)) 
-   to:(from)
-   (size Group at:(from) Orthogonal)
-  )
+    (min
+        (results
+            from:(difference (sites Occupied by:Mover) (sites State 1)) 
+            to:(from)
+            (size Group at:(from) Orthogonal)
+        )
 ))
 
 (define "SmallestGroup" (min (sizes Group Orthogonal Mover)))
 
 (define "NothingLarger"
- (all Sites
- (sites Around (to) Orthogonal if:(is Mover (who at:(to))))
-  if:(=
-   <ExtendMerge:playableMode> 
-   (size Group at:(site) Orthogonal)
+    (all Sites
+        (sites Around (to) Orthogonal if:(is Mover (who at:(to))))
+        if:(=
+            <ExtendMerge:playableMode> 
+            (size Group at:(site) Orthogonal)
 )))
 
 (define "MergeAny" 
- (not
-  (all Sites
-   (sites Around (to) Orthogonal if:(is Mover (who at:(to))))
-   if:(<
-    <ExtendMerge:playableMode> 
-    (size Group at:(site) Orthogonal)
+    (not
+        (all Sites
+            (sites Around (to) Orthogonal if:(is Mover (who at:(to))))
+            if:(<
+                <ExtendMerge:playableMode> 
+                (size Group at:(site) Orthogonal)
 ))))
-    
+
 (define "MarkUnPlayableNextGroups"
- (forEach Group Orthogonal
-  if:(is In (to) (sites Occupied by:Next))
-  (if
-   (< 0
-    (size Array
-     (array
-      (intersection
-       (sites Around (sites) Orthogonal if:(is Empty(to)))
-       <Capture:nextPlayableSites>
-   ))))
-   (forEach Value (array (sites)) (set State at:(value) 0))
-   (forEach Value (array (sites)) (set State at:(value) 1))
+    (forEach Group Orthogonal
+        if:(is In (to) (sites Occupied by:Next))
+        (if
+            (< 0
+                (size Array
+                    (array
+                        (intersection
+                            (sites Around (sites) Orthogonal if:(is Empty(to)))
+                            <Capture:nextPlayableSites>
+            ))))
+            (forEach Value (array (sites)) (set State at:(value) 0))
+            (forEach Value (array (sites)) (set State at:(value) 1))
 )))
 
 (define "CreateNewGroup"
- (move Add
-  (to
-   <Capture:playableSites>
-   if:("Isolated")
+    (move Add
+        (to
+            <Capture:playableSites>
+            if:("Isolated")
 )))
 
 (define "ExtendGroup"
- (move Add
-  (to
-   <Capture:playableSites>
-   if:<ExtendMerge:contactMode>
+    (move Add
+        (to
+            <Capture:playableSites>
+            if:<ExtendMerge:contactMode>
 )))
 
 (define "UpdatePlayableSitesAndGroups"
- (seq
-  {
-   ("UpdateGroupSizeValue4PiecesConnected2Placement")     
-   ("MakeAnyCaptures")
-   ("MarkUnPlayableNextGroups")
-//   <ExtendMerge:playableMode>
-  }
+    (seq
+        {
+        ("UpdateGroupSizeValue4PiecesConnected2Placement")     
+        ("MakeAnyCaptures")
+        ("MarkUnPlayableNextGroups")
+        //   <ExtendMerge:playableMode>
+        }
 ))
 
 (define "IsolatedPiecePriority"
- (priority
-  ("CreateNewGroup")
-  ("ExtendGroup")
-  (then "UpdatePlayableSitesAndGroups")
+    (priority
+        ("CreateNewGroup")
+        ("ExtendGroup")
+        (then "UpdatePlayableSitesAndGroups")
 ))
 
 (define "GroupCreationPriority"
- (priority
-  (if
-   (> 2 (count Groups Orthogonal <Group:playableRule>))
-   ("CreateNewGroup")
-  )
-  (or
-   ("CreateNewGroup")
-   ("ExtendGroup")
-  )
-  (then "UpdatePlayableSitesAndGroups")
+    (priority
+        (if
+            (> 2 (count Groups Orthogonal <Group:playableRule>))
+            ("CreateNewGroup")
+        )
+        (or
+            ("CreateNewGroup")
+            ("ExtendGroup")
+        )
+        (then "UpdatePlayableSitesAndGroups")
 ))
 
 (define "GroupCreationRequirement"
- (if
-  (> 2 (count Groups Orthogonal <Group:playableRule>))
-  ("CreateNewGroup")
-  (or
-   ("CreateNewGroup")
-   ("ExtendGroup")
-  )
-  (then "UpdatePlayableSitesAndGroups")
+    (if
+        (> 2 (count Groups Orthogonal <Group:playableRule>))
+        ("CreateNewGroup")
+        (or
+            ("CreateNewGroup")
+            ("ExtendGroup")
+        )
+        (then "UpdatePlayableSitesAndGroups")
 ))
 
 //--------------------------
@@ -284,41 +284,41 @@
     (equipment
         {
         (board <Board:type> use:Cell)
-//        (hand Each size:1)
+        //        (hand Each size:1)
         (piece "Disc" Each)
         }
     )
     (rules
         (play
-         <Group:creationRule>
+            <Group:creationRule>
         )
         (end 
-         "EndNoMoves"
+            "EndNoMoves"
 ))) 
 
 (define "EndNoMoves"
- (if (no Moves Next) (result Next Loss))
+    (if (no Moves Next) (result Next Loss))
 )
- 
+
 //--------------------------------------
 (rulesets
- {
-  (ruleset "Ruleset/The Smallholder- Gaps Original (Described)"
-   {"Board/Hex4" "Groups/Must create if only 1" "Adjacent play/Smallest, else lose" "Territory/Gap" "Capture/Piecewise"}
-  ) 
-  (ruleset "Ruleset/The Smallholder- Nibbler  (Described)"
-   {"Board/Hex4" "Groups/Must create if 1 playable" "Adjacent play/Smallest playable" "Territory/Gap" "Capture/Piecewise"}
-  )**** 
-  (ruleset "Ruleset/The Smallholder- Offshore Gaps  (Described)"
-   {"Board/Hex4" "Groups/Priority to create if 1 playable" "Adjacent play/Smallest playable" "Territory/Gap" "Capture/Piecewise"}
-  )
-  (ruleset "Ruleset/The Smallholder- Stymie  (Described)"
-   {"Board/Hex4" "Groups/Priority to create if 1 playable" "Adjacent play/Smallest, else lose" "Territory/Gap" "Capture/Groupwise, Adjacent re-entry"}
-  ) 
-  (ruleset "Ruleset/The Smallholder- Hull Setbacks  (Described)"
-   {"Board/Hex4" "Groups/Must create if 1 playable" "Adjacent play/Smallest playable" "Territory/Hull" "Capture/Groupwise, No re-entry"}
-  )
- }
+    {
+    (ruleset "Ruleset/The Smallholder- Gaps Original (Described)"
+        {"Board/Hex4" "Groups/Must create if only 1" "Adjacent play/Smallest, else lose" "Territory/Gap" "Capture/Piecewise"}
+    ) 
+    (ruleset "Ruleset/The Smallholder- Nibbler  (Described)"
+        {"Board/Hex4" "Groups/Must create if 1 playable" "Adjacent play/Smallest playable" "Territory/Gap" "Capture/Piecewise"}
+    )**** 
+    (ruleset "Ruleset/The Smallholder- Offshore Gaps  (Described)"
+        {"Board/Hex4" "Groups/Priority to create if 1 playable" "Adjacent play/Smallest playable" "Territory/Gap" "Capture/Piecewise"}
+    )
+    (ruleset "Ruleset/The Smallholder- Stymie  (Described)"
+        {"Board/Hex4" "Groups/Priority to create if 1 playable" "Adjacent play/Smallest, else lose" "Territory/Gap" "Capture/Groupwise, Adjacent re-entry"}
+    ) 
+    (ruleset "Ruleset/The Smallholder- Hull Setbacks  (Described)"
+        {"Board/Hex4" "Groups/Must create if 1 playable" "Adjacent play/Smallest playable" "Territory/Hull" "Capture/Groupwise, No re-entry"}
+    )
+    }
 )
 
 (option "Board" <Board> args:{ <type> }
@@ -334,68 +334,67 @@
     }
 ) 
 (option "Groups" <Group>
- args:{ <creationRule> <playableRule>}
- {
-  (item "Must create if only 1"
-   <"GroupCreationRequirement"> 
-   <if:(is Mover (who at:(to)))>
-   "A player with a single group must create a new group, or LOSE."
-  )
-  (item "Must create if 1 playable"
-   <"GroupCreationRequirement"> 
-   <if:(and (= 0 (state at:(to))) (is Mover (who at:(to))))>
-   "A player with less than 2 groups with adjacent playable sites must place a stone to create a new group, or LOSE."
-  )***
-  (item "Priority to create if 1"
-   <"GroupCreationPriority"> 
-   <if:(is Mover (who at:(to)))>
-   "A player with less than 2 groups must place a stone to create a new group, IF POSSIBLE."
-  )
-  (item "Priority to create if 1 playable"
-   <"GroupCreationPriority"> 
-   <if:(and (= 0 (state at:(to))) (is Mover (who at:(to))))>
-   "A player with less than 2 groups with adjacent playable sites must place a stone to create a new group, IF POSSIBLE."
-  )
-  (item "Priority to create"
-   <"IsolatedPiecePriority">
-   <>
-   "A player must place a stone to create a new group whenever possible."
-  )
- }
+    args:{ <creationRule> <playableRule>}
+    {
+    (item "Must create if only 1"
+        <"GroupCreationRequirement"> 
+        <if:(is Mover (who at:(to)))>
+        "A player with a single group must create a new group, or LOSE."
+    )
+    (item "Must create if 1 playable"
+        <"GroupCreationRequirement"> 
+        <if:(and (= 0 (state at:(to))) (is Mover (who at:(to))))>
+        "A player with less than 2 groups with adjacent playable sites must place a stone to create a new group, or LOSE."
+    )***
+    (item "Priority to create if 1"
+        <"GroupCreationPriority"> 
+        <if:(is Mover (who at:(to)))>
+        "A player with less than 2 groups must place a stone to create a new group, IF POSSIBLE."
+    )
+    (item "Priority to create if 1 playable"
+        <"GroupCreationPriority"> 
+        <if:(and (= 0 (state at:(to))) (is Mover (who at:(to))))>
+        "A player with less than 2 groups with adjacent playable sites must place a stone to create a new group, IF POSSIBLE."
+    )
+    (item "Priority to create"
+        <"IsolatedPiecePriority">
+        <>
+        "A player must place a stone to create a new group whenever possible."
+    )
+    }
 )
-
 
 (option "Adjacent play" <ExtendMerge>
- args:{ <contactMode> <playableMode> }
- {
- 
-  (item "Smallest playable"
-   <"MergeAny"> 
-   <"SmallestPlayable">
-   "Otherwise, placement is allowed next to a group of the same size as the smallest mover's group with an adjacent playable site."
-  )***
-  
-  (item "Smallest playable only"
-   <"NothingLarger">
-   <"SmallestPlayable">
-   "Otherwise, placement is not allowed next to any group larger than the mover's smallest group with an adjacent playable site."
-  )
-  
-  (item "Smallest, else lose"
-   <"MergeAny"> 
-   <"SmallestGroup">
-   "Otherwise, if placement is made adjacent to a group, it must be next to a group of the same size as the mover's smallest group."
-  )
-  
-  (item "Smallest only, else lose"
-   <"NothingLarger"> 
-   <"SmallestGroup">
-   "Otherwise, placement is not allowed next to any group larger than the mover's smallest group."
-  )
-
- }
+    args:{ <contactMode> <playableMode> }
+    {
+    
+    (item "Smallest playable"
+        <"MergeAny"> 
+        <"SmallestPlayable">
+        "Otherwise, placement is allowed next to a group of the same size as the smallest mover's group with an adjacent playable site."
+    )***
+    
+    (item "Smallest playable only"
+        <"NothingLarger">
+        <"SmallestPlayable">
+        "Otherwise, placement is not allowed next to any group larger than the mover's smallest group with an adjacent playable site."
+    )
+    
+    (item "Smallest, else lose"
+        <"MergeAny"> 
+        <"SmallestGroup">
+        "Otherwise, if placement is made adjacent to a group, it must be next to a group of the same size as the mover's smallest group."
+    )
+    
+    (item "Smallest only, else lose"
+        <"NothingLarger"> 
+        <"SmallestGroup">
+        "Otherwise, placement is not allowed next to any group larger than the mover's smallest group."
+    )
+    
+    }
 )
-     
+
 (option "Territory" <Territory> args:{ <tVariant> }
     {
     (item "Gap"
@@ -412,61 +411,61 @@
 (option "Capture" <Capture> args:{ <cVariant> <playableSites> <nextPlayableSites> }
     {
     (item "Piecewise" 
-     <"PiecewiseCapture">
-     <"EmptySitesOutsideEnemyTerritory">
-     <"EmptySitesOutsideFriendlyTerritory">
-     "After placement, capture every enemy STONE within friendly holdings. Placement inside the opponent's holdings is forbidden."
+        <"PiecewiseCapture">
+        <"EmptySitesOutsideEnemyTerritory">
+        <"EmptySitesOutsideFriendlyTerritory">
+        "After placement, capture every enemy STONE within friendly holdings. Placement inside the opponent's holdings is forbidden."
     )***
     (item "Groupwise, No re-entry" 
-     <"CaptureGroupsWithin">
-     <"EmptySitesOutsideEnemyTerritory">
-     <"EmptySitesOutsideFriendlyTerritory">
-     "After placement, capture every complete enemy GROUP within friendly holdings. Placement inside the opponent's holdings is forbidden."
+        <"CaptureGroupsWithin">
+        <"EmptySitesOutsideEnemyTerritory">
+        <"EmptySitesOutsideFriendlyTerritory">
+        "After placement, capture every complete enemy GROUP within friendly holdings. Placement inside the opponent's holdings is forbidden."
     )
     (item "Groupwise, Adjacent re-entry" 
-     <"CaptureGroupsWithin">
-     <(union
-       ("EmptySitesOutsideEnemyTerritory")
-       (sites Around
-        (intersection (sites Board) (sites Occupied by:Mover)) 
-        Orthogonal 
-        if:(is Empty (to))
-     ))>
-     <(union
-       ("EmptySitesOutsideFriendlyTerritory")
-       (sites Around
-        (intersection (sites Board) (sites Occupied by:Next)) 
-        Orthogonal 
-        if:(is Empty (to))
-     ))>
-     "After placement, capture every complete enemy GROUP within friendly holdings; Placement in the opponent's holdings is only allowed by extending a friendly group."
+        <"CaptureGroupsWithin">
+        <(union
+            ("EmptySitesOutsideEnemyTerritory")
+            (sites Around
+                (intersection (sites Board) (sites Occupied by:Mover)) 
+                Orthogonal 
+                if:(is Empty (to))
+        ))>
+        <(union
+            ("EmptySitesOutsideFriendlyTerritory")
+            (sites Around
+                (intersection (sites Board) (sites Occupied by:Next)) 
+                Orthogonal 
+                if:(is Empty (to))
+        ))>
+        "After placement, capture every complete enemy GROUP within friendly holdings; Placement in the opponent's holdings is only allowed by extending a friendly group."
     )
     }
 )    
 //------------------------------------------------------------------------------
 //
 (metadata
-  (info
-   {
-   }
-  )
-
-  (graphics
-    {
-    (board Colour Phase0 (colour 100 200 250 120))
-    (board Colour OuterEdges (colour Black))
-    (board Colour InnerEdges (colour Black))
-    (board StyleThickness OuterEdges 1.5)
-    (board StyleThickness InnerEdges 0.4)
-    (board StyleThickness InnerVertices 0.4)
-    (board StyleThickness OuterVertices 0.4)
-    (board Colour Symbols (colour Black))
-    (player Colour P1 (colour Black))
-    (player Colour P2 (colour LightOrange))
-    (region Colour ("P1Territory")     (colour  60 120 170 120)) 
-    (region Colour ("CommonTerritory") (colour 120 157 185 120))  
-    (region Colour ("P2Territory")     (colour 180 195 200 120))
-    (piece Foreground "Disc" state:1 image:"Disc.svg" fillColour:(colour 150 150 150 150) edgeColour:(colour 150 150 150 150) scale:.5)
-    }
-  )
+    (info
+        {
+        }
+    )
+    
+    (graphics
+        {
+        (board Colour Phase0 (colour 100 200 250 120))
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board StyleThickness OuterEdges 1.5)
+        (board StyleThickness InnerEdges 0.4)
+        (board StyleThickness InnerVertices 0.4)
+        (board StyleThickness OuterVertices 0.4)
+        (board Colour Symbols (colour Black))
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour LightOrange))
+        (region Colour ("P1Territory")     (colour  60 120 170 120)) 
+        (region Colour ("CommonTerritory") (colour 120 157 185 120))  
+        (region Colour ("P2Territory")     (colour 180 195 200 120))
+        (piece Foreground "Disc" state:1 image:"Disc.svg" fillColour:(colour 150 150 150 150) edgeColour:(colour 150 150 150 150) scale:.5)
+        }
+    )
 )

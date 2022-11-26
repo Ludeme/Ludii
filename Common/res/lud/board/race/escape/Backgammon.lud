@@ -99,7 +99,7 @@
                         replayDouble:True 
                         if:("DieNotUsed")
                         (forEach Site 
-                        	(sites Occupied by:Mover)
+                            (sites Occupied by:Mover)
                             (if ("NotEmptyAndNotOffTheBoard") 
                                 (if ("CanEscape")
                                     ("RemoveAPiece")
