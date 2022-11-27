@@ -111,6 +111,44 @@
         >
         "The game is played according to the rules of Martin Gardner with a slightly difference. The army can be placed anywhere except in the middle of the towers."
     ) 
+    (item "Schuh"  
+            <> 
+            <(start {
+                (place "Pawn1" (sites P1))
+                (place "Pawn2" (sites P2))
+            })
+            >
+            <
+            phases:{
+                (phase "MovementP1" P1 
+                    (play (forEach Piece)) 
+                )
+                (phase "MovementP2" P2 
+                        (play 
+                        	(forEach Piece 
+                        		(if (!= 1 (state at:(from))) 
+                        			(move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))
+                        				(then
+                        						(if (< (count MovesThisTurn) 2) 
+                        							(and
+	                        							(moveAgain)
+	                            						(set State at:(last To) 1)
+                            						)
+                        							(forEach Site (sites Occupied by:P2)
+                        								(set State at:(site) 0)
+                        							)
+                        								
+                        						)
+                        				)
+                        			)
+                        		)
+                        	)
+                        )
+                )
+                }
+            >   
+            "The game is played according to the rules of Lucas, except that Schuh suggested that White has to move his 3 pieces (in any order) at each turn."
+        ) 
 })
 
 (option "Move Limit" <Move> args:{ <limit> }
@@ -129,6 +167,10 @@
     
     (ruleset "Ruleset/Gardner (Suggested)" {
         "Direction Tower/All directions" "Direction Army/All directions" "Version/Martin Gardner" "Move Limit/No move limit"
+    })
+    
+    (ruleset "Ruleset/Schuh (Suggested)" {
+        "Direction Tower/All directions" "Direction Army/All directions" "Version/Schuh" "Move Limit/No move limit"
     })
     
 })
