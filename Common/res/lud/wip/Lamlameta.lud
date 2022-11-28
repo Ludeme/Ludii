@@ -34,10 +34,10 @@
                             })
                         )
                     )
-                    (if (= (var "FirstSite") ("NextHole" ("LastHoleSowed")))
+                    (if (= (var "FirstSite") ("NextHole" (last To afterConsequence:True)))
                         (move Select
                             (from
-                                (sites {("LastHoleSowed")})
+                                ("LastHoleSowed")
                             )
                             (then
                                 (sow)
@@ -45,7 +45,7 @@
                         )
                         (move Select
                             (from
-                                (sites {("NextHole" ("LastHoleSowed"))})
+                                (sites {("NextHole" (last To afterConsequence:True))})
                             )
                             (then
                                 (and 

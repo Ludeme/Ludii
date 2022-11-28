@@ -1,0 +1,1753 @@
+(game "Seven-Fang"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Seven-Fang1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 7)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (> 
+                                (count Sites in:
+                                    (forEach 
+                                        (sites Around 
+                                            (last To)
+                                        )
+                                        if:
+                                        (if 
+                                            (is Empty 
+                                                (site)
+                                            )
+                                            
+                                            (or 
+                                                (and { 
+                                                    (is In 
+                                                        (last To)
+                                                        
+                                                        (sites { 
+                                                            (ahead 
+                                                                (site)
+                                                            N )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            S )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            W )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            E )
+                                                            }
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            N )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            S )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            W )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            E )
+                                                        )
+                                                    )
+                                                    }
+                                                )
+                                                
+                                                (and { 
+                                                    (is In 
+                                                        (last To)
+                                                        
+                                                        (sites { 
+                                                            (ahead 
+                                                                (site)
+                                                            NE )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            SE )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            SW )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            NW )
+                                                            }
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            NE )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            SE )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            SW )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            NW )
+                                                        )
+                                                    )
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            0 )
+                            
+                            (and 
+                                (set Value Mover 
+                                    (count Sites in:
+                                        (forEach 
+                                            (sites Around 
+                                                (last To)
+                                            )
+                                            if:
+                                            (if 
+                                                (is Empty 
+                                                    (site)
+                                                )
+                                                
+                                                (or 
+                                                    (and { 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites { 
+                                                                (ahead 
+                                                                    (site )
+                                                                N )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                S )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                W )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                E )
+                                                                }
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                N )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                S )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                W )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                E )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                    
+                                                    (and { 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites { 
+                                                                (ahead 
+                                                                    (site )
+                                                                NE )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                SE )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                SW )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                NW )
+                                                                }
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                NE )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                SE )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                SW )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                NW )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:24)
+            )
+            phases:{ 
+            (phase "FirstPlacement" P1 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Centre)
+                        )
+                    )
+                )
+                
+                (nextPhase "Placement")
+            )
+            
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Playing" )
+            )
+            
+            (phase "Playing" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next)
+                            
+                            (then 
+                                (if 
+                                    (> 
+                                        (value Player Mover)
+                                    1)
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Value Mover 
+                                            (- 
+                                                (value Player Mover)
+                                            1)
+                                        )
+                                    )
+                                    
+                                    (set Value Mover 0)
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Seven-Fang1 ruleset.")
+    
+    (item "Seven-Fang2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 7)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or 
+                    (if 
+                        (= 1 
+                            (+ 
+                                (count Cell at:
+                                    (handSite Mover)
+                                )
+                                
+                                (count Pieces Mover)
+                            )
+                        )
+                        
+                        (move Hop 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Slide 
+                        (then 
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                
+                                (between 
+                                    (range 1 
+                                        (count Rows)
+                                    )
+                                    if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (and 
+                                            (remove 
+                                                (between)
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (handSite Mover)
+                                                )
+                                                
+                                                (to 
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:24)
+            )
+            phases:{ 
+            (phase "FirstPlacement" P1 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Centre)
+                        )
+                    )
+                )
+                
+                (nextPhase "Placement")
+            )
+            
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Playing" )
+            )
+            
+            (phase "Playing" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next)
+                            
+                            (then 
+                                (if 
+                                    (> 
+                                        (value Player Mover)
+                                    1)
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Value Mover 
+                                            (- 
+                                                (value Player Mover)
+                                            1)
+                                        )
+                                    )
+                                    
+                                    (set Value Mover 0)
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Seven-Fang2 ruleset.")
+    
+    (item "Seven-Fang3" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 7)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (> 
+                                (count Sites in:
+                                    (forEach 
+                                        (sites Around 
+                                            (last To)
+                                        )
+                                        if:
+                                        (if 
+                                            (is Empty 
+                                                (site)
+                                            )
+                                            
+                                            (or 
+                                                (and { 
+                                                    (is In 
+                                                        (last To)
+                                                        
+                                                        (sites { 
+                                                            (ahead 
+                                                                (site)
+                                                            N )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            S )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            W )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            E )
+                                                            }
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            N )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            S )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            W )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            E )
+                                                        )
+                                                    )
+                                                    }
+                                                )
+                                                
+                                                (and { 
+                                                    (is In 
+                                                        (last To)
+                                                        
+                                                        (sites { 
+                                                            (ahead 
+                                                                (site)
+                                                            NE )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            SE )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            SW )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            NW )
+                                                            }
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            NE )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            SE )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            SW )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            NW )
+                                                        )
+                                                    )
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            0 )
+                            
+                            (and 
+                                (set Value Mover 
+                                    (count Sites in:
+                                        (forEach 
+                                            (sites Around 
+                                                (last To)
+                                            )
+                                            if:
+                                            (if 
+                                                (is Empty 
+                                                    (site)
+                                                )
+                                                
+                                                (or 
+                                                    (and { 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites { 
+                                                                (ahead 
+                                                                    (site )
+                                                                N )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                S )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                W )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                E )
+                                                                }
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                N )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                S )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                W )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                E )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                    
+                                                    (and { 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites { 
+                                                                (ahead 
+                                                                    (site )
+                                                                NE )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                SE )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                SW )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                NW )
+                                                                }
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                NE )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                SE )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                SW )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                NW )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker" "Hand" count:16)
+                
+                (place "Marker1" 
+                    (union 
+                        (sites Top)
+                        
+                        (difference 
+                            (sites Right)
+                            
+                            (sites Bottom)
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (sites Bottom)
+                        
+                        (difference 
+                            (sites Left)
+                            
+                            (sites Top)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Seven-Fang3 ruleset.")
+    
+    (item "Seven-Fang4" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 7)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or 
+                    (if 
+                        (= 1 
+                            (+ 
+                                (count Cell at:
+                                    (handSite Mover)
+                                )
+                                
+                                (count Pieces Mover)
+                            )
+                        )
+                        
+                        (move Hop 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Slide 
+                        (then 
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                
+                                (between 
+                                    (range 1 
+                                        (count Rows)
+                                    )
+                                    if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (and 
+                                            (remove 
+                                                (between)
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (handSite Mover)
+                                                )
+                                                
+                                                (to 
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker" "Hand" count:16)
+                
+                (place "Marker1" 
+                    (union 
+                        (sites Top)
+                        
+                        (difference 
+                            (sites Right)
+                            
+                            (sites Bottom)
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (sites Bottom)
+                        
+                        (difference 
+                            (sites Left)
+                            
+                            (sites Top)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Seven-Fang4 ruleset.")
+    
+    (item "Seven-Fang5" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 7)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (> 
+                                (count Sites in:
+                                    (forEach 
+                                        (sites Around 
+                                            (last To)
+                                        )
+                                        if:
+                                        (if 
+                                            (is Empty 
+                                                (site)
+                                            )
+                                            
+                                            (or 
+                                                (and { 
+                                                    (is In 
+                                                        (last To)
+                                                        
+                                                        (sites { 
+                                                            (ahead 
+                                                                (site)
+                                                            N )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            S )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            W )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            E )
+                                                            }
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            N )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            S )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            W )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            E )
+                                                        )
+                                                    )
+                                                    }
+                                                )
+                                                
+                                                (and { 
+                                                    (is In 
+                                                        (last To)
+                                                        
+                                                        (sites { 
+                                                            (ahead 
+                                                                (site)
+                                                            NE )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            SE )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            SW )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            NW )
+                                                            }
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            NE )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            SE )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            SW )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            NW )
+                                                        )
+                                                    )
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            0 )
+                            
+                            (and 
+                                (set Value Mover 
+                                    (count Sites in:
+                                        (forEach 
+                                            (sites Around 
+                                                (last To)
+                                            )
+                                            if:
+                                            (if 
+                                                (is Empty 
+                                                    (site)
+                                                )
+                                                
+                                                (or 
+                                                    (and { 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites { 
+                                                                (ahead 
+                                                                    (site )
+                                                                N )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                S )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                W )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                E )
+                                                                }
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                N )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                S )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                W )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                E )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                    
+                                                    (and { 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites { 
+                                                                (ahead 
+                                                                    (site )
+                                                                NE )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                SE )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                SW )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                NW )
+                                                                }
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                NE )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                SE )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                SW )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                NW )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Seven-Fang5 ruleset.")
+    
+    (item "Seven-Fang6" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 7)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker" "Hand" count:16)
+                
+                (place "Marker1" 
+                    (union 
+                        (sites Top)
+                        
+                        (difference 
+                            (sites Right)
+                            
+                            (sites Bottom)
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (sites Bottom)
+                        
+                        (difference 
+                            (sites Left)
+                            
+                            (sites Top)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Seven-Fang6 ruleset.")
+    
+    (item "Seven-Fang7" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 7)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (or 
+                                (is Line 3 All)
+                                
+                                (is Pattern { F R F R F R F }
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Seven-Fang7 ruleset.")
+    
+    (item "Seven-Fang8" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 7)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move 
+                    (from)
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Seven-Fang8 ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board 
+                (square 7)
+                use:Vertex
+            )
+            (piece "Marker" Each [#]) 
+            (hand Each)
+        }) 
+        (rules [#])
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Seven-Fang1 (Reconstructed)" {
+        "Variant/Seven-Fang1"
+    })
+    (ruleset "Ruleset/Seven-Fang2 (Reconstructed)" {
+        "Variant/Seven-Fang2"
+    })
+    (ruleset "Ruleset/Seven-Fang3 (Reconstructed)" {
+        "Variant/Seven-Fang3"
+    })
+    (ruleset "Ruleset/Seven-Fang4 (Reconstructed)" {
+        "Variant/Seven-Fang4"
+    })
+    (ruleset "Ruleset/Seven-Fang5 (Reconstructed)" {
+        "Variant/Seven-Fang5"
+    })
+    (ruleset "Ruleset/Seven-Fang6 (Reconstructed)" {
+        "Variant/Seven-Fang6"
+    })
+    (ruleset "Ruleset/Seven-Fang7 (Reconstructed)" {
+        "Variant/Seven-Fang7"
+    })
+    (ruleset "Ruleset/Seven-Fang8 (Reconstructed)" {
+        "Variant/Seven-Fang8"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Seven-Fang is a game played in China during the twentieth century. Though its rules were not completely described, it was likely similar to the game Fang played by the Uighur people.")
+        (rules "7x7 intersecting lines.")
+        (source "DLP evidence.")
+        (id "1137")
+        (version "1.3.7")
+        (classification "board/war/reconstruction")
+        (credit "Eric Piette")
+        (origin "This game was played in China, from around 1997 to 1999.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+    })
+    
+)
+

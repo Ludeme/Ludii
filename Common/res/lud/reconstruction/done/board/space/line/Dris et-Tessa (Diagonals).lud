@@ -1,0 +1,1397 @@
+(game "Dris et-Tessa (Diagonals)"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Dris et-Tessa (Diagonals)1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Dris et-Tessa (Diagonals)1 ruleset.")
+    
+    (item "Dris et-Tessa (Diagonals)2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Dris et-Tessa (Diagonals)2 ruleset.")
+    
+    (item "Dris et-Tessa (Diagonals)3" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Dris et-Tessa (Diagonals)3 ruleset.")
+    
+    (item "Dris et-Tessa (Diagonals)4" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Dris et-Tessa (Diagonals)4 ruleset.")
+    
+    (item "Dris et-Tessa (Diagonals)5" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (or { 
+                                        (is Line 3 N exact:True)
+                                        
+                                        (is Line 3 S exact:True)
+                                        
+                                        (is Line 3 E exact:True)
+                                        
+                                        (is Line 3 W exact:True)
+                                        }
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            4)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Dris et-Tessa (Diagonals)5 ruleset.")
+    
+    (item "Dris et-Tessa (Diagonals)6" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (or { 
+                                (is Line 3 N exact:True)
+                                
+                                (is Line 3 S exact:True)
+                                
+                                (is Line 3 E exact:True)
+                                
+                                (is Line 3 W exact:True)
+                                }
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (or { 
+                                        (is Line 3 N exact:True)
+                                        
+                                        (is Line 3 S exact:True)
+                                        
+                                        (is Line 3 E exact:True)
+                                        
+                                        (is Line 3 W exact:True)
+                                        }
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            4)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Dris et-Tessa (Diagonals)6 ruleset.")
+    
+    (item "Dris et-Tessa (Diagonals)7" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (or { 
+                                        (is Line 3 N exact:True)
+                                        
+                                        (is Line 3 S exact:True)
+                                        
+                                        (is Line 3 E exact:True)
+                                        
+                                        (is Line 3 W exact:True)
+                                        }
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            4)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Dris et-Tessa (Diagonals)7 ruleset.")
+    
+    (item "Dris et-Tessa (Diagonals)8" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Dris et-Tessa (Diagonals)8 ruleset.")
+    
+    (item "Dris et-Tessa (Diagonals)9" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            
+            (play 
+                (or 
+                    (if 
+                        (not 
+                            (all Sites 
+                                (sites Hand Mover)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Dris et-Tessa (Diagonals)9 ruleset.")
+    
+    (item "Dris et-Tessa (Diagonals)10" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (and 
+                                (if 
+                                    (and 
+                                        (< 
+                                            (var)
+                                        1)
+                                        
+                                        (is Line 3)
+                                    )
+                                    
+                                    (set Var 
+                                        (mover)
+                                    )
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all Sites 
+                                            (sites Hand P1)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (all Sites 
+                                            (sites Hand P2)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (< 
+                                            (var)
+                                        1)
+                                        
+                                        (moveAgain)
+                                        
+                                        (set NextPlayer 
+                                            (player 
+                                                (var)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (all Sites 
+                            (sites Hand P1)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                        
+                        (all Sites 
+                            (sites Hand P2)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                "Remove" )
+            )
+            
+            (phase "Remove" 
+                (play 
+                    (move Remove 
+                        (sites Occupied by:Next container:"Board")
+                    )
+                )
+                
+                (nextPhase Mover "Move")
+            )
+            
+            (phase "Move" 
+                (play 
+                    (if 
+                        (and 
+                            (not 
+                                (is Pending)
+                            )
+                            
+                            (is Prev Mover)
+                        )
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                            
+                            (then 
+                                (if 
+                                    (no Moves Next)
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Pending)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (is Pending)
+                            
+                            (do 
+                                (forEach Piece 
+                                    (move Step 
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                ifAfterwards:
+                                (can Move 
+                                    (forEach Piece Next)
+                                )
+                            )
+                            
+                            (forEach Piece)
+                        )
+                        
+                        (then 
+                            (if 
+                                (= 2 
+                                    (count Pieces P1)
+                                )
+                                
+                                (addScore P2 1 
+                                    (then 
+                                        (if 
+                                            (!= 
+                                                (score P2)
+                                            5)
+                                            
+                                            (and { 
+                                                (remove 
+                                                    (sites Occupied by:All )
+                                                )
+                                                
+                                                (add 
+                                                    (piece 
+                                                        (id "Marker" P1)
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite P1)
+                                                    )
+                                                count:12 )
+                                                
+                                                (add 
+                                                    (piece 
+                                                        (id "Marker" P2)
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite P2)
+                                                    )
+                                                count:12 )
+                                                }
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (= 2 
+                                        (count Pieces P2)
+                                    )
+                                    
+                                    (addScore P1 1 
+                                        (then 
+                                            (if 
+                                                (!= 
+                                                    (score P1)
+                                                5)
+                                                
+                                                (and { 
+                                                    (remove 
+                                                        (sites Occupied by:All )
+                                                    )
+                                                    
+                                                    (add 
+                                                        (piece 
+                                                            (id "Marker" P1 )
+                                                        )
+                                                        
+                                                        (to 
+                                                            (handSite P1)
+                                                        )
+                                                    count:12 )
+                                                    
+                                                    (add 
+                                                        (piece 
+                                                            (id "Marker" P2 )
+                                                        )
+                                                        
+                                                        (to 
+                                                            (handSite P2)
+                                                        )
+                                                    count:12 )
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (= 0 
+                        (count Sites in:
+                            (sites Occupied by:All container:"Board")
+                        )
+                    )
+                "Placement" )
+            )
+            }
+            
+            (end 
+                (if 
+                    (= 
+                        (score Mover)
+                    5)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Dris et-Tessa (Diagonals)10 ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2)
+        
+        (equipment { 
+            (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
+            (hand Each)
+            (piece "Marker" Each [#]) 
+        }) 
+        (rules [#])
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Dris et-Tessa (Diagonals)1 (Reconstructed)" {
+        "Variant/Dris et-Tessa (Diagonals)1"
+    })
+    (ruleset "Ruleset/Dris et-Tessa (Diagonals)2 (Reconstructed)" {
+        "Variant/Dris et-Tessa (Diagonals)2"
+    })
+    (ruleset "Ruleset/Dris et-Tessa (Diagonals)3 (Reconstructed)" {
+        "Variant/Dris et-Tessa (Diagonals)3"
+    })
+    (ruleset "Ruleset/Dris et-Tessa (Diagonals)4 (Reconstructed)" {
+        "Variant/Dris et-Tessa (Diagonals)4"
+    })
+    (ruleset "Ruleset/Dris et-Tessa (Diagonals)5 (Reconstructed)" {
+        "Variant/Dris et-Tessa (Diagonals)5"
+    })
+    (ruleset "Ruleset/Dris et-Tessa (Diagonals)6 (Reconstructed)" {
+        "Variant/Dris et-Tessa (Diagonals)6"
+    })
+    (ruleset "Ruleset/Dris et-Tessa (Diagonals)7 (Reconstructed)" {
+        "Variant/Dris et-Tessa (Diagonals)7"
+    })
+    (ruleset "Ruleset/Dris et-Tessa (Diagonals)8 (Reconstructed)" {
+        "Variant/Dris et-Tessa (Diagonals)8"
+    })
+    (ruleset "Ruleset/Dris et-Tessa (Diagonals)9 (Reconstructed)" {
+        "Variant/Dris et-Tessa (Diagonals)9"
+    })
+    (ruleset "Ruleset/Dris et-Tessa (Diagonals)10 (Reconstructed)" {
+        "Variant/Dris et-Tessa (Diagonals)10"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Dris et-Tessa is a game played in eighteenth century Egypt. The board used is similar to others used throughout the world for alignment games.")
+        (rules "Three concentric squares, with lines connecting their corners and the midpoints of each side.")
+        (source "DLP evidence.")
+        (id "1059")
+        (version "1.3.7")
+        (classification "board/space/line/reconstruction")
+        (credit "Eric Piette")
+        (origin "This game was played in Egypt, around 1762.")
+        }
+    )
+    
+    (recon {
+        (concept "NumStartComponents" minValue:9 maxValue:27)
+    })
+    
+)
+

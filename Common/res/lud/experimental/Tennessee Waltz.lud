@@ -14,15 +14,13 @@
                 if:(and
                     (is #1 (who at:(site)))
                     (= 2 (count Pieces #1 in:(union (sites Around (from) "Adj") (sites Around (site) "Adj"))))
-                )
-            )
+            ))
             (from)
-        )
-    )
+    ))
     
     (define "ShiftTokenFromToAndScore"
         (and
-            (set Score #2 (size Array ("PairSitesOf" #2))) 
+            (set Score #2 (size Array ("PairSitesOf" #2)))   
             (if
                 (>
                     (size Array ("PairSitesOf" #2))
@@ -38,31 +36,22 @@
                                 stack:False
                                 (then
                                     (remove (sites Hand #1))
-                                )
-                            )
-                        )
-                    )
-                )
+                )))))
                 (if
                     (and
                         (not (no Pieces #2 in:(sites Hand #2)))
                         (=
                             (size Array ("PairSitesOf" #2))
                             (size Array ("PairSitesOf" #1))
-                        )
-                    )
+                    ))
                     (addScore #2 1)
-                )
-            )
-        )
-    )
+    ))))
     
     (define "Score4"
         (+
             (count Pieces #1 in:(sites Hand #1))
             (size Array ("PairSitesOf" #1))
-        )
-    )
+    ))
     
     //---------------------------------
     // Shifting consequences and utilities
@@ -71,260 +60,221 @@
     
     (define "PairedSiteIsPushedOff" (= (var "PairedSite") (ahead (var "PairedSite") "PushDirection")))
     (define "CauseANullMove" (remove (var "LF")))
-    
     (define "PushConsquences4ThePair"
         (if
-            ("PairedSiteIsPushedOff")
-("CauseANullMove") // which is filtered out afterwards.))))
-(if
-    (is Mover (who at:(var "LT")))
-    (push
-        (from (var "LF"))
-        "PushDirection" 
-    )
-    (if
-        (= (var "LF") (ahead (var "PairedSite") "PushDirection"))
-        (push
-            (from (var "PairedSite"))    
-            "PushDirection"
-        )
-        (and
+            (= (var "PairedSite") (var "LT")) // corrected for general case
             (push
-                (from (var "LF"))    
-                "PushDirection"
+                (from (var "LF"))
+                "PushDirection" 
             )
-            (push
-                (from (var "PairedSite"))
-                "PushDirection"
-            )
-        )
-    )
-)
-)
-)
-
-//----------------------------------
-// Pair Testing utility
-
-(define "IsAPairOfAt"
-    (and
-        (= 1 (count Pieces #1 in:(sites Around #2 "Adj")))
-        (no Pieces #1 in:(sites Around (intersection (sites Around #2 "Adj") (sites Occupied by:#1)) "Adj"))
-    )
-)
-
-//---------------------------------------------
-// Move restrictions and housekeeping
-
-(define "PairHasStayedOnBoard" (not (is Repeat PositionalInTurn))) 
-(define "CurrentEnemyCount" (count Sites in:(sites Occupied by:Next)))
-(define "NoEnemyWasPushedOff" (= ("CurrentEnemyCount") (var "StartTurnEnemy")))
-
-(define "RecordTheSitesInvolvedInTheMove"
-    (set Var "LF" (last From)
-        (then
-            (set Var "LT" (last To)
-                (then
-                    (set Var "PairedSite" (regionSite (intersection (sites Around (var "LF") "Adj") (sites Occupied by:Mover)) index:0))
-                )
-            )
-        )
-    )
-)
-
-(define "PassingIsAllowedAfterFirstPairScores"
-    (if
-        (= 1 (mod (+ (score P1) (score P2)) 2)) // There has been a pair already.
-        (move Pass)
-    )
-)
-
-//---------------------------------------------------
-
-(game "Tennessee Waltz" 
-    (players 2)
-    (equipment {
-        (board <BoardShape:gridType> use:Vertex)
-        (hand Each size:1)
-        (piece "Disc" Each) 
-    })
-    (rules
-        (play
-            (or {
-                ("PassingIsAllowedAfterFirstPairScores")
-                (move Add (to (sites Empty) if:(not ("IsAPairOfAt" Mover (to)))))
-                (do
-                    (set Var "StartTurnEnemy" ("CurrentEnemyCount"))
-                    next:(do
-                        (move Select
-                            (from (sites Empty) if:("IsAPairOfAt" Mover (from)))
-                            (to (sites Around (from) "Adj"))
-                            (then
-                                (and
-                                    "RecordTheSitesInvolvedInTheMove"
-                                    (add (piece (id "Disc" Mover)) (to (last From))
-                                        (then ("PushConsquences4ThePair"))
-                                    )
-                                )
-                            )
-                        )
-                        ifAfterwards:(and ("PairHasStayedOnBoard") ("NoEnemyWasPushedOff"))
-                    )
-                )
-                }
-                (then
-                    (and
-                        ("ShiftTokenFromToAndScore" Next Mover)
-                        ("ShiftTokenFromToAndScore" Mover Next)
-                    )
-                )
-            )
-        )
-        (end 
             (if
-                (or
-                    "IsWinningCondition"
-                    (all Passed)
+                (= (var "LF") (ahead (var "PairedSite") "PushDirection"))
+                (push
+                    (from (var "PairedSite"))              
+                    "PushDirection"
                 )
-                (byScore)
-                // Bug - Without this update below final score does not update correctly in some cases after the push.
-                // (byScore {(score Mover ("Score4" Mover)) (score Next ("Score4" Next))}) 
-            )
-        )
-    )
-)
-
-//-------------------------------------------------
-// Winning and Scoring
-
-(define "IsWinningCondition"
-    (or {
-        (and
-            (< (score Mover) (score Next))
-            ("CannotMakeAPairOf" Mover)
-        )
-        (and
-            (> (score Mover) (score Next))
-            ("CannotMakeAPairOf" Next)
-        )
-    })
-)
-
-(define "ThereAreSurroundingEmptySitesWithNoPiecesOfAroundThemAt"
-    (< 0
-        (size Array
-            (array
-                (forEach
-                    (intersection (sites Around #2 "Adj") (sites Empty))
-                    if:(no Pieces #1 in:(sites Around (site) "Adj"))
-                )
-            )
-        )
-    )
-)
-
-(define "PairableSiteOf"
-    (sites To
-        (select
-            (from
-                (sites Empty)
-                if:(or {
-                    ("IsAPairOfAt" #1 (from))
+                (if
+                    ("PairedSiteIsPushedOff") 
+                    ("CauseANullMove") // which is filtered out afterwards.
                     (and
-                        (no Pieces #1 in:(sites Around (from) "Adj"))
-                        ("ThereAreSurroundingEmptySitesWithNoPiecesOfAroundThemAt" #1 (from))
-                    )
-                })
-            )
-        )
-    )
-)
-
-(define "CannotMakeAPairOf"
-    (= 0
-        (size Array
-            (array
-                ("PairableSiteOf" #1)
-            )
-        )
-    )
-)
-
-//------------------------------------
-
-// Options
-
-(define "Adj" <BoardShape:directionsUsed>)
-
-(option "Board" <BoardShape> args:{ <gridType> <directionsUsed> <DiagShow> } 
-    {
-    (item "Hex 3" <(tri Hexagon 3)> <Orthogonal> <Hidden> "Order 3, Hex Grid")
-    (item "Hex 3,4" <(tri Limping 3)> <Orthogonal> <Hidden> "Order 3-4, Hex Grid")
-    (item "Hex 4" <(tri Hexagon 4)> <Orthogonal> <Hidden> "Order 4, Hex Grid")**
-    (item "Hex 4,5" <(tri Limping 4)> <Orthogonal> <Hidden> "Order 4-5, Hex Grid")
-    (item "Hex 5" <(tri Hexagon 5)> <Orthogonal> <Hidden> "Order 5, Hex Grid")
-    (item "Hex 5,6" <(tri Limping 5)> <Orthogonal> <Hidden> "Order 5-6, Hex Grid") 
-    (item "Hex 6" <(tri Hexagon 6)> <Orthogonal> <Hidden> "Order 6, Hex Grid")
-    }
-)
-
-(metadata
-    (info
-        {
-        (description "Tennessee Waltz is a game of making and breaking couples.
-            It was designed as a tactical game that involves the whole board.
-        On large boards there are some territorial aspects.")
-        (rules "The board is hexagonal with a triangular grid. 
-            Choose a board of the desired size. 
-            Play on the nodes of the grid.
-            
-            The board starts empty and the dark color plays first.
-            
-            Players alternate placing a stone of their color onto an empty node of the board. 
-            
-            When this placement forms a pair, the mover must choose a grid direction along which to move that pair one step, pushing all the stones in front of them.
-            
-            However, it is not allowed to choose a direction that results either in any opponent's stone, or in a stone of the pair itself, getting pushed off the board. 
-            
-            If no direction is available to move, creating the pair is not allowed.
-            Note that pushing off OTHER friendly stones IS allowed.
-            
-            If after the push, the mover has more pairs than the other player, he takes the leader's token.
-            
-            Players may pass. 
-            
-            The game ends when there is no place on the board for the player who doesn't have the token to be able to form a new pair in the future.
-            It also ends if both pass consecutively.
-            
-        The player with the token wins.")
-        (id "1999")
-        (version "1.3.7")
-        (classification "experimental")
-        (author "Dale W. Walton")
-        (credit "Dale W. Walton")
-        (date "18-06-2022")
-        }
-    )
-    (graphics 
-        {
-        (player Colour P1 (colour DarkGreen))
-        (player Colour P2 (colour 205 189 255))
-        (board Style Graph)
-        (board Background image:"Hex" fillColour:(colour Cream) edgeColour:(colour 186 163 255 40) scale:1.4 rotation:90)
-        (board StyleThickness InnerEdges .2)
-        (board StyleThickness OuterEdges .2)
-        (board StyleThickness InnerVertices .5)
-        (show Edges Diagonal <BoardShape:DiagShow>)
-        }
-    )
-    (ai
-        (heuristics
-            {
-            (score weight:.3)
-            // (influence weight:.4)
-            // (influenceAdvanced weight:.4)
-            // (mobilityAdvanced weight:.1)
-            //  (mobilitySimple weight:.1)
-            } 
+                        (push
+                            (from (var "LF"))              
+                            "PushDirection"
+                        )
+                        (push
+                            (from (var "PairedSite"))
+                            "PushDirection"
+    ))))))
+    
+    //----------------------------------
+    // Pair Testing utility
+    
+    (define "IsAPairOfAt"
+        (and
+            (= 1 (count Pieces #1 in:(sites Around #2 "Adj")))
+            (no Pieces #1 in:(sites Around (intersection (sites Around #2 "Adj") (sites Occupied by:#1)) "Adj"))
     ))
-)
+    
+    //---------------------------------------------
+    // Move restrictions and housekeeping
+    
+    (define "PairHasStayedOnBoard" (not (is Repeat PositionalInTurn))) 
+    (define "CurrentEnemyCount" (count Sites in:(sites Occupied by:Next)))
+    (define "NoEnemyWasPushedOff" (= ("CurrentEnemyCount") (var "StartTurnEnemy")))
+    
+    (define "RecordTheSitesInvolvedInTheMove"
+        (set Var "LF" (last From)
+            (then
+                (set Var "LT" (last To)
+                    (then
+                        (set Var "PairedSite" (regionSite (intersection (sites Around (var "LF") "Adj") (sites Occupied by:Mover)) index:0))
+    )))))
+    
+    (define "PassingIsAllowedAfterFirstPairScores"
+        (if
+            (= 1 (mod (+ (score P1) (score P2)) 2)) // There has been a pair already.
+            (move Pass)
+    ))
+    
+    //---------------------------------------------------
+    
+    (game "Tennessee Waltz" 
+        (players 2)
+        (equipment
+            {
+            (board <BoardShape:gridType> use:Vertex)
+            (hand Each size:1)
+            (piece "Disc" Each) 
+            }
+        )
+        (rules
+            (play
+                (or
+                    {
+                    ("PassingIsAllowedAfterFirstPairScores")
+                    (move Add (to (sites Empty) if:(not ("IsAPairOfAt" Mover (to)))))
+                    (do
+                        (set Var "StartTurnEnemy" ("CurrentEnemyCount"))
+                        next:(do
+                            (move Select
+                                (from (sites Empty) if:("IsAPairOfAt" Mover (from)))
+                                (to (sites Around (from) <BoardShape:sashayDirections> )) 
+                                (then
+                                    (and
+                                        "RecordTheSitesInvolvedInTheMove"
+                                        (add (piece (id "Disc" Mover)) (to (last From))
+                                            (then ("PushConsquences4ThePair"))
+                            ))))
+                            ifAfterwards:(and ("PairHasStayedOnBoard") ("NoEnemyWasPushedOff"))
+                    ))
+                    }
+                    (then
+                        (and
+                            ("ShiftTokenFromToAndScore" Next Mover)
+                            ("ShiftTokenFromToAndScore" Mover Next)
+            ))))
+            (end 
+                (if
+                    (or
+                        "IsWinningCondition"
+                        (all Passed)
+                    )
+                    (byScore)
+    ))))
+    
+    //-------------------------------------------------
+    // Winning and Scoring
+    
+    (define "IsWinningCondition"
+        (or
+            {
+            // end game when losing player has no place to score more
+            (and
+                (> (score Mover) (score Next))
+                ("CannotMakeAPairOf" Next)
+            )
+            
+            // end game when passing allows leading player to win.
+            (and
+                (< (score Mover) (score Next))
+                ("CannotMakeAPairOf" Mover)
+            )
+            
+            }
+    ))
+    
+    (define "ThereAreSurroundingEmptySitesWithNoPiecesOfAroundThemAt"
+        (< 0
+            (size Array
+                (array
+                    (forEach
+                        (intersection (sites Around #2 "Adj") (sites Empty))
+                        if:(no Pieces #1 in:(sites Around (site) "Adj"))
+    )))))
+    
+    (define "PairableSiteOf"
+        (sites To
+            (select
+                (from
+                    (sites Empty)
+                    if:(or
+                        {
+                        ("IsAPairOfAt" #1 (from))
+                        (and
+                            (no Pieces #1 in:(sites Around (from) "Adj"))
+                            ("ThereAreSurroundingEmptySitesWithNoPiecesOfAroundThemAt" #1 (from))
+                        )
+                        }
+    )))))
+    
+    (define "CannotMakeAPairOf"
+        (= 0
+            (size Array
+                (array
+                    ("PairableSiteOf" #1)
+    ))))
+    
+    //------------------------------------
+    
+    // Options
+    
+    (define "Adj" <BoardShape:directionsUsed> )
+    
+    (define "LongEdge" <BoardSize:longestEdge>)
+    
+    (option "Size" <BoardSize> args:{ <longestEdge> }
+        {
+        (item "S" <3> "Small Board (Hex 3 / Limping 2,3 / Square 4)")
+        (item "M" <4> "Medium Board (Hex 4 / Limping 3,4 / Square 5)")**
+        (item "ML" <5> "Medium Large Board (Hex 5 / Limping 4,5 / Square 6)")
+        (item "L" <6> "Large Board (Hex 6 / Limping 5,6 / Square 7)")
+        (item "XL" <7> "Large Board (Hex 7 / Limping 6,7 / Square 8)")
+        (item "XXL" <8> "Large Board (Hex 8 / Limping 7,8 / Square 9)")
+        (item "XXXL" <12> "Large Board (Hex 8 / Limping 8,9 / Square 13)")
+        }
+    )
+    
+    (option "Board" <BoardShape> args:{ <gridType> <directionsUsed> <sashayDirections> <DiagShow> } 
+        {
+        (item "Hex" <(tri Hexagon (min 8 "LongEdge"))> <Orthogonal> <Orthogonal> <Hidden> "Hex Board")
+        (item "Limping" <(tri Limping (min 8 (- "LongEdge" 1)))> <Orthogonal> <Orthogonal> <Hidden> "Limping Board")
+        (item "Square" <(square (+ 1 "LongEdge"))> <Orthogonal> <All> <ThinDotted> "Square Board")**
+        }
+    )
+    (rulesets
+        {
+        (ruleset "Ruleset/Square (Described)" { "Size/M" "Board/Square"})***
+        (ruleset "Ruleset/Hex (Described)" { "Size/M" "Board/Hex"})
+        }
+    )
+    
+    (metadata
+        (info
+            {
+            (source "Author's Script")
+            (version "1.3.4")
+            (classification "experimental")
+            (author "Dale W. Walton")
+            (credit "Dale W. Walton")
+            (date "18-Jun-2022")
+            }
+        )
+        (graphics 
+            {
+            (player Colour P1 (colour DarkGreen))
+            (player Colour P2 (colour 205 189 255))
+            (board Style Graph)
+            (board Background image:"Square" fillColour:(colour Cream) edgeColour:(colour 186 163 255 40) scale:1.5 rotation:90)
+            (board StyleThickness InnerEdges .2)
+            (board StyleThickness OuterEdges .2)
+            (board StyleThickness InnerVertices .5)
+            (show Edges Diagonal <BoardShape:DiagShow>)
+            }
+        )
+        (ai
+            (heuristics
+                {
+                (score weight:.3)
+                } 
+        ))
+    )

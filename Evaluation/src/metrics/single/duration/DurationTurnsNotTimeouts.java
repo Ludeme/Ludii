@@ -31,7 +31,7 @@ public class DurationTurnsNotTimeouts extends Metric
 			"Number of turns in a game (excluding timeouts).", 
 			0.0, 
 			Constants.INFINITY,
-			Concept.DurationTurns
+			Concept.DurationTurnsNotTimeouts
 		);
 	}
 	

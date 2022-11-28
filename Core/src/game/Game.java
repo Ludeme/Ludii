@@ -2404,9 +2404,9 @@ public class Game extends BaseLudeme implements API, Serializable
 		mapStarting.put(Concept.NumStartComponentsHand.name(), Double.valueOf(numStartComponentsHands));
 		mapStarting.put(Concept.NumStartComponentsBoard.name(), Double.valueOf(numStartComponentsBoard));
 
-		mapStarting.put(Concept.NumStartComponentsPerPlayer.name(), Double.valueOf(numStartComponents / players().count()));
-		mapStarting.put(Concept.NumStartComponentsHandPerPlayer.name(), Double.valueOf(numStartComponentsHands / players().count()));
-		mapStarting.put(Concept.NumStartComponentsBoardPerPlayer.name(), Double.valueOf(numStartComponentsBoard / players().count()));
+		mapStarting.put(Concept.NumStartComponentsPerPlayer.name(), Double.valueOf(numStartComponents / (players().count() == 0 ? 1 : players().count())));
+		mapStarting.put(Concept.NumStartComponentsHandPerPlayer.name(), Double.valueOf(numStartComponentsHands / (players().count() == 0 ? 1 : players().count())));
+		mapStarting.put(Concept.NumStartComponentsBoardPerPlayer.name(), Double.valueOf(numStartComponentsBoard / (players().count() == 0 ? 1 : players().count())));
 		
 		return mapStarting;
 	}

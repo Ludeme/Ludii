@@ -1,0 +1,841 @@
+(game "Che Lo"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Che Lo1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Disc" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Disc1" 
+                    (sites Bottom)
+                )
+                
+                (place "Disc2" 
+                    (sites Top)
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Che Lo1 ruleset.")
+    
+    (item "Che Lo2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Disc" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Disc1" 
+                    (sites Bottom)
+                )
+                
+                (place "Disc2" 
+                    (sites Top)
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (is Line 5)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Che Lo2 ruleset.")
+    
+    (item "Che Lo3" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Disc" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Disc1" 
+                    (sites Bottom)
+                )
+                
+                (place "Disc2" 
+                    (sites Top)
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P2)
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (no Pieces P1)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Che Lo3 ruleset.")
+    
+    (item "Che Lo4" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Disc" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Disc1" 
+                    (sites Bottom)
+                )
+                
+                (place "Disc2" 
+                    (sites Top)
+                )
+                }
+            )
+            
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (or 
+                        (move Pass)
+                        
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece top:True)
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Che Lo4 ruleset.")
+    
+    (item "Che Lo5" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Disc" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Disc1" 
+                    (sites Bottom)
+                )
+                
+                (place "Disc2" 
+                    (sites Top)
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Che Lo5 ruleset.")
+    
+    (item "Che Lo6" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Disc" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Disc1" 
+                    (sites Bottom)
+                )
+                
+                (place "Disc2" 
+                    (sites Top)
+                )
+                }
+            )
+            
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (or 
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        
+                        (move Pass)
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Che Lo6 ruleset.")
+    
+    (item "Che Lo7" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Disc" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Disc1" 
+                    (sites Bottom)
+                )
+                
+                (place "Disc2" 
+                    (sites Top)
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Che Lo7 ruleset.")
+    
+    (item "Che Lo8" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Disc" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Disc1" 
+                    (sites Bottom)
+                )
+                
+                (place "Disc2" 
+                    (sites Top)
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (forEach Player if:
+                    (no Pieces Player)
+                    
+                    (result Player Loss)
+                )
+            )
+        )
+        
+    > "The Che Lo8 ruleset.")
+    
+    (item "Che Lo9" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Disc" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Disc1" 
+                    (sites Bottom)
+                )
+                
+                (place "Disc2" 
+                    (sites Top)
+                )
+                }
+            )
+            
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (or 
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        
+                        (move Pass)
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    5)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Che Lo9 ruleset.")
+    
+    (item "Che Lo10" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Disc" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Disc1" 
+                    (sites Bottom)
+                )
+                
+                (place "Disc2" 
+                    (sites Top)
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P2)
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (no Pieces P1)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Che Lo10 ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            ("AlquerqueBoard" 3 3)
+            (piece "Disc" Each (move [#])) 
+        }) 
+        (rules 
+            (start {
+                (place "Disc1" (sites Bottom))
+                (place "Disc2" (sites Top))
+            })
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Che Lo1 (Reconstructed)" {
+        "Variant/Che Lo1"
+    })
+    (ruleset "Ruleset/Che Lo2 (Reconstructed)" {
+        "Variant/Che Lo2"
+    })
+    (ruleset "Ruleset/Che Lo3 (Reconstructed)" {
+        "Variant/Che Lo3"
+    })
+    (ruleset "Ruleset/Che Lo4 (Reconstructed)" {
+        "Variant/Che Lo4"
+    })
+    (ruleset "Ruleset/Che Lo5 (Reconstructed)" {
+        "Variant/Che Lo5"
+    })
+    (ruleset "Ruleset/Che Lo6 (Reconstructed)" {
+        "Variant/Che Lo6"
+    })
+    (ruleset "Ruleset/Che Lo7 (Reconstructed)" {
+        "Variant/Che Lo7"
+    })
+    (ruleset "Ruleset/Che Lo8 (Reconstructed)" {
+        "Variant/Che Lo8"
+    })
+    (ruleset "Ruleset/Che Lo9 (Reconstructed)" {
+        "Variant/Che Lo9"
+    })
+    (ruleset "Ruleset/Che Lo10 (Reconstructed)" {
+        "Variant/Che Lo10"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Che Lo is a small alignment game played in early modern China.")
+        (rules "3x3 intersecting lines, with diagonals. Three pieces per player, which begin on opposite sides of the board.")
+        (source "DLP evidence.")
+        (id "1393")
+        (version "1.3.7")
+        (classification "board/space/line/reconstruction")
+        (credit "Eric Piette")
+        (origin "This game was played in China, around 1694.")
+        }
+    )
+    
+    (recon {
+        (concept "NumStartComponents" 6)
+    })
+    
+)
+

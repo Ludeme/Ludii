@@ -1,0 +1,1499 @@
+(game "Sgjough"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Sgjough1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Sgjough1 ruleset.")
+    
+    (item "Sgjough2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Sgjough2 ruleset.")
+    
+    (item "Sgjough3" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Sgjough3 ruleset.")
+    
+    (item "Sgjough4" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Sgjough4 ruleset.")
+    
+    (item "Sgjough5" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            
+            (play 
+                (or 
+                    (if 
+                        (not 
+                            (all Sites 
+                                (sites Hand Mover)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Sgjough5 ruleset.")
+    
+    (item "Sgjough6" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (or { 
+                                        (is Line 3 N exact:True)
+                                        
+                                        (is Line 3 S exact:True)
+                                        
+                                        (is Line 3 E exact:True)
+                                        
+                                        (is Line 3 W exact:True)
+                                        }
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            4)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Sgjough6 ruleset.")
+    
+    (item "Sgjough7" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (or { 
+                                (is Line 3 N exact:True)
+                                
+                                (is Line 3 S exact:True)
+                                
+                                (is Line 3 E exact:True)
+                                
+                                (is Line 3 W exact:True)
+                                }
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (and 
+                                (if 
+                                    (and 
+                                        (< 
+                                            (var)
+                                        1)
+                                        
+                                        (is Line 3)
+                                    )
+                                    
+                                    (set Var 
+                                        (mover)
+                                    )
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all Sites 
+                                            (sites Hand P1)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (all Sites 
+                                            (sites Hand P2)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (< 
+                                            (var)
+                                        1)
+                                        
+                                        (moveAgain)
+                                        
+                                        (set NextPlayer 
+                                            (player 
+                                                (var)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (all Sites 
+                            (sites Hand P1)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                        
+                        (all Sites 
+                            (sites Hand P2)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                "Remove" )
+            )
+            
+            (phase "Remove" 
+                (play 
+                    (move Remove 
+                        (sites Occupied by:Next container:"Board")
+                    )
+                )
+                
+                (nextPhase Mover "Move")
+            )
+            
+            (phase "Move" 
+                (play 
+                    (if 
+                        (and 
+                            (not 
+                                (is Pending)
+                            )
+                            
+                            (is Prev Mover)
+                        )
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                            
+                            (then 
+                                (if 
+                                    (no Moves Next)
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Pending)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (is Pending)
+                            
+                            (do 
+                                (forEach Piece 
+                                    (move Step 
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                ifAfterwards:
+                                (can Move 
+                                    (forEach Piece Next)
+                                )
+                            )
+                            
+                            (forEach Piece)
+                        )
+                        
+                        (then 
+                            (if 
+                                (= 2 
+                                    (count Pieces P1)
+                                )
+                                
+                                (addScore P2 1 
+                                    (then 
+                                        (if 
+                                            (!= 
+                                                (score P2)
+                                            5)
+                                            
+                                            (and { 
+                                                (remove 
+                                                    (sites Occupied by:All )
+                                                )
+                                                
+                                                (add 
+                                                    (piece 
+                                                        (id "Marker" P1)
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite P1)
+                                                    )
+                                                count:12 )
+                                                
+                                                (add 
+                                                    (piece 
+                                                        (id "Marker" P2)
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite P2)
+                                                    )
+                                                count:12 )
+                                                }
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (= 2 
+                                        (count Pieces P2)
+                                    )
+                                    
+                                    (addScore P1 1 
+                                        (then 
+                                            (if 
+                                                (!= 
+                                                    (score P1)
+                                                5)
+                                                
+                                                (and { 
+                                                    (remove 
+                                                        (sites Occupied by:All )
+                                                    )
+                                                    
+                                                    (add 
+                                                        (piece 
+                                                            (id "Marker" P1 )
+                                                        )
+                                                        
+                                                        (to 
+                                                            (handSite P1)
+                                                        )
+                                                    count:12 )
+                                                    
+                                                    (add 
+                                                        (piece 
+                                                            (id "Marker" P2 )
+                                                        )
+                                                        
+                                                        (to 
+                                                            (handSite P2)
+                                                        )
+                                                    count:12 )
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (= 0 
+                        (count Sites in:
+                            (sites Occupied by:All container:"Board")
+                        )
+                    )
+                "Placement" )
+            )
+            }
+            
+            (end 
+                (if 
+                    (= 
+                        (score Mover)
+                    5)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Sgjough7 ruleset.")
+    
+    (item "Sgjough8" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            
+            (play 
+                (or 
+                    (if 
+                        (not 
+                            (all Sites 
+                                (sites Hand Mover)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Sgjough8 ruleset.")
+    
+    (item "Sgjough9" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (if 
+                    (= 3 
+                        (count Pieces Mover)
+                    )
+                    
+                    (move 
+                        (from 
+                            (from)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Sgjough9 ruleset.")
+    
+    (item "Sgjough10" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Marker1" 
+                    (handSite P1)
+                count:12)
+                
+                (place Stack "Marker2" 
+                    (handSite P2)
+                count:12)
+                }
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (forEach 
+                                    (sites Occupied by:Next container:"Board")
+                                    if:
+                                    (= 
+                                        (size Stack at:
+                                            (site)
+                                        )
+                                    1)
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (not 
+                                (all Sites 
+                                    (sites Hand Mover)
+                                    if:
+                                    (= 0 
+                                        (count Cell at:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (is Line 3 if:
+                                            (= 1 
+                                                (size Stack at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (and 
+                                    (not 
+                                        (is Next Mover)
+                                    )
+                                    
+                                    (and 
+                                        (all Sites 
+                                            (sites Hand P1)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (all Sites 
+                                            (sites Hand P2)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (and 
+                                    (forEach Site 
+                                        (forEach 
+                                            (sites Occupied by:P1 container:"Board" )
+                                            if:
+                                            (= 
+                                                (size Stack at:
+                                                    (site)
+                                                )
+                                            2)
+                                        )
+                                        
+                                        (and { 
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (add 
+                                                (piece 
+                                                    (id "Marker" P1)
+                                                )
+                                                
+                                                (to 
+                                                    (site)
+                                                )
+                                            )
+                                            }
+                                        )
+                                    )
+                                    
+                                    (forEach Site 
+                                        (forEach 
+                                            (sites Occupied by:P2 container:"Board" )
+                                            if:
+                                            (= 
+                                                (size Stack at:
+                                                    (site)
+                                                )
+                                            2)
+                                        )
+                                        
+                                        (and { 
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (add 
+                                                (piece 
+                                                    (id "Marker" P2)
+                                                )
+                                                
+                                                (to 
+                                                    (site)
+                                                )
+                                            )
+                                            }
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (not 
+                            (is Next Mover)
+                        )
+                        
+                        (and 
+                            (all Sites 
+                                (sites Hand P1)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
+                            )
+                            
+                            (all Sites 
+                                (sites Hand P2)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            3)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (end 
+                    (if 
+                        (no Moves Next)
+                        
+                        (result Mover Win)
+                    )
+                )
+            )
+            }
+        )
+        
+    > "The Sgjough10 ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2)
+        
+        (equipment { 
+            ("NineMensMorrisBoard") 
+            (hand Each)
+            (piece "Marker" Each [#])
+        })
+        (rules [#])
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Sgjough1 (Reconstructed)" {
+        "Variant/Sgjough1"
+    })
+    (ruleset "Ruleset/Sgjough2 (Reconstructed)" {
+        "Variant/Sgjough2"
+    })
+    (ruleset "Ruleset/Sgjough3 (Reconstructed)" {
+        "Variant/Sgjough3"
+    })
+    (ruleset "Ruleset/Sgjough4 (Reconstructed)" {
+        "Variant/Sgjough4"
+    })
+    (ruleset "Ruleset/Sgjough5 (Reconstructed)" {
+        "Variant/Sgjough5"
+    })
+    (ruleset "Ruleset/Sgjough6 (Reconstructed)" {
+        "Variant/Sgjough6"
+    })
+    (ruleset "Ruleset/Sgjough7 (Reconstructed)" {
+        "Variant/Sgjough7"
+    })
+    (ruleset "Ruleset/Sgjough8 (Reconstructed)" {
+        "Variant/Sgjough8"
+    })
+    (ruleset "Ruleset/Sgjough9 (Reconstructed)" {
+        "Variant/Sgjough9"
+    })
+    (ruleset "Ruleset/Sgjough10 (Reconstructed)" {
+        "Variant/Sgjough10"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Sgjough is a larger merels game played in Armenia during the seventeenth century.")
+        (aliases {"Dugh"})
+        (rules "Three concentric squares with lines connecting the midpoints of the sides.")
+        (source "DLP evidence.")
+        (id "1371")
+        (version "1.3.7")
+        (classification "board/space/line/reconstruction")
+        (origin "This game was played in Armenia, around 1694.")
+        }
+    )
+    
+    (recon {
+        (concept "NumStartComponents" minValue:6 maxValue:27)
+    })
+    
+)
+

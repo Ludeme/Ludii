@@ -1325,9 +1325,9 @@ public class ExportDbCsvConcepts
 		mapStarting.put(Concept.NumStartComponentsHand.name(), Double.valueOf(numStartComponentsHands / allStoredRNG.size()));
 		mapStarting.put(Concept.NumStartComponentsBoard.name(), Double.valueOf(numStartComponentsBoard / allStoredRNG.size()));
 
-		mapStarting.put(Concept.NumStartComponentsPerPlayer.name(), Double.valueOf((numStartComponents / allStoredRNG.size()) / game.players().count()));
-		mapStarting.put(Concept.NumStartComponentsHandPerPlayer.name(), Double.valueOf((numStartComponentsHands / allStoredRNG.size()) / game.players().count()));
-		mapStarting.put(Concept.NumStartComponentsBoardPerPlayer.name(), Double.valueOf((numStartComponentsBoard / allStoredRNG.size()) / game.players().count()));
+		mapStarting.put(Concept.NumStartComponentsPerPlayer.name(), Double.valueOf((numStartComponents / allStoredRNG.size()) / (game.players().count() == 0 ? 1 : game.players().count())));
+		mapStarting.put(Concept.NumStartComponentsHandPerPlayer.name(), Double.valueOf((numStartComponentsHands / allStoredRNG.size()) / (game.players().count() == 0 ? 1 : game.players().count())));
+		mapStarting.put(Concept.NumStartComponentsBoardPerPlayer.name(), Double.valueOf((numStartComponentsBoard / allStoredRNG.size()) / (game.players().count() == 0 ? 1 : game.players().count())));
 
 //		System.out.println(Concept.NumStartComponents.name() + " = " + mapStarting.get(Concept.NumStartComponents.name()));
 //		System.out.println(Concept.NumStartComponentsHand.name() + " = " + mapStarting.get(Concept.NumStartComponentsHand.name()));
@@ -1630,11 +1630,14 @@ public class ExportDbCsvConcepts
 		// We add all the metrics corresponding to a concept to the returned map.
 		final List<Metric> metrics = new Evaluation().conceptMetrics();
 		for (final Metric metric : metrics)
+		{
 			if (metric.concept() != null)
 			{
 				Double value;
 				if(reconstructionConcepts.contains(metric.concept()))
+				{
 					value = metric.apply(game, evaluation, trialsMetrics, rngTrials);
+				}
 				else
 					value = null; // If that's not a reconstruction metrics we put NULL for it.
 					
@@ -1649,6 +1652,7 @@ public class ExportDbCsvConcepts
 							System.out.println(metric.concept().name() + ": " + metricValue);
 				}
 			}
+		}
 
 		final double allMilliSecond = System.currentTimeMillis() - startTime;
 		final double allSeconds = allMilliSecond / 1000.0;

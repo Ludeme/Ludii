@@ -11,6 +11,7 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import contextualiser.ContextualSimilarity;
 import game.Game;
 import gameDistance.datasets.Dataset;
 import other.GameLoader;
@@ -131,7 +132,7 @@ public class DistanceUtils
 	public static Map<Integer, Double> getAllRulesetCSNDistances(final int rulesetId)
 	{
 		// Load ruleset distances from specific directory.
-		final String distancesFilePath = "./res/recons/input/contextualiser/similarity_" + rulesetId + ".csv";
+		final String distancesFilePath = ContextualSimilarity.rulesetContextualiserFilePath + rulesetId + ".csv";
 		
 		// Map of rulesetId (key) to CSN distance (value) pairs.
 		final Map<Integer, Double> rulesetCSNDistances = new HashMap<>();	

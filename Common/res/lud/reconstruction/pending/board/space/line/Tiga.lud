@@ -13,13 +13,9 @@
         (equipment { 
             ("NineMensMorrisBoard")
             (hand Each)
-            (piece "Marker" Each (move [#])) 
+            (piece "Marker" Each [#])
         })
-        (rules
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
@@ -50,5 +46,9 @@
         (credit "Eric Piette")
         }
     )
+    
+    (recon {
+        (concept "NumStartComponents" minValue:6 maxValue:27)
+    })
     
 )

@@ -170,8 +170,10 @@ public final class Intervene extends Effect
 					oppositeFound = true;
 				}
 				if (oppositeFound)
+				{
 					context.setTo(radial.steps()[1].id());
-				MoveUtilities.chainRuleCrossProduct(context, actions, targetEffect, null, false);
+					MoveUtilities.chainRuleCrossProduct(context, actions, targetEffect, null, false);
+				}
 			}
 
 		}
