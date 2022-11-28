@@ -46,7 +46,7 @@ public final class Face extends BaseIntFunction
 	public int eval(final Context context)
 	{
 		final int loc = locn.eval(context);
-		if (loc == Constants.OFF)
+		if (loc == Constants.OFF || context.containerId().length >= loc)
 			return Constants.OFF;
 
 		final int containerId = context.containerId()[loc];
