@@ -1,4 +1,4 @@
-package app.util;
+package app.util;//
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,11 +88,27 @@ public final class CountRulesetsDone
 				{
 					final Ruleset ruleset = rulesetsInGame.get(rs);
 					if (!ruleset.optionSettings().isEmpty()&& !ruleset.heading().contains("Incomplete")) // We check if the ruleset is implemented.
+					{
+//						final Game rulesetGame = GameLoader.loadGameFromName(gameName, ruleset.optionSettings());
+//							if(rulesetGame.computeRequirementReport())
+//							{
+//								System.out.println("WILL CRASH OR MISSING REQUIREMENT");
+//								System.out.println(rulesetGame.name() + " RULESET + " + ruleset.heading());
+//							}
 						count++;
+					}
 				}
 			}
 			else
+			{
+				
+//			if(game.computeRequirementReport())
+//			{
+//				System.out.println("WILL CRASH OR MISSING REQUIREMENT");
+//				System.out.println(game.name());
+//			}
 				count++;
+			}
 		}
 		
 		System.out.println(count + " rulesets implemented");
