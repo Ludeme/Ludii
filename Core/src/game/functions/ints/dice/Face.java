@@ -121,19 +121,25 @@ public final class Face extends BaseIntFunction
 	@Override
 	public boolean missingRequirement(final Game game)
 	{
-//		if(locn instanceof IntConstant)
-//		{
-//			int numCells = 0;
-//			for(int i = 0; i < game.numContainers(); i++)
-//				numCells += game.equipment().containers()[i].topology().cells().size();
-//			
-//			final int loc = locn.eval(new Context(game, new Trial(game)));
-//			
-//			if (loc == Constants.OFF || context.containerId().length >= loc)
-//				return Constants.OFF;
-//		}
-		
 		boolean missingRequirement = false;
+		
+		if(locn instanceof IntConstant)
+		{
+			int numCells = 0;
+			
+			numCells += game.equipment().containers()[0].topology().getGraphElements(game.board().defaultSite()).size();
+			for(int i = 1; i < game.numContainers(); i++)
+				numCells += game.equipment().containers()[i].topology().cells().size();
+			
+			final int loc = locn.eval(new Context(game, new Trial(game)));
+			
+			if (loc == Constants.OFF || numCells <= loc)
+			{
+				game.addRequirementToReport("The ludeme (face ...) is used on a non existing cell.");
+				missingRequirement = true;
+			}
+		}
+		
 		if (!game.hasHandDice())
 		{
 			game.addRequirementToReport("The ludeme (face ...) is used but the equipment has no dice.");
