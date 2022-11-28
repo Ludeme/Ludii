@@ -1,0 +1,2278 @@
+(game "Nardshir"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Nardshir1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 0..23}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23..0}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            
+            (map { 
+                (pair 1 24)
+                
+                (pair 2 25)
+                }
+            )
+            
+            (regions P1 { 6}
+            )
+            
+            (regions P2 { 23 22 21 20 19 18}
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:15)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (or 
+                        (forEach Piece)
+                        
+                        (forEach Piece container:
+                            (mover)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Nardshir1 ruleset.")
+    
+    (item "Nardshir2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 11..0 12..23}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23..12 0..11}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            
+            (map { 
+                (pair 1 24)
+                
+                (pair 2 25)
+                }
+            )
+            
+            (regions P1 { 10}
+            )
+            
+            (regions P2 { 23 22 21 20 19 18}
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:15)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (or 
+                        (forEach Piece)
+                        
+                        (forEach Piece container:
+                            (mover)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Nardshir2 ruleset.")
+    
+    (item "Nardshir3" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 11..0 12..23}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23..12 0..11}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            
+            (map { 
+                (pair 1 24)
+                
+                (pair 2 25)
+                }
+            )
+            
+            (regions P1 { 4}
+            )
+            
+            (regions P2 { 23 22 21 20 19 18}
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:15)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (or 
+                        (forEach Piece)
+                        
+                        (forEach Piece container:
+                            (mover)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Nardshir3 ruleset.")
+    
+    (item "Nardshir4" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 11..0 12..23}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23..12 0..11}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            
+            (map { 
+                (pair 1 24)
+                
+                (pair 2 25)
+                }
+            )
+            
+            (regions P1 { 1}
+            )
+            
+            (regions P2 { 23 22 21 20 19 18}
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:15)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (or 
+                        (forEach Piece)
+                        
+                        (forEach Piece container:
+                            (mover)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Nardshir4 ruleset.")
+    
+    (item "Nardshir5" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 0..23}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23..0}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            
+            (map { 
+                (pair 1 24)
+                
+                (pair 2 25)
+                }
+            )
+            
+            (regions P1 { 2}
+            )
+            
+            (regions P2 { 23 22 21 20 19 18}
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:15)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (or 
+                        (forEach Piece)
+                        
+                        (forEach Piece container:
+                            (mover)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Nardshir5 ruleset.")
+    
+    (item "Nardshir6" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 0..23}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23..0}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            
+            (map { 
+                (pair 1 24)
+                
+                (pair 2 25)
+                }
+            )
+            
+            (regions P1 { 4}
+            )
+            
+            (regions P2 { 23 22 21 20 19 18}
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:15)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (or 
+                        (forEach Piece)
+                        
+                        (forEach Piece container:
+                            (mover)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (= 
+                        (value Player Mover)
+                    3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Nardshir6 ruleset.")
+    
+    (item "Nardshir7" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 0..23}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23..0}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            
+            (map { 
+                (pair 1 24)
+                
+                (pair 2 25)
+                }
+            )
+            
+            (regions P1 { 10}
+            )
+            
+            (regions P2 { 23 22 21 20 19 18}
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:15)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (or 
+                        (forEach Piece)
+                        
+                        (forEach Piece container:
+                            (mover)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Nardshir7 ruleset.")
+    
+    (item "Nardshir8" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 11..0 12..23}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23..12 0..11}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            
+            (map { 
+                (pair 1 24)
+                
+                (pair 2 25)
+                }
+            )
+            
+            (regions P1 { 4}
+            )
+            
+            (regions P2 { 23 22 21 20 19 18}
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:15)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (roll)
+                    next:
+                    (or { 
+                        (if 
+                            (is Occupied 
+                                (handSite Mover)
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (mapEntry "Entry" 
+                                            (mover)
+                                        )
+                                        "Track" steps:
+                                        (- 
+                                            (mapEntry "Throw" 
+                                                (count Pips)
+                                            )
+                                        1 )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                        }
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (is Prev Mover)
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (= 
+                        (value Player Mover)
+                    3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Nardshir8 ruleset.")
+    
+    (item "Nardshir9" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 11..0 12..23}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23..12 0..11}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            
+            (map { 
+                (pair 1 24)
+                
+                (pair 2 25)
+                }
+            )
+            
+            (regions P1 { 8}
+            )
+            
+            (regions P2 { 23 22 21 20 19 18}
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:15)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (roll)
+                    next:
+                    (or { 
+                        (if 
+                            (and 
+                                (< 
+                                    (count Pieces Mover in:
+                                        (sites Board)
+                                    )
+                                1)
+                                
+                                (is Occupied 
+                                    (handSite Mover)
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (mapEntry "Entry" 
+                                            (mover)
+                                        )
+                                        "Track" steps:
+                                        (- 
+                                            (mapEntry "Throw" 
+                                                (count Pips)
+                                            )
+                                        1 )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                        }
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (not 
+                                    (no Pieces Mover)
+                                )
+                                
+                                (not 
+                                    (is Prev Mover)
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Nardshir9 ruleset.")
+    
+    (item "Nardshir10" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 11..0 12..23}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23..12 0..11}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            
+            (map { 
+                (pair 1 24)
+                
+                (pair 2 25)
+                }
+            )
+            
+            (regions P1 { 3}
+            )
+            
+            (regions P2 { 23 22 21 20 19 18}
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:15)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (roll)
+                    next:
+                    (or { 
+                        (if 
+                            (is Occupied 
+                                (handSite Mover)
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (mapEntry "Entry" 
+                                            (mover)
+                                        )
+                                        "Track" steps:
+                                        (- 
+                                            (mapEntry "Throw" 
+                                                (count Pips)
+                                            )
+                                        1 )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                        }
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (is Prev Mover)
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Nardshir10 ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2)
+        (equipment {
+            [
+            ("TableBoard"
+                {
+                (track "Track1" {24 11..0 12..23} P1 directed:True)
+                (track "Track2" {25 23..12 0..11} P2 directed:True)
+                } 
+            )
+            | 
+            ("TableBoard"
+                {
+                (track "Track1" {24 0..23} P1 directed:True)
+                (track "Track2" {25 23..0} P2 directed:True)
+                } 
+            )
+            ]
+            (dice d:6 num:2)
+            (piece "Disc" Each [#])
+            (hand Each)
+            (map {(pair 1 24) (pair 2 25)}) // Bar
+            (regions P1 { [11..6 | 0..5] }) // P1 Home
+            (regions P2 { 23..18 }) // P2 Home
+        })
+        (rules
+            (start {
+                (place Stack "Disc1" (handSite P1) count:15)
+                (place Stack "Disc2" (handSite P2) count:15)
+            })
+            
+            (play [#]) // I can't describe this alone: "Single pieces are removed from the board and must reenter when an opposing piece lands on the same space."
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Nardshir1 (Reconstructed)" {
+        "Variant/Nardshir1"
+    })
+    (ruleset "Ruleset/Nardshir2 (Reconstructed)" {
+        "Variant/Nardshir2"
+    })
+    (ruleset "Ruleset/Nardshir3 (Reconstructed)" {
+        "Variant/Nardshir3"
+    })
+    (ruleset "Ruleset/Nardshir4 (Reconstructed)" {
+        "Variant/Nardshir4"
+    })
+    (ruleset "Ruleset/Nardshir5 (Reconstructed)" {
+        "Variant/Nardshir5"
+    })
+    (ruleset "Ruleset/Nardshir6 (Reconstructed)" {
+        "Variant/Nardshir6"
+    })
+    (ruleset "Ruleset/Nardshir7 (Reconstructed)" {
+        "Variant/Nardshir7"
+    })
+    (ruleset "Ruleset/Nardshir8 (Reconstructed)" {
+        "Variant/Nardshir8"
+    })
+    (ruleset "Ruleset/Nardshir9 (Reconstructed)" {
+        "Variant/Nardshir9"
+    })
+    (ruleset "Ruleset/Nardshir10 (Reconstructed)" {
+        "Variant/Nardshir10"
+    })
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Nardshir is a game attested from Persia and Mesopotamia from the middle of the first century CE. It is the ancestor of the game Nard, and may be the ancestor of similar games such as Backgammon.")
+        (aliases {"Nardashir" "New-Ardakhshir"})
+        (rules "Board with 24 points, board divided into four quadrants. 15 pieces per player. Two players. Two six-sided dice. Pieces move in opposite directions from one another. Single pieces are removed from the board and must reenter when an opposing piece lands on the same space.")
+        (source "DLP evidence.")
+        (id "323")
+        (version "1.3.7")
+        (classification "board/race/escape/reconstruction")
+        (credit "Eric Piette")
+        (origin "This game was played in Persia, from around 500 to 799.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+        (board Style Table)
+        (stackType 0 Backgammon)
+        (stackType 1 Count)
+        (stackType 2 Count)
+    })
+    
+    (recon {
+        (concept "StackState" True)
+        (concept "Capture" True)
+    })
+    
+)
+
