@@ -62,7 +62,7 @@ public class DurationTurnsNotTimeouts extends Metric
 		// Check if all trials timed out
 		if (numTrials == 0)
 		{
-			if (game.players().count() == 1)
+			if (game.players().count() <= 1)
 				return Double.valueOf(1);
 			else
 				return Double.valueOf(game.getMaxTurnLimit() * game.players().count());
