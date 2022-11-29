@@ -105,11 +105,12 @@ public class MemoryUsedGames
 					long total_mem = rt.totalMemory();
 					long free_mem = rt.freeMemory();
 					long used_mem = total_mem - free_mem;
-					System.out.println("Amount of used memory: " + (used_mem/ 1000000));
+					System.out.println("Amount of used memory: " + (used_mem/ 1000000)
+							 + " MB");
 					
 					final List<String> lineToWrite = new ArrayList<String>();
 					lineToWrite.add(game.name());
-					lineToWrite.add((used_mem/ 1000000) + " MB");
+					lineToWrite.add((used_mem/ 1000000) + "");
 					writer.println(StringRoutines.join(",", lineToWrite));
 					Thread.sleep(250);
 				}
