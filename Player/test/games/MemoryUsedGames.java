@@ -109,7 +109,7 @@ public class MemoryUsedGames
 					
 					final List<String> lineToWrite = new ArrayList<String>();
 					lineToWrite.add(game.name());
-					lineToWrite.add((used_mem/ 1000000) + "");
+					lineToWrite.add((used_mem/ 1000000) + " MB");
 					writer.println(StringRoutines.join(",", lineToWrite));
 					Thread.sleep(250);
 				}
@@ -130,8 +130,6 @@ public class MemoryUsedGames
 					System.err.println("** FAILED TO COMPILE: " + fileName + ".");
 				}
 				
-				// Uncomment this to generate QR codes for all games.
-				//QrCodeGeneration.makeQRCode(game, 5, 2, false);
 			}
 			
 		}
