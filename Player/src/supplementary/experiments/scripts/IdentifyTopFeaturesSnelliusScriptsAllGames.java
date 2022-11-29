@@ -20,7 +20,7 @@ import main.UnixPrintWriter;
  *
  * @author Dennis Soemers
  */
-public class IdentifyTopFeaturesSnelliusScripts
+public class IdentifyTopFeaturesSnelliusScriptsAllGames
 {
 	/** Don't submit more than this number of jobs at a single time */
 	private static final int MAX_JOBS_PER_BATCH = 800;
@@ -99,7 +99,7 @@ public class IdentifyTopFeaturesSnelliusScripts
 	/**
 	 * Constructor (don't need this)
 	 */
-	private IdentifyTopFeaturesSnelliusScripts()
+	private IdentifyTopFeaturesSnelliusScriptsAllGames()
 	{
 		// Do nothing
 	}
