@@ -52,7 +52,7 @@
 (option "P2 Ending Conditions" <EndCondP2> args:{ <EndCondP1> }
 {
 (item "No Moves P1" <(no Moves P1)>   "The army can not move.")** 
-(item "No Moves P1 after Moving three pieces"  <(and (= (count MovesThisTurn) 2) (no Moves P1))> "The army can not move and all towers moved.") 
+(item "No Moves P1 after Moving three pieces"  <(and (= (count MovesThisTurn) 2) (no Moves Next))> "The army can not move and all towers moved.") 
 })
 
 (option "Version" <Version> args:{ <hand> <start> <play>}
