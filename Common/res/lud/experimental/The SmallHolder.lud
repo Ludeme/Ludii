@@ -429,23 +429,23 @@
 (rulesets { 
     
     (ruleset "Ruleset/The Smallholder- Gaps Original (Described)" {
-    	"Board/Hex4" "Groups/Must create if only 1" "Adjacent play/Smallest, else lose" "Territory/Gap" "Capture/Piecewise"
-     }) 
-	
+        "Board/Hex4" "Groups/Must create if only 1" "Adjacent play/Smallest, else lose" "Territory/Gap" "Capture/Piecewise"
+    }) 
+    
     (ruleset "Ruleset/The Smallholder- Nibbler (Described)" {
-    	"Board/Hex4" "Groups/Must create if 1 playable" "Adjacent play/Smallest playable" "Territory/Gap" "Capture/Piecewise"
+        "Board/Hex4" "Groups/Must create if 1 playable" "Adjacent play/Smallest playable" "Territory/Gap" "Capture/Piecewise"
     })*
     
     (ruleset "Ruleset/The Smallholder- Offshore Gaps (Described)" {
-    	"Board/Hex4" "Groups/Priority to create if 1 playable" "Adjacent play/Smallest playable" "Territory/Gap" "Capture/Piecewise"
+        "Board/Hex4" "Groups/Priority to create if 1 playable" "Adjacent play/Smallest playable" "Territory/Gap" "Capture/Piecewise"
     })
-	
+    
     (ruleset "Ruleset/The Smallholder- Stymie (Described)" {
-    	"Board/Hex4" "Groups/Priority to create if 1 playable" "Adjacent play/Smallest, else lose" "Territory/Gap" "Capture/Groupwise, Adjacent re-entry"
+        "Board/Hex4" "Groups/Priority to create if 1 playable" "Adjacent play/Smallest, else lose" "Territory/Gap" "Capture/Groupwise, Adjacent re-entry"
     })
     
     (ruleset "Ruleset/The Smallholder- Hull Setbacks (Described)" {
-    	"Board/Hex4" "Groups/Must create if 1 playable" "Adjacent play/Smallest playable" "Territory/Hull" "Capture/Groupwise, No re-entry"
+        "Board/Hex4" "Groups/Must create if 1 playable" "Adjacent play/Smallest playable" "Territory/Hull" "Capture/Groupwise, No re-entry"
     })
     
 })

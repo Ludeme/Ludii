@@ -3836,11 +3836,306 @@
         {
         (description "This game, named Shatranj al-Kabir by Aminallah Abu-Rafid Muhammad Hafid, was played in Constantinople in the early nineteenth century.")
         (aliases {"Shatranj al-Kabir"})
-        (rules "13x13 board. The same pieces as Shatranj plus: five pawns per player, one Great Ferz, which moves as a Zurafa in Shatranj al-Kabir, two Karkaddan, which moves diagonally any distance or like a Knight, and two Ahu, which move like the Jamal in Shatranj al-Kabir. Pawns begin on the fourth rank of the board. Pieces are arranged as follows, beginning from the left corner: Rook, Knight, Fil, Karkaddan, Ahu, Great Ferz, Shah, Ferz, Ahu, Karkaddan, Fil, Knight, Rook.")
-        (source "DLP evidence.")
-        (id "1432")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "13x13 board. The same pieces as Shatranj plus: five pawns per player, one Great Ferz, which moves as a Zurafa in Shatranj al-Kabir, two Karkaddan, which moves diagonally any distance or like a Knight, and two Ahu, which move like the Jamal in Shatranj al-Kabir. Pawns begin on the fourth rank of the board. Pieces are arranged as follows, beginning from the left corner: Rook, Knight, Fil, Karkaddan, Ahu, Great Ferz, Shah, Ferz, Ahu, Karkaddan, Fil, Knight, Rook."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1432"))
+        (useFor "Ruleset/Shatranj al-Kabir (Constantinople)1 (Reconstructed)" (rules "The game Shatranj al-Kabir (Constantinople) is played by two players on a 13x13 rectangle board with square tiling.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with Pawns, Rooks, KingnoCrosses, BishopnoCrosses, Knights, FerznoCrosses, Rhinos, Gazelles and Amazons.
+                Rules for Pieces:
+                Amazons from cell in the location of the piece to cell in the to sites of slide from to in the orthogonal direction through [between] is in the set of empty cells moveRule: true, for all sites that can be reached from cell the location of the piece in the direction diagonal.
+                BishopnoCrosses hop diagonal.
+                FerznoCrosses if there is an enemy Player at to, remove pieces at to then step diagonal.
+                Gazelles leap a piece to empty.
+                KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights leap a piece to not is a friend.
+                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in , move again.
+                Rhinos slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells or leap a piece to empty.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 3 row.
+                Place a Pawn for player two at each cell of the 9 row.
+                Place a Rook for player one at the cells with coordinates [A1, M1].
+                Place a Rook for player two at the cells with coordinates [A13, M13].
+                Place a Knight for player one at the cells with coordinates [B1, L1].
+                Place a Knight for player two at the cells with coordinates [B13, L13].
+                Place a BishopnoCross for player one at the cells with coordinates [C1, K1].
+                Place a BishopnoCross for player two at the cells with coordinates [C13, K13].
+                Place a Rhino for player one at the cells with coordinates [D1, J1].
+                Place a Rhino for player two at the cells with coordinates [D13, J13].
+                Place a Gazelle for player one at the cells with coordinates [E1, I1].
+                Place a Gazelle for player two at the cells with coordinates [E13, I13].
+                Place a Amazon for player one at the cells with coordinates [F1].
+                Place a Amazon for player two at the cells with coordinates [H13].
+                Place a KingnoCross for player one at the cells with coordinates [G1].
+                Place a KingnoCross for player two at the cells with coordinates [G13].
+                Place a FerznoCross for player one at the cells with coordinates [H1].
+                Place a FerznoCross for player two at the cells with coordinates [F13]..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Shatranj al-Kabir (Constantinople)1 (Reconstructed)" (id "2545"))
+        (useFor "Ruleset/Shatranj al-Kabir (Constantinople)2 (Reconstructed)" (rules "The game Shatranj al-Kabir (Constantinople) is played by two players on a 13x13 rectangle board with square tiling.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with Pawns, Rooks, KingnoCrosses, BishopnoCrosses, Knights, FerznoCrosses, Rhinos, Gazelles and Amazons.
+                Rules for Pieces:
+                Amazons from cell in the location of the piece to cell in the to sites of slide from to in the orthogonal direction through [between] is in the set of empty cells moveRule: true, for all sites that can be reached from cell the location of the piece in the direction diagonal.
+                BishopnoCrosses hop diagonal.
+                FerznoCrosses if there is an enemy Player at to, remove pieces at to then step diagonal.
+                Gazelles leap a piece to empty.
+                KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights leap a piece to not is a friend.
+                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in , move again.
+                Rhinos slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells or leap a piece to empty.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 3 row.
+                Place a Pawn for player two at each cell of the 9 row.
+                Place a Rook for player one at the cells with coordinates [A1, M1].
+                Place a Rook for player two at the cells with coordinates [A13, M13].
+                Place a Knight for player one at the cells with coordinates [B1, L1].
+                Place a Knight for player two at the cells with coordinates [B13, L13].
+                Place a BishopnoCross for player one at the cells with coordinates [C1, K1].
+                Place a BishopnoCross for player two at the cells with coordinates [C13, K13].
+                Place a Rhino for player one at the cells with coordinates [D1, J1].
+                Place a Rhino for player two at the cells with coordinates [D13, J13].
+                Place a Gazelle for player one at the cells with coordinates [E1, I1].
+                Place a Gazelle for player two at the cells with coordinates [E13, I13].
+                Place a Amazon for player one at the cells with coordinates [F1].
+                Place a Amazon for player two at the cells with coordinates [H13].
+                Place a KingnoCross for player one at the cells with coordinates [G1].
+                Place a KingnoCross for player two at the cells with coordinates [G13].
+                Place a FerznoCross for player one at the cells with coordinates [H1].
+                Place a FerznoCross for player two at the cells with coordinates [F13]..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Shatranj al-Kabir (Constantinople)2 (Reconstructed)" (id "2546"))
+        (useFor "Ruleset/Shatranj al-Kabir (Constantinople)3 (Reconstructed)" (rules "The game Shatranj al-Kabir (Constantinople) is played by two players on a 13x13 rectangle board with square tiling.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with Pawns, Rooks, KingnoCrosses, BishopnoCrosses, Knights, FerznoCrosses, Rhinos, Gazelles and Amazons.
+                Rules for Pieces:
+                Amazons from cell in the location of the piece to cell in the to sites of slide from to in the orthogonal direction through [between] is in the set of empty cells moveRule: true, for all sites that can be reached from cell the location of the piece in the direction diagonal.
+                BishopnoCrosses hop diagonal.
+                FerznoCrosses if there is an enemy Player at to, remove pieces at to then step diagonal.
+                Gazelles leap a piece to empty.
+                KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights leap a piece to not is a friend.
+                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in , move again.
+                Rhinos slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells or leap a piece to empty.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 3 row.
+                Place a Pawn for player two at each cell of the 9 row.
+                Place a Rook for player one at the cells with coordinates [A1, M1].
+                Place a Rook for player two at the cells with coordinates [A13, M13].
+                Place a Knight for player one at the cells with coordinates [B1, L1].
+                Place a Knight for player two at the cells with coordinates [B13, L13].
+                Place a BishopnoCross for player one at the cells with coordinates [C1, K1].
+                Place a BishopnoCross for player two at the cells with coordinates [C13, K13].
+                Place a Rhino for player one at the cells with coordinates [D1, J1].
+                Place a Rhino for player two at the cells with coordinates [D13, J13].
+                Place a Gazelle for player one at the cells with coordinates [E1, I1].
+                Place a Gazelle for player two at the cells with coordinates [E13, I13].
+                Place a Amazon for player one at the cells with coordinates [F1].
+                Place a Amazon for player two at the cells with coordinates [H13].
+                Place a KingnoCross for player one at the cells with coordinates [G1].
+                Place a KingnoCross for player two at the cells with coordinates [G13].
+                Place a FerznoCross for player one at the cells with coordinates [H1].
+                Place a FerznoCross for player two at the cells with coordinates [F13]..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the moving player cannot move, the moving player loses.
+                
+        "))
+        (useFor "Ruleset/Shatranj al-Kabir (Constantinople)3 (Reconstructed)" (id "2547"))
+        (useFor "Ruleset/Shatranj al-Kabir (Constantinople)4 (Reconstructed)" (rules "The game Shatranj al-Kabir (Constantinople) is played by two players on a 13x13 rectangle board with square tiling.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with Pawns, Rooks, KingnoCrosses, BishopnoCrosses, Knights, FerznoCrosses, Rhinos, Gazelles and Amazons.
+                Rules for Pieces:
+                Amazons from cell in the location of the piece to cell in the to sites of slide from to in the orthogonal direction through [between] is in the set of empty cells moveRule: true, for all sites that can be reached from cell the location of the piece in the direction diagonal.
+                BishopnoCrosses hop diagonal.
+                FerznoCrosses if there is an enemy Player at to, remove pieces at to then step diagonal.
+                Gazelles leap a piece to empty.
+                KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights leap a piece to not is a friend.
+                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in , move again.
+                Rhinos slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells or leap a piece to empty.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 3 row.
+                Place a Pawn for player two at each cell of the 9 row.
+                Place a Rook for player one at the cells with coordinates [A1, M1].
+                Place a Rook for player two at the cells with coordinates [A13, M13].
+                Place a Knight for player one at the cells with coordinates [B1, L1].
+                Place a Knight for player two at the cells with coordinates [B13, L13].
+                Place a BishopnoCross for player one at the cells with coordinates [C1, K1].
+                Place a BishopnoCross for player two at the cells with coordinates [C13, K13].
+                Place a Rhino for player one at the cells with coordinates [D1, J1].
+                Place a Rhino for player two at the cells with coordinates [D13, J13].
+                Place a Gazelle for player one at the cells with coordinates [E1, I1].
+                Place a Gazelle for player two at the cells with coordinates [E13, I13].
+                Place a Amazon for player one at the cells with coordinates [F1].
+                Place a Amazon for player two at the cells with coordinates [H13].
+                Place a KingnoCross for player one at the cells with coordinates [G1].
+                Place a KingnoCross for player two at the cells with coordinates [G13].
+                Place a FerznoCross for player one at the cells with coordinates [H1].
+                Place a FerznoCross for player two at the cells with coordinates [F13]..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the number of null owned by Player 1 is equal to 1 or the number of null owned by Player 2 is equal to 1 and Counter is equal to 20, it's a draw.
+                
+        "))
+        (useFor "Ruleset/Shatranj al-Kabir (Constantinople)4 (Reconstructed)" (id "2548"))
+        (useFor "Ruleset/Shatranj al-Kabir (Constantinople)5 (Reconstructed)" (rules "The game Shatranj al-Kabir (Constantinople) is played by two players on a 13x13 rectangle board with square tiling.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with Pawns, Rooks, KingnoCrosses, BishopnoCrosses, Knights, FerznoCrosses, Rhinos, Gazelles and Amazons.
+                Rules for Pieces:
+                Amazons from cell in the location of the piece to cell in the to sites of slide from to in the orthogonal direction through [between] is in the set of empty cells moveRule: true, for all sites that can be reached from cell the location of the piece in the direction diagonal.
+                BishopnoCrosses hop diagonal.
+                FerznoCrosses if there is an enemy Player at to, remove pieces at to then step diagonal.
+                Gazelles leap a piece to empty.
+                KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights leap a piece to not is a friend.
+                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in , move again.
+                Rhinos slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells or leap a piece to empty.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 3 row.
+                Place a Pawn for player two at each cell of the 9 row.
+                Place a Rook for player one at the cells with coordinates [A1, M1].
+                Place a Rook for player two at the cells with coordinates [A13, M13].
+                Place a Knight for player one at the cells with coordinates [B1, L1].
+                Place a Knight for player two at the cells with coordinates [B13, L13].
+                Place a BishopnoCross for player one at the cells with coordinates [C1, K1].
+                Place a BishopnoCross for player two at the cells with coordinates [C13, K13].
+                Place a Rhino for player one at the cells with coordinates [D1, J1].
+                Place a Rhino for player two at the cells with coordinates [D13, J13].
+                Place a Gazelle for player one at the cells with coordinates [E1, I1].
+                Place a Gazelle for player two at the cells with coordinates [E13, I13].
+                Place a Amazon for player one at the cells with coordinates [F1].
+                Place a Amazon for player two at the cells with coordinates [H13].
+                Place a KingnoCross for player one at the cells with coordinates [G1].
+                Place a KingnoCross for player two at the cells with coordinates [G13].
+                Place a FerznoCross for player one at the cells with coordinates [H1].
+                Place a FerznoCross for player two at the cells with coordinates [F13]..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If KingnoCross of the next player is threatened and not can move move one of your pieces.
+                
+        "))
+        (useFor "Ruleset/Shatranj al-Kabir (Constantinople)5 (Reconstructed)" (id "2549"))
+        (useFor "Ruleset/Shatranj al-Kabir (Constantinople)6 (Reconstructed)" (rules "The game Shatranj al-Kabir (Constantinople) is played by two players on a 13x13 rectangle board with square tiling.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with Pawns, Rooks, KingnoCrosses, BishopnoCrosses, Knights, FerznoCrosses, Rhinos, Gazelles and Amazons.
+                Rules for Pieces:
+                Amazons from cell in the location of the piece to cell in the to sites of slide from to in the orthogonal direction through [between] is in the set of empty cells moveRule: true, for all sites that can be reached from cell the location of the piece in the direction diagonal.
+                BishopnoCrosses hop diagonal.
+                FerznoCrosses if there is an enemy Player at to, remove pieces at to then step diagonal.
+                Gazelles leap a piece to empty.
+                KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights leap a piece to not is a friend.
+                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in , move again.
+                Rhinos slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells or leap a piece to empty.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 3 row.
+                Place a Pawn for player two at each cell of the 9 row.
+                Place a Rook for player one at the cells with coordinates [A1, M1].
+                Place a Rook for player two at the cells with coordinates [A13, M13].
+                Place a Knight for player one at the cells with coordinates [B1, L1].
+                Place a Knight for player two at the cells with coordinates [B13, L13].
+                Place a BishopnoCross for player one at the cells with coordinates [C1, K1].
+                Place a BishopnoCross for player two at the cells with coordinates [C13, K13].
+                Place a Rhino for player one at the cells with coordinates [D1, J1].
+                Place a Rhino for player two at the cells with coordinates [D13, J13].
+                Place a Gazelle for player one at the cells with coordinates [E1, I1].
+                Place a Gazelle for player two at the cells with coordinates [E13, I13].
+                Place a Amazon for player one at the cells with coordinates [F1].
+                Place a Amazon for player two at the cells with coordinates [H13].
+                Place a KingnoCross for player one at the cells with coordinates [G1].
+                Place a KingnoCross for player two at the cells with coordinates [G13].
+                Place a FerznoCross for player one at the cells with coordinates [H1].
+                Place a FerznoCross for player two at the cells with coordinates [F13]..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the moving player cannot move, the moving player wins If the number of null owned by Player the next player is equal to 1, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Shatranj al-Kabir (Constantinople)6 (Reconstructed)" (id "2550"))
+        (useFor "Ruleset/Shatranj al-Kabir (Constantinople)7 (Reconstructed)" (rules "The game Shatranj al-Kabir (Constantinople) is played by two players on a 13x13 rectangle board with square tiling.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with Pawns, Rooks, KingnoCrosses, BishopnoCrosses, Knights, FerznoCrosses, Rhinos, Gazelles and Amazons.
+                Rules for Pieces:
+                Amazons from cell in the location of the piece to cell in the to sites of slide from to in the orthogonal direction through [between] is in the set of empty cells moveRule: true, for all sites that can be reached from cell the location of the piece in the direction diagonal.
+                BishopnoCrosses hop diagonal.
+                FerznoCrosses if there is an enemy Player at to, remove pieces at to then step diagonal.
+                Gazelles leap a piece to empty.
+                KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights leap a piece to not is a friend.
+                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in , move again.
+                Rhinos slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells or leap a piece to empty.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 3 row.
+                Place a Pawn for player two at each cell of the 9 row.
+                Place a Rook for player one at the cells with coordinates [A1, M1].
+                Place a Rook for player two at the cells with coordinates [A13, M13].
+                Place a Knight for player one at the cells with coordinates [B1, L1].
+                Place a Knight for player two at the cells with coordinates [B13, L13].
+                Place a BishopnoCross for player one at the cells with coordinates [C1, K1].
+                Place a BishopnoCross for player two at the cells with coordinates [C13, K13].
+                Place a Rhino for player one at the cells with coordinates [D1, J1].
+                Place a Rhino for player two at the cells with coordinates [D13, J13].
+                Place a Gazelle for player one at the cells with coordinates [E1, I1].
+                Place a Gazelle for player two at the cells with coordinates [E13, I13].
+                Place a Amazon for player one at the cells with coordinates [F1].
+                Place a Amazon for player two at the cells with coordinates [H13].
+                Place a KingnoCross for player one at the cells with coordinates [G1].
+                Place a KingnoCross for player two at the cells with coordinates [G13].
+                Place a FerznoCross for player one at the cells with coordinates [H1].
+                Place a FerznoCross for player two at the cells with coordinates [F13]..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If KingnoCross of the next player is threatened and not can move move one of your pieces.
+                
+        "))
+        (useFor "Ruleset/Shatranj al-Kabir (Constantinople)7 (Reconstructed)" (id "2551"))
+        (source "Murray 1913: 346.")
         (version "1.3.7")
-        (classification "board/war/replacement/checkmate/chaturanga/reconstruction")
+        (classification "board/war/replacement/checkmate/chaturanga/reconstruction/done")
         (credit "Eric Piette")
         (origin "This game was played in Turkey, from around 1805 to 1806.")
         }

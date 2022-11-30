@@ -2606,11 +2606,162 @@
     (info
         {
         (description "Owana is a two-row mancala-style board game played by children in the Republic of Congo.")
-        (rules "2x4 holes board with two stores. Four counters per hole. Players sow in an anti-clockwise direction. The player who captures all of the opponent's counters wins.")
-        (source "DLP evidence.")
-        (id "1349")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "2x4 holes board with two stores. Four counters per hole. Players sow in an anti-clockwise direction. The player who captures all of the opponent's counters wins."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1349"))
+        (useFor "Ruleset/Owana1 (Reconstructed)" (rules "The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 4.
+                Rules: 
+                If The proposed is End, cast a vote with possible vote options [End] or cast a vote with possible vote options [No], else if we have repeated the same state three times, propose the following options [End] or select Vertex in if in the same turn if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, backtracking: the location of the piece is in RegionP1 or RegionP2 and the total number of vertex in the location of the piece is equal to 2 or the total number of vertex in the location of the piece is equal to 3, captureEffect: if to is in RegionP1 or RegionP2 and the total number of vertex in to is equal to 2 or the total number of vertex in to is equal to 3, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, else if 1 is less than the total number of vertex in to, move again, else if to is in RegionP1 or RegionP2 and 1 is less than the total number of vertex in if 1 is the mover then add the following values: [to,6] otherwise to minus 6, from vertex in if 1 is the mover then add the following values: [to,6] otherwise to minus 6 to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: false.
+                Aim: 
+                If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
+                
+        "))
+        (useFor "Ruleset/Owana1 (Reconstructed)" (id "2361"))
+        (useFor "Ruleset/Owana2 (Reconstructed)" (rules "The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 4.
+                Rules: 
+                Select Vertex in if in the same turn if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if to is in RegionP1 or RegionP2 and the total number of vertex in to is equal to 4, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true then Each turn, where the site is within if 1 is the mover, if the total number of vertex in current site is equal to 4, from vertex in current site to vertex Player the moving player's hand site 0 moveRule: true, else if 1 is less than the total number of vertex in to, move again, type: Vertex, includeSelf: false.
+                Aim: 
+                If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
+                
+        "))
+        (useFor "Ruleset/Owana2 (Reconstructed)" (id "2362"))
+        (useFor "Ruleset/Owana3 (Reconstructed)" (rules "The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 4.
+                Rules: 
+                If The proposed is End, cast a vote with possible vote options [End] or cast a vote with possible vote options [No], else if we have repeated the same state three times, propose the following options [End] or select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: to is in RegionP1 or RegionP2 and the total number of vertex in to is equal to 2 or the total number of vertex in to is equal to 3, backtracking: true, captureEffect: from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: false.
+                Aim: 
+                If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
+                
+        "))
+        (useFor "Ruleset/Owana3 (Reconstructed)" (id "2363"))
+        (useFor "Ruleset/Owana4 (Reconstructed)" (rules "The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 4.
+                Rules: 
+                Select Vertex in 10 if true then Sow with the following rules, startLoc: the to location of the last move, countFn: 2, numPerHoleFn: 1, origin: false, captureRule: true, type: Vertex, includeSelf: true.
+                Aim: 
+                If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
+                
+        "))
+        (useFor "Ruleset/Owana4 (Reconstructed)" (id "2364"))
+        (useFor "Ruleset/Owana5 (Reconstructed)" (rules "The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 4.
+                Rules: 
+                Select Vertex in if 0 is equal to the number of moves if vertex the location of the piece is occupied and 0 is equal to State at the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if 1 is less than the total number of vertex in to, if 0 is equal to State at to, move again and set the variable Replay to to, else if to is in RegionP1 or RegionP2, if 3 is not equal to the total number of vertex in if to is in the bottom sites of the board then add the following values: [to,6] otherwise to minus 6, if 0 is not equal to the total number of vertex in if to is in the bottom sites of the board then add the following values: [to,6] otherwise to minus 6, from vertex in if to is in the bottom sites of the board then add the following values: [to,6] otherwise to minus 6 to vertex Player the moving player's hand site 0 moveRule: true, else from vertex in if to is in the bottom sites of the board then add the following values: [to,6] otherwise to minus 6 to vertex to moveRule: true and set the state of the Vertex to to current moving player and set the state of the Vertex if to is in the bottom sites of the board then add the following values: [to,6] otherwise to minus 6 to current moving player, type: Vertex, includeSelf: true if not Player the moving player is the next mover and all sites in [1,2,3,4] satisfy the condition 0 is not equal to State at current site or empty or all sites in [5,6,7,8] satisfy the condition 0 is not equal to State at current site or empty, Each turn, where the site is within [1,2,3,4], if 0 is equal to State at current site, from vertex in current site to vertex Player 1's hand site 0 moveRule: true and Each turn, where the site is within [5,6,7,8], if 0 is equal to State at current site, from vertex in current site to vertex Player 2's hand site 0 moveRule: true and Each turn, where the site is within the sites of the board, if State at current site is equal to 1, from vertex in current site to vertex Player 1's hand site 0 moveRule: true, else if State at current site is equal to 2, from vertex in current site to vertex Player 2's hand site 0 moveRule: true.
+                Aim: 
+                If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
+                
+        "))
+        (useFor "Ruleset/Owana5 (Reconstructed)" (id "2365"))
+        (useFor "Ruleset/Owana6 (Reconstructed)" (rules "The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 4.
+                Rules: 
+                Select Vertex in if in the same turn if vertex the location of the piece is occupied and the location of the piece is in sites all remembered values then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, skipFn: not to is in the centre sites of the board and not to is in sites all remembered values, captureRule: true, captureEffect: if vertex 1 steps forward from site to on track Track is occupied, move again and set the variable Replay to to, else if 2 steps forward from site to on track Track is in the centre sites of the board, set the value of Player the moving player to 1, else if vertex 2 steps forward from site to on track Track is occupied, from vertex in 2 steps forward from site to on track Track to vertex Player the moving player's hand site 0 moveRule: true and if vertex if 2 steps forward from site to on track Track is in the bottom sites of the board then add the following values: [2 steps forward from site to on track Track,7] otherwise 2 steps forward from site to on track Track minus 7 is occupied, from vertex in if 2 steps forward from site to on track Track is in the bottom sites of the board then add the following values: [2 steps forward from site to on track Track,7] otherwise 2 steps forward from site to on track Track minus 7 to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true if all sites in the difference between the sites of the board and the centre sites of the board satisfy the condition 0 is equal to the total number of vertex in current site, forget all previously rememberd values and if 0 is not equal to add the following values: [the total number of vertex in 3,the total number of vertex in 10], if 1 is equal to the value of Player 1 and 1 is equal to the value of Player 2, if add the following values: [the total number of vertex in 3,the total number of vertex in 10] is even, from vertex in 3 to cell Player 1's hand site 0 moveRule: true and from vertex in 10 to cell Player 1's hand site 0 moveRule: true and from cell in Player 1's hand site 0 to cell Player 2's hand site 0 moveRule: true, else from vertex in 3 to cell Player 1's hand site 0 moveRule: true and from vertex in 10 to cell Player 1's hand site 0 moveRule: true and from cell in Player 1's hand site 0 to cell Player 2's hand site 0 moveRule: true, else if 1 is equal to the value of Player 1, from vertex in 3 to cell Player 1's hand site 0 moveRule: true and from vertex in 10 to cell Player 1's hand site 0 moveRule: true, else if 1 is equal to the value of Player 2, from vertex in 3 to cell Player 2's hand site 0 moveRule: true and from vertex in 10 to cell Player 2's hand site 0 moveRule: true.
+                Aim: 
+                If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
+                
+        "))
+        (useFor "Ruleset/Owana6 (Reconstructed)" (id "2366"))
+        (useFor "Ruleset/Owana7 (Reconstructed)" (rules "The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 4.
+                Rules: 
+                Select Vertex in if in the same turn if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if the total number of vertex in 1 steps forward from site to on track null is greater than 0, move again, else if the total number of vertex in if 1 steps forward from site to on track null is in the bottom sites of the board then add the following values: [1 steps forward from site to on track null,7] otherwise 1 steps forward from site to on track null minus 7 is greater than 0, from vertex in if 1 steps forward from site to on track null is in the bottom sites of the board then add the following values: [1 steps forward from site to on track null,7] otherwise 1 steps forward from site to on track null minus 7 to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                Aim: 
+                If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
+                
+        "))
+        (useFor "Ruleset/Owana7 (Reconstructed)" (id "2367"))
+        (useFor "Ruleset/Owana8 (Reconstructed)" (rules "The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 4.
+                Rules: 
+                Select Vertex in if in the same turn if vertex the location of the piece is occupied, the location of the piece is in sites all remembered values and the next mover is not equal to State at the location of the piece then set the variable NumSowed to the total number of vertex in the to location of the last move and set the variable StateSowFrom to State at the to location of the last move and afterwards Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, trackName: TrackCW, origin: false, skipFn: State at to is not equal to current moving player and State at to is not equal to 0 or not to is in sites all remembered values, captureRule: true, captureEffect: if vertex 1 steps forward from site to on track Track is occupied, move again and set the variable Replay to 1 steps forward from site to on track Track, else if vertex if 1 steps forward from site to on track Track is in the bottom sites of the board then add the following values: [1 steps forward from site to on track Track,7] otherwise 1 steps forward from site to on track Track minus 7 is occupied, from vertex in if 1 steps forward from site to on track Track is in the bottom sites of the board then add the following values: [1 steps forward from site to on track Track,7] otherwise 1 steps forward from site to on track Track minus 7 to vertex Player the moving player's hand site 0 moveRule: true and set the state of the Vertex if 1 steps forward from site to on track Track is in the bottom sites of the board then add the following values: [1 steps forward from site to on track Track,7] otherwise 1 steps forward from site to on track Track minus 7 to State at if 1 steps forward from site to on track Track is in the bottom sites of the board then add the following values: [1 steps forward from site to on track Track,7] otherwise 1 steps forward from site to on track Track minus 7, type: Vertex, includeSelf: true then Each turn, where the site is within track of board, if the value of Player the moving player is equal to the total number of vertex in current site and State at current site is equal to current moving player or State at current site is equal to 0, from vertex in current site to vertex Player the moving player's hand site 0 moveRule: true and set the state of the Vertex current site to State at current site, else if vertex current site is occupied and current moving player is equal to State at current site, from vertex in current site to vertex Player the moving player's hand site 0 moveRule: true and set the state of the Vertex current site to State at current site and set the variable NumSowed to 0 and if 0 is less than state variableStateSowFrom, set the state of the Vertex the from location of the last move to state variableStateSowFrom if all sites in 0 is equal to State at current site the sites of the board satisfy the condition 0 is equal to the total number of vertex in current site, Each turn, where the site is within the sites of the board, if State at current site is equal to 1, from vertex in current site to vertex Player 1's hand site 0 moveRule: true and if State at current site is equal to 2, from vertex in current site to vertex Player 2's hand site 0 moveRule: true and forget all previously rememberd values and if the total number of cell in Player 1's hand site 0 is greater than or equal to the total number of cell in Player 2's hand site 0, set the variable CurrentWinner to 1, else set the variable CurrentWinner to 2 and set the value of Player 2 to 0 and set the value of Player 1 to 0 and Each turn, where the site is within the sites of the board, if 0 is not equal to State at current site, set the state of the Vertex current site to 0.
+                Aim: 
+                If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
+                
+        "))
+        (useFor "Ruleset/Owana8 (Reconstructed)" (id "2368"))
+        (useFor "Ruleset/Owana9 (Reconstructed)" (rules "The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 4.
+                Rules: 
+                Select Vertex in if in the same turn if the total number of vertex in the location of the piece is greater than 0 then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if vertex 1 steps forward from site to on track null is occupied, set the site to to pending and from vertex in 1 steps forward from site to on track null to vertex Player the moving player's hand site 0 moveRule: true and move again, else if vertex 2 steps forward from site to on track null is occupied, from vertex in 2 steps forward from site to on track null to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                Aim: 
+                If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
+                
+        "))
+        (useFor "Ruleset/Owana9 (Reconstructed)" (id "2369"))
+        (useFor "Ruleset/Owana10 (Reconstructed)" (rules "The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 4.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if the total number of vertex in the location of the piece is greater than 0 then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if 2 is equal to the total number of vertex in to or 4 is equal to the total number of vertex in to, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                Aim: 
+                If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
+                
+        "))
+        (useFor "Ruleset/Owana10 (Reconstructed)" (id "2370"))
+        (source "Klepzig 1972:186-187.")
         (version "1.3.7")
-        (classification "board/sow/two rows/reconstruction")
+        (classification "board/sow/two rows/reconstruction/done")
         (credit "Eric Piette")
         (origin "This game was played in Republic of Congo, around 1971.")
         }

@@ -322,13 +322,7 @@
 (metadata
     (info
         {
-        (description "Quoted from the BGG entry: Bug ... is a 2 player combinatorial game where you build shapes on a hexagonal board, which then eat each other. The shapes that survive grow into different, larger shapes until one player runs out of space to grow (and thus wins).
-            
-            The game is played with white and black stones on any hexagonal tiling. The author strongly recommends playing at first on a 'hexhex3' board, and playing on larger boards only after accruing some skill.
-            
-            The game originated in the author's thinking about a cognitive phenomenon called 'perceptual binding', and how it may be used to make combinatorial games more easily understandable to the human mind, given its peculiarities. ...
-            
-        This implementation may differ slightly from the standard rules in exceptional cases, but is based on his confirmation of clarifying questions I asked the author in regards to the intent of the Eating rules.")
+        (description "Quoted from the BGG entry: Bug ... is a 2 player combinatorial game where you build shapes on a hexagonal board, which then eat each other. The shapes that survive grow into different, larger shapes until one player runs out of space to grow (and thus wins).The game is played with white and black stones on any hexagonal tiling. The author strongly recommends playing at first on a 'hexhex3' board, and playing on larger boards only after accruing some skill.The game originated in the author's thinking about a cognitive phenomenon called 'perceptual binding', and how it may be used to make combinatorial games more easily understandable to the human mind, given its peculiarities. ...This implementation may differ slightly from the standard rules in exceptional cases, but is based on his confirmation of clarifying questions I asked the author in regards to the intent of the Eating rules.")
         (rules "Definitions:
             -- A 'bug' is an entire group of connected, same-color stones on the board. A single stone is also a bug.
             -- The 'size' of a bug is the number of stones it contains.
