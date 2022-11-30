@@ -112,14 +112,23 @@
         "The game is played according to the rules of Martin Gardner with a slightly difference. The army can be placed anywhere except in the middle of the towers."
     ) 
     (item "Schuh"  
-        <> 
+        <(hand P1)> 
         <(start {
-            (place "Pawn1" (sites P1))
+            (place "Pawn1" "Hand1")
             (place "Pawn2" (sites P2))
         })
         >
         <
         phases:{
+        (phase "PlacementP1" P1 
+                (play 
+                        (move 
+                            (from (handSite P1)) 
+                            (to (difference (sites Empty) (sites {"B2" "B3"})))
+                        )
+                    )  
+            (nextPhase Mover "MovementP1")
+        )
         (phase "MovementP1" P1 
             (play (forEach Piece)) 
         )
