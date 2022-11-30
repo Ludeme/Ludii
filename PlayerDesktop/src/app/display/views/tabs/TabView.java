@@ -103,6 +103,9 @@ public class TabView extends View
 		
 		select(app.settingsPlayer().tabSelected());
 		
+		if (SettingsExhibition.exhibitionVersion)
+			select(5);
+		
 		for (final View view : pages)
 			DesktopApp.view().getPanels().add(view);
 	}

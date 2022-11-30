@@ -126,13 +126,19 @@ public abstract class TabPage extends View
 		fontColour = new Color(50, 50, 50);
 		textArea.setBackground(Color.white);
 		
+		if (SettingsExhibition.exhibitionVersion)
+		{
+			textArea.setBackground(Color.black);
+			fontColour = new Color(250, 250, 250);
+		}
+		
 		fadedFontColour = new Color(fontColour.getRed() + (int) ((255 - fontColour.getRed()) * 0.75),
 				fontColour.getGreen() + (int) ((255 - fontColour.getGreen()) * 0.75),
 				fontColour.getBlue() + (int) ((255 - fontColour.getBlue()) * 0.75));
 
 		StyleConstants.setForeground(textstyle, fontColour);
 
-		textArea.setVisible(false); // true);
+		textArea.setVisible(false);
 		textArea.setText(text);
 		
 		DesktopApp.view().setLayout(null);
@@ -221,7 +227,7 @@ public abstract class TabPage extends View
 		StyleConstants.setForeground(textstyle, fontColour);
 		try
 		{
-			if (this instanceof InfoPage || this instanceof RulesPage)
+			if ((this instanceof InfoPage || this instanceof RulesPage) && !SettingsExhibition.exhibitionVersion)
 			{
 				final String htmlString = str.replaceAll("\n", "<br>");
 				

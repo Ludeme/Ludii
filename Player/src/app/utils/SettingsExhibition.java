@@ -14,7 +14,7 @@ public class SettingsExhibition
 	public static final int exhibitionDisplayWidth = 800;
 	public static final int exhibitionDisplayHeight = 480;
 	
-	public static final String exhibitionGamePath = "/lud/board/war/replacement/checkmate/chess/Chess.lud";
+	public static final String exhibitionGamePath = "/lud/test/exhibition/ChessExhibition.lud";
 	
 	public static final boolean againstAI = false;
 	
