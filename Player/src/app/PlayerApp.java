@@ -28,6 +28,7 @@ import app.utils.GameUtil;
 import app.utils.GraphicsCache;
 import app.utils.RemoteDialogFunctionsPublic;
 import app.utils.SVGUtil;
+import app.utils.SettingsExhibition;
 import app.utils.SettingsPlayer;
 import app.utils.UpdateTabMessages;
 import app.views.View;
@@ -262,6 +263,10 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		if (imageInfo.containerIndex() > 0)
 		{
 			g2d.setColor(Color.BLACK);
+			if (SettingsExhibition.exhibitionVersion)
+			{
+				g2d.setColor(Color.white);
+			}
 			final Rectangle2D countRect = g2d.getFont().getStringBounds("x"+count, g2d.getFontRenderContext());
 			final int drawPosnX = (int)(imageInfo.drawPosn().x + imageInfo.imageSize()/2 - countRect.getWidth()/2);
 			final int drawPosnY = (int)(imageInfo.drawPosn().y + imageInfo.imageSize() + countRect.getHeight()/2 * 1.5);

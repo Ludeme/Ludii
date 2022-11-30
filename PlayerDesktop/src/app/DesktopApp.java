@@ -207,7 +207,7 @@ public class DesktopApp extends PlayerApp
 		String frameTitle = AppName + " - " + game.name();
 		GameOptions gameOptions = game.description().gameOptions();
 		
-		if (manager().settingsManager().userSelections().ruleset() != Constants.UNDEFINED)
+		if (manager().settingsManager().userSelections().ruleset() != Constants.UNDEFINED && !SettingsExhibition.exhibitionVersion)
 		{
 			final String rulesetName = game.description().rulesets().get(manager().settingsManager().userSelections().ruleset()).heading();
 			frameTitle += " (" + rulesetName + ")";
