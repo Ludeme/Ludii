@@ -71,6 +71,13 @@ public class TabView extends View
 		int width  = DesktopApp.view().getWidth() - boardSize;
 		int height = DesktopApp.view().getHeight() - DesktopApp.view().getPlayerPanel().placement().height - toolHeight;
 		
+		if (SettingsExhibition.exhibitionVersion)
+		{
+			startY -= 30;
+			height += 20;
+			width -= 20;
+		}
+		
 		if (portraitMode)
 		{
 			boardSize = app.width();

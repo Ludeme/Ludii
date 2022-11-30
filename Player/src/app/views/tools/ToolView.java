@@ -73,6 +73,11 @@ public class ToolView extends View
 		int startY = app.height() - toolHeight;
 		int width = app.width() - boardSize - toolHeight;
 		
+		if (SettingsExhibition.exhibitionVersion)
+		{
+			startY -= 10;
+		}
+		
 		if (portraitMode)
 		{
 			boardSize = app.width();
