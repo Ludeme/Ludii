@@ -19,7 +19,7 @@
         <Version:play> 
         
         (end {
-            (if (no Moves P1) (result P2 Win))
+            (if <EndCondP2> (result P2 Win))
             <Move:limit>
             (if (is In (where "Pawn" P1) (sites P2)) (result P1 Win))
             //   (if 
@@ -46,7 +46,13 @@
 (option "Direction Army" <Army> args:{ <direction> }
     {
     (item "All directions" <>   "The army can move in all the directions.")** 
-    (item "Orthogonal"  <Orthogonal> "The tower can move only orthogonally.") 
+    (item "Orthogonal"  <Orthogonal> "The towers can move only orthogonally.") 
+})
+
+(option "P2 Ending Conditions" <EndCondP2> args:{ <EndCondP1> }
+{
+(item "No Moves P1" <(no Moves P1)>   "The army can not move.")** 
+(item "No Moves P1 after Moving three pieces"  <(and (= (count MovesThisTurn) 2) (no Moves P1))> "The army can not move and all towers moved.") 
 })
 
 (option "Version" <Version> args:{ <hand> <start> <play>}
@@ -171,15 +177,15 @@
 (rulesets { 
     
     (ruleset "Ruleset/Lucas (Described)" {
-        "Direction Tower/All directions" "Direction Army/All directions" "Version/Lucas" "Move Limit/No move limit"
+        "Direction Tower/All directions" "Direction Army/All directions" "P2 Ending Conditions/No Moves P1" "Version/Lucas" "Move Limit/No move limit"
     })*
     
     (ruleset "Ruleset/Gardner (Suggested)" {
-        "Direction Tower/All directions" "Direction Army/All directions" "Version/Martin Gardner" "Move Limit/No move limit"
+        "Direction Tower/All directions" "Direction Army/All directions" "P2 Ending Conditions/No Moves P1" "Version/Martin Gardner" "Move Limit/No move limit"
     })
     
     (ruleset "Ruleset/Schuh (Suggested)" {
-        "Direction Tower/All directions" "Direction Army/All directions" "Version/Schuh" "Move Limit/No move limit"
+        "Direction Tower/All directions" "Direction Army/All directions" "P2 Ending Conditions/No Moves P1 after Moving three pieces" "Version/Schuh" "Move Limit/No move limit"
     })
     
 })
