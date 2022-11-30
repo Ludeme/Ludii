@@ -301,25 +301,6 @@
 )
 
 //--------------------------------------
-(rulesets
-    {
-    (ruleset "Ruleset/The Smallholder- Gaps Original (Described)"
-        {"Board/Hex4" "Groups/Must create if only 1" "Adjacent play/Smallest, else lose" "Territory/Gap" "Capture/Piecewise"}
-    ) 
-    (ruleset "Ruleset/The Smallholder- Nibbler  (Described)"
-        {"Board/Hex4" "Groups/Must create if 1 playable" "Adjacent play/Smallest playable" "Territory/Gap" "Capture/Piecewise"}
-    )**** 
-    (ruleset "Ruleset/The Smallholder- Offshore Gaps  (Described)"
-        {"Board/Hex4" "Groups/Priority to create if 1 playable" "Adjacent play/Smallest playable" "Territory/Gap" "Capture/Piecewise"}
-    )
-    (ruleset "Ruleset/The Smallholder- Stymie  (Described)"
-        {"Board/Hex4" "Groups/Priority to create if 1 playable" "Adjacent play/Smallest, else lose" "Territory/Gap" "Capture/Groupwise, Adjacent re-entry"}
-    ) 
-    (ruleset "Ruleset/The Smallholder- Hull Setbacks  (Described)"
-        {"Board/Hex4" "Groups/Must create if 1 playable" "Adjacent play/Smallest playable" "Territory/Hull" "Capture/Groupwise, No re-entry"}
-    )
-    }
-)
 
 (option "Board" <Board> args:{ <type> }
     {
@@ -442,11 +423,187 @@
     )
     }
 )    
+
 //------------------------------------------------------------------------------
-//
+
+(rulesets { 
+    
+    (ruleset "Ruleset/The Smallholder- Gaps Original (Described)" {
+    	"Board/Hex4" "Groups/Must create if only 1" "Adjacent play/Smallest, else lose" "Territory/Gap" "Capture/Piecewise"
+     }) 
+	
+    (ruleset "Ruleset/The Smallholder- Nibbler (Described)" {
+    	"Board/Hex4" "Groups/Must create if 1 playable" "Adjacent play/Smallest playable" "Territory/Gap" "Capture/Piecewise"
+    })*
+    
+    (ruleset "Ruleset/The Smallholder- Offshore Gaps (Described)" {
+    	"Board/Hex4" "Groups/Priority to create if 1 playable" "Adjacent play/Smallest playable" "Territory/Gap" "Capture/Piecewise"
+    })
+	
+    (ruleset "Ruleset/The Smallholder- Stymie (Described)" {
+    	"Board/Hex4" "Groups/Priority to create if 1 playable" "Adjacent play/Smallest, else lose" "Territory/Gap" "Capture/Groupwise, Adjacent re-entry"
+    })
+    
+    (ruleset "Ruleset/The Smallholder- Hull Setbacks (Described)" {
+    	"Board/Hex4" "Groups/Must create if 1 playable" "Adjacent play/Smallest playable" "Territory/Hull" "Capture/Groupwise, No re-entry"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
 (metadata
     (info
         {
+        (description "'The Smallholder' is an evolution of the game Offshore to find a similar game that is easier to play on a physical set.
+            The game gives up most of the counting: 
+            No territory counting - last to place wins; 
+            No tracking of the larger group sizes.
+            
+            The concept started with the ancestor of Offshore (no counting) and then added in a different placement limitation:
+            
+            -- Must play to form a new group, or, if there are already multiple groups, may also play to merge or extend the smallest group.
+            
+            This rule is much easier to visualize without counting.
+            The rule has further evolved to require forming a new group if there are less than 2 groups that have adjacent playable sites.
+            
+            Next, piecewise capture was introduced, and finally, the 'hull' notion of territory was replaced with territory defined as spaces between two members of a group, to make the play tighter and more tactical, as well as being easier to visualize.
+            
+            Some further options improved play: Excluding blocked groups from counting as smallest group, or from counting towards the 2 viable group requirement, allows freer play, and make the Hull version more viable. 
+            
+            The options are left available so that players can assess on their own the value of these changes.
+            The main division is between Gap based territory and Hull based territory.
+            
+            ---------------     
+            Hull territory games such as 'Setback', feature more aggressive territorial fights.
+            If the Group option is set to any type of priority, the end game features a fill in phase, and territorial area is the primary concern.
+            
+            Otherwise, as in the 'Setback' game, itself, the strategy is to keep 2 groups as long as possible, and at the critical moment link them to wipe out all but one of the opponent groups, and to hold enough territory that the opponent has nowhere to form a new group. Link too early, and you will need to form your own new group. 
+            
+            In the case of placement being to the absolute smallest groups, an additional strategy gains dominance: Trapping a small group without capturing it - the smaller the better. Then the opponent must constantly create new groups instead of expanding to capture you.
+            
+            The Hull game played with Piecewise capture tends to lead to turnovers, and to lead to endings of one sparse group each - possibly the fastest version.  
+            
+            When applied together with the Group 'priority' option, however, these groups tend to fill in as opposing chevrons, first to fill-in losing.
+            
+            --------------
+            The Gap based games are tighter conflicts, suited to piecewise capture because holdings expand too slowly for groupwise capture to occur frequently.
+            
+            The original Gap game required group creation and adding to absolute smallest group, leading to the tactics of boxing in singletons at the corners or any other small groups so that expansion would be impossible. This is the game's tension as capture and control is driven by reducing many groups to fewer larger ones.
+            
+            This rule drives new group formation automatically. 
+            Easing the extension rule to placement 'next to the smallest PLAYABLE group,' makes the game more interesting: - then the Group formation rule keeps the same dynamic but less strictly. 
+            
+            With the group rule then set to 'must create if less than 2 playable' we get 'Nibbler' which is the closest to the original (strictest.) 
+            
+            If the rule less than 2 ABSOLUTE is used a trapped group becomes an advantage, and least strict rules, using Priority to drive group creation are no longer about trapping at all, and more similar to the source game 'Offshore' - building groups to capture each other maximise territory, except it is based on Gap territory rather than Hull territory.
+            
+        Finally, 'Stymie' is a Gap game that uses Group capture with re-entry to minimise the influence of capture, and minimal requirement for new group creation, to make a game focussing on filling, where the purpose of the filling is to trap a small group, and not run out of merging plays yourself.  One loses this game due to not being able to play next to one's smallest group.")
+        (useFor "Ruleset/The Smallholder- Nibbler (Described)" (rules "Goal: Last to place a stone, wins.
+                
+                Definitions:
+                -- Stones are connected if they are the same color and next to each other orthogonally.
+                -- Groups consist of connected stones. 
+                Every stone is part of exactly one group. Every group contains all the stones connected to it. 
+                (Groups without any adjacent playable sites are shown with grey dots, for convenience.)
+                
+                Play starts with black. Turns alternate. Passing is not allowed.
+                
+                A player with less than 2 groups with adjacent playable sites must place a stone to create a new group, or LOSE.     
+                Otherwise, placement is allowed next to a group of the same size as the smallest mover's group with an adjacent playable site.
+                
+                Group holdings are all the sites that lie between pairs of each group's members.
+                After placement, capture every enemy STONE within friendly holdings. 
+                
+                Placement inside the opponent's holdings is forbidden.
+                
+        -- Nibbler is close to the original Gap game, but gives a bit more freedom in play, and may work better than the original on larger boards."))
+        (useFor "Ruleset/The Smallholder- Nibbler (Described)" (id "2001"))
+        (useFor "Ruleset/The Smallholder- Gaps Original (Described)" (rules "Goal: Last to place a stone, wins.
+                
+                Definitions:
+                -- Stones are connected if they are the same color and next to each other orthogonally.
+                -- Groups consist of connected stones. 
+                Every stone is part of exactly one group. Every group contains all the stones connected to it. 
+                (Groups without any adjacent playable sites are shown with grey dots, for convenience.)
+                
+                Play starts with black. Turns alternate. Passing is not allowed.
+                
+                A player with a single group must create a new group, or LOSE.
+                Otherwise, if placement is made adjacent to a group, it must be next to a group of the same size as the mover's smallest group.
+                
+                Group holdings are all the sites that lie between pairs of each group's members.
+                After placement, capture every enemy STONE within friendly holdings. 
+                
+                Placement inside the opponent's holdings is forbidden.
+                
+        This game has a strong tactic of boxing in singletons at the corners (or any other small groups) so that expansion would be impossible. The game's tension is that capture and control is driven by reducing many groups to fewer larger ones, but larger groups mean turns get spent on enlarging a few small groups that might not have space to grow."))
+        (useFor "Ruleset/The Smallholder- Gaps Original (Described)" (id "2652"))
+        (useFor "Ruleset/The Smallholder- Offshore Gaps (Described)" (rules "Goal: Last to place a stone, wins.
+                
+                Definitions:
+                -- Stones are connected if they are the same color and next to each other orthogonally.
+                -- Groups consist of connected stones. 
+                Every stone is part of exactly one group. Every group contains all the stones connected to it. 
+                (Groups without any adjacent playable sites are shown with grey dots, for convenience.)
+                
+                Play starts with black. Turns alternate. Passing is not allowed.
+                
+                A player with less than 2 groups with adjacent playable sites must place a stone to create a new group, IF POSSIBLE. 
+                Otherwise, placement is allowed next to a group of the same size as the smallest mover's group with an adjacent playable site.
+                
+                Group holdings are all the sites that lie between pairs of each group's members.
+                After placement, capture every enemy STONE within friendly holdings. 
+                
+                Placement inside the opponent's holdings is forbidden.
+                
+        -- This game focuses on building groups to capture each other and to maximise territory available to fill in."))
+        (useFor "Ruleset/The Smallholder- Offshore Gaps (Described)" (id "2653"))
+        (useFor "Ruleset/The Smallholder- Stymie (Described)" (rules "Goal: Last to place a stone, wins.
+                
+                Definitions:
+                -- Stones are connected if they are the same color and next to each other orthogonally.
+                -- Groups consist of connected stones. 
+                Every stone is part of exactly one group. Every group contains all the stones connected to it. 
+                (Groups without any adjacent playable sites are shown with grey dots, for convenience.)
+                
+                Play starts with black. Turns alternate. Passing is not allowed.
+                
+                A player with less than 2 groups with adjacent playable sites must place a stone to create a new group, IF POSSIBLE. 
+                Otherwise, if placement is made adjacent to a group, it must be next to a group of the same size as the mover's smallest group.
+                
+                Group holdings are all the sites that lie between pairs of each group's members.
+                After placement, capture every complete enemy GROUP within friendly holdings; 
+                
+                Placement in the opponent's holdings is only allowed by extending a friendly group.
+                
+                This is a cold game focussing on creating many small groups and gradually merging them. 
+        Trapping a small opponent's group is advantageous tactically, but it is just as important not to run out of merging plays yourself."))
+        (useFor "Ruleset/The Smallholder- Stymie (Described)" (id "2654"))
+        (useFor "Ruleset/The Smallholder- Hull Setbacks (Described)" (rules "Goal: Last to place a stone, wins.
+                
+                Definitions:
+                -- Stones are connected if they are the same color and next to each other orthogonally.
+                -- Groups consist of connected stones. 
+                Every stone is part of exactly one group. Every group contains all the stones connected to it. 
+                (Groups without any adjacent playable sites are shown with grey dots, for convenience.)
+                
+                Play starts with black. Turns alternate. Passing is not allowed.
+                
+                A player with less than 2 groups with adjacent playable sites must place a stone to create a new group, or LOSE.   
+                Otherwise, placement is allowed next to a group of the same size as the smallest mover's group with an adjacent playable site.
+                
+                Group holdings are the sites in the smallest grid-oriented hexagon that contains each group.     
+                After placement, capture every complete enemy group within friendly holdings. 
+                
+        Placement inside the opponent's holdings is forbidden."))
+        (useFor "Ruleset/The Smallholder- Hull Setbacks (Described)" (id "2655"))
+        (id "2001")
+        (version "1.3.7")
+        (classification "experimental")
+        (author "Dale Walton")
+        (credit "Dale Walton")
+        (date "07-2022")
         }
     )
     
