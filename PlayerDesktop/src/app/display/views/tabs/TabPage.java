@@ -128,6 +128,7 @@ public abstract class TabPage extends View
 		
 		if (SettingsExhibition.exhibitionVersion)
 		{
+			app.settingsPlayer().setTabFontSize(15);
 			textArea.setBackground(Color.black);
 			fontColour = new Color(250, 250, 250);
 		}
