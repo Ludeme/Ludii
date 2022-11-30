@@ -1347,11 +1347,131 @@
         {
         (description "Diris is an alignment game played in Persia during the seventeenth century.")
         (aliases {"Dris" "Sidere" "Si-perde" "Sipere" "Si-perek"})
-        (rules "Three consecutive squares, with lines connecting the corners and the midpoints of the sides of the squares.")
-        (source "DLP Evidence.")
-        (id "1502")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Three consecutive squares, with lines connecting the corners and the midpoints of the sides of the squares."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP Evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1502"))
+        (useFor "Ruleset/Diris1 (Reconstructed)" (rules "The game Diris is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent.
+                Players take turns moving.
+                Rules: 
+                If not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true or move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Diris1 (Reconstructed)" (id "2828"))
+        (useFor "Ruleset/Diris2 (Reconstructed)" (rules "The game Diris is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+                Aim: 
+                If the number of null owned by Player the next player is less than or equal to 2, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Diris2 (Reconstructed)" (id "2829"))
+        (useFor "Ruleset/Diris3 (Reconstructed)" (rules "The game Diris is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+                Players take turns moving.
+                Rules: 
+                If not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true or move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Diris3 (Reconstructed)" (id "2830"))
+        (useFor "Ruleset/Diris4 (Reconstructed)" (rules "The game Diris is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line and not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, move again move one of your pieces remove pieces at sites occupied by any component owned by Enemy in Board then move again.
+                
+        "))
+        (useFor "Ruleset/Diris4 (Reconstructed)" (id "2831"))
+        (useFor "Ruleset/Diris5 (Reconstructed)" (rules "The game Diris is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+                Aim: 
+                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Diris5 (Reconstructed)" (id "2832"))
+        (useFor "Ruleset/Diris6 (Reconstructed)" (rules "The game Diris is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+                Aim: 
+                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Diris6 (Reconstructed)" (id "2833"))
+        (useFor "Ruleset/Diris7 (Reconstructed)" (rules "The game Diris is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+                Aim: 
+                If the number of null owned by Player the next player is less than or equal to 2, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Diris7 (Reconstructed)" (id "2834"))
+        (useFor "Ruleset/Diris8 (Reconstructed)" (rules "The game Diris is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+                Players take turns moving.
+                Setup:
+                Place stack of [Marker1] at vertex Player 1's hand site 0
+                Place stack of [Marker2] at vertex Player 2's hand site 0.
+                Rules: 
+                If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of null owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+                
+        "))
+        (useFor "Ruleset/Diris8 (Reconstructed)" (id "2835"))
+        (useFor "Ruleset/Diris9 (Reconstructed)" (rules "The game Diris is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Diris9 (Reconstructed)" (id "2836"))
+        (useFor "Ruleset/Diris10 (Reconstructed)" (rules "The game Diris is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers if the location of the piece is in the corner sites of the board, from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true, else step adjacent.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of null owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+                Aim: 
+                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Diris10 (Reconstructed)" (id "2837"))
+        (source "Murray 1951: 47.")
         (version "1.3.7")
-        (classification "board/space/line/reconstruction")
+        (classification "board/space/line/reconstruction/done")
         (credit "Eric Piette")
         (origin "This game was played in Persia, around 1694.")
         }

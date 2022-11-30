@@ -166,19 +166,7 @@
 (metadata
     (info
         {
-        (description "'Dogtown Clans' is a simplification of Double-move Situ and resembles Ki, as well. 
-            Differences from Ki include double moves, individual captures requiring a separate move without replacement, a last-able-to-move goal, preference for hex grid, and a parameter to define control.
-            Difference from Situ is that control is based on adjacency.
-            
-            Like Situ, the game is based on the choice of placing one's own piece or removing an opponent's piece.
-            
-            It can be played on hex grids, square grids or square grids with diagonals.
-            
-            Placement must be on empty nodes that are not controlled by the opponent, while removals are taken from nodes that the mover controls. 
-            
-            This control is determined by the difference in quantity of the two player's pieces that are adjacent to the given node. 
-            This difference is a parameter for the game, and when the value of the parameter is met or exceded, the player with the excess LoS pieces controls the site.
-        The default for the parameter is 3.")
+        (description "'Dogtown Clans' is a simplification of Double-move Situ and resembles Ki, as well. Differences from Ki include double moves, individual captures requiring a separate move without replacement, a last-able-to-move goal, preference for hex grid, and a parameter to define control.Difference from Situ is that control is based on adjacency.Like Situ, the game is based on the choice of placing one's own piece or removing an opponent's piece.It can be played on hex grids, square grids or square grids with diagonals.Placement must be on empty nodes that are not controlled by the opponent, while removals are taken from nodes that the mover controls. This control is determined by the difference in quantity of the two player's pieces that are adjacent to the given node. This difference is a parameter for the game, and when the value of the parameter is met or exceded, the player with the excess LoS pieces controls the site.The default for the parameter is 3.")
         (rules "Structure of Play:
             There is no passing.
             Maroon chooses to remove up to two nodes of the board before passing to White. 

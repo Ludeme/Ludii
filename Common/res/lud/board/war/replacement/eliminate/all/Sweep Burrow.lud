@@ -403,9 +403,7 @@
     
     (info
         {
-        (description "Burrow is a whole series of draw-free annihilation games based on the general concept of capture-templates. To begin a turn, a player takes one of his pieces and captures-via-replacement some enemy piece. Some aspect of the capture provides a template whereby the piece may perform further captures. The template can be the minimal bounding box containing the move, the directions used to achieve the capture or even the number of friendly pieces in the line-of-sight. 
-            
-        This Ludii version is implementing the Sweep Burrow version.")
+        (description "Burrow is a whole series of draw-free annihilation games based on the general concept of capture-templates. To begin a turn, a player takes one of his pieces and captures-via-replacement some enemy piece. Some aspect of the capture provides a template whereby the piece may perform further captures. The template can be the minimal bounding box containing the move, the directions used to achieve the capture or even the number of friendly pieces in the line-of-sight. This Ludii version is implementing the Sweep Burrow version.")
         (rules "By far the easiest of the variants so far, Sweep Burrow's template is simply the two orthogonal directions involved in making the initial capture. The only further convention here is that if the capture was made with just movement in one direction, you cannot employ a second direction.
             
         The player may not end his turn until the capturing piece have no further captures available.")

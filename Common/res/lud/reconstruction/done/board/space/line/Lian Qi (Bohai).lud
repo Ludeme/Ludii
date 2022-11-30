@@ -1844,11 +1844,130 @@
     (info
         {
         (description "Lian Qi is a name used for alignment games in China. This versian, smaller than typically found in China, comes from the Bohai State period of Manchuria.")
-        (rules "Two concentric squares, with lines connecting the corners and the midpoints of the sides.")
-        (source "DLP evidence.")
-        (id "1572")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Two concentric squares, with lines connecting the corners and the midpoints of the sides."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1572"))
+        (useFor "Ruleset/Lian Qi (Bohai)1 (Reconstructed)" (rules "The game Lian Qi (Bohai) is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of null owned by Player the moving player is greater than 4, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+                Aim: 
+                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Lian Qi (Bohai)1 (Reconstructed)" (id "2798"))
+        (useFor "Ruleset/Lian Qi (Bohai)2 (Reconstructed)" (rules "The game Lian Qi (Bohai) is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if state variablenull is less than 1 and a player places 3 of their pieces in an adjacent direction line, set the variable null to current moving player and if all sites in the sites in Player 1's hand satisfy the condition 0 is equal to the total number of cell in current site and all sites in the sites in Player 2's hand satisfy the condition 0 is equal to the total number of cell in current site, if state variablenull is less than 1, move again, else set the next mover to Player [state variablenull] remove pieces at sites occupied by any component owned by Next in Board if not a state is pending and in the same turn, remove pieces at sites occupied by any component owned by Next in Board then if the next player cannot move, move again and set pending, else if a state is pending, move one of your pieces, else move one of your pieces.
+                Aim: 
+                If the score of Player the moving player is equal to 5, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Lian Qi (Bohai)2 (Reconstructed)" (id "2799"))
+        (useFor "Ruleset/Lian Qi (Bohai)3 (Reconstructed)" (rules "The game Lian Qi (Bohai) is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+                Players take turns moving.
+                Setup:
+                Place stack of [Marker1] at vertex Player 1's hand site 0
+                Place stack of [Marker2] at vertex Player 2's hand site 0.
+                Rules: 
+                If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of null owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+                
+        "))
+        (useFor "Ruleset/Lian Qi (Bohai)3 (Reconstructed)" (id "2800"))
+        (useFor "Ruleset/Lian Qi (Bohai)4 (Reconstructed)" (rules "The game Lian Qi (Bohai) is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if not in the same turn and a player places 3 of their pieces in an adjacent direction line, move again, else if the next player cannot move, move again and set pending.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+                Aim: 
+                If the number of null owned by Player the next player is less than or equal to 2, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Lian Qi (Bohai)4 (Reconstructed)" (id "2801"))
+        (useFor "Ruleset/Lian Qi (Bohai)5 (Reconstructed)" (rules "The game Lian Qi (Bohai) is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if state variablenull is less than 1 and a player places 3 of their pieces in an adjacent direction line, set the variable null to current moving player and if all sites in the sites in Player 1's hand satisfy the condition 0 is equal to the total number of cell in current site and all sites in the sites in Player 2's hand satisfy the condition 0 is equal to the total number of cell in current site, if state variablenull is less than 1, move again, else set the next mover to Player [state variablenull] remove pieces at sites occupied by any component owned by Next in Board if not a state is pending and in the same turn, remove pieces at sites occupied by any component owned by Next in Board then if the next player cannot move, move again and set pending, else if a state is pending, move one of your pieces, else move one of your pieces.
+                Aim: 
+                If the score of Player the moving player is equal to 5, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Lian Qi (Bohai)5 (Reconstructed)" (id "2802"))
+        (useFor "Ruleset/Lian Qi (Bohai)6 (Reconstructed)" (rules "The game Lian Qi (Bohai) is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+                Players take turns moving.
+                Rules: 
+                If not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true or move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Lian Qi (Bohai)6 (Reconstructed)" (id "2803"))
+        (useFor "Ruleset/Lian Qi (Bohai)7 (Reconstructed)" (rules "The game Lian Qi (Bohai) is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers if 3 is equal to the number of null owned by Player the moving player, from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true, else step adjacent.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Lian Qi (Bohai)7 (Reconstructed)" (id "2804"))
+        (useFor "Ruleset/Lian Qi (Bohai)8 (Reconstructed)" (rules "The game Lian Qi (Bohai) is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line and not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, move again move one of your pieces remove pieces at sites occupied by any component owned by Enemy in Board then move again.
+                
+        "))
+        (useFor "Ruleset/Lian Qi (Bohai)8 (Reconstructed)" (id "2805"))
+        (useFor "Ruleset/Lian Qi (Bohai)9 (Reconstructed)" (rules "The game Lian Qi (Bohai) is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if not in the same turn and a player places 3 of their pieces in an adjacent direction line, move again, else if the next player cannot move, move again and set pending.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Lian Qi (Bohai)9 (Reconstructed)" (id "2806"))
+        (useFor "Ruleset/Lian Qi (Bohai)10 (Reconstructed)" (rules "The game Lian Qi (Bohai) is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+                Aim: 
+                If the next player cannot move or the number of null owned by Player the next player is less than or equal to 2, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Lian Qi (Bohai)10 (Reconstructed)" (id "2807"))
         (version "1.3.7")
-        (classification "board/space/line/reconstruction")
+        (classification "board/space/line/reconstruction/done")
         (credit "Eric Piette")
         (origin "This game was played in Manchuria, from around 800 to 925.")
         }

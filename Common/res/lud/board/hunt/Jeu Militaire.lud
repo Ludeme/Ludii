@@ -19,7 +19,7 @@
         <Version:play> 
         
         (end {
-            (if (no Moves P1) (result P2 Win))
+            (if <EndCondP2> (result P2 Win))
             <Move:limit>
             (if (is In (where "Pawn" P1) (sites P2)) (result P1 Win))
             //   (if 
@@ -46,7 +46,13 @@
 (option "Direction Army" <Army> args:{ <direction> }
     {
     (item "All directions" <>   "The army can move in all the directions.")** 
-    (item "Orthogonal"  <Orthogonal> "The tower can move only orthogonally.") 
+    (item "Orthogonal"  <Orthogonal> "The towers can move only orthogonally.") 
+})
+
+(option "P2 Ending Conditions" <EndCondP2> args:{ <EndCondP1> }
+{
+(item "No Moves P1" <(no Moves P1)>   "The army can not move.")** 
+(item "No Moves P1 after Moving three pieces"  <(and (= (count MovesThisTurn) 2) (no Moves P1))> "The army can not move and all towers moved.") 
 })
 
 (option "Version" <Version> args:{ <hand> <start> <play>}
@@ -112,14 +118,23 @@
         "The game is played according to the rules of Martin Gardner with a slightly difference. The army can be placed anywhere except in the middle of the towers."
     ) 
     (item "Schuh"  
-        <> 
+        <(hand P1)> 
         <(start {
-            (place "Pawn1" (sites P1))
+            (place "Pawn1" "Hand1")
             (place "Pawn2" (sites P2))
         })
         >
         <
         phases:{
+        (phase "PlacementP1" P1 
+                (play 
+                        (move 
+                            (from (handSite P1)) 
+                            (to (difference (sites Empty) (sites {"B2" "B3"})))
+                        )
+                    )  
+            (nextPhase Mover "MovementP1")
+        )
         (phase "MovementP1" P1 
             (play (forEach Piece)) 
         )
@@ -162,15 +177,15 @@
 (rulesets { 
     
     (ruleset "Ruleset/Lucas (Described)" {
-        "Direction Tower/All directions" "Direction Army/All directions" "Version/Lucas" "Move Limit/No move limit"
+        "Direction Tower/All directions" "Direction Army/All directions" "P2 Ending Conditions/No Moves P1" "Version/Lucas" "Move Limit/No move limit"
     })*
     
     (ruleset "Ruleset/Gardner (Suggested)" {
-        "Direction Tower/All directions" "Direction Army/All directions" "Version/Martin Gardner" "Move Limit/No move limit"
+        "Direction Tower/All directions" "Direction Army/All directions" "P2 Ending Conditions/No Moves P1" "Version/Martin Gardner" "Move Limit/No move limit"
     })
     
     (ruleset "Ruleset/Schuh (Suggested)" {
-        "Direction Tower/All directions" "Direction Army/All directions" "Version/Schuh" "Move Limit/No move limit"
+        "Direction Tower/All directions" "Direction Army/All directions" "P2 Ending Conditions/No Moves P1 after Moving three pieces" "Version/Schuh" "Move Limit/No move limit"
     })
     
 })
@@ -189,6 +204,8 @@
         (useFor "Ruleset/Gardner (Suggested)" (rules "The player with the single piece may place their piece on any empty spot at the beginning of the game. "))
         (useFor "Ruleset/Gardner (Suggested)" (source "Garnder, Martin. 1963. \"Mathermatical Games.\" Scientific American 209(4): 125-126."))
         (useFor "Ruleset/Gardner (Suggested)" (id "591"))
+        (useFor "Ruleset/Schuh (Suggested)" (rules "The game is played according to the rules of Lucas, except that Schuh suggested that White has to move his 3 pieces (in any order) at each turn."))
+        (useFor "Ruleset/Schuh (Suggested)" (id "2881"))
         (source "Lucas 1887: 402-404.")
         (id "387")
         (version "1.3.7")

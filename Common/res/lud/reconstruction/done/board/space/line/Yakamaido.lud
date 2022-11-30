@@ -1232,11 +1232,124 @@
     (info
         {
         (description "Yakamaido is a game that was played by the Mono people of California during the nineteenth or early twentieth century.")
-        (rules "Three concentric squares, with lines connecting the corners and the midpoints of the sides.")
-        (source "DLP evidence.")
-        (id "1070")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Three concentric squares, with lines connecting the corners and the midpoints of the sides."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1070"))
+        (useFor "Ruleset/Yakamaido1 (Reconstructed)" (rules "The game Yakamaido is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line and not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, move again move one of your pieces remove pieces at sites occupied by any component owned by Enemy in Board then move again.
+                
+        "))
+        (useFor "Ruleset/Yakamaido1 (Reconstructed)" (id "2718"))
+        (useFor "Ruleset/Yakamaido2 (Reconstructed)" (rules "The game Yakamaido is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+                
+        "))
+        (useFor "Ruleset/Yakamaido2 (Reconstructed)" (id "2719"))
+        (useFor "Ruleset/Yakamaido3 (Reconstructed)" (rules "The game Yakamaido is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if not in the same turn and a player places 3 of their pieces in an adjacent direction line, move again, else if the next player cannot move, move again and set pending.
+                Players take turns moving.
+                Rules: 
+                If not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true or move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Yakamaido3 (Reconstructed)" (id "2720"))
+        (useFor "Ruleset/Yakamaido4 (Reconstructed)" (rules "The game Yakamaido is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+                
+        "))
+        (useFor "Ruleset/Yakamaido4 (Reconstructed)" (id "2721"))
+        (useFor "Ruleset/Yakamaido5 (Reconstructed)" (rules "The game Yakamaido is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if not in the same turn and a player places 3 of their pieces in an adjacent direction line, move again, else if the next player cannot move, move again and set pending.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If player two cannot move, player one wins If a player places 3 of their pieces in an adjacent direction line, player two wins.
+                
+        "))
+        (useFor "Ruleset/Yakamaido5 (Reconstructed)" (id "2722"))
+        (useFor "Ruleset/Yakamaido6 (Reconstructed)" (rules "The game Yakamaido is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+                Aim: 
+                If the number of null owned by Player the next player is less than or equal to 2, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Yakamaido6 (Reconstructed)" (id "2723"))
+        (useFor "Ruleset/Yakamaido7 (Reconstructed)" (rules "The game Yakamaido is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of null owned by Player the moving player is greater than 4, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+                Aim: 
+                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Yakamaido7 (Reconstructed)" (id "2724"))
+        (useFor "Ruleset/Yakamaido8 (Reconstructed)" (rules "The game Yakamaido is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+                
+        "))
+        (useFor "Ruleset/Yakamaido8 (Reconstructed)" (id "2725"))
+        (useFor "Ruleset/Yakamaido9 (Reconstructed)" (rules "The game Yakamaido is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If player two cannot move, player one wins If a player places 3 of their pieces in an adjacent direction line, player two wins.
+                
+        "))
+        (useFor "Ruleset/Yakamaido9 (Reconstructed)" (id "2726"))
+        (useFor "Ruleset/Yakamaido10 (Reconstructed)" (rules "The game Yakamaido is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+                Aim: 
+                If the next player cannot move or the number of null owned by Player the next player is less than or equal to 2, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Yakamaido10 (Reconstructed)" (id "2727"))
+        (source "Murray 1951: 48.")
         (version "1.3.7")
-        (classification "board/space/line/reconstruction")
+        (classification "board/space/line/reconstruction/done")
         (credit "Eric Piette")
         (origin "This game was played in California, around 1907.")
         }

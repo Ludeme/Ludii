@@ -1964,11 +1964,137 @@
     (info
         {
         (description "Four-Fang is a game that is played in China. It was played during the twentieth century, but graffiti at earlier sites suggest that it could be much older. Though it was observed, the rules were not documented, but it may be similar to the game Fang played by the Uighur people.")
-        (rules "4x4 intersecting lines.")
-        (source "DLP evidence.")
-        (id "1135")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "4x4 intersecting lines."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1135"))
+        (useFor "Ruleset/Four-Fang1 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false is greater than 0, set the value of Player the moving player to the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false and move again.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the centre sites of the board moveRule: true from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true if in the same turn, remove pieces at sites occupied by any component owned by Next then if the value of Player the moving player is greater than 1, move again and set the value of Player the moving player to the value of Player the moving player minus 1, else set the value of Player the moving player to 0, else move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Four-Fang1 (Reconstructed)" (id "2606"))
+        (useFor "Ruleset/Four-Fang2 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false is greater than 0, set the value of Player the moving player to the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false and move again.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the union of the top sites of the board and the difference between the right sites of the board and the bottom sites of the board.
+                Place a Marker for player two at the union of the bottom sites of the board and the difference between the left sites of the board and the top sites of the board..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Four-Fang2 (Reconstructed)" (id "2607"))
+        (useFor "Ruleset/Four-Fang3 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers if 1 is equal to add the following values: [the total number of cell in Player the moving player's hand site 0,the number of null owned by Player the moving player], hop adjacent or slide from the location of the piece in the adjacent direction through [between] is in the set of empty vertexs then for all flanked pieces on Vertexes starting from the to location of the last move with Adjacent direction with a limit of the number of Vertex rows pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and from vertex in Player the moving player's hand site 0 to vertex between moveRule: true.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the centre sites of the board moveRule: true from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true if in the same turn, remove pieces at sites occupied by any component owned by Next then if the value of Player the moving player is greater than 1, move again and set the value of Player the moving player to the value of Player the moving player minus 1, else set the value of Player the moving player to 0, else move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Four-Fang3 (Reconstructed)" (id "2608"))
+        (useFor "Ruleset/Four-Fang4 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers if 1 is equal to add the following values: [the total number of cell in Player the moving player's hand site 0,the number of null owned by Player the moving player], hop adjacent or slide from the location of the piece in the adjacent direction through [between] is in the set of empty vertexs then for all flanked pieces on Vertexes starting from the to location of the last move with Adjacent direction with a limit of the number of Vertex rows pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and from vertex in Player the moving player's hand site 0 to vertex between moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the union of the top sites of the board and the difference between the right sites of the board and the bottom sites of the board.
+                Place a Marker for player two at the union of the bottom sites of the board and the difference between the left sites of the board and the top sites of the board..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Four-Fang4 (Reconstructed)" (id "2609"))
+        (useFor "Ruleset/Four-Fang5 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the centre sites of the board moveRule: true from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true if in the same turn, remove pieces at sites occupied by any component owned by Next then if the value of Player the moving player is greater than 1, move again and set the value of Player the moving player to the value of Player the moving player minus 1, else set the value of Player the moving player to 0, else move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Four-Fang5 (Reconstructed)" (id "2610"))
+        (useFor "Ruleset/Four-Fang6 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false is greater than 0, set the value of Player the moving player to the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false and move again.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Four-Fang6 (Reconstructed)" (id "2611"))
+        (useFor "Ruleset/Four-Fang7 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step all.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the centre sites of the board moveRule: true from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true if in the same turn, remove pieces at sites occupied by any component owned by Next then if the value of Player the moving player is greater than 1, move again and set the value of Player the moving player to the value of Player the moving player minus 1, else set the value of Player the moving player to 0, else move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Four-Fang7 (Reconstructed)" (id "2612"))
+        (useFor "Ruleset/Four-Fang8 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent or hop adjacent.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an adjacent direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Four-Fang8 (Reconstructed)" (id "2613"))
+        (useFor "Ruleset/Four-Fang9 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an adjacent direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Four-Fang9 (Reconstructed)" (id "2614"))
+        (useFor "Ruleset/Four-Fang10 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step all.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Four-Fang10 (Reconstructed)" (id "2615"))
         (version "1.3.7")
-        (classification "board/war/reconstruction")
+        (classification "board/war/reconstruction/done")
         (credit "Eric Piette")
         (origin "This game was played in China, from around 680 to 1999.")
         }
