@@ -1,13 +1,12 @@
 package app.utils;
 
 /**
- * Desktop specific settings
+ * Exhibition (in-depth) application settings
  * 
  * @author Matthew.Stephenson
  */
 public class SettingsExhibition
 {
-
 	/** If the app should be loaded in the exhibition display format. */
 	public static final boolean exhibitionVersion = false;
 	
@@ -17,5 +16,4 @@ public class SettingsExhibition
 	public static final String exhibitionGamePath = "/lud/test/exhibition/SenetExhibition.lud";
 	
 	public static final boolean againstAI = false;
-	
 }
