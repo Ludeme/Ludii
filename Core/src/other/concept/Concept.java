@@ -7676,7 +7676,7 @@ public enum Concept
 		"The game ends in solving the puzzle.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
-		ConceptComputationType.Playout,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.End
