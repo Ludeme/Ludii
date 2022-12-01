@@ -16,7 +16,7 @@ import main.grammar.Description;
  * computed if that's leaf. If that's not a leaf, the concept is true if any
  * child is true.
  * 
- * Remarks: The next id in case of a new concept is the id 803.
+ * Remarks: The next id in case of a new concept is the id 804.
  * 
  * @author Eric.Piette
  */
@@ -5186,10 +5186,24 @@ public enum Concept
 		Concept.PieceConditions
 	),
 	
+	/** (= (what ...) (id ...) ...) is used. */
+	IsPieceAt
+	(
+		"3.3.3.3.7",
+		803, 
+		"Occupied site by a specific piece type.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceConditions
+	),
+	
 	/** (sites LineOfSight ...), (slide ...) or (shoot ...) is used.. */
 	LineOfSight
 	(
-		"3.3.3.3.7",
+		"3.3.3.3.8",
 		347, 
 		"Line of sight of pieces used.",
 		ConceptType.Play, 
@@ -5203,7 +5217,7 @@ public enum Concept
 	/** (</<=/>/>= <IntFunction> (count Pieces ...)) is used. */
 	CountPiecesComparison
 	(
-		"3.3.3.3.8",
+		"3.3.3.3.9",
 		348, 
 		"The number of pieces is compared.",
 		ConceptType.Play, 
@@ -5217,7 +5231,7 @@ public enum Concept
 	/** (</<=/>/>= <IntFunction> (count Pieces Mover...)) is used. */
 	CountPiecesMoverComparison
 	(
-		"3.3.3.3.8.1",
+		"3.3.3.3.9.1",
 		349, 
 		"The number of pieces of the mover is compared.",
 		ConceptType.Play, 
@@ -5231,7 +5245,7 @@ public enum Concept
 	/** (</<=/>/>= <IntFunction> (count Pieces Next ...)) is used. */
 	CountPiecesNextComparison
 	(
-		"3.3.3.3.8.2",
+		"3.3.3.3.9.2",
 		350, 
 		"The number of pieces of the next player is compared.",
 		ConceptType.Play, 

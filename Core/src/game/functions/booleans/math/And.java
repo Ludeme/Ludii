@@ -119,6 +119,17 @@ public final class And extends BaseBooleanFunction
 
 		concepts.set(Concept.Conjunction.id(), true);
 
+		boolean fillCheck = true;
+		for (final BooleanFunction elem : list)
+			if(!elem.concepts(game).get(Concept.IsPieceAt.id()))
+			{
+				fillCheck = false;
+				break;
+			}
+		
+		if (fillCheck)
+			concepts.set(Concept.Fill.id(), true);
+		
 		return concepts;
 	}
 

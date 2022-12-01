@@ -271,6 +271,10 @@ public final class Equals extends BaseBooleanFunction
 				concepts.set(Concept.Contains.id(), true);
 			else if (valueB.getClass().toString().contains("Where") && valueA.getClass().toString().contains("MapEntry"))
 				concepts.set(Concept.Contains.id(), true);
+			else if (valueB.getClass().toString().contains("What") && valueA.getClass().toString().contains("Id"))
+					concepts.set(Concept.IsPieceAt.id(), true);
+			else if (valueA.getClass().toString().contains("What") && valueB.getClass().toString().contains("Id"))
+				concepts.set(Concept.IsPieceAt.id(), true);
 		}
 
 		if (regionA != null && regionB != null)
