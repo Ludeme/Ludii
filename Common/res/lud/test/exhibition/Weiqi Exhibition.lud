@@ -1,0 +1,49 @@
+(game "Weiqi Exhibition"
+    (players 2)
+    (equipment {
+        (board (square 19) use:Vertex)
+        (piece "Marker" Each)
+    })
+    (rules 
+        (meta
+            (no Repeat)
+        )
+        (play   
+            (or
+                (move Add
+                    (to (sites Empty))
+                    (then ("EncloseCapture" Orthogonal))
+                )
+                (move Pass)
+            )
+        )
+        (end
+            (if (all Passed)
+                (byScore {
+                    (score P1 (+ (count Pieces P1) (size Territory P1))) 
+                    (score P2 (+ (count Pieces P2) (size Territory P2)))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (rules "These are the modern rules for Weiqi. Players alternate turns placing a piece on the board with the goal of surrounding groups of the opponent's pieces to capture them. The player with the most pieces on the board at the end of the game wins.")
+        }
+    )
+    
+    (graphics {
+        (board Style Go)
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+    })
+    (ai
+        "Weiqi_ai"
+    )
+)

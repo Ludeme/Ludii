@@ -13,7 +13,7 @@ public class SettingsExhibition
 	public static final int exhibitionDisplayWidth = 800;
 	public static final int exhibitionDisplayHeight = 480;
 	
-	public static final String exhibitionGamePath = "/lud/test/exhibition/NardExhibition.lud";
+	public static final String exhibitionGamePath = "/lud/test/exhibition/Toguz Kumalak Exhibition.lud";
 	
 	public static final boolean againstAI = false;
 }

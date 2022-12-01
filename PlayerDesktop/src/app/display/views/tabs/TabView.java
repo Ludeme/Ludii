@@ -73,7 +73,7 @@ public class TabView extends View
 		
 		if (SettingsExhibition.exhibitionVersion)
 		{
-			startY -= 30;
+			startY -= 20;
 			height += 20;
 			width -= 20;
 		}
