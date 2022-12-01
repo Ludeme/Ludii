@@ -13,7 +13,7 @@ public class SettingsExhibition
 	public static final int exhibitionDisplayWidth = 1920;
 	public static final int exhibitionDisplayHeight = 1080;
 	
-	public static final String exhibitionGamePath = "/lud/test/exhibition/Shatranj Exhibition.lud";
+	public static final String exhibitionGamePath = "/lud/test/exhibition/Senet Exhibition.lud";
 	
 	public static final boolean againstAI = false;
 }

@@ -128,7 +128,7 @@ public abstract class TabPage extends View
 		
 		if (SettingsExhibition.exhibitionVersion)
 		{
-			app.settingsPlayer().setTabFontSize(18);
+			app.settingsPlayer().setTabFontSize(19);
 			textArea.setBackground(Color.black);
 			fontColour = new Color(250, 250, 250);
 			scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);

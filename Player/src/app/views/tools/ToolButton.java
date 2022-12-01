@@ -101,6 +101,9 @@ public abstract class ToolButton
 	 */
 	public double scaleForDevice()
 	{
+		if (SettingsExhibition.exhibitionVersion)
+			return rect.getHeight() / 16.0;
+		
 		// Based on default toolbar height for desktop player of 32 pixels.
 		return rect.getHeight() / 32.0;
 	}

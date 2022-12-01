@@ -957,7 +957,10 @@ public class DesktopApp extends PlayerApp
 	@Override
 	public void showSettingsDialog()
 	{
-		SettingsDialog.createAndShowGUI(this);
+		if (!SettingsExhibition.exhibitionVersion)
+		{
+			SettingsDialog.createAndShowGUI(this);
+		}
 	}
 
 	@Override

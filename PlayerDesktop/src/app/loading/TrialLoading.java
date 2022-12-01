@@ -13,6 +13,7 @@ import app.DesktopApp;
 import app.PlayerApp;
 import app.display.MainWindowDesktop;
 import app.utils.GameUtil;
+import app.utils.SettingsExhibition;
 import main.Constants;
 import manager.ai.AIUtil;
 import manager.utils.game_logs.MatchRecord;
@@ -173,6 +174,9 @@ public class TrialLoading
 	 */
 	public static void loadStartTrial(final PlayerApp app)
 	{
+		if (SettingsExhibition.exhibitionVersion)
+			return;
+		
 		try
 		{
 			final File file = new File("." + File.separator + "ludii.trl");
