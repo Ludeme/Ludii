@@ -247,7 +247,8 @@ public class EndConcepts
 		}
 		
 		// Eliminate Pieces End
-		if (condConcepts.get(Concept.NoPieceNext.id()) || condConcepts.get(Concept.CountPiecesNextComparison.id()))
+		if (condConcepts.get(Concept.NoPieceNext.id()) || condConcepts.get(Concept.CountPiecesNextComparison.id()) || 
+				(condConcepts.get(Concept.NoPiece.id()) && !condConcepts.get(Concept.NoPieceMover.id())))
 		{
 			endConcepts.set(Concept.EliminatePiecesEnd.id(), true);	
 			if(resultType != null && who != null)
