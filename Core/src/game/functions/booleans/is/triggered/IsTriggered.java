@@ -8,6 +8,7 @@ import game.Game;
 import game.functions.booleans.BaseBooleanFunction;
 import game.functions.ints.IntFunction;
 import game.types.play.RoleType;
+import other.concept.Concept;
 import other.context.Context;
 
 /**
@@ -87,6 +88,8 @@ public final class IsTriggered extends BaseBooleanFunction
 	{
 		final BitSet concepts = new BitSet();
 		concepts.or(playerId.concepts(game));
+		if(event.equals("Connected"))
+			concepts.set(Concept.Connection.id(), true);
 		return concepts;
 	}
 
