@@ -27,10 +27,10 @@ import other.move.Move;
 import other.state.owned.Owned;
 
 /**
- * Defines a heuristic term based on the unthreatened material (which
+ * Defines a heuristic term based on the threatened material (which
  * opponents cannot threaten with their legal moves).
  * 
- * @author Dennis Soemers
+ * @author Markus
  */
 public class ThreatenedMaterial extends HeuristicTerm
 {
@@ -163,9 +163,9 @@ public class ThreatenedMaterial extends HeuristicTerm
 		{
 			if (p == player)
 				continue;
-			// Now count material value, but only for unthreatened sites
-			final List<? extends Location>[] pieces =  owned.positions(p);
 			
+			// Now count material value, but only for threatened sites
+			final List<? extends Location>[] pieces =  owned.positions(p);
 			
 			for (int i = 0; i < pieces.length; ++i)
 			{
@@ -387,7 +387,7 @@ public class ThreatenedMaterial extends HeuristicTerm
 		{
 			final StringBuilder sb = new StringBuilder();
 		
-			sb.append("(unthreatenedMaterial");
+			sb.append("(threatenedMaterial");
 			if (transformation != null)
 				sb.append(" transformation:" + transformation.toString());
 			if (weight != 1.f)
@@ -466,9 +466,9 @@ public class ThreatenedMaterial extends HeuristicTerm
 					if (pieceTrailingNumbers.length() == 0 || playerIndex < 0 || Integer.valueOf(pieceTrailingNumbers).intValue() == playerIndex)
 					{
 						if (gameAgnosticWeightsArray[i] > 0)
-							sb.append("You should try to maximise the number of unthreatened " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) you control");
+							sb.append("You should try to maximise the number of threatened " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) you control");
 						else
-							sb.append("You should try to minimise the number of unthreatened " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) you control");
+							sb.append("You should try to minimise the number of threatened " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) you control");
 						
 						sb.append(" (" + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ")\n");
 					}
@@ -478,9 +478,9 @@ public class ThreatenedMaterial extends HeuristicTerm
 		else
 		{
 			if (weight > 0)
-				sb.append("You should try to maximise the number of unthreatened piece(s) you control");
+				sb.append("You should try to maximise the number of threatened piece(s) you control");
 			else
-				sb.append("You should try to maximise the number of unthreatened piece(s) you control");
+				sb.append("You should try to minimise the number of threatened piece(s) you control");
 			
 			sb.append(" (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
 		}

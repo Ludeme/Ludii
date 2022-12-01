@@ -31,7 +31,7 @@ import other.state.owned.Owned;
  * Defines a heuristic term based on the unthreatened material (which
  * opponents cannot threaten with their legal moves).
  * 
- * @author Dennis Soemers
+ * @author Markus
  */
 public class ThreatenedMaterialMultipleCount extends HeuristicTerm
 {
@@ -146,18 +146,19 @@ public class ThreatenedMaterialMultipleCount extends HeuristicTerm
 							
 							if (contID == 0)
 							{
-								int returnValue = threatenedSitesWithCounter.putIfAbsent(removeSite,1);
+								int returnValue = threatenedSitesWithCounter.putIfAbsent(removeSite, 1);
 								if (returnValue != threatenedSitesWithCounter.getNoEntryValue())
-									threatenedSitesWithCounter.adjustValue(removeSite,1);
+									threatenedSitesWithCounter.adjustValue(removeSite, 1);
 							}
 						}
 					}
 					
 					// Also assume we threaten the site we move to, regardless of whether or not there are Remove actions
-					if (move.to() >= 0) {
-						int returnValue = threatenedSitesWithCounter.putIfAbsent(move.to(),1);
+					if (move.to() >= 0) 
+					{
+						int returnValue = threatenedSitesWithCounter.putIfAbsent(move.to(), 1);
 						if (returnValue != threatenedSitesWithCounter.getNoEntryValue())
-							threatenedSitesWithCounter.adjustValue(move.to(),1);
+							threatenedSitesWithCounter.adjustValue(move.to(), 1);
 					}
 						
 				}
@@ -174,9 +175,9 @@ public class ThreatenedMaterialMultipleCount extends HeuristicTerm
 		{
 			if (p == player)
 				continue;
-			// Now count material value, but only for unthreatened sites
-			final List<? extends Location>[] pieces =  owned.positions(p);
 			
+			// Now count material value, but only for threatened sites
+			final List<? extends Location>[] pieces = owned.positions(p);
 			
 			for (int i = 0; i < pieces.length; ++i)
 			{
@@ -399,7 +400,7 @@ public class ThreatenedMaterialMultipleCount extends HeuristicTerm
 		{
 			final StringBuilder sb = new StringBuilder();
 		
-			sb.append("(threatenedMaterial");
+			sb.append("(threatenedMaterialMultipleCount");
 			if (transformation != null)
 				sb.append(" transformation:" + transformation.toString());
 			if (weight != 1.f)
@@ -459,7 +460,7 @@ public class ThreatenedMaterialMultipleCount extends HeuristicTerm
 	@Override
 	public String description() 
 	{
-		return "Sum of unthreatened owned pieces.";
+		return "Sum of threatened owned pieces (with count).";
 	}
 	
 	@Override
@@ -478,9 +479,9 @@ public class ThreatenedMaterialMultipleCount extends HeuristicTerm
 					if (pieceTrailingNumbers.length() == 0 || playerIndex < 0 || Integer.valueOf(pieceTrailingNumbers).intValue() == playerIndex)
 					{
 						if (gameAgnosticWeightsArray[i] > 0)
-							sb.append("You should try to maximise the number of unthreatened " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) you control");
+							sb.append("You should try to maximise the number of threatened " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) you control");
 						else
-							sb.append("You should try to minimise the number of unthreatened " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) you control");
+							sb.append("You should try to minimise the number of threatened " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) you control");
 						
 						sb.append(" (" + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ")\n");
 					}
@@ -490,9 +491,9 @@ public class ThreatenedMaterialMultipleCount extends HeuristicTerm
 		else
 		{
 			if (weight > 0)
-				sb.append("You should try to maximise the number of unthreatened piece(s) you control");
+				sb.append("You should try to maximise the number of threatened piece(s) you control");
 			else
-				sb.append("You should try to maximise the number of unthreatened piece(s) you control");
+				sb.append("You should try to minimise the number of threatened piece(s) you control");
 			
 			sb.append(" (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
 		}
@@ -503,11 +504,14 @@ public class ThreatenedMaterialMultipleCount extends HeuristicTerm
 	//-------------------------------------------------------------------------
 
 	@Override
-	public float[] gameAgnosticWeightsArray() {
+	public float[] gameAgnosticWeightsArray() 
+	{
 		return gameAgnosticWeightsArray;
 	}
+	
 	@Override
-	public FVector pieceWeights() {
+	public FVector pieceWeights() 
+	{
 		return pieceWeights;
 	}
 }
