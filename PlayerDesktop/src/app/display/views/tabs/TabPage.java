@@ -128,9 +128,11 @@ public abstract class TabPage extends View
 		
 		if (SettingsExhibition.exhibitionVersion)
 		{
-			app.settingsPlayer().setTabFontSize(15);
+			app.settingsPlayer().setTabFontSize(13);
 			textArea.setBackground(Color.black);
 			fontColour = new Color(250, 250, 250);
+			scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+			scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		}
 		
 		fadedFontColour = new Color(fontColour.getRed() + (int) ((255 - fontColour.getRed()) * 0.75),
