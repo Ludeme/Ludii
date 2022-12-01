@@ -142,6 +142,9 @@ public class EndConcepts
 				else if(resultType.equals(ResultType.Draw))
 					endConcepts.set(Concept.NoOwnPiecesDraw.id(), true);
 			}
+			
+			if(result.concepts(game).get(Concept.Scoring.id))
+					endConcepts.set(Concept.NoOwnPiecesWin.id(), true);
 		}
 
 		// Fill End
