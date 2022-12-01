@@ -237,7 +237,7 @@ public final class Equals extends BaseBooleanFunction
 			{
 				if(countPieces.roleType().equals(RoleType.Mover))
 					concepts.set(Concept.CountPiecesMoverComparison.id(), true);
-				else if(countPieces.roleType().equals(RoleType.Next))
+				else if(countPieces.roleType().equals(RoleType.Next) || countPieces.roleType().equals(RoleType.Player))
 					concepts.set(Concept.CountPiecesNextComparison.id(), true);
 			}
 		}
@@ -249,7 +249,7 @@ public final class Equals extends BaseBooleanFunction
 			{
 				if(countPieces.roleType().equals(RoleType.Mover))
 					concepts.set(Concept.CountPiecesMoverComparison.id(), true);
-				else if(countPieces.roleType().equals(RoleType.Next))
+				else if(countPieces.roleType().equals(RoleType.Next) || countPieces.roleType().equals(RoleType.Player))
 				concepts.set(Concept.CountPiecesNextComparison.id(), true);
 			}
 		}
