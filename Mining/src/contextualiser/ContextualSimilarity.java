@@ -14,7 +14,7 @@ public class ContextualSimilarity
 	//-------------------------------------------------------------------------
 	
 	public static final String rulesetIdsFilePath = "../Mining/res/concepts/input/GameRulesets.csv";
-	public static final String rulesetContextualiserFilePath = "../Mining/res/recons/input/contextualiser_500/similarity_";
+	public static final String rulesetContextualiserFilePath = "../Mining/res/recons/input/contextualiser_1000/similarity_";
 	public static final String rulesetGeographicDistanceFilePath = "../Mining/res/recons/input/rulesetGeographicalDistances.csv";
 	
 	//-------------------------------------------------------------------------
