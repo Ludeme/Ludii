@@ -13,10 +13,10 @@ public enum EnglishSwedishTranslations
 	// Button Text
 	RESET("Reset", "TODO SWEDISH"),
 	PLAY("Play", "TODO SWEDISH"),
-	PLAYAGAIN("Player Again", "TODO SWEDISH"),
+	PLAYAGAIN("Play Again", "TODO SWEDISH"),
 	EDIT("Edit", "TODO SWEDISH"),
-	HUMANVSHUMAN("Human vs Human", "TODO SWEDISH"),
-	HUMANVSAI("Huma vs AI", "TODO SWEDISH"),
+	HUMANVSHUMAN("vs. Human", "TODO SWEDISH"),
+	HUMANVSAI("vs. AI", "TODO SWEDISH"),
 	
 	// Goal Options
 	LINE3("Line 3", "TODO SWEDISH"),
