@@ -16,7 +16,7 @@ import main.grammar.Description;
  * computed if that's leaf. If that's not a leaf, the concept is true if any
  * child is true.
  * 
- * Remarks: The next id in case of a new concept is the id 805.
+ * Remarks: The next id in case of a new concept is the id 806.
  * 
  * @author Eric.Piette
  */
@@ -6952,6 +6952,20 @@ public enum Concept
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.EliminatePiecesDraw
+	),
+	
+	/** End with (>= (count at:(mapEntry Player)) ...) or equivalent. */
+	CaptureMinimumPiecesEnd
+	(
+		"3.4.2.4",
+		805, 
+		"End if a certain number of pieces are captured.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true,
+		Concept.CaptureEnd
 	),
 	
 	/** */
