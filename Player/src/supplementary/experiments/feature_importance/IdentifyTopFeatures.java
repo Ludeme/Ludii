@@ -161,7 +161,7 @@ public class IdentifyTopFeatures
 				
 				collectFeatures(playoutTreesPerPlayer[p], featuresList);
 				collectFeatures(tspgTreesPerPlayer[p], featuresList);
-				
+								
 				// Get rid of any sorts of duplicates/redundancies
 				for (final Feature feature : featuresList)
 				{
@@ -239,14 +239,14 @@ public class IdentifyTopFeatures
 				candidateFeatures.addAll(candidateSpatialFeaturesPerPlayer.get(p));
 				candidateFeaturesPerPlayer.add(candidateFeatures);
 				
-	//			System.out.println("Candidate features for player " + p);
-	//			
-	//			for (final Feature f : candidateFeatures)
-	//			{
-	//				System.out.println(f);
-	//			}
-	//			
-	//			System.out.println();
+//				System.out.println("Candidate features for player " + p);
+//				
+//				for (final Feature f : candidateFeatures)
+//				{
+//					System.out.println(f);
+//				}
+//				
+//				System.out.println();
 			}
 			
 			evaluateCandidateFeatures(game, candidateFeaturesPerPlayer, candidateFeatureWeightsPerPlayer, parsedArgs);
@@ -376,7 +376,7 @@ public class IdentifyTopFeatures
 				}
 			}
 			
-			// We'll terminate except if in the evaluating we decide that we want to keep going
+			// We'll terminate except if in the evaluation we decide that we want to keep going
 			terminateProcess = true;
 			
 			// Evaluate the entire generation
