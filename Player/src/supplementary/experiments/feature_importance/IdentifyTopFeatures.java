@@ -392,7 +392,7 @@ public class IdentifyTopFeatures
 				Collections.sort(scoredIndices, ScoredInt.DESCENDING);
 				
 				// Keep only the best ones
-				final int numToKeep = Math.max(GOAL_NUM_FEATURES, scoredIndices.size() / 2);
+				final int numToKeep = Math.min(scoredIndices.size(), Math.max(GOAL_NUM_FEATURES, scoredIndices.size() / 2));
 				final TIntArrayList keepIndices = new TIntArrayList();
 				for (int i = 0; i < numToKeep; ++i)
 				{
