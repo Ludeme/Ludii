@@ -7,6 +7,7 @@ import game.functions.booleans.BooleanFunction;
 import game.rules.end.Result;
 import game.types.play.ResultType;
 import game.types.play.RoleType;
+import main.Constants;
 import other.context.Context;
 
 /**
@@ -155,10 +156,10 @@ public class EndConcepts
 			{
 				if(resultType.equals(ResultType.Win))
 				{
-					if(who.equals(RoleType.Mover))
-						endConcepts.set(Concept.FillWin.id(), true);
-					else if(who.equals(RoleType.Next) && game.players().count() == 2)
+					if(who.equals(RoleType.Next) && game.players().count() == 2)
 						endConcepts.set(Concept.FillLoss.id(), true);
+					else if(who.equals(RoleType.Mover) || who.owner() != Constants.NOBODY)
+							endConcepts.set(Concept.FillWin.id(), true);
 				}
 				else if(resultType.equals(ResultType.Loss))
 				{
