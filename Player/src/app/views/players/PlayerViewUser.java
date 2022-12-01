@@ -74,6 +74,11 @@ public class PlayerViewUser extends View
 		
 		if (SettingsExhibition.exhibitionVersion)
 		{
+			if (SettingsExhibition.exhibitionVersion)
+			{
+				placement.y += 30 * playerId;
+			}
+			
 			moverTextColour = new Color(220,220,220);
 			nonMoverTextColour = new Color(100,100,100);
 			this.playerView.playerNameFont = new Font("Arial", Font.PLAIN, 26);

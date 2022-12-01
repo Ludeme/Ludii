@@ -73,9 +73,9 @@ public class TabView extends View
 		
 		if (SettingsExhibition.exhibitionVersion)
 		{
-			startY -= 20;
-			height += 20;
-			width -= 20;
+			height -= 200;
+			width -= 50;
+			startY += 100;
 		}
 		
 		if (portraitMode)

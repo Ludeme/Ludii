@@ -51,6 +51,11 @@ public class PlayerView extends View
 		int width = app.width() - boardSize;
 		int height = Math.min(maxHandHeight, (int)(app.height()*maxPanelPercentageHeight/numPlayers));
 		
+		if (SettingsExhibition.exhibitionVersion)
+		{
+			startY += 20;
+		}
+		
 		if (app.manager().isWebApp() && portraitMode && numPlayers <= 4)
 			playerNameFont = new Font("Arial", Font.PLAIN, 32);
 		
@@ -102,7 +107,7 @@ public class PlayerView extends View
 			if (app.settingsPlayer().usingMYOGApp())
 				place = new Rectangle(350, 300, 180, 130);		// Last argument changes piece size.
 			if (SettingsExhibition.exhibitionVersion)
-				place = new Rectangle(0, 10, boardSize, boardSize/7);		// Last argument changes piece size.
+				place = new Rectangle(0, -90, boardSize, boardSize/7);		// Last argument changes piece size.
 			
 			final PlayerViewShared naturePlayerPage = new PlayerViewShared(app, place, numPlayers + 1, this);
 			app.getPanels().add(naturePlayerPage);

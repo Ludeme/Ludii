@@ -75,7 +75,8 @@ public class ToolView extends View
 		
 		if (SettingsExhibition.exhibitionVersion)
 		{
-			startY -= 10;
+			startX += 40;
+			startY -= 30;
 		}
 		
 		if (portraitMode)
