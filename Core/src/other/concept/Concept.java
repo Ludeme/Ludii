@@ -5201,7 +5201,7 @@ public enum Concept
 	),
 	
 	/** (sites LineOfSight ...), (slide ...) or (shoot ...) is used.. */
-	LineOfSight
+	LineOfSight 
 	(
 		"3.3.3.3.8",
 		347, 
