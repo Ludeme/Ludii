@@ -182,7 +182,7 @@ public class MainWindowDesktop extends JPanel implements MouseListener, MouseMot
 
 			// Set application background colour.
 			if (app.settingsPlayer().usingMYOGApp())
-				g2d.setColor(new Color(146,223,243));
+				g2d.setColor(Color.black);
 			else if (SettingsExhibition.exhibitionVersion)
 				g2d.setColor(Color.black);
 			else

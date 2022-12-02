@@ -8,7 +8,7 @@ public enum EnglishSwedishTranslations
 	DRAGPIECES("Drag pieces onto board", "TODO SWEDISH"),
 	MOVEMENT("Movement", "TODO SWEDISH"),
 	CAPTURE("Capture", "TODO SWEDISH"),
-	CHOOSEGOALS("Choose goal(s)", "TODO SWEDISH"),
+	GOAL("Goal", "TODO SWEDISH"),
 	
 	// Button Text
 	RESET("Reset", "TODO SWEDISH"),

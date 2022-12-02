@@ -82,11 +82,12 @@ public final class OverlayView extends View
 		{
 			final Font exhbitionTitleFont = new Font("Cantarell", Font.BOLD, 52);
 			g2d.setFont(exhbitionTitleFont);
-			g2d.setColor(Color.BLUE);
+			g2d.setColor(new Color(29,136,188));
 			g2d.drawString(EnglishSwedishTranslations.MYOGTITLE.toString(), 40, 75);
 			
 			if (app.manager().ref().context().game().hasSharedPlayer())
 			{
+				g2d.setColor(new Color(227,62,41));
 				final Font exhbitionLabelFont = new Font("Cantarell", Font.PLAIN, 24);
 				g2d.setFont(exhbitionLabelFont);
 				g2d.drawString("1. " + EnglishSwedishTranslations.CHOOSEBOARD.toString(), 30, 150);
@@ -97,8 +98,9 @@ public final class OverlayView extends View
 			else
 			{
 				// If playing a game, show toEnglish of that game's description
-				final Font exhbitionDescriptionFont = new Font("Cantarell", Font.PLAIN, 20);
+				final Font exhbitionDescriptionFont = new Font("Cantarell", Font.PLAIN, 22);
 				englishDescriptionField.setFont(exhbitionDescriptionFont);
+				englishDescriptionField.setForeground(Color.white);
 				englishDescriptionField.setBounds(30, 100, 600, 800);
 				englishDescriptionField.setOpaque(false);
 				englishDescriptionField.setLineWrap(true);
