@@ -3,40 +3,40 @@ package app.utils;
 public enum EnglishSwedishTranslations 
 {
 	// Menu Text
-	MYOGTITLE("Make Your Own Game", "TODO SWEDISH"),
-	CHOOSEBOARD("Choose a board", "TODO SWEDISH"),
-	DRAGPIECES("Drag pieces onto board", "TODO SWEDISH"),
-	MOVEMENT("Movement", "TODO SWEDISH"),
-	CAPTURE("Capture", "TODO SWEDISH"),
-	GOAL("Goal", "TODO SWEDISH"),
+	MYOGTITLE("Make Your Own Game", "Gör Ditt Eget Spel"),
+	CHOOSEBOARD("Choose a board", "Välj en bräda"),
+	DRAGPIECES("Drag pieces onto board", "Dra bitar till brädet"),
+	MOVEMENT("Movement", "Rörelse"),
+	CAPTURE("Capture", "Fånga"),
+	GOAL("Goal", "Mål"),
 	
 	// Button Text
-	RESET("Reset", "TODO SWEDISH"),
-	PLAY("Play", "TODO SWEDISH"),
-	PLAYAGAIN("Play Again", "TODO SWEDISH"),
-	EDIT("Edit", "TODO SWEDISH"),
-	HUMANVSHUMAN("vs. Human", "TODO SWEDISH"),
-	HUMANVSAI("vs. AI", "TODO SWEDISH"),
+	RESET("Reset", "Återställa"),
+	PLAY("Play", "Spela"),
+	PLAYAGAIN("Play Again", "Spela igen"),
+	EDIT("Edit", "Redigera"),
+	HUMANVSHUMAN("vs. Human", "vs. Person"),
+	HUMANVSAI("vs. AI", "vs. AI"),
 	
 	// Goal Options
-	LINE3("Line 3", "TODO SWEDISH"),
-	LINE4("Line 4", "TODO SWEDISH"),
-	ELIMINATE("Eliminate", "TODO SWEDISH"),
-	BLOCK("Block", "TODO SWEDISH"),
-	SURROUND("Surround", "TODO SWEDISH"),
+	LINE3("Line 3", "Rad 3"),
+	LINE4("Line 4", "Rad 4"),
+	ELIMINATE("Eliminate", "Eliminera"),
+	BLOCK("Block", "Blockera"),
+	SURROUND("Surround", "Omge"),
 	
 	// Move Options
-	STEP("Step", "TODO SWEDISH"),
-	SLIDE("Slide", "TODO SWEDISH"),
-	KNIGHT("Knight", "TODO SWEDISH"),
-	ADD("Add", "TODO SWEDISH"),
-	ANY("Any", "TODO SWEDISH"),
+	STEP("Step", "Steg"),
+	SLIDE("Slide", "Glida"),
+	KNIGHT("Knight", "Riddare"),
+	ADD("Add", "tillsätta"),
+	ANY("Any", "Några"),
 	
 	// Capture Options
-	REPLACE("Replace", "TODO SWEDISH"),
-	HOP("Hop", "TODO SWEDISH"),
-	FLANK("Flank", "TODO SWEDISH"),
-	NEIGHBOR("Neighbor", "TODO SWEDISH"),
+	REPLACE("Replace", "Ersätta"),
+	HOP("Hop", "Hopp"),
+	FLANK("Flank", "Flank"),
+	NEIGHBOR("Neighbor", "Granne"),
 	;
 
 	//-------------------------------------------------------------------------
