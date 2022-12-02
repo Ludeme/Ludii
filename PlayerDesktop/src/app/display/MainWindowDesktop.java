@@ -20,7 +20,6 @@ import javax.swing.Timer;
 
 import app.DesktopApp;
 import app.PlayerApp;
-import app.display.dialogs.SettingsDialog;
 import app.display.dialogs.MoveDialog.SandboxDialog;
 import app.display.util.DevTooltip;
 import app.display.util.ZoomBox;
@@ -264,13 +263,13 @@ public class MainWindowDesktop extends JPanel implements MouseListener, MouseMot
 		if (GUIUtil.pointOverlapsRectangles(e.getPoint(), playerSwatchList))
 		{
 			if (pressButton)
-				SettingsDialog.createAndShowGUI(app);
+				app.showSettingsDialog();
 			return true;
 		}
 		else if (GUIUtil.pointOverlapsRectangles(e.getPoint(), playerNameList))
 		{
 			if (pressButton)
-				SettingsDialog.createAndShowGUI(app);
+				app.showSettingsDialog();
 			return true;
 		}
 		else if (tabPanel.placement().contains(e.getPoint()))

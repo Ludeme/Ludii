@@ -39,8 +39,6 @@ import metadata.ai.heuristics.terms.PlayerSiteMapCount;
 import metadata.ai.heuristics.terms.RegionProximity;
 import metadata.ai.heuristics.terms.Score;
 import metadata.ai.heuristics.terms.SidesProximity;
-import metadata.ai.heuristics.terms.ThreatenedMaterial;
-import metadata.ai.heuristics.terms.ThreatenedMaterialMultipleCount;
 import metadata.ai.heuristics.terms.UnthreatenedMaterial;
 import metadata.ai.misc.Pair;
 import other.AI;
@@ -688,15 +686,15 @@ public class HeuristicWeightTuning
 				for (final Pair[] componentPairs : allComponentPairsCombinations)
 				heuristicTerms.add(new UnthreatenedMaterial(null, Float.valueOf(weight), componentPairs));
 			}
-			if (ThreatenedMaterial.isApplicableToGame(game)) {
-				for (final Pair[] componentPairs : allComponentPairsCombinations)
-				heuristicTerms.add(new ThreatenedMaterial(null, Float.valueOf(weight), componentPairs));
-			}
-			
-			if (ThreatenedMaterialMultipleCount.isApplicableToGame(game)) {
-				for (final Pair[] componentPairs : allComponentPairsCombinations)
-					heuristicTerms.add(new ThreatenedMaterialMultipleCount(null, Float.valueOf(weight), componentPairs));
-			}
+//			if (ThreatenedMaterial.isApplicableToGame(game)) {
+//				for (final Pair[] componentPairs : allComponentPairsCombinations)
+//				heuristicTerms.add(new ThreatenedMaterial(null, Float.valueOf(weight), componentPairs));
+//			}
+//			
+//			if (ThreatenedMaterialMultipleCount.isApplicableToGame(game)) {
+//				for (final Pair[] componentPairs : allComponentPairsCombinations)
+//					heuristicTerms.add(new ThreatenedMaterialMultipleCount(null, Float.valueOf(weight), componentPairs));
+//			}
 		}
 				
 		for (final HeuristicTerm h : heuristicTerms)

@@ -51,6 +51,11 @@ public class PlayerView extends View
 		int width = app.width() - boardSize;
 		int height = Math.min(maxHandHeight, (int)(app.height()*maxPanelPercentageHeight/numPlayers));
 		
+		if (SettingsExhibition.exhibitionVersion)
+		{
+			startY += 40;
+		}
+		
 		if (app.manager().isWebApp() && portraitMode && numPlayers <= 4)
 			playerNameFont = new Font("Arial", Font.PLAIN, 32);
 		
@@ -100,9 +105,16 @@ public class PlayerView extends View
 			
 			// Place the shared hand in different location for exhibition app.
 			if (app.settingsPlayer().usingMYOGApp())
+			{
 				place = new Rectangle(350, 300, 180, 130);		// Last argument changes piece size.
+			}
 			if (SettingsExhibition.exhibitionVersion)
-				place = new Rectangle(0, 10, boardSize, boardSize/7);		// Last argument changes piece size.
+			{
+				if (app.contextSnapshot().getContext(app).game().name().contains("Senet"))
+					place = new Rectangle(0, 90, boardSize, boardSize/7);
+				else
+					place = new Rectangle(0, -90, boardSize, boardSize/7);
+			}
 			
 			final PlayerViewShared naturePlayerPage = new PlayerViewShared(app, place, numPlayers + 1, this);
 			app.getPanels().add(naturePlayerPage);

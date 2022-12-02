@@ -55,8 +55,18 @@ public class RulesPage extends TabPage
 						addText("Rules:\n");
 					for (final String s : metadata.info().getRules())
 					{
-						addText(s.trim());
-						addText("\n\n");
+						if (SettingsExhibition.exhibitionVersion)
+						{
+							for (final String line : s.split("\\."))
+							{
+								addText(line.trim() + "." + "\n\n");
+							}
+						}
+						else
+						{
+							addText(s.trim());
+							addText("\n\n");
+						}
 					}
 				}
 				if (metadata.info().getSource().size() > 0)

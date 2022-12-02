@@ -42,7 +42,6 @@ import app.display.dialogs.EvaluationDialog;
 import app.display.dialogs.GameLoaderDialog;
 import app.display.dialogs.ReconstructionDialog;
 import app.display.dialogs.SVGViewerDialog;
-import app.display.dialogs.SettingsDialog;
 import app.display.dialogs.TestLudemeDialog;
 import app.display.dialogs.MoveDialog.PossibleMovesDialog;
 import app.display.dialogs.editor.EditorDialog;
@@ -1185,7 +1184,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().startsWith("Preferences"))
 		{
-			SettingsDialog.createAndShowGUI(app);
+			app.showSettingsDialog();
 		}
 		else if (source.getText().equals("Load SVG"))
 		{
