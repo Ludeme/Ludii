@@ -70,6 +70,8 @@ public abstract class ToolButton
 		{
 			buttonColour = new Color(220,220,220);
 			invalidButtonColour = new Color(100,100,100);
+			rect.width *= 2;
+			rect.height *= 2;
 		}
 	}
 
@@ -101,9 +103,6 @@ public abstract class ToolButton
 	 */
 	public double scaleForDevice()
 	{
-		if (SettingsExhibition.exhibitionVersion)
-			return rect.getHeight() / 16.0;
-		
 		// Based on default toolbar height for desktop player of 32 pixels.
 		return rect.getHeight() / 32.0;
 	}

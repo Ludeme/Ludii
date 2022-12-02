@@ -160,7 +160,7 @@ public abstract class TabPage extends View
 		DesktopApp.view().setLayout(null);
 		DesktopApp.view().add(scrollPane());
 		
-		textArea.addHyperlinkListener(new HyperlinkListener() 
+		textArea.addHyperlinkListener(new HyperlinkListener()
 	    {
 	        @Override
 	        public void hyperlinkUpdate(final HyperlinkEvent e) 

@@ -75,7 +75,7 @@ public class TabView extends View
 		{
 			height -= 200;
 			width -= 50;
-			startY += 100;
+			startY += 120;
 		}
 		
 		if (portraitMode)
