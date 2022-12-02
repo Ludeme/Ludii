@@ -7,10 +7,12 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
@@ -128,9 +130,20 @@ public abstract class TabPage extends View
 		
 		if (SettingsExhibition.exhibitionVersion)
 		{
-			app.settingsPlayer().setTabFontSize(18);
+			try
+			{
+				final URL resource = this.getClass().getResource("/NationalFont/National-Regular.ttf");
+				final File fontFile = new File(resource.toURI());
+				textArea.setFont(Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(28f));
+			}
+			catch (final Exception e)
+			{
+				e.printStackTrace();
+			}
+			
 			textArea.setBackground(Color.black);
-			fontColour = new Color(250, 250, 250);
+			fontColour = Color.white;
+			textArea.setForeground(fontColour);
 			scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 			scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		}
@@ -227,10 +240,13 @@ public abstract class TabPage extends View
 	 */
 	public void addText(final String str)
 	{
+		if (SettingsExhibition.exhibitionVersion)
+			textArea.setText(textArea.getText() + str);
+		
 		StyleConstants.setForeground(textstyle, fontColour);
 		try
 		{
-			if ((this instanceof InfoPage || this instanceof RulesPage) && !SettingsExhibition.exhibitionVersion)
+			if (this instanceof InfoPage || this instanceof RulesPage)
 			{
 				final String htmlString = str.replaceAll("\n", "<br>");
 				

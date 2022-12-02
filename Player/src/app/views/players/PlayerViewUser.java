@@ -9,8 +9,10 @@ import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.jfree.graphics2d.svg.SVGGraphics2D;
@@ -288,6 +290,20 @@ public class PlayerViewUser extends View
 		NameAndExtrasBounds.y = (int) (strNameY - bounds.getHeight());
 		
 		app.playerNameList()[playerId] = NameAndExtrasBounds;
+		
+		if (SettingsExhibition.exhibitionVersion)
+		{
+			try
+			{
+				final URL resource = this.getClass().getResource("/NationalFont/National-Regular.ttf");
+				final File fontFile = new File(resource.toURI());
+				g2d.setFont(Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(32f));
+			}
+			catch (final Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
 		
 		g2d.drawString(stringNameAndExtras, strNameX, strNameY);
 	}
