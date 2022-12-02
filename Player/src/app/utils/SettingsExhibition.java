@@ -8,7 +8,7 @@ package app.utils;
 public class SettingsExhibition
 {
 	/** If the app should be loaded in the exhibition display format. */
-	public static final boolean exhibitionVersion = true;
+	public static final boolean exhibitionVersion = false;
 	
 	public static final int exhibitionDisplayWidth = 1920;
 	public static final int exhibitionDisplayHeight = 1080;
