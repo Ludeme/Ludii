@@ -544,6 +544,7 @@
 	
 	<target name="export_exhibition_jar" depends="cleanall,build-without-junit">
 		<mkdir dir="build" />
+		<ant antfile="build.xml" dir="${NetworkPrivate.location}" inheritAll="false" target="build-project"/>
 		<jar destfile="build/Ludii.jar" basedir="bin" duplicate="preserve">
 			<exclude name="**/lud/board/**" />
 			<exclude name="**/lud/dominoes/**" />
