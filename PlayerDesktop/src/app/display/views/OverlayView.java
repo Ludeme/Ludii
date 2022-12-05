@@ -132,7 +132,7 @@ public final class OverlayView extends View
 				}
 				englishDescriptionField.setFont(exhbitionDescriptionFont);
 				englishDescriptionField.setForeground(Color.white);
-				englishDescriptionField.setBounds(30, 100, 600, 800);
+				englishDescriptionField.setBounds(30, 100, 600, 500);
 				englishDescriptionField.setOpaque(false);
 				englishDescriptionField.setLineWrap(true);
 				englishDescriptionField.setWrapStyleWord(true);
@@ -283,17 +283,34 @@ public final class OverlayView extends View
 		// Game over message for exhibition
 		if (app.settingsPlayer().usingMYOGApp() && context.trial().over())	
 		{
-			String message = "          Draw";
-			if (context.winners().size() > 0)
-				message = "Player " + context.winners().get(0) + " has won";
-
-			final Font font = new Font("Arial", Font.BOLD, 48);
-			g2d.setFont(font);
-			g2d.setColor(Color.RED);
-			
-			final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
-			final int pixels = DesktopApp.view().getBoardPanel().placement().width;
-			g2d.drawString(message, pixels, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.5));
+			if (EnglishSwedishTranslations.inEnglish())
+			{
+				String message = "             Draw";
+				if (context.winners().size() > 0)
+					message = "   Player " + context.winners().get(0) + " has won";
+	
+				final Font font = new Font("Arial", Font.BOLD, 40);
+				g2d.setFont(font);
+				g2d.setColor(Color.RED);
+				
+				final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+				final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+				g2d.drawString(message, pixels, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+			}
+			else
+			{
+				String message = "              Dra";
+				if (context.winners().size() > 0)
+					message = "Spelare " + context.winners().get(0) + " har vunnit";
+	
+				final Font font = new Font("Arial", Font.BOLD, 40);
+				g2d.setFont(font);
+				g2d.setColor(Color.RED);
+				
+				final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+				final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+				g2d.drawString(message, pixels, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+							}
 		}
 	}
 	
