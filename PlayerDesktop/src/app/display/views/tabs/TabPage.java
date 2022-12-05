@@ -7,12 +7,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
@@ -130,11 +129,10 @@ public abstract class TabPage extends View
 		
 		if (SettingsExhibition.exhibitionVersion)
 		{
-			try
+			
+			try(InputStream in = getClass().getResourceAsStream("/National-Regular.ttf"))
 			{
-				final URL resource = this.getClass().getResource("/NationalFont/National-Regular.ttf");
-				final File fontFile = new File(resource.toURI());
-				textArea.setFont(Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(28f));
+				textArea.setFont(Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(28f));
 			}
 			catch (final Exception e)
 			{

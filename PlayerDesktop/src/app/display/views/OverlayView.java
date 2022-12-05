@@ -7,8 +7,8 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -83,16 +83,16 @@ public final class OverlayView extends View
 		{
 			final Font exhbitionTitleFont = new Font("Cantarell", Font.BOLD, 52);
 			g2d.setFont(exhbitionTitleFont);
-			try
+			
+			try(InputStream in = getClass().getResourceAsStream("/National-Bold.ttf"))
 			{
-				final URL resource = this.getClass().getResource("/NationalFont/National-Bold.ttf");
-				final File fontFile = new File(resource.toURI());
-				g2d.setFont(Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(52f));
+				g2d.setFont(Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(52f));
 			}
 			catch (final Exception e)
 			{
 				e.printStackTrace();
 			}
+			
 			g2d.setColor(new Color(29,136,188));
 			g2d.drawString(EnglishSwedishTranslations.MYOGTITLE.toString(), 40, 75);
 			
@@ -101,16 +101,16 @@ public final class OverlayView extends View
 				g2d.setColor(new Color(227,62,41));
 				final Font exhbitionLabelFont = new Font("Cantarell", Font.PLAIN, 24);
 				g2d.setFont(exhbitionLabelFont);
-				try
+
+				try(InputStream in = getClass().getResourceAsStream("/National-Regular.ttf"))
 				{
-					final URL resource = this.getClass().getResource("/NationalFont/National-Regular.ttf");
-					final File fontFile = new File(resource.toURI());
-					g2d.setFont(Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(24f));
+					g2d.setFont(Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(24f));
 				}
 				catch (final Exception e)
 				{
 					e.printStackTrace();
 				}
+				
 				g2d.drawString("1. " + EnglishSwedishTranslations.CHOOSEBOARD.toString(), 30, 150);
 				
 				if (app.manager().ref().context().board().numSites() > 1)
@@ -120,16 +120,15 @@ public final class OverlayView extends View
 			{
 				// If playing a game, show toEnglish of that game's description
 				Font exhbitionDescriptionFont = new Font("Cantarell", Font.PLAIN, 22);
-				try
+				try(InputStream in = getClass().getResourceAsStream("/National-Regular.ttf"))
 				{
-					final URL resource = this.getClass().getResource("/NationalFont/National-Regular.ttf");
-					final File fontFile = new File(resource.toURI());
-					exhbitionDescriptionFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(22f);
+					exhbitionDescriptionFont = Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(22f);
 				}
 				catch (final Exception e)
 				{
 					e.printStackTrace();
 				}
+				
 				englishDescriptionField.setFont(exhbitionDescriptionFont);
 				englishDescriptionField.setForeground(Color.white);
 				englishDescriptionField.setBounds(30, 100, 600, 500);
