@@ -282,39 +282,15 @@
 (define "KendallRules" 
     (rules 
         #1 // Starting rules
-        phases:{
-        (phase "Opening"
-            (play 
-                ("RollMove"
-                    (move Pass 
-                        (then 
-                            (if (= 1 ("Throw"))
-                                (and {
-                                    #2
-                                    (if (is Mover P2) 
-                                        (swap Players P1 P2)
-                                    )
-                                    (set NextPlayer (player 1))
-                                })
-                            )
-                        )
-                    )
-                )
-            )
-            (nextPhase (= 1 (count Pips)) "Playing")
-        )
-        (phase "Playing"
-            (play 
+        (play 
                 (do 
-                    (roll #6)
-                    next:(if (can Move ("KendallMoves" #3 #4 #5 #7))
-                        ("KendallMoves" #3 #4 #5 #7)
+                    (roll #5)
+                    next:(if (can Move ("KendallMoves" #2 #3 #4 #6))
+                        ("KendallMoves" #2 #3 #4 #6)
                         (move Pass (then (if (is In ("Throw") (sites {1 4 5})) (moveAgain))))
                     )
                 )
             )
-        )
-        }
         
         (end ("EscapeWin"))
     )
@@ -405,7 +381,7 @@
     (item "Kendall" 
         <>
         <
-        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("NoStartingThrow") ("BearOffPiece") ("BearOffPieceOnWater"))
+        ("KendallRules" ("SevenPiecesOnBoard") ("NoStartingThrow") ("BearOffPiece") ("BearOffPieceOnWater"))
         > 
     "The rules of Kendall.")**
     

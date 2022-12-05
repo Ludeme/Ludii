@@ -4626,8 +4626,6 @@ SUBCLASS: metadata.ai.heuristics.terms.PlayerSiteMapCount
 SUBCLASS: metadata.ai.heuristics.terms.RegionProximity
 SUBCLASS: metadata.ai.heuristics.terms.Score
 SUBCLASS: metadata.ai.heuristics.terms.SidesProximity
-SUBCLASS: metadata.ai.heuristics.terms.ThreatenedMaterial
-SUBCLASS: metadata.ai.heuristics.terms.ThreatenedMaterialMultipleCount
 SUBCLASS: metadata.ai.heuristics.terms.UnthreatenedMaterial
 SUBCLASS: metadata.ai.heuristics.transformations.DivNumBoardSites
 SUBCLASS: metadata.ai.heuristics.transformations.DivNumInitPlacement
@@ -4724,8 +4722,6 @@ SUBCLASS: metadata.ai.heuristics.terms.PlayerSiteMapCount
 SUBCLASS: metadata.ai.heuristics.terms.RegionProximity
 SUBCLASS: metadata.ai.heuristics.terms.Score
 SUBCLASS: metadata.ai.heuristics.terms.SidesProximity
-SUBCLASS: metadata.ai.heuristics.terms.ThreatenedMaterial
-SUBCLASS: metadata.ai.heuristics.terms.ThreatenedMaterialMultipleCount
 SUBCLASS: metadata.ai.heuristics.terms.UnthreatenedMaterial
 SUBCLASS: metadata.ai.heuristics.transformations.DivNumBoardSites
 SUBCLASS: metadata.ai.heuristics.transformations.DivNumInitPlacement
@@ -4940,8 +4936,6 @@ SUBCLASS: metadata.ai.heuristics.terms.PlayerSiteMapCount
 SUBCLASS: metadata.ai.heuristics.terms.RegionProximity
 SUBCLASS: metadata.ai.heuristics.terms.Score
 SUBCLASS: metadata.ai.heuristics.terms.SidesProximity
-SUBCLASS: metadata.ai.heuristics.terms.ThreatenedMaterial
-SUBCLASS: metadata.ai.heuristics.terms.ThreatenedMaterialMultipleCount
 SUBCLASS: metadata.ai.heuristics.terms.UnthreatenedMaterial
 TYPE: metadata.ai.heuristics.terms.Influence
 TYPE JAVADOC: Defines a heuristic term that multiplies its weight by the number  of moves with distinct "to" positions that a player has in a current game state,  divided by the number of playable positions that exist in the game.
@@ -5049,22 +5043,6 @@ PARAM JAVADOC: [transformation:<heuristicTransformation>]: An optional transform
 PARAM JAVADOC: [weight:<float>]: The weight for this term in a linear combination of multiple terms. If not specified, a default weight of $1.0$ is used.
 PARAM JAVADOC: [pieceWeights:{<pair>}]: Weights for different piece types. If no piece weights are specified at all, all piece types are given an equal weight of $1.0$. If piece weights are only specified for some piece types, all other piece types get a weight of $0$.
 EXAMPLE: (sidesProximity weight:-1.0)
-TYPE: metadata.ai.heuristics.terms.ThreatenedMaterial
-TYPE JAVADOC: Defines a heuristic term based on the unthreatened material (which  opponents cannot threaten with their legal moves).
-NEW CTOR
-(threatenedMaterial [transformation:<heuristicTransformation>] [weight:<float>] [pieceWeights:{<pair>}])
-PARAM JAVADOC: [transformation:<heuristicTransformation>]: An optional transformation to be applied to any raw heuristic score outputs.
-PARAM JAVADOC: [weight:<float>]: The weight for this term in a linear combination of multiple terms. If not specified, a default weight of $1.0$ is used.
-PARAM JAVADOC: [pieceWeights:{<pair>}]: Weights for different piece types. If no piece weights are specified at all, all piece types are given an equal weight of $1.0$. If piece weights are only specified for some piece types, all other piece types get a weight of $0$.
-EXAMPLE: (threatenedMaterial pieceWeights:{ (pair "Pawn" 1.0) (pair "Bishop" 3.0) })
-TYPE: metadata.ai.heuristics.terms.ThreatenedMaterialMultipleCount
-TYPE JAVADOC: Defines a heuristic term based on the unthreatened material (which  opponents cannot threaten with their legal moves).
-NEW CTOR
-(threatenedMaterialMultipleCount [transformation:<heuristicTransformation>] [weight:<float>] [pieceWeights:{<pair>}])
-PARAM JAVADOC: [transformation:<heuristicTransformation>]: An optional transformation to be applied to any raw heuristic score outputs.
-PARAM JAVADOC: [weight:<float>]: The weight for this term in a linear combination of multiple terms. If not specified, a default weight of $1.0$ is used.
-PARAM JAVADOC: [pieceWeights:{<pair>}]: Weights for different piece types. If no piece weights are specified at all, all piece types are given an equal weight of $1.0$. If piece weights are only specified for some piece types, all other piece types get a weight of $0$.
-EXAMPLE: (threatenedMaterialMultipleCount pieceWeights:{ (pair "Pawn" 1.0) (pair "Bishop" 3.0) })
 TYPE: metadata.ai.heuristics.terms.UnthreatenedMaterial
 TYPE JAVADOC: Defines a heuristic term based on the unthreatened material (which  opponents cannot threaten with their legal moves).
 NEW CTOR
