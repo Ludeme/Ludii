@@ -46,7 +46,7 @@ public class WriteGameRulesetCategories
 		
 		final Map<String, String> gameCategories = new HashMap<String, String>();
 		
-		final String gameCategoriesFileContents = FileHandling.loadTextContentsFromFile("../../LudiiPrivate/DataMiningScripts/Dennis/GameCategories.csv");
+		final String gameCategoriesFileContents = FileHandling.loadTextContentsFromFile("../Mining/res/categories/GameCategories.csv");
 		final String[] gameCategoryLines = gameCategoriesFileContents.split(Pattern.quote("\n"));
 		for (final String line : gameCategoryLines)
 		{
