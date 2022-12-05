@@ -542,6 +542,92 @@
 		<delete dir="bin"/>		<!-- Clean this because otherwise I get stuck with outdated luds in Eclipse -->
 	</target>
 	
+	<target name="export_exhibition_jar" depends="cleanall,build-without-junit,generate-release-files,generate-javadoc">
+		<mkdir dir="build" />
+		<jar destfile="build/Ludii.jar" basedir="bin" duplicate="preserve">
+			<exclude name="**/lud/board/**" />
+			<exclude name="**/lud/dominoes/**" />
+			<exclude name="**/lud/experimental/**" />
+			<exclude name="**/lud/math/**" />
+			<exclude name="**/lud/puzzle/**" />
+			<exclude name="**/lud/reconstruction/**" />
+			<exclude name="**/lud/simulation/**" />
+			<exclude name="**/lud/subgame/**" />
+			<exclude name="**/lud/bad/**" />
+			<exclude name="**/lud/bad_playout/**" />
+			<exclude name="**/lud/reconstruction/pending/**" />
+			<exclude name="**/lud/reconstruction/validation/**" />
+			<exclude name="**/lud/proprietary/**" />
+			<exclude name="**/lud/test/dennis/**" />
+			<exclude name="**/lud/test/eric/**" />
+			<exclude name="**/lud/test/graph/**" />
+			<exclude name="**/lud/test/knightMoves/**" />
+			<exclude name="**/lud/test/matthew/**" />
+			<exclude name="**/lud/test/old/**" />
+			<exclude name="**/lud/test/parser/**" />
+			<exclude name="**/lud/test/recon/**" />
+			<exclude name="**/lud/wip/**" />
+			<exclude name="**/lud/wishlist/**" />
+			<exclude name="**/lud/WishlistDLP/**" />
+			<exclude name="**/demos/**"/>
+			<exclude name="**/recommender/BGG_dataset.csv" />
+			<exclude name="**/recommender/gameNames.txt" />
+			<exclude name="**/recommender/validBGGId.txt" />
+			<!--<exclude name="**/visual_editor/resources/recs/models/**.gz" />-->
+			<exclude name="**/visual_editor/prototypes/**" />
+			<exclude name="**/supplementary/experiments/debugging/FindCrashingTrial.class" />
+			<exclude name="**/supplementary/experiments/debugging/FindSuperLongTrial.class" />
+			<exclude name="**/supplementary/experiments/game_files/AddCurlyBracesMetadata.class" />
+			<exclude name="**/supplementary/experiments/game_files/CountGames.class" />
+			<exclude name="**/supplementary/experiments/game_files/TestFormatLudFile.class" />
+			<exclude name="**/supplementary/experiments/game_files/UpdateAIMetadata.class" />
+			<exclude name="**/supplementary/experiments/scripts/ExItTrainingScriptsGen.class" />
+			<exclude name="**/supplementary/experiments/scripts/FindBestBaseAgentScriptsGen.class" />
+			<exclude name="**/supplementary/experiments/scripts/FindBestStartingHeuristicsScriptsGen.class" />
+			<exclude name="**/supplementary/experiments/scripts/FindCrashingTrialScriptsGen.class" />
+			<exclude name="**/supplementary/experiments/scripts/InitBestAgentsData.class" />
+			<exclude name="**/package-info.class" />
+			<fileset dir="${Features.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${Core.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${Common.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${Generation.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${ViewController.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${AI.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${Evaluation.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${Manager.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${Mining.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${Language.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${Player.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<!--<fileset dir="${NetworkPrivate.location}/bin" includes="**/*.class" excludes="**/package-info.class" />-->
+			<zipgroupfileset dir="${Common.location}/lib/" includes="**/*.jar" >
+				<exclude name="hamcrest-all-1.3.jar" />
+				<exclude name="json-20180813-sources.jar" />
+				<exclude name="junit-4.12.jar" />
+				<exclude name="Trove4j_ApacheCommonsRNG-sources.jar" />
+			</zipgroupfileset>
+			<zipgroupfileset dir="${Player.location}/lib/" includes="**/*.jar" />
+				
+			<manifest>
+				<attribute name="Main-Class" value="app.StartDesktopApp" />
+			</manifest>
+		</jar>
+		<!--<jar destfile="build/Ludii-javadoc.jar" basedir="build/javadoc" />-->
+		<jar destfile="build/Ludii-src.jar" duplicate="preserve">
+			<fileset dir="${AI.location}/src" includes="**/*.java"/>
+			<fileset dir="${Common.location}/src" includes="**/*.java"/>
+			<fileset dir="${Core.location}/src" includes="**/*.java"/>
+			<fileset dir="${Features.location}/src" includes="**/*.java"/>
+			<fileset dir="${Language.location}/src" includes="**/*.java"/>
+			<fileset dir="${Manager.location}/src" includes="**/*.java"/>
+			<fileset dir="${Mining.location}/src" includes="**/*.java"/>
+			<fileset dir="${Player.location}/src" includes="**/*.java"/>
+			<fileset dir="${PlayerDesktop.location}/src" includes="**/*.java"/>
+			<fileset dir="${ViewController.location}/src" includes="**/*.java"/>
+			<fileset file="../LICENSE"/>
+		</jar>
+		<delete dir="bin"/>		<!-- Clean this because otherwise I get stuck with outdated luds in Eclipse -->
+	</target>
+	
 	<target name="export_jar_public" depends="cleanallpublic,build-without-junit">
 			<mkdir dir="build" />
 			<jar destfile="build/Ludii.jar" basedir="bin" duplicate="preserve">
