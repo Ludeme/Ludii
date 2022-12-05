@@ -1,0 +1,92 @@
+(define "NextSiteFrom" ("NextSiteOnTrack" #2 from:#1))
+
+(define "EnterPieces"
+    (if (is Occupied (mapEntry "Bar" Mover))
+        (forEach Die
+            if:("DieNotUsed")
+            (move 
+                (from (mapEntry "Bar" Mover))
+                (to 
+                    ("NextSiteFrom" (mapEntry "Bar" Mover) (pips))
+                    if:(< (size Stack at:(to)) 2)
+                    ("HittingCapture" (mapEntry "Bar" Next))
+                )
+            )
+            (then ("ReplayNotAllDiceUsed"))
+        )
+    )
+)
+
+(define "AllPiecesInFinalQuadrant" ("AllOwnedPiecesIn" (sites Mover "FinalQuadrant")))
+
+//------------------------------------------------------------------------------
+
+(game "Nard Exhibition"
+    (players 2)
+    (equipment {
+        ("BackgammonBoard" ("BackgammonTracksWithBar" End)) 
+        (dice d:6 num:2)
+        (map "Bar" {(pair P1 6) (pair P2 19)})
+        (regions "FinalQuadrant" P1 (sites {20..25}))
+        (regions "FinalQuadrant" P2 (sites {7..12}))
+        (piece "Disc" Each
+            (forEach Die
+                if:("DieNotUsed")
+                (if ("IsEndTrack" ("NextSiteFrom" (from) (pips)))
+                    (if ("AllPiecesInFinalQuadrant")
+                        (move Remove (from))
+                    )
+                    (move 
+                        (from (from))
+                        (to 
+                            ("NextSiteFrom" (from) (pips))
+                            if:("NoEnemyOrOnlyOne" (to))
+                            ("HittingCapture" (mapEntry "Bar" Next))
+                        )
+                    )
+                )
+                (then ("ReplayNotAllDiceUsed"))
+            )
+        )
+    })
+    (rules 
+        (start {
+            (place Stack "Disc1" 7 count:5) (place Stack "Disc1" 4 count:3) 
+            (place Stack "Disc1" 13 count:5) (place Stack "Disc1" 25 count:2)
+            (place Stack "Disc2" 20 count:5) (place Stack "Disc2" 17 count:3) 
+            (place Stack "Disc2" 0 count:5) (place Stack "Disc2" 12 count:2)
+        })
+        (play 
+            ("RollEachNewTurnMove"
+                (priority {
+                    ("EnterPieces")
+                    (if (is Empty (mapEntry "Bar" Mover)) (max Distance (forEach Piece top:True)))
+                })
+                (then
+                    (if (no Pieces Mover)
+                        (if (no Pieces Enemy in:(sites Mover "FinalQuadrant")) (addScore Mover 1) (addScore Mover 2))
+                    )
+                )
+            )
+        )
+        (end ("EscapeWin"))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (rules "Dessa regler spelades i Persien på 1800-talet. Reglerna är nästan desamma som Backgammon, förutom att dubblar inte spelas två gånger. Bitar kan inte återföras på en punkt med mer än en bit redan på den. Spelare tävlar för att få bort alla sina pjäser från spelplanen.")
+
+        }
+    )
+    
+    (graphics {
+        (board Style backgammon)
+        (stackType Backgammon)
+    })
+    
+)

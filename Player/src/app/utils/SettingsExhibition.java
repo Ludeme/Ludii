@@ -13,7 +13,7 @@ public class SettingsExhibition
 	public static final int exhibitionDisplayWidth = 1920;
 	public static final int exhibitionDisplayHeight = 1080;
 	
-	public static final String exhibitionGamePath = "/lud/test/exhibition/Senet Exhibition Swedish.lud";
+	public static final String exhibitionGamePath = "/lud/wip/exhibition/Senet Exhibition Swedish.lud";
 	
 	public static final boolean againstAI = false;
 }

@@ -1,0 +1,154 @@
+(define "IsEmpty" (is Empty (to)))
+
+(define "Centre" (= (to) (centrePoint)))
+
+(define "MoveOnlyIfAdjacentToEnemyOrCentre"
+    (move
+        Step 
+        (to if:(and
+                ("IsEmpty")
+                (or
+                    (not "Centre")
+                    (is Related Adjacent (from) (sites Occupied by:Next))
+                )
+            ) 
+        )
+    )	
+)
+
+(define "MoveOnlyIfAdjacentToEnemy"
+    (move
+        Step 
+        (to if:(and
+                ("IsEmpty")
+                (is Related Adjacent (from) (sites Occupied by:Next))
+            ) 
+        )
+    )	
+)
+
+//------------------------------------------------------------------------------
+
+(game "Mu Torere"
+    (players 2) 
+    (equipment { 
+        <Board:type>
+        
+        (piece "Marker" Each <Play>) 
+    }) 
+    (rules 
+        (start { 
+            <Board:start>
+        })
+        (play (forEach Piece))
+        (end ("NoMoves" Loss))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board" <Board> args:{ <type> <start>}
+    {
+    (item "Wheel Shape"   
+        <(board (concentric {1 8}) use:Vertex)>
+        <(place "Marker1" {1..3 8})
+        (place "Marker2" {4..7})>
+        "The game is played on a wheel board."
+    )* 
+    (item "Square Shape" 
+        <("AlquerqueBoard" 3 3)>
+        <(place "Marker1" {0 1 2 5})
+        (place "Marker2" {3 6 7 8})>         
+    "The game is played on a 3x3 alquerque board.") 
+})
+
+(option "Play Rules" <Play> args:{ <rules>}
+    {
+    (item "Adjacent Enemy to Centre"   
+        <("MoveOnlyIfAdjacentToEnemyOrCentre")>
+        "The game is played with all the rules"
+    )*
+    
+    (item "No Restriction"   
+        <"StepToEmpty">         
+        "The game is played with no constraint on the centre site."
+    ) 
+    
+    (item "FirstMove"   
+        <
+        (if (> (count Moves) 1)
+            "StepToEmpty"
+            ("MoveOnlyIfAdjacentToEnemyOrCentre")
+        )
+        >         
+        "The constraint to move a piece adjacent to an enemy is applied only for the first move."
+    ) 
+    
+    (item "FirstTwoTurns"   
+        <
+        (if (> (count Moves) 4)
+            "StepToEmpty"
+            ("MoveOnlyIfAdjacentToEnemyOrCentre")
+        )
+        >        
+        "The constraint to move a piece adjacent to an enemy is applied only for the first two turns."
+    )
+    
+    (item "Adjacent Enemy"   
+        <("MoveOnlyIfAdjacentToEnemy")>
+        "The pieces can move only if they are adjacent to an enemy piece."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/No Restriction (Suggested)" 
+        {
+        "Board/Wheel Shape" "Play Rules/No Restriction"
+        }
+    )    
+    
+    (ruleset "Ruleset/First Move (Observed)" 
+        {
+        "Board/Wheel Shape" "Play Rules/FirstMove"
+        }
+    )
+    
+    (ruleset "Ruleset/First Two Turns (Suggested)" 
+        {
+        "Board/Wheel Shape" "Play Rules/FirstTwoTurns"
+        }
+    )
+    
+    (ruleset "Ruleset/Adjacent Enemy to Centre (Suggested)" 
+        {
+        "Board/Wheel Shape" "Play Rules/Adjacent Enemy to Centre"
+        }
+    )
+    
+    (ruleset "Ruleset/Adjacent Enemy (Suggested)" 
+        {
+        "Board/Wheel Shape" "Play Rules/Adjacent Enemy"
+        }
+    )**
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+
+        (useFor "Ruleset/Adjacent Enemy (Suggested)" (rules "Dessa regler observerades i Nya Zeeland/Aotearoa 1912, men med ett tillägg som gör spelandet mer rättvist. Spelare flyttar en pjäs till en tom plats. Den spelare som blockerar motståndaren från att kunna flytta vinner. Endast pjäser som är bredvid en motståndares pjäs kan flyttas."))
+
+        }
+    )
+    
+    (graphics {
+        (no Curves)
+    })
+    
+)

@@ -1,0 +1,167 @@
+(define "JiangSameColumnWithNoPieceBetween"
+    (if (= (column of:(where "Jiang" P1)) (column of:(where "Jiang" P2)))
+        (not ("NoSites" (forEach (sites Direction from:(where "Jiang" P1) N stop:(= (to) (where "Jiang" P2))) if:(is Occupied (site)))))
+        True
+    )
+)
+
+(define "StepMoveOnThePalace" 
+    (move Step
+        #1 
+        (to 
+            if:(and 
+                (is In (to) (sites Mover "Palace")) 
+                (not ("IsFriendAt" (to)))
+            ) 
+            (apply (remove (to)))
+        )
+    ) 
+)
+
+//------------------------------------------------------------------------------
+
+(game "Xiangqi Exhibition" 
+    ("TwoPlayersNorthSouth") 
+    (equipment { 
+        (board (rectangle 10 9) use:Vertex) 
+        
+        // General
+        (piece "Jiang" Each ("StepMoveOnThePalace" Orthogonal)) 
+        
+        // Guard
+        (piece "Shi" Each ("StepMoveOnThePalace" Diagonal)) 
+        
+        // Elephant
+        (piece "Xiang" Each 
+            (move Slide
+                Diagonal 
+                (between 
+                    (exact 2) 
+                    if:(and { 
+                        (is In (between) (sites Mover "Home")) 
+                        (is Empty (between)) 
+                    })
+                )
+                (to 
+                    if:("IsEnemyAt" (to)) 
+                    (apply (remove (to)))
+                ) 
+            )
+        ) 
+        
+        // Horse
+        (piece "Ma" Each 
+            (forEach Direction 
+                Orthogonal 
+                (to 
+                    if:(is Empty (to)) 
+                    (apply 
+                        (forEach Direction 
+                            (from (to)) 
+                            (directions {FR FL} of:All) 
+                            (if (not ("IsFriendAt" (to))) 
+                                (move 
+                                    (from) 
+                                    (to 
+                                        (apply 
+                                            if:("IsEnemyAt" (to))
+                                            (remove (to))
+                                        )
+                                    )
+                                )
+                            )
+                        ) 
+                    )
+                )
+            ) 
+        )
+        
+        // Chariot
+        (piece "Ju" Each ("SlideCapture" Orthogonal))
+        
+        // Canon
+        (piece "Pao" Each 
+            (or 
+                (move Slide Orthogonal) 
+                (move Hop
+                    Orthogonal 
+                    (between 
+                        before:(count Rows) 
+                        after:(count Rows) 
+                        if:(is Occupied (between))
+                    )
+                    (to 
+                        if:(is Empty (to)) 
+                        (apply 
+                            if:("IsEnemyAt" (to)) 
+                            (remove (to))
+                        )
+                    ) 
+                ) 
+            )
+        )
+        
+        // Soldier
+        (piece "Zu" Each
+            ("StepToNotFriend"
+                (if 
+                    (is In (from) (sites Mover "Home")) 
+                    Forward 
+                    (directions {Forward Rightward Leftward})
+                ) 
+            )
+        )
+        
+        (regions "PalaceP1" P1 { 3..5 12..14 21..23 })
+        (regions "PalaceP2" P2 { 66..68 75..77 84..86 })
+        (regions "Home" P1 (expand (sites Bottom) steps:4))
+        (regions "Home" P2 (expand (sites Top) steps:4))
+    }) 
+    
+    (rules 
+        (start { 
+            (place "Jiang1" coord:"E1") (place "Shi1" {"D1" "F1"}) (place "Xiang1" {"C1" "G1"}) (place "Ma1" {"B1" "H1"}) (place "Ju1" {"A1" "I1"}) (place "Pao1" {"B3" "H3"}) (place "Zu1" {"A4" "C4" "E4" "G4" "I4"})
+            (place "Jiang2" coord:"E10") (place "Shi2" {"D10" "F10"}) (place "Xiang2" {"C10" "G10"}) (place "Ma2" {"B10" "H10"}) (place "Ju2" {"A10" "I10"}) (place "Pao2" {"B8" "H8"}) (place "Zu2" {"A7" "C7" "E7" "G7" "I7"})
+        })
+        
+        (play (do 
+                (forEach Piece) 
+                ifAfterwards:(and 
+                    ("JiangSameColumnWithNoPieceBetween")
+                    (not ("IsInCheck" "Jiang" Mover))
+                )
+            )
+        )
+        
+        (end {
+            ("Checkmate" "Jiang")
+            ("BlockWin")
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+
+        (rules "These are the standard modern rules of Xiangqi. Played in a similar manner to Chess. There are two \"castles\" which the king and his two generals cannot leave. There is also a \"river\" in the middle of the board, which the elephants cannot cross. Pawns are promoted when they cross the river.")
+
+                }
+            )
+            
+            (graphics {
+                (player Colour P1 (colour White))
+                (player Colour P2 (colour Red))
+                (board Style Xiangqi)
+                (piece Families {"Defined" "Western"})
+                (piece ExtendName P2 "_black")
+            })
+            
+            (ai 
+                "Xiangqi_ai"
+            )
+            
+        )
