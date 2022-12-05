@@ -542,7 +542,7 @@
 		<delete dir="bin"/>		<!-- Clean this because otherwise I get stuck with outdated luds in Eclipse -->
 	</target>
 	
-	<target name="export_exhibition_jar" depends="cleanall,build-without-junit,generate-release-files,generate-javadoc">
+	<target name="export_exhibition_jar" depends="cleanall,build-without-junit">
 		<mkdir dir="build" />
 		<jar destfile="build/Ludii.jar" basedir="bin" duplicate="preserve">
 			<exclude name="**/lud/board/**" />
@@ -586,6 +586,7 @@
 			<fileset dir="${Features.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
 			<fileset dir="${Core.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
 			<fileset dir="${Common.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${Common.location}/bin" includes="**/*.ttf" excludes="**/package-info.class" />
 			<fileset dir="${Generation.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
 			<fileset dir="${ViewController.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
 			<fileset dir="${AI.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
