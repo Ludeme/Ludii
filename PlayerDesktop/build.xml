@@ -558,15 +558,11 @@
 			<exclude name="**/lud/reconstruction/pending/**" />
 			<exclude name="**/lud/reconstruction/validation/**" />
 			<exclude name="**/lud/proprietary/**" />
-			<exclude name="**/lud/test/dennis/**" />
-			<exclude name="**/lud/test/eric/**" />
-			<exclude name="**/lud/test/graph/**" />
-			<exclude name="**/lud/test/knightMoves/**" />
-			<exclude name="**/lud/test/matthew/**" />
-			<exclude name="**/lud/test/old/**" />
-			<exclude name="**/lud/test/parser/**" />
-			<exclude name="**/lud/test/recon/**" />
-			<exclude name="**/lud/wip/**" />
+			<exclude name="**/lud/test/**" />
+			<exclude name="**/lud/wip/isg/**" />
+			<exclude name="**/lud/wip/matthew/**" />
+			<exclude name="**/lud/wip/puzzle/**" />
+			<exclude name="**/lud/wip/reconstruction/**" />
 			<exclude name="**/lud/wishlist/**" />
 			<exclude name="**/lud/WishlistDLP/**" />
 			<exclude name="**/demos/**"/>
@@ -598,7 +594,7 @@
 			<fileset dir="${Mining.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
 			<fileset dir="${Language.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
 			<fileset dir="${Player.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
-			<!--<fileset dir="${NetworkPrivate.location}/bin" includes="**/*.class" excludes="**/package-info.class" />-->
+			<fileset dir="${NetworkPrivate.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
 			<zipgroupfileset dir="${Common.location}/lib/" includes="**/*.jar" >
 				<exclude name="hamcrest-all-1.3.jar" />
 				<exclude name="json-20180813-sources.jar" />
