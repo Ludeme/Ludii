@@ -443,7 +443,14 @@ public class DesktopApp extends PlayerApp
 				GameLoading.loadGameFromMemory(this, SettingsExhibition.exhibitionGamePath, false);
 				
 				if (SettingsExhibition.againstAI)
-					AIUtil.updateSelectedAI(manager(), manager().aiSelected()[2].object(), 2, manager().aiSelected()[2].menuItemName());
+				{
+					final JSONObject json = new JSONObject().put("AI",
+							new JSONObject()
+							.put("algorithm", "UCT")
+							);
+					AIUtil.updateSelectedAI(manager(), json, 2, "UCT");
+					manager().aiSelected()[2].setThinkTime(SettingsExhibition.thinkingTime);
+				}
 				
 				bridge().settingsVC().setShowPossibleMoves(true);
 				
