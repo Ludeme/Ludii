@@ -14,7 +14,7 @@ public class SettingsExhibition
 	public static final int exhibitionDisplayWidth = 1920;
 	public static final int exhibitionDisplayHeight = 1080;
 	
-	/** The game to load (there exists both an english and swedish version of each game. */
+	/** The game to load (there exists both an English and Swedish version of each game). */
 	public static final String exhibitionGamePath = "/lud/wip/exhibition/Senet Exhibition Swedish.lud";
 	
 	/** If Player 2 should be controlled by an AI agent. */
