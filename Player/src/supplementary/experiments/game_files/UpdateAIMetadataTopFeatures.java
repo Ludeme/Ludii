@@ -231,7 +231,7 @@ public class UpdateAIMetadataTopFeatures
 				}
 				
 				// Also update the .lud file to make sure it points to our AI def file
-				final File ludFile = new File(argParse.getValueString("--luds-dir") + gameName, ""));
+				final File ludFile = new File(argParse.getValueString("--luds-dir") + gameName, "");
 				try
 				{
 					final String ludFileContents = FileHandling.loadTextContentsFromFile(ludFile.getAbsolutePath());
