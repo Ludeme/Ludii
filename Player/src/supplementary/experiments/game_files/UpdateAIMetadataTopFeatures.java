@@ -216,7 +216,7 @@ public class UpdateAIMetadataTopFeatures
 				try (final PrintWriter writer = new PrintWriter(aiDefFile, "UTF-8"))
 				{
 					System.out.println("Writing to file: " + aiDefFile.getAbsolutePath());
-					writer.println("(define " + StringRoutines.quote(thisGameName.replaceAll(Pattern.quote(".lud"), "") + "_ai"));
+					writer.println("(define " + StringRoutines.quote((thisGameName.replaceAll(Pattern.quote(".lud"), "") + "_ai").substring(1)));
 					
 					for (final String toWrite : stringsToWrite)
 					{
@@ -256,8 +256,24 @@ public class UpdateAIMetadataTopFeatures
 					}
 					else if (!StringRoutines.cleanWhitespace(ludFileContents.replaceAll(Pattern.quote("\n"), "")).contains(defStr))
 					{
+						// Print warnings
 						System.err.println("AI Metadata not null, but did not find the AI def: " + defStr);
 						System.err.println(" looked at file: " + ludFile.getAbsolutePath());
+						
+						// Replace the (ai ...) metadata part from .lud file with reference to AI def
+						final StringBuffer sb = new StringBuffer(ludFileContents);
+						final int startMetadataIdx = sb.indexOf("(metadata");
+						
+						final int startAiMetadataIdx = sb.indexOf("(ai", startMetadataIdx);
+						final int endAiMetadataIdx = StringRoutines.matchingBracketAt(ludFileContents, startAiMetadataIdx);
+						
+						sb.replace(startAiMetadataIdx, endAiMetadataIdx + 1, "    (ai\n        " + defStr + "\n    )\n");
+
+						try (final PrintWriter writer = new PrintWriter(ludFile, "UTF-8"))
+						{
+							System.out.println("Updating .lud file: " + ludFile.getAbsolutePath());
+							writer.print(sb.toString());
+						}
 					}
 				}
 				catch (final IOException e)
