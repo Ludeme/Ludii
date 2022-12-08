@@ -371,6 +371,9 @@ public class PlayerViewUser extends View
 			final double r = playerView.playerNameFont.getSize();
 			final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + r + 15,  nameRect.getCenterY() - 3);
 			
+			if (SettingsExhibition.exhibitionVersion)
+				drawPosn.setLocation(drawPosn.getX() + 30, drawPosn.getY());
+			
 			if (spinner == null || drawPosn.getX() != spinner.originalRect().getX())
 				spinner = new Spinner(new Rectangle2D.Double(drawPosn.getX(),drawPosn.getY(), r, r));
 		}
