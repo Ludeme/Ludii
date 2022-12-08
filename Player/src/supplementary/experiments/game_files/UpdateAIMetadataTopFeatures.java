@@ -211,12 +211,12 @@ public class UpdateAIMetadataTopFeatures
 			if (!stringsToWrite.isEmpty())
 			{
 				// Write our AI def file
-				final File aiDefFile = new File(argParse.getValueString("--ai-defs-dir") + "/" + thisGameName + "_ai.def");
+				final File aiDefFile = new File(argParse.getValueString("--ai-defs-dir") + "/" + thisGameName.replaceAll(Pattern.quote(".lud"), "") + "_ai.def");
 				
 				try (final PrintWriter writer = new PrintWriter(aiDefFile, "UTF-8"))
 				{
 					System.out.println("Writing to file: " + aiDefFile.getAbsolutePath());
-					writer.println("(define " + StringRoutines.quote(thisGameName + "_ai"));
+					writer.println("(define " + StringRoutines.quote(thisGameName.replaceAll(Pattern.quote(".lud"), "") + "_ai"));
 					
 					for (final String toWrite : stringsToWrite)
 					{
@@ -231,11 +231,11 @@ public class UpdateAIMetadataTopFeatures
 				}
 				
 				// Also update the .lud file to make sure it points to our AI def file
-				final File ludFile = new File(argParse.getValueString("--luds-dir") + gameName);
+				final File ludFile = new File(argParse.getValueString("--luds-dir") + gameName.replaceAll(Pattern.quote(".lud"), ""));
 				try
 				{
 					final String ludFileContents = FileHandling.loadTextContentsFromFile(ludFile.getAbsolutePath());
-					final String defStr = StringRoutines.quote(gameName + "_ai");
+					final String defStr = StringRoutines.quote(thisGameName.replaceAll(Pattern.quote(".lud"), "") + "_ai");
 					
 					if (gameNoRuleset.metadata().ai().agent() == null)
 					{
