@@ -216,7 +216,7 @@ public class UpdateAIMetadataTopFeatures
 				try (final PrintWriter writer = new PrintWriter(aiDefFile, "UTF-8"))
 				{
 					System.out.println("Writing to file: " + aiDefFile.getAbsolutePath());
-					writer.println("(define " + StringRoutines.quote(thisGameName.replaceAll(Pattern.quote(".lud"), "") + "_ai"));
+					writer.println("(define " + StringRoutines.quote((thisGameName.replaceAll(Pattern.quote(".lud"), "") + "_ai").substring(1)));
 					
 					for (final String toWrite : stringsToWrite)
 					{
