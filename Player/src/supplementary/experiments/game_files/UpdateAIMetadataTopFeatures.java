@@ -1,6 +1,10 @@
 package supplementary.experiments.game_files;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +16,11 @@ import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.FileHandling;
+import main.StringRoutines;
+import main.grammar.Report;
 import main.options.Ruleset;
+import metadata.ai.Ai;
+import metadata.ai.features.Features;
 import other.GameLoader;
 
 /**
@@ -52,8 +60,6 @@ public class UpdateAIMetadataTopFeatures
 		if (!topFeaturesOutDirPath.endsWith("/"))
 			topFeaturesOutDirPath += "/";
 		
-		final File topFeaturesOutDir = new File(topFeaturesOutDirPath);
-		
 		final String[] allGameNames = Arrays.stream(FileHandling.listGames()).filter(s -> (
 				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/bad/")) &&
 				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wip/")) &&
@@ -64,9 +70,6 @@ public class UpdateAIMetadataTopFeatures
 				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/simulation/")) &&
 				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/proprietary/"))
 			)).toArray(String[]::new);
-		
-		final List<String> gameNames = new ArrayList<String>();
-		final List<String> rulesetNames = new ArrayList<String>();
 		
 		for (final String gameName : allGameNames)
 		{
@@ -90,6 +93,11 @@ public class UpdateAIMetadataTopFeatures
 			final List<Ruleset> gameRulesets = new ArrayList<Ruleset>(gameNoRuleset.description().rulesets());
 			gameRulesets.add(null);
 			boolean foundRealRuleset = false;
+			
+			final String thisGameName = "/" + shortGameName;
+			
+			// This will collect the strings we want to write for all rulesets of this game
+			final List<String> stringsToWrite = new ArrayList<String>();
 			
 			for (final Ruleset ruleset : gameRulesets)
 			{
@@ -146,12 +154,118 @@ public class UpdateAIMetadataTopFeatures
 				if (game.isSimultaneousMoveGame())
 					continue;
 				
-				gameNames.add("/" + shortGameName);
-				rulesetNames.add(fullRulesetName);
+				final String thisRulesetName = fullRulesetName;
+				
+				// Figure out whether we have features for this ruleset
+				final String cleanGameName = StringRoutines.cleanGameName(thisGameName.replaceAll(Pattern.quote(".lud"), ""));
+				final String cleanRulesetName = StringRoutines.cleanRulesetName(thisRulesetName).replaceAll(Pattern.quote("/"), "_");
+				
+				final String rulesetFeaturesOutDirPath = topFeaturesOutDirPath + cleanGameName + "_" + cleanRulesetName;
+				final File rulesetFeaturesOutDir = new File(rulesetFeaturesOutDirPath);
+				
+				if (!rulesetFeaturesOutDir.exists() || !rulesetFeaturesOutDir.isDirectory())
+					continue;		// No features for this ruleset, move on
+				
+				final File bestFeaturesFile = new File(rulesetFeaturesOutDirPath + "/BestFeatures.txt");
+				if (!bestFeaturesFile.exists())
+					continue;		// No features for this ruleset, move on
+				
+				// Generate the strings we want to write for features metadata
+				if (!cleanRulesetName.isEmpty())
+				{
+					stringsToWrite.add("(useFor { " + StringRoutines.quote(thisRulesetName) + " }");
+				}
+				
+				// Get the current metadata out of game, if any exists
+				Ai aiMetadata = game.metadata().ai();
+				if (aiMetadata == null)
+					aiMetadata = new Ai(null, null, null, null, null, null);
+				
+				try
+				{
+					// Load the features we've identified and put them in metadata
+					final Features features = (Features)compiler.Compiler.compileObject
+							(
+								FileHandling.loadTextContentsFromFile(bestFeaturesFile.getAbsolutePath()), 
+								"metadata.ai.features.Features",
+								new Report()
+							);
+					
+					aiMetadata.setTrainedFeatures(features);
+				}
+				catch (final IOException e)
+				{
+					e.printStackTrace();
+				}
+				
+				stringsToWrite.add(aiMetadata.toString());
+				
+				// Close the (useFor ...) block if we have one
+				if (!cleanRulesetName.isEmpty())
+				{
+					stringsToWrite.add(")");
+				}
+			}
+			
+			// We have something to write for this game
+			if (!stringsToWrite.isEmpty())
+			{
+				// Write our AI def file
+				final File aiDefFile = new File(argParse.getValueString("--ai-defs-dir") + "/" + thisGameName.replaceAll(Pattern.quote(".lud"), "") + "_ai.def");
+				
+				try (final PrintWriter writer = new PrintWriter(aiDefFile, "UTF-8"))
+				{
+					System.out.println("Writing to file: " + aiDefFile.getAbsolutePath());
+					writer.println("(define " + StringRoutines.quote(thisGameName.replaceAll(Pattern.quote(".lud"), "") + "_ai"));
+					
+					for (final String toWrite : stringsToWrite)
+					{
+						writer.println(toWrite);
+					}
+					
+					writer.println(")");
+				}
+				catch (final FileNotFoundException | UnsupportedEncodingException e)
+				{
+					e.printStackTrace();
+				}
+				
+				// Also update the .lud file to make sure it points to our AI def file
+				final File ludFile = new File(argParse.getValueString("--luds-dir") + gameName, "");
+				try
+				{
+					final String ludFileContents = FileHandling.loadTextContentsFromFile(ludFile.getAbsolutePath());
+					final String defStr = StringRoutines.quote((thisGameName.replaceAll(Pattern.quote(".lud"), "") + "_ai").substring(1));
+					
+					if (gameNoRuleset.metadata().ai().agent() == null)
+					{
+						if (!StringRoutines.cleanWhitespace(ludFileContents.replaceAll(Pattern.quote("\n"), "")).contains(defStr))
+						{
+							// We need to write the AI metadata
+							final StringBuffer sb = new StringBuffer(ludFileContents);
+							final int startMetadataIdx = sb.indexOf("(metadata");
+							final int endMetadataIdx = StringRoutines.matchingBracketAt(ludFileContents, startMetadataIdx);
+							sb.insert(endMetadataIdx, "    (ai\n        " + defStr + "\n    )\n");
+							
+							try (final PrintWriter writer = new PrintWriter(ludFile, "UTF-8"))
+							{
+								System.out.println("Updating .lud file: " + ludFile.getAbsolutePath());
+								writer.print(sb.toString());
+							}
+						}	
+					}
+					else if (!StringRoutines.cleanWhitespace(ludFileContents.replaceAll(Pattern.quote("\n"), "")).contains(defStr))
+					{
+						System.err.println("AI Metadata not null, but did not find the AI def: " + defStr);
+						System.err.println(" looked at file: " + ludFile.getAbsolutePath());
+					}
+				}
+				catch (final IOException e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
-		
-		// TODO
 	}
 	
 	//-------------------------------------------------------------------------
