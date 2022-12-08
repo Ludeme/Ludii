@@ -284,32 +284,46 @@ public final class OverlayView extends View
 		{
 			if (EnglishSwedishTranslations.inEnglish())
 			{
-				String message = "            Draw";
-				if (context.winners().size() > 0)
-					message = "   Player " + context.winners().get(0) + " has won";
-	
 				final Font font = new Font("Arial", Font.BOLD, 40);
 				g2d.setFont(font);
 				g2d.setColor(Color.RED);
 				
-				final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
-				final int pixels = DesktopApp.view().getBoardPanel().placement().width;
-				g2d.drawString(message, pixels, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+				if (context.winners().size() > 0)
+				{
+					final String message = "Player " + context.winners().get(0) + " has won";
+					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+					g2d.drawString(message, pixels + 42, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+				}
+				else
+				{
+					final String message = "Draw";
+					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+					g2d.drawString(message, pixels + 170, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+				}
 			}
 			else
 			{
-				String message = "              Dra";
-				if (context.winners().size() > 0)
-					message = "Spelare " + context.winners().get(0) + " har vunnit";
-	
 				final Font font = new Font("Arial", Font.BOLD, 40);
 				g2d.setFont(font);
 				g2d.setColor(Color.RED);
 				
-				final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
-				final int pixels = DesktopApp.view().getBoardPanel().placement().width;
-				g2d.drawString(message, pixels, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
-							}
+				if (context.winners().size() > 0)
+				{
+					final String message = "Spelare " + context.winners().get(0) + " har vunnit";
+					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+					g2d.drawString(message, pixels, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+				}
+				else
+				{
+					final String message = "Dra";
+					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+					g2d.drawString(message, pixels + 190, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+				}
+			}
 		}
 	}
 	
