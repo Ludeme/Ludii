@@ -235,7 +235,7 @@ public class UpdateAIMetadataTopFeatures
 				try
 				{
 					final String ludFileContents = FileHandling.loadTextContentsFromFile(ludFile.getAbsolutePath());
-					final String defStr = StringRoutines.quote(thisGameName.replaceAll(Pattern.quote(".lud"), "") + "_ai").substring(1);
+					final String defStr = StringRoutines.quote((thisGameName.replaceAll(Pattern.quote(".lud"), "") + "_ai").substring(1));
 					
 					if (gameNoRuleset.metadata().ai().agent() == null)
 					{
