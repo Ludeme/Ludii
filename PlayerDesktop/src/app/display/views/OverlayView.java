@@ -282,12 +282,12 @@ public final class OverlayView extends View
 		// Game over message for exhibition
 		if (app.settingsPlayer().usingMYOGApp() && context.trial().over())	
 		{
+			final Font font = new Font("Arial", Font.BOLD, 40);
+			g2d.setFont(font);
+			g2d.setColor(Color.RED);
+			
 			if (EnglishSwedishTranslations.inEnglish())
 			{
-				final Font font = new Font("Arial", Font.BOLD, 40);
-				g2d.setFont(font);
-				g2d.setColor(Color.RED);
-				
 				if (context.winners().size() > 0)
 				{
 					final String message = "Player " + context.winners().get(0) + " has won";
@@ -305,10 +305,6 @@ public final class OverlayView extends View
 			}
 			else
 			{
-				final Font font = new Font("Arial", Font.BOLD, 40);
-				g2d.setFont(font);
-				g2d.setColor(Color.RED);
-				
 				if (context.winners().size() > 0)
 				{
 					final String message = "Spelare " + context.winners().get(0) + " har vunnit";
