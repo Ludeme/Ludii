@@ -198,6 +198,12 @@ public class UpdateAIMetadataTopFeatures
 					e.printStackTrace();
 				}
 				
+				// write AI metadata string, minus the "(ai" prefix and ")" suffix
+				final StringBuilder aiMetadataString = new StringBuilder(aiMetadata.toString());
+				final int aiPrefixIdx = aiMetadataString.indexOf("(ai");
+				final int aiSuffixIdx = StringRoutines.matchingBracketAt(aiMetadataString.toString(), aiPrefixIdx);
+				aiMetadataString.replace(aiSuffixIdx, aiSuffixIdx + 1, "");
+				aiMetadataString.replace(aiPrefixIdx, aiPrefixIdx + "(ai".length(), "");
 				stringsToWrite.add(aiMetadata.toString());
 				
 				// Close the (useFor ...) block if we have one
