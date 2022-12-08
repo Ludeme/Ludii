@@ -325,6 +325,9 @@ public class DesktopApp extends PlayerApp
 	/** Tasks that are performed when the application is closed. */
 	public void appClosedTasks()
 	{
+		if (SettingsExhibition.exhibitionVersion)
+			return;
+		
 		manager().settingsNetwork().restoreAiPlayers(manager());
 		
 		// Close all AI objects
