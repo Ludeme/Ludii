@@ -284,7 +284,7 @@ public final class OverlayView extends View
 		{
 			if (EnglishSwedishTranslations.inEnglish())
 			{
-				String message = "             Draw";
+				String message = "            Draw";
 				if (context.winners().size() > 0)
 					message = "   Player " + context.winners().get(0) + " has won";
 	
