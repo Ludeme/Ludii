@@ -135,7 +135,6 @@ public final class OverlayView extends View
 				englishDescriptionField.setOpaque(false);
 				englishDescriptionField.setLineWrap(true);
 				englishDescriptionField.setWrapStyleWord(true);
-				//englishDescriptionField.setText(app.contextSnapshot().getContext(app).game().toEnglish(app.contextSnapshot().getContext(app).game()));
 				englishDescriptionField.setText("\n" + app.settingsPlayer().lastGeneratedGameEnglishRules());
 				englishDescriptionField.setVisible(true);
 			}
