@@ -1,0 +1,243 @@
+(game "Sahkku (Lujavvr)" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Pawn" Each 
+            (or { 
+                (move Step Forward 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (directions { FR FL }
+                    )
+                    
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                
+                (if 
+                    (is In 
+                        (from)
+                        
+                        (sites Start 
+                            (piece 
+                                (what at:
+                                    (from)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Slide Forward 
+                        (between 
+                            (exact 2)
+                            if:
+                            (is Empty 
+                                (between)
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                }
+            )
+        )
+        
+        (piece "Rook" Each 
+            (move Slide Orthogonal 
+                (to if:
+                    (is Enemy 
+                        (who at:
+                            (to)
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "King" Each 
+            (move Step 
+                (to if:
+                    (not 
+                        (is Friend 
+                            (who at:
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (apply 
+                        (if 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Bishop" Each 
+            (move Slide Diagonal 
+                (to if:
+                    (is Enemy 
+                        (who at:
+                            (to)
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Knight" Each 
+            (move Leap { { F F R F }
+                { F F L F }
+                }
+                
+                (to if:
+                    (not 
+                        (is Friend 
+                            (who at:
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (apply 
+                        (if 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Queen" Each 
+            (move Slide 
+                (to if:
+                    (is Enemy 
+                        (who at:
+                            (to)
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (regions "Promotion" P1 
+            (sites Top)
+        )
+        
+        (regions "Promotion" P2 
+            (sites Bottom)
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Knight1" 
+                (sites Bottom)
+            )
+            
+            (place "Knight2" 
+                (sites Top)
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (and 
+                    (is Threatened 
+                        (id "King" Next)
+                    )
+                    
+                    (not 
+                        (can Move 
+                            (do 
+                                (forEach Piece Next)
+                                ifAfterwards:
+                                (not 
+                                    (is Threatened 
+                                        (id "King" Next)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+

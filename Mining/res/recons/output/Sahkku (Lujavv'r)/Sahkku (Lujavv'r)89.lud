@@ -1,0 +1,438 @@
+(game "Sahkku (Lujavvr)" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Pawn" Each 
+            (or { 
+                (move Step Forward 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (directions { FR FL }
+                    )
+                    
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                
+                (if 
+                    (is In 
+                        (from)
+                        
+                        (sites Start 
+                            (piece 
+                                (what at:
+                                    (from)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Slide Forward 
+                        (between 
+                            (exact 2)
+                            if:
+                            (is Empty 
+                                (between)
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                }
+            )
+        )
+        
+        (piece "Rook" Each 
+            (move Slide Orthogonal 
+                (to if:
+                    (is Enemy 
+                        (who at:
+                            (to)
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "KingnoCross" Each 
+            (move Step 
+                (to if:
+                    (not 
+                        (is Friend 
+                            (who at:
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (apply 
+                        (if 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Elephant" Each 
+            (move Slide Diagonal 
+                (to if:
+                    (is Enemy 
+                        (who at:
+                            (to)
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Knight" Each 
+            (move Leap { { F F R F }
+                { F F L F }
+                }
+                
+                (to if:
+                    (not 
+                        (is Friend 
+                            (who at:
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (apply 
+                        (if 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Knight1" 
+                (sites Bottom)
+            )
+            
+            (place "Knight2" 
+                (sites Top)
+            )
+            }
+        )
+        
+        (play 
+            (if 
+                (is Prev Mover)
+                
+                (or { 
+                    (move Hop 
+                        (from 
+                            (last To)
+                        )
+                        Diagonal 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (or 
+                                        (move Hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (do 
+                                            (move Hop 
+                                                (from 
+                                                    (last To)
+                                                )
+                                                Orthogonal 
+                                                (between before:2 after:2 if:
+                                                    (and 
+                                                        (= 2 
+                                                            (count Steps 
+                                                                (from)
+                                                                
+                                                                (between)
+                                                            )
+                                                        )
+                                                        
+                                                        (is Enemy 
+                                                            (who at:
+                                                                (between )
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (apply 
+                                                        (remove 
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (to if:
+                                                    (is Empty 
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                            ifAfterwards:
+                                            (is In 
+                                                (last To)
+                                                
+                                                (sites Phase 1)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (do 
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between before:2 after:2 if:
+                                (and 
+                                    (= 2 
+                                        (count Steps 
+                                            (from)
+                                            
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                        ifAfterwards:
+                        (is In 
+                            (last To)
+                            
+                            (sites Phase 1)
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (or 
+                                        (move Hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (do 
+                                            (move Hop 
+                                                (from 
+                                                    (last To)
+                                                )
+                                                Orthogonal 
+                                                (between before:2 after:2 if:
+                                                    (and 
+                                                        (= 2 
+                                                            (count Steps 
+                                                                (from)
+                                                                
+                                                                (between)
+                                                            )
+                                                        )
+                                                        
+                                                        (is Enemy 
+                                                            (who at:
+                                                                (between )
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (apply 
+                                                        (remove 
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (to if:
+                                                    (is Empty 
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                            ifAfterwards:
+                                            (is In 
+                                                (last To)
+                                                
+                                                (sites Phase 1)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                    }
+                )
+                
+                (forEach Piece)
+            )
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+

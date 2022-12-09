@@ -1,0 +1,581 @@
+(game "Sahkku (Lujavvr)" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Counter" Each)
+        
+        (piece "CounterStar" Each)
+        
+        (regions P1 
+            (sites Bottom)
+        )
+        
+        (regions P2 
+            (sites Top)
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Counter1" 
+                (difference 
+                    (expand 
+                        (sites Bottom)
+                        steps:
+                        (- 3 1)
+                    )
+                    
+                    (sites Phase 1)
+                )
+            )
+            
+            (place "Counter2" 
+                (difference 
+                    (expand 
+                        (sites Top)
+                        steps:
+                        (- 3 1)
+                    )
+                    
+                    (sites Phase 1)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (if 
+                (is Prev Mover)
+                
+                (if 
+                    (= 
+                        (what at:
+                            (last To)
+                            level:
+                            (topLevel at:
+                                (last To)
+                            )
+                        )
+                        
+                        (id "Counter" Mover)
+                    )
+                    
+                    (move Hop 
+                        (from 
+                            (last To)
+                        )
+                        
+                        (directions { FR FL }
+                        )
+                        
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (fromTo 
+                                    (from 
+                                        (between)
+                                    )
+                                    
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (and 
+                                (is In 
+                                    (from)
+                                    
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                        stack:True 
+                        (then 
+                            (if 
+                                (is In 
+                                    (last To)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (promote 
+                                    (last To)
+                                    
+                                    (piece "CounterStar")
+                                Mover )
+                                
+                                (if 
+                                    (can Move 
+                                        (move Hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (directions { FR FL }
+                                            )
+                                            
+                                            (between if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (fromTo 
+                                                        (from 
+                                                            (between)
+                                                        )
+                                                        
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (and 
+                                                    (is In 
+                                                        (from)
+                                                        
+                                                        (sites Occupied by:Mover )
+                                                    )
+                                                    
+                                                    (is Empty 
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        stack:True )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (from 
+                            (last To)
+                        )
+                        Diagonal 
+                        (between before:
+                            (count Rows)
+                            after:
+                            (count Rows)
+                            if:
+                            (and 
+                                (not 
+                                    (is In 
+                                        (between)
+                                        
+                                        (last Between)
+                                    )
+                                )
+                                
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (fromTo 
+                                    (from 
+                                        (between)
+                                    )
+                                    
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (and 
+                                (is In 
+                                    (from)
+                                    
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                        stack:True 
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        Diagonal 
+                                        (between before:
+                                            (count Rows)
+                                            after:
+                                            (count Rows)
+                                            if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (last Between)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (apply 
+                                                (fromTo 
+                                                    (from 
+                                                        (between)
+                                                    )
+                                                    
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (and 
+                                                (is In 
+                                                    (from)
+                                                    
+                                                    (sites Occupied by:Mover)
+                                                )
+                                                
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    stack:True )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+                
+                (priority { 
+                    (or { 
+                        (forEach Piece "Counter" 
+                            (move Hop 
+                                (from)
+                                
+                                (directions { FR FL }
+                                )
+                                
+                                (between if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (fromTo 
+                                            (from 
+                                                (between)
+                                            )
+                                            
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (and 
+                                        (is In 
+                                            (from)
+                                            
+                                            (sites Occupied by:Mover)
+                                        )
+                                        
+                                        (is Empty 
+                                            (to)
+                                        )
+                                    )
+                                )
+                                stack:True 
+                                (then 
+                                    (if 
+                                        (can Move 
+                                            (move Hop 
+                                                (from 
+                                                    (last To)
+                                                )
+                                                
+                                                (directions { FR FL }
+                                                )
+                                                
+                                                (between if:
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between )
+                                                        )
+                                                    )
+                                                    
+                                                    (apply 
+                                                        (fromTo 
+                                                            (from 
+                                                                (between )
+                                                            )
+                                                            
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (to if:
+                                                    (and 
+                                                        (is In 
+                                                            (from)
+                                                            
+                                                            (sites Occupied by:Mover )
+                                                        )
+                                                        
+                                                        (is Empty 
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            stack:True )
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                            top:True 
+                            (then 
+                                (if 
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites Next)
+                                    )
+                                    
+                                    (promote 
+                                        (last To)
+                                        
+                                        (piece "CounterStar")
+                                    Mover )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece "CounterStar" 
+                            (move Hop 
+                                (from)
+                                Diagonal 
+                                (between before:
+                                    (count Rows)
+                                    after:
+                                    (count Rows)
+                                    if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (fromTo 
+                                            (from 
+                                                (between)
+                                            )
+                                            
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (and 
+                                        (is In 
+                                            (from)
+                                            
+                                            (sites Occupied by:Mover)
+                                        )
+                                        
+                                        (is Empty 
+                                            (to)
+                                        )
+                                    )
+                                )
+                                stack:True 
+                                (then 
+                                    (if 
+                                        (can Move 
+                                            (hop 
+                                                (from 
+                                                    (last To)
+                                                )
+                                                Diagonal 
+                                                (between before:
+                                                    (count Rows )
+                                                    after:
+                                                    (count Rows)
+                                                    if:
+                                                    (and 
+                                                        (not 
+                                                            (is In 
+                                                                (between )
+                                                                
+                                                                (last Between )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Enemy 
+                                                            (who at:
+                                                                (between )
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (apply 
+                                                        (fromTo 
+                                                            (from 
+                                                                (between )
+                                                            )
+                                                            
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (to if:
+                                                    (and 
+                                                        (is In 
+                                                            (from)
+                                                            
+                                                            (sites Occupied by:Mover )
+                                                        )
+                                                        
+                                                        (is Empty 
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            stack:True )
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                        top:True )
+                        }
+                    )
+                    
+                    (or { 
+                        (forEach Piece "Counter" 
+                            (move Step 
+                                (directions { FR FL }
+                                )
+                                
+                                (to if:
+                                    (and 
+                                        (is In 
+                                            (from)
+                                            
+                                            (sites Occupied by:Mover)
+                                        )
+                                        
+                                        (is Empty 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            stack:True )
+                            top:True 
+                            (then 
+                                (if 
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites Next)
+                                    )
+                                    
+                                    (promote 
+                                        (last To)
+                                        
+                                        (piece "CounterStar")
+                                    Mover )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece "CounterStar" 
+                            (move Slide Diagonal stack:True)
+                        top:True )
+                        }
+                    )
+                    }
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (and 
+                    (no Moves P1)
+                    
+                    (no Moves P2)
+                )
+                
+                (byScore { 
+                    (score P1 
+                        (+ 
+                            (count Pieces P1)
+                            
+                            (size Territory P1)
+                        )
+                    )
+                    
+                    (score P2 
+                        (+ 
+                            (count Pieces P2)
+                            
+                            (size Territory P2)
+                        )
+                    )
+                    }
+                )
+            )
+        )
+    )
+)
+
+

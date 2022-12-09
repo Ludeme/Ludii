@@ -1,0 +1,80 @@
+(game "Sahkku (Lujavvr)" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Counter" P1 N)
+        
+        (piece "Counter" P2 S)
+        
+        (piece "DoubleCounter" Each)
+        
+        (regions P1 
+            (sites Bottom)
+        )
+        
+        (regions P2 
+            (sites Top)
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Counter1" 
+                (difference 
+                    (expand 
+                        (sites Bottom)
+                        steps:
+                        (- 3 1)
+                    )
+                    
+                    (sites Phase 1)
+                )
+            )
+            
+            (place "Counter2" 
+                (difference 
+                    (expand 
+                        (sites Top)
+                        steps:
+                        (- 3 1)
+                    )
+                    
+                    (sites Phase 1)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (move Add 
+                (to 
+                    (intersection 
+                        (sites Phase 1)
+                        
+                        (sites Empty)
+                    )
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (no Moves Next)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+

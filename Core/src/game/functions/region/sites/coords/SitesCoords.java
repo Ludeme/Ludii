@@ -130,7 +130,8 @@ public final class SitesCoords extends BaseRegionFunction
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "the " + type.name().toLowerCase() + StringRoutines.getPlural(type.name()) + " with coordinates " + Arrays.toString(coords);
+		final SiteType realType = (type != null) ? type : game.board().defaultSite();
+		return "the " + realType.name().toLowerCase() + StringRoutines.getPlural(realType.name()) + " with coordinates " + Arrays.toString(coords);
 	}
 	
 	//-------------------------------------------------------------------------
