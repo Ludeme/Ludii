@@ -40,9 +40,9 @@ import utils.RandomAI;
 public class ReconstructionGenerator
 {
 	final static String defaultOutputPath        = "./res/recons/output/";
-	final static int    defaultNumReconsExpected = 10;
+	final static int    defaultNumReconsExpected = 100;
 	final static int    defaultNumAttempts       = 100000;
-	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/race/escape/Nardshir";
+	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/war/leaping/diagonal/Sahkku (Lujavv'r)";
 	//final static String defaultReconsPath        = "/lud/reconstruction/validation/Canadian Draughts";
 	final static String defaultOptionName        = "Variant/Incomplete";
 	
@@ -196,7 +196,7 @@ public class ReconstructionGenerator
 						try{game = (Game) Compiler.compileReconsTest(new Description(completionRaw), false);}
 						catch(final Exception e)
 						{
-//							System.out.println("Impossible to compile);
+//							System.out.println("Impossible to compile");
 //							System.out.println("DESC IS");
 //							System.out.println(completionRaw);
 //							e.printStackTrace();

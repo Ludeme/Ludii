@@ -401,12 +401,12 @@ public class CompleterWithPrepro
 					
 					final String secondPart = candidate.substring(l + parent[0].length());  //.trim();
 					
-	//				System.out.println("\notherDescription is: " + otherDescription);
-	//				System.out.println("parent[0] is: " + parent[0]);
-	//				System.out.println("parent[1] is: " + parent[1]);
-	//				System.out.println("secondPart is: " + secondPart);
-	//				System.out.println("left  is: " + left);
-	//				System.out.println("right is: " + right);
+//					System.out.println("\notherDescription is: " + otherDescription);
+//					System.out.println("parent[0] is: " + parent[0]);
+//					System.out.println("parent[1] is: " + parent[1]);
+//					System.out.println("secondPart is: " + secondPart);
+//					System.out.println("left  is: " + left);
+//					System.out.println("right is: " + right);
 					
 	//				final int r = secondPart.indexOf(parent[1]);
 					
@@ -415,10 +415,10 @@ public class CompleterWithPrepro
 					int r = 0;
 					for(; r < secondPart.length(); r++)
 					{
-						if(secondPart.charAt(r) == '(')
+						if(secondPart.charAt(r) == '(' || secondPart.charAt(r) == '{')
 							countParenthesis++;
 						else
-							if(secondPart.charAt(r) == ')')
+							if(secondPart.charAt(r) == ')' || secondPart.charAt(r) == '}')
 								countParenthesis--;
 						if(countParenthesis == -1)
 						{
@@ -510,6 +510,8 @@ public class CompleterWithPrepro
 				if (left.charAt(l) == ')' || left.charAt(l) == '}')
 				{
 					int depth = 1;
+					if (left.charAt(l) == ')' || left.charAt(l) == '}')
+						depth++;
 					while (l >= 0 && depth > 0)
 					{
 						l--;
@@ -527,6 +529,7 @@ public class CompleterWithPrepro
 					l--;
 				}
 			}
+			
 			if (l > 0)
 				l--;
 			
@@ -540,18 +543,10 @@ public class CompleterWithPrepro
 			if (l < 0)
 				break;
 			
+//			System.out.println(left.charAt(l + 1));
 			// Step forwards to next bracket on right side
 			final boolean curly = left.charAt(l + 1) == '{';
-			while 
-			(
-				r < right.length() 
-				&& 
-				(
-					!curly && right.charAt(r) != ')'
-					||
-					curly && right.charAt(r) != '}'
-				)
-			)
+			while (r < right.length() && (!curly && right.charAt(r) != ')' || curly && right.charAt(r) != '}'))
 			{
 				// Step past embedded clauses
 				if (right.charAt(r) == '(' || right.charAt(r) == '{')
@@ -574,6 +569,9 @@ public class CompleterWithPrepro
 					r++;
 				}
 			}
+//			if (r < right.length() - 1 && right.charAt(r) != ')' && right.charAt(r) != '}')
+//				r++;
+			
 			if (r < right.length() - 1)
 				r++;
 			
