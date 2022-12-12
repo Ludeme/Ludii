@@ -204,7 +204,7 @@ public class UpdateAIMetadataTopFeatures
 				final int aiSuffixIdx = StringRoutines.matchingBracketAt(aiMetadataString.toString(), aiPrefixIdx);
 				aiMetadataString.replace(aiSuffixIdx, aiSuffixIdx + 1, "");
 				aiMetadataString.replace(aiPrefixIdx, aiPrefixIdx + "(ai".length(), "");
-				stringsToWrite.add(aiMetadata.toString());
+				stringsToWrite.add(aiMetadataString.toString());
 				
 				// Close the (useFor ...) block if we have one
 				if (!cleanRulesetName.isEmpty())
