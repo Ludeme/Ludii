@@ -15,7 +15,7 @@ public class SettingsExhibition
 	public static final int exhibitionDisplayHeight = 1080;
 	
 	/** The game to load (there exists both an English and Swedish version of each game). */
-	public static final String exhibitionGamePath = "/lud/wip/exhibition/Senet Exhibition English.lud";
+	public static final String exhibitionGamePath = "/lud/wip/exhibition/Papan Dakon Exhibition English.lud";
 	
 	/** If Player 2 should be controlled by an AI agent. */
 	public static final boolean againstAI = true;

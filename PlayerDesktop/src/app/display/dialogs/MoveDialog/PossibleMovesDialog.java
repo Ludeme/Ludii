@@ -19,6 +19,7 @@ import app.move.MoveHandler;
 import app.move.MoveUtil;
 import app.utils.BufferedImageUtil;
 import app.utils.SVGUtil;
+import app.utils.SettingsExhibition;
 import game.equipment.component.Component;
 import graphics.ImageUtil;
 import graphics.svg.SVGtoImage;
@@ -55,6 +56,12 @@ public class PossibleMovesDialog extends MoveDialog
 	 */
 	public static void createAndShowGUI(final PlayerApp app, final Context context, final FastArrayList<Move> validMoves, final boolean centerOnBoard)
 	{
+		if (SettingsExhibition.exhibitionVersion)
+		{
+			app.manager().ref().applyHumanMoveToGame(app.manager(), validMoves.get(0));
+			return;
+		}
+		
 		try
 		{
 			final PossibleMovesDialog dialog = new PossibleMovesDialog(app, context, validMoves);

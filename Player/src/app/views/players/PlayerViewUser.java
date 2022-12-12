@@ -101,7 +101,9 @@ public class PlayerViewUser extends View
 		{
 			drawColourSwatch(g2d, mover, winnerNumbers, context);
 			drawPlayerName(g2d, mover, winnerNumbers, context);
-			drawAIFace(g2d);
+			
+			if (!SettingsExhibition.exhibitionVersion)
+				drawAIFace(g2d);
 			
 			final int swatchWidth = app.playerSwatchList()[playerId].width;
 			final int maxNameWidth = playerView.maximalPlayerNameWidth(context, g2d);
@@ -124,7 +126,8 @@ public class PlayerViewUser extends View
 			playerView.paintHand(g2d, context, containerPlacement, hand.index());
 		}
 		
-		drawAISpinner(g2d, context);
+		if (!SettingsExhibition.exhibitionVersion)
+			drawAISpinner(g2d, context);
 		
 		paintDebug(g2d, Color.RED);
 	}
@@ -450,6 +453,12 @@ public class PlayerViewUser extends View
 		
 		if (app.manager().aiSelected()[playerIndex].ai() != null)
 			strAIName += " (" + app.manager().aiSelected()[playerIndex].ai().friendlyName() + ") ";
+		
+		if (app.manager().aiSelected()[playerIndex].ai() != null && SettingsExhibition.exhibitionVersion)
+		{
+			strName = "AI";
+			strAIName = "";
+		}
 		
 		// Score
 		final ScoreDisplayInfo scoreDisplayInfo = instance.metadata().graphics().scoreDisplayInfo(instanceContext, playerId);
