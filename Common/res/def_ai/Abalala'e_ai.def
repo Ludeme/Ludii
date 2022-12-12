@@ -1,7 +1,31 @@
 (define "Abalala'e_ai"
-    (bestAgent "MAST")
-    trainedHeuristics:(heuristics {
-        (mobilitySimple)
-    })
     
+        (bestAgent "MAST")
+        trainedHeuristics:(heuristics {
+    (mobilitySimple)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[!-{0,1/4}]>" 3.455922)
+        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[!-{0,-1/4}, !R0{-1/4,1/4}]>" 3.455922)
+        (pair "rel:to=<{}>:pat=<els=[#{0}, R3{1/2}, -{1/4}]>" -0.08875086)
+        (pair "rel:to=<{}>:pat=<els=[!-{0}]>" -0.0031805036)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[R3{0,0,0,0}, !R3{1/4,0}]>" 0.15454233)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{0,0}, !R1{1/2,0}, !-{0,-1/4}]>" -1.1817584)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{0,0}, R2{1/4,1/4}]>" -0.7828958)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[R3{0,0,0,0}, !-{-1/4}]>" -0.42357618)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, -{0,0}, #{1/4}, !R1{-1/4,0,0,0}]>" 0.7468497)
+        (pair "rel:to=<{}>:pat=<els=[!R3{0,0}, #{1/2}, !-{0}]>" -0.0072358805)
+        (pair "rel:to=<{}>:pat=<els=[R3{1/4,0,0,0}, !-{0}]>" 0.058326945)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{0,0}, !R1{1/2,0}]>" -0.8065267)
+    }
+    )
+})
+
+    
+
 )

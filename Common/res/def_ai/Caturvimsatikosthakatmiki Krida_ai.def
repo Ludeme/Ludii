@@ -1,0 +1,21 @@
+(define "Caturvimsatikosthakatmiki Krida_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{0}]>" 0.5269429)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[e{0}]>" 0.5269429)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{0,0,1/2}]>" 2.2399733)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{0,0,1/2}, -{0,0,1/2,0,1/4,1/4}]>" 2.307153)
+        (pair "rel:last_to=<{0}>:from=<{0,0}>:to=<{}>:pat=<els=[-{0,0,1/4,1/4}]>" 2.3773189)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[]>" 1.7758327)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{0,0,1/4,0,0}]>" 1.9767056)
+    }
+    )
+})
+
+    
+
+)

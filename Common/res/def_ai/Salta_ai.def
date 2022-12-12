@@ -1,3 +1,17 @@
 (define "Salta_ai"
-    (bestAgent "AlphaBeta")
+    
+        (bestAgent "AlphaBeta")
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[I19{0,0,0,0}]>" 0.33652827)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+    }
+    )
+})
+
+    
+
 )

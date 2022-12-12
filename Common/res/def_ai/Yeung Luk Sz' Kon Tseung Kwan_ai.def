@@ -1,16 +1,63 @@
 (define "Yeung Luk Sz' Kon Tseung Kwan_ai"
-    (useFor { "Variant/Described" }
+(useFor { "Ruleset/Yeung Luk Sz' Kon Tseung Kwan (Described)" }
+    
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
-            (influence)
-        })
-        
+    (influence)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/2}, N4{0,1/5}]>" -0.5006299)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-2/5,1/5}]>" -0.015409014)
+        (pair "rel:from=<{0}>:pat=<els=[!-{1/4,0}]>" -6.335963)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/2}, N4{0,1/5}, N4{0,-1/2,0,-2/5}]>" -0.50658494)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/4,1/8}]>" 0.00646593)
+        (pair "rel:from=<{}>:pat=<els=[e{0,0}, N4{0,-1/2,2/5}]>" 0.0040687197)
+        (pair "rel:last_to=<{0}>:from=<{1/2}>:pat=<els=[N4{1/4,-1/4}]>" -6.335963)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{0,1/5}, N4{0,-1/2,0,-2/5}]>" -0.10761104)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{0,2/5}, e{0,0}]>" -0.458792)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{1/4,0}, -{0,-1/4,2/5}]>" 0.50388485)
+    }
     )
-    (useFor { "Variant/Murray" }
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[N4{0,0,-1/2,0,-1/4,2/5}]>" 0.2001102)
+        (pair "rel:last_to=<{0}>:from=<{}>:to=<{0,0}>:pat=<els=[N4{0,0}]>" 0.7383902)
+        (pair "rel:from=<{}>:pat=<els=[!-{0}]>" -0.0017636681)
+        (pair "rel:last_to=<{0,0,1/2}>:from=<{0,0}>:to=<{}>:pat=<els=[]>" 0.52337253)
+        (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[!-{1/4,0}, !e{0,1/4}]>" 0.54490304)
+        (pair "rel:last_to=<{0,0,1/2}>:from=<{0,0}>:to=<{}>:pat=<els=[!e{1/2}]>" 0.69801664)
+        (pair "rel:last_to=<{0,0,-1/2}>:to=<{}>:pat=<els=[!e{-1/2}, N4{0,0,-1/2,0,-1/4,2/5}]>" 0.15073611)
+    }
+    )
+})
+
+    
+
+)
+(useFor { "Ruleset/Murray (Suggested)" }
+    
         (bestAgent "MAST")
         trainedHeuristics:(heuristics {
-            (centreProximity weight:-1.0)
-        })
-        
+    (centreProximity weight:-1.0)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4}, !f{1/4,1/5}, e{0,-1/2,1/5}, -{0,-1/4,0,0}]>" 1.2659913)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!f{1/4}, e{0,-1/2,1/5}, -{0,-1/4,0,0}]>" 0.9566727)
+        (pair "rel:to=<{}>:pat=<els=[!f{1/4}, e{0,-1/2,1/5}, -{0,-1/4,0,0}]>" 0.7346173)
+    }
     )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_from=<{0,0,0,0}>:to=<{}>:pat=<els=[!e{1/2,1/5}, !-{0,0,0}]>" 0.0031878685)
+        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[e{0,1/8}, e{-1/4}]>" -0.007815749)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,1/5}, !-{0,-1/5}]>" 0.051630206)
+    }
+    )
+})
+
+    
+
+)
 )

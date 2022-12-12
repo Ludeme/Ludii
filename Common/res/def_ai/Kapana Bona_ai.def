@@ -1,7 +1,31 @@
 (define "Kapana Bona_ai"
-    (bestAgent "UCT")
-    trainedHeuristics:(heuristics {
-        (influence)
-    })
     
+        (bestAgent "UCT")
+        trainedHeuristics:(heuristics {
+    (influence)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{0}]>" -1.054893)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" -1.1160463)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{0}, -{1/4,0}, -{1/4}]>" -0.9316446)
+        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{-1/4}, -{0,1/4}]>" 6.606855)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{0}, -{1/2,-1/4}]>" 6.0587482)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/4,0}]>" -0.87994117)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{0}]>" -0.64339584)
+        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[-{1/4,-1/4}]>" -0.78651094)
+        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0}, -{1/4,-1/4}, -{1/2}]>" 1.5966531)
+        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0,0}]>" 0.6601403)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, -{0}, -{1/2}]>" 1.4857699)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" -2.51865)
+    }
+    )
+})
+
+    
+
 )

@@ -1,7 +1,37 @@
 (define "Um el Tuweisat_ai"
-    (bestAgent "UCT")
-    trainedHeuristics:(heuristics {
-        (influence)
-    })
     
+        (bestAgent "UCT")
+        trainedHeuristics:(heuristics {
+    (influence)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!R0{1/4,0}]>" -0.21532424)
+        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:to=<{}>:pat=<els=[!R0{0,0}]>" -0.17512782)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{0}, !R1{1/4,0}]>" -0.26803592)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.09441698)
+        (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[!R0{0,0}, !R1{0,0}]>" -0.21532424)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{1/4}, !#{0,0}]>" 0.51135945)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/4}]>" -0.80179614)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, -{0,1/4}]>" -0.87925875)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, !#{0,0}]>" -0.64891636)
+        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, !R0{1/4,0}]>" 0.51135945)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -0.2565712)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{1/4}]>" -0.87925875)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" -0.42434093)
+        (pair "rel:to=<{}>:pat=<els=[!R0{0,0}]>" -0.13024855)
+        (pair "rel:to=<{}>:pat=<els=[-{1/2}, -{0,-1/4}]>" 0.6352286)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4,-1/4}, -{0,-1/4}]>" -0.6734885)
+    }
+    )
+})
+
+    
+
 )

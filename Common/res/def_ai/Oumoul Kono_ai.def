@@ -1,3 +1,32 @@
 (define "Oumoul Kono_ai"
-    (bestAgent "MAST")
+    
+        (bestAgent "MAST")
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{0,3/8}>:from=<{}>:pat=<els=[]>" -4.8949757)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" 0.7948017)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,3/8}]>" -0.7017735)
+        (pair "rel:last_to=<{0}>:from=<{}>:pat=<els=[]>" 2.4687834)
+        (pair "rel:to=<{}>:pat=<els=[N8{}]>" -2.0710611)
+        (pair "rel:last_to=<{0,1/2,3/8}>:from=<{}>:to=<{0}>:pat=<els=[]>" 2.520381)
+        (pair "rel:last_to=<{0,3/8}>:from=<{0}>:to=<{}>:pat=<els=[]>" 0.69657207)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0,3/8}]>" 1.7106389)
+        (pair "rel:last_to=<{0,1/2,3/8}>:to=<{0}>:pat=<els=[#{0,1/2,1/4}]>" 2.520381)
+        (pair "rel:from=<{}>:pat=<els=[f{0,0,3/8}]>" 1.7106389)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[f{1/8}, #{0,0,3/8}, #{0,-1/2,-1/8}]>" 6.577821)
+        (pair "rel:from=<{}>:pat=<els=[e{0,-1/8}, #{3/8,-3/8}, e{0,1/8}, #{-3/8,3/8}, #{3/8,3/8}]>" 7.23756)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{1/8}, #{0,0,3/8}, #{0,-1/2,-1/8}]>" 10.754454)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,0,3/8}, #{0,-1/2,-1/8}]>" 8.579318)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,-1/2,-1/8}, e{0,-1/2,-3/8,3/8}]>" 8.011257)
+        (pair "rel:last_to=<{1/4,3/8}>:from=<{0}>:to=<{}>:pat=<els=[#{0,-1/4,3/8}]>" 3.2607763)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{1/8}, #{0,1/4,-3/8}]>" 9.556554)
+    }
+    )
+})
+
+    
+
 )

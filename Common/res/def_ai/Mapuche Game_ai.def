@@ -1,22 +1,50 @@
 (define "Mapuche Game_ai"
-    (bestAgent "UCT")
-    trainedHeuristics:(heuristics {
-        (regionProximity region:0)
-        (centreProximity pieceWeights:{
-            (pair "Marker1" -0.49786612)
-            (pair "Marker2" 1.7155555)
-        })
-        (cornerProximity pieceWeights:{
-            (pair "Marker1" 1.2954341)
-            (pair "Marker2" -0.33583155)
-        })
-        (lineCompletionHeuristic weight:1.2798258)
-        (material pieceWeights:{
-            (pair "Marker1" -0.8072842)
-            (pair "Marker2" 0.1493101)
-        })
-        (influence weight:-7.720491)
-        (playerSiteMapCount weight:1.8824643)
-    })
     
+        (bestAgent "UCT")
+        trainedHeuristics:(heuristics {
+    (regionProximity region:0)
+    (centreProximity pieceWeights:{
+        (pair "Marker1" -0.49786612)
+        (pair "Marker2" 1.7155555)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" 1.2954341)
+        (pair "Marker2" -0.33583155)
+    })
+    (lineCompletionHeuristic weight:1.2798258)
+    (material pieceWeights:{
+        (pair "Marker1" -0.8072842)
+        (pair "Marker2" 0.1493101)
+    })
+    (influence weight:-7.720491)
+    (playerSiteMapCount weight:1.8824643)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[f{-1/2,0,0}, -{0,0,0,0}, -{0,0,1/2,0}]>" -0.2512391)
+        (pair "rel:from=<{}>:pat=<els=[!-{0,0}, !f{0,0,1/2}, !e{0,0,0}]>" -0.18496266)
+        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[]>" -0.49430162)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!R0{0,0}, !-{0,0,1/2,0}, !-{0,0,0,0,0,0}]>" 0.13544303)
+        (pair "rel:last_to=<{}>:from=<{}>:to=<{0,0}>:pat=<els=[!-{0,0,1/2,0}, !-{0,0,0,0,0,0}]>" -0.33870962)
+        (pair "rel:to=<{}>:pat=<els=[!f{0}, !f{1/2,0}]>" 0.046345774)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[f{-1/2,0,0}, -{0,0,1/2,0}]>" 0.11305202)
+        (pair "rel:to=<{}>:pat=<els=[f{1/2,0,0}, -{0,0,0,0}]>" -0.23540314)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[!f{1/2}, !-{0,0,0,0,0,0}]>" -1.5015993)
+        (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:from=<{0,0}>:pat=<els=[!e{1/2}]>" 0.24853024)
+        (pair "rel:from=<{}>:pat=<els=[!e{0,0}, !-{0,0,0,0,0,0,0}]>" -0.024535589)
+        (pair "rel:from=<{}>:pat=<els=[!f{0}]>" -0.03279909)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[]>" -0.45937794)
+        (pair "rel:from=<{0,0}>:pat=<els=[!e{1/2}, !e{0,0,-1/2,0,0}]>" 0.24853024)
+        (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[!-{0,0,0,0,0,0}]>" -0.76732826)
+    }
+    )
+})
+
+    
+
 )

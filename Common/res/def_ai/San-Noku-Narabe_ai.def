@@ -1,7 +1,37 @@
 (define "San-Noku-Narabe_ai"
-    (bestAgent "ProgressiveHistory")
-    trainedHeuristics:(heuristics {
-        (mobilitySimple weight:-1.0)
-    })
     
+        (bestAgent "ProgressiveHistory")
+        trainedHeuristics:(heuristics {
+    (mobilitySimple weight:-1.0)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{1/4,-1/4}, f{0,1/4,0}]>" 2.2322204)
+        (pair "rel:from=<{}>:pat=<els=[e{0,0}, e{0}]>" -2.6563797)
+        (pair "rel:from=<{}>:pat=<els=[e{0,0}, e{0}, e{1/4,0}]>" -3.8483043)
+        (pair "rel:to=<{0}>:pat=<els=[!f{-1/2}, f{0,1/4,0}, f{0,-1/2}]>" -0.9742585)
+        (pair "rel:last_to=<{0,1/4,1/4}>:from=<{0,1/4}>:pat=<els=[e{0,0}, -{0,1/4,1/4,-1/4}, -{0,1/4,0,1/4}]>" -0.9742585)
+        (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[e{0,1/4,0}]>" -0.7283109)
+        (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[e{0,1/4}, e{0,1/4,0}]>" -0.17713186)
+        (pair "rel:last_from=<{}>:from=<{0}>:pat=<els=[e{0,1/4}]>" -0.9742585)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{1/4}, !e{0,-1/2,1/2,-1/4}]>" -0.09445786)
+        (pair "rel:last_to=<{0,1/4,1/4}>:from=<{}>:to=<{0}>:pat=<els=[!-{1/4}]>" -0.7811608)
+        (pair "rel:from=<{0,0,1/4}>:pat=<els=[-{0,0}, -{-1/4,1/4}, !e{0,0,1/4,-1/2}, !e{0,0,1/4,1/4}, #{0,0,1/4,-1/4,0}]>" -1.6396728)
+        (pair "rel:from=<{0,0,1/4}>:to=<{}>:pat=<els=[-{0,0}, -{-1/4,1/4}, !e{0,0,1/4,-1/2}, !e{0,0,1/4,1/4}]>" 1.5972524)
+        (pair "rel:from=<{0,1/4,0}>:pat=<els=[e{1/4,0}, !f{0,1/4,0,0}, e{0,1/4,0,1/2}, !e{0,1/4,0,1/4,1/4}, !-{0,1/4,0,0}]>" -1.6396728)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[f{1/4}, e{0,0,1/2}, !e{0,0,1/4,1/4}, !-{0,0,0}]>" -0.6057241)
+        (pair "rel:from=<{}>:to=<{0,0,1/4}>:pat=<els=[-{1/4,0}, e{0,0,1/4,1/4,0}]>" 0.6373991)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[e{0,0,1/2}, !e{0,0,1/4,1/4}, !-{0,0,0}]>" -0.008374002)
+        (pair "rel:last_to=<{0}>:from=<{}>:pat=<els=[e{0,0}]>" -2.8340304)
+        (pair "rel:from=<{0,1/4,0}>:to=<{}>:pat=<els=[e{1/4,0}, !-{0,1/4,0,-1/2,0}, !f{0,1/4,0,0}, e{0,1/4,0,1/2}, !e{0,1/4,0,1/4,1/4}, !-{0,1/4,0,0}]>" -1.1907381)
+    }
+    )
+})
+
+    
+
 )

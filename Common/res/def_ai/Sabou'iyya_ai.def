@@ -1,0 +1,33 @@
+(define "Sabou'iyya_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/4,-1/4}, f{0,1/4,0}]>" 0.54636925)
+        (pair "rel:to=<{0}>:pat=<els=[-{0,0,0}, f{0,1/4,0}]>" -1.2993162)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0,0}, e{1/4,-1/4}, f{0,1/4,0}]>" 0.58164763)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!f{1/2,1/4}, f{0,0,0}]>" 0.27153105)
+        (pair "rel:from=<{}>:pat=<els=[]>" -0.026506582)
+        (pair "rel:to=<{}>:pat=<els=[!#{1/4,0,0,0}, !-{0,1/4}, f{0,0,0}]>" 0.15397945)
+        (pair "rel:from=<{0}>:pat=<els=[e{-1/4,0,0,0}, !f{1/2,1/4}, !-{0,-1/4}]>" -1.2993162)
+        (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 0.038279798)
+        (pair "rel:last_from=<{0,0,1/4}>:to=<{}>:pat=<els=[e{0,0}]>" -0.027648874)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}, f{0,1/4,0}]>" 0.71181446)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}]>" 0.261796)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/4}, e{0,-1/4}, f{0,-1/4,0}]>" 0.7712666)
+        (pair "rel:to=<{0}>:pat=<els=[!-{-1/4,1/4}, f{0,-1/2,-1/4}, !#{0,0,0,0}]>" -0.9818795)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/4}]>" 0.07015528)
+        (pair "rel:from=<{}>:pat=<els=[#{1/4}, e{0,-1/4}]>" -0.049928166)
+        (pair "rel:from=<{}>:pat=<els=[e{0,1/4}, f{0,1/4,0}]>" 0.22810563)
+        (pair "rel:from=<{}>:pat=<els=[#{1/4}, f{0,-1/4,0}]>" 0.16837397)
+        (pair "rel:to=<{}>:pat=<els=[!e{1/4}, !e{1/2,0}, !e{0,0}]>" -0.02631991)
+        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[]>" 0.19747922)
+    }
+    )
+})
+
+    
+
+)

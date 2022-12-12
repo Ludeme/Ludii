@@ -1,0 +1,31 @@
+(define "Tablo_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[#{-1/2,1/4}, -{0,-1/4,0,0,0}]>" 0.11505219)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{1/2,0,0}, #{0,1/2,1/4}]>" -0.149524)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{1/2,0,0}, -{0,1/4}, #{0,1/2,1/4}]>" -0.20261087)
+        (pair "rel:from=<{0}>:pat=<els=[-{0,1/4,0,0,0}]>" 0.106632486)
+        (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[!-{0,0,1/2}]>" 0.11599655)
+        (pair "rel:to=<{0}>:pat=<els=[-{1/4}]>" 0.106632486)
+        (pair "rel:from=<{}>:pat=<els=[f{0}]>" 0.043996125)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{1/4,0}>:pat=<els=[!f{0,-1/4}]>" -0.03337573)
+        (pair "rel:to=<{}>:pat=<els=[f{0}]>" 3.3851483E-4)
+        (pair "rel:to=<{1/4,0}>:pat=<els=[!f{0,-1/4}]>" 0.022244483)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/4}, f{0,-1/2,0,0}]>" 0.12778892)
+        (pair "rel:from=<{}>:pat=<els=[!f{0,1/4}]>" -3.4366295E-4)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{-1/2}, -{0,1/4}, f{0,-1/2,0,0}]>" 0.2976141)
+        (pair "rel:from=<{}>:pat=<els=[-{0,0,0,1/4}]>" -0.0082605425)
+        (pair "rel:to=<{0}>:pat=<els=[-{1/2}, f{0,1/2,0,0}]>" 0.022244483)
+        (pair "rel:from=<{0,0}>:pat=<els=[-{0,0,1/4,0,0,0}]>" 0.022244483)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{0}, #{1/2,-1/4}]>" -0.04207344)
+    }
+    )
+})
+
+    
+
+)

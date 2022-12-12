@@ -1,7 +1,21 @@
 (define "Dorvolz_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (mobilitySimple weight:-1.0)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (mobilitySimple weight:-1.0)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[!-{0,0,0,0}]>" -0.009302271)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[!R1{0}, !-{1/2}]>" 0.005208574)
+    }
+    )
+})
+
+    
+
 )

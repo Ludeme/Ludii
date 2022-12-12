@@ -1,7 +1,42 @@
 (define "Ilpion_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (score)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (score)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[N10{0,1/5}]>" 3.0549428)
+        (pair "rel:to=<{}>:pat=<els=[N10{0}]>" -0.68417764)
+        (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 0.8865874)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0}]>" 0.79728055)
+        (pair "rel:last_to=<{0,-1/10}>:to=<{}>:pat=<els=[!-{0,3/8}]>" 1.6687295)
+        (pair "rel:to=<{}>:pat=<els=[N8{0,0,0}]>" -0.45348105)
+        (pair "rel:last_to=<{0,1/10}>:to=<{}>:pat=<els=[]>" 0.47478685)
+        (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[]>" -1.1579633)
+        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" -0.7041255)
+        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[N10{0,1/5}]>" 3.8917005)
+        (pair "rel:to=<{}>:pat=<els=[N2{2/5}, !-{1/5}, !-{0,-1/3}, -{4/17,-3/8}]>" 1.6198328)
+        (pair "rel:to=<{}>:pat=<els=[N2{2/5}, !-{1/5}, !-{0,-1/3}, -{1/3,-3/8}]>" 0.91355544)
+        (pair "rel:to=<{}>:pat=<els=[N2{2/5}, !-{0,-1/3}, -{1/3,-3/8}, -{4/17,-3/8}]>" 0.8345484)
+        (pair "rel:to=<{}>:pat=<els=[!-{1/5}, !-{0,-1/3}, -{1/3,-3/8}, -{4/17,-3/8}]>" 1.547362)
+        (pair "rel:to=<{}>:pat=<els=[N2{1/5}, !-{0}, -{2/15,-3/8}, -{1/20,-3/8}]>" 1.3925492)
+        (pair "rel:to=<{}>:pat=<els=[N2{1/5}, !-{0}, -{2/15,-3/8}, -{1/20,-3/8}]>" 1.3925492)
+        (pair "rel:to=<{}>:pat=<els=[N2{1/2}, !-{3/10}, !-{1/10,-1/3}, !-{0,-1/3}, -{1/3,-3/8}]>" 1.5528108)
+        (pair "rel:to=<{}>:pat=<els=[N2{1/2}, !-{3/10}, -{7/16,-3/8}, !-{0,-1/3}, -{1/3,-3/8}]>" 1.534639)
+        (pair "rel:to=<{}>:pat=<els=[!-{0,1/3}, -{-1/3,3/8}, !-{1/10,1/3}, !-{1/2}, #{2/5,3/10}]>" 1.2099832)
+        (pair "rel:to=<{}>:pat=<els=[N2{1/2}, !-{1/10,-1/3}, -{7/16,-3/8}, !-{0,-1/3}, -{1/3,-3/8}]>" 0.6078178)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0}]>" 0.8384994)
+        (pair "rel:to=<{}>:pat=<els=[!-{-1/2,1/3}, !-{-2/5,1/3}, f{0,-1/5}, !-{0}, #{-1/10,3/10}]>" 1.8689965)
+    }
+    )
+})
+
+    
+
 )

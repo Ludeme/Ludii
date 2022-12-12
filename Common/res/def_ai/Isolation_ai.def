@@ -1,24 +1,57 @@
 (define "Isolation_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (influence weight:0.98444813)
-        (centreProximity pieceWeights:{
-            (pair "Pawn1" 0.41344148)
-            (pair "Pawn2" 0.16893372)
-        })
-        (cornerProximity pieceWeights:{
-            (pair "Pawn1" 0.09369311)
-            (pair "Pawn2" 0.1140612)
-        })
-        (material pieceWeights:{
-            (pair "Pawn1" -0.021027174)
-            (pair "Pawn2" 0.021027174)
-        })
-        (mobilitySimple weight:-0.015560122)
-        (sidesProximity pieceWeights:{
-            (pair "Pawn1" -0.26146048)
-            (pair "Pawn2" -0.68404)
-        })
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (influence weight:0.98444813)
+    (centreProximity pieceWeights:{
+        (pair "Pawn1" 0.41344148)
+        (pair "Pawn2" 0.16893372)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Pawn1" 0.09369311)
+        (pair "Pawn2" 0.1140612)
+    })
+    (material pieceWeights:{
+        (pair "Pawn1" -0.021027174)
+        (pair "Pawn2" 0.021027174)
+    })
+    (mobilitySimple weight:-0.015560122)
+    (sidesProximity pieceWeights:{
+        (pair "Pawn1" -0.26146048)
+        (pair "Pawn2" -0.68404)
+    })
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[!-{0,0,0}, !-{1/4,0}, !-{0}, I2{1/4,-1/4}]>" 1.1595294)
+        (pair "rel:to=<{}>:pat=<els=[e{1/4}, !-{0,0}]>" 0.53699625)
+        (pair "rel:to=<{}>:pat=<els=[!-{0,0,0}, !-{1/4,0}, I2{0,1/4}, !-{0}]>" 1.1595294)
+        (pair "rel:to=<{}>:pat=<els=[!-{1/4,0}, I2{0,1/4}, !-{0}, I2{1/4,-1/4}]>" 0.7424071)
+        (pair "rel:to=<{}>:pat=<els=[e{1/2}, !#{0,0,0,0}, !-{1/4,1/4}]>" 1.1508464)
+        (pair "rel:to=<{}>:pat=<els=[e{1/4}, !-{0,1/4}, !-{1/2,0}]>" 0.88785243)
+        (pair "rel:to=<{}>:pat=<els=[!-{0,0,0}, !-{1/4,0}, I2{0,1/4}, !-{0}, I2{1/4,-1/4}]>" 1.1595294)
+        (pair "rel:to=<{}>:pat=<els=[e{1/4}, !#{-1/4,0,0,0}, !-{0,1/4}, !-{1/2,0}]>" 1.4752293)
+        (pair "rel:to=<{}>:pat=<els=[I2{0}]>" 0.5278856)
+        (pair "rel:to=<{}>:pat=<els=[e{1/2}, !#{0,0,0,0}, !-{-1/4,0}]>" 0.9875182)
+        (pair "rel:to=<{}>:pat=<els=[e{1/2}, !#{0,0,0,0}]>" 0.75560904)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[I1{1/4}, !-{0,0}, !-{1/2}, !-{1/4,-1/4}, !-{0}, !-{-1/4,-1/4}]>" 1.5149494)
+        (pair "rel:to=<{}>:pat=<els=[I1{0}, !-{1/4}, !-{0,-1/4}, !-{1/4,0}, !-{-1/4}, !-{1/2,-1/4}]>" 1.5708331)
+        (pair "rel:to=<{}>:pat=<els=[I3{1/4,0,0,0}, I1{0}, !-{1/4}, !-{0,-1/4}]>" 1.5409031)
+        (pair "rel:to=<{}>:pat=<els=[I1{0}, !-{1/4}, !-{0,-1/4}, I3{-1/2,-1/4}]>" 1.43316)
+        (pair "rel:to=<{}>:pat=<els=[I3{1/4,0,0,0}, I1{0}, !-{0,-1/4}]>" 1.0359347)
+        (pair "rel:to=<{}>:pat=<els=[I1{-1/4}, !-{0}, I3{1/4,-1/4}]>" 1.1426848)
+        (pair "rel:to=<{}>:pat=<els=[I1{0}, !-{-1/4,0}, !-{1/4}, !-{0,-1/4}, !-{1/4,0}, !-{-1/4}, !-{1/2,-1/4}]>" 1.5692666)
+        (pair "rel:to=<{}>:pat=<els=[I1{-1/4}, !-{1/2,0}, !-{0}, !-{0,0}, !-{1/2}, !-{1/4,-1/4}]>" 1.4214537)
+        (pair "rel:to=<{}>:pat=<els=[I3{1/2,-1/4}, !#{0,0,0,0}]>" 0.38177544)
+        (pair "rel:to=<{}>:pat=<els=[I1{1/2}, !-{-1/4}, #{1/4,0}, I3{0,-1/4}]>" 1.5307121)
+    }
+    )
+})
+
+    
+
 )

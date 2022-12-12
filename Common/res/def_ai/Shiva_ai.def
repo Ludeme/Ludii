@@ -1,7 +1,33 @@
 (define "Shiva_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (cornerProximity)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (cornerProximity)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0,0}]>" 1.2976495)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/2,1/4}, e{0,0,0}]>" 2.1327968)
+        (pair "rel:last_from=<{0,-1/2,-1/2}>:from=<{}>:pat=<els=[e{-1/2,0}, e{0,1/4}, !f{0,-1/2,0,0,0}, e{0,-1/2,-1/2,0}]>" 1.4999444)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, e{0,-1/2,0}, e{0,1/4,0,0}]>" 1.918049)
+        (pair "rel:to=<{}>:pat=<els=[f{1/4}, e{0,-1/2,0}, e{0,1/4,0,0}]>" 1.0604591)
+        (pair "rel:last_to=<{0,-1/4}>:from=<{}>:pat=<els=[f{1/2,0,0}, e{0,-1/4,0,0}, e{0,-1/2,0}]>" 0.38898784)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[e{0,-1/4}, e{0,1/4,1/4}]>" 1.4434708)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/2}, e{0,-1/2,-1/2,-1/4}]>" 2.915891)
+        (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 0.8217741)
+        (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[e{1/4,0,0}, !f{0,-1/2,-1/4}]>" 3.0977874)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" -0.7493802)
+        (pair "rel:to=<{0}>:pat=<els=[f{-1/2,-1/4}, e{1/2}, !#{0,-1/2,-1/4,0,0,0}]>" -0.84385)
+        (pair "rel:from=<{0}>:pat=<els=[e{-1/4,1/4}, e{0,1/4}, e{0,-1/2,1/2,0}]>" -0.84385)
+        (pair "rel:last_to=<{1/4}>:from=<{0}>:pat=<els=[#{-1/2,1/4}, !f{0,0,0,0}, e{-1/4,1/4}, !#{0,-1/4,0,0,0}]>" -0.84385)
+    }
+    )
+})
+
+    
+
 )

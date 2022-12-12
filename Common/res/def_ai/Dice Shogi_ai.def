@@ -1,7 +1,30 @@
 (define "Dice Shogi_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (material)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[e{0}, !#{1/2,0,0}]>" -0.13672066)
+        (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[R1{1/2,1/4}, !-{1/4,0}, !e{0,-1/4}]>" 0.03360515)
+        (pair "rel:to=<{}>:pat=<els=[!R0{-1/4,0,0,0}, #{0,0}, !f{0}, !f{1/2}]>" 0.11610619)
+        (pair "rel:to=<{}>:pat=<els=[!-{1/4,0}, !e{1/2,1/4}, !e{0,-1/4}]>" -0.03321114)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,1/4,0}]>" -0.362606)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I3{0}]>" -0.28395757)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!#{0,0,0,0}]>" -0.40614462)
+        (pair "rel:from=<{0}>:pat=<els=[I3{0}]>" 2.422086)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/2,1/4}, !#{0,0,0,0}]>" -0.4936313)
+        (pair "rel:to=<{}>:pat=<els=[I20{0}]>" -0.37372875)
+        (pair "rel:from=<{}>:pat=<els=[]>" -0.32221076)
+    }
+    )
+})
+
+    
+
 )

@@ -1,7 +1,40 @@
 (define "Marelle Quadruple_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (lineCompletionHeuristic)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (lineCompletionHeuristic)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[f{0,1/4}]>" 0.084494084)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{1/8}, -{0,-1/2,0}]>" 0.12419758)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}, f{0,-1/2,-1/2,1/4}]>" 0.049497195)
+        (pair "rel:from=<{}>:pat=<els=[-{0,-3/8}, -{1/4,-3/8}, -{1/2,-3/8}, !#{3/8,0,0}]>" 0.07419273)
+        (pair "rel:from=<{}>:pat=<els=[-{0,0}]>" 0.024732927)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{-1/8,-3/8}, f{0,-1/2,3/8}]>" 0.124186195)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{3/8,1/8}]>" 0.05501903)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{-1/4,1/4}, f{0,1/4,0}]>" 0.23260741)
+        (pair "rel:last_to=<{1/8,1/4,1/4}>:from=<{}>:pat=<els=[f{0,-3/8}]>" 0.18935682)
+        (pair "rel:from=<{}>:pat=<els=[N4{1/4,0}, f{0,-3/8,1/8}, -{0,-1/2,1/2,0,0}]>" 0.18879177)
+        (pair "rel:from=<{}>:pat=<els=[-{0,-3/8}, !#{1/8,0,0}, -{1/2,-3/8}, !#{3/8,0,0}]>" 0.07340334)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" -0.0016707707)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,-1/2,1/4}]>" 0.09006172)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{1/4,1/8}, !-{0,-1/2,3/8}, e{0,-1/8,0}]>" 0.06411445)
+        (pair "rel:from=<{}>:pat=<els=[]>" 0.01775026)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{0,1/8,0,0}]>" 0.22186723)
+        (pair "rel:to=<{}>:pat=<els=[e{0,1/8}]>" -0.0015501824)
+        (pair "rel:to=<{}>:pat=<els=[f{-1/4,0}, f{0,-1/2,1/4}, f{0,-1/2,1/4,0,0}]>" 0.28150067)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{0,1/8}, e{0,1/4,1/8}]>" 0.118165344)
+        (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[N8{0,1/4,-1/4}]>" 0.035809156)
+        (pair "rel:to=<{0}>:pat=<els=[e{1/8,0,0,0}, N4{0,1/8}, e{0,1/4,1/8}]>" -3.868669)
+    }
+    )
+})
+
+    
+
 )

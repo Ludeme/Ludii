@@ -1,0 +1,29 @@
+(define "Bay Khom_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[N4{0}, N4{0,1/3}, #{-1/2}]>" 0.0)
+        (pair "rel:last_to=<{-1/6}>:to=<{}>:pat=<els=[N4{0}, #{1/3}]>" 0.9743419)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[!-{0}, -{-1/3,1/6}]>" 0.19215545)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4,1/6}, R1{1/2,1/4}, #{0}]>" 0.116283946)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/6}, R1{1/4,1/4}, N4{5/12}]>" 0.2971563)
+        (pair "rel:last_to=<{1/6}>:to=<{}>:pat=<els=[N4{0,0}, !-{0}]>" 1.6712472)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!-{1/6}, #{1/2}]>" 0.6265744)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!R0{0,1/3}, #{1/2}]>" 0.62794656)
+        (pair "rel:last_to=<{-1/6}>:to=<{}>:pat=<els=[-{0,-1/6}, !#{1/12,0}, !-{0}, #{1/3}, !-{-1/3}]>" 1.4937395)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/6}, #{1/2}, N4{0}]>" -0.14151101)
+        (pair "rel:to=<{}>:pat=<els=[-{1/3}, !-{0}]>" 0.10521036)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" 0.865048)
+        (pair "rel:to=<{}>:pat=<els=[-{1/6,0}, R0{0,1/4}]>" 0.06907486)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.865048)
+        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[-{0,-1/6}, -{-1/3,1/6}]>" -0.8443736)
+    }
+    )
+})
+
+    
+
+)

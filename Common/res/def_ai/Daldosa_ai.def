@@ -1,21 +1,44 @@
 (define "Daldosa_ai"
-    (bestAgent "UCT")
-    trainedHeuristics:(heuristics {
-        (centreProximity pieceWeights:{
-            (pair "Minus1" 0.3142034)
-            (pair "Minus2" 0.016565992)
-        })
-        (cornerProximity pieceWeights:{
-            (pair "Minus1" -0.11592177)
-            (pair "Minus2" 0.038181484)
-        })
-        (lineCompletionHeuristic weight:0.18928629)
-        (material pieceWeights:{
-            (pair "Minus1" 0.39279127)
-            (pair "Minus2" 0.09750127)
-        })
-        (mobilitySimple weight:0.022635387)
-        (influence weight:0.070623316)
-    })
     
+        (bestAgent "UCT")
+        trainedHeuristics:(heuristics {
+    (centreProximity pieceWeights:{
+        (pair "Minus1" 0.3142034)
+        (pair "Minus2" 0.016565992)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Minus1" -0.11592177)
+        (pair "Minus2" 0.038181484)
+    })
+    (lineCompletionHeuristic weight:0.18928629)
+    (material pieceWeights:{
+        (pair "Minus1" 0.39279127)
+        (pair "Minus2" 0.09750127)
+    })
+    (mobilitySimple weight:0.022635387)
+    (influence weight:0.070623316)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{}>:from=<{}>:to=<{0,0,0}>:pat=<els=[!R0{0,0}, -{1/2,0,0}]>" 1.1826587)
+        (pair "rel:last_to=<{}>:from=<{}>:to=<{0,0,0}>:pat=<els=[!R0{0,0}]>" 0.5176151)
+        (pair "rel:last_to=<{}>:to=<{0,0,0}>:pat=<els=[!R0{0,0}, -{1/2,0,0}, -{0,0,0,0,0,0}]>" 1.2404794)
+        (pair "rel:from=<{}>:pat=<els=[!R0{1/2,0}, -{0,0,0}]>" -0.24054512)
+        (pair "rel:last_to=<{}>:from=<{}>:to=<{0}>:pat=<els=[!-{0}, N2{0,0}]>" 1.1093669)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0}, !f{0,0,0}]>" 0.43348062)
+        (pair "rel:last_to=<{}>:from=<{}>:to=<{0,0,0}>:pat=<els=[!R0{0,0}, -{1/2,0,0}, -{0,0,0,0,0,0}]>" 0.7809312)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{}>:from=<{}>:to=<{0,0,0,0}>:pat=<els=[N2{0,0,0,0}]>" 0.6319349)
+        (pair "rel:last_to=<{}>:from=<{}>:pat=<els=[N2{0,0,0,0}]>" 0.6903331)
+        (pair "rel:last_to=<{}>:from=<{}>:to=<{0}>:pat=<els=[!e{1/2}, -{0,-1/2,0,0}, !e{0}, !e{0,-1/2}, !-{0,0,0,0,0}]>" 0.5514767)
+        (pair "rel:last_to=<{}>:to=<{0}>:pat=<els=[!e{1/2}, #{0,0,0}, -{0,0}, -{0,-1/2,0,0}, !e{0,-1/2}, !-{0,0,0,0,0}]>" 0.48722395)
+    }
+    )
+})
+
+    
+
 )

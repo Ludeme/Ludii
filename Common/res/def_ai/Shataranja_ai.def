@@ -1,0 +1,28 @@
+(define "Shataranja_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[I10{0,0,0,0}]>" -0.45900458)
+        (pair "rel:last_to=<{0,0}>:from=<{}>:pat=<els=[I10{1/2,0,0}]>" -1.1628221)
+        (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 0.0056969537)
+        (pair "rel:from=<{}>:pat=<els=[#{0,0,0}]>" 0.34334064)
+        (pair "rel:from=<{}>:pat=<els=[I13{0,1/4}]>" -0.9530807)
+        (pair "rel:to=<{}>:pat=<els=[!e{0,0}]>" 6.6067616E-4)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4,-1/2,1/4}, !-{0,-1/4,1/4,0}, !-{0,-1/4,-1/2,0,0}]>" 0.39421672)
+        (pair "rel:to=<{}>:pat=<els=[f{-1/4}, !-{0,-1/4,-1/2,1/4}, !-{0,-1/4,1/4,0}]>" 0.5737146)
+        (pair "rel:to=<{}>:pat=<els=[f{-1/4}, !-{0,-1/4,-1/2,1/4}, !-{0,-1/4,-1/2,0,0}]>" 0.5727368)
+        (pair "rel:from=<{}>:pat=<els=[I2{1/4,0}, -{1/2,0}, -{0,1/4}]>" -0.12613504)
+        (pair "rel:from=<{}>:pat=<els=[!-{0,1/4}]>" 0.11231878)
+        (pair "rel:to=<{}>:pat=<els=[-{1/2,0,0,0}, #{0,0,0,0}]>" 0.07876964)
+        (pair "rel:from=<{0,-1/4}>:to=<{}>:pat=<els=[I2{0,1/4}]>" -0.05488442)
+    }
+    )
+})
+
+    
+
+)

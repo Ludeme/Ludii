@@ -50,9 +50,9 @@
 })
 
 (option "P2 Ending Conditions" <EndCondP2> args:{ <EndCondP1> }
-{
-(item "No Moves P1" <(no Moves P1)>   "The army can not move.")** 
-(item "No Moves P1 after Moving three pieces"  <(and (= (count MovesThisTurn) 2) (no Moves Next))> "The army can not move and all towers moved.") 
+    {
+    (item "No Moves P1" <(no Moves P1)>   "The army can not move.")** 
+    (item "No Moves P1 after Moving three pieces"  <(and (= (count MovesThisTurn) 2) (no Moves Next))> "The army can not move and all towers moved.") 
 })
 
 (option "Version" <Version> args:{ <hand> <start> <play>}
@@ -127,12 +127,12 @@
         <
         phases:{
         (phase "PlacementP1" P1 
-                (play 
-                        (move 
-                            (from (handSite P1)) 
-                            (to (difference (sites Empty) (sites {"B2" "B3"})))
-                        )
-                    )  
+            (play 
+                (move 
+                    (from (handSite P1)) 
+                    (to (difference (sites Empty) (sites {"B2" "B3"})))
+                )
+            )  
             (nextPhase Mover "MovementP1")
         )
         (phase "MovementP1" P1 
@@ -219,4 +219,7 @@
         (player Colour P2 (colour White))
     })
     
+    (ai
+        "Jeu Militaire_ai"
+    )
 )

@@ -1,0 +1,32 @@
+(define "Reach Chess_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{1/4,0,0,0}>:to=<{}>:pat=<els=[f{1/2,0,0}, R0{0,0,0,0}]>" -0.2048853)
+        (pair "rel:from=<{}>:pat=<els=[I2{0,0,0,0,0}]>" -0.107052445)
+        (pair "rel:to=<{0}>:pat=<els=[I2{0,0,0,0,0}]>" 0.586974)
+        (pair "rel:last_to=<{1/4,0,0,0}>:to=<{}>:pat=<els=[R0{0,0,0,0}, #{1/2,1/4}]>" 1.1003294)
+        (pair "rel:last_to=<{-1/4,0,0,0}>:to=<{}>:pat=<els=[f{0,0,0}, #{1/4}, #{0,1/4}]>" 0.67469805)
+        (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}]>" 0.053007755)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!e{0,0}]>" -0.15859866)
+        (pair "rel:last_to=<{-1/4,0,0,0}>:to=<{}>:pat=<els=[f{0,0,0}, R0{-1/2,0,0,0}, #{1/4}, #{0,1/4}]>" 1.1285067)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[f{1/4,1/4}, !-{0,1/4,-1/2,-1/4,0,0,0}]>" 0.10844741)
+        (pair "rel:last_to=<{0,1/4}>:to=<{0,1/4}>:pat=<els=[f{1/4,1/4}]>" 1.0127802)
+        (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0,1/4}>:pat=<els=[-{0,1/4,1/4,1/4,1/4,0}]>" 1.4683291)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!I1{}, !-{0,1/2}]>" 2.4025815)
+        (pair "rel:last_to=<{0,1/4}>:to=<{0,1/4}>:pat=<els=[-{0,1/4,1/4,1/4,1/4,0}]>" 1.0127802)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!I1{}]>" -0.077498816)
+        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:last_to=<{0,1/4}>:from=<{}>:pat=<els=[f{1/4,1/4}]>" 0.31193784)
+        (pair "rel:last_to=<{0,1/4}>:from=<{}>:pat=<els=[f{0}, -{0,1/4,1/4,1/4,1/4,0}]>" 0.54462343)
+        (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0,1/4}>:pat=<els=[f{1/4,1/4}, !-{0,1/4,-1/2,-1/4,0,0,0}]>" 1.4812682)
+    }
+    )
+})
+
+    
+
+)

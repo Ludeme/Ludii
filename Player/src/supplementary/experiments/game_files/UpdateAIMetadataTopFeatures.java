@@ -204,7 +204,7 @@ public class UpdateAIMetadataTopFeatures
 				final int aiSuffixIdx = StringRoutines.matchingBracketAt(aiMetadataString.toString(), aiPrefixIdx);
 				aiMetadataString.replace(aiSuffixIdx, aiSuffixIdx + 1, "");
 				aiMetadataString.replace(aiPrefixIdx, aiPrefixIdx + "(ai".length(), "");
-				stringsToWrite.add(aiMetadata.toString());
+				stringsToWrite.add(aiMetadataString.toString());
 				
 				// Close the (useFor ...) block if we have one
 				if (!cleanRulesetName.isEmpty())
@@ -243,14 +243,24 @@ public class UpdateAIMetadataTopFeatures
 					final String ludFileContents = FileHandling.loadTextContentsFromFile(ludFile.getAbsolutePath());
 					final String defStr = StringRoutines.quote((thisGameName.replaceAll(Pattern.quote(".lud"), "") + "_ai").substring(1));
 					
-					if (gameNoRuleset.metadata().ai().agent() == null)
+					final int startMetadataIdx = ludFileContents.indexOf("(metadata");
+					final int endMetadataIdx = StringRoutines.matchingBracketAt(ludFileContents, startMetadataIdx);
+					
+					final int startAiMetadataIdx = ludFileContents.indexOf("(ai", startMetadataIdx);
+					final int endAiMetadataIdx;
+					
+					if (startAiMetadataIdx >= 0)
+						endAiMetadataIdx = StringRoutines.matchingBracketAt(ludFileContents, startAiMetadataIdx);
+					else
+						endAiMetadataIdx = -1;
+					
+					if (startAiMetadataIdx < 0)
 					{
 						if (!StringRoutines.cleanWhitespace(ludFileContents.replaceAll(Pattern.quote("\n"), "")).contains(defStr))
 						{
 							// We need to write the AI metadata
 							final StringBuffer sb = new StringBuffer(ludFileContents);
-							final int startMetadataIdx = sb.indexOf("(metadata");
-							final int endMetadataIdx = StringRoutines.matchingBracketAt(ludFileContents, startMetadataIdx);
+							
 							sb.insert(endMetadataIdx, "    (ai\n        " + defStr + "\n    )\n");
 							
 							try (final PrintWriter writer = new PrintWriter(ludFile, "UTF-8"))
@@ -268,13 +278,9 @@ public class UpdateAIMetadataTopFeatures
 						
 						// Replace the (ai ...) metadata part from .lud file with reference to AI def
 						final StringBuffer sb = new StringBuffer(ludFileContents);
-						final int startMetadataIdx = sb.indexOf("(metadata");
-						
-						final int startAiMetadataIdx = sb.indexOf("(ai", startMetadataIdx);
-						final int endAiMetadataIdx = StringRoutines.matchingBracketAt(ludFileContents, startAiMetadataIdx);
 						
 						sb.replace(startAiMetadataIdx, endAiMetadataIdx + 1, "    (ai\n        " + defStr + "\n    )\n");
-
+						
 						try (final PrintWriter writer = new PrintWriter(ludFile, "UTF-8"))
 						{
 							System.out.println("Updating .lud file: " + ludFile.getAbsolutePath());

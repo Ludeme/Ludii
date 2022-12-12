@@ -1,3 +1,19 @@
 (define "Chuka_ai"
-    (bestAgent "UCT")
+    
+        (bestAgent "UCT")
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, !-{1/2,0,0,0}, !-{0,0,0,0}]>" -0.30364674)
+        (pair "rel:to=<{}>:pat=<els=[!-{1/2}, !-{0,0}]>" -0.015406207)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, !-{1/2,0,0}, !-{-1/2,0,0,0}, !-{0,0,0,0}]>" -0.3168675)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, !-{1/2,0,0}]>" -0.28912085)
+        (pair "rel:last_to=<{-1/2,0}>:to=<{}>:pat=<els=[-{0,0,0}, !-{0,0}, !-{1/2,0,0,0}]>" -0.19518743)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, !-{0,0,0,0}]>" -0.29010788)
+        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[-{1/2,0,0}, !-{0,0,0,0}, !-{1/2,0,0,0}]>" -0.19973291)
+    }
+    )
+})
+
+    
+
 )

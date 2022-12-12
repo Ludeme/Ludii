@@ -1,47 +1,78 @@
 (define "Game of Solomon_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (material)
-        (centreProximity pieceWeights:{
-            (pair "Counter1" -0.18230943)
-            (pair "Counter2" 0.5094708)
-            (pair "DoubleCounter1" 0.60703963)
-            (pair "DoubleCounter2" 0.6288453)
-        })
-        (cornerProximity pieceWeights:{
-            (pair "Counter1" -0.24570352)
-            (pair "Counter2" -0.28930864)
-            (pair "DoubleCounter1" -0.099901505)
-            (pair "DoubleCounter2" 0.0101534985)
-        })
-        (lineCompletionHeuristic weight:0.09126799)
-        (mobilitySimple weight:-0.07080618)
-        (influence weight:1.3684999)
-        (ownRegionsCount weight:-0.2566873)
-        (playerRegionsProximity player:2 pieceWeights:{
-            (pair "Counter1" -0.3364529)
-            (pair "Counter2" -0.122944005)
-            (pair "DoubleCounter1" -0.29972884)
-            (pair "DoubleCounter2" 0.22946069)
-        })
-        (regionProximity region:0 pieceWeights:{
-            (pair "Counter1" 1.0402108)
-            (pair "Counter2" 0.15772691)
-            (pair "DoubleCounter1" -0.13290088)
-            (pair "DoubleCounter2" 0.39007986)
-        })
-        (regionProximity region:1 pieceWeights:{
-            (pair "Counter1" 1.1768007)
-            (pair "Counter2" 0.07222296)
-            (pair "DoubleCounter1" 0.83202744)
-            (pair "DoubleCounter2" -0.33324045)
-        })
-        (sidesProximity pieceWeights:{
-            (pair "Counter1" -0.12286817)
-            (pair "Counter2" 0.1758151)
-            (pair "DoubleCounter1" 0.4056585)
-            (pair "DoubleCounter2" 0.38085705)
-        })
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (material)
+    (centreProximity pieceWeights:{
+        (pair "Counter1" -0.18230943)
+        (pair "Counter2" 0.5094708)
+        (pair "DoubleCounter1" 0.60703963)
+        (pair "DoubleCounter2" 0.6288453)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Counter1" -0.24570352)
+        (pair "Counter2" -0.28930864)
+        (pair "DoubleCounter1" -0.099901505)
+        (pair "DoubleCounter2" 0.0101534985)
+    })
+    (lineCompletionHeuristic weight:0.09126799)
+    (mobilitySimple weight:-0.07080618)
+    (influence weight:1.3684999)
+    (ownRegionsCount weight:-0.2566873)
+    (playerRegionsProximity player:2 pieceWeights:{
+        (pair "Counter1" -0.3364529)
+        (pair "Counter2" -0.122944005)
+        (pair "DoubleCounter1" -0.29972884)
+        (pair "DoubleCounter2" 0.22946069)
+    })
+    (regionProximity region:0 pieceWeights:{
+        (pair "Counter1" 1.0402108)
+        (pair "Counter2" 0.15772691)
+        (pair "DoubleCounter1" -0.13290088)
+        (pair "DoubleCounter2" 0.39007986)
+    })
+    (regionProximity region:1 pieceWeights:{
+        (pair "Counter1" 1.1768007)
+        (pair "Counter2" 0.07222296)
+        (pair "DoubleCounter1" 0.83202744)
+        (pair "DoubleCounter2" -0.33324045)
+    })
+    (sidesProximity pieceWeights:{
+        (pair "Counter1" -0.12286817)
+        (pair "Counter2" 0.1758151)
+        (pair "DoubleCounter1" 0.4056585)
+        (pair "DoubleCounter2" 0.38085705)
+    })
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[!R1{0,0,0,0}, e{1/4}, !R1{0,0,0}]>" -0.73407155)
+        (pair "rel:to=<{}>:pat=<els=[I4{0}]>" -1.6966454)
+        (pair "rel:to=<{}>:pat=<els=[R0{-5/12,0,0}, e{0}, !R1{1/4,0,0}]>" -1.1275749)
+        (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[]>" -1.8924689)
+        (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[N4{0,1/2,0,0,0}]>" -2.0533476)
+        (pair "rel:from=<{}>:to=<{1/4}>:pat=<els=[-{0,1/6}]>" -0.033898965)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4,-1/3}]>" -0.028377827)
+        (pair "rel:to=<{}>:pat=<els=[I4{1/3}, R1{0,0,0}]>" -1.8821361)
+        (pair "rel:last_from=<{1/3,1/6}>:to=<{}>:pat=<els=[R1{0,0,0}]>" -0.46417138)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{-1/4,1/6}, R1{0,1/6}]>" 0.19953576)
+        (pair "rel:last_from=<{0,-1/6}>:to=<{}>:pat=<els=[R0{1/3,0,0}, !R1{0,0,0,0}]>" -0.7313731)
+        (pair "rel:to=<{}>:pat=<els=[!R1{0,0,0,0}]>" -0.07582585)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0}, N4{0,1/2,0,0,0}, -{0,1/3}]>" -1.1706265)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0}, N4{0,1/2,0,0,0}]>" -1.1608149)
+        (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[N4{0,1/2,0,0,0}]>" -1.7896252)
+        (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[e{0,0}, -{0,1/3}]>" -1.4648815)
+        (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[I4{0,1/2}, e{0,0}, -{0,1/3}]>" -1.8798355)
+        (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[e{0,0}, N4{0,1/2,0,0,0}, -{0,1/3}]>" -1.7974299)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,0,1/3}, -{0,-1/4}, R0{1/4,0,0,0}, R0{0,-1/6}]>" 0.020810708)
+    }
+    )
+})
+
+    
+
 )

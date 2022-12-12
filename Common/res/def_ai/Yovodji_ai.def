@@ -1,7 +1,34 @@
 (define "Yovodji_ai"
-    (bestAgent "MAST")
-    trainedHeuristics:(heuristics {
-        (influence)
-    })
     
+        (bestAgent "MAST")
+        trainedHeuristics:(heuristics {
+    (influence)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{1/4,0}, !R0{0,1/4}, -{-1/4}, -{1/4,-1/4}]>" -0.5714797)
+        (pair "rel:to=<{}>:pat=<els=[R1{0}, -{1/4,-1/4}, -{1/4}, !R0{0,1/4}]>" -0.3427196)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, !R1{0,0,0,0}]>" -0.050674856)
+        (pair "rel:to=<{}>:pat=<els=[R1{1/4}, -{1/2,-1/4}, !#{0,0,0,0}, -{1/4}, !R0{1/2,-1/4}, -{1/4,-1/4}, !R0{0,0,0,0}, -{0,0,0}]>" -0.67201227)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{1/4,-1/4}, !R0{0,1/4}]>" 0.046458635)
+        (pair "rel:to=<{}>:pat=<els=[!#{0,0,0,0}, -{1/4}, !R0{-1/2,-1/4}, -{1/4,-1/4}, -{0}, !R0{0,0,0,0}, -{0,0,0}, !R0{1/4,-1/4}]>" -0.46574983)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[!R1{1/4,0,0,0}]>" 0.55997264)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[!R1{0,0,0,0}, -{0}]>" -0.09949641)
+        (pair "rel:to=<{}>:pat=<els=[R0{1/4,1/4}, !#{0,0,0,0}]>" -0.04747914)
+        (pair "rel:to=<{}>:pat=<els=[!R1{0,1/4}, -{1/2,-1/4}, -{0}, !R0{1/2,0,0,0}]>" -0.24054556)
+        (pair "rel:to=<{}>:pat=<els=[-{-1/4}, -{0}, !R1{0,-1/4}, -{-1/2,1/4}]>" -0.59150565)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[!R0{1/4,0,0,0}]>" 0.09574404)
+        (pair "rel:last_to=<{-1/4,1/4}>:to=<{}>:pat=<els=[-{0,-1/4}, -{-1/2}, !R0{0,0,0,0}]>" 0.34373286)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/4}, -{0,-1/4}, !R1{1/4,-1/4}, -{-1/4,1/4}]>" -0.59150565)
+        (pair "rel:last_to=<{-1/4,1/4}>:to=<{}>:pat=<els=[-{0,-1/4}, !R0{0,0,0,0}]>" 0.09574404)
+    }
+    )
+})
+
+    
+
 )

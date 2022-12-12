@@ -1,7 +1,37 @@
 (define "Upper Hand_ai"
-    (bestAgent "MC-GRAVE")
-    trainedHeuristics:(heuristics {
-        (cornerProximity)
-    })
     
+        (bestAgent "MC-GRAVE")
+        trainedHeuristics:(heuristics {
+    (cornerProximity)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[I1{0,2/9}, N8{1/2,1/5}]>" 0.9064742)
+        (pair "rel:to=<{}>:pat=<els=[N8{0,1/9}, N8{1/4,-1/5}]>" 0.54890716)
+        (pair "rel:to=<{}>:pat=<els=[f{3/10,2/9}, f{0,0}]>" 1.0020915)
+        (pair "rel:to=<{}>:pat=<els=[e{0}, N8{1/6,1/9}, N8{5/12,-1/5}]>" 1.0522008)
+        (pair "rel:to=<{}>:pat=<els=[f{0,-2/9}, f{3/8,-2/9}]>" 1.178162)
+        (pair "rel:to=<{}>:pat=<els=[N9{0,3/10}, N8{1/4,1/4}]>" 0.43248257)
+        (pair "rel:to=<{}>:pat=<els=[N8{1/4,1/9}, I1{0,-2/9}]>" 1.1277)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[I2{0,1/5}, #{1/8,5/12}]>" 0.038333867)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[N12{0,5/12}]>" 0.5929647)
+        (pair "rel:to=<{}>:pat=<els=[N10{1/6,1/3}, N12{0,5/12}]>" 0.5951797)
+        (pair "rel:to=<{}>:pat=<els=[f{0}, e{-5/17,3/10}, N10{3/8,-1/8}]>" 1.0290294)
+        (pair "rel:to=<{}>:pat=<els=[N12{0,-1/6}, N9{1/4,-3/10}]>" 0.6897224)
+        (pair "rel:to=<{}>:pat=<els=[e{0,3/10}, N10{-1/3,-1/8}]>" 0.6716498)
+        (pair "rel:to=<{}>:pat=<els=[f{0}, N10{3/8,-1/8}]>" 0.7947423)
+        (pair "rel:to=<{}>:pat=<els=[#{0,5/12}]>" -0.19301897)
+        (pair "rel:to=<{}>:pat=<els=[e{0,3/10}, N10{4/9,-1/3}]>" 0.4324228)
+        (pair "rel:to=<{}>:pat=<els=[e{0,3/10}]>" 0.25513515)
+        (pair "rel:to=<{}>:pat=<els=[N10{0,1/8}]>" 0.0024157877)
+    }
+    )
+})
+
+    
+
 )

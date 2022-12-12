@@ -1,7 +1,37 @@
 (define "Pente_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (lineCompletionHeuristic)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (lineCompletionHeuristic)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0}]>" 1.9948117)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{0}, f{0,0}]>" 2.395687)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{1/2}, f{0}, f{0,0}]>" 4.118996)
+        (pair "rel:to=<{}>:pat=<els=[f{1/2}, f{0}, f{0,0}]>" 2.5122826)
+        (pair "rel:to=<{}>:pat=<els=[f{1/2}, f{0}, f{0,0}, -{1/2,-1/4}, f{0,0,0}]>" 4.169786)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{1/4}, f{0}, f{0,0}]>" 2.372538)
+        (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0}, !-{1/4,0}, -{1/2,-1/4}, f{0,0,0}]>" 2.5839617)
+        (pair "rel:to=<{}>:pat=<els=[f{1/2}, f{0}, f{0,0}, #{1/4,0,0,0}, f{0,0,0}]>" 4.118996)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{0,0}]>" 1.5490543)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0,0,0}, f{0,0,0}, f{0}, f{0,0}]>" 4.1239624)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[f{-1/2}, f{0,0}, f{0}, f{1/2,0}]>" 4.236683)
+        (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0,0}, f{1/2}, f{0,0}]>" 2.971284)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{1/2}, f{0,0}]>" 0.362929)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{0,0}]>" 0.4750385)
+        (pair "rel:to=<{}>:pat=<els=[!e{0,0}]>" 1.1743634E-5)
+        (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/2}, f{0,0}]>" 0.2525719)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" -3.2641433E-4)
+        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+    }
+    )
+})
+
+    
+
 )

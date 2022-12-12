@@ -1,0 +1,32 @@
+(define "Diagonals_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[#{1/2,0}, !-{0,-1/4}]>" 1.6317046)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[e{1/4,0}, !f{0,1/4}, !f{1/4}]>" 1.0398682)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[e{1/4,0}, !-{-1/4,-1/4}]>" 1.6214722)
+        (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[!-{0,-1/4}, !f{1/4,1/4}, !f{0,1/4}]>" 1.2946956)
+        (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[!-{1/2,0}, !-{0,-1/4}]>" 1.4451665)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[!-{1/4,0}]>" 0.81258595)
+        (pair "rel:last_to=<{1/2,1/4}>:to=<{}>:pat=<els=[e{0,0,0}, f{0}]>" 1.0660306)
+        (pair "rel:to=<{}>:pat=<els=[f{0}, f{-1/4,1/4}, e{1/4,0,0,0}]>" 0.25657803)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[!-{-1/4,-1/4}, !f{0,1/4}, !f{1/4}]>" 1.3115066)
+        (pair "rel:to=<{}>:pat=<els=[f{1/4}, f{0,1/4}]>" 0.08769626)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, !-{1/4,-1/4}, e{0}]>" 0.11530739)
+        (pair "rel:to=<{}>:pat=<els=[#{1/2,0}, f{0,1/4}, e{-1/4,-1/4}, f{0,0,0}]>" 0.5556962)
+        (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[]>" -0.09024508)
+        (pair "rel:to=<{}>:pat=<els=[e{0}, e{0,0}, e{1/4,0,0}]>" -0.050115857)
+        (pair "rel:to=<{}>:pat=<els=[!f{0,0}]>" 4.5872403E-5)
+        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[!-{1/2,-1/4}, e{1/4}]>" 1.3149148)
+        (pair "rel:to=<{}>:pat=<els=[#{0,0}, f{1/2,0}]>" -0.015301992)
+        (pair "rel:to=<{}>:pat=<els=[!-{0,0}]>" 0.02002678)
+    }
+    )
+})
+
+    
+
+)

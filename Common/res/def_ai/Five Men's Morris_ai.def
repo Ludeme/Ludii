@@ -1,50 +1,112 @@
 (define "Five Men's Morris_ai"
-    (useFor { "Play Rules/Any Capture" }
+(useFor { "Ruleset/Murray (Suggested)" }
+    
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
-            (lineCompletionHeuristic weight:0.9326043)
-            (centreProximity pieceWeights:{
-                (pair "Marker1" -0.18863367)
-                (pair "Marker2" -0.488658)
-            })
-            (cornerProximity pieceWeights:{
-                (pair "Marker1" 0.17438747)
-                (pair "Marker2" 0.2421477)
-            })
-            (material pieceWeights:{
-                (pair "Marker1" -0.020024117)
-                (pair "Marker2" 0.7924627)
-            })
-            (influence weight:1.4161588)
-            (sidesProximity pieceWeights:{
-                (pair "Marker1" 1.253085)
-                (pair "Marker2" 0.09856033)
-            })
-        })
-        
+    (lineCompletionHeuristic weight:0.9326043)
+    (centreProximity pieceWeights:{
+        (pair "Marker1" -0.18863367)
+        (pair "Marker2" -0.488658)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" 0.17438747)
+        (pair "Marker2" 0.2421477)
+    })
+    (material pieceWeights:{
+        (pair "Marker1" -0.020024117)
+        (pair "Marker2" 0.7924627)
+    })
+    (influence weight:1.4161588)
+    (sidesProximity pieceWeights:{
+        (pair "Marker1" 1.253085)
+        (pair "Marker2" 0.09856033)
+    })
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 2.1033592)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}]>" 0.90337944)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}]>" 0.7600796)
+        (pair "rel:to=<{}>:pat=<els=[f{1/2}, f{0}]>" 1.0561811)
+        (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/4}]>" 0.67132336)
+        (pair "rel:from=<{}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 1.0583798)
+        (pair "rel:last_to=<{1/4,1/4}>:from=<{}>:pat=<els=[!e{0,-1/4}]>" 0.51344854)
+        (pair "rel:last_to=<{1/2,1/4}>:from=<{}>:pat=<els=[!-{0}]>" 0.5980366)
+    }
     )
-    (useFor { "Play Rules/Restriction on Capture" }
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{-1/4,0}, f{0,-1/2,1/4}]>" 1.9444962)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{-1/4,0}, !f{0,0}, f{0,-1/2,1/4}]>" 2.0383606)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4}, f{0,1/4}]>" 3.0461555)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4}, f{0,1/4}, !e{0,-1/2,1/4,-1/4}]>" 3.0639508)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!f{0,0}, f{0,-1/2,1/4}]>" 0.92218083)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,-1/2,1/4}]>" 0.8791713)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4}, !e{0,-1/2,1/4,-1/4}]>" 0.82824236)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0}, f{1/4,-1/2,1/4}]>" 0.89215714)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0}, !f{1/4,0}]>" 0.4618627)
+    }
+    )
+})
+
+    
+
+)
+(useFor { "Ruleset/Cyningstan (Suggested)" }
+    
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
-            (lineCompletionHeuristic weight:0.8069309)
-            (centreProximity pieceWeights:{
-                (pair "Marker1" -0.28919855)
-                (pair "Marker2" 0.14195774)
-            })
-            (cornerProximity pieceWeights:{
-                (pair "Marker1" 0.5470853)
-                (pair "Marker2" 0.15568562)
-            })
-            (material pieceWeights:{
-                (pair "Marker1" 0.11702669)
-                (pair "Marker2" 0.7219215)
-            })
-            (influence weight:0.72968143)
-            (sidesProximity pieceWeights:{
-                (pair "Marker1" 0.3770066)
-                (pair "Marker2" 0.6990081)
-            })
-        })
-        
+    (lineCompletionHeuristic weight:0.8069309)
+    (centreProximity pieceWeights:{
+        (pair "Marker1" -0.28919855)
+        (pair "Marker2" 0.14195774)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" 0.5470853)
+        (pair "Marker2" 0.15568562)
+    })
+    (material pieceWeights:{
+        (pair "Marker1" 0.11702669)
+        (pair "Marker2" 0.7219215)
+    })
+    (influence weight:0.72968143)
+    (sidesProximity pieceWeights:{
+        (pair "Marker1" 0.3770066)
+        (pair "Marker2" 0.6990081)
+    })
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}, f{0,-1/2,-1/4}]>" 3.5535538)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, f{0,1/2,1/4}]>" 3.0201123)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4}, f{0,1/4}]>" 3.0201123)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{1/4,-1/4}, f{0,-1/4}, f{0,1/4}]>" 2.9937954)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,1/2,1/4}]>" 1.0859247)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}]>" 1.0859247)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}]>" 1.0092018)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}]>" 1.0859247)
+        (pair "rel:to=<{}>:pat=<els=[f{1/4,0}, f{0,-1/2,-1/4}]>" 1.5509374)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, !e{0,-1/2,1/2,-1/4}]>" 1.1483269)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{1/4,-1/4}, f{0,-1/4}]>" 1.043452)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4,1/4}]>" 0.9840719)
+        (pair "rel:to=<{}>:pat=<els=[f{1/4}, f{0,1/2,1/4}]>" 1.4483373)
+    }
     )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{-1/4,0}, !#{0,0}, f{0,-1/2,1/4}]>" 1.3465029)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{-1/4,0}, f{0,-1/2,1/4}]>" 1.3465029)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, f{0,-1/2,1/4}]>" 1.7044337)
+        (pair "rel:to=<{}>:pat=<els=[f{-1/4,0}, !#{0,0}, f{0,-1/2,1/4}]>" 0.7834173)
+        (pair "rel:from=<{}>:pat=<els=[e{0}]>" 0.11033956)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!#{0,1/2,1/2,1/4}]>" 0.112053886)
+        (pair "rel:from=<{}>:pat=<els=[]>" 0.112053886)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0}, !#{1/4,0}]>" 0.27284467)
+    }
+    )
+})
+
+    
+
+)
 )

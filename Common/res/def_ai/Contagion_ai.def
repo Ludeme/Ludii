@@ -1,7 +1,21 @@
 (define "Contagion_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (mobilitySimple)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (mobilitySimple)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}]>" 0.032357384)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{0,0,0,0}, !e{1/2,-1/4}, -{-1/4,0}, -{0,1/4}, -{1/4,0,0,0}, !e{-1/4,1/4}, -{1/2,0}]>" -0.18476282)
+    }
+    )
+})
+
+    
+
 )

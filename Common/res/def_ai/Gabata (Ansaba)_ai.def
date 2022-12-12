@@ -1,0 +1,28 @@
+(define "Gabata (Ansaba)_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[R1{0,-1/4}, !R0{1/4,0,0,0}]>" 0.1987253)
+        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[R1{1/4,-1/4}]>" -0.78716797)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" -0.12917483)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{1/4,1/4}]>" -0.8776483)
+        (pair "rel:to=<{}>:pat=<els=[-{0,-1/4}, R1{0,-1/4}, -{0,1/4}]>" -0.24180758)
+        (pair "rel:last_to=<{-1/4,1/4}>:to=<{}>:pat=<els=[R1{0,-1/4}, -{0,1/4}]>" -0.8776483)
+        (pair "rel:to=<{}>:pat=<els=[R1{0,-1/4}, !R1{1/4,0,0,0}]>" 0.1987253)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, -{1/2,-1/4}]>" -0.2689307)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" -0.1275904)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{-1/4,0}, !R1{0,-1/4}]>" -0.10729414)
+        (pair "rel:to=<{}>:pat=<els=[!R0{0,0,0,0}, -{0,0}, -{1/2,-1/4}]>" 0.07368116)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/4,-1/4}, -{0,0,0,0}]>" 0.13532118)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/2,0}, -{0,0}, !R1{1/4,1/4}]>" -0.33566272)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, !R1{1/4,1/4}, -{0,0,0,0}, R0{1/4,1/4}]>" 0.24125496)
+    }
+    )
+})
+
+    
+
+)

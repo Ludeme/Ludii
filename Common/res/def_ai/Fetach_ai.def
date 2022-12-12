@@ -1,0 +1,30 @@
+(define "Fetach_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{0,0,1/4,-1/4}]>" 1.8499355)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{0,0,1/8,1/4}]>" 1.8351912)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N4{0,1/8}]>" 2.2574713)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[R1{1/4,-3/8}]>" 1.9285325)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N8{1/8,0,0,0}]>" 2.3086066)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[]>" 1.8189578)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{0,0,1/4}]>" 1.7053677)
+        (pair "rel:last_from=<{0,0,1/2,1/8}>:from=<{}>:to=<{0,0}>:pat=<els=[!-{0,0,1/8,1/4}]>" 1.9564377)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[I4{}]>" 2.0409572)
+        (pair "rel:last_to=<{0,0,1/2}>:from=<{}>:to=<{0,0}>:pat=<els=[!-{0,0,0,-1/4}]>" 1.8635893)
+        (pair "rel:last_to=<{0,0,1/2}>:from=<{}>:to=<{0,0}>:pat=<els=[#{-1/4,-1/8}]>" 1.8478961)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{1/4,1/8}, !-{0,0,0,1/4}]>" 1.3726014)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[I4{1/8,-3/8}, !-{0,0,0,-1/4}]>" 1.9666317)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!R0{1/8,-1/4}, #{0,0,0,1/4}]>" 1.2656701)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[]>" 2.2494404)
+        (pair "rel:last_to=<{0,0,1/2}>:from=<{}>:to=<{0,0}>:pat=<els=[I4{1/8,-3/8}, #{-1/4,-1/8}, !-{0,0,0,-1/4}]>" 2.314671)
+    }
+    )
+})
+
+    
+
+)

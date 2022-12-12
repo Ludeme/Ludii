@@ -92,7 +92,7 @@
         {
         (board Colour Phase0 (colour 232 229 212))
         (board Colour InnerEdges (colour 232 229 212))
-    (board Colour OuterEdges (colour 232 229 212)) //(colour 157 155 141))
+    (board Colour OuterEdges (colour 232 229 212))
     (board StyleThickness OuterEdges 8)
     (show Edges All Adjacent connection:true Thick (colour 157 155 141))
     (show Symbol "square-alt1.svg" 
@@ -109,4 +109,7 @@
     (piece Scale "Disc" 0.97)
     }
 )
+    (ai
+        "Make Muster_ai"
+    )
 )

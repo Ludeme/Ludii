@@ -1,7 +1,32 @@
 (define "Phase Chess_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (material)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{}, -{0,0,0}, !f{1/4}, -{1/2,0,0}]>" -0.030662255)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, R0{1/4,0,0,0}, -{1/2,0,0}]>" -0.059122674)
+        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!R1{-1/4,1/4}, -{0,1/4,0,0}]>" -2.839319E-4)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, !f{0,0}, -{1/2,0,0}]>" -0.024675926)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[I1{1/4,0}, !f{0,0,-1/4,0}]>" 0.02347844)
+        (pair "rel:last_to=<{1/4,0,0,0}>:to=<{}>:pat=<els=[-{0,0,0}, !f{0,0}]>" -0.028687887)
+        (pair "rel:last_to=<{1/4,0,0,0}>:to=<{}>:pat=<els=[!-{0,1/4}]>" 0.105451375)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 0.48828053)
+        (pair "rel:from=<{}>:to=<{-1/4,0,0}>:pat=<els=[R0{0,1/4}, #{-1/2,0,0}, -{0,0,0}]>" 0.048997506)
+        (pair "rel:from=<{}>:to=<{-1/4,0,0}>:pat=<els=[R0{0,1/4}, !I5{1/4,-1/4}, -{0,0,0}]>" -0.0073444336)
+        (pair "rel:to=<{0,0,0}>:pat=<els=[R0{1/4,1/4}, #{-1/4,0,0}, !I5{1/2,-1/4}, -{1/4,0,0}, f{0,0,0,-1/2,0,0}]>" -5.251991)
+        (pair "rel:from=<{}>:pat=<els=[R0{0,1/4}, #{1/2,0,0}, !I5{1/4,-1/4}, -{0,0,0}]>" 0.027355142)
+        (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[#{-1/4,0,0}, -{1/4,0,0}, f{0,0,0,-1/2,0,0}]>" -0.10255994)
+    }
+    )
+})
+
+    
+
 )

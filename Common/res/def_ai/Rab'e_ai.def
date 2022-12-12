@@ -1,0 +1,32 @@
+(define "Rab'e_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" 0.028486319)
+        (pair "rel:to=<{}>:pat=<els=[!-{0}]>" -7.667863E-4)
+        (pair "rel:to=<{}>:pat=<els=[!R0{0,1/4}]>" 0.0)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!R0{1/4,0}]>" 0.0343827)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" 0.0021350682)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, !R0{1/2,-1/4}]>" 0.020114746)
+        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[-{1/2,1/4}, !R0{0,-1/4}]>" 0.047147904)
+        (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}]>" -0.0013187828)
+        (pair "rel:to=<{}>:pat=<els=[!-{0}, -{0,0,0,0}]>" -0.008559634)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{1/4,0}, #{0}]>" 0.009936112)
+        (pair "rel:last_to=<{1/2,-1/4}>:to=<{}>:pat=<els=[!-{0}, #{0,-1/4}]>" 0.014157879)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, !R1{1/2,0,0}]>" 0.036135007)
+        (pair "rel:to=<{}>:pat=<els=[R0{1/2,1/4}, !-{0}, #{0,1/4}]>" 0.0040197102)
+        (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[-{0,1/4}]>" -0.020508336)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, !R1{0,1/4}, -{1/2}]>" 0.043608665)
+        (pair "rel:to=<{}>:pat=<els=[!R0{0,0}, !R1{0,1/4}]>" 0.0031827556)
+        (pair "rel:to=<{}>:pat=<els=[!R0{0,0}, !R1{0,1/4}, -{-1/2}]>" 0.03529464)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, !R1{0,1/4}, !-{-1/4,1/4}]>" 0.008678958)
+    }
+    )
+})
+
+    
+
+)

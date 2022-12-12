@@ -1,7 +1,46 @@
 (define "Ngolo_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (mobilitySimple)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (mobilitySimple)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}, !-{0}]>" 0.46034762)
+        (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}, !-{1/2,1/4}]>" 0.47010028)
+        (pair "rel:to=<{}>:pat=<els=[!-{0}, !-{-1/2,1/4}, !-{1/2}, !-{0,1/4}]>" 0.44930285)
+        (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}, !-{0}, !-{1/2,1/4}]>" 0.47663587)
+        (pair "rel:to=<{}>:pat=<els=[!-{-1/4,-1/4}, !-{0,1/4}, !-{-1/2}, !-{0,-1/4}, !-{0}]>" 0.44977954)
+        (pair "rel:to=<{}>:pat=<els=[!-{1/4,-1/4}, !-{1/2,1/4}, !-{0}, !-{1/2}, !-{0,-1/4}]>" 0.44902506)
+        (pair "rel:to=<{}>:pat=<els=[!-{0}, !-{1/2}, !-{0,1/4}]>" 0.42424667)
+        (pair "rel:to=<{}>:pat=<els=[!-{1/4,-1/4}, !-{0}, !-{1/2,-1/4}, !-{1/2}, !-{0,-1/4}]>" 0.44977954)
+        (pair "rel:to=<{}>:pat=<els=[!-{0}, !-{1/2,1/4}]>" 0.45457685)
+        (pair "rel:to=<{}>:pat=<els=[!-{1/4,-1/4}, !-{0,-1/4}]>" 0.47005576)
+        (pair "rel:to=<{}>:pat=<els=[]>" 0.46125466)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4}, !-{0}, !-{1/2}, !-{0,-1/4}]>" 0.45247057)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4}, !-{0}, !-{1/2,1/4}]>" 0.5079352)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[!-{0}, !-{1/2}]>" 0.48342225)
+        (pair "rel:to=<{}>:pat=<els=[]>" 0.46739295)
+        (pair "rel:to=<{}>:pat=<els=[!-{0}, !-{1/4,1/4}]>" 0.48196855)
+        (pair "rel:to=<{}>:pat=<els=[!-{0}]>" 0.4680122)
+        (pair "rel:to=<{}>:pat=<els=[!-{1/4,1/4}, !-{0,-1/4}]>" 0.46769583)
+        (pair "rel:to=<{}>:pat=<els=[#{0,1/4}]>" 0.54929566)
+        (pair "rel:to=<{}>:pat=<els=[!-{0}, !-{1/2,-1/4}]>" 0.48196855)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, !-{-1/4}, !-{1/4,-1/4}, !-{1/2}]>" 0.45883542)
+        (pair "rel:to=<{}>:pat=<els=[!-{0}, !-{1/2,-1/4}, !-{-1/4}]>" 0.46608913)
+        (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, !-{1/4}]>" 0.48135132)
+        (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, !-{1/2,1/4}]>" 0.4865399)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4,0,0}, !-{0}, !-{-1/4}]>" 0.48319146)
+        (pair "rel:to=<{}>:pat=<els=[-{0}]>" 0.45392746)
+        (pair "rel:to=<{}>:pat=<els=[#{0}]>" 0.54929566)
+    }
+    )
+})
+
+    
+
 )

@@ -1,0 +1,31 @@
+(define "Sweep Burrow_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,0,0,0,0,0,1/4}>:pat=<els=[f{0,0,0,0,0,0,1/4,0,1/4}]>" 0.46808535)
+        (pair "rel:last_to=<{0,0,0,0}>:to=<{}>:pat=<els=[]>" -0.3738979)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" -0.12592219)
+        (pair "rel:last_to=<{0}>:from=<{0}>:to=<{}>:pat=<els=[]>" 0.5359686)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,1/2,0,0}]>" -0.07901103)
+        (pair "rel:last_to=<{1/2,0,0,0}>:to=<{}>:pat=<els=[f{0,0,0}]>" -0.55205214)
+        (pair "rel:last_to=<{1/2,0,0,0}>:from=<{0}>:pat=<els=[]>" -0.80896324)
+        (pair "rel:from=<{}>:pat=<els=[-{0,-1/4}, !-{1/4,-1/4}, !-{1/2,0}]>" 0.16526282)
+        (pair "rel:to=<{}>:pat=<els=[!-{0,0,0}]>" 1.900893E-4)
+        (pair "rel:last_to=<{}>:from=<{}>:to=<{0}>:pat=<els=[]>" 0.62331986)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[#{1/4,-1/4}, #{1/4,0}, !-{-1/4,1/4}, #{0,-1/4}, #{0,0}, !-{1/2,1/4}]>" -0.07570917)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0,1/4,0,-1/4}, #{0,0,0,0,1/4,1/2,0}]>" 0.054856665)
+        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[#{1/2,-1/4}, !-{0,1/4}, #{1/4,-1/4}, !-{-1/4,1/4}]>" 0.59606916)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" -0.20031331)
+        (pair "rel:to=<{}>:pat=<els=[#{0}]>" 0.010115708)
+        (pair "rel:from=<{0,0,0,0,1/4}>:to=<{}>:pat=<els=[-{0,0,0,0,1/4,0,-1/4}, #{0,0,0,0,1/4,1/2,0}]>" -0.054801673)
+        (pair "rel:from=<{}>:pat=<els=[!-{0,1/4}]>" -0.0013323434)
+    }
+    )
+})
+
+    
+
+)

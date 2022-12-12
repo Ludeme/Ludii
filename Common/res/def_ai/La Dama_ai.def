@@ -1,0 +1,38 @@
+(define "La Dama_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[e{0}]>" 2.650695)
+        (pair "rel:last_to=<{0,-1/4}>:from=<{}>:to=<{0,0,-1/4,0}>:pat=<els=[!f{0,0,-1/4,0,-1/4,1/4}]>" 3.32245)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[e{0}, -{0,0,1/4,0,0,0}]>" 3.6427548)
+        (pair "rel:from=<{}>:to=<{0,0,-1/4,0}>:pat=<els=[!I3{}, !f{0,0,-1/4,0,-1/4,1/4}]>" 3.0892391)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!f{0,1/4}]>" 1.2978597)
+        (pair "rel:last_to=<{0,-1/4}>:from=<{}>:to=<{0,0,-1/4,0}>:pat=<els=[-{0,0,-1/4,0,1/4}, !f{0,0,-1/4,0,-1/4,1/4}]>" 3.4985268)
+        (pair "rel:from=<{0,0,0}>:to=<{}>:pat=<els=[e{0}]>" 2.2843885)
+        (pair "rel:from=<{}>:to=<{0,0,-1/4,0}>:pat=<els=[!I3{}, -{0,0,-1/4,0,1/4}]>" 3.2039325)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[]>" 1.8777939)
+        (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[R1{0,1/4}]>" 2.3937316)
+        (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[!I3{}]>" 3.3371449)
+        (pair "rel:to=<{}>:pat=<els=[e{0}, -{0,0,1/4,0,0,0}]>" 0.8487521)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[!-{}]>" 3.508245)
+        (pair "rel:to=<{}>:pat=<els=[I1{}]>" 3.5840487)
+        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!-{}]>" 3.4027996)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!#{0,0,1/4,-1/4}]>" 1.8846595)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[R0{1/4,1/4}]>" 2.0402722)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!R1{0,0}, !#{0,0,1/4,-1/4}]>" 2.3647182)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!R1{0,0}]>" 1.9235911)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[e{1/4}]>" 1.8297337)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[I1{0,0,0,1/4}]>" 2.3814538)
+        (pair "rel:from=<{}>:pat=<els=[!R1{0,0}]>" -0.05450063)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[]>" 1.4258792)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[e{0,0,1/2,1/4}]>" 2.0211587)
+    }
+    )
+})
+
+    
+
+)

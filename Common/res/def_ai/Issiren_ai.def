@@ -1,0 +1,29 @@
+(define "Issiren_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 0.14920646)
+        (pair "rel:from=<{}>:pat=<els=[-{0,1/2,1/4}]>" 1.4298171E-5)
+        (pair "rel:last_to=<{}>:from=<{}>:to=<{0}>:pat=<els=[-{0,1/2,1/4}]>" -0.014763838)
+        (pair "rel:last_to=<{1/2,-1/4}>:to=<{}>:pat=<els=[-{0,0}]>" 0.26930112)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" -0.025834389)
+        (pair "rel:last_to=<{}>:from=<{}>:to=<{0}>:pat=<els=[-{0,1/4,-1/4}]>" -0.10669208)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,-1/4}, -{0,1/4,-1/4}]>" 0.031227032)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" 5.8742557E-5)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[-{0}, -{1/4,1/4}]>" 0.37997338)
+        (pair "rel:to=<{}>:pat=<els=[-{0,-1/4}, -{1/4,1/4}]>" 0.18135689)
+        (pair "rel:to=<{0,0}>:pat=<els=[f{1/4}, -{0,0,1/4,-1/4}]>" -0.85527563)
+        (pair "rel:from=<{}>:pat=<els=[f{1/4}, -{0,0,-1/4,1/4}, -{0,0,1/4,-1/4}]>" -0.008558571)
+        (pair "rel:to=<{}>:pat=<els=[-{-1/2,1/4}, -{0,1/4}, -{0,-1/4}, -{1/4,1/4}]>" 0.17228103)
+        (pair "rel:last_from=<{1/2,-1/4}>:to=<{}>:pat=<els=[-{-1/2,1/4}, -{0,1/4}, -{0,-1/4}]>" 0.006174667)
+        (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, -{1/2,-1/4}]>" -0.055742104)
+    }
+    )
+})
+
+    
+
+)

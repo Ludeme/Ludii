@@ -1,0 +1,33 @@
+(define "Mulabalaba_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[-{0,-1/4,1/6}]>" 0.07345356)
+        (pair "rel:from=<{}>:to=<{1/2}>:pat=<els=[!-{0,0,0}]>" 0.41505805)
+        (pair "rel:last_to=<{0,1/4}>:to=<{0}>:pat=<els=[!-{-1/2,0,0}]>" -2.7957177)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0,1/4}]>" 0.46780756)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/2}, N4{0,1/2,1/6}]>" 0.8816809)
+        (pair "rel:to=<{0}>:pat=<els=[N4{0,1/2,1/6}]>" -2.7957177)
+        (pair "rel:last_from=<{0,-1/2,-1/6}>:from=<{}>:pat=<els=[#{3/8,0,0,0}]>" 0.3271723)
+        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 0.56520677)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0}]>" 0.953434)
+        (pair "rel:to=<{}>:pat=<els=[e{1/8,1/8}, f{0}, f{0,0}]>" 0.98599994)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/6}, f{0,1/6,0}]>" 1.3899468)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0}]>" 0.434927)
+        (pair "rel:from=<{}>:to=<{0,0,1/4,1/4,0}>:pat=<els=[e{1/4,-1/4}]>" -0.038857523)
+        (pair "rel:to=<{0}>:pat=<els=[f{0,1/6}, f{0,1/6,0}]>" -2.5272882)
+        (pair "rel:to=<{}>:pat=<els=[-{0,3/8}]>" 0.0071678446)
+        (pair "rel:from=<{}>:pat=<els=[f{0,0}]>" 0.3564603)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/4,0}, f{0,1/6,0}]>" 0.99931306)
+        (pair "rel:to=<{}>:pat=<els=[e{1/8,1/8}, f{0,0}]>" 0.4221098)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4,-3/8}, N8{0,-1/6}]>" -0.08200297)
+    }
+    )
+})
+
+    
+
+)

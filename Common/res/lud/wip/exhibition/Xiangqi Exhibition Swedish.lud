@@ -146,22 +146,22 @@
     
     (info
         {
-
+        
         (rules "Detta är de moderna standardreglerna för Xiangqi. Spelade på ett liknande sätt som schack. Det finns två \"slott\" som kungen och hans två generaler inte kan lämna. Det finns också en \"flod\" i mitten av brädan, som elefanterna inte kan korsa. Bönder främjas när de korsar floden.")
-
-                }
-            )
-            
-            (graphics {
-                (player Colour P1 (colour White))
-                (player Colour P2 (colour Red))
-                (board Style Xiangqi)
-                (piece Families {"Defined" "Western"})
-                (piece ExtendName P2 "_black")
-            })
-            
-            (ai 
-                "Xiangqi_ai"
-            )
-            
-        )
+        
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Red))
+        (board Style Xiangqi)
+        (piece Families {"Defined" "Western"})
+        (piece ExtendName P2 "_black")
+    })
+    
+    (ai 
+        "Xiangqi_ai"
+    )
+    
+)

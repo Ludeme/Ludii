@@ -1,0 +1,36 @@
+(define "Mraha wa Bwe_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!f{0,0,1/4,0}]>" 1.7848299)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!#{0,1/4}]>" 1.7935264)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,0,-1/2,1/4}]>" 1.9581597)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/4,0}]>" 1.9991505)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!e{0,0,0,0}, -{1/4}]>" 1.8475792)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,-1/2,0,1/4}]>" 1.75311)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,-1/4,1/4}]>" 1.9706706)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[#{1/4,1/4}]>" 1.9706706)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/4,1/4}]>" 2.4857929)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!#{0,0,1/2,0,0,0}]>" 2.7722511)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!#{0,0,-1/4,1/4}]>" 1.8795834)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!f{0,0,1/4,0}]>" 1.4714022)
+        (pair "rel:last_from=<{}>:from=<{0,0}>:to=<{}>:pat=<els=[!#{0,0,-1/4,1/4}]>" 2.3592966)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[f{0,0,1/4,-1/4}]>" 1.7415243)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[#{1/2}]>" 1.3924165)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[#{-1/4}, #{1/2}]>" 2.316383)
+        (pair "rel:last_to=<{-1/2}>:to=<{}>:pat=<els=[!f{0,1/4}, #{0}]>" 1.3924165)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0,0}]>" -0.68125075)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[e{1/2}]>" 1.4080107)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[e{1/2}, !f{0,0,-1/4,0}]>" 1.381612)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{1/2,0,0,0}]>" -0.37856)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{1/2,0,0,0}, -{0,0,0}]>" -0.68125075)
+    }
+    )
+})
+
+    
+
+)

@@ -1,7 +1,52 @@
 (define "Level Chess_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (centreProximity)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (centreProximity)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[I21{0,0,0}]>" -0.2959433)
+        (pair "rel:to=<{}>:pat=<els=[!I19{}]>" 0.0021426328)
+        (pair "rel:from=<{}>:pat=<els=[!f{0,0}]>" -4.838727E-5)
+        (pair "rel:to=<{}>:pat=<els=[I3{0,1/4}]>" -3.8026874)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:to=<{}>:pat=<els=[I18{0}]>" -0.20867988)
+        (pair "rel:from=<{}>:pat=<els=[!R8{0}]>" 0.0011478266)
+        (pair "rel:last_from=<{0,0}>:from=<{}>:pat=<els=[]>" -4.1372566)
+        (pair "rel:to=<{}>:pat=<els=[I13{}]>" -2.0836754)
+        (pair "rel:from=<{}>:pat=<els=[!f{0,1/4}]>" 0.0016127323)
+    }
+    )
+    (featureSet P3 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[f{0,0,0}]>" -3.0755792)
+        (pair "rel:from=<{}>:pat=<els=[I23{0,0,0}]>" -8.1909275)
+        (pair "rel:from=<{}>:pat=<els=[I23{0,1/4}]>" -3.7125478)
+        (pair "rel:to=<{}>:pat=<els=[!I17{}]>" 0.017849624)
+        (pair "rel:from=<{}>:pat=<els=[R3{0}]>" 1.1876884)
+        (pair "rel:from=<{}>:pat=<els=[I5{0}]>" -4.897615)
+        (pair "rel:from=<{}>:pat=<els=[I3{0,0}]>" -2.8035429)
+        (pair "rel:from=<{}>:pat=<els=[!R4{0,1/4}]>" 1.138884)
+        (pair "rel:to=<{}>:pat=<els=[I19{0,0,0}]>" -2.81667)
+    }
+    )
+    (featureSet P4 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[I12{0,0,0}]>" -1.9298443)
+        (pair "rel:to=<{}>:pat=<els=[I14{0,1/4}]>" -4.313633)
+        (pair "rel:to=<{}>:pat=<els=[!I2{}]>" 0.23972271)
+        (pair "rel:to=<{}>:pat=<els=[I24{0,0,0}]>" -0.73536205)
+        (pair "rel:from=<{}>:pat=<els=[I16{0,0,0,0}]>" -1.7375013)
+        (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:to=<{}>:pat=<els=[I11{0}]>" -2.8047576)
+        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+    }
+    )
+})
+
+    
+
 )

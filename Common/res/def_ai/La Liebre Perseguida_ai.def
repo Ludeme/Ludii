@@ -1,7 +1,29 @@
 (define "La Liebre Perseguida_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (lineCompletionHeuristic)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (lineCompletionHeuristic)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_from=<{0,3/8}>:to=<{}>:pat=<els=[]>" 1.4901406)
+        (pair "rel:last_from=<{1/8,3/8}>:to=<{}>:pat=<els=[N8{0,3/8,0}, N8{0}]>" 1.0059983)
+        (pair "rel:last_from=<{1/8,3/8}>:from=<{0}>:to=<{}>:pat=<els=[N8{0,3/8,0}, N8{0}]>" 1.3724769)
+        (pair "rel:last_from=<{0,3/8}>:to=<{}>:pat=<els=[#{1/2,-3/8}]>" 1.0225817)
+        (pair "rel:to=<{}>:pat=<els=[R1{0,3/8}, e{3/8,-1/2,3/8}]>" 0.25372773)
+        (pair "rel:to=<{0}>:pat=<els=[N8{0,1/2,0}]>" 1.8276925)
+        (pair "rel:to=<{}>:pat=<els=[!R0{0,1/4}, e{1/4,-1/2,3/8}]>" 0.78338397)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4,3/8}, f{0,1/2,-3/8}]>" 0.6192515)
+        (pair "rel:from=<{}>:pat=<els=[e{1/8,-1/8}, !R1{0,-1/8}]>" 0.19255893)
+        (pair "rel:from=<{0}>:pat=<els=[e{1/4,3/8}, !R0{-1/2,1/4}, -{0,-3/8,1/8}]>" -0.76640874)
+    }
+    )
+})
+
+    
+
 )

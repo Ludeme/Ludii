@@ -1,0 +1,33 @@
+(define "Tandems_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,1/4,1/4}]>" 0.10772501)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" -0.012281969)
+        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!-{0,1/4,0,0}]>" 0.1485889)
+        (pair "rel:to=<{}>:pat=<els=[!e{0,1/4,1/4}]>" 0.0)
+        (pair "rel:from=<{0}>:pat=<els=[!R0{1/4,0,0,0}]>" -1.087947)
+        (pair "rel:to=<{}>:pat=<els=[!-{1/4}, -{0,1/4,0}]>" -0.011587114)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{1/4}]>" 0.029196134)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[!-{1/2}, f{0,1/4,0}]>" -0.08444967)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!#{0,0,0}, f{0,1/4,0}]>" -0.09521197)
+        (pair "rel:from=<{}>:pat=<els=[f{0}]>" -0.008368982)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,-1/2,1/4}]>" 0.056162182)
+        (pair "rel:from=<{}>:pat=<els=[-{0,0}]>" -0.00946547)
+        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:to=<{}>:pat=<els=[#{0,0}]>" 0.013572794)
+        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[e{1/4}, f{0,0}]>" 0.030802105)
+        (pair "rel:from=<{}>:pat=<els=[#{0,-1/2,1/4}]>" 0.030742278)
+        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[f{0,0}]>" 0.055619188)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" -0.0392208)
+        (pair "rel:last_to=<{0,1/4,0}>:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}]>" 0.020435816)
+    }
+    )
+})
+
+    
+
+)

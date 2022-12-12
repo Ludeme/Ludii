@@ -1,18 +1,48 @@
 (define "Horde Chess_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (material transformation:(divNumInitPlacement) pieceWeights:{
-            (pair "Pawn1" 1.0)
-            (pair "Pawn2" 1.0)
-            (pair "Rook1" 5.0)
-            (pair "Rook2" 5.0)
-            (pair "Bishop1" 3.0)
-            (pair "Bishop2" 3.0)
-            (pair "Knight1" 3.0)
-            (pair "Knight2" 3.0)
-            (pair "Queen1" 9.0)
-            (pair "Queen2" 9.0)
-        })
-    })
     
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+    (material transformation:(divNumInitPlacement) pieceWeights:{
+        (pair "Pawn1" 1.0)
+        (pair "Pawn2" 1.0)
+        (pair "Rook1" 5.0)
+        (pair "Rook2" 5.0)
+        (pair "Bishop1" 3.0)
+        (pair "Bishop2" 3.0)
+        (pair "Knight1" 3.0)
+        (pair "Knight2" 3.0)
+        (pair "Queen1" 9.0)
+        (pair "Queen2" 9.0)
+    })
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[I1{1/4}, I9{0,0,-1/2,0,0}]>" -0.2790222)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[I3{1/4}]>" -0.09291572)
+        (pair "rel:last_to=<{1/2,-1/4}>:to=<{0}>:pat=<els=[!I9{}, !I10{1/2,1/4}, !e{0,1/4,0,0}]>" -1.3292791)
+        (pair "rel:to=<{}>:pat=<els=[I5{0,0,0}]>" 0.011191895)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R0{0,0,0,0}, #{0,1/2,0,0}]>" 0.17889218)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,1/2,1/4}]>" 0.06723404)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[#{0,1/2,0,0}]>" 0.11699963)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I5{0,0}, I7{0,-1/4,1/4}]>" 0.9183581)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[!R0{-1/4,-1/4}, -{0,0,0}, #{-1/2,0,0,0}, -{1/4,-1/4}, !I2{0,0,0,0}]>" 0.06731903)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!I2{1/4,0,0,0}, !R1{1/2}, !R1{1/4}, !I2{-1/4,-1/4}, I3{0,1/4}]>" -0.1186701)
+        (pair "rel:last_from=<{0,1/4}>:from=<{0}>:to=<{}>:pat=<els=[R0{0,-1/4}, !I2{0,-1/4}]>" -0.03376186)
+        (pair "rel:from=<{}>:pat=<els=[R0{0,0}]>" -0.0110038025)
+        (pair "rel:from=<{}>:pat=<els=[I5{0}]>" 0.08659508)
+        (pair "rel:to=<{}>:pat=<els=[I5{0,0,0}]>" -0.054098137)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!R1{1/2}, !I2{0,1/4}, !I2{1/2,0,0,0}, !I2{-1/4,-1/4}, I3{0,1/4}]>" -0.07740573)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!I2{1/4,0,0,0}, !R1{1/2}, !I2{0,1/4}, !I2{1/2,0,0,0}, I3{0,1/4}]>" -0.072624184)
+        (pair "rel:from=<{}>:pat=<els=[!R0{0,-1/4}, -{-1/4}, -{1/4,0,0}, -{0,0,0,0}, -{1/2,-1/4}]>" 0.08129419)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!R1{1/2}, !I2{0,1/4}, !R1{1/4}, !I2{-1/4,-1/4}, I3{0,1/4}]>" -0.11365122)
+    }
+    )
+})
+
+    
+
 )

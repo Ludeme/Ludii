@@ -1,7 +1,31 @@
 (define "Asalto_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (material)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,-1/2,0,1/2,0}]>" 6.346759)
+        (pair "rel:last_to=<{0,0,-1/2}>:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,-1/2,0,1/2,0}]>" 6.8242545)
+        (pair "rel:from=<{}>:pat=<els=[!-{0,1/4,1/8}]>" 0.016739953)
+        (pair "rel:last_to=<{0,0,-1/2}>:from=<{0,0}>:pat=<els=[N8{-1/4,0,0}, !-{0,0,-1/2,0,1/2,0}]>" -4.7022047)
+        (pair "rel:last_from=<{0,3/8}>:from=<{}>:pat=<els=[!-{0,1/4,1/8}]>" -0.11040114)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N8{0,0,0}, N8{0,0,1/2,1/4}, N8{0,0,3/8,1/4}]>" 7.1494765)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_from=<{0}>:from=<{}>:pat=<els=[]>" -0.15699098)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N8{0,-1/4}, #{0,1/4,-3/8}, N8{0,-1/2,0,-1/4}]>" 0.10290847)
+        (pair "rel:last_to=<{0,1/2,-1/4}>:to=<{0}>:pat=<els=[!#{1/4,0,0,0}, -{0,1/8,1/8}]>" -3.6729014)
+        (pair "rel:to=<{}>:pat=<els=[f{0,1/8}]>" -0.14061432)
+        (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[N8{0,-1/4}, -{-3/8,-1/8}, #{0,1/4,-3/8}]>" -0.119163476)
+        (pair "rel:last_from=<{1/8,-3/8}>:to=<{}>:pat=<els=[!-{-1/8,0}, #{0,0,-1/4}, #{0,1/4}]>" -1.8038013)
+    }
+    )
+})
+
+    
+
 )

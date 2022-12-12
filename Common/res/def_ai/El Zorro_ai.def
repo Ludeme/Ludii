@@ -1,0 +1,34 @@
+(define "El Zorro_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{1/4,0}>:pat=<els=[#{0,0}]>" 0.64802843)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/4,0,0,0}]>" 0.9505118)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{-1/4,0}, -{0,0,1/4,0,0,0}]>" 1.5312538)
+        (pair "rel:from=<{}>:pat=<els=[#{0,0}, -{1/4,0,1/4,0,0,0}]>" 0.18724528)
+        (pair "rel:to=<{0}>:pat=<els=[e{0,1/2,3/8}]>" -2.350142)
+        (pair "rel:from=<{}>:pat=<els=[!-{0,3/8}, e{3/8,-1/2,-3/8}]>" -0.0076658283)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}]>" 4.572708E-4)
+        (pair "rel:to=<{}>:pat=<els=[!-{0,0}]>" 0.023584373)
+        (pair "rel:to=<{1/4,0}>:pat=<els=[#{0,0}]>" -2.350142)
+        (pair "rel:from=<{}>:pat=<els=[-{0,0}, #{0,-1/2,1/4}]>" 0.048129395)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,-1/4,1/4}, N8{0,-1/2,-1/2,-1/4}]>" 0.30443487)
+        (pair "rel:from=<{0}>:pat=<els=[-{1/8}]>" -3.0100005)
+        (pair "rel:from=<{}>:pat=<els=[f{0,-1/8}, !-{0,-1/4,1/4}, N8{0,-1/2,-1/2,-1/4}]>" 0.27107242)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{0,1/4,0,0}]>" 0.024038358)
+        (pair "rel:from=<{0}>:pat=<els=[f{0,1/2,0,0}]>" -3.0100005)
+        (pair "rel:to=<{}>:pat=<els=[-{1/8}, #{0,-1/2,1/8}]>" -0.12748621)
+        (pair "rel:last_to=<{1/4,-1/8}>:from=<{}>:pat=<els=[-{0,1/8,0,0}]>" 0.16877457)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[#{0,-1/2,1/8}]>" -0.09268761)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/8,0,0}]>" 0.0764387)
+        (pair "rel:last_to=<{0,0,3/8}>:from=<{}>:to=<{0}>:pat=<els=[!f{-1/8,0}, N8{0,1/4,0}, !-{0,3/8,1/8}, N8{0,1/8,1/4}]>" -0.050875507)
+    }
+    )
+})
+
+    
+
+)

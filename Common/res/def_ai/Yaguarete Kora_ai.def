@@ -1,0 +1,26 @@
+(define "Yaguarete Kora_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{0,3/8}>:from=<{0}>:to=<{}>:pat=<els=[!e{-1/4,-1/4}, -{0,0,0}]>" 0.15407088)
+        (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:last_to=<{0,3/8}>:from=<{0}>:to=<{}>:pat=<els=[!e{-1/4,-1/4}, #{0,-1/2,3/8,0,0}]>" 0.18667619)
+        (pair "rel:to=<{0}>:pat=<els=[!e{1/4,0,0,0}, !-{0,1/4,0,0,0}]>" -0.19057061)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,1/4,0,0,0}]>" 0.050837293)
+        (pair "rel:last_to=<{0,3/8}>:from=<{0}>:pat=<els=[!e{-1/4,-1/4}, -{0,0,0}, #{0,-1/2,3/8,0,0}]>" -0.19057061)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{1/4,0,0,0}]>" 0.06663371)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{-3/8,3/8}>:from=<{1/4}>:pat=<els=[-{0,-1/8}]>" -1.3813065)
+        (pair "rel:to=<{0}>:pat=<els=[e{0,0}]>" -1.3813065)
+        (pair "rel:from=<{0}>:pat=<els=[-{0,1/8}, e{0,-1/2,0}]>" -1.3813065)
+        (pair "rel:from=<{}>:to=<{1/2}>:pat=<els=[N8{0,-3/8}]>" -0.06742209)
+        (pair "rel:from=<{0}>:pat=<els=[e{0,1/4}, N8{0,-3/8,0,0,0}]>" -1.3813065)
+    }
+    )
+})
+
+    
+
+)

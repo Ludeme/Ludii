@@ -1,7 +1,37 @@
 (define "Dam_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (material)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[-{-1/4,-1/4}, !-{0,1/4,1/4,0,0}]>" -1.6237607)
+        (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[!e{0,0,1/4,0,-1/2,1/4}]>" 0.19098483)
+        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!-{0,1/4,1/4,0,0}]>" -0.23023708)
+        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[e{0,1/4,1/4,0}]>" -0.59515464)
+        (pair "rel:last_to=<{}>:from=<{}>:pat=<els=[]>" 0.5713657)
+        (pair "rel:last_to=<{-1/4,1/4}>:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[!e{0,0,1/4,0,-1/2,1/4}]>" -0.28950113)
+        (pair "rel:from=<{}>:pat=<els=[!-{0}, #{1/4,1/4}]>" 0.29554236)
+        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[]>" -0.4272365)
+        (pair "rel:from=<{0,0,1/4,0}>:pat=<els=[!e{0,0,1/4,0,-1/2,1/4}]>" -0.3270825)
+        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[R1{0,0}, e{0,1/4,1/4,0}]>" -1.1908244)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{0,0,0,1/4,0,0}>:pat=<els=[!e{0,0,0,1/4,0,0,-1/4,-1/4}]>" 1.2743355)
+        (pair "rel:to=<{0,0,0,1/4,0,0}>:pat=<els=[!R0{-1/4,-1/4}, !e{0,0,0,1/4,0,0,-1/4,-1/4}]>" 1.2743355)
+        (pair "rel:to=<{}>:pat=<els=[R0{0,1/4}]>" -4.1112927E-4)
+        (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[I1{0,-1/4,0,1/4}]>" 0.053967673)
+        (pair "rel:to=<{}>:pat=<els=[]>" -4.9576967E-4)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4,1/4}, !-{0,0,1/4,0,1/4,1/4}]>" -0.010134435)
+        (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[!f{1/4,0}, I1{0,-1/4,0,1/4}]>" 0.06306583)
+        (pair "rel:from=<{}>:pat=<els=[!-{0,0,0,0}]>" 0.008331982)
+    }
+    )
+})
+
+    
+
 )

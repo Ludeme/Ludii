@@ -1,0 +1,36 @@
+(define "Paintbucket_ai"
+    
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+    (score)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[#{-1/2,0}, !f{0,1/4}, f{-1/4,-1/4}, f{0}]>" 0.4856551)
+        (pair "rel:last_to=<{1/2,1/4}>:to=<{}>:pat=<els=[e{0,-1/4}, e{1/4,0,0}, e{-1/4,1/4}]>" -1.2605401)
+        (pair "rel:to=<{}>:pat=<els=[f{1/2,0,0}, #{1/4}, !e{0,-1/4}]>" 0.8390836)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[f{1/2,0}, e{1/4,1/4}]>" -1.1514823)
+        (pair "rel:to=<{}>:pat=<els=[e{0,0,0,0}, f{1/4,-1/4}, f{-1/2,0}, f{0,0,0}]>" 1.3540337)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{-1/4,0}, f{1/4,0,0}]>" 0.72997457)
+        (pair "rel:to=<{}>:pat=<els=[e{-1/4,0,0,0}, f{0,-1/4}, f{1/2}]>" 0.8218521)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[f{0,-1/4}, f{-1/4}, f{0}, e{1/2,0,0}]>" 0.36574927)
+        (pair "rel:to=<{}>:pat=<els=[#{-1/2,0}, f{0,1/4}, f{0}, f{1/4,1/4}]>" 1.0414099)
+        (pair "rel:to=<{}>:pat=<els=[f{1/4}, f{0,-1/4}, f{-1/4}, f{0}]>" 0.78086156)
+        (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/4,1/4}, f{1/2,1/4}]>" 1.4220089)
+        (pair "rel:to=<{}>:pat=<els=[e{0,0,0,0}, f{0}, f{1/4,1/4}, f{1/4}, f{1/2,1/4}]>" 1.6241027)
+        (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[!e{0,1/4}, e{1/2,0,0,0}]>" -0.6175305)
+        (pair "rel:to=<{}>:pat=<els=[f{1/2,0}, f{1/4}, f{0,-1/4}]>" 1.5044836)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0}, f{1/2,1/4}, !e{-1/4,0}, f{0}, e{1/2,0,0}]>" 1.6460565)
+        (pair "rel:to=<{}>:pat=<els=[f{0,1/4}, #{0,0,0}]>" -0.17450683)
+        (pair "rel:to=<{}>:pat=<els=[f{1/4}, f{0,-1/4}, f{0}, e{1/2,0,0}]>" 0.6322712)
+    }
+    )
+})
+
+    
+
+)

@@ -1,9 +1,36 @@
 (define "Mehen_ai"
-    (useFor { "Variant/Kendall" }
+(useFor { "Ruleset/Kendall (Scholarly)" }
+    
         (bestAgent "MAST")
         trainedHeuristics:(heuristics {
-            (material)
-        })
-        
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[!-{}]>" 1.6488488)
+        (pair "rel:to=<{}>:pat=<els=[!-{}, !I8{}]>" 1.7263032)
+        (pair "rel:to=<{}>:pat=<els=[!e{0,0}]>" 6.617124E-4)
+        (pair "rel:from=<{}>:pat=<els=[]>" -0.021315143)
+        (pair "rel:to=<{0,0,0,0,0,0}>:pat=<els=[!I4{1/2}, !I8{0,0,0,0,0,0,1/2}]>" -9.966804)
+        (pair "rel:to=<{0,0,0,0,0,0}>:pat=<els=[!I8{0,0,0,0,0,0,1/2}]>" -9.966804)
+        (pair "rel:from=<{}>:pat=<els=[!I4{1/2}, !I8{0,0,0,0,0,0,1/2}]>" -0.02122033)
+    }
     )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[f{0,0,0,0}]>" 0.29870263)
+        (pair "rel:to=<{0}>:pat=<els=[!I5{1/2}]>" -21.462904)
+        (pair "rel:from=<{}>:pat=<els=[!I8{}]>" -0.16918065)
+        (pair "rel:from=<{}>:pat=<els=[!I3{1/2,0}, !I7{0,0,0,0}]>" -0.01515657)
+        (pair "rel:from=<{}>:pat=<els=[!I5{0}]>" -0.018246844)
+        (pair "rel:from=<{}>:pat=<els=[e{0,0}]>" -0.08669787)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[e{}, !-{0,0,1/2,0,1/2,0}]>" 0.4509187)
+        (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[!I6{0,0,0,1/2,0,0}]>" 1.6472509)
+    }
+    )
+})
+
+    
+
+)
 )

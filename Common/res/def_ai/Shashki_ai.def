@@ -1,7 +1,38 @@
 (define "Shashki_ai"
-    (bestAgent "ProgressiveHistory")
-    trainedHeuristics:(heuristics {
-        (material)
-    })
     
+        (bestAgent "ProgressiveHistory")
+        trainedHeuristics:(heuristics {
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[R0{-1/4,0}, -{0,-1/4}]>" -0.9179063)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[#{0,0,0}, -{1/2,1/4}]>" -0.45623657)
+        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[I2{0,-1/4}, #{1/4,1/4}]>" 2.0418298)
+        (pair "rel:from=<{}>:pat=<els=[I1{1/4,0}, #{0,1/4,0,0}, I2{0,1/4,-1/4,-1/4}]>" 0.23423083)
+        (pair "rel:to=<{}>:pat=<els=[R0{0,-1/4}, -{1/2,1/4,1/4,0,0,0}, R1{1/4,0,0}]>" -0.10962588)
+        (pair "rel:to=<{}>:pat=<els=[!R0{1/4,-1/4}, R1{0}, -{-1/4,1/4}]>" -0.053317156)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{0,-1/4}, !R1{0,-1/4}]>" -0.75324315)
+        (pair "rel:last_to=<{0,1/4,0,1/4}>:from=<{}>:to=<{0,1/4}>:pat=<els=[R1{0,0,0}]>" -0.74744153)
+        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[f{0,1/4,-1/2,-1/4}, !-{0,1/4,1/4,1/4}]>" -0.054989584)
+        (pair "rel:to=<{}>:pat=<els=[#{0,1/4}]>" 0.35828462)
+        (pair "rel:from=<{}>:to=<{1/4,1/4}>:pat=<els=[!R1{0,-1/4}]>" 0.09568858)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{1/4,1/4}, e{0,1/4}]>" -0.6118566)
+        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[I2{-1/2,0}, I1{0,1/4,0,-1/4}]>" -0.96740156)
+        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[I1{0,1/4,0,-1/4}]>" -0.95972306)
+        (pair "rel:to=<{}>:pat=<els=[R1{1/2,0,0}, R0{0,0,0}, e{0,1/4}]>" -0.47209987)
+        (pair "rel:to=<{}>:pat=<els=[I1{0,1/4}]>" -0.39904222)
+        (pair "rel:last_to=<{0,1/4,0,-1/4}>:from=<{}>:to=<{0,1/4}>:pat=<els=[#{-1/4,0,0}, I1{0,1/4,0,-1/4}]>" -1.238121)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[R0{0,-1/4}]>" -0.68183094)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[R0{0,-1/4}, -{1/2,0}]>" -1.1189417)
+    }
+    )
+})
+
+    
+
 )

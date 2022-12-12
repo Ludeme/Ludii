@@ -1,7 +1,21 @@
 (define "Galatjang_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (influence)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (influence)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" 0.08962586)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{1/4,0,0,0}, R0{0}]>" 0.11876228)
+    }
+    )
+})
+
+    
+
 )

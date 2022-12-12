@@ -1,7 +1,37 @@
 (define "Tant Fant_ai"
-    (bestAgent "UCT")
-    trainedHeuristics:(heuristics {
-        (ownRegionsCount weight:-1.0)
-    })
     
+        (bestAgent "UCT")
+        trainedHeuristics:(heuristics {
+    (ownRegionsCount weight:-1.0)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,-1/2,1/8}, f{0,-1/2,1/4}]>" 1.2896972)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[R1{1/4,-1/4}, e{0,-1/4,3/8}]>" 3.1107585)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,-1/4,3/8}]>" 0.7132573)
+        (pair "rel:from=<{}>:pat=<els=[f{0,0}]>" -0.5596192)
+        (pair "rel:last_to=<{0,-1/4,3/8}>:to=<{0}>:pat=<els=[e{0,-3/8}, -{0,-1/8,3/8}, f{1/8,-3/8}]>" -0.010457698)
+        (pair "rel:last_to=<{0,3/8,-3/8}>:from=<{}>:to=<{0}>:pat=<els=[#{1/2,3/8}, -{0,1/4,-3/8}]>" -0.5196252)
+        (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[e{0,1/8}, f{0,-1/2,3/8,-1/8}]>" 0.72943366)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[#{1/2,-3/8}]>" -0.5975234)
+        (pair "rel:from=<{}>:pat=<els=[R0{0,0}, -{0,-1/2,3/8}]>" 0.4352273)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[R0{-1/8,-1/4}, f{0,-1/2,1/8}]>" 1.2065697)
+        (pair "rel:from=<{0}>:pat=<els=[f{-1/8,1/4}, -{0,-1/8,1/4}]>" -1.1060863)
+        (pair "rel:last_from=<{}>:from=<{0}>:pat=<els=[R0{1/8,0}, -{0,3/8,1/8}]>" -1.1060863)
+        (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[R0{3/8,3/8}]>" 0.6101867)
+        (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[]>" -0.825832)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{1/4}, e{0,-1/2,-3/8,3/8}]>" -0.23608492)
+        (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[#{3/8}]>" -0.4763382)
+        (pair "rel:from=<{0}>:pat=<els=[#{3/8}, #{1/2,-3/8}, e{0,1/4,3/8}]>" -1.1060863)
+        (pair "rel:to=<{}>:pat=<els=[-{0,3/8}, f{0,-1/4}]>" 0.16800721)
+    }
+    )
+})
+
+    
+
 )
