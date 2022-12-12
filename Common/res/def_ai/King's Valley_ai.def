@@ -1,38 +1,36 @@
 (define "King's Valley_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (centreProximity)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!I1{}, -{0,0,0,0}]>" 1.6841166)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!I1{}, -{0,0,0,0}, -{0,0,1/4,1/4}]>" 1.742507)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[I3{}, -{0,0,0,1/4}]>" 1.1935755)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[I3{}, I1{0,0,0}]>" 1.3724213)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{-1/2}, -{0,0,-1/4,1/4}, #{1/2}, -{0,0,1/4,-1/4}]>" 1.4320261)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,-1/4,1/4}, #{1/2}, -{0,0,1/4,-1/4}]>" 1.4320261)
-        (pair "rel:last_to=<{0,0,1/4,1/4}>:from=<{}>:pat=<els=[I1{0,0,0}, -{0,0,0,0}]>" 0.1858546)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[I1{0,0,0}, -{0,0,0,0}, -{0,0,1/4,1/4}]>" 1.7187682)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:last_from=<{0,0}>:from=<{}>:to=<{0,0}>:pat=<els=[f{0,0,1/2,0}]>" -0.17800696)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" -0.063385256)
-        (pair "rel:from=<{}>:pat=<els=[f{0,0,1/4,0,0}]>" -0.040489223)
-        (pair "rel:last_to=<{0,0,0}>:to=<{0,0}>:pat=<els=[-{0,0,0,0}, I2{0,0,1/2,0}]>" -2.2804532)
-        (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, #{1/2,-1/4}]>" -0.13390848)
-        (pair "rel:from=<{0,0,0}>:to=<{}>:pat=<els=[e{1/4,1/4}, f{0,0,0,-1/4,0,0}]>" 0.68029493)
-        (pair "rel:last_from=<{0,0}>:from=<{}>:to=<{0,0}>:pat=<els=[]>" -0.24865936)
-        (pair "rel:to=<{}>:pat=<els=[#{0,0,1/4,1/4}]>" -0.01591755)
-        (pair "rel:from=<{}>:pat=<els=[e{0,-1/4}, !-{1/2,0,1/4,0,0,-1/4}]>" -0.013762349)
-        (pair "rel:from=<{}>:pat=<els=[#{1/4,1/4}, f{0,0,1/4,0,0}]>" 0.02871629)
-        (pair "rel:last_from=<{0,0}>:from=<{}>:to=<{0,0}>:pat=<els=[I2{1/2}, f{0,0,-1/2,0}]>" -0.38188234)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (centreProximity)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!I1{}, -{0,0,0,0}]>" 1.6841166)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!I1{}, -{0,0,0,0}, -{0,0,1/4,1/4}]>" 1.742507)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[I3{}, -{0,0,0,1/4}]>" 1.1935755)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[I3{}, I1{0,0,0}]>" 1.3724213)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{-1/2}, -{0,0,-1/4,1/4}, #{1/2}, -{0,0,1/4,-1/4}]>" 1.4320261)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,-1/4,1/4}, #{1/2}, -{0,0,1/4,-1/4}]>" 1.4320261)
+            (pair "rel:last_to=<{0,0,1/4,1/4}>:from=<{}>:pat=<els=[I1{0,0,0}, -{0,0,0,0}]>" 0.1858546)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[I1{0,0,0}, -{0,0,0,0}, -{0,0,1/4,1/4}]>" 1.7187682)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:last_from=<{0,0}>:from=<{}>:to=<{0,0}>:pat=<els=[f{0,0,1/2,0}]>" -0.17800696)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" -0.063385256)
+            (pair "rel:from=<{}>:pat=<els=[f{0,0,1/4,0,0}]>" -0.040489223)
+            (pair "rel:last_to=<{0,0,0}>:to=<{0,0}>:pat=<els=[-{0,0,0,0}, I2{0,0,1/2,0}]>" -2.2804532)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, #{1/2,-1/4}]>" -0.13390848)
+            (pair "rel:from=<{0,0,0}>:to=<{}>:pat=<els=[e{1/4,1/4}, f{0,0,0,-1/4,0,0}]>" 0.68029493)
+            (pair "rel:last_from=<{0,0}>:from=<{}>:to=<{0,0}>:pat=<els=[]>" -0.24865936)
+            (pair "rel:to=<{}>:pat=<els=[#{0,0,1/4,1/4}]>" -0.01591755)
+            (pair "rel:from=<{}>:pat=<els=[e{0,-1/4}, !-{1/2,0,1/4,0,0,-1/4}]>" -0.013762349)
+            (pair "rel:from=<{}>:pat=<els=[#{1/4,1/4}, f{0,0,1/4,0,0}]>" 0.02871629)
+            (pair "rel:last_from=<{0,0}>:from=<{}>:to=<{0,0}>:pat=<els=[I2{1/2}, f{0,0,-1/2,0}]>" -0.38188234)
+            }
+        )
+    })
+    
 )

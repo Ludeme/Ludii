@@ -1,34 +1,32 @@
 (define "Das Bohnenspiel_ai"
     
-        (bestAgent "MAST")
-        trainedHeuristics:(heuristics {
-    (playerSiteMapCount)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[N2{0}]>" 0.12560539)
-        (pair "rel:to=<{}>:pat=<els=[-{1/3,1/3}, -{0,0,0,0}]>" 0.2306941)
-        (pair "rel:to=<{}>:pat=<els=[-{0}, N6{0,0,0,0}]>" 0.044175792)
-        (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[-{0,0,0}, -{0}, N6{0,0,0,0}]>" -0.03526163)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" -0.015754802)
-        (pair "rel:to=<{}>:pat=<els=[-{1/4,0}, N6{0,-1/6}, -{0,1/6}, N4{1/3,0,0}]>" -0.042601142)
-        (pair "rel:to=<{}>:pat=<els=[N2{0}]>" 0.04787429)
-        (pair "rel:to=<{}>:pat=<els=[N6{0,0}]>" -0.0051462958)
-        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[N2{0}, -{1/4}]>" 0.3700063)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" 0.021103611)
-        (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{0}]>" -0.1344106)
-        (pair "rel:to=<{}>:pat=<els=[-{1/4}, N6{0,0}]>" -0.08202471)
-        (pair "rel:to=<{}>:pat=<els=[-{1/12,0,0}, -{0,0}]>" -0.12826404)
-        (pair "rel:to=<{}>:pat=<els=[-{-1/3,1/3}, -{0}, !R0{1/6,0,0,0}]>" -0.053869773)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{1/3,-1/3}]>" -0.087074175)
-    }
-    )
-})
-
+    (bestAgent "MAST")
+    trainedHeuristics:(heuristics {
+        (playerSiteMapCount)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[N2{0}]>" 0.12560539)
+            (pair "rel:to=<{}>:pat=<els=[-{1/3,1/3}, -{0,0,0,0}]>" 0.2306941)
+            (pair "rel:to=<{}>:pat=<els=[-{0}, N6{0,0,0,0}]>" 0.044175792)
+            (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[-{0,0,0}, -{0}, N6{0,0,0,0}]>" -0.03526163)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" -0.015754802)
+            (pair "rel:to=<{}>:pat=<els=[-{1/4,0}, N6{0,-1/6}, -{0,1/6}, N4{1/3,0,0}]>" -0.042601142)
+            (pair "rel:to=<{}>:pat=<els=[N2{0}]>" 0.04787429)
+            (pair "rel:to=<{}>:pat=<els=[N6{0,0}]>" -0.0051462958)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[N2{0}, -{1/4}]>" 0.3700063)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" 0.021103611)
+            (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{0}]>" -0.1344106)
+            (pair "rel:to=<{}>:pat=<els=[-{1/4}, N6{0,0}]>" -0.08202471)
+            (pair "rel:to=<{}>:pat=<els=[-{1/12,0,0}, -{0,0}]>" -0.12826404)
+            (pair "rel:to=<{}>:pat=<els=[-{-1/3,1/3}, -{0}, !R0{1/6,0,0,0}]>" -0.053869773)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{1/3,-1/3}]>" -0.087074175)
+            }
+        )
+    })
+    
 )

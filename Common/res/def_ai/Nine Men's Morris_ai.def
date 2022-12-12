@@ -1,42 +1,40 @@
 (define "Nine Men's Morris_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (lineCompletionHeuristic)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 1.9509622)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4}, f{0,1/4}]>" 2.357132)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, f{0,-1/2,1/4}]>" 2.357132)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, -{0,-1/4,-1/4}, f{0,-1/2,1/4}]>" 2.7064946)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}]>" 0.7653611)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{1/4,-1/4}, f{0,1/4}, f{0,1/4,0}]>" 2.194022)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, -{0,-1/4,-1/4}]>" 1.4385026)
-        (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/2}]>" 1.1336192)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}]>" 0.64229554)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, -{1/2}, f{0,-1/2,1/4}]>" 2.741475)
-        (pair "rel:to=<{}>:pat=<els=[e{0,-1/4}, f{0}, f{1/2}]>" 1.4762814)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/4,-1/4}, f{0,-1/2,1/4}]>" 0.91806114)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}, f{0,-1/2,-1/4}]>" 2.7082186)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 2.7082186)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4}, f{0,1/4}]>" 2.5452633)
-        (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[f{0}]>" 1.2994609)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}]>" 1.2994609)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}]>" 1.1477166)
-        (pair "rel:from=<{}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 1.1092222)
-        (pair "rel:to=<{}>:pat=<els=[f{1/4,0}, f{0,-1/2,-1/4}]>" 1.112155)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0}, f{0,1/4}]>" 1.4188428)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0}, f{0,1/4}, f{0,1/4,0}]>" 2.6011524)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}]>" 1.1477166)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (lineCompletionHeuristic)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 1.9509622)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4}, f{0,1/4}]>" 2.357132)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, f{0,-1/2,1/4}]>" 2.357132)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, -{0,-1/4,-1/4}, f{0,-1/2,1/4}]>" 2.7064946)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}]>" 0.7653611)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{1/4,-1/4}, f{0,1/4}, f{0,1/4,0}]>" 2.194022)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, -{0,-1/4,-1/4}]>" 1.4385026)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/2}]>" 1.1336192)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}]>" 0.64229554)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, -{1/2}, f{0,-1/2,1/4}]>" 2.741475)
+            (pair "rel:to=<{}>:pat=<els=[e{0,-1/4}, f{0}, f{1/2}]>" 1.4762814)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/4,-1/4}, f{0,-1/2,1/4}]>" 0.91806114)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}, f{0,-1/2,-1/4}]>" 2.7082186)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 2.7082186)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4}, f{0,1/4}]>" 2.5452633)
+            (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[f{0}]>" 1.2994609)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}]>" 1.2994609)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}]>" 1.1477166)
+            (pair "rel:from=<{}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 1.1092222)
+            (pair "rel:to=<{}>:pat=<els=[f{1/4,0}, f{0,-1/2,-1/4}]>" 1.112155)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0}, f{0,1/4}]>" 1.4188428)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0}, f{0,1/4}, f{0,1/4,0}]>" 2.6011524)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}]>" 1.1477166)
+            }
+        )
+    })
+    
 )

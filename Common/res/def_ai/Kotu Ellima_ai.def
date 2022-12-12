@@ -1,26 +1,24 @@
 (define "Kotu Ellima_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (material)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{}>:pat=<els=[e{0}, !-{0,0,1/4,0}]>" 0.21413669)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{0}]>" 0.10885782)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{1/4,0}>:to=<{}>:pat=<els=[!-{0,0,0}]>" 0.6103531)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,1/4,0,0}]>" 0.5972477)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{-1/8,-1/8}, #{0,0,1/8,0,0}]>" 0.6670093)
-        (pair "rel:from=<{}>:to=<{1/4,0}>:pat=<els=[-{0,0}]>" 0.57438296)
-        (pair "rel:from=<{3/8,0}>:to=<{}>:pat=<els=[#{0,0}]>" 0.7517763)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (material)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[e{0}, !-{0,0,1/4,0}]>" 0.21413669)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{0}]>" 0.10885782)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{1/4,0}>:to=<{}>:pat=<els=[!-{0,0,0}]>" 0.6103531)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,1/4,0,0}]>" 0.5972477)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{-1/8,-1/8}, #{0,0,1/8,0,0}]>" 0.6670093)
+            (pair "rel:from=<{}>:to=<{1/4,0}>:pat=<els=[-{0,0}]>" 0.57438296)
+            (pair "rel:from=<{3/8,0}>:to=<{}>:pat=<els=[#{0,0}]>" 0.7517763)
+            }
+        )
+    })
+    
 )

@@ -1,21 +1,19 @@
 (define "Hindustani Chess_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (mobilitySimple weight:-1.0)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{0}>:pat=<els=[!e{1/4}, I5{0,-1/4,0}]>" 0.5262547)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{0,0,1/4}>:pat=<els=[f{1/4,0}]>" -0.72355545)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (mobilitySimple weight:-1.0)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{0}>:pat=<els=[!e{1/4}, I5{0,-1/4,0}]>" 0.5262547)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,0,1/4}>:pat=<els=[f{1/4,0}]>" -0.72355545)
+            }
+        )
+    })
+    
 )

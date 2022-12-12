@@ -1,50 +1,48 @@
 (define "Ethiopian Capture Game_ai"
     
-        (bestAgent "Biased MCTS (Uniform Playouts)")
-        trainedHeuristics:(heuristics {
-    (material)
-    (centreProximity pieceWeights:{
-        (pair "Marker1" 0.123125486)
-        (pair "Marker2" 0.047769)
+    (bestAgent "Biased MCTS (Uniform Playouts)")
+    trainedHeuristics:(heuristics {
+        (material)
+        (centreProximity pieceWeights:{
+            (pair "Marker1" 0.123125486)
+            (pair "Marker2" 0.047769)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Marker1" 0.13961834)
+            (pair "Marker2" -0.049613114)
+        })
+        (lineCompletionHeuristic weight:3.4384434)
+        (mobilitySimple weight:0.107754506)
+        (influence weight:-3.0069876)
+        (sidesProximity pieceWeights:{
+            (pair "Marker1" 0.2985462)
+            (pair "Marker2" 0.48546392)
+        })
     })
-    (cornerProximity pieceWeights:{
-        (pair "Marker1" 0.13961834)
-        (pair "Marker2" -0.049613114)
-    })
-    (lineCompletionHeuristic weight:3.4384434)
-    (mobilitySimple weight:0.107754506)
-    (influence weight:-3.0069876)
-    (sidesProximity pieceWeights:{
-        (pair "Marker1" 0.2985462)
-        (pair "Marker2" 0.48546392)
-    })
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!e{1/2}]>" 1.982956)
-        (pair "rel:from=<{}>:to=<{1/2,0}>:pat=<els=[!-{0,-1/4}]>" 1.7944151)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!e{1/2}, N8{0,0,1/4,1/4}]>" 2.0732121)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,0,1/8}]>" 1.9728562)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,0,3/8}]>" 2.3815675)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[N8{0,0,1/4,1/4}]>" 1.8322301)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,0}]>" 2.5914862)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{-1/2,-1/4}, #{0,0,0,1/8}]>" 1.9820004)
-        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[N4{0,1/4,3/8}]>" 1.7209063)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N8{0,0,1/2,0,0}]>" 2.022597)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[]>" 1.5354127)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/4,1/4}]>" 2.0777402)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{0,3/8}]>" 2.09897)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!e{1/4,3/8}]>" 2.1577222)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,1/4}]>" 1.970459)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{0,3/8}, #{0,0,1/4,1/4}]>" 2.158285)
-    }
-    )
-})
-
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!e{1/2}]>" 1.982956)
+            (pair "rel:from=<{}>:to=<{1/2,0}>:pat=<els=[!-{0,-1/4}]>" 1.7944151)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!e{1/2}, N8{0,0,1/4,1/4}]>" 2.0732121)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,0,1/8}]>" 1.9728562)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,0,3/8}]>" 2.3815675)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[N8{0,0,1/4,1/4}]>" 1.8322301)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,0}]>" 2.5914862)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{-1/2,-1/4}, #{0,0,0,1/8}]>" 1.9820004)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[N4{0,1/4,3/8}]>" 1.7209063)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N8{0,0,1/2,0,0}]>" 2.022597)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[]>" 1.5354127)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/4,1/4}]>" 2.0777402)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{0,3/8}]>" 2.09897)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!e{1/4,3/8}]>" 2.1577222)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,1/4}]>" 1.970459)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{0,3/8}, #{0,0,1/4,1/4}]>" 2.158285)
+            }
+        )
+    })
+    
 )

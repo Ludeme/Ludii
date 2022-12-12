@@ -1,38 +1,36 @@
 (define "Ashtapada_ai"
-(useFor { "Ruleset/Kile (Suggested)" }
-    
+    (useFor { "Ruleset/Kile (Suggested)" }
+        
         (bestAgent "Biased MCTS (Uniform Playouts)")
         trainedHeuristics:(heuristics {
-    (cornerProximity)
-})
-
+            (cornerProximity)
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 1.251444)
-        (pair "rel:from=<{0,0}>:pat=<els=[!#{0,0,1/2}]>" 2.8408458)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[R0{0,1/4}]>" 0.9327342)
-        (pair "rel:from=<{0,0}>:pat=<els=[!-{0,0,0,0,0}]>" 2.8408458)
-        (pair "rel:to=<{}>:pat=<els=[#{0,0}]>" -0.021867)
-        (pair "rel:last_to=<{0,0,0,0}>:from=<{}>:pat=<els=[]>" -0.15058754)
-        (pair "rel:from=<{0,0}>:pat=<els=[#{1/4,0}, !-{0,0,0,0,0}]>" 2.8408458)
-        (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[]>" -0.051674373)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 1.251444)
+                (pair "rel:from=<{0,0}>:pat=<els=[!#{0,0,1/2}]>" 2.8408458)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[R0{0,1/4}]>" 0.9327342)
+                (pair "rel:from=<{0,0}>:pat=<els=[!-{0,0,0,0,0}]>" 2.8408458)
+                (pair "rel:to=<{}>:pat=<els=[#{0,0}]>" -0.021867)
+                (pair "rel:last_to=<{0,0,0,0}>:from=<{}>:pat=<els=[]>" -0.15058754)
+                (pair "rel:from=<{0,0}>:pat=<els=[#{1/4,0}, !-{0,0,0,0,0}]>" 2.8408458)
+                (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[]>" -0.051674373)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 1.37215)
+                (pair "rel:last_to=<{}>:to=<{0}>:pat=<els=[#{0,1/2,0}]>" 1.7891418)
+                (pair "rel:last_to=<{}>:from=<{}>:to=<{0}>:pat=<els=[]>" 0.3801557)
+                (pair "rel:to=<{}>:pat=<els=[!e{}]>" -0.03607724)
+                (pair "rel:from=<{0,0,1/4}>:to=<{}>:pat=<els=[]>" 0.9452412)
+                (pair "rel:to=<{}>:pat=<els=[#{1/2,1/4}, !f{0,0,1/4,1/4,0,0,0}]>" 0.21973142)
+                (pair "rel:to=<{}>:pat=<els=[#{0,1/4}]>" 0.21973142)
+                (pair "rel:last_to=<{0}>:from=<{}>:pat=<els=[]>" 0.38118297)
+                (pair "rel:from=<{}>:pat=<els=[]>" 0.025310071)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 1.37215)
-        (pair "rel:last_to=<{}>:to=<{0}>:pat=<els=[#{0,1/2,0}]>" 1.7891418)
-        (pair "rel:last_to=<{}>:from=<{}>:to=<{0}>:pat=<els=[]>" 0.3801557)
-        (pair "rel:to=<{}>:pat=<els=[!e{}]>" -0.03607724)
-        (pair "rel:from=<{0,0,1/4}>:to=<{}>:pat=<els=[]>" 0.9452412)
-        (pair "rel:to=<{}>:pat=<els=[#{1/2,1/4}, !f{0,0,1/4,1/4,0,0,0}]>" 0.21973142)
-        (pair "rel:to=<{}>:pat=<els=[#{0,1/4}]>" 0.21973142)
-        (pair "rel:last_to=<{0}>:from=<{}>:pat=<els=[]>" 0.38118297)
-        (pair "rel:from=<{}>:pat=<els=[]>" 0.025310071)
-    }
-    )
-})
-
-    
-
-)
 )

@@ -1,29 +1,27 @@
 (define "Puhulmutu_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!R0{0,-1/3}, -{-1/4,0,0,1/6,0}]>" 0.035295088)
-        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[N6{1/4,0,0}]>" -0.40530768)
-        (pair "rel:from=<{}>:pat=<els=[-{0}, -{0,1/6,0,0,0}]>" 0.1578199)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{5/12,0,0,1/6,0}]>" 0.1505914)
-        (pair "rel:from=<{0,0,0,1/6}>:pat=<els=[-{-5/12,0}, -{0,0,0,1/6,0}]>" 0.048778642)
-        (pair "rel:from=<{}>:to=<{0,1/6,0,0}>:pat=<els=[]>" 0.048778642)
-        (pair "rel:to=<{}>:pat=<els=[!R0{0,1/4}]>" 0.0)
-        (pair "rel:from=<{0,0,0,1/6}>:to=<{}>:pat=<els=[-{0,0,0,1/6,0}]>" 0.13844135)
-        (pair "rel:from=<{}>:to=<{0,1/6,0,0}>:pat=<els=[-{0,1/6,0,0,0}]>" 0.28969353)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{0,0,1/6}>:pat=<els=[-{-1/2}, -{0,0,1/6,-1/2}]>" 0.08726624)
-        (pair "rel:to=<{}>:pat=<els=[-{0,-1/3}, R0{1/3,-1/3}]>" -0.15683754)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, R0{1/12,-1/3}]>" -0.17901209)
-        (pair "rel:to=<{}>:pat=<els=[-{1/4,0,0}, -{0,-1/3}]>" -0.3350232)
-        (pair "rel:from=<{}>:pat=<els=[!-{0}]>" -0.24217334)
-        (pair "rel:from=<{0,0,1/6}>:to=<{}>:pat=<els=[-{0}]>" -0.7600781)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!R0{0,-1/3}, -{-1/4,0,0,1/6,0}]>" 0.035295088)
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[N6{1/4,0,0}]>" -0.40530768)
+            (pair "rel:from=<{}>:pat=<els=[-{0}, -{0,1/6,0,0,0}]>" 0.1578199)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{5/12,0,0,1/6,0}]>" 0.1505914)
+            (pair "rel:from=<{0,0,0,1/6}>:pat=<els=[-{-5/12,0}, -{0,0,0,1/6,0}]>" 0.048778642)
+            (pair "rel:from=<{}>:to=<{0,1/6,0,0}>:pat=<els=[]>" 0.048778642)
+            (pair "rel:to=<{}>:pat=<els=[!R0{0,1/4}]>" 0.0)
+            (pair "rel:from=<{0,0,0,1/6}>:to=<{}>:pat=<els=[-{0,0,0,1/6,0}]>" 0.13844135)
+            (pair "rel:from=<{}>:to=<{0,1/6,0,0}>:pat=<els=[-{0,1/6,0,0,0}]>" 0.28969353)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{0,0,1/6}>:pat=<els=[-{-1/2}, -{0,0,1/6,-1/2}]>" 0.08726624)
+            (pair "rel:to=<{}>:pat=<els=[-{0,-1/3}, R0{1/3,-1/3}]>" -0.15683754)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, R0{1/12,-1/3}]>" -0.17901209)
+            (pair "rel:to=<{}>:pat=<els=[-{1/4,0,0}, -{0,-1/3}]>" -0.3350232)
+            (pair "rel:from=<{}>:pat=<els=[!-{0}]>" -0.24217334)
+            (pair "rel:from=<{0,0,1/6}>:to=<{}>:pat=<els=[-{0}]>" -0.7600781)
+            }
+        )
+    })
     
-
 )

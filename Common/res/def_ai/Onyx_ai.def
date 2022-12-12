@@ -1,28 +1,26 @@
 (define "Onyx_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 2.4851532)
-        (pair "rel:to=<{}>:pat=<els=[f{0,1/14}]>" 2.3668268)
-        (pair "rel:to=<{}>:pat=<els=[!R1{2/7,-1/14}, N14{0,1/5}]>" 0.0051107425)
-        (pair "rel:to=<{}>:pat=<els=[e{0,-1/10}, R0{1/5,-3/7}]>" -5.9851217)
-        (pair "rel:to=<{}>:pat=<els=[!-{0,1/5}]>" 0.99460334)
-        (pair "rel:to=<{}>:pat=<els=[e{0,1/10}]>" 1.3641115)
-        (pair "rel:last_to=<{0,1/14}>:to=<{}>:pat=<els=[]>" -0.22876298)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[f{0,1/5}]>" 1.2625391)
-        (pair "rel:to=<{}>:pat=<els=[!R0{0}]>" 0.20559953)
-        (pair "rel:last_to=<{0,-1/14}>:to=<{}>:pat=<els=[!R0{-2/7,3/14}]>" 1.2531495)
-        (pair "rel:to=<{}>:pat=<els=[N14{0,3/8}]>" -0.063409865)
-        (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 1.2353443)
-        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" -1.2074478)
-        (pair "rel:to=<{}>:pat=<els=[e{2/7,3/14}, R0{0}]>" 0.15433483)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 2.4851532)
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/14}]>" 2.3668268)
+            (pair "rel:to=<{}>:pat=<els=[!R1{2/7,-1/14}, N14{0,1/5}]>" 0.0051107425)
+            (pair "rel:to=<{}>:pat=<els=[e{0,-1/10}, R0{1/5,-3/7}]>" -5.9851217)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,1/5}]>" 0.99460334)
+            (pair "rel:to=<{}>:pat=<els=[e{0,1/10}]>" 1.3641115)
+            (pair "rel:last_to=<{0,1/14}>:to=<{}>:pat=<els=[]>" -0.22876298)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/5}]>" 1.2625391)
+            (pair "rel:to=<{}>:pat=<els=[!R0{0}]>" 0.20559953)
+            (pair "rel:last_to=<{0,-1/14}>:to=<{}>:pat=<els=[!R0{-2/7,3/14}]>" 1.2531495)
+            (pair "rel:to=<{}>:pat=<els=[N14{0,3/8}]>" -0.063409865)
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 1.2353443)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" -1.2074478)
+            (pair "rel:to=<{}>:pat=<els=[e{2/7,3/14}, R0{0}]>" 0.15433483)
+            }
+        )
+    })
     
-
 )

@@ -1,32 +1,30 @@
 (define "Greater Even Loss_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (mobilitySimple)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[e{0,0}]>" -0.19893916)
-        (pair "rel:to=<{}>:pat=<els=[e{0}]>" -0.34439242)
-        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[f{-1/4,0}, f{1/4,1/4}]>" 2.4799924)
-        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" -11.278623)
-        (pair "rel:to=<{}>:pat=<els=[f{1/4,-1/4}, f{1/2,-1/4}, f{0,0}]>" 2.2662082)
-        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
-        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -7.669948)
-        (pair "rel:to=<{}>:pat=<els=[e{0}, f{1/2,1/4}]>" 1.0498127)
-        (pair "rel:to=<{}>:pat=<els=[f{0,-1/4}, f{1/4,-1/4}]>" 2.3626444)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[f{1/4,0}, -{0,0,0}]>" 7.1481524)
-        (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}]>" 0.0653442)
-        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
-        (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 0.45953882)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (mobilitySimple)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[e{0,0}]>" -0.19893916)
+            (pair "rel:to=<{}>:pat=<els=[e{0}]>" -0.34439242)
+            (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[f{-1/4,0}, f{1/4,1/4}]>" 2.4799924)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" -11.278623)
+            (pair "rel:to=<{}>:pat=<els=[f{1/4,-1/4}, f{1/2,-1/4}, f{0,0}]>" 2.2662082)
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -7.669948)
+            (pair "rel:to=<{}>:pat=<els=[e{0}, f{1/2,1/4}]>" 1.0498127)
+            (pair "rel:to=<{}>:pat=<els=[f{0,-1/4}, f{1/4,-1/4}]>" 2.3626444)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{1/4,0}, -{0,0,0}]>" 7.1481524)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}]>" 0.0653442)
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 0.45953882)
+            }
+        )
+    })
+    
 )

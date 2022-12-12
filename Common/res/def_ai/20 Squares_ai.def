@@ -1,58 +1,56 @@
 (define "20 Squares_ai"
-(useFor { "Ruleset/Seleucid (Scholarly)" }
-    
+    (useFor { "Ruleset/Seleucid (Scholarly)" }
+        
         (bestAgent "MAST")
         trainedHeuristics:(heuristics {
-    (centreProximity)
-    (cornerProximity pieceWeights:{
-        (pair "UrPiece1" 0.10074285)
-        (pair "UrPiece2" 0.018262142)
-    })
-    (lineCompletionHeuristic weight:0.26438275)
-    (material pieceWeights:{
-        (pair "UrPiece1" -0.7676993)
-        (pair "UrPiece2" -0.28735864)
-    })
-    (mobilitySimple weight:-0.05898858)
-    (influence weight:1.1163099)
-    (regionProximity region:0 pieceWeights:{
-        (pair "UrPiece1" 0.32878387)
-        (pair "UrPiece2" 0.24497277)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "UrPiece1" 0.15525939)
-        (pair "UrPiece2" 0.044376224)
-    })
-})
-
+            (centreProximity)
+            (cornerProximity pieceWeights:{
+                (pair "UrPiece1" 0.10074285)
+                (pair "UrPiece2" 0.018262142)
+            })
+            (lineCompletionHeuristic weight:0.26438275)
+            (material pieceWeights:{
+                (pair "UrPiece1" -0.7676993)
+                (pair "UrPiece2" -0.28735864)
+            })
+            (mobilitySimple weight:-0.05898858)
+            (influence weight:1.1163099)
+            (regionProximity region:0 pieceWeights:{
+                (pair "UrPiece1" 0.32878387)
+                (pair "UrPiece2" 0.24497277)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "UrPiece1" 0.15525939)
+                (pair "UrPiece2" 0.044376224)
+            })
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!-{}, N2{-1/2,-1/4}, !e{0,-1/4}, !f{1/2,1/4}, !e{1/2,-1/4}, !-{0,-1/4}]>" 1.3444918)
-        (pair "rel:to=<{}>:pat=<els=[!-{}, N2{-1/2,-1/4}, !e{0,-1/4}, !f{1/2,1/4}, !-{0,-1/4}]>" 1.2663884)
-        (pair "rel:to=<{}>:pat=<els=[!e{1/2,1/4}, N2{0}, !-{0,-1/4}, !f{1/2,1/4}, !f{-1/4,0}]>" 1.3365448)
-        (pair "rel:to=<{}>:pat=<els=[!#{-1/2,0,0}, !e{0,1/4}, !-{1/2,1/4}, N2{-1/2,-1/4}, !e{0,-1/4}, !e{1/2,-1/4}, !-{0,-1/4}]>" 1.3231256)
-        (pair "rel:to=<{}>:pat=<els=[!-{}, N2{0,-1/4}, !f{0,1/4}, !e{0,-1/4}, !-{-1/2,-1/4}]>" 1.1458309)
-        (pair "rel:to=<{}>:pat=<els=[N2{0,1/4}, !e{1/2,1/4}, N2{0}, !f{1/2,1/4}, !f{-1/4,0}]>" 1.0424262)
-        (pair "rel:to=<{}>:pat=<els=[!-{}, !e{0,-1/4}, N2{1/2,1/4}]>" 0.92232037)
-        (pair "rel:to=<{}>:pat=<els=[N2{0}, !e{1/2,-1/4}, !-{0,-1/4}]>" 0.59847033)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!-{}, N2{-1/2,-1/4}, !e{0,-1/4}, !f{1/2,1/4}, !e{1/2,-1/4}, !-{0,-1/4}]>" 1.3444918)
+                (pair "rel:to=<{}>:pat=<els=[!-{}, N2{-1/2,-1/4}, !e{0,-1/4}, !f{1/2,1/4}, !-{0,-1/4}]>" 1.2663884)
+                (pair "rel:to=<{}>:pat=<els=[!e{1/2,1/4}, N2{0}, !-{0,-1/4}, !f{1/2,1/4}, !f{-1/4,0}]>" 1.3365448)
+                (pair "rel:to=<{}>:pat=<els=[!#{-1/2,0,0}, !e{0,1/4}, !-{1/2,1/4}, N2{-1/2,-1/4}, !e{0,-1/4}, !e{1/2,-1/4}, !-{0,-1/4}]>" 1.3231256)
+                (pair "rel:to=<{}>:pat=<els=[!-{}, N2{0,-1/4}, !f{0,1/4}, !e{0,-1/4}, !-{-1/2,-1/4}]>" 1.1458309)
+                (pair "rel:to=<{}>:pat=<els=[N2{0,1/4}, !e{1/2,1/4}, N2{0}, !f{1/2,1/4}, !f{-1/4,0}]>" 1.0424262)
+                (pair "rel:to=<{}>:pat=<els=[!-{}, !e{0,-1/4}, N2{1/2,1/4}]>" 0.92232037)
+                (pair "rel:to=<{}>:pat=<els=[N2{0}, !e{1/2,-1/4}, !-{0,-1/4}]>" 0.59847033)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, !e{0,1/4}, !R0{-1/4,0}, !R0{1/2}, !e{0,-1/4}, N2{-1/2,0,0}, !f{0,0,0}]>" 1.1982781)
+                (pair "rel:to=<{}>:pat=<els=[f{}]>" 1.3940501)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}, !e{-1/2,-1/4}, N2{0,1/4}, !-{0,-1/4}]>" 1.2867267)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}, N2{0,0,0}, N2{0,1/4}, !-{0,-1/4}]>" 1.0159246)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}, N2{0,1/4}, !-{0,-1/4}]>" 0.95677674)
+                (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, !e{0,1/4}, !R0{-1/4,0}, !R0{1/2}, !f{1/2}, N2{-1/2,0,0}, !f{0,0,0}]>" 1.172208)
+                (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, !e{0,1/4}, !R0{-1/4,0}, !e{0,-1/4}, N2{-1/2,0,0}, !f{0,0,0}, !f{1/2,0,0}]>" 1.3086056)
+                (pair "rel:to=<{}>:pat=<els=[!f{1/2,0}, !-{0,-1/4}, N2{0,0,0}]>" 0.64776474)
+                (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, !e{0,1/4}, !R0{-1/4,0}, !R0{1/2}, !f{1/2}, !e{0,-1/4}, N2{-1/2,0,0}, !f{0,0,0}]>" 1.3028673)
+                (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, !e{0,1/4}, !R0{-1/4,0}, !R0{1/2}, !e{0,-1/4}, N2{-1/2,0,0}, !f{1/2,0,0}]>" 1.1798668)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, !e{0,1/4}, !R0{-1/4,0}, !R0{1/2}, !e{0,-1/4}, N2{-1/2,0,0}, !f{0,0,0}]>" 1.1982781)
-        (pair "rel:to=<{}>:pat=<els=[f{}]>" 1.3940501)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0}, !e{-1/2,-1/4}, N2{0,1/4}, !-{0,-1/4}]>" 1.2867267)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0}, N2{0,0,0}, N2{0,1/4}, !-{0,-1/4}]>" 1.0159246)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0}, N2{0,1/4}, !-{0,-1/4}]>" 0.95677674)
-        (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, !e{0,1/4}, !R0{-1/4,0}, !R0{1/2}, !f{1/2}, N2{-1/2,0,0}, !f{0,0,0}]>" 1.172208)
-        (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, !e{0,1/4}, !R0{-1/4,0}, !e{0,-1/4}, N2{-1/2,0,0}, !f{0,0,0}, !f{1/2,0,0}]>" 1.3086056)
-        (pair "rel:to=<{}>:pat=<els=[!f{1/2,0}, !-{0,-1/4}, N2{0,0,0}]>" 0.64776474)
-        (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, !e{0,1/4}, !R0{-1/4,0}, !R0{1/2}, !f{1/2}, !e{0,-1/4}, N2{-1/2,0,0}, !f{0,0,0}]>" 1.3028673)
-        (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, !e{0,1/4}, !R0{-1/4,0}, !R0{1/2}, !e{0,-1/4}, N2{-1/2,0,0}, !f{1/2,0,0}]>" 1.1798668)
-    }
-    )
-})
-
-    
-
-)
 )

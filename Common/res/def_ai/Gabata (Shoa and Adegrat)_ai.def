@@ -1,30 +1,28 @@
 (define "Gabata (Shoa and Adegrat)_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[R1{0,-1/4}, -{1/4,0}]>" -0.03343541)
-        (pair "rel:to=<{}>:pat=<els=[!#{0,0,0,0}, R1{1/4}]>" 0.011921552)
-        (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[-{0,1/4}]>" 0.024310682)
-        (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[R1{0}]>" 0.01075799)
-        (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/2,0}]>" -0.01659972)
-        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" -0.022813614)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" -0.016014617)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" 0.02545558)
-        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[R1{1/4}]>" 0.01075799)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[-{0}, !R1{1/2,-1/4}, !#{0,0,0,0}]>" 0.040117048)
-        (pair "rel:to=<{}>:pat=<els=[-{1/2}, R0{0,1/4}]>" -0.0032063636)
-        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
-        (pair "rel:to=<{}>:pat=<els=[!#{1/2,0,0,0}, -{1/4}, !R1{0,1/4}]>" 0.047665585)
-        (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[!R1{0,1/4}]>" 0.02325112)
-        (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[-{0,0}, R0{0,1/4}, !#{0,0,0,0}]>" 0.07432376)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" 0.0011798419)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[R1{0,-1/4}, -{1/4,0}]>" -0.03343541)
+            (pair "rel:to=<{}>:pat=<els=[!#{0,0,0,0}, R1{1/4}]>" 0.011921552)
+            (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[-{0,1/4}]>" 0.024310682)
+            (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[R1{0}]>" 0.01075799)
+            (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/2,0}]>" -0.01659972)
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" -0.022813614)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" -0.016014617)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" 0.02545558)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[R1{1/4}]>" 0.01075799)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{0}, !R1{1/2,-1/4}, !#{0,0,0,0}]>" 0.040117048)
+            (pair "rel:to=<{}>:pat=<els=[-{1/2}, R0{0,1/4}]>" -0.0032063636)
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:to=<{}>:pat=<els=[!#{1/2,0,0,0}, -{1/4}, !R1{0,1/4}]>" 0.047665585)
+            (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[!R1{0,1/4}]>" 0.02325112)
+            (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[-{0,0}, R0{0,1/4}, !#{0,0,0,0}]>" 0.07432376)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" 0.0011798419)
+            }
+        )
+    })
     
-
 )

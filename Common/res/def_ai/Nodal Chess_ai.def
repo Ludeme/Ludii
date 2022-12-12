@@ -1,46 +1,44 @@
 (define "Nodal Chess_ai"
     
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-    (material transformation:(divNumInitPlacement) pieceWeights:{
-        (pair "Pawn1" 1.0)
-        (pair "Pawn2" 1.0)
-        (pair "Bishop1" 6.0)
-        (pair "Bishop2" 6.0)
-        (pair "Knight1" 3.0)
-        (pair "Knight2" 3.0)
-        (pair "Queen1" 4.0)
-        (pair "Queen2" 4.0)
+    (bestAgent "Alpha-Beta")
+    (heuristics {
+        (material transformation:(divNumInitPlacement) pieceWeights:{
+            (pair "Pawn1" 1.0)
+            (pair "Pawn2" 1.0)
+            (pair "Bishop1" 6.0)
+            (pair "Bishop2" 6.0)
+            (pair "Knight1" 3.0)
+            (pair "Knight2" 3.0)
+            (pair "Queen1" 4.0)
+            (pair "Queen2" 4.0)
+        })
     })
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{0}>:pat=<els=[f{1/4}, f{0,-1/4,-1/4}]>" -0.40113226)
-        (pair "rel:last_from=<{-1/2,0,0,0}>:from=<{0,0,1/4}>:to=<{}>:pat=<els=[!-{0,0,1/4,1/4,-1/4}]>" -0.6844548)
-        (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 0.0464421)
-        (pair "rel:last_to=<{0,1/4,1/4,1/4}>:from=<{}>:to=<{0,1/4}>:pat=<els=[!-{0,1/4,1/4,0}]>" 0.07606236)
-        (pair "rel:last_to=<{0,1/4,1/4,1/4}>:from=<{}>:pat=<els=[!I8{1/4}]>" 0.07482225)
-        (pair "rel:last_to=<{1/2,0,0}>:to=<{}>:pat=<els=[!-{0,1/4}, R1{0,0}]>" -0.5924901)
-        (pair "rel:to=<{}>:pat=<els=[R1{0,0}, !R0{0,0,0,0}]>" -0.37988955)
-        (pair "rel:last_from=<{0,0,0,0}>:to=<{}>:pat=<els=[]>" -0.110033855)
-        (pair "rel:last_to=<{1/2,0,0}>:to=<{}>:pat=<els=[R1{0,0}, !R0{0,0,0,0}]>" -0.64182)
-        (pair "rel:last_from=<{0,-1/4}>:to=<{}>:pat=<els=[!-{1/4}]>" -0.43920508)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[I2{1/4,0}, I6{0,1/4,-1/2,0,0}]>" 0.3521743)
-        (pair "rel:to=<{}>:pat=<els=[I6{0,0}]>" 0.066385105)
-        (pair "rel:from=<{}>:to=<{0,1/4,0}>:pat=<els=[R0{0}]>" 0.1198424)
-        (pair "rel:to=<{}>:pat=<els=[I6{0,0,0}]>" 0.10430061)
-        (pair "rel:from=<{}>:pat=<els=[I10{0,0,0}]>" 0.10133756)
-        (pair "rel:to=<{}>:pat=<els=[!I2{0,1/4}]>" 0.0012335394)
-        (pair "rel:to=<{}>:pat=<els=[]>" 0.0012358907)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" -0.034314163)
-    }
-    )
-})
-
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{0}>:pat=<els=[f{1/4}, f{0,-1/4,-1/4}]>" -0.40113226)
+            (pair "rel:last_from=<{-1/2,0,0,0}>:from=<{0,0,1/4}>:to=<{}>:pat=<els=[!-{0,0,1/4,1/4,-1/4}]>" -0.6844548)
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 0.0464421)
+            (pair "rel:last_to=<{0,1/4,1/4,1/4}>:from=<{}>:to=<{0,1/4}>:pat=<els=[!-{0,1/4,1/4,0}]>" 0.07606236)
+            (pair "rel:last_to=<{0,1/4,1/4,1/4}>:from=<{}>:pat=<els=[!I8{1/4}]>" 0.07482225)
+            (pair "rel:last_to=<{1/2,0,0}>:to=<{}>:pat=<els=[!-{0,1/4}, R1{0,0}]>" -0.5924901)
+            (pair "rel:to=<{}>:pat=<els=[R1{0,0}, !R0{0,0,0,0}]>" -0.37988955)
+            (pair "rel:last_from=<{0,0,0,0}>:to=<{}>:pat=<els=[]>" -0.110033855)
+            (pair "rel:last_to=<{1/2,0,0}>:to=<{}>:pat=<els=[R1{0,0}, !R0{0,0,0,0}]>" -0.64182)
+            (pair "rel:last_from=<{0,-1/4}>:to=<{}>:pat=<els=[!-{1/4}]>" -0.43920508)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[I2{1/4,0}, I6{0,1/4,-1/2,0,0}]>" 0.3521743)
+            (pair "rel:to=<{}>:pat=<els=[I6{0,0}]>" 0.066385105)
+            (pair "rel:from=<{}>:to=<{0,1/4,0}>:pat=<els=[R0{0}]>" 0.1198424)
+            (pair "rel:to=<{}>:pat=<els=[I6{0,0,0}]>" 0.10430061)
+            (pair "rel:from=<{}>:pat=<els=[I10{0,0,0}]>" 0.10133756)
+            (pair "rel:to=<{}>:pat=<els=[!I2{0,1/4}]>" 0.0012335394)
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0012358907)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" -0.034314163)
+            }
+        )
+    })
+    
 )

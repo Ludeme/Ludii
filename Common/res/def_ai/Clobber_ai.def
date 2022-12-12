@@ -1,37 +1,35 @@
 (define "Clobber_ai"
     
-        (bestAgent "MAST")
-        trainedHeuristics:(heuristics {
-    (influence)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:last_to=<{}>:from=<{1/4}>:to=<{}>:pat=<els=[-{0,0,0}, !-{1/2,0,0,0}]>" -0.73473823)
-        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" 1.5329217E-4)
-        (pair "rel:last_to=<{}>:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}, -{-1/4,0,0}, !e{0,1/4,0,0,0}]>" -0.9685179)
-        (pair "rel:last_to=<{0,1/4}>:from=<{0}>:to=<{}>:pat=<els=[f{0,0,0,0}, -{0,1/4,0}]>" -0.75071174)
-        (pair "rel:last_to=<{0}>:from=<{}>:to=<{0}>:pat=<els=[!-{1/4,0}, -{0,-1/2,0,0}]>" -0.84921277)
-        (pair "rel:last_to=<{}>:from=<{0}>:pat=<els=[f{1/4,0}, -{-1/4,0,0}, !e{0,1/4,0,0,0}]>" -1.7194085)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0,1/4}, -{1/2,1/4,0,0}]>" -0.41519207)
-        (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[f{0,0}, -{1/2,0,0}, !-{0,0,0,0}]>" -0.016778307)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,1/4,0,0}, -{0,-1/2,0,0}]>" -0.14476869)
-        (pair "rel:last_to=<{0}>:from=<{}>:to=<{0}>:pat=<els=[!-{1/4,0}]>" -0.54969394)
-        (pair "rel:last_to=<{0}>:from=<{}>:to=<{0}>:pat=<els=[#{0,0,0,0}, !-{-1/2,0,0}, -{0,1/4,0,0}]>" -1.1591408)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,0,0,0}, !-{-1/2,0,0}, -{0,1/4,0,0}]>" -0.011598114)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{0}>:pat=<els=[e{-1/4,0}, #{0,1/4,0,0,0}, -{0,-1/2,0,0}]>" 0.65148836)
-        (pair "rel:from=<{1/2}>:to=<{}>:pat=<els=[e{-1/4,0}, f{0,0,0,0}, -{0,1/4}]>" -0.18673062)
-        (pair "rel:last_to=<{0}>:to=<{0}>:pat=<els=[!-{1/2,1/4}, -{0,0,-1/4}, #{0,1/2,0,0,0}, -{0,0,1/4}]>" 0.65148836)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/2,0}]>" -0.11408948)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4,0}, -{-1/2,1/4}, #{0,0,0,0}]>" -0.14360723)
-        (pair "rel:from=<{1/2}>:to=<{}>:pat=<els=[f{0,0,0,0}, -{0,1/4}]>" -0.1312472)
-    }
-    )
-})
-
+    (bestAgent "MAST")
+    trainedHeuristics:(heuristics {
+        (influence)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_to=<{}>:from=<{1/4}>:to=<{}>:pat=<els=[-{0,0,0}, !-{1/2,0,0,0}]>" -0.73473823)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" 1.5329217E-4)
+            (pair "rel:last_to=<{}>:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}, -{-1/4,0,0}, !e{0,1/4,0,0,0}]>" -0.9685179)
+            (pair "rel:last_to=<{0,1/4}>:from=<{0}>:to=<{}>:pat=<els=[f{0,0,0,0}, -{0,1/4,0}]>" -0.75071174)
+            (pair "rel:last_to=<{0}>:from=<{}>:to=<{0}>:pat=<els=[!-{1/4,0}, -{0,-1/2,0,0}]>" -0.84921277)
+            (pair "rel:last_to=<{}>:from=<{0}>:pat=<els=[f{1/4,0}, -{-1/4,0,0}, !e{0,1/4,0,0,0}]>" -1.7194085)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0,1/4}, -{1/2,1/4,0,0}]>" -0.41519207)
+            (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[f{0,0}, -{1/2,0,0}, !-{0,0,0,0}]>" -0.016778307)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,1/4,0,0}, -{0,-1/2,0,0}]>" -0.14476869)
+            (pair "rel:last_to=<{0}>:from=<{}>:to=<{0}>:pat=<els=[!-{1/4,0}]>" -0.54969394)
+            (pair "rel:last_to=<{0}>:from=<{}>:to=<{0}>:pat=<els=[#{0,0,0,0}, !-{-1/2,0,0}, -{0,1/4,0,0}]>" -1.1591408)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,0,0,0}, !-{-1/2,0,0}, -{0,1/4,0,0}]>" -0.011598114)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{0}>:pat=<els=[e{-1/4,0}, #{0,1/4,0,0,0}, -{0,-1/2,0,0}]>" 0.65148836)
+            (pair "rel:from=<{1/2}>:to=<{}>:pat=<els=[e{-1/4,0}, f{0,0,0,0}, -{0,1/4}]>" -0.18673062)
+            (pair "rel:last_to=<{0}>:to=<{0}>:pat=<els=[!-{1/2,1/4}, -{0,0,-1/4}, #{0,1/2,0,0,0}, -{0,0,1/4}]>" 0.65148836)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/2,0}]>" -0.11408948)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4,0}, -{-1/2,1/4}, #{0,0,0,0}]>" -0.14360723)
+            (pair "rel:from=<{1/2}>:to=<{}>:pat=<els=[f{0,0,0,0}, -{0,1/4}]>" -0.1312472)
+            }
+        )
+    })
+    
 )

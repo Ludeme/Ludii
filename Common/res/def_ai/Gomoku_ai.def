@@ -1,38 +1,36 @@
 (define "Gomoku_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (lineCompletionHeuristic)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{0,0}, f{0}]>" 0.5387159)
-        (pair "rel:to=<{}>:pat=<els=[f{0,0}, f{0}]>" 0.2998169)
-        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{0,0}, f{1/2}, f{0}]>" 1.5083545)
-        (pair "rel:to=<{}>:pat=<els=[-{1/2,0}, #{1/2,0,0,0}, f{-1/4,-1/4}, f{0,1/4}, e{1/4,0,0}]>" 0.9154042)
-        (pair "rel:to=<{}>:pat=<els=[f{0,0}, f{1/2}, f{0}]>" 0.5720971)
-        (pair "rel:to=<{}>:pat=<els=[f{1/2}, f{0}]>" 0.3165389)
-        (pair "rel:to=<{}>:pat=<els=[f{-1/2,0}, f{0,0}, f{1/2}, f{0}]>" 1.4843377)
-        (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[e{0,0,0,0}, -{-1/4,1/4}]>" 0.21976222)
-        (pair "rel:to=<{}>:pat=<els=[f{1/2,0}, f{0,0}, f{0}]>" 0.30354646)
-        (pair "rel:to=<{}>:pat=<els=[e{0}]>" 0.19402233)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0,0}, f{0,0}, f{0,0,0,0}]>" 2.1521275)
-        (pair "rel:to=<{}>:pat=<els=[f{1/2}, -{-1/4,1/4}, -{1/2,-1/4}, f{0,0,0}, f{0}, f{0,0}]>" 1.866234)
-        (pair "rel:to=<{}>:pat=<els=[f{1/2}, f{0,0,0}, f{0}, f{0,0}]>" 1.7843075)
-        (pair "rel:to=<{}>:pat=<els=[f{1/2}, -{-1/4,1/4}, f{0,0,0}, f{0}, f{0,0}]>" 1.7536763)
-        (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0,0}, f{0,0}]>" 0.6403088)
-        (pair "rel:to=<{}>:pat=<els=[!-{0,0,0}, f{0}, f{0,0}, f{0,0,0,0}]>" 0.63396436)
-        (pair "rel:to=<{}>:pat=<els=[-{-1/4,1/4}, f{0,0,0}, f{0}, f{0,0}]>" 0.6414462)
-        (pair "rel:to=<{}>:pat=<els=[f{1/2}, f{0}, f{0,0}]>" 0.41874728)
-        (pair "rel:to=<{}>:pat=<els=[f{-1/4,-1/4}, f{0,1/4}, -{0,-1/4}, -{1/2,-1/4}, f{0}, f{0,0}]>" 0.5055015)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (lineCompletionHeuristic)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{0,0}, f{0}]>" 0.5387159)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0}, f{0}]>" 0.2998169)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{0,0}, f{1/2}, f{0}]>" 1.5083545)
+            (pair "rel:to=<{}>:pat=<els=[-{1/2,0}, #{1/2,0,0,0}, f{-1/4,-1/4}, f{0,1/4}, e{1/4,0,0}]>" 0.9154042)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0}, f{1/2}, f{0}]>" 0.5720971)
+            (pair "rel:to=<{}>:pat=<els=[f{1/2}, f{0}]>" 0.3165389)
+            (pair "rel:to=<{}>:pat=<els=[f{-1/2,0}, f{0,0}, f{1/2}, f{0}]>" 1.4843377)
+            (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[e{0,0,0,0}, -{-1/4,1/4}]>" 0.21976222)
+            (pair "rel:to=<{}>:pat=<els=[f{1/2,0}, f{0,0}, f{0}]>" 0.30354646)
+            (pair "rel:to=<{}>:pat=<els=[e{0}]>" 0.19402233)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0,0}, f{0,0}, f{0,0,0,0}]>" 2.1521275)
+            (pair "rel:to=<{}>:pat=<els=[f{1/2}, -{-1/4,1/4}, -{1/2,-1/4}, f{0,0,0}, f{0}, f{0,0}]>" 1.866234)
+            (pair "rel:to=<{}>:pat=<els=[f{1/2}, f{0,0,0}, f{0}, f{0,0}]>" 1.7843075)
+            (pair "rel:to=<{}>:pat=<els=[f{1/2}, -{-1/4,1/4}, f{0,0,0}, f{0}, f{0,0}]>" 1.7536763)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0,0}, f{0,0}]>" 0.6403088)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,0,0}, f{0}, f{0,0}, f{0,0,0,0}]>" 0.63396436)
+            (pair "rel:to=<{}>:pat=<els=[-{-1/4,1/4}, f{0,0,0}, f{0}, f{0,0}]>" 0.6414462)
+            (pair "rel:to=<{}>:pat=<els=[f{1/2}, f{0}, f{0,0}]>" 0.41874728)
+            (pair "rel:to=<{}>:pat=<els=[f{-1/4,-1/4}, f{0,1/4}, -{0,-1/4}, -{1/2,-1/4}, f{0}, f{0,0}]>" 0.5055015)
+            }
+        )
+    })
+    
 )

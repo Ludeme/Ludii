@@ -1,26 +1,24 @@
 (define "Selbia_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[e{0}, e{0,0}]>" 5.4107842)
-        (pair "rel:to=<{}>:pat=<els=[e{0,3/8}, f{0}]>" 1.3037649)
-        (pair "rel:to=<{}>:pat=<els=[e{3/8}, e{0}, f{1/8}]>" 6.196979)
-        (pair "rel:to=<{}>:pat=<els=[-{1/8,3/8}, -{0}, -{-3/8,3/8}]>" 2.3718586)
-        (pair "rel:last_to=<{1/8}>:to=<{}>:pat=<els=[#{1/2,3/8}, f{1/4,1/8}, N8{0,0}]>" 1.8688849)
-        (pair "rel:to=<{}>:pat=<els=[-{3/8}, -{0,3/8}, -{-1/8}, -{1/2,3/8}]>" 2.3560722)
-        (pair "rel:last_to=<{-1/4}>:to=<{}>:pat=<els=[-{0}, #{3/8,3/8}, #{-1/2,-3/8}, -{0,0}, N4{-1/8,-1/8}]>" 1.812411)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[#{-3/8,3/8}, e{0}, e{0,0}]>" 2.888882)
-        (pair "rel:to=<{}>:pat=<els=[#{3/8,-3/8}, e{1/8,-3/8}, e{0,0}]>" 2.8670142)
-        (pair "rel:to=<{}>:pat=<els=[-{0,-1/8}, -{0,1/8}, e{0}, e{0,0}]>" 2.8840663)
-        (pair "rel:to=<{}>:pat=<els=[-{-1/4,0}, #{1/8,-3/8}, #{0}, -{-3/8,-1/8}]>" 0.71110404)
-        (pair "rel:to=<{}>:pat=<els=[e{0,3/8}, e{1/8,0}]>" 2.800221)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[e{0}, e{0,0}]>" 5.4107842)
+            (pair "rel:to=<{}>:pat=<els=[e{0,3/8}, f{0}]>" 1.3037649)
+            (pair "rel:to=<{}>:pat=<els=[e{3/8}, e{0}, f{1/8}]>" 6.196979)
+            (pair "rel:to=<{}>:pat=<els=[-{1/8,3/8}, -{0}, -{-3/8,3/8}]>" 2.3718586)
+            (pair "rel:last_to=<{1/8}>:to=<{}>:pat=<els=[#{1/2,3/8}, f{1/4,1/8}, N8{0,0}]>" 1.8688849)
+            (pair "rel:to=<{}>:pat=<els=[-{3/8}, -{0,3/8}, -{-1/8}, -{1/2,3/8}]>" 2.3560722)
+            (pair "rel:last_to=<{-1/4}>:to=<{}>:pat=<els=[-{0}, #{3/8,3/8}, #{-1/2,-3/8}, -{0,0}, N4{-1/8,-1/8}]>" 1.812411)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[#{-3/8,3/8}, e{0}, e{0,0}]>" 2.888882)
+            (pair "rel:to=<{}>:pat=<els=[#{3/8,-3/8}, e{1/8,-3/8}, e{0,0}]>" 2.8670142)
+            (pair "rel:to=<{}>:pat=<els=[-{0,-1/8}, -{0,1/8}, e{0}, e{0,0}]>" 2.8840663)
+            (pair "rel:to=<{}>:pat=<els=[-{-1/4,0}, #{1/8,-3/8}, #{0}, -{-3/8,-1/8}]>" 0.71110404)
+            (pair "rel:to=<{}>:pat=<els=[e{0,3/8}, e{1/8,0}]>" 2.800221)
+            }
+        )
+    })
     
-
 )

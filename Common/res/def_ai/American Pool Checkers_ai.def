@@ -1,75 +1,73 @@
 (define "American Pool Checkers_ai"
     
-        (bestAgent "Biased MCTS (Uniform Playouts)")
-        trainedHeuristics:(heuristics {
-    (sidesProximity)
-    (centreProximity pieceWeights:{
-        (pair "Counter1" 0.6729074)
-        (pair "Counter2" 0.57359296)
-        (pair "DoubleCounter1" 0.80653256)
-        (pair "DoubleCounter2" 0.92660576)
+    (bestAgent "Biased MCTS (Uniform Playouts)")
+    trainedHeuristics:(heuristics {
+        (sidesProximity)
+        (centreProximity pieceWeights:{
+            (pair "Counter1" 0.6729074)
+            (pair "Counter2" 0.57359296)
+            (pair "DoubleCounter1" 0.80653256)
+            (pair "DoubleCounter2" 0.92660576)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Counter1" 0.05758966)
+            (pair "Counter2" -0.02110167)
+            (pair "DoubleCounter1" 0.19966185)
+            (pair "DoubleCounter2" -0.16386423)
+        })
+        (lineCompletionHeuristic weight:-0.28499293)
+        (material pieceWeights:{
+            (pair "Counter1" -0.10044123)
+            (pair "Counter2" 0.01455404)
+            (pair "DoubleCounter1" -0.273514)
+            (pair "DoubleCounter2" 0.94127804)
+        })
+        (mobilitySimple weight:-0.012077978)
+        (influence weight:1.3839786)
+        (ownRegionsCount weight:0.14849024)
+        (playerRegionsProximity player:1 pieceWeights:{
+            (pair "Counter1" 0.5250746)
+            (pair "DoubleCounter1" 3.476897)
+            (pair "DoubleCounter2" -0.4221285)
+        })
+        (regionProximity region:0 pieceWeights:{
+            (pair "Counter1" -0.05590865)
+            (pair "Counter2" 0.33843002)
+            (pair "DoubleCounter1" 0.6198131)
+            (pair "DoubleCounter2" 0.4799825)
+        })
+        (regionProximity region:1 pieceWeights:{
+            (pair "Counter1" -0.22798264)
+            (pair "Counter2" -0.06989633)
+            (pair "DoubleCounter1" 0.061329048)
+            (pair "DoubleCounter2" 0.23741609)
+        })
     })
-    (cornerProximity pieceWeights:{
-        (pair "Counter1" 0.05758966)
-        (pair "Counter2" -0.02110167)
-        (pair "DoubleCounter1" 0.19966185)
-        (pair "DoubleCounter2" -0.16386423)
-    })
-    (lineCompletionHeuristic weight:-0.28499293)
-    (material pieceWeights:{
-        (pair "Counter1" -0.10044123)
-        (pair "Counter2" 0.01455404)
-        (pair "DoubleCounter1" -0.273514)
-        (pair "DoubleCounter2" 0.94127804)
-    })
-    (mobilitySimple weight:-0.012077978)
-    (influence weight:1.3839786)
-    (ownRegionsCount weight:0.14849024)
-    (playerRegionsProximity player:1 pieceWeights:{
-        (pair "Counter1" 0.5250746)
-        (pair "DoubleCounter1" 3.476897)
-        (pair "DoubleCounter2" -0.4221285)
-    })
-    (regionProximity region:0 pieceWeights:{
-        (pair "Counter1" -0.05590865)
-        (pair "Counter2" 0.33843002)
-        (pair "DoubleCounter1" 0.6198131)
-        (pair "DoubleCounter2" 0.4799825)
-    })
-    (regionProximity region:1 pieceWeights:{
-        (pair "Counter1" -0.22798264)
-        (pair "Counter2" -0.06989633)
-        (pair "DoubleCounter1" 0.061329048)
-        (pair "DoubleCounter2" 0.23741609)
-    })
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[I2{0,-1/4,0,1/4}]>" -0.6481371)
-        (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[-{0,0}, I2{0,-1/4,0,1/4}]>" -0.6563139)
-        (pair "rel:to=<{}>:pat=<els=[I2{1/4,1/4}, #{-1/4,0}, #{0,-1/4}]>" 1.6218913)
-        (pair "rel:last_to=<{0,-1/4,-1/2,-1/4}>:from=<{}>:to=<{0,-1/4}>:pat=<els=[R1{0,0,0,0}, f{0,-1/4,-1/2,1/4}, I1{0,-1/4,-1/4,1/4}]>" 0.1575783)
-        (pair "rel:to=<{}>:pat=<els=[#{0,1/4}, !-{1/2,1/4}]>" 0.5373461)
-        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!-{-1/2,0}, -{0,1/4,-1/4,1/4}]>" 0.13239096)
-        (pair "rel:to=<{}>:pat=<els=[#{0,1/4}]>" 0.34949687)
-        (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[!-{0,0}, I2{1/4,1/4}, #{0,-1/4}]>" 1.5963855)
-        (pair "rel:last_to=<{0,-1/4,-1/2,-1/4}>:from=<{}>:to=<{0,-1/4}>:pat=<els=[f{0,-1/4,-1/2,1/4}, !I1{0,-1/4,0,1/4}]>" -0.3258294)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[#{1/4,0}]>" 0.7523784)
-        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[#{1/4,0}, !-{0,1/4,1/4,0}, e{0,1/4,-1/4,-1/4}]>" 1.8227476)
-        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[#{1/4,0}, e{0,1/4,-1/4,-1/4}]>" 1.6858398)
-        (pair "rel:to=<{0,1/4}>:pat=<els=[#{1/4,0}, !-{0,1/4,1/4,0}, e{0,1/4,-1/4,-1/4}]>" -0.013947652)
-        (pair "rel:last_to=<{0,0,1/4,0,1/4,1/4}>:from=<{}>:pat=<els=[-{-1/2,1/4}, I1{0,0,1/4,0,1/4,1/4}]>" 1.2920134)
-        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[R0{0}]>" -0.18270712)
-        (pair "rel:last_to=<{0,0,1/4,0,1/4,1/4}>:to=<{0,0,1/4,0}>:pat=<els=[-{-1/2,1/4}]>" -0.013947652)
-        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[-{1/4,1/4}]>" -0.46261922)
-    }
-    )
-})
-
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[I2{0,-1/4,0,1/4}]>" -0.6481371)
+            (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[-{0,0}, I2{0,-1/4,0,1/4}]>" -0.6563139)
+            (pair "rel:to=<{}>:pat=<els=[I2{1/4,1/4}, #{-1/4,0}, #{0,-1/4}]>" 1.6218913)
+            (pair "rel:last_to=<{0,-1/4,-1/2,-1/4}>:from=<{}>:to=<{0,-1/4}>:pat=<els=[R1{0,0,0,0}, f{0,-1/4,-1/2,1/4}, I1{0,-1/4,-1/4,1/4}]>" 0.1575783)
+            (pair "rel:to=<{}>:pat=<els=[#{0,1/4}, !-{1/2,1/4}]>" 0.5373461)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!-{-1/2,0}, -{0,1/4,-1/4,1/4}]>" 0.13239096)
+            (pair "rel:to=<{}>:pat=<els=[#{0,1/4}]>" 0.34949687)
+            (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[!-{0,0}, I2{1/4,1/4}, #{0,-1/4}]>" 1.5963855)
+            (pair "rel:last_to=<{0,-1/4,-1/2,-1/4}>:from=<{}>:to=<{0,-1/4}>:pat=<els=[f{0,-1/4,-1/2,1/4}, !I1{0,-1/4,0,1/4}]>" -0.3258294)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[#{1/4,0}]>" 0.7523784)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[#{1/4,0}, !-{0,1/4,1/4,0}, e{0,1/4,-1/4,-1/4}]>" 1.8227476)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[#{1/4,0}, e{0,1/4,-1/4,-1/4}]>" 1.6858398)
+            (pair "rel:to=<{0,1/4}>:pat=<els=[#{1/4,0}, !-{0,1/4,1/4,0}, e{0,1/4,-1/4,-1/4}]>" -0.013947652)
+            (pair "rel:last_to=<{0,0,1/4,0,1/4,1/4}>:from=<{}>:pat=<els=[-{-1/2,1/4}, I1{0,0,1/4,0,1/4,1/4}]>" 1.2920134)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[R0{0}]>" -0.18270712)
+            (pair "rel:last_to=<{0,0,1/4,0,1/4,1/4}>:to=<{0,0,1/4,0}>:pat=<els=[-{-1/2,1/4}]>" -0.013947652)
+            (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[-{1/4,1/4}]>" -0.46261922)
+            }
+        )
+    })
+    
 )

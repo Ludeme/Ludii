@@ -1,60 +1,58 @@
 (define "Tic-Tac-Four_ai"
     
-        (bestAgent "Biased MCTS (Uniform Playouts)")
-        trainedHeuristics:(heuristics {
-    (centreProximity)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[f{0,1/4}, f{1/4,-1/4}]>" 1.7852933)
-        (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 1.7852933)
-        (pair "rel:to=<{}>:pat=<els=[#{0}]>" -0.52547264)
-        (pair "rel:to=<{}>:pat=<els=[#{0,0}, #{0,1/4}, !#{1/2,0,0,0}]>" -0.52547264)
-        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, #{-1/4,1/4}, !#{1/4,0,0,0}]>" -0.5963344)
-        (pair "rel:to=<{}>:pat=<els=[#{0,0}, -{1/4,1/4}, #{0,1/4}]>" -0.5963344)
-        (pair "rel:to=<{}>:pat=<els=[#{0,0}, -{1/4,1/4}, #{0,1/4}, !#{1/2,0,0,0}]>" -0.5963344)
-        (pair "rel:to=<{}>:pat=<els=[#{1/4,1/4}, #{0,-1/4}]>" -0.5221025)
-        (pair "rel:to=<{}>:pat=<els=[!#{0,0,0}]>" -0.08494057)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!-{0}, !e{0}, f{0,0}]>" 5.0454106)
-        (pair "rel:to=<{}>:pat=<els=[e{0}, f{1/4,1/4}]>" 2.1400917)
-        (pair "rel:to=<{}>:pat=<els=[e{-1/4}, -{1/4}, f{0,1/4}]>" 2.2025092)
-        (pair "rel:to=<{}>:pat=<els=[e{0}, -{1/2}]>" 1.2252395)
-        (pair "rel:to=<{}>:pat=<els=[!#{0,0,0}, !#{1/4,0,0}]>" -0.2024919)
-        (pair "rel:to=<{}>:pat=<els=[#{0,0}, f{1/4,1/4}, -{-1/4,-1/4}, e{1/2,0}]>" 1.5350934)
-        (pair "rel:to=<{}>:pat=<els=[-{1/4,-1/4}, !#{0,0,0}, -{0,-1/4}, !#{-1/4,0,0}]>" -0.6687491)
-    }
-    )
-    (featureSet P3 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!-{0}, !e{0}, f{0,0}]>" 5.4349737)
-        (pair "rel:to=<{}>:pat=<els=[!-{0}, !e{0}, -{-1/2,1/4}, e{-1/4,1/4}]>" 1.8075132)
-        (pair "rel:to=<{}>:pat=<els=[!-{1/2}, !e{1/2}, -{0,1/4}, e{1/4,1/4}, !e{0}]>" 1.766433)
-        (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 1.1909852)
-        (pair "rel:to=<{}>:pat=<els=[!-{0}, !e{0}, e{-1/4,1/4}, !e{-1/2}]>" 0.94262874)
-        (pair "rel:to=<{}>:pat=<els=[!e{0}, f{0,0}]>" 0.87448835)
-        (pair "rel:to=<{}>:pat=<els=[!-{1/2}, -{0,1/4}, e{1/4,1/4}, !e{0}]>" 0.8411133)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, -{1/4,0,0,0}]>" -0.56458795)
-        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!-{1/4}, !e{1/4}, e{0,1/4}]>" 2.702199)
-        (pair "rel:to=<{}>:pat=<els=[f{1/4,0}, !e{0}, -{0,0,0,0}]>" 1.0193746)
-        (pair "rel:to=<{}>:pat=<els=[!e{0}, -{1/4,0,0}, -{0,0,0,0}]>" -0.6385201)
-        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!e{1/4}, e{0,1/4}, !e{-1/4}]>" 0.030841848)
-    }
-    )
-    (featureSet P4 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!-{0}, !e{0}, f{0,0}]>" 4.753153)
-        (pair "rel:to=<{}>:pat=<els=[f{1/2,-1/4}, !e{0}, e{1/4}, e{-1/4,-1/4}]>" 1.2899787)
-        (pair "rel:to=<{}>:pat=<els=[f{-1/4,-1/4}, !e{1/4}, e{0}, e{-1/2}, e{0,-1/4}]>" 1.8473908)
-        (pair "rel:to=<{}>:pat=<els=[f{1/4,-1/4}, -{0,-1/4}, e{0}, e{1/2,-1/4}]>" 1.2613102)
-        (pair "rel:to=<{}>:pat=<els=[f{1/4,-1/4}, -{0,-1/4}, e{1/2}, e{0}]>" 1.2200307)
-        (pair "rel:to=<{}>:pat=<els=[!e{1/4}, e{0,1/4}, !e{-1/4}, f{1/4,0}, -{0,0,0}]>" 1.4782497)
-        (pair "rel:to=<{}>:pat=<els=[e{0,0,0,0}, f{1/4,0}, -{0,0,0}]>" 0.55291784)
-    }
-    )
-})
-
+    (bestAgent "Biased MCTS (Uniform Playouts)")
+    trainedHeuristics:(heuristics {
+        (centreProximity)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/4}, f{1/4,-1/4}]>" 1.7852933)
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 1.7852933)
+            (pair "rel:to=<{}>:pat=<els=[#{0}]>" -0.52547264)
+            (pair "rel:to=<{}>:pat=<els=[#{0,0}, #{0,1/4}, !#{1/2,0,0,0}]>" -0.52547264)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, #{-1/4,1/4}, !#{1/4,0,0,0}]>" -0.5963344)
+            (pair "rel:to=<{}>:pat=<els=[#{0,0}, -{1/4,1/4}, #{0,1/4}]>" -0.5963344)
+            (pair "rel:to=<{}>:pat=<els=[#{0,0}, -{1/4,1/4}, #{0,1/4}, !#{1/2,0,0,0}]>" -0.5963344)
+            (pair "rel:to=<{}>:pat=<els=[#{1/4,1/4}, #{0,-1/4}]>" -0.5221025)
+            (pair "rel:to=<{}>:pat=<els=[!#{0,0,0}]>" -0.08494057)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!-{0}, !e{0}, f{0,0}]>" 5.0454106)
+            (pair "rel:to=<{}>:pat=<els=[e{0}, f{1/4,1/4}]>" 2.1400917)
+            (pair "rel:to=<{}>:pat=<els=[e{-1/4}, -{1/4}, f{0,1/4}]>" 2.2025092)
+            (pair "rel:to=<{}>:pat=<els=[e{0}, -{1/2}]>" 1.2252395)
+            (pair "rel:to=<{}>:pat=<els=[!#{0,0,0}, !#{1/4,0,0}]>" -0.2024919)
+            (pair "rel:to=<{}>:pat=<els=[#{0,0}, f{1/4,1/4}, -{-1/4,-1/4}, e{1/2,0}]>" 1.5350934)
+            (pair "rel:to=<{}>:pat=<els=[-{1/4,-1/4}, !#{0,0,0}, -{0,-1/4}, !#{-1/4,0,0}]>" -0.6687491)
+            }
+        )
+        (featureSet P3 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!-{0}, !e{0}, f{0,0}]>" 5.4349737)
+            (pair "rel:to=<{}>:pat=<els=[!-{0}, !e{0}, -{-1/2,1/4}, e{-1/4,1/4}]>" 1.8075132)
+            (pair "rel:to=<{}>:pat=<els=[!-{1/2}, !e{1/2}, -{0,1/4}, e{1/4,1/4}, !e{0}]>" 1.766433)
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 1.1909852)
+            (pair "rel:to=<{}>:pat=<els=[!-{0}, !e{0}, e{-1/4,1/4}, !e{-1/2}]>" 0.94262874)
+            (pair "rel:to=<{}>:pat=<els=[!e{0}, f{0,0}]>" 0.87448835)
+            (pair "rel:to=<{}>:pat=<els=[!-{1/2}, -{0,1/4}, e{1/4,1/4}, !e{0}]>" 0.8411133)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, -{1/4,0,0,0}]>" -0.56458795)
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!-{1/4}, !e{1/4}, e{0,1/4}]>" 2.702199)
+            (pair "rel:to=<{}>:pat=<els=[f{1/4,0}, !e{0}, -{0,0,0,0}]>" 1.0193746)
+            (pair "rel:to=<{}>:pat=<els=[!e{0}, -{1/4,0,0}, -{0,0,0,0}]>" -0.6385201)
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!e{1/4}, e{0,1/4}, !e{-1/4}]>" 0.030841848)
+            }
+        )
+        (featureSet P4 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!-{0}, !e{0}, f{0,0}]>" 4.753153)
+            (pair "rel:to=<{}>:pat=<els=[f{1/2,-1/4}, !e{0}, e{1/4}, e{-1/4,-1/4}]>" 1.2899787)
+            (pair "rel:to=<{}>:pat=<els=[f{-1/4,-1/4}, !e{1/4}, e{0}, e{-1/2}, e{0,-1/4}]>" 1.8473908)
+            (pair "rel:to=<{}>:pat=<els=[f{1/4,-1/4}, -{0,-1/4}, e{0}, e{1/2,-1/4}]>" 1.2613102)
+            (pair "rel:to=<{}>:pat=<els=[f{1/4,-1/4}, -{0,-1/4}, e{1/2}, e{0}]>" 1.2200307)
+            (pair "rel:to=<{}>:pat=<els=[!e{1/4}, e{0,1/4}, !e{-1/4}, f{1/4,0}, -{0,0,0}]>" 1.4782497)
+            (pair "rel:to=<{}>:pat=<els=[e{0,0,0,0}, f{1/4,0}, -{0,0,0}]>" 0.55291784)
+            }
+        )
+    })
+    
 )

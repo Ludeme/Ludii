@@ -1,38 +1,36 @@
 (define "Koruboddo_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (material)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!f{0,1/4}]>" 2.7518303)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{0,0,1/2}]>" 2.7132328)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!e{-1/2}, e{0,0,-1/2,0,1/2}]>" 3.0129645)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{1/2,0}]>" 2.6726284)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!f{0}, f{0,0}, #{1/2,0}]>" 2.7896898)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!f{0}, !e{0,0,-1/2,1/4}, f{0,0}]>" 2.7180398)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/4}]>" 2.7530904)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,0,0}]>" 2.6505973)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!f{0}, !e{0,0,-1/2,1/4}, #{-1/2,0}]>" 2.799872)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{1/2,0}, !-{0,0,0,0}]>" 2.5970404)
-        (pair "rel:last_to=<{0,0,-1/2,0,-1/2}>:from=<{}>:to=<{0,0}>:pat=<els=[!e{0,0,-1/4,1/4}]>" 2.8108866)
-        (pair "rel:last_to=<{0,0,-1/2}>:from=<{0,0}>:to=<{}>:pat=<els=[!e{-1/2}, e{0,0,-1/2,0,1/2}]>" 2.9217758)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,1/2}]>" 2.865018)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{0,0,1/2}]>" 2.865018)
-        (pair "rel:from=<{}>:to=<{1/4,0}>:pat=<els=[-{0,1/4}]>" 3.090823)
-        (pair "rel:last_to=<{0}>:from=<{0,0}>:to=<{}>:pat=<els=[!e{1/4,1/4}]>" 2.9531212)
-        (pair "rel:last_to=<{0}>:from=<{0,0}>:to=<{}>:pat=<els=[!e{1/4,1/4}, !-{0,0,-1/4,0}]>" 2.9248402)
-        (pair "rel:last_to=<{0}>:from=<{0,0}>:to=<{}>:pat=<els=[!f{0,0,0,1/4}]>" 2.831073)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/2,0,0}]>" 3.5003097)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (material)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!f{0,1/4}]>" 2.7518303)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{0,0,1/2}]>" 2.7132328)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!e{-1/2}, e{0,0,-1/2,0,1/2}]>" 3.0129645)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{1/2,0}]>" 2.6726284)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!f{0}, f{0,0}, #{1/2,0}]>" 2.7896898)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!f{0}, !e{0,0,-1/2,1/4}, f{0,0}]>" 2.7180398)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/4}]>" 2.7530904)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,0,0}]>" 2.6505973)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!f{0}, !e{0,0,-1/2,1/4}, #{-1/2,0}]>" 2.799872)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{1/2,0}, !-{0,0,0,0}]>" 2.5970404)
+            (pair "rel:last_to=<{0,0,-1/2,0,-1/2}>:from=<{}>:to=<{0,0}>:pat=<els=[!e{0,0,-1/4,1/4}]>" 2.8108866)
+            (pair "rel:last_to=<{0,0,-1/2}>:from=<{0,0}>:to=<{}>:pat=<els=[!e{-1/2}, e{0,0,-1/2,0,1/2}]>" 2.9217758)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,1/2}]>" 2.865018)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{0,0,1/2}]>" 2.865018)
+            (pair "rel:from=<{}>:to=<{1/4,0}>:pat=<els=[-{0,1/4}]>" 3.090823)
+            (pair "rel:last_to=<{0}>:from=<{0,0}>:to=<{}>:pat=<els=[!e{1/4,1/4}]>" 2.9531212)
+            (pair "rel:last_to=<{0}>:from=<{0,0}>:to=<{}>:pat=<els=[!e{1/4,1/4}, !-{0,0,-1/4,0}]>" 2.9248402)
+            (pair "rel:last_to=<{0}>:from=<{0,0}>:to=<{}>:pat=<els=[!f{0,0,0,1/4}]>" 2.831073)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/2,0,0}]>" 3.5003097)
+            }
+        )
+    })
+    
 )

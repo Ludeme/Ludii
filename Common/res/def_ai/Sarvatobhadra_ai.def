@@ -1,25 +1,23 @@
 (define "Sarvatobhadra_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{0,0}>:pat=<els=[-{1/2}, I6{0,0,1/4,0}]>" -0.28766334)
-        (pair "rel:to=<{}>:pat=<els=[!f{1/2}, !f{0,1/4,0,1/4}]>" -3.0683476E-4)
-        (pair "rel:last_from=<{0,0,0,0}>:to=<{0,0,1/4}>:pat=<els=[-{0,0}]>" -0.28766334)
-        (pair "rel:to=<{}>:pat=<els=[!f{0,1/4,0,1/4}]>" -3.1869768E-5)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{1/2}]>" 0.0059835142)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I7{-1/2}, !-{0,1/4,1/4}, !-{0,-1/4,0,0}]>" 0.043944206)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:pat=<els=[I7{0,1/4}]>" 0.12455178)
-        (pair "rel:to=<{}>:pat=<els=[!-{0,1/4,-1/2,-1/4}]>" 0.03436025)
-        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!I7{0,1/4}]>" 0.049934123)
-        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[!e{0}, !e{1/2}]>" 0.19258636)
-        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.036795687)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{0,0}>:pat=<els=[-{1/2}, I6{0,0,1/4,0}]>" -0.28766334)
+            (pair "rel:to=<{}>:pat=<els=[!f{1/2}, !f{0,1/4,0,1/4}]>" -3.0683476E-4)
+            (pair "rel:last_from=<{0,0,0,0}>:to=<{0,0,1/4}>:pat=<els=[-{0,0}]>" -0.28766334)
+            (pair "rel:to=<{}>:pat=<els=[!f{0,1/4,0,1/4}]>" -3.1869768E-5)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{1/2}]>" 0.0059835142)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I7{-1/2}, !-{0,1/4,1/4}, !-{0,-1/4,0,0}]>" 0.043944206)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[I7{0,1/4}]>" 0.12455178)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,1/4,-1/2,-1/4}]>" 0.03436025)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!I7{0,1/4}]>" 0.049934123)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[!e{0}, !e{1/2}]>" 0.19258636)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.036795687)
+            }
+        )
+    })
     
-
 )

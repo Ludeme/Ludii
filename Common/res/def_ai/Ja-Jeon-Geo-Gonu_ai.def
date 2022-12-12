@@ -1,29 +1,27 @@
 (define "Ja-Jeon-Geo-Gonu_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (cornerProximity)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[-{0,1/4,-1/4,-1/4}]>" 3.2685688)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[#{0,0,0,-1/4,1/4,-1/4}]>" 1.7212586)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 1.7212586)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{-1/2}, !-{0,-1/4}, -{1/4,0}, -{0,1/4}]>" 1.9951377)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0}, -{-1/4,0}, -{1/2,1/4}, !-{0,1/4}]>" 2.015863)
-        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[]>" 3.4032848)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:last_from=<{1/4}>:to=<{}>:pat=<els=[-{0}, !-{-1/4,-1/4}, -{0,-1/4}]>" 1.1880887)
-        (pair "rel:last_from=<{1/4}>:to=<{}>:pat=<els=[-{0}, -{0,-1/4}]>" 1.1623505)
-        (pair "rel:last_from=<{1/2}>:to=<{}>:pat=<els=[-{1/4}, !-{0,-1/4}]>" 0.6946366)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!-{0,-1/4}, -{1/2,-1/4}]>" 0.2987013)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (cornerProximity)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[-{0,1/4,-1/4,-1/4}]>" 3.2685688)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[#{0,0,0,-1/4,1/4,-1/4}]>" 1.7212586)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 1.7212586)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{-1/2}, !-{0,-1/4}, -{1/4,0}, -{0,1/4}]>" 1.9951377)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0}, -{-1/4,0}, -{1/2,1/4}, !-{0,1/4}]>" 2.015863)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[]>" 3.4032848)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:last_from=<{1/4}>:to=<{}>:pat=<els=[-{0}, !-{-1/4,-1/4}, -{0,-1/4}]>" 1.1880887)
+            (pair "rel:last_from=<{1/4}>:to=<{}>:pat=<els=[-{0}, -{0,-1/4}]>" 1.1623505)
+            (pair "rel:last_from=<{1/2}>:to=<{}>:pat=<els=[-{1/4}, !-{0,-1/4}]>" 0.6946366)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!-{0,-1/4}, -{1/2,-1/4}]>" 0.2987013)
+            }
+        )
+    })
+    
 )

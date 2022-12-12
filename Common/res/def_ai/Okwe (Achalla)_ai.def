@@ -1,35 +1,33 @@
 (define "Okwe (Achalla)_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (ownRegionsCount)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[-{0}, !R1{0,0,0}]>" 0.18036859)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, !R1{0,0,0,0}]>" 0.29933605)
-        (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[-{1/2,0,0,0}, -{0,0,0,0}, -{1/2,0,0}]>" 0.41566566)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0}, !R1{1/2}, -{0,0,0,0}, -{0}]>" 0.095182635)
-        (pair "rel:to=<{}>:pat=<els=[!-{1/2,0,0}, !R1{0,0}, -{1/2,0,0,0}, -{0}, -{0,0}]>" -0.22204807)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0}, !R1{1/2}, -{1/2,0,0}, -{0}]>" 0.13172406)
-        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[-{1/2}, !-{1/2,0,0}, !R1{-1/2,0}, -{0,0,0,0}]>" 0.18026488)
-        (pair "rel:last_to=<{1/2,0}>:to=<{}>:pat=<els=[!R1{0,0,0}]>" 0.3184413)
-        (pair "rel:to=<{}>:pat=<els=[!-{0,0,0}, !-{1/2,0,0}, !R1{-1/2,0}, -{1/2}, !-{0}]>" 0.07138627)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[-{1/2,0,0,0}, -{0}]>" 0.06522657)
-        (pair "rel:last_to=<{1/2,0,0,0}>:to=<{}>:pat=<els=[-{0}, !-{1/2}, -{0,0}, -{-1/2,0,0}]>" 0.6005138)
-        (pair "rel:to=<{}>:pat=<els=[-{0}, !-{1/2}, !R0{0,0}, -{-1/2,0,0}]>" 0.19137624)
-        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
-        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!R0{1/2,0}, !-{0,0,0}, !-{0}, !R0{1/2,0,0,0}]>" -0.046130393)
-        (pair "rel:last_to=<{1/2,0,0,0}>:to=<{}>:pat=<els=[-{0}, -{0,0}, -{-1/2,0,0}]>" 0.60888237)
-        (pair "rel:to=<{}>:pat=<els=[-{0}, !R0{0,0,0,0}, -{0,0,0,0}, -{1/2,0,0,0}]>" 0.06814818)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (ownRegionsCount)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{0}, !R1{0,0,0}]>" 0.18036859)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, !R1{0,0,0,0}]>" 0.29933605)
+            (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[-{1/2,0,0,0}, -{0,0,0,0}, -{1/2,0,0}]>" 0.41566566)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0}, !R1{1/2}, -{0,0,0,0}, -{0}]>" 0.095182635)
+            (pair "rel:to=<{}>:pat=<els=[!-{1/2,0,0}, !R1{0,0}, -{1/2,0,0,0}, -{0}, -{0,0}]>" -0.22204807)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0}, !R1{1/2}, -{1/2,0,0}, -{0}]>" 0.13172406)
+            (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[-{1/2}, !-{1/2,0,0}, !R1{-1/2,0}, -{0,0,0,0}]>" 0.18026488)
+            (pair "rel:last_to=<{1/2,0}>:to=<{}>:pat=<els=[!R1{0,0,0}]>" 0.3184413)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,0,0}, !-{1/2,0,0}, !R1{-1/2,0}, -{1/2}, !-{0}]>" 0.07138627)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{1/2,0,0,0}, -{0}]>" 0.06522657)
+            (pair "rel:last_to=<{1/2,0,0,0}>:to=<{}>:pat=<els=[-{0}, !-{1/2}, -{0,0}, -{-1/2,0,0}]>" 0.6005138)
+            (pair "rel:to=<{}>:pat=<els=[-{0}, !-{1/2}, !R0{0,0}, -{-1/2,0,0}]>" 0.19137624)
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!R0{1/2,0}, !-{0,0,0}, !-{0}, !R0{1/2,0,0,0}]>" -0.046130393)
+            (pair "rel:last_to=<{1/2,0,0,0}>:to=<{}>:pat=<els=[-{0}, -{0,0}, -{-1/2,0,0}]>" 0.60888237)
+            (pair "rel:to=<{}>:pat=<els=[-{0}, !R0{0,0,0,0}, -{0,0,0,0}, -{1/2,0,0,0}]>" 0.06814818)
+            }
+        )
+    })
+    
 )

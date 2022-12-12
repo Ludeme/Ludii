@@ -1,24 +1,22 @@
 (define "Welschschach_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{0,0,1/4,0}>:pat=<els=[!-{0,0,1/4,0,1/4,0}]>" -4.6459546)
-        (pair "rel:to=<{0,0,1/4,0}>:pat=<els=[R0{0,0,0}, !-{0,0,1/4,0,1/4,0}]>" -4.6459546)
-        (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[R0{0,0,0}]>" 0.22955279)
-        (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
-        (pair "rel:to=<{}>:pat=<els=[I12{0,0,0}]>" 0.04845478)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:pat=<els=[!-{1/4,1/4}, !-{0,-1/4,-1/2,0,0}]>" 0.31781816)
-        (pair "rel:from=<{}>:pat=<els=[!I6{}, !e{0,0}]>" -0.018943071)
-        (pair "rel:to=<{0,1/4}>:pat=<els=[!-{0,1/4,1/2,0,0}]>" -0.7398223)
-        (pair "rel:to=<{}>:pat=<els=[I9{0}]>" 0.07065048)
-        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[-{0,1/4,-1/4,0,0,0}]>" -0.019001236)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{0,0,1/4,0}>:pat=<els=[!-{0,0,1/4,0,1/4,0}]>" -4.6459546)
+            (pair "rel:to=<{0,0,1/4,0}>:pat=<els=[R0{0,0,0}, !-{0,0,1/4,0,1/4,0}]>" -4.6459546)
+            (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[R0{0,0,0}]>" 0.22955279)
+            (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:to=<{}>:pat=<els=[I12{0,0,0}]>" 0.04845478)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[!-{1/4,1/4}, !-{0,-1/4,-1/2,0,0}]>" 0.31781816)
+            (pair "rel:from=<{}>:pat=<els=[!I6{}, !e{0,0}]>" -0.018943071)
+            (pair "rel:to=<{0,1/4}>:pat=<els=[!-{0,1/4,1/2,0,0}]>" -0.7398223)
+            (pair "rel:to=<{}>:pat=<els=[I9{0}]>" 0.07065048)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[-{0,1/4,-1/4,0,0,0}]>" -0.019001236)
+            }
+        )
+    })
     
-
 )

@@ -1,39 +1,37 @@
 (define "Pancha Keliya_ai"
     
-        (bestAgent "Biased MCTS (Uniform Playouts)")
-        trainedHeuristics:(heuristics {
-    (cornerProximity weight:-1.0)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!f{}]>" -0.102959886)
-        (pair "rel:from=<{0,0}>:pat=<els=[R0{0,0,0}]>" 6.6101217)
-        (pair "rel:from=<{}>:pat=<els=[]>" -0.12668945)
-        (pair "rel:to=<{}>:pat=<els=[!e{0,0,0}, N2{}, !f{1/4,0}, !e{}, !f{0,0}, -{-1/2,-1/4}]>" -0.08093853)
-        (pair "rel:to=<{}>:pat=<els=[!e{0,0,0}, N2{}, !f{1/4,0}, -{-1/4,1/4}, !e{}, !f{0,0}]>" -0.054320246)
-        (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}]>" -0.11495479)
-        (pair "rel:from=<{}>:pat=<els=[!-{0}]>" -0.23504232)
-        (pair "rel:to=<{}>:pat=<els=[#{0,0,0,1/4}]>" -0.043910593)
-        (pair "rel:to=<{}>:pat=<els=[!e{}, N2{}, !f{0,0}]>" -0.05717439)
-        (pair "rel:to=<{}>:pat=<els=[-{0}, !e{1/4,0,0}, N2{}, -{0,1/4}, !e{}, !f{1/4,0}, -{-1/4,-1/4}]>" -0.16268077)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[N2{}, -{1/4,0}, !-{0,1/4}, -{0,0,0}]>" 0.5746832)
-        (pair "rel:to=<{}>:pat=<els=[f{0,1/4}, N2{}, -{0,0}]>" 1.168336)
-        (pair "rel:to=<{}>:pat=<els=[-{-1/4,0}, !-{0,-1/4}, -{0,0,0}, #{1/2,0,0,0}]>" 0.4080298)
-        (pair "rel:to=<{}>:pat=<els=[f{0,1/4}, -{0,0}]>" 1.168336)
-        (pair "rel:from=<{}>:pat=<els=[!f{0,0,0,0}, !R1{0}, #{1/2,0}]>" -0.14200182)
-        (pair "rel:to=<{}>:pat=<els=[N2{}]>" -0.05959345)
-        (pair "rel:to=<{}>:pat=<els=[#{0,0,0,0}]>" -0.026013482)
-        (pair "rel:to=<{}>:pat=<els=[N2{}, -{1/4,0}, -{1/2,0,0}, #{0,0,0,0}]>" -0.08797161)
-        (pair "rel:to=<{}>:pat=<els=[-{1/4,0}, !-{1/2,-1/4}, !f{-1/4,0,0}, #{0,0,0,0}]>" 0.39928418)
-        (pair "rel:last_to=<{1/2,-1/4}>:from=<{}>:pat=<els=[!f{1/2,0,0,0}, #{0,-1/4}, #{0,0}]>" -0.07796832)
-    }
-    )
-})
-
+    (bestAgent "Biased MCTS (Uniform Playouts)")
+    trainedHeuristics:(heuristics {
+        (cornerProximity weight:-1.0)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!f{}]>" -0.102959886)
+            (pair "rel:from=<{0,0}>:pat=<els=[R0{0,0,0}]>" 6.6101217)
+            (pair "rel:from=<{}>:pat=<els=[]>" -0.12668945)
+            (pair "rel:to=<{}>:pat=<els=[!e{0,0,0}, N2{}, !f{1/4,0}, !e{}, !f{0,0}, -{-1/2,-1/4}]>" -0.08093853)
+            (pair "rel:to=<{}>:pat=<els=[!e{0,0,0}, N2{}, !f{1/4,0}, -{-1/4,1/4}, !e{}, !f{0,0}]>" -0.054320246)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}]>" -0.11495479)
+            (pair "rel:from=<{}>:pat=<els=[!-{0}]>" -0.23504232)
+            (pair "rel:to=<{}>:pat=<els=[#{0,0,0,1/4}]>" -0.043910593)
+            (pair "rel:to=<{}>:pat=<els=[!e{}, N2{}, !f{0,0}]>" -0.05717439)
+            (pair "rel:to=<{}>:pat=<els=[-{0}, !e{1/4,0,0}, N2{}, -{0,1/4}, !e{}, !f{1/4,0}, -{-1/4,-1/4}]>" -0.16268077)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[N2{}, -{1/4,0}, !-{0,1/4}, -{0,0,0}]>" 0.5746832)
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/4}, N2{}, -{0,0}]>" 1.168336)
+            (pair "rel:to=<{}>:pat=<els=[-{-1/4,0}, !-{0,-1/4}, -{0,0,0}, #{1/2,0,0,0}]>" 0.4080298)
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/4}, -{0,0}]>" 1.168336)
+            (pair "rel:from=<{}>:pat=<els=[!f{0,0,0,0}, !R1{0}, #{1/2,0}]>" -0.14200182)
+            (pair "rel:to=<{}>:pat=<els=[N2{}]>" -0.05959345)
+            (pair "rel:to=<{}>:pat=<els=[#{0,0,0,0}]>" -0.026013482)
+            (pair "rel:to=<{}>:pat=<els=[N2{}, -{1/4,0}, -{1/2,0,0}, #{0,0,0,0}]>" -0.08797161)
+            (pair "rel:to=<{}>:pat=<els=[-{1/4,0}, !-{1/2,-1/4}, !f{-1/4,0,0}, #{0,0,0,0}]>" 0.39928418)
+            (pair "rel:last_to=<{1/2,-1/4}>:from=<{}>:pat=<els=[!f{1/2,0,0,0}, #{0,-1/4}, #{0,0}]>" -0.07796832)
+            }
+        )
+    })
+    
 )

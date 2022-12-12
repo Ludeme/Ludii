@@ -1,38 +1,36 @@
 (define "Meusueb_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (playerSiteMapCount)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[-{0}, N6{1/4,0}]>" -0.018665627)
-        (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[R1{0,1/6}]>" -0.44748253)
-        (pair "rel:to=<{}>:pat=<els=[-{1/4,0,0,0}, N6{1/12,-1/3}, -{0,1/4}]>" 0.23878138)
-        (pair "rel:to=<{}>:pat=<els=[-{1/3,-1/4}, -{0,0}]>" 0.020083133)
-        (pair "rel:to=<{}>:pat=<els=[-{1/4,-1/4}, -{0}]>" 0.11081811)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{0}, !R0{1/3,1/3}]>" -0.0862781)
-        (pair "rel:to=<{}>:pat=<els=[N6{0,-1/3}, -{1/4,0}]>" -0.011918027)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" -0.02451072)
-        (pair "rel:to=<{}>:pat=<els=[-{1/2,0}, N6{0}]>" 0.18815422)
-        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[-{0,1/4}, N6{-1/4,1/3}]>" 0.45974612)
-        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" 0.027367266)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{0,1/3}, -{0,-1/4}, !R1{-1/3,1/3}, -{-1/3}, R0{0,-1/3}]>" 0.16054675)
-        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[N4{0,0,0}, -{1/4,-1/3}, -{0}]>" -0.61378765)
-        (pair "rel:to=<{}>:pat=<els=[N4{0,0,0}, -{0}]>" -0.11550089)
-        (pair "rel:to=<{}>:pat=<els=[-{0}, R0{0,1/4}]>" 0.048895653)
-        (pair "rel:to=<{}>:pat=<els=[-{0,1/6}]>" 0.030212728)
-        (pair "rel:to=<{}>:pat=<els=[R0{-1/2,1/3}, -{0}, R0{0,-1/4}]>" 0.1792598)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" -0.050058827)
-        (pair "rel:to=<{}>:pat=<els=[-{0}, R0{-1/2,-1/6}, R0{0,1/6}]>" 0.27783394)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (playerSiteMapCount)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{0}, N6{1/4,0}]>" -0.018665627)
+            (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[R1{0,1/6}]>" -0.44748253)
+            (pair "rel:to=<{}>:pat=<els=[-{1/4,0,0,0}, N6{1/12,-1/3}, -{0,1/4}]>" 0.23878138)
+            (pair "rel:to=<{}>:pat=<els=[-{1/3,-1/4}, -{0,0}]>" 0.020083133)
+            (pair "rel:to=<{}>:pat=<els=[-{1/4,-1/4}, -{0}]>" 0.11081811)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{0}, !R0{1/3,1/3}]>" -0.0862781)
+            (pair "rel:to=<{}>:pat=<els=[N6{0,-1/3}, -{1/4,0}]>" -0.011918027)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" -0.02451072)
+            (pair "rel:to=<{}>:pat=<els=[-{1/2,0}, N6{0}]>" 0.18815422)
+            (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[-{0,1/4}, N6{-1/4,1/3}]>" 0.45974612)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" 0.027367266)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{0,1/3}, -{0,-1/4}, !R1{-1/3,1/3}, -{-1/3}, R0{0,-1/3}]>" 0.16054675)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[N4{0,0,0}, -{1/4,-1/3}, -{0}]>" -0.61378765)
+            (pair "rel:to=<{}>:pat=<els=[N4{0,0,0}, -{0}]>" -0.11550089)
+            (pair "rel:to=<{}>:pat=<els=[-{0}, R0{0,1/4}]>" 0.048895653)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/6}]>" 0.030212728)
+            (pair "rel:to=<{}>:pat=<els=[R0{-1/2,1/3}, -{0}, R0{0,-1/4}]>" 0.1792598)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" -0.050058827)
+            (pair "rel:to=<{}>:pat=<els=[-{0}, R0{-1/2,-1/6}, R0{0,1/6}]>" 0.27783394)
+            }
+        )
+    })
+    
 )

@@ -1,26 +1,24 @@
 (define "Hufesay_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[R1{0,1/4}, -{1/4}, !R0{0,1/4}]>" 0.0671045)
-        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{0}]>" 0.10102074)
-        (pair "rel:to=<{}>:pat=<els=[R1{0,1/4}, !R0{0,1/4}]>" 0.0015713254)
-        (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[-{0,0}]>" 0.15310922)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[-{0,1/4}, !R0{0,0,0,0}]>" 7.9352065E-4)
-        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, !-{}, !#{0,0,0,0}]>" 0.088148735)
-        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[R0{0,1/4}, !R0{-1/4,0,0,0}]>" -0.004319686)
-        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, !R0{0,0,0,0}]>" 0.088148735)
-        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[R0{0,1/4}, -{-1/4,1/4}]>" 0.005239912)
-        (pair "rel:to=<{}>:pat=<els=[!R0{0,0,0,0}]>" 0.021824323)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" 0.040037982)
-        (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[-{0,1/4}, !#{0,0,0,0}]>" 0.23165542)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[R1{0,1/4}, -{1/4}, !R0{0,1/4}]>" 0.0671045)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{0}]>" 0.10102074)
+            (pair "rel:to=<{}>:pat=<els=[R1{0,1/4}, !R0{0,1/4}]>" 0.0015713254)
+            (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[-{0,0}]>" 0.15310922)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[-{0,1/4}, !R0{0,0,0,0}]>" 7.9352065E-4)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, !-{}, !#{0,0,0,0}]>" 0.088148735)
+            (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[R0{0,1/4}, !R0{-1/4,0,0,0}]>" -0.004319686)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, !R0{0,0,0,0}]>" 0.088148735)
+            (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[R0{0,1/4}, -{-1/4,1/4}]>" 0.005239912)
+            (pair "rel:to=<{}>:pat=<els=[!R0{0,0,0,0}]>" 0.021824323)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" 0.040037982)
+            (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[-{0,1/4}, !#{0,0,0,0}]>" 0.23165542)
+            }
+        )
+    })
     
-
 )

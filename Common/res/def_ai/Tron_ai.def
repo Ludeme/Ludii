@@ -1,50 +1,48 @@
 (define "Tron_ai"
     
-        (bestAgent "Biased MCTS (Uniform Playouts)")
-        trainedHeuristics:(heuristics {
-    (cornerProximity)
-    (centreProximity pieceWeights:{
-        (pair "King1" 2.220763)
-        (pair "King2" 0.14999212)
-        (pair "Square1" 0.6587064)
-        (pair "Square2" 0.4682022)
+    (bestAgent "Biased MCTS (Uniform Playouts)")
+    trainedHeuristics:(heuristics {
+        (cornerProximity)
+        (centreProximity pieceWeights:{
+            (pair "King1" 2.220763)
+            (pair "King2" 0.14999212)
+            (pair "Square1" 0.6587064)
+            (pair "Square2" 0.4682022)
+        })
+        (lineCompletionHeuristic weight:0.9952717)
+        (material pieceWeights:{
+            (pair "King1" -1.3497256)
+            (pair "King2" 1.3497256)
+            (pair "Square1" -0.7052398)
+            (pair "Square2" 0.3370826)
+        })
+        (mobilitySimple weight:0.085515484)
+        (sidesProximity pieceWeights:{
+            (pair "King1" -3.136205)
+            (pair "King2" 1.1831039)
+            (pair "Square1" -2.3447342)
+            (pair "Square2" -0.817818)
+        })
     })
-    (lineCompletionHeuristic weight:0.9952717)
-    (material pieceWeights:{
-        (pair "King1" -1.3497256)
-        (pair "King2" 1.3497256)
-        (pair "Square1" -0.7052398)
-        (pair "Square2" 0.3370826)
-    })
-    (mobilitySimple weight:0.085515484)
-    (sidesProximity pieceWeights:{
-        (pair "King1" -3.136205)
-        (pair "King2" 1.1831039)
-        (pair "Square1" -2.3447342)
-        (pair "Square2" -0.817818)
-    })
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{}]>" -6.569682)
-        (pair "rel:to=<{}>:pat=<els=[-{0}, !f{-1/4}, !f{1/4}]>" 3.991522)
-        (pair "rel:to=<{}>:pat=<els=[!-{}, e{0,-1/4}, !I3{-1/2,1/4}, !-{0,-1/2}, -{0,-1/2,1/2,0}]>" -7.222838)
-        (pair "rel:last_from=<{0,-1/4}>:to=<{}>:pat=<els=[!-{}, !I3{-1/2,1/4}, !-{0,-1/2}, -{0,-1/2,1/2,0}]>" -6.8203554)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,-1/4}, -{0,-1/2,1/2,0,0,0}]>" 1.1310387)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!-{}]>" -6.319998)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{}]>" -6.319998)
-        (pair "rel:to=<{}>:pat=<els=[e{-1/4}, e{0,1/2,1/4}, !-{0,-1/2}, !I4{0,-1/2,1/2,-1/4}]>" -6.4681115)
-        (pair "rel:last_from=<{0,-1/4,-1/4}>:to=<{}>:pat=<els=[e{-1/4}, !-{0,-1/2}, !I4{0,-1/2,1/2,-1/4}]>" -6.1172066)
-        (pair "rel:last_from=<{0,-1/4,-1/4}>:to=<{}>:pat=<els=[e{-1/4}, e{0,1/2,1/4}, !-{0,-1/2}]>" -6.141464)
-        (pair "rel:last_from=<{0,1/2,1/4,1/4}>:from=<{}>:to=<{0}>:pat=<els=[!-{0}, -{0,1/4}, e{0,1/2,1/2,-1/4}]>" -5.3790493)
-    }
-    )
-})
-
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{}]>" -6.569682)
+            (pair "rel:to=<{}>:pat=<els=[-{0}, !f{-1/4}, !f{1/4}]>" 3.991522)
+            (pair "rel:to=<{}>:pat=<els=[!-{}, e{0,-1/4}, !I3{-1/2,1/4}, !-{0,-1/2}, -{0,-1/2,1/2,0}]>" -7.222838)
+            (pair "rel:last_from=<{0,-1/4}>:to=<{}>:pat=<els=[!-{}, !I3{-1/2,1/4}, !-{0,-1/2}, -{0,-1/2,1/2,0}]>" -6.8203554)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,-1/4}, -{0,-1/2,1/2,0,0,0}]>" 1.1310387)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!-{}]>" -6.319998)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{}]>" -6.319998)
+            (pair "rel:to=<{}>:pat=<els=[e{-1/4}, e{0,1/2,1/4}, !-{0,-1/2}, !I4{0,-1/2,1/2,-1/4}]>" -6.4681115)
+            (pair "rel:last_from=<{0,-1/4,-1/4}>:to=<{}>:pat=<els=[e{-1/4}, !-{0,-1/2}, !I4{0,-1/2,1/2,-1/4}]>" -6.1172066)
+            (pair "rel:last_from=<{0,-1/4,-1/4}>:to=<{}>:pat=<els=[e{-1/4}, e{0,1/2,1/4}, !-{0,-1/2}]>" -6.141464)
+            (pair "rel:last_from=<{0,1/2,1/4,1/4}>:from=<{}>:to=<{0}>:pat=<els=[!-{0}, -{0,1/4}, e{0,1/2,1/2,-1/4}]>" -5.3790493)
+            }
+        )
+    })
+    
 )

@@ -1,28 +1,26 @@
 (define "Hexshogi_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[]>" -0.0032504415)
-        (pair "rel:to=<{}>:pat=<els=[f{}]>" 4.730854)
-        (pair "rel:from=<{}>:pat=<els=[I6{0,0,0}]>" 0.82032526)
-        (pair "rel:from=<{}>:pat=<els=[I1{}]>" -1.2467853)
-        (pair "rel:to=<{}>:pat=<els=[I18{0}]>" -0.48635268)
-        (pair "rel:to=<{}>:pat=<els=[!f{0,0}]>" -0.0022200283)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[I11{0,0}]>" -0.55368954)
-        (pair "rel:to=<{}>:pat=<els=[#{0}]>" -0.59705114)
-        (pair "rel:to=<{}>:pat=<els=[f{}]>" 4.319513)
-        (pair "rel:from=<{}>:pat=<els=[I28{0,1/6}]>" -1.3218906)
-        (pair "rel:to=<{}>:pat=<els=[!e{0,0}]>" -0.0020105094)
-        (pair "rel:to=<{}>:pat=<els=[I11{}]>" -2.1061778)
-        (pair "rel:from=<{}>:pat=<els=[]>" -0.23663269)
-        (pair "rel:from=<{}>:pat=<els=[I2{0,0,0,0}]>" -1.511983)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[]>" -0.0032504415)
+            (pair "rel:to=<{}>:pat=<els=[f{}]>" 4.730854)
+            (pair "rel:from=<{}>:pat=<els=[I6{0,0,0}]>" 0.82032526)
+            (pair "rel:from=<{}>:pat=<els=[I1{}]>" -1.2467853)
+            (pair "rel:to=<{}>:pat=<els=[I18{0}]>" -0.48635268)
+            (pair "rel:to=<{}>:pat=<els=[!f{0,0}]>" -0.0022200283)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[I11{0,0}]>" -0.55368954)
+            (pair "rel:to=<{}>:pat=<els=[#{0}]>" -0.59705114)
+            (pair "rel:to=<{}>:pat=<els=[f{}]>" 4.319513)
+            (pair "rel:from=<{}>:pat=<els=[I28{0,1/6}]>" -1.3218906)
+            (pair "rel:to=<{}>:pat=<els=[!e{0,0}]>" -0.0020105094)
+            (pair "rel:to=<{}>:pat=<els=[I11{}]>" -2.1061778)
+            (pair "rel:from=<{}>:pat=<els=[]>" -0.23663269)
+            (pair "rel:from=<{}>:pat=<els=[I2{0,0,0,0}]>" -1.511983)
+            }
+        )
+    })
     
-
 )

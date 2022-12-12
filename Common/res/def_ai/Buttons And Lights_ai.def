@@ -1,13 +1,11 @@
 (define "Buttons And Lights_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.011378289)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" -0.0030787205)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.011378289)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" -0.0030787205)
+            }
+        )
+    })
     
-
 )

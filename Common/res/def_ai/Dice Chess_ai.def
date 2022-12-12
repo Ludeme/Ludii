@@ -1,39 +1,37 @@
 (define "Dice Chess_ai"
     
-        (bestAgent "MAST")
-        trainedHeuristics:(heuristics {
-    (cornerProximity)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[I13{}]>" 4.5069704)
-        (pair "rel:from=<{}>:to=<{0,0,1/4}>:pat=<els=[I4{1/4}, !-{0,0,1/4,-1/2,-1/4}]>" 1.4569743)
-        (pair "rel:last_from=<{0,0,0,0}>:to=<{}>:pat=<els=[e{0,0,0}, #{1/4,0}, !R0{-1/4,-1/4}]>" -0.3440703)
-        (pair "rel:to=<{}>:pat=<els=[R1{0}]>" -0.032667316)
-        (pair "rel:from=<{}>:pat=<els=[-{0,0,0}]>" 0.011960254)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[]>" -0.3848407)
-        (pair "rel:last_from=<{0,0,0,0}>:to=<{}>:pat=<els=[I3{0,0,0}]>" -0.4164505)
-        (pair "rel:from=<{}>:pat=<els=[I8{0,1/4}]>" -0.21074677)
-        (pair "rel:from=<{}>:to=<{0,0,1/4}>:pat=<els=[I4{1/4}]>" 1.4277298)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[I12{}]>" 4.8298597)
-        (pair "rel:from=<{}>:pat=<els=[!R0{1/4,-1/4}, !-{1/2}, I3{0,0,-1/4,0}]>" -0.17286888)
-        (pair "rel:from=<{0,0}>:pat=<els=[I2{0,0,1/2,0,0,0}]>" -0.9641409)
-        (pair "rel:from=<{}>:pat=<els=[I11{0,0}]>" -0.040063385)
-        (pair "rel:from=<{}>:to=<{0,0,0,1/4,0,0}>:pat=<els=[!#{1/4}, #{0,0,0,1/4,0,0,0}]>" 1.8424293)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[I9{1/2}, #{0,0,1/4}]>" 0.63271695)
-        (pair "rel:to=<{}>:pat=<els=[I2{0,0,1/2,0,0,0}]>" 0.17308159)
-        (pair "rel:from=<{}>:pat=<els=[#{0,0,0,1/4,0,0,0}]>" 0.0)
-        (pair "rel:to=<{0,0}>:pat=<els=[!-{1/2}, !I2{1/4,1/4}, I3{0,0,-1/4,0}]>" -0.9641409)
-        (pair "rel:to=<{0,0}>:pat=<els=[!R0{1/4,-1/4}, !-{1/2}, I3{0,0,-1/4,0}]>" -0.9641409)
-        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
-    }
-    )
-})
-
+    (bestAgent "MAST")
+    trainedHeuristics:(heuristics {
+        (cornerProximity)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[I13{}]>" 4.5069704)
+            (pair "rel:from=<{}>:to=<{0,0,1/4}>:pat=<els=[I4{1/4}, !-{0,0,1/4,-1/2,-1/4}]>" 1.4569743)
+            (pair "rel:last_from=<{0,0,0,0}>:to=<{}>:pat=<els=[e{0,0,0}, #{1/4,0}, !R0{-1/4,-1/4}]>" -0.3440703)
+            (pair "rel:to=<{}>:pat=<els=[R1{0}]>" -0.032667316)
+            (pair "rel:from=<{}>:pat=<els=[-{0,0,0}]>" 0.011960254)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[]>" -0.3848407)
+            (pair "rel:last_from=<{0,0,0,0}>:to=<{}>:pat=<els=[I3{0,0,0}]>" -0.4164505)
+            (pair "rel:from=<{}>:pat=<els=[I8{0,1/4}]>" -0.21074677)
+            (pair "rel:from=<{}>:to=<{0,0,1/4}>:pat=<els=[I4{1/4}]>" 1.4277298)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[I12{}]>" 4.8298597)
+            (pair "rel:from=<{}>:pat=<els=[!R0{1/4,-1/4}, !-{1/2}, I3{0,0,-1/4,0}]>" -0.17286888)
+            (pair "rel:from=<{0,0}>:pat=<els=[I2{0,0,1/2,0,0,0}]>" -0.9641409)
+            (pair "rel:from=<{}>:pat=<els=[I11{0,0}]>" -0.040063385)
+            (pair "rel:from=<{}>:to=<{0,0,0,1/4,0,0}>:pat=<els=[!#{1/4}, #{0,0,0,1/4,0,0,0}]>" 1.8424293)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[I9{1/2}, #{0,0,1/4}]>" 0.63271695)
+            (pair "rel:to=<{}>:pat=<els=[I2{0,0,1/2,0,0,0}]>" 0.17308159)
+            (pair "rel:from=<{}>:pat=<els=[#{0,0,0,1/4,0,0,0}]>" 0.0)
+            (pair "rel:to=<{0,0}>:pat=<els=[!-{1/2}, !I2{1/4,1/4}, I3{0,0,-1/4,0}]>" -0.9641409)
+            (pair "rel:to=<{0,0}>:pat=<els=[!R0{1/4,-1/4}, !-{1/2}, I3{0,0,-1/4,0}]>" -0.9641409)
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+            }
+        )
+    })
+    
 )
