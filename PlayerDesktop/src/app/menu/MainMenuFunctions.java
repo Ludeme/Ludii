@@ -1328,11 +1328,12 @@ public class MainMenuFunctions extends JMenuBar
 			final Map<String, Double> rulesetSimilaritiesCultural = ContextualSimilarity.getRulesetSimilarities(game, false);
 	        final Map<String, Double> rulesetSimilaritiesConcept = ContextualSimilarity.getRulesetSimilarities(game, true);
 	        final Map<String, Double> rulesetSimilaritiesGeographical = ContextualSimilarity.getRulesetGeographicSimilarities(game);
+	        final Map<String, Double> rulesetSimilaritiesYears = ContextualSimilarity.getRulesetYearSimilarities(game);
 
 			final int NUM_TO_PRINT = 10;
 			
 			System.out.println("------------------");
-			System.out.println("closest cultural rulesets:");
+			System.out.println("Closest cultural rulesets:");
 			for(int i = 0; i < NUM_TO_PRINT; i++)
 			{
 				final double maxValueInMapCultural = (Collections.max(rulesetSimilaritiesCultural.values()).doubleValue());
@@ -1345,7 +1346,7 @@ public class MainMenuFunctions extends JMenuBar
 			}
 			
 			System.out.println();
-			System.out.println("closest concept rulesets:");
+			System.out.println("Closest concept rulesets:");
 			for(int i = 0; i < NUM_TO_PRINT; i++)
 			{
 				final double maxValueInMapConcept = (Collections.max(rulesetSimilaritiesConcept.values()).doubleValue());
@@ -1358,16 +1359,29 @@ public class MainMenuFunctions extends JMenuBar
 			}
 			
 			System.out.println();
-			System.out.println("closest geographical rulesets:");
+			System.out.println("Closest geographical rulesets:");
 			for(int i = 0; i < NUM_TO_PRINT; i++)
 			{
 				final double maxValueInMapConcept = (Collections.max(rulesetSimilaritiesGeographical.values()).doubleValue());
 				if (maxValueInMapConcept > 0)
 			        for (final Entry<String, Double> entry : rulesetSimilaritiesGeographical.entrySet()) 
 			            if (entry.getValue().doubleValue() == maxValueInMapConcept) 
-			                System.out.println(entry.getKey() + " (" + maxValueInMapConcept + ")");     // Print the rulesets with max concept similarity
+			                System.out.println(entry.getKey() + " (" + maxValueInMapConcept + ")");     // Print the rulesets with max geographic similarity
 
 				rulesetSimilaritiesGeographical.values().removeIf(value -> (value.doubleValue() == maxValueInMapConcept));
+			}
+			
+			System.out.println();
+			System.out.println("Closest year rulesets:");
+			for(int i = 0; i < NUM_TO_PRINT; i++)
+			{
+				final double maxValueInMapConcept = (Collections.max(rulesetSimilaritiesYears.values()).doubleValue());
+				if (maxValueInMapConcept > 0)
+			        for (final Entry<String, Double> entry : rulesetSimilaritiesYears.entrySet()) 
+			            if (entry.getValue().doubleValue() == maxValueInMapConcept) 
+			                System.out.println(entry.getKey() + " (" + maxValueInMapConcept + ")");     // Print the rulesets with max year similarity
+
+				rulesetSimilaritiesYears.values().removeIf(value -> (value.doubleValue() == maxValueInMapConcept));
 			}
 		}
 		else if (source.getText().equals("Reconstruction Dialog"))
