@@ -1,0 +1,32 @@
+(define "Cannon_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[I4{}]>" 3.287104)
+        (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[R1{1/4,-1/4}, !-{0,-1/4}]>" 0.11284595)
+        (pair "rel:from=<{}>:pat=<els=[I4{0}]>" 0.4110447)
+        (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[R1{1/4,-1/4}, #{0,0,0}, !-{0,-1/4}]>" 0.8422634)
+        (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[R1{1/4,-1/4}]>" -0.006655748)
+        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[#{0,0,0}]>" 0.13067819)
+        (pair "rel:from=<{}>:pat=<els=[]>" -0.0017283498)
+        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:from=<{}>:pat=<els=[R1{1/4,-1/4}, #{0,0,0}]>" 0.027678583)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[!-{-1/2}, !-{0,1/4,1/4,1/4}]>" 0.0116808945)
+        (pair "rel:to=<{}>:pat=<els=[!I3{}]>" -7.858554E-4)
+        (pair "rel:from=<{0}>:pat=<els=[!I3{0,1/4,0,0}]>" -0.39867952)
+        (pair "rel:last_to=<{0,-1/4}>:from=<{0,1/4}>:pat=<els=[!-{-1/2}, !-{0,1/4,1/4,1/4}]>" -0.39867952)
+        (pair "rel:from=<{}>:pat=<els=[-{0,0,0,0}, I4{1/4,1/4,1/4,0,0,0}]>" -0.034073148)
+        (pair "rel:from=<{0,1/4}>:pat=<els=[!-{-1/2}, !-{0,1/4,1/4,1/4}]>" -0.39867952)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!I3{0,1/4,0,0}]>" 0.018370358)
+        (pair "rel:last_to=<{0,-1/4}>:from=<{0,1/4}>:pat=<els=[!-{0,1/4,1/4,1/4}]>" -0.39867952)
+        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!-{0,1/4,1/4,1/4}]>" 0.1639973)
+    }
+    )
+})
+
+    
+
+)

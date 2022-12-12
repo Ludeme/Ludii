@@ -1,7 +1,33 @@
 (define "L Game_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (mobilitySimple)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (mobilitySimple)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[!-{1/4,-1/2}]>" -0.30421722)
+        (pair "rel:last_to=<{0,1/4,0,1/4,0}>:to=<{0,1/4,0}>:pat=<els=[!e{1/4,0,0,0}]>" 0.31354395)
+        (pair "rel:from=<{0,1/4,0}>:pat=<els=[!f{0,1/4,0,0,0,0}]>" 0.31354395)
+        (pair "rel:last_to=<{0,1/4,0,1/4,0}>:from=<{}>:to=<{0,1/4,0}>:pat=<els=[#{0,1/4,0,0,1/4}]>" -0.51399237)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I1{1/4,0,0}, -{1/2,0}, !I1{0,1/4,0,0,0}]>" 1.4114511)
+        (pair "rel:last_from=<{0,0,0,1/4,1/4,0}>:from=<{}>:to=<{0,0,0,1/4}>:pat=<els=[!-{0,0,0,1/4,-1/2,-1/4}]>" 0.84193844)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{0,1/2,1/4}>:from=<{}>:to=<{0}>:pat=<els=[-{1/4,1/4}]>" -0.030855922)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/2}, #{0,-1/2,0,-1/4}]>" 1.307943)
+        (pair "rel:from=<{0}>:pat=<els=[#{0,0}, I1{0,1/2,1/2}, #{0,1/2,0,1/4}]>" 0.2943917)
+        (pair "rel:to=<{0}>:pat=<els=[-{0,1/4,0,0}]>" 0.2943917)
+        (pair "rel:last_from=<{0,0,0,1/4,0}>:from=<{}>:to=<{0,0,0,1/4,0}>:pat=<els=[!-{0}]>" 0.63266677)
+        (pair "rel:last_from=<{0,0,0,1/4,0}>:to=<{0,0,0,1/4,0}>:pat=<els=[!-{0}, !f{0,0,0,1/4,0,1/4,0,0,1/4,0,1/4,0,0}]>" 0.2943917)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/2}, #{0,0}, I1{0,-1/2,-1/2}, #{0,-1/2,0,-1/4}]>" 1.5326859)
+        (pair "rel:to=<{}>:pat=<els=[I1{0,1/4}]>" 0.21966536)
+    }
+    )
+})
+
+    
+
 )

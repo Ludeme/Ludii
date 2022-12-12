@@ -1,7 +1,39 @@
 (define "Altan Xaraacaj_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (centreProximity)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (centreProximity)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{-1/2}, #{0,1/4,3/8}]>" 1.3425893)
+        (pair "rel:from=<{1/2}>:to=<{}>:pat=<els=[N4{0}]>" 0.8226093)
+        (pair "rel:to=<{}>:pat=<els=[-{0,-1/8}, N4{-3/8,0,0}, #{3/8,1/8}]>" 0.23093252)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[!-{1/8,-3/8}]>" 0.5302152)
+        (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[-{0,1/8}]>" 0.48926845)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/4,3/8}]>" 0.34560448)
+        (pair "rel:last_to=<{-1/4,-1/4}>:to=<{}>:pat=<els=[-{0,-1/8}, #{3/8,1/8}]>" 0.47184512)
+        (pair "rel:from=<{}>:pat=<els=[#{0,3/8}]>" 0.34560448)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[e{0,-3/8}]>" 0.5267376)
+        (pair "rel:last_to=<{3/8,-1/4}>:to=<{}>:pat=<els=[-{-3/8,-1/8}, N4{1/4,0,0}, #{0,1/8}]>" 0.66271645)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[e{0,-3/8}, f{0,1/4}]>" 0.31993553)
+        (pair "rel:to=<{}>:pat=<els=[f{0}]>" 0.2103456)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[f{1/2,3/8}, f{0,3/8}]>" 0.68199056)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0,3/8}]>" 0.60876507)
+        (pair "rel:to=<{}>:pat=<els=[f{0,3/8}, f{-1/2,3/8}, !f{0,-3/8,3/8}]>" 0.65694296)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{-1/2,3/8}, !f{0,-3/8,3/8}]>" 0.6083688)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,-1/8}]>" 0.43538287)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{1/4,-3/8}, f{0,1/4,-1/8}, f{0,-1/4,-1/8}]>" 1.975974)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0,-3/8}, !f{0,-1/2,3/8,-3/8}]>" 0.6083688)
+        (pair "rel:to=<{}>:pat=<els=[N4{0,0,0,0}]>" -0.2969694)
+    }
+    )
+})
+
+    
+
 )

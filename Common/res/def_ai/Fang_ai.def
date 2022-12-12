@@ -1,7 +1,32 @@
 (define "Fang_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (cornerProximity)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (cornerProximity)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0}>:pat=<els=[e{0,0,0,0}, !-{0,1/2,1/5}]>" 2.2483883)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N8{1/2}]>" -0.16340984)
+        (pair "rel:to=<{0}>:pat=<els=[f{0,-1/2,-1/4}, !e{0,-1/2,-1/5,1/4}]>" 2.2483883)
+        (pair "rel:last_from=<{0,-1/4}>:from=<{1/4}>:pat=<els=[]>" 2.2483883)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-2/5,1/8}]>" -0.06390483)
+        (pair "rel:to=<{}>:pat=<els=[e{0,0,0}]>" 0.029611746)
+        (pair "rel:to=<{0}>:pat=<els=[N8{-1/4,1/5}, -{1/2,3/8}, f{0,-2/5,1/8}]>" 2.2483883)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,0,0,0}]>" -0.1830538)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}]>" 0.19119473)
+        (pair "rel:last_to=<{0,1/4,0}>:to=<{}>:pat=<els=[!-{0,1/2,0,1/8}]>" 0.029639475)
+        (pair "rel:last_to=<{0,-1/4,0}>:to=<{}>:pat=<els=[N5{1/4,0,0}, !-{0,-1/2,0,-1/8}]>" -0.08088704)
+        (pair "rel:from=<{}>:to=<{1/4}>:pat=<els=[!-{-7/20}, N8{0,1/5}]>" 0.34830996)
+        (pair "rel:from=<{}>:pat=<els=[!-{2/5}, f{0,-1/4,0,0}]>" 0.16723697)
+    }
+    )
+})
+
+    
+
 )

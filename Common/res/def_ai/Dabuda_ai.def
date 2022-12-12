@@ -1,16 +1,75 @@
 (define "Dabuda_ai"
-    (useFor { "Opening/One Rightmost hole" }
+(useFor { "Ruleset/Afar (Observed)" }
+    
         (bestAgent "MAST")
         trainedHeuristics:(heuristics {
-            (ownRegionsCount)
-        })
-        
+    (ownRegionsCount)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[R2{0,0}]>" 0.05595112)
+        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[!R2{0,1/4}]>" -0.23076504)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{0}, !R0{1/4,-1/4}]>" -0.14649136)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" -0.06405981)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{-1/4,1/4}]>" -0.1920399)
+        (pair "rel:to=<{}>:pat=<els=[!R3{0,0,0,0}, -{1/2}, -{0,0,0}]>" -0.12461373)
+        (pair "rel:to=<{}>:pat=<els=[!R2{0,0,0}]>" -0.083234735)
+        (pair "rel:to=<{}>:pat=<els=[!R2{0,0,0,0}]>" -0.08812173)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{0}]>" -0.076799765)
+    }
     )
-    (useFor { "Opening/Four Rightmost holes" }
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[R2{1/4}, -{0}]>" -0.08916515)
+        (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[-{1/2}, R2{0,0,0}, !R3{1/4,-1/4}, -{0}]>" -1.3199315)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{0,0,0}]>" -0.19143222)
+        (pair "rel:to=<{}>:pat=<els=[-{1/2}, -{0,1/4}, -{1/4,1/4}]>" -0.31198373)
+        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[!R2{0,1/4}, -{1/4}, -{-1/4,1/4}, -{0,1/4}]>" -0.7846902)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{0}]>" -0.2621833)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{1/4}, !R3{0,-1/4}, R2{0}, -{-1/4}]>" -0.9044781)
+        (pair "rel:to=<{}>:pat=<els=[!R3{0,0,0,0}, R2{1/4}]>" -0.06946451)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{1/4}, !R3{0,-1/4}, -{-1/4}]>" -0.9044781)
+        (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[-{1/2}, R2{0,0,0}, -{0}]>" -1.3199315)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[R2{-1/4,0,0}, !R3{0,-1/4}, R2{0}]>" -0.6303007)
+    }
+    )
+})
+
+    
+
+)
+(useFor { "Ruleset/Damohoita (Observed)" }
+    
         (bestAgent "MAST")
         trainedHeuristics:(heuristics {
-            (ownRegionsCount)
-        })
-        
+    (ownRegionsCount)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[R2{1/4,0,0,0}, R3{0,1/4}]>" 0.26538056)
+        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[R3{0,1/4}, -{0,0,0,0}]>" 0.4755201)
+        (pair "rel:to=<{}>:pat=<els=[!R3{0}, -{1/2,0,0}, R3{-1/2,-1/4}, -{1/4,1/4}, R3{0,1/4}]>" 0.09684813)
+        (pair "rel:to=<{}>:pat=<els=[!R2{0,0}, -{0}]>" -0.084506616)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, R2{1/4,0,0,0}, !R2{-1/4,0,0}]>" -0.12342243)
+        (pair "rel:to=<{}>:pat=<els=[!R3{0}, -{1/2,0,0}, -{0}, R3{-1/2,-1/4}, -{1/4,1/4}, R3{0,1/4}]>" 0.30343217)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{1/4,0}, !R2{-1/4,0,0}]>" -0.154502)
+        (pair "rel:to=<{}>:pat=<els=[!R2{1/2}, -{0}, -{1/4,-1/4}]>" -0.15745118)
+    }
     )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, -{0}, -{1/2,0,0,0}]>" -0.26337123)
+        (pair "rel:to=<{}>:pat=<els=[!R3{0}, !R3{1/2}, !R3{0,1/4}]>" -0.19097833)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{1/4,0,0}, -{0}]>" 0.28003204)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/2,0,0,0}]>" -0.2600804)
+        (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[!R2{0,0,0}, !R3{0,0,0}, -{0,0,0}]>" 0.9777857)
+        (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[-{0}, !R3{0}, -{1/2,0}, -{1/4,1/4}, !R3{1/2}]>" -1.0019755)
+    }
+    )
+})
+
+    
+
+)
 )

@@ -1,7 +1,21 @@
 (define "Neg Tugal Tuux_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (cornerProximity weight:-1.0)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (cornerProximity weight:-1.0)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0}>:pat=<els=[e{1/2}, f{0,-1/2,-1/6}]>" -0.85145444)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" -0.7251933)
+    }
+    )
+})
+
+    
+
 )

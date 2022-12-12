@@ -1,23 +1,52 @@
 (define "Daldos_ai"
-    (useFor { "Variant/Ostergaard and Gaston" }
+(useFor { "Ruleset/Ostergaard and Gaston (Scholarly)" }
+    
         (bestAgent "UCT")
         trainedHeuristics:(heuristics {
-            (centreProximity pieceWeights:{
-                (pair "Minus1" 0.23901205)
-                (pair "Minus2" -0.19236146)
-            })
-            (cornerProximity pieceWeights:{
-                (pair "Minus1" 0.010351354)
-                (pair "Minus2" 0.04698997)
-            })
-            (lineCompletionHeuristic weight:-0.8091056)
-            (material pieceWeights:{
-                (pair "Minus1" 0.22917108)
-                (pair "Minus2" 0.09639954)
-            })
-            (mobilitySimple weight:-0.017077107)
-            (influence weight:2.0325944)
-        })
-        
+    (centreProximity pieceWeights:{
+        (pair "Minus1" 0.23901205)
+        (pair "Minus2" -0.19236146)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Minus1" 0.010351354)
+        (pair "Minus2" 0.04698997)
+    })
+    (lineCompletionHeuristic weight:-0.8091056)
+    (material pieceWeights:{
+        (pair "Minus1" 0.22917108)
+        (pair "Minus2" 0.09639954)
+    })
+    (mobilitySimple weight:-0.017077107)
+    (influence weight:2.0325944)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{0}>:from=<{0}>:pat=<els=[-{1/2,0}]>" -0.7092368)
+        (pair "rel:to=<{}>:pat=<els=[!e{}, !f{0,0,0,0,0}, !-{0,1/2,0}]>" -0.2474226)
+        (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[!f{1/2,0}]>" 0.15512496)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!f{0,0,0,0,0}, !-{0,1/2,0}]>" 0.41834456)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!e{}, !f{0,0,0,0,0}]>" 0.07918077)
+        (pair "rel:last_to=<{}>:to=<{0,0,0}>:pat=<els=[-{0,0,0,1/2,0,0,0}]>" -0.7092368)
+        (pair "rel:last_to=<{0}>:from=<{0}>:to=<{}>:pat=<els=[!e{}, !-{0,1/2,0}]>" 0.59268045)
+        (pair "rel:to=<{0,0,0}>:pat=<els=[!f{1/2,0}, -{0,0,0,-1/2,0,0,0}]>" -0.7092368)
+    }
     )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{0,0,0,1/2,0,0}>:from=<{}>:to=<{0,0,0}>:pat=<els=[-{0,0,0,0,0,0}]>" -0.65868145)
+        (pair "rel:from=<{}>:pat=<els=[!e{0,0}]>" -0.0017018552)
+        (pair "rel:to=<{0,0,0,0}>:pat=<els=[#{1/2,0,0,0}, -{0,0,0,0,0}]>" -0.27956632)
+        (pair "rel:from=<{}>:pat=<els=[#{1/2,0,0,0}, -{0,0,0,0,0}]>" 0.05322684)
+        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:last_to=<{0,0,0,0,1/2,0,0,0}>:from=<{}>:to=<{0,0,0,0}>:pat=<els=[-{0,0}, !-{0,0,0,0,0,0}, !e{0,0,0,0}]>" 0.5248483)
+        (pair "rel:to=<{0,0,0}>:pat=<els=[!-{1/2,0,0,0}, -{0,0,0,0,0,0}]>" -0.27956632)
+        (pair "rel:last_to=<{}>:from=<{}>:pat=<els=[#{0,0,0,0}]>" -0.18086447)
+        (pair "rel:last_to=<{0,0,0,0,1/2,0,0,0}>:from=<{}>:to=<{0,0,0,0}>:pat=<els=[!-{0,0,0,0,0,0}, !e{0,0,0,0}]>" 0.5248483)
+    }
+    )
+})
+
+    
+
+)
 )

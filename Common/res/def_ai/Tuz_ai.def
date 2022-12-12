@@ -1,0 +1,30 @@
+(define "Tuz_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[R1{0,1/4}]>" 0.15547806)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!R0{1/4,-1/4}, !#{-1/4,0,0,0}]>" 0.2531483)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" 0.2753871)
+        (pair "rel:to=<{}>:pat=<els=[!R0{0,0,0,0}, !R0{0,1/4}]>" -0.06683668)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" 0.056832056)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" -0.016318437)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" 0.06300329)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, !R0{0,1/4}]>" -0.012905927)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[!R1{0,1/4}, !#{-1/4,0,0,0}, R0{0,-1/4}, -{1/4,-1/4}]>" 0.09013202)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, R0{1/2,-1/4}]>" 0.12306222)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" -0.100308284)
+        (pair "rel:to=<{}>:pat=<els=[!R1{1/4,1/4}, !#{0,0,0,0}, -{1/2,-1/4}]>" 0.09013202)
+        (pair "rel:to=<{}>:pat=<els=[!R1{0,1/4}, -{0,1/4}]>" 0.08006807)
+        (pair "rel:to=<{}>:pat=<els=[!#{0,0,0,0}, -{1/4,1/4}]>" 0.08012043)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[R0{1/4,1/4}]>" 0.26392227)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{1/2}, -{0,0}]>" 0.22151475)
+    }
+    )
+})
+
+    
+
+)

@@ -1,7 +1,36 @@
 (define "Chongka'_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (playerSiteMapCount)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (playerSiteMapCount)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[!R0{0,1/4}]>" 0.0)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[R1{1/4,-1/4}, -{1/12,-1/3}]>" -0.12970419)
+        (pair "rel:to=<{}>:pat=<els=[-{1/2,1/6}, -{0,-1/6}]>" 0.0034183068)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, !R0{1/6,1/4}]>" -0.09879445)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/3}]>" -0.11236849)
+        (pair "rel:to=<{}>:pat=<els=[N4{}]>" -0.048211258)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[N6{1/4,0,0}, -{1/12}]>" 0.36816654)
+        (pair "rel:last_to=<{1/6,1/4}>:to=<{}>:pat=<els=[-{0}, !R1{1/6,-1/4}, !R1{-1/12,0,0,0}]>" 0.59168726)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" -0.033931155)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" 0.29313326)
+        (pair "rel:to=<{}>:pat=<els=[-{1/6}, -{0,0}]>" 0.190346)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, -{0,0}, R0{1/4,1/4}, -{5/12}]>" 0.8579455)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{0}, R0{-1/4,1/6}]>" -0.33441085)
+        (pair "rel:to=<{}>:pat=<els=[R0{-1/4,1/6}, -{1/4,0}, R0{0,-1/4}, -{-1/6}, !R1{0,1/3}]>" 0.44194582)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, R0{1/2,1/4}]>" 0.36868542)
+        (pair "rel:to=<{}>:pat=<els=[-{1/3}, !R1{0,-1/6}, -{0}]>" 0.531557)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, R0{0,1/6}]>" 0.1368525)
+    }
+    )
+})
+
+    
+
 )

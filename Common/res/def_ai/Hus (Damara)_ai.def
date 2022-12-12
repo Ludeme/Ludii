@@ -1,16 +1,77 @@
 (define "Hus (Damara)_ai"
-    (useFor { "Play Rules/Sowing with 1 or more seeds" "Board Size/12" }
+(useFor { "Ruleset/Damara (Observed)" }
+    
         (bestAgent "UCT")
         trainedHeuristics:(heuristics {
-            (ownRegionsCount)
-        })
-        
+    (ownRegionsCount)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[-{1/4,0,0}, -{-1/4,-1/4}]>" 0.39269537)
+        (pair "rel:to=<{}>:pat=<els=[-{0,-1/4}, !-{1/4}]>" 0.0039337184)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{1/2,0,0,0}]>" 0.0071412516)
+        (pair "rel:to=<{}>:pat=<els=[-{1/2}, -{0,0}, !-{1/4}]>" 0.012938786)
+        (pair "rel:last_to=<{1/4,0}>:to=<{}>:pat=<els=[#{0,-1/4}]>" 0.010887182)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.30844215)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/2,0,0}]>" -0.004765566)
+        (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, -{0,0,0}, -{1/2,-1/4}]>" -0.0040780837)
+        (pair "rel:to=<{}>:pat=<els=[!-{1/2,1/4}, -{0}, !-{1/4}]>" -0.008390761)
+    }
     )
-    (useFor { "Play Rules/Sowing with 2 or more seeds" "Board Size/12" }
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -0.011333655)
+        (pair "rel:to=<{}>:pat=<els=[-{0}]>" 1.1359861E-4)
+        (pair "rel:to=<{}>:pat=<els=[!-{1/4}, -{0,1/4}, !-{1/2,1/4}]>" -0.06039099)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{0,0,0}]>" -0.035259865)
+        (pair "rel:to=<{}>:pat=<els=[!-{1/2}, -{0,1/4}]>" -0.12295302)
+        (pair "rel:to=<{}>:pat=<els=[!-{0}, !-{1/4,1/4}]>" -0.069201864)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, !-{-1/4}, -{0,1/4}]>" -0.19867165)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" -0.0038176833)
+        (pair "rel:to=<{}>:pat=<els=[#{0,1/4}, !-{0}, -{-1/4,1/4}]>" -0.19549315)
+    }
+    )
+})
+
+    
+
+)
+(useFor { "Ruleset/Wagner (Observed)" }
+    
         (bestAgent "UCT")
         trainedHeuristics:(heuristics {
-            (ownRegionsCount)
-        })
-        
+    (ownRegionsCount)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{1/4,-1/4}, !-{-1/4,1/4}, -{0,0}]>" -0.15104413)
+        (pair "rel:last_to=<{-1/4,0}>:to=<{}>:pat=<els=[-{0,0}, !-{1/4}]>" -1.732135)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{1/4,0}]>" -0.11249344)
+        (pair "rel:to=<{}>:pat=<els=[#{1/2}, -{0}]>" 0.035654124)
+        (pair "rel:to=<{}>:pat=<els=[!-{0}, !-{1/4,-1/4}]>" -0.024368498)
+        (pair "rel:last_to=<{1/4,0}>:to=<{}>:pat=<els=[!-{0,-1/4}]>" -0.87378603)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, -{0,0,0,0}]>" -0.027196871)
+        (pair "rel:to=<{}>:pat=<els=[-{1/2,1/4}, -{0,0,0,0}]>" -0.07522104)
+    }
     )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{1/2}, -{1/4,-1/4}]>" -0.08899843)
+        (pair "rel:to=<{}>:pat=<els=[!-{0}, -{1/4,0,0}, !-{1/2}, -{-1/4,0,0}]>" -0.20013352)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{0}]>" 0.0027696067)
+        (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[!-{0}, !-{0,-1/4}]>" 0.006868725)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{1/2,1/4}, !-{0,1/4}]>" 0.06644984)
+        (pair "rel:to=<{}>:pat=<els=[#{-1/2}, -{0,-1/4}, -{0,1/4}, -{0,0,0}]>" 0.32103512)
+        (pair "rel:to=<{}>:pat=<els=[#{0,1/4}, R5{1/4}]>" 0.06384865)
+        (pair "rel:to=<{}>:pat=<els=[#{0}, -{1/4}, -{1/2,1/4}, !-{0}, -{1/2,0,0}]>" 0.31776476)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" 0.02238039)
+        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[R5{1/4}, -{-1/4,1/4}]>" -0.08548526)
+        (pair "rel:last_to=<{-1/4,-1/4}>:to=<{}>:pat=<els=[R5{0}, -{1/2,1/4}, -{1/4}]>" 0.02308819)
+    }
+    )
+})
+
+    
+
+)
 )

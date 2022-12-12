@@ -1,7 +1,37 @@
 (define "Parsi Chess_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (cornerProximity)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (cornerProximity)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0,0,1/4}>:to=<{}>:pat=<els=[f{0,0}, !-{0,0,1/4,-1/2,1/4}]>" -0.3629091)
+        (pair "rel:from=<{}>:pat=<els=[!-{0,0,0}, -{-1/4,0,0}, #{-1/2,0}, I9{0,1/4}, f{0,0,0,0}, -{-1/4,0,0,0}]>" 0.9831982)
+        (pair "rel:last_from=<{0,0,0,0,0}>:to=<{0}>:pat=<els=[f{1/4,1/4}]>" -1.2225257)
+        (pair "rel:from=<{}>:pat=<els=[!-{0,0,0}, -{-1/4,0,0}, !R0{0,1/4}, #{-1/2,0}, f{0,0,0,0}, -{-1/4,0,0,0}]>" 0.12317051)
+        (pair "rel:from=<{}>:pat=<els=[!-{-1/4,0,0}, -{0,0,0}, !R0{1/4,1/4}, #{-1/4,0}, f{1/4,0,0,0}, -{0,0,0,0}]>" 0.1548325)
+        (pair "rel:from=<{}>:pat=<els=[!-{0,0,0}, !-{1/2,0,0}, -{-1/4,0,0}, !R0{0,1/4}, I9{0,1/4}, f{0,0,0,0}]>" 0.74609536)
+        (pair "rel:from=<{}>:pat=<els=[!-{0,0,0}, !-{1/2,0,0}, -{-1/4,0,0}, !R0{0,1/4}, #{-1/2,0}, I9{0,1/4}, f{0,0,0,0}]>" 0.82559377)
+        (pair "rel:from=<{}>:pat=<els=[!-{1/2,0,0}, -{-1/4,0,0}, !R0{0,1/4}, I9{0,1/4}, f{0,0,0,0}, -{-1/4,0,0,0}]>" 0.7158684)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[!e{0,1/4}]>" -3.0946805E-5)
+        (pair "rel:last_to=<{1/4,0}>:to=<{}>:pat=<els=[f{1/2,0,0,0}, #{0,0,0}]>" -0.2589166)
+        (pair "rel:last_to=<{0,1/4,0}>:from=<{}>:to=<{0}>:pat=<els=[!f{1/4}]>" -0.18180303)
+        (pair "rel:to=<{0}>:pat=<els=[R1{-1/2,1/4}, #{0,-1/4,0,0}]>" -1.5383328)
+        (pair "rel:last_to=<{0,1/4,0}>:to=<{0}>:pat=<els=[#{0,0,0,0}]>" -1.5383328)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,0,0,0}]>" -0.062908225)
+        (pair "rel:to=<{}>:pat=<els=[I1{0}]>" -0.024806455)
+        (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:from=<{}>:pat=<els=[R1{0,1/4}]>" 0.0013192856)
+        (pair "rel:to=<{0,1/4}>:pat=<els=[R0{-1/2,1/4}, I2{0,1/4,1/4,1/4}]>" -1.5383328)
+    }
+    )
+})
+
+    
+
 )

@@ -1,7 +1,35 @@
 (define "Shantarad_ai"
-    (bestAgent "UCT")
-    trainedHeuristics:(heuristics {
-        (centreProximity weight:-1.0)
-    })
     
+        (bestAgent "UCT")
+        trainedHeuristics:(heuristics {
+    (centreProximity weight:-1.0)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{0}>:pat=<els=[!-{1/4,-1/4}]>" -2.7595944)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,0,1/4}]>" 0.041987646)
+        (pair "rel:from=<{0}>:pat=<els=[e{-1/2,0}, !f{0,1/4,0,0}]>" -2.7595944)
+        (pair "rel:last_to=<{-1/4,1/4}>:from=<{}>:to=<{0}>:pat=<els=[e{0,-1/4}]>" 0.020486308)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,1/4}, e{0,-1/4}]>" 0.31244886)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0}]>" 0.027681964)
+        (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{1/4}>:pat=<els=[]>" 0.019384686)
+        (pair "rel:to=<{}>:pat=<els=[e{0,0}]>" 0.014922454)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[e{0,0}, !-{0,1/4,-1/4}]>" 0.05192217)
+        (pair "rel:from=<{}>:pat=<els=[-{0,0}, -{1/4,0}]>" -0.01066557)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/4,0}, !f{0,1/4,1/4}]>" 0.047459356)
+        (pair "rel:to=<{}>:pat=<els=[e{1/4}, #{0,1/4}]>" 0.02705344)
+        (pair "rel:last_to=<{0,0}>:from=<{0}>:pat=<els=[!-{0,1/4,-1/4}]>" -1.7097925)
+        (pair "rel:from=<{}>:pat=<els=[#{1/4,0}, !f{0,0,1/4}]>" 0.022526791)
+        (pair "rel:from=<{}>:pat=<els=[!f{0,1/4,1/4}, !f{0,0,1/4}]>" 0.012196699)
+        (pair "rel:to=<{0}>:pat=<els=[#{1/4,0}, !f{0,0,1/4}]>" -1.7097925)
+    }
+    )
+})
+
+    
+
 )

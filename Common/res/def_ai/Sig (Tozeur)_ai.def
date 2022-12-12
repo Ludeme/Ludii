@@ -1,7 +1,36 @@
 (define "Sig (Tozeur)_ai"
-    (bestAgent "ProgressiveHistory")
-    trainedHeuristics:(heuristics {
-        (material)
-    })
     
+        (bestAgent "ProgressiveHistory")
+        trainedHeuristics:(heuristics {
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[#{0}, #{0,-1/4}, -{-1/2,1/4}, R2{-1/4,-1/4}, !-{0,1/4}, !-{1/4,1/4}]>" 0.050428465)
+        (pair "rel:from=<{0}>:pat=<els=[f{0}]>" 0.52394444)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" 0.0028149108)
+        (pair "rel:to=<{}>:pat=<els=[R2{0}, #{1/4}]>" 0.07166219)
+        (pair "rel:to=<{}>:pat=<els=[#{1/2,-1/4}, -{1/4}, -{0,1/4}]>" 0.07747467)
+        (pair "rel:to=<{}>:pat=<els=[#{0}]>" -0.2682297)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" 0.52394444)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, #{1/4}, #{1/4,-1/4}, -{-1/4,1/4}, -{0,0,0}, R2{0,-1/4}, !-{1/4,1/4}, !-{1/2,1/4}]>" 1.2210861)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, #{1/4}, #{1/4,-1/4}, -{-1/4,1/4}, -{0,0,0}, !-{1/2,1/4}]>" 0.69011337)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0,0,0,0}>:to=<{}>:pat=<els=[-{0,0,0,0,0,1/4}]>" -0.039526876)
+        (pair "rel:from=<{0,0,0,0,0}>:to=<{}>:pat=<els=[R2{0,1/4}]>" 0.27345926)
+        (pair "rel:to=<{}>:pat=<els=[R2{0,1/4}, -{-1/2,0,0}, -{0,0,0,0,0,0,0}]>" 0.25786173)
+        (pair "rel:from=<{}>:to=<{0,1/4,0}>:pat=<els=[!-{1/2}, #{1/4,1/4}]>" -0.07989483)
+        (pair "rel:from=<{}>:pat=<els=[!R2{0,1/4}, !-{1/2}, #{1/4,1/4}]>" -0.118183315)
+        (pair "rel:from=<{0,0,0,0}>:to=<{}>:pat=<els=[R2{1/2,1/4}]>" 0.07025809)
+        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!-{0}, !-{1/4,1/4}]>" 0.38999727)
+        (pair "rel:to=<{}>:pat=<els=[!-{1/4}, -{0,0,0,0}]>" 0.09766906)
+    }
+    )
+})
+
+    
+
 )

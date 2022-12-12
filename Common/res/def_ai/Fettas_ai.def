@@ -1,0 +1,35 @@
+(define "Fettas_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 1.486503)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/4,-1/4}, f{0,1/4}, f{0,1/4,0}]>" 1.6401815)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}, !#{1/4,0}]>" 1.5062109)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4}, f{0,1/4}]>" 1.0279617)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4}, f{0,1/2,1/4}]>" 0.48633894)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{1/4,1/4}, f{0,-1/4}]>" 0.4629298)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}]>" 0.48945725)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{1/4,1/4}, f{0,-1/4}, f{0,1/4}]>" 1.050153)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{1/4,1/4}, f{0,1/4}]>" 0.4059282)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}]>" 0.41472206)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{1/4,1/4}, -{0,-1/4,1/4}]>" 0.12040371)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{-1/4,0}, f{0,-1/2,1/4}]>" 1.9581057)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 1.9581057)
+        (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[f{0}]>" 0.96032387)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}]>" 0.96032387)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,-1/2,1/4}]>" 0.96032387)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4}, !e{1/4,1/4}]>" 0.9573172)
+        (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[f{0,0}]>" 0.826575)
+        (pair "rel:to=<{}>:pat=<els=[f{-1/4,0}, !#{0,0}, f{0,-1/2,1/4}]>" 0.74634033)
+        (pair "rel:from=<{}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 0.93960273)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, -{1/2}, f{0,1/4,0}]>" 2.151087)
+    }
+    )
+})
+
+    
+
+)

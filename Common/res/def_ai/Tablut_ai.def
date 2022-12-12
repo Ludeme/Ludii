@@ -1,38 +1,91 @@
 (define "Tablut_ai"
-    (useFor { "Play Rules/King Flanked" }
+(useFor { "Ruleset/Linnaeus (Observed)" }
+    
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
-            (cornerProximity)
-        })
-        
+    (cornerProximity)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[I3{1/2}, #{0,-1/4}]>" 2.0283566)
+        (pair "rel:from=<{}>:pat=<els=[#{1/4,0}, #{0,0,0,0,0}]>" -0.009903374)
+        (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:from=<{}>:pat=<els=[#{1/4}, !R0{0,0,0}]>" -0.025883611)
+        (pair "rel:from=<{0,0,0}>:pat=<els=[I1{-1/4,0,0,0}, #{1/2,-1/4}, I3{0,0,0,-1/4,0,0}]>" -2.1896198)
+        (pair "rel:last_to=<{1/4,0,0}>:from=<{}>:to=<{0,0,0}>:pat=<els=[-{0,0,0,-1/2,0,0,0}, -{1/2,0,0,0}]>" -0.701612)
+        (pair "rel:last_from=<{0,1/4}>:to=<{0}>:pat=<els=[!R0{1/2,0,0}, !R0{0,0,0,0}, -{0,1/4,1/4}, !-{0,1/2,1/4}]>" -2.1896198)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!R0{1/2,0,0,0}, !R0{1/2,0,0}, !R0{0,0,0,0}, -{0,1/4,1/4}]>" 0.028292455)
+    }
     )
-    (useFor { "Play Rules/King Surrounded" }
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0,0,0,0}>:to=<{}>:pat=<els=[I3{0,0,0,0}]>" 0.9941762)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!I2{}, #{0,0,0,1/4}]>" 1.9183512)
+        (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[I3{}, #{0,0,0,-1/4,1/4}]>" 1.4958093)
+        (pair "rel:from=<{}>:to=<{0,0,0,0}>:pat=<els=[!I2{}]>" 0.9941762)
+        (pair "rel:from=<{0,0,0,0}>:to=<{}>:pat=<els=[R0{0,0,0,0}, I3{0,0,0,0}]>" 1.054051)
+        (pair "rel:last_to=<{0,0,0,0,1/4,0}>:from=<{}>:to=<{0,0,0,0}>:pat=<els=[#{0,0,0,0,0}, -{0,0,0,0,-1/4}]>" 0.48458108)
+        (pair "rel:last_to=<{0,0,0,0,1/4,0}>:to=<{0,0,0,0}>:pat=<els=[!R0{1/2,0}, #{0,0,0,0,0}]>" -0.98711413)
+        (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:from=<{}>:to=<{0,0,0,0}>:pat=<els=[#{0,0,0,0,0}, -{0,0,0,0,1/4}]>" 0.07226629)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!I2{}]>" -0.25146076)
+    }
+    )
+})
+
+    
+
+)
+(useFor { "Ruleset/Smith (Suggested)" }
+    
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
-            (influence weight:1.0117979)
-            (centreProximity pieceWeights:{
-                (pair "Thrall1" 0.16435)
-                (pair "Thrall2" -0.16368139)
-                (pair "Jarl2" -0.16414143)
-            })
-            (cornerProximity pieceWeights:{
-                (pair "Thrall1" 0.16416223)
-                (pair "Thrall2" -0.16423242)
-                (pair "Jarl2" -0.16425939)
-            })
-            (lineCompletionHeuristic weight:0.16346586)
-            (material pieceWeights:{
-                (pair "Thrall1" 0.1643041)
-                (pair "Thrall2" -0.16419065)
-                (pair "Jarl2" -0.1643041)
-            })
-            (mobilitySimple weight:0.01598847)
-            (sidesProximity pieceWeights:{
-                (pair "Thrall1" 0.16429634)
-                (pair "Thrall2" -0.16439916)
-                (pair "Jarl2" -0.16479905)
-            })
-        })
-        
+    (influence weight:1.0117979)
+    (centreProximity pieceWeights:{
+        (pair "Thrall1" 0.16435)
+        (pair "Thrall2" -0.16368139)
+        (pair "Jarl2" -0.16414143)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Thrall1" 0.16416223)
+        (pair "Thrall2" -0.16423242)
+        (pair "Jarl2" -0.16425939)
+    })
+    (lineCompletionHeuristic weight:0.16346586)
+    (material pieceWeights:{
+        (pair "Thrall1" 0.1643041)
+        (pair "Thrall2" -0.16419065)
+        (pair "Jarl2" -0.1643041)
+    })
+    (mobilitySimple weight:0.01598847)
+    (sidesProximity pieceWeights:{
+        (pair "Thrall1" 0.16429634)
+        (pair "Thrall2" -0.16439916)
+        (pair "Jarl2" -0.16479905)
+    })
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{0,0,1/4,-1/4}]>" 0.15694906)
+        (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[e{1/2,0,0}, I2{1/4,0,0,0}, R0{1/4}, !-{-1/2,-1/4}, I1{0,0,0,1/4,0,0,0}]>" 0.2632343)
+        (pair "rel:from=<{}>:pat=<els=[e{1/4,0,0}, I2{0,0,0,0}, R0{0}, I1{-1/4,0,0,1/4,0,0,0}]>" 0.15692233)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[R0{1/4,0,0,0}, e{0,0,1/4,-1/4}]>" 0.031231195)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.119939685)
+        (pair "rel:last_from=<{}>:last_to=<{0,1/2,1/4}>:to=<{}>:pat=<els=[]>" 0.13070673)
+    }
     )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,0,0,0}>:pat=<els=[I3{}, #{0,0,0,0,0,1/4}]>" 2.3741186)
+        (pair "rel:from=<{0}>:pat=<els=[#{0,1/2,0}]>" 0.29987872)
+        (pair "rel:from=<{}>:pat=<els=[I3{}]>" 0.19364901)
+        (pair "rel:to=<{0,0,0}>:pat=<els=[#{0,0,0,1/4,-1/4}]>" 0.29987872)
+        (pair "rel:to=<{0,0,0,0}>:pat=<els=[I3{}]>" 0.29987872)
+    }
+    )
+})
+
+    
+
+)
 )

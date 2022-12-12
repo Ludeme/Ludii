@@ -1,7 +1,36 @@
 (define "Awari_ai"
-    (bestAgent "UCT")
-    trainedHeuristics:(heuristics {
-        (mobilitySimple)
-    })
     
+        (bestAgent "UCT")
+        trainedHeuristics:(heuristics {
+    (mobilitySimple)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{0,1/4}, -{1/2}, -{0}]>" 0.23852435)
+        (pair "rel:to=<{}>:pat=<els=[!#{0,0,0,0}, -{0}, -{1/4,-1/4}]>" 0.21931134)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/4,-1/4}, -{-1/4}, -{1/4}, -{0,1/4}]>" 0.23852435)
+        (pair "rel:to=<{}>:pat=<els=[!#{0,0,0,0}, -{0}, -{1/4}, -{-1/2,-1/4}]>" 0.45686772)
+        (pair "rel:to=<{}>:pat=<els=[!#{0,0,0,0}, -{1/4,-1/4}, -{1/2,-1/4}]>" 0.20506607)
+        (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[-{0,0}, -{0,0,0}, -{1/2}]>" -0.45343575)
+        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[-{-1/4,1/4}, -{1/4,0}]>" -0.09636062)
+        (pair "rel:to=<{}>:pat=<els=[!R0{0,0,0,0}, -{1/4}, -{0}, -{-1/2}]>" 0.33722168)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/4,1/4}, -{1/2}]>" 0.27531394)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{0,0}, -{0,0,0,0}]>" -0.1267853)
+        (pair "rel:to=<{}>:pat=<els=[-{0,-1/4}, !#{1/4,0,0,0}]>" 0.3037033)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, -{0,1/4}, -{1/4,0,0,0}]>" 0.067347996)
+        (pair "rel:to=<{}>:pat=<els=[!R1{0,0,0,0}]>" 0.032938845)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{0,-1/4}, !R1{1/4,0,0,0}]>" 0.5763002)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{0,-1/4}]>" 0.12672682)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/4,0}]>" -0.09396209)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, -{-1/2,1/4}, !#{0,0,0,0}]>" 0.516503)
+    }
+    )
+})
+
+    
+
 )

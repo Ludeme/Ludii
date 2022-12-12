@@ -1,7 +1,36 @@
 (define "Uril_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (playerSiteMapCount)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (playerSiteMapCount)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{1/3}, -{0,-1/6}]>" -0.038373165)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{1/3}, -{0,-1/6}]>" 0.04922272)
+        (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[-{0,1/6}, N6{1/3,1/3}, !#{0,0,0,0}]>" 0.2541089)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/6}, N6{1/3,1/3}, !#{0,0,0,0}]>" 0.12179955)
+        (pair "rel:to=<{}>:pat=<els=[N6{0,1/3}, -{0,-1/6}]>" 0.14590591)
+        (pair "rel:to=<{}>:pat=<els=[N6{0,-1/6}, !R0{1/4,0,0,0}]>" 0.10581904)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[N6{0,1/6}]>" 0.3437142)
+        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[N6{-1/3,-1/4}, N4{0,0,0}, N6{-1/4,1/3}]>" 0.27031475)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/6}, N6{1/2,0,0}, -{1/4,1/6}]>" 0.13592528)
+        (pair "rel:to=<{}>:pat=<els=[N6{1/6,0,0}, -{0}]>" 0.02982321)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/3}]>" 0.03165161)
+        (pair "rel:to=<{}>:pat=<els=[N6{0,-1/4}, -{1/2,0,0}]>" 0.18768784)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}, N6{1/2,0,0}, -{0,1/3}]>" 0.14891066)
+        (pair "rel:to=<{}>:pat=<els=[-{0}]>" 0.0116248075)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/3,-1/6}, -{1/12,-1/6}]>" 0.10520382)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, -{0,0,0}]>" 0.13093875)
+        (pair "rel:to=<{}>:pat=<els=[N6{1/2,0,0}, -{1/4,1/6}, -{0,1/3}]>" 0.13592528)
+    }
+    )
+})
+
+    
+
 )

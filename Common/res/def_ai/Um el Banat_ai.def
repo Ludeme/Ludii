@@ -1,0 +1,35 @@
+(define "Um el Banat_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[!R0{0,0,0,0}]>" 0.018893888)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, R1{0,1/4}]>" 0.0023742248)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4}, R1{0,1/4}]>" -0.0243412)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, !R0{0,0,0,0}]>" 0.03154914)
+        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[!#{1/4,0,0,0}]>" 0.19972955)
+        (pair "rel:last_to=<{-1/4,-1/4}>:to=<{}>:pat=<els=[R1{1/2,1/4}, !R0{0,0,0,0}]>" 0.20204145)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" 0.018810857)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[!R0{1/4,0,0,0}]>" 0.0791477)
+        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 0.041385215)
+        (pair "rel:to=<{}>:pat=<els=[!#{0,0,0,0}]>" 0.018893888)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{0}]>" 0.16472094)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{1/4,-1/4}]>" 0.2048365)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{0,-1/4}]>" 0.062322516)
+        (pair "rel:last_to=<{-1/4,1/4}>:to=<{}>:pat=<els=[-{0,-1/4}, !#{0,0,0,0}]>" 0.14013967)
+        (pair "rel:to=<{}>:pat=<els=[R0{0,1/4}, !#{1/2,0,0,0}]>" -0.028421633)
+        (pair "rel:to=<{}>:pat=<els=[!R1{1/4,-1/4}, -{0,-1/4}]>" 0.078205176)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" -0.14132652)
+        (pair "rel:last_to=<{-1/4,1/4}>:to=<{}>:pat=<els=[-{0,-1/4}, R0{-1/2,1/4}, !#{0,0,0,0}]>" 0.12412289)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" 0.021234948)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{0,-1/4}]>" 0.087116525)
+        (pair "rel:last_to=<{-1/4,1/4}>:to=<{}>:pat=<els=[-{0,1/4}, -{0,-1/4}]>" 0.21895923)
+    }
+    )
+})
+
+    
+
+)

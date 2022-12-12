@@ -1,0 +1,30 @@
+(define "Persian Chess with a Queen_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[I12{0,0,0}]>" -0.39557377)
+        (pair "rel:to=<{}>:pat=<els=[!I4{}]>" 0.0017334073)
+        (pair "rel:to=<{}>:pat=<els=[I12{0,0}]>" -0.27775413)
+        (pair "rel:from=<{}>:pat=<els=[!-{0,0,1/4}]>" 0.044892)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, #{0,-1/2,0,0}, -{0,1/4,0,0}]>" 0.11000209)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 0.03136784)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,0,0}, -{0,0}, #{0,1/2,0,0}]>" 0.34891304)
+        (pair "rel:from=<{0}>:pat=<els=[-{0,0,0}, #{0,-1/2,0,0}, -{0,1/4,0,0}]>" -5.6550646)
+        (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[]>" 0.04994936)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[!f{-1/4}, !e{1/4,1/4}, -{1/2}, #{0,0,0}, !f{1/4}, !e{-1/4,-1/4}, #{0,0,0}]>" -0.017715609)
+        (pair "rel:from=<{}>:pat=<els=[!I4{}]>" -0.035552524)
+        (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[f{0,0,0,0,1/4}]>" -0.4399119)
+        (pair "rel:from=<{}>:pat=<els=[f{0,0}, f{1/4,0}]>" 0.22291726)
+        (pair "rel:from=<{0,0,1/4}>:to=<{}>:pat=<els=[]>" 0.0036840395)
+        (pair "rel:from=<{0,0,1/4}>:pat=<els=[!-{0,0,1/4,-1/4,0,0}]>" -4.4293756)
+        (pair "rel:last_to=<{0,0,0,0}>:from=<{}>:pat=<els=[]>" -0.1425119)
+    }
+    )
+})
+
+    
+
+)

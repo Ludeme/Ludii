@@ -1,7 +1,33 @@
 (define "Gale_ai"
-    (bestAgent "MC-GRAVE")
-    trainedHeuristics:(heuristics {
-        (lineCompletionHeuristic)
-    })
     
+        (bestAgent "MC-GRAVE")
+        trainedHeuristics:(heuristics {
+    (lineCompletionHeuristic)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[e{1/2,-1/4}, R1{0,0}, f{1/4,0}]>" 0.81272954)
+        (pair "rel:to=<{}>:pat=<els=[e{0,0}, R1{0}, e{1/2,0}]>" 0.8183619)
+        (pair "rel:to=<{}>:pat=<els=[e{0,1/4}, f{1/4,0}]>" 0.4583148)
+        (pair "rel:to=<{}>:pat=<els=[R1{1/4,0}, f{0,0}]>" 0.30049422)
+        (pair "rel:last_to=<{0,0,0,0}>:to=<{}>:pat=<els=[e{1/4,0}, R1{1/2,0,0,0}]>" 0.45491794)
+        (pair "rel:to=<{}>:pat=<els=[f{1/2,0,0,0}, !-{0,1/4}, #{0,0,0,0}]>" 0.19199325)
+        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[e{1/4,0,0,0}, f{0,0,0,0}, e{-1/4,0}, R0{1/4,0,0,0}]>" 0.60732526)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[!-{1/4,-1/4}]>" 0.7907293)
+        (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[e{0,-1/4}, !-{1/2,-1/4}]>" 1.9492619)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0,0,0}, f{1/4,0,0,0}]>" 0.24011922)
+        (pair "rel:last_to=<{-1/4,1/4}>:to=<{}>:pat=<els=[f{0,0}, !-{0,-1/4}]>" 1.5254949)
+        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[e{0,0,0,0}, R1{1/4}, #{1/4,1/4}, e{0,0}]>" 2.1138177)
+        (pair "rel:to=<{}>:pat=<els=[#{0,-1/4}, !e{1/2,-1/4}, !-{-1/4,-1/4}]>" 0.04142493)
+    }
+    )
+})
+
+    
+
 )

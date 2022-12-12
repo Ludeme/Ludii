@@ -1,7 +1,38 @@
 (define "Groups_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (centreProximity)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (centreProximity)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{0,1/4}>:from=<{0,0,1/4,0}>:pat=<els=[!-{0,0,1/4,0,-1/2,-1/4}]>" -5.0501633)
+        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[]>" -0.19924767)
+        (pair "rel:from=<{}>:pat=<els=[-{-1/2,0,0,0}, !-{0,0,-1/2,-1/4}, !-{0,0,1/4,0,0}]>" 0.2127432)
+        (pair "rel:from=<{}>:pat=<els=[!-{0,0,-1/2,-1/4}, !-{0,0,1/4,0,0}]>" 0.1614287)
+        (pair "rel:last_from=<{0,0,0,0}>:from=<{0,-1/4}>:to=<{}>:pat=<els=[-{0,-1/4,1/4,0,0}]>" -0.3376309)
+        (pair "rel:last_from=<{0,0,0,0}>:to=<{}>:pat=<els=[]>" -0.04304044)
+        (pair "rel:from=<{0,-1/4}>:to=<{}>:pat=<els=[e{1/2,0}, !-{0,-1/4,0}, !-{0,-1/4,1/4,0}]>" -0.09600146)
+        (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[!-{0,0,1/4,0,-1/4,0,0}]>" 0.14639269)
+        (pair "rel:to=<{}>:pat=<els=[e{1/2,0}, !-{0,-1/4,0}]>" -0.07742739)
+        (pair "rel:last_from=<{0,0,0,0}>:from=<{0,1/4}>:pat=<els=[]>" -5.0501633)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{0,1/4,0,0}>:from=<{}>:to=<{0}>:pat=<els=[!-{1/2,0,0}]>" -0.12361423)
+        (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 0.19244)
+        (pair "rel:from=<{}>:pat=<els=[!-{1/2,0,0}, !-{0,-1/2,0,0}]>" 0.05107831)
+        (pair "rel:last_to=<{0,1/4,0,0}>:from=<{}>:pat=<els=[!-{1/2,0,0}, !-{0,-1/2,0,0}]>" 0.069697164)
+        (pair "rel:to=<{0}>:pat=<els=[!-{1/2,0,0}, !-{0,-1/2,0,0}]>" 0.48855886)
+        (pair "rel:last_to=<{0,1/4,0,0}>:to=<{0}>:pat=<els=[!-{1/2,0,0}, !-{0,-1/2,0,0}]>" 0.48855886)
+        (pair "rel:last_to=<{0,1/4,0,0}>:to=<{0}>:pat=<els=[!-{0,-1/2,0,0}]>" 0.48855886)
+        (pair "rel:last_to=<{0,1/4,0,0}>:from=<{}>:to=<{0}>:pat=<els=[!-{1/2,0,0}, !-{0,-1/2,0,0}]>" -0.10636844)
+        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.18808766)
+    }
+    )
+})
+
+    
+
 )

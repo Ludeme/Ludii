@@ -1,7 +1,35 @@
 (define "Rumi Shatranj_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (material)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[e{0,0,0}]>" -0.15041348)
+        (pair "rel:from=<{0,0,1/4}>:pat=<els=[!-{0,0}, e{0,0,1/4,1/4,0,0,0}]>" -1.3590807)
+        (pair "rel:from=<{0,0,1/4}>:to=<{}>:pat=<els=[!-{0,0}]>" -0.4903778)
+        (pair "rel:from=<{}>:pat=<els=[#{0,0}]>" 0.026189258)
+        (pair "rel:from=<{0,0,1/4}>:pat=<els=[e{0,0}, e{0,0,1/4,1/4,0,0,0}]>" -1.3590807)
+        (pair "rel:to=<{}>:pat=<els=[!-{0,0}]>" -0.10779044)
+        (pair "rel:from=<{0,0,1/4}>:to=<{}>:pat=<els=[e{0,0}]>" -0.46687838)
+        (pair "rel:from=<{}>:pat=<els=[e{0,0,0}, -{0,1/4}]>" -0.14387079)
+        (pair "rel:from=<{0,0,1/4}>:to=<{}>:pat=<els=[!-{0,0}, e{0,0,1/4,1/4,0,0,0}]>" -1.7794772)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{0,1/4,-1/4,0,0,0}>:from=<{0,1/4}>:to=<{}>:pat=<els=[!I12{0,1/4}]>" 0.6958654)
+        (pair "rel:last_to=<{0,1/4,-1/4,0,0,0}>:to=<{}>:pat=<els=[-{0,0,0,0}, !I12{0,1/4}]>" 0.12451032)
+        (pair "rel:last_to=<{0,1/4,-1/4,0,0,0}>:from=<{0,1/4}>:to=<{}>:pat=<els=[-{0,0,0,0}, !I12{0,1/4}]>" 0.699804)
+        (pair "rel:to=<{}>:pat=<els=[-{0}]>" 0.023124676)
+        (pair "rel:last_to=<{0,1/4,-1/4,0,0,0}>:from=<{0,1/4}>:to=<{}>:pat=<els=[-{0,0,0,0}]>" 0.6341792)
+        (pair "rel:last_to=<{0,1/4,-1/4,0,0,0}>:to=<{}>:pat=<els=[!I12{0,1/4}]>" 0.12298009)
+        (pair "rel:last_to=<{0,1/4,-1/4,0,0,0}>:from=<{0,1/4}>:pat=<els=[-{0,0,0,0}, !I12{0,1/4}]>" -8.729014)
+    }
+    )
+})
+
+    
+
 )

@@ -1,7 +1,38 @@
 (define "Ultimate Chess_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (material)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[R0{0,1/4}, !I5{1/2}]>" 0.003879486)
+        (pair "rel:from=<{}>:pat=<els=[I9{1/2}, I2{0,0,0,0,0,0}]>" -0.9231574)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[R1{1/2,0,0}, e{0,1/4,0,0,0}]>" -1.4716187)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I1{1/4,-1/4}]>" -0.87364495)
+        (pair "rel:last_from=<{0,0,1/4,1/4,-1/4}>:from=<{}>:to=<{0,0,1/4}>:pat=<els=[!I5{}, !I2{0,0,1/4}, !-{0,0,1/4,-1/4,0,0,0}]>" -0.3294982)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I1{1/4,-1/4}, R0{-1/2,1/4}, !I5{0}]>" -1.530429)
+        (pair "rel:from=<{}>:to=<{0,0,1/4}>:pat=<els=[!I5{}, #{0,0,1/4,-1/4,0,0}, !-{0,0,1/4,-1/4,0,0,0}]>" 0.15504403)
+        (pair "rel:to=<{}>:pat=<els=[!f{0}]>" -8.2650746E-4)
+        (pair "rel:to=<{0,0,1/4}>:pat=<els=[!I5{}, #{0,0,1/4,-1/4,0,0}, !I2{0,0,1/4}, !-{0,0,1/4,-1/4,0,0,0}]>" 0.03379498)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4,0,0,0}]>" -0.7169382)
+        (pair "rel:from=<{}>:pat=<els=[I2{0,0,0,0,0,0}]>" -0.38934848)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[f{0,0}, !R1{-1/4,1/4}]>" -0.5696664)
+        (pair "rel:from=<{0,0,0,0,0}>:to=<{}>:pat=<els=[R0{0,0,0}]>" -0.13697532)
+        (pair "rel:to=<{}>:pat=<els=[f{1/4,0}, !R1{0,1/4}]>" 0.16243069)
+        (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[f{1/4,0}, #{0,0}, !R1{0,1/4}]>" -0.13051307)
+        (pair "rel:from=<{}>:pat=<els=[-{0,0}, -{1/2,0}]>" -0.04918489)
+        (pair "rel:to=<{}>:pat=<els=[I3{0,0}]>" -0.10937132)
+        (pair "rel:last_from=<{0,0,-1/4,0,1/4}>:from=<{}>:to=<{0,0,-1/4,0}>:pat=<els=[R1{1/2,1/4}]>" -0.84872544)
+        (pair "rel:from=<{}>:pat=<els=[R1{0,0}]>" 0.010621265)
+    }
+    )
+})
+
+    
+
 )

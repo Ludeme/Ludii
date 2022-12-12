@@ -1,9 +1,42 @@
 (define "Laram Wali_ai"
-    (useFor { "Board Size/3" }
+(useFor { "Ruleset/Laram Wali (Observed)" }
+    
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
-            (material)
-        })
-        
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[#{0,0}, -{0,-1/2,1/4,-1/4}]>" -0.3834109)
+        (pair "rel:to=<{}>:pat=<els=[!-{0}, -{0,0,0,0}, !-{1/4,1/4}, #{-1/2,0,0,0}]>" 0.35825002)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[#{0,0}]>" -0.3633426)
+        (pair "rel:to=<{}>:pat=<els=[!-{1/2}, !#{0,1/4,-1/4}, !-{-1/4,1/4}, #{0,0,0,0}]>" 0.29812264)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{1/2}, !-{-1/4,1/4}, #{0,0,0,0}]>" 0.23486893)
+        (pair "rel:last_from=<{0,0,1/4}>:to=<{0}>:pat=<els=[#{1/4,0}]>" -1.4795517)
+        (pair "rel:to=<{}>:pat=<els=[!-{-1/2}, !#{0,-1/4,1/4}, -{0,0}, -{0,-1/2,0,0,0,0}, !-{0,-1/2,-1/4,-1/4}, #{0,-1/2,-1/2,0,0,0}]>" 0.5416939)
+        (pair "rel:to=<{}>:pat=<els=[!-{1/2}, !#{0,1/4,-1/4}, -{1/2,0,0,0}, !-{-1/4,1/4}, #{0,0,0,0}]>" 0.6002511)
+        (pair "rel:last_to=<{0,1/2,0}>:to=<{}>:pat=<els=[#{0,0}]>" -0.692377)
+        (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" -0.35717168)
+    }
     )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!#{0,0,0,1/4}]>" 1.2462778)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{0,0,1/4,1/4}]>" 1.3594497)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{1/4,0,0,0}, !-{0,0,1/4,1/4}]>" 1.3688025)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{1/2}]>" 1.4431045)
+        (pair "rel:from=<{}>:to=<{1/2,0}>:pat=<els=[#{0,1/4}]>" 1.2370617)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{0,0,1/2,0,0,0}]>" 1.1974163)
+        (pair "rel:last_to=<{0,0,1/2}>:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,0,1/4}]>" 1.4856044)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,0,1/4}, !-{0,0,1/4,1/4}]>" 1.4243681)
+        (pair "rel:last_to=<{0,0,1/2}>:from=<{}>:to=<{0,0}>:pat=<els=[#{1/4,0,0,0}, #{0,0,0,1/4}]>" 1.4856044)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,0}]>" 1.4240612)
+        (pair "rel:last_to=<{0,0,1/2}>:from=<{}>:to=<{0,0}>:pat=<els=[!-{0,0,1/4,1/4}]>" 1.4958903)
+    }
+    )
+})
+
+    
+
+)
 )

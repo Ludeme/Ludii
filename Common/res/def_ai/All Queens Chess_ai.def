@@ -1,7 +1,35 @@
 (define "All Queens Chess_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (sidesProximity weight:-1.0)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (sidesProximity weight:-1.0)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[-{0,0,1/4,0,1/2}, #{0,0,1/4,0,0,0}]>" 0.67294085)
+        (pair "rel:to=<{}>:pat=<els=[e{0}, -{1/4,1/4}, e{0,0,-1/4,0,1/2,0,0}]>" 0.12080221)
+        (pair "rel:from=<{0,0,0,1/4,0,0}>:pat=<els=[-{0,0,0,1/4,0,0,0,1/4}]>" -2.7930863)
+        (pair "rel:last_from=<{0,0,1/4,0,0,0}>:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[-{0,0,1/4,0,-1/4,-1/4}]>" 1.4196604)
+        (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[f{0}, e{0,0,1/4,0,1/4}, -{0,0,1/4,0,1/2}, #{0,0,1/4,0,0,0}]>" 1.2197754)
+        (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[-{0,0,1/4,0,-1/4,-1/4}]>" 0.66796654)
+        (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[e{0,0,1/4,0,1/4}, -{0,0,1/4,0,1/2}]>" 0.7543313)
+        (pair "rel:to=<{}>:pat=<els=[e{0,0,1/4,0,1/4}, -{0,0,1/4,0,1/2}, #{0,0,1/4,0,0,0}]>" 0.20599186)
+        (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[e{0,0,1/4,0,1/4}, #{0,0,1/4,0,0,0}]>" 0.8193397)
+        (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[f{0}, e{0,0,1/4,0,1/4}, #{0,0,1/4,0,0,0}]>" 1.0345699)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[e{0,0,0}]>" 1.036473)
+        (pair "rel:to=<{}>:pat=<els=[e{0,0}, f{0}]>" -0.18921474)
+        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[f{0}, f{0,1/4,-1/2,0}, f{0,1/4,-1/2,0,0}]>" 1.5633876)
+        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[f{0}]>" -0.19085771)
+        (pair "rel:to=<{}>:pat=<els=[-{0}]>" 0.02094038)
+        (pair "rel:to=<{}>:pat=<els=[e{0,0}]>" 0.007967248)
+    }
+    )
+})
+
+    
+
 )

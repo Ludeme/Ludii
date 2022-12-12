@@ -1,7 +1,38 @@
 (define "Jungle_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (material)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{1/4,1/4}, #{1/2}, I11{0}]>" -0.26728278)
+        (pair "rel:from=<{1/2}>:pat=<els=[I7{0}]>" -9.29372)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!R1{-1/2,0,0}, f{0,-1/4,1/4}]>" -0.03070906)
+        (pair "rel:from=<{0}>:pat=<els=[#{1/4,-1/4}, !-{0,0}, f{0,-1/4,1/4}]>" -9.29372)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[#{1/2}, !R1{1/4,0,0}]>" -0.1279011)
+        (pair "rel:to=<{}>:pat=<els=[#{1/4,-1/4}, !R1{-1/2,0,0}, !-{0,0}, f{0,-1/4,1/4}]>" -0.31942913)
+        (pair "rel:to=<{}>:pat=<els=[#{1/4,-1/4}, !-{0,0}, f{0,-1/4,1/4}]>" -0.26693398)
+        (pair "rel:from=<{0}>:pat=<els=[!-{1/4,1/4}, #{1/2}, !R3{0,1/4}, I11{0}]>" -9.29372)
+        (pair "rel:from=<{}>:pat=<els=[I3{0,0}]>" -0.058074914)
+        (pair "rel:to=<{}>:pat=<els=[I7{0}]>" 0.1546722)
+        (pair "rel:from=<{1/2}>:to=<{}>:pat=<els=[I7{0}]>" 0.073881455)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[!R2{0,-1/4}, #{1/4,1/4}, !R2{0,1/4}]>" 1.8662565)
+        (pair "rel:to=<{}>:pat=<els=[#{-1/4,-1/4}, !R2{0,-1/4}, #{1/4,1/4}, !R2{0,1/4}]>" 1.8662565)
+        (pair "rel:to=<{}>:pat=<els=[#{-1/4,-1/4}, !R2{0,-1/4}, !R2{0,1/4}]>" 1.8662565)
+        (pair "rel:last_to=<{0,-1/2,1/2}>:from=<{}>:to=<{0}>:pat=<els=[-{0,-1/2,1/2,-1/4}, -{0,-1/2,1/2,1/2,-1/4,1/4}]>" 1.5950325)
+        (pair "rel:last_to=<{0}>:from=<{}>:to=<{0}>:pat=<els=[!R2{1/4,1/4}, -{0,1/2,-1/4,1/4}]>" 1.4547108)
+        (pair "rel:to=<{}>:pat=<els=[!R2{0,0,0,0}, I2{0,0,0}]>" -0.17451343)
+        (pair "rel:last_to=<{0,-1/2,1/2}>:from=<{}>:to=<{0}>:pat=<els=[!R0{-1/2,-1/4}, !f{0,0,-1/4}, -{0,-1/2,1/2,-1/4}, -{0,-1/2,1/2,1/2,-1/4,1/4}]>" 1.7048159)
+    }
+    )
+})
+
+    
+
 )

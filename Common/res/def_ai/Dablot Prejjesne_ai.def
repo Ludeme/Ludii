@@ -1,7 +1,33 @@
 (define "Dablot Prejjesne_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (material)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" -0.06353521)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[]>" 0.9464032)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[I5{1/8,-3/8}]>" 0.5147248)
+        (pair "rel:last_to=<{0,0,3/8,3/8}>:from=<{}>:to=<{0,0}>:pat=<els=[!-{0,0,-1/8,0,0}]>" 0.79274154)
+        (pair "rel:last_to=<{0,0,3/8,3/8}>:from=<{}>:to=<{0,0}>:pat=<els=[I5{1/8,-3/8}]>" 0.5566902)
+        (pair "rel:to=<{}>:pat=<els=[#{0,3/8}, !-{1/2,0,0}]>" -0.62738854)
+        (pair "rel:last_to=<{0,-3/8}>:to=<{}>:pat=<els=[#{0,3/8}]>" -0.44948134)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" -0.21364367)
+        (pair "rel:to=<{}>:pat=<els=[!R0{1/4,0,0}, I5{0,0,1/8,3/8}]>" 0.14540231)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[I5{0,0,1/8,3/8}]>" 0.100369364)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0,0}>:pat=<els=[#{0,0,0,0}]>" 1.6922892)
+        (pair "rel:from=<{}>:pat=<els=[f{0,3/8}]>" 0.052662175)
+        (pair "rel:last_to=<{0,1/8,3/8}>:to=<{0}>:pat=<els=[R0{1/2,1/4}, N8{0,0,0}]>" 1.6922892)
+        (pair "rel:from=<{}>:pat=<els=[!R1{0,0,0,0}]>" 0.15512124)
+    }
+    )
+})
+
+    
+
 )

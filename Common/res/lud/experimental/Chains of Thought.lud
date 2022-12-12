@@ -346,5 +346,8 @@ The other rule variants are only for experimentation.")
     (show Edges Diagonal <BoardShape:DiagShow>)
     }
 )
-(ai (heuristics (score weight:2)))
+    (ai
+        "Chains of Thought_ai"
+    )
+
 )

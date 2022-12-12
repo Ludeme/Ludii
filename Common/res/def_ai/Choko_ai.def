@@ -1,7 +1,35 @@
 (define "Choko_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (material)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,0,-1/4,1/4}]>" 2.0983896)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!e{0,0,-1/4,-1/4}, -{0,0,-1/2,0,1/4}]>" 1.833326)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/4,1/4}]>" 1.6145613)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{1/4}]>" 1.5229669)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,1/4,0}]>" 1.5910611)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/4,1/4}]>" 1.5706509)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[#{1/4,0}]>" 1.5910611)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!R0{0,0,0}]>" 1.4767681)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,0,1/4,0,0}]>" 1.7576824)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[f{0,0}]>" 1.8337553)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!f{0,0,0,1/4}]>" 1.8382194)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!e{0,0,1/4}, -{0,0,1/2,0,1/2,0}]>" 1.8348116)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{1/4}]>" 1.785103)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{1/4}, !f{0,0,0,1/4}]>" 1.7745514)
+        (pair "rel:last_to=<{0,0,1/2}>:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/2,0,1/2,0}]>" 2.3091307)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/4}]>" 2.0038211)
+    }
+    )
+})
+
+    
+
 )

@@ -1,0 +1,37 @@
+(define "Dama (Alquerque)_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[I2{0}]>" 1.6816145)
+        (pair "rel:last_to=<{0,0,-1/2}>:from=<{}>:to=<{0,0}>:pat=<els=[!I2{1/4,-1/4}]>" 1.8190777)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[I1{0,0,1/4,-3/8}]>" 1.7825412)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[f{0,0,0,1/4}]>" 1.9371513)
+        (pair "rel:last_to=<{0,0,3/8,3/8}>:from=<{}>:to=<{0,0}>:pat=<els=[!#{-3/8,0}]>" 2.0957446)
+        (pair "rel:from=<{}>:to=<{3/8,0}>:pat=<els=[!#{0,0}]>" 1.1537968)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!I2{1/4,-1/4}]>" 0.9173623)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[I2{0}, f{0,0,0,1/4}]>" 2.4722881)
+        (pair "rel:last_to=<{0,0,1/2}>:from=<{}>:to=<{0,0}>:pat=<els=[]>" 1.8418498)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!e{-1/4,3/8}, f{0,0,1/4,1/8}]>" 1.5938334)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!I4{}]>" 1.6868006)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!I4{}, !e{0,0,-3/8,1/4}]>" 1.6766415)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[I1{0}]>" 1.6921737)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!e{0,0,-3/8,1/4}]>" 0.81390065)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!R0{3/8,1/4}]>" 1.5015174)
+        (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[!-{3/8}]>" 1.2271682)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[I1{0}, -{0,0,1/2,0,0,0}]>" 2.7445533)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[I1{1/2}]>" 1.3910078)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[]>" 1.273343)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/2,0,0,0}]>" 1.2367166)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[N4{0,0,0,1/4}]>" 1.2696257)
+        (pair "rel:to=<{0,0}>:pat=<els=[!I4{}, !e{0,0,-3/8,1/4}]>" -1.5448927)
+        (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[]>" 1.5407933)
+    }
+    )
+})
+
+    
+
+)

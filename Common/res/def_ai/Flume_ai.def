@@ -1,7 +1,39 @@
 (define "Flume_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (mobilitySimple)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (mobilitySimple)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[f{1/2}, I2{0}]>" 1.2909088)
+        (pair "rel:to=<{}>:pat=<els=[f{1/4}, I2{0}]>" 0.84207445)
+        (pair "rel:to=<{}>:pat=<els=[I3{0,1/4}, f{1/2}]>" 1.0092957)
+        (pair "rel:to=<{}>:pat=<els=[I1{1/4}, I3{0,1/4}]>" 1.0216011)
+        (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/4}, e{-1/4,0}]>" 1.5926083)
+        (pair "rel:to=<{}>:pat=<els=[f{1/2}, f{1/4}, I1{0,1/4}]>" 1.6424009)
+        (pair "rel:to=<{}>:pat=<els=[f{1/4}, I2{0}, f{-1/4,-1/4}]>" 1.3756099)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, f{1/4}, f{1/2}]>" 1.0963273)
+        (pair "rel:to=<{}>:pat=<els=[I2{0}, I2{1/2}]>" 1.2820493)
+        (pair "rel:to=<{}>:pat=<els=[I1{0}, I3{1/4,-1/4}]>" 1.0193106)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[I2{1/4,0,0,0}, !-{1/2}, !-{0}]>" 1.3629788)
+        (pair "rel:to=<{}>:pat=<els=[!-{0}, !-{1/2}, f{0,1/4}]>" 0.64029276)
+        (pair "rel:to=<{}>:pat=<els=[I2{0,0,0,0}, !-{1/4}, !-{-1/4}]>" 1.3629788)
+        (pair "rel:to=<{}>:pat=<els=[I2{0}, f{1/4}]>" 0.51924354)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[I2{0,1/4}, I2{1/2,0}]>" 1.3791102)
+        (pair "rel:to=<{}>:pat=<els=[!-{1/2}, f{0,1/4}, !-{0}, f{1/2,-1/4}]>" 1.4736652)
+        (pair "rel:last_to=<{-1/4}>:to=<{}>:pat=<els=[!-{1/2}, !-{0}]>" 1.9496386)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[I2{1/4,-1/4}, f{-1/4}]>" 1.9379647)
+        (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[f{0,1/4}, f{1/2,-1/4}]>" 2.475745)
+        (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[!-{1/2}, f{0,1/4}, !-{0}, f{1/2,-1/4}]>" 3.2575245)
+    }
+    )
+})
+
+    
+
 )

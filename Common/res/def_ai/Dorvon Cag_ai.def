@@ -1,7 +1,23 @@
 (define "Dorvon Cag_ai"
-    (bestAgent "UCT")
-    trainedHeuristics:(heuristics {
-        (lineCompletionHeuristic weight:-1.0)
-    })
     
+        (bestAgent "UCT")
+        trainedHeuristics:(heuristics {
+    (lineCompletionHeuristic weight:-1.0)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[!-{1/8,-3/8}, !-{-3/8,3/8}, !-{0,3/8}, #{0,-3/8}, #{-1/8,-3/8}, !-{1/4}, -{3/8,3/8}]>" -0.045606133)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[#{0,-3/8}, -{1/2,-3/8}, !-{0,-3/8}, !-{1/4}, -{3/8,-3/8}]>" 2.9154525)
+        (pair "rel:to=<{}>:pat=<els=[#{0,-3/8}, #{-1/4,-3/8}, !-{0,-3/8}, !-{1/4}, -{3/8,-3/8}]>" 2.9154525)
+        (pair "rel:to=<{}>:pat=<els=[#{0,-3/8}, -{1/2,-3/8}, #{-1/4,-3/8}, !-{0,-3/8}, !-{1/4}]>" 2.4482882)
+    }
+    )
+})
+
+    
+
 )

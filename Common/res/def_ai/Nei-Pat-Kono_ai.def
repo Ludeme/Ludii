@@ -1,22 +1,52 @@
 (define "Nei-Pat-Kono_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (centreProximity)
-        (cornerProximity pieceWeights:{
-            (pair "Marker1" 0.4205946)
-            (pair "Marker2" 0.2501356)
-        })
-        (lineCompletionHeuristic weight:-0.63390154)
-        (material pieceWeights:{
-            (pair "Marker1" 0.95843774)
-            (pair "Marker2" 1.280191)
-        })
-        (mobilitySimple weight:0.039721813)
-        (influence weight:0.42171675)
-        (sidesProximity pieceWeights:{
-            (pair "Marker1" 0.015408705)
-            (pair "Marker2" -0.05659186)
-        })
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (centreProximity)
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" 0.4205946)
+        (pair "Marker2" 0.2501356)
+    })
+    (lineCompletionHeuristic weight:-0.63390154)
+    (material pieceWeights:{
+        (pair "Marker1" 0.95843774)
+        (pair "Marker2" 1.280191)
+    })
+    (mobilitySimple weight:0.039721813)
+    (influence weight:0.42171675)
+    (sidesProximity pieceWeights:{
+        (pair "Marker1" 0.015408705)
+        (pair "Marker2" -0.05659186)
+    })
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!e{0,0,0,1/4}]>" 3.2730882)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!f{0,0,0}]>" 3.1739466)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/4}]>" 3.3049438)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/4}]>" 3.4157426)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/4}, !f{0,0,0}]>" 3.2053165)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{0,0,0,1/4}]>" 3.474369)
+        (pair "rel:from=<{}>:to=<{1/4,0}>:pat=<els=[-{0,0}]>" 3.068864)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{-1/4,0}, -{0,0,-1/2,1/4}]>" 2.610898)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/4}, e{0,0,0,-1/4}]>" 4.8899264)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!e{0,1/4}]>" 3.385316)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/4}]>" 3.0690196)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,0,1/4}]>" 3.7490618)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,0,1/4,0}]>" 2.718571)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/4}, -{0,0,1/4,1/4}]>" 2.305988)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{1/4,0}, -{0,0,1/4,0}]>" 2.8952155)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{0,0,1/4,1/4}]>" 3.680716)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!e{0,1/4}, -{0,0,0,1/4}]>" 3.1066217)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[]>" 2.56254)
+    }
+    )
+})
+
+    
+
 )

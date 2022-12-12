@@ -1,8 +1,28 @@
 (define "Peg Solitaire_ai"
-    (useFor { "Known Variants/European" }
+(useFor { "Ruleset/European (Described)" }
+    
         (bestAgent "UCT")
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{0,0,-1/4}>:from=<{}>:pat=<els=[#{1/2,0}, f{1/4,0}]>" 0.0040913965)
+    }
     )
-    (useFor { "Known Variants/English" }
+})
+
+    
+
+)
+(useFor { "Ruleset/English (Described)" }
+    
         (bestAgent "UCT")
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[-{0,0,1/4,0,0}]>" -3.5551924E-4)
+    }
     )
+})
+
+    
+
+)
 )

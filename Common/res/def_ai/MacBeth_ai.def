@@ -1,7 +1,37 @@
 (define "MacBeth_ai"
-    (bestAgent "MAST")
-    trainedHeuristics:(heuristics {
-        (score)
-    })
     
+        (bestAgent "MAST")
+        trainedHeuristics:(heuristics {
+    (score)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[N3{1/4,0,0,0}, !-{5/12,0,0}, !I1{1/3}, !I1{0,1/4}]>" -0.5849939)
+        (pair "rel:to=<{}>:pat=<els=[N3{1/4,0,0,0}, !-{5/12,0,0}, !I1{0,1/4}]>" -0.5789821)
+        (pair "rel:to=<{}>:pat=<els=[N3{0}, I1{1/4,0}]>" -0.58066607)
+        (pair "rel:to=<{}>:pat=<els=[-{1/12,0,0,0}, !-{1/2,0,0}, I1{0,0}]>" -0.15774778)
+        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:to=<{}>:pat=<els=[-{1/12,0,0,0}, !-{-1/6,1/3}, !-{1/2,0,0}, !I1{0}, I1{0,0}]>" -0.48008037)
+        (pair "rel:to=<{}>:pat=<els=[!I1{0,1/4}]>" -6.333022E-4)
+        (pair "rel:to=<{}>:pat=<els=[N3{1/2,0,0,0}, !-{0,1/3}, !I1{-5/12}]>" -0.68208885)
+        (pair "rel:to=<{}>:pat=<els=[N3{0,0,0,0}, !-{1/6,0,0}, !I1{1/12}]>" -0.5849939)
+        (pair "rel:to=<{}>:pat=<els=[N3{0,0,0,0}, !-{1/2,1/3}, !-{1/6,0,0}, !I1{1/12}, !I1{-1/4,1/4}]>" -0.68396246)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[-{0,0,0,0}, #{-1/4,0,0,0}]>" 1.0356407)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!I1{0,1/4}, I1{0,0,0}, !I1{1/4}, #{1/2,0,0,0}]>" 1.103011)
+        (pair "rel:to=<{}>:pat=<els=[I1{-1/3,1/4}, !I1{0,1/4}, I1{-1/4,0}, !-{0,1/4}]>" 0.3111129)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[I1{0,0,0}, !-{0,1/4}, #{-1/3,0,0}]>" 0.94986916)
+        (pair "rel:to=<{}>:pat=<els=[-{1/2,-1/3}, !-{0,1/4}, I1{1/4,0,0}]>" -0.013842618)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{1/4,0,0,0}, I1{0,0,0}]>" 1.2116696)
+        (pair "rel:to=<{}>:pat=<els=[!-{1/3}, I1{0,0,0,0}]>" -0.0052503054)
+        (pair "rel:last_to=<{1/3}>:to=<{}>:pat=<els=[#{0,0,0}]>" 0.7238865)
+    }
+    )
+})
+
+    
+
 )

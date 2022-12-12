@@ -1,7 +1,36 @@
 (define "Shodra_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (material)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" 0.1596849)
+        (pair "rel:to=<{}>:pat=<els=[!f{0}]>" 0.0010310811)
+        (pair "rel:from=<{0}>:pat=<els=[R1{1/2,0}]>" -1.6338466)
+        (pair "rel:last_from=<{0,0,0,0}>:to=<{}>:pat=<els=[]>" 0.09340961)
+        (pair "rel:from=<{0}>:pat=<els=[R1{1/2,0}, #{0,1/4,1/4}]>" -1.6338466)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[]>" 0.683682)
+        (pair "rel:to=<{}>:pat=<els=[!-{0}]>" 0.28821182)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R1{0}]>" 0.6118539)
+        (pair "rel:to=<{0,0,0}>:pat=<els=[-{0,0,0,-1/2,1/4}]>" -6.7713447)
+        (pair "rel:last_to=<{0,0,0,0}>:to=<{}>:pat=<els=[#{1/2,1/4}]>" 0.93143666)
+        (pair "rel:from=<{0}>:pat=<els=[R1{0}]>" -6.7713447)
+        (pair "rel:from=<{0}>:pat=<els=[-{0,1/2,1/4}]>" -6.7713447)
+        (pair "rel:from=<{}>:pat=<els=[R0{0}]>" -0.07922074)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[e{1/4,1/4}]>" 0.4968343)
+        (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[]>" 0.50688624)
+        (pair "rel:to=<{0,0,0}>:pat=<els=[R1{-1/4,0,0,0}, -{0,0,0,-1/2,1/4}]>" -6.7713447)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R1{0}, -{0,1/2,1/4}]>" 0.5926317)
+    }
+    )
+})
+
+    
+
 )

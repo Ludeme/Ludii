@@ -1,33 +1,89 @@
 (define "Picaria_ai"
-    (useFor { "Board/9 Holes" "Play/Anywhere" }
+(useFor { "Ruleset/Zaslavsky 1 (Suggested)" }
+    
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
-            (influence weight:0.0969397)
-            (centreProximity pieceWeights:{
-                (pair "Marker1" -1.3798143)
-                (pair "Marker2" 1.5697663)
-            })
-            (cornerProximity pieceWeights:{
-                (pair "Marker1" 0.62923783)
-                (pair "Marker2" -0.036390908)
-            })
-            (lineCompletionHeuristic weight:0.26689026)
-            (material pieceWeights:{
-                (pair "Marker1" 0.3180889)
-                (pair "Marker2" -0.36635426)
-            })
-            (sidesProximity pieceWeights:{
-                (pair "Marker1" -1.2670743)
-                (pair "Marker2" -0.5210024)
-            })
-        })
-        
+    (influence weight:0.0969397)
+    (centreProximity pieceWeights:{
+        (pair "Marker1" -1.3798143)
+        (pair "Marker2" 1.5697663)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" 0.62923783)
+        (pair "Marker2" -0.036390908)
+    })
+    (lineCompletionHeuristic weight:0.26689026)
+    (material pieceWeights:{
+        (pair "Marker1" 0.3180889)
+        (pair "Marker2" -0.36635426)
+    })
+    (sidesProximity pieceWeights:{
+        (pair "Marker1" -1.2670743)
+        (pair "Marker2" -0.5210024)
+    })
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}, f{0,1/4,1/4}]>" 2.5068982)
+        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[-{0,-1/4}, #{0,1/4,-1/4,1/4}]>" 2.800804)
+        (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[-{1/4,0}]>" 3.435182)
+        (pair "rel:from=<{0}>:pat=<els=[f{0,1/4,1/4}]>" -1.6394764)
+        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[-{0,-1/4}, f{0,1/4,-1/2,1/4}, #{0,1/4,-1/4,1/4}]>" 1.1059245)
+        (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[-{1/4,0}, f{0,-1/2,-1/2,1/4}]>" 5.3459516)
+    }
     )
-    (useFor { "Board/13 Sites" "Play/Not Middle" }
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}, e{0,1/4}, !-{0,1/4,0}]>" 0.73503375)
+        (pair "rel:from=<{}>:pat=<els=[-{0,0}, #{1/4,-1/2,1/4,0,0}]>" 3.7787597)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0,1/4}]>" -0.49616647)
+        (pair "rel:last_to=<{1/4}>:from=<{0}>:pat=<els=[]>" 0.24647893)
+        (pair "rel:last_from=<{0,1/4,0}>:from=<{}>:pat=<els=[-{1/4,0}]>" 5.228319)
+        (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{1/4,0}, e{1/4,-1/4}, !e{0,1/4,0}]>" 4.3720837)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,1/4}, !-{0,1/4,0}]>" 0.3976595)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4,0}, -{0,1/4,0}]>" 4.893927)
+        (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[f{1/4,0}, e{0,1/4}, !-{0,1/4,0}]>" 0.5926923)
+    }
+    )
+})
+
+    
+
+)
+(useFor { "Ruleset/Zaslavsky 2 (Suggested)" }
+    
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
-            (lineCompletionHeuristic)
-        })
-        
+    (lineCompletionHeuristic)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[f{0,1/8}, -{-3/8,1/4}]>" 1.4447547)
+        (pair "rel:to=<{}>:pat=<els=[f{-1/4,1/4}, -{0,1/8}]>" 1.2330796)
+        (pair "rel:from=<{}>:pat=<els=[#{0}]>" 1.8855921)
+        (pair "rel:last_to=<{1/2,1/8}>:to=<{}>:pat=<els=[!-{1/8,3/8}, !#{0,-1/4,-1/8}]>" 2.495319)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" -0.8745587)
+        (pair "rel:last_to=<{1/8,-1/8}>:to=<{}>:pat=<els=[-{0}]>" 0.3618641)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{3/8}]>" 1.8855921)
+        (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 1.2756456)
+        (pair "rel:from=<{}>:pat=<els=[#{3/8}, f{0,1/4,1/4}]>" 2.6101036)
+    }
     )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[e{0,1/4}, N8{1/4,0}, !-{0,3/8}]>" 1.495252)
+        (pair "rel:last_to=<{0,-3/8}>:to=<{}>:pat=<els=[e{-1/4,1/4}, N8{0,0}]>" 2.0385551)
+        (pair "rel:last_to=<{0,3/8}>:to=<{}>:pat=<els=[N4{0}, e{1/8,0}, !-{-1/8,-3/8}]>" 2.8084092)
+        (pair "rel:to=<{}>:pat=<els=[e{0,3/8}, e{1/8,0}]>" 1.3859373)
+        (pair "rel:last_to=<{0,3/8}>:to=<{}>:pat=<els=[N4{0}, e{1/8,0}]>" 2.8084092)
+        (pair "rel:last_to=<{0,3/8}>:to=<{}>:pat=<els=[!-{0,3/8}, !-{-1/8,-3/8}]>" 0.7447064)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}]>" 0.048148308)
+        (pair "rel:last_to=<{0,3/8}>:to=<{}>:pat=<els=[!-{1/4,-3/8}, f{-1/8,1/4}, -{0}]>" 1.2497681)
+    }
+    )
+})
+
+    
+
+)
 )

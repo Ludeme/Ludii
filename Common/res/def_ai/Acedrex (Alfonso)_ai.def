@@ -1,0 +1,32 @@
+(define "Acedrex (Alfonso)_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[!-{0,0}]>" 0.04258516)
+        (pair "rel:to=<{}>:pat=<els=[#{0,0}]>" 0.016422193)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4,-1/4}, #{0,0,-1/2,0,0}]>" 0.023688326)
+        (pair "rel:from=<{}>:pat=<els=[R0{1/4,1/4}, I12{0,1/4}]>" -0.036675647)
+        (pair "rel:to=<{}>:pat=<els=[I8{}]>" 0.021795504)
+        (pair "rel:to=<{}>:pat=<els=[#{0,1/4}]>" 0.09840329)
+        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[-{0,0,0}]>" 0.88515234)
+        (pair "rel:from=<{0}>:pat=<els=[e{1/4,0}]>" -1.5046946)
+        (pair "rel:from=<{0,0}>:pat=<els=[-{1/4,-1/4}, #{0,0,-1/2,0,0}]>" -1.5046946)
+        (pair "rel:from=<{0}>:pat=<els=[-{0,0,0,0,0}]>" -1.5046946)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[-{0,1/4}]>" -2.218603E-4)
+        (pair "rel:from=<{}>:pat=<els=[#{0,0,0}]>" -0.0023748055)
+        (pair "rel:last_to=<{0,0,0,0}>:from=<{}>:pat=<els=[]>" -0.45169044)
+        (pair "rel:to=<{}>:pat=<els=[I12{0,0}]>" 0.2123171)
+        (pair "rel:from=<{}>:pat=<els=[!R1{0,1/4}]>" -0.036009073)
+        (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[I11{0,0,1/4,0,-1/4}]>" 0.1447516)
+        (pair "rel:from=<{}>:pat=<els=[R1{0,0}, I11{0,0,1/4,0,-1/4}]>" 0.1123963)
+        (pair "rel:last_from=<{0,0,0,0}>:to=<{}>:pat=<els=[]>" -0.11503961)
+    }
+    )
+})
+
+    
+
+)

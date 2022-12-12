@@ -1,47 +1,76 @@
 (define "Crand_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (influence weight:0.055196557)
-        (centreProximity pieceWeights:{
-            (pair "Counter1" 0.3059572)
-            (pair "Counter2" 0.33256865)
-            (pair "DoubleCounter1" 0.3101938)
-            (pair "DoubleCounter2" 0.015163427)
-        })
-        (cornerProximity pieceWeights:{
-            (pair "Counter1" 0.03794223)
-            (pair "DoubleCounter2" 0.013971022)
-        })
-        (lineCompletionHeuristic weight:0.12180206)
-        (material pieceWeights:{
-            (pair "Counter1" 0.5058896)
-            (pair "Counter2" -0.20563242)
-            (pair "DoubleCounter1" -0.9102041)
-            (pair "DoubleCounter2" 0.5799117)
-        })
-        (playerRegionsProximity player:1 pieceWeights:{
-            (pair "Counter1" 0.15878016)
-            (pair "DoubleCounter1" -0.058590144)
-            (pair "DoubleCounter2" 0.038480278)
-        })
-        (regionProximity region:0 pieceWeights:{
-            (pair "Counter1" -0.9274213)
-            (pair "Counter2" -0.19150597)
-            (pair "DoubleCounter1" 0.37258837)
-            (pair "DoubleCounter2" -0.46275273)
-        })
-        (regionProximity region:1 pieceWeights:{
-            (pair "Counter1" -0.91608506)
-            (pair "Counter2" -0.21181642)
-            (pair "DoubleCounter1" 0.44274846)
-            (pair "DoubleCounter2" -0.5467548)
-        })
-        (sidesProximity pieceWeights:{
-            (pair "Counter1" 0.49482724)
-            (pair "Counter2" 0.5986697)
-            (pair "DoubleCounter1" 0.3511627)
-            (pair "DoubleCounter2" 0.03755918)
-        })
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (influence weight:0.055196557)
+    (centreProximity pieceWeights:{
+        (pair "Counter1" 0.3059572)
+        (pair "Counter2" 0.33256865)
+        (pair "DoubleCounter1" 0.3101938)
+        (pair "DoubleCounter2" 0.015163427)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Counter1" 0.03794223)
+        (pair "DoubleCounter2" 0.013971022)
+    })
+    (lineCompletionHeuristic weight:0.12180206)
+    (material pieceWeights:{
+        (pair "Counter1" 0.5058896)
+        (pair "Counter2" -0.20563242)
+        (pair "DoubleCounter1" -0.9102041)
+        (pair "DoubleCounter2" 0.5799117)
+    })
+    (playerRegionsProximity player:1 pieceWeights:{
+        (pair "Counter1" 0.15878016)
+        (pair "DoubleCounter1" -0.058590144)
+        (pair "DoubleCounter2" 0.038480278)
+    })
+    (regionProximity region:0 pieceWeights:{
+        (pair "Counter1" -0.9274213)
+        (pair "Counter2" -0.19150597)
+        (pair "DoubleCounter1" 0.37258837)
+        (pair "DoubleCounter2" -0.46275273)
+    })
+    (regionProximity region:1 pieceWeights:{
+        (pair "Counter1" -0.91608506)
+        (pair "Counter2" -0.21181642)
+        (pair "DoubleCounter1" 0.44274846)
+        (pair "DoubleCounter2" -0.5467548)
+    })
+    (sidesProximity pieceWeights:{
+        (pair "Counter1" 0.49482724)
+        (pair "Counter2" 0.5986697)
+        (pair "DoubleCounter1" 0.3511627)
+        (pair "DoubleCounter2" 0.03755918)
+    })
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,0,0}]>" -0.36828548)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" -0.2910834)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,-1/4,1/8}]>" -0.21224222)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!I1{0,1/4,1/8}]>" -0.06890814)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N6{0,-1/4,1/8}]>" -0.22061017)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/3,1/3}]>" -0.21214499)
+        (pair "rel:from=<{}>:pat=<els=[N6{1/3,3/8}, !R1{0,1/4}]>" 0.069406025)
+        (pair "rel:to=<{}>:pat=<els=[e{0,0,0,0}, !I1{1/4,-1/4,-1/8}]>" 0.012679829)
+        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[!I2{0,0}]>" -9.5109295E-5)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 0.010521897)
+        (pair "rel:to=<{}>:pat=<els=[I3{0,-1/4}, N6{1/3,0,0,0}]>" -0.48867816)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I2{0,1/4,-1/4}]>" -0.011385739)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R1{0,0,0,0}, I2{0,1/4,-1/4}]>" -0.23944138)
+        (pair "rel:to=<{}>:pat=<els=[R0{1/2,0,0,0}, N8{0,-1/2,1/6}]>" 0.3385038)
+        (pair "rel:to=<{}>:pat=<els=[N6{}, I3{0}]>" -0.15365261)
+        (pair "rel:to=<{}>:pat=<els=[N8{0,0}]>" -0.32928634)
+    }
+    )
+})
+
+    
+
 )

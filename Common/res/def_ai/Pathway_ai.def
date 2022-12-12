@@ -1,7 +1,35 @@
 (define "Pathway_ai"
-    (bestAgent "MAST")
-    trainedHeuristics:(heuristics {
-        (centreProximity)
-    })
     
+        (bestAgent "MAST")
+        trainedHeuristics:(heuristics {
+    (centreProximity)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[#{1/4,-1/4}, -{0}]>" -0.3040262)
+        (pair "rel:to=<{}>:pat=<els=[!f{1/4,-1/4}, e{0,-1/4}]>" 0.804832)
+        (pair "rel:to=<{}>:pat=<els=[e{0,1/4}, !f{0,-1/4}, e{-1/4,-1/4}, -{1/4,0,0}]>" 1.5274454)
+        (pair "rel:to=<{}>:pat=<els=[e{-1/4,0}, f{0,-1/4}, !f{1/4,1/4}, #{1/2,0}, e{0,1/4}]>" 1.7850511)
+        (pair "rel:to=<{}>:pat=<els=[e{-1/4,0}, f{0,-1/4}, !f{1/4,1/4}, e{0,1/4}]>" 1.3620913)
+        (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[#{-1/4,-1/4}, e{1/4,0,0,0}]>" 0.46077603)
+        (pair "rel:to=<{}>:pat=<els=[e{0,1/4}, !f{0,-1/4}, -{1/4,0,0}]>" 0.8146182)
+        (pair "rel:to=<{}>:pat=<els=[e{0,1/4}, !f{0,-1/4}, e{-1/4,-1/4}, -{1/4,0,0}, !f{-1/4,1/4}]>" 1.5274454)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[e{0}, !e{1/4,1/4}, e{1/2}]>" 0.34165028)
+        (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[!-{0,1/4}]>" 0.027641593)
+        (pair "rel:to=<{}>:pat=<els=[f{1/4}, e{0,-1/4}]>" 0.14602497)
+        (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 0.16225897)
+        (pair "rel:to=<{}>:pat=<els=[!e{0,1/4}, #{-1/4}, -{1/2,0,0}]>" -0.17902395)
+        (pair "rel:last_to=<{-1/4}>:to=<{}>:pat=<els=[!-{0,-1/4}, !-{1/2,1/4}, e{1/4}]>" 0.5122405)
+        (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[f{-1/4}, -{0}]>" -0.084484786)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}, !e{1/4,-1/4}, !#{0,0,0,0}, -{-1/4,0}, !e{1/2,-1/4}]>" -0.17395306)
+    }
+    )
+})
+
+    
+
 )

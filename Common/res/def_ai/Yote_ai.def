@@ -1,21 +1,53 @@
 (define "Yote_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (sidesProximity)
-        (centreProximity pieceWeights:{
-            (pair "Marker1" -1.119665)
-            (pair "Marker2" -0.6233214)
-        })
-        (cornerProximity pieceWeights:{
-            (pair "Marker1" -0.19263615)
-            (pair "Marker2" -0.06904073)
-        })
-        (lineCompletionHeuristic weight:-0.111348405)
-        (material pieceWeights:{
-            (pair "Marker1" 1.6656593)
-            (pair "Marker2" 0.6767286)
-        })
-        (influence weight:0.26289403)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (sidesProximity)
+    (centreProximity pieceWeights:{
+        (pair "Marker1" -1.119665)
+        (pair "Marker2" -0.6233214)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" -0.19263615)
+        (pair "Marker2" -0.06904073)
+    })
+    (lineCompletionHeuristic weight:-0.111348405)
+    (material pieceWeights:{
+        (pair "Marker1" 1.6656593)
+        (pair "Marker2" 0.6767286)
+    })
+    (influence weight:0.26289403)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!f{1/2,0,0}]>" 2.3729963)
+        (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[#{0,0,1/4,0,0,0}]>" 2.8690019)
+        (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[-{-1/4}, #{0,0,1/4,0,0,0}]>" 2.8509421)
+        (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[!#{0,0,1/4,0,1/4,0,0}]>" 2.8690019)
+        (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[!e{0,-1/4}]>" 2.8254333)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!f{1/2,0,0}, !#{0,0,1/4,0,0,0}]>" 2.7994707)
+        (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[-{0,0,1/4,0,1/4,-1/4}]>" 2.8816962)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!#{0,0,1/4,0,0,0}]>" 2.7994707)
+        (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[-{0,0,1/4,0,1/4,-1/4}, #{0,0,1/4,0,0,0}]>" 2.9371984)
+        (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[-{-1/4}, -{0,0,1/4,0,1/4,-1/4}, #{0,0,1/4,0,0,0}]>" 2.8971155)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[]>" 2.2500844)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[#{0,0,1/4,0,0,0}]>" 2.430316)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!f{0,0,1/4,1/4}, #{0,0,0,0}]>" 2.8231068)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!e{0,1/4}, #{0,0,0,0}]>" 2.8262146)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/4,0}, #{0,0,0,0}]>" 2.795375)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/4,0}, !f{0,0,-1/4,-1/4}]>" 2.3874915)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/4,0}, !f{0,0,-1/4,-1/4}, #{0,0,0,0}]>" 2.8010013)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!e{0,1/4}, !f{0,0,1/4,1/4}]>" 2.5629475)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!e{0,1/4}, !f{0,0,1/4,1/4}, #{0,0,0,0}]>" 3.1125598)
+        (pair "rel:last_to=<{0,0,-1/2}>:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/4,0}, #{0,0,0,0}]>" 2.9475021)
+    }
+    )
+})
+
+    
+
 )

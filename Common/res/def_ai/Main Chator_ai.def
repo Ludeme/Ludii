@@ -1,0 +1,28 @@
+(define "Main Chator_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[!f{0,1/4,1/4}]>" -2.3779576E-4)
+        (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}, -{1/4,1/4}]>" 0.005242519)
+        (pair "rel:from=<{}>:pat=<els=[!f{0}, !f{0,1/4,1/4}]>" -0.002514702)
+        (pair "rel:to=<{}>:pat=<els=[R1{0,0}]>" 0.014778008)
+        (pair "rel:last_to=<{0,0,0,-1/4}>:from=<{}>:to=<{0,0,0}>:pat=<els=[R0{-1/4,-1/4}, -{1/4,0}]>" -0.5728859)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!R0{1/4,1/4}]>" 0.004539337)
+        (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[I2{0,0,0}, f{1/4,-1/4}]>" 0.3346334)
+        (pair "rel:last_to=<{1/4,0,0,-1/4}>:from=<{}>:pat=<els=[R0{0,-1/4}, -{1/2,0}]>" 0.057757754)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0,0,1/4,0}>:pat=<els=[R0{0,0,0}, f{0,0,1/4,0,-1/4,0,0}]>" -5.0929475)
+        (pair "rel:from=<{0,-1/4}>:to=<{}>:pat=<els=[#{1/4,0,0}, I10{0,-1/4,-1/2,0}]>" -0.44346994)
+        (pair "rel:to=<{}>:pat=<els=[R0{0,1/4}, I10{1/4,-1/4,-1/2,0}]>" 0.065152936)
+        (pair "rel:from=<{0,0,1/4,0}>:pat=<els=[!-{1/4,0}]>" -5.0929475)
+        (pair "rel:from=<{0,-1/4}>:pat=<els=[R0{-1/4,1/4}, I10{0,-1/4,-1/2,0}]>" -5.0929475)
+        (pair "rel:to=<{}>:pat=<els=[R0{0,0,0}]>" -0.07185146)
+    }
+    )
+})
+
+    
+
+)

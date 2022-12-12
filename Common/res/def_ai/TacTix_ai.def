@@ -1,0 +1,32 @@
+(define "TacTix_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{0,0,0}]>" 0.21055631)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{0}]>" -0.12270899)
+        (pair "rel:last_to=<{0,-1/2}>:to=<{0}>:pat=<els=[!f{-1/2,0}, -{0,1/4,1/4}, !-{0,1/4,-1/4}]>" 0.10441715)
+        (pair "rel:last_to=<{0,-1/2}>:from=<{}>:pat=<els=[!f{-1/2,0}, -{0,1/4,1/4}, !-{0,1/4,-1/4}]>" 0.10285802)
+        (pair "rel:last_to=<{0,-1/2}>:from=<{}>:to=<{0}>:pat=<els=[-{1/4,1/4}, -{0,1/4,1/4}, -{0,-1/2,-1/4,0}]>" 0.4967689)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{0}>:from=<{0}>:to=<{}>:pat=<els=[e{1/4,0}, -{1/4,-1/4}]>" 0.23751259)
+        (pair "rel:last_to=<{0}>:from=<{0}>:to=<{}>:pat=<els=[e{1/4,0}, #{0,1/2,1/2,-1/4}]>" 0.17227568)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{1/2}, e{0,-1/4,0}]>" -0.036725778)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,0,1/4}]>" -0.12741031)
+        (pair "rel:last_to=<{}>:from=<{}>:pat=<els=[-{0,1/2,0}]>" -0.16328967)
+        (pair "rel:from=<{}>:pat=<els=[!e{1/2}, -{0,-1/2}]>" -0.13809375)
+        (pair "rel:to=<{}>:pat=<els=[e{0,0}, -{0,0,0}, #{1/4,-1/2,-1/2,1/4}]>" 0.1773255)
+        (pair "rel:last_to=<{0}>:from=<{0}>:pat=<els=[-{-1/4,0,0}, #{0,-1/2,-1/2,1/4}]>" -0.06304311)
+        (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[e{0,0}, -{0,0,0}]>" 0.3582801)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{1/4,-1/4}, #{0,1/2,1/2,-1/4}]>" 0.16957216)
+        (pair "rel:last_to=<{0}>:from=<{0}>:to=<{}>:pat=<els=[e{1/4,0}]>" -0.034725927)
+        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[]>" 0.37964308)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{-1/4,0}, #{0,-1/2,-1/2,1/4}]>" 0.17227568)
+    }
+    )
+})
+
+    
+
+)

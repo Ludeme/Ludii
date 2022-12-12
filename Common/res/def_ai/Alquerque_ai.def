@@ -1,122 +1,220 @@
 (define "Alquerque_ai"
-    (useFor { "Play Rules/No force capture no sequence" }
+(useFor { "Ruleset/Alfonso X (Described)" }
+    
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
-            (material)
-        })
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,1/4}]>" 0.30355364)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,1/4}, -{0,0,1/4,-1/4}]>" 0.56001294)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,3/8}]>" 0.29334316)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,0,1/4,-1/4}]>" 0.3771733)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{3/8,-1/8}, -{0,0,3/8,0,0,0}]>" 0.7110085)
+        (pair "rel:last_to=<{0,0}>:from=<{}>:pat=<els=[]>" -0.048611704)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,1/4}, -{3/8,3/8}]>" 0.35334173)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/4,0,0}]>" 0.36291602)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,1/4}, -{0,0,1/4,-1/4}, -{3/8,3/8}]>" 0.63829774)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{1/4,1/8}]>" 0.9855087)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,-1/2}, -{0,0,-1/2,0,1/2,3/8}]>" 1.0757111)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,1/2}]>" 0.99416417)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,0,-1/2,0,1/2,3/8}]>" 1.0757111)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{1/4,1/8}, !-{0,0,1/4,0}]>" 0.97775203)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,0,0}]>" 0.99369216)
+    }
+    )
+})
+
         trainedFeatureTrees:(featureTrees 
-            logitTrees:{
-            (logitTree P1
-                (if "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/4,-1/4}, #{0,0,-1/8,1/8}]>"
-                    then:(if "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/8,-3/8}, !#{0,0,-1/2,0,0,0}]>"
-                        then:(if "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{1/8,1/8}, N8{0,0,1/4,0}]>"
-                            then:(if "rel:last_to=<{1/8,-1/8}>:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,-1/2,1/8}]>"
-                                then:(leaf { (pair "Intercept" 1.5161244) })
-                                else:(leaf { (pair "Intercept" 2.728344) })
-                            )
-                            else:(if "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/4}, e{0,0,-1/4,0}]>"
-                                then:(leaf { (pair "Intercept" 1.4713979) })
-                                else:(leaf { (pair "Intercept" 2.0708268) })
-                            )
-                        )
-                        else:(if "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{1/4,-1/4}, -{0,0,-1/4,0}]>"
-                            then:(if "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{3/8,3/8}, -{0,0,1/2,3/8}]>"
-                                then:(leaf { (pair "Intercept" 1.3607565) })
-                                else:(leaf { (pair "Intercept" 1.997542) })
-                            )
-                            else:(if "rel:from=<{0,0}>:to=<{}>:pat=<els=[#{1/2,1/8}, !#{0,0,-1/2,0,0}]>"
-                                then:(leaf { (pair "Intercept" 1.0359786) })
-                                else:(leaf { (pair "Intercept" 0.6514414) })
-                            )
-                        )
-                    )
-                    else:(if "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/4,1/4}, !-{0,0,-1/4,-1/4}]>"
-                        then:(if "rel:to=<{}>:pat=<els=[#{0,1/4}]>"
-                            then:(if "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/8,-3/8}, !#{0,0,-1/2,0,0,0}]>"
-                                then:(leaf { (pair "Intercept" 1.9115099) })
-                                else:(leaf { (pair "Intercept" 1.0137452) })
-                            )
-                            else:(if "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/4}, e{0,0,-1/4,0}]>"
-                                then:(leaf { (pair "Intercept" -0.0052476455) })
-                                else:(leaf { (pair "Intercept" 0.3860865) })
-                            )
-                        )
-                        else:(if "rel:from=<{}>:pat=<els=[f{0}]>"
-                            then:(if "rel:from=<{}>:pat=<els=[e{0}]>"
-                                then:(leaf { (pair "Intercept" -0.61904484) })
-                                else:(leaf { (pair "Intercept" -0.9230064) })
-                            )
-                            else:(if "rel:from=<{}>:pat=<els=[!-{0,0}]>"
-                                then:(leaf { (pair "Intercept" -0.47259647) })
-                                else:(leaf { (pair "Intercept" -1.4028162) })
-                            )
-                        )
-                    )
+logitTrees:{
+(logitTree P1
+(if "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/4,-1/4}, #{0,0,-1/8,1/8}]>"
+        then:(if "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/8,-3/8}, !#{0,0,-1/2,0,0,0}]>"
+            then:(if "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{1/8,1/8}, N8{0,0,1/4,0}]>"
+                then:(if "rel:last_to=<{1/8,-1/8}>:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,-1/2,1/8}]>"
+                    then:(leaf { (pair "Intercept" 1.5161244) })
+                    else:(leaf { (pair "Intercept" 2.728344) })
+                )
+                else:(if "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/4}, e{0,0,-1/4,0}]>"
+                    then:(leaf { (pair "Intercept" 1.4713979) })
+                    else:(leaf { (pair "Intercept" 2.0708268) })
                 )
             )
-            (logitTree P2
-                (if "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/8,0}, !f{0,0,-3/8,1/4}]>"
-                    then:(if "rel:from=<{}>:pat=<els=[-{0}]>"
-                        then:(if "rel:from=<{}>:pat=<els=[e{0,0,0}]>"
-                            then:(if "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/4}, N8{0,0,0,1/4}]>"
-                                then:(leaf { (pair "Intercept" 4.9406066) })
-                                else:(leaf { (pair "Intercept" 4.435365) })
-                            )
-                            else:(if "rel:from=<{0,0}>:to=<{}>:pat=<els=[!e{1/4,3/8}, -{0,0,1/4,-1/8}]>"
-                                then:(leaf { (pair "Intercept" 5.74854) })
-                                else:(leaf { (pair "Intercept" 5.1374607) })
-                            )
-                        )
-                        else:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[f{0,1/4}, !-{0,1/4,-1/8,1/4}]>"
-                            then:(if "rel:from=<{}>:pat=<els=[e{0,0,0}]>"
-                                then:(leaf { (pair "Intercept" 4.2372775) })
-                                else:(leaf { (pair "Intercept" 4.9825377) })
-                            )
-                            else:(if "rel:from=<{}>:pat=<els=[e{0,0,0}]>"
-                                then:(leaf { (pair "Intercept" 3.5814993) })
-                                else:(leaf { (pair "Intercept" 4.165149) })
-                            )
-                        )
-                    )
-                    else:(if "rel:from=<{}>:pat=<els=[e{0,0,0}]>"
-                        then:(if "rel:to=<{}>:pat=<els=[N4{}]>"
-                            then:(if "rel:from=<{}>:pat=<els=[N8{}]>"
-                                then:(leaf { (pair "Intercept" 2.1434336) })
-                                else:(leaf { (pair "Intercept" 3.8615396) })
-                            )
-                            else:(if "rel:from=<{}>:pat=<els=[e{0}]>"
-                                then:(leaf { (pair "Intercept" 2.8938498) })
-                                else:(leaf { (pair "Intercept" 2.4686308) })
-                            )
-                        )
-                        else:(if "rel:from=<{0,0}>:to=<{}>:pat=<els=[!e{-1/2,-1/4}, -{0,0,-1/2,1/4}]>"
-                            then:(if "rel:from=<{}>:pat=<els=[-{0}]>"
-                                then:(leaf { (pair "Intercept" 5.141321) })
-                                else:(leaf { (pair "Intercept" 4.201981) })
-                            )
-                            else:(if "rel:to=<{}>:pat=<els=[#{0,1/4}]>"
-                                then:(leaf { (pair "Intercept" 3.002418) })
-                                else:(leaf { (pair "Intercept" 2.5957038) })
-                            )
-                        )
-                    )
+            else:(if "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{1/4,-1/4}, -{0,0,-1/4,0}]>"
+                then:(if "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{3/8,3/8}, -{0,0,1/2,3/8}]>"
+                    then:(leaf { (pair "Intercept" 1.3607565) })
+                    else:(leaf { (pair "Intercept" 1.997542) })
+                )
+                else:(if "rel:from=<{0,0}>:to=<{}>:pat=<els=[#{1/2,1/8}, !#{0,0,-1/2,0,0}]>"
+                    then:(leaf { (pair "Intercept" 1.0359786) })
+                    else:(leaf { (pair "Intercept" 0.6514414) })
                 )
             )
-            }
+        )
+        else:(if "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/4,1/4}, !-{0,0,-1/4,-1/4}]>"
+            then:(if "rel:to=<{}>:pat=<els=[#{0,1/4}]>"
+                then:(if "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/8,-3/8}, !#{0,0,-1/2,0,0,0}]>"
+                    then:(leaf { (pair "Intercept" 1.9115099) })
+                    else:(leaf { (pair "Intercept" 1.0137452) })
+                )
+                else:(if "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/4}, e{0,0,-1/4,0}]>"
+                    then:(leaf { (pair "Intercept" -0.0052476455) })
+                    else:(leaf { (pair "Intercept" 0.3860865) })
+                )
+            )
+            else:(if "rel:from=<{}>:pat=<els=[f{0}]>"
+                then:(if "rel:from=<{}>:pat=<els=[e{0}]>"
+                    then:(leaf { (pair "Intercept" -0.61904484) })
+                    else:(leaf { (pair "Intercept" -0.9230064) })
+                )
+                else:(if "rel:from=<{}>:pat=<els=[!-{0,0}]>"
+                    then:(leaf { (pair "Intercept" -0.47259647) })
+                    else:(leaf { (pair "Intercept" -1.4028162) })
+                )
+            )
         )
     )
-    (useFor { "Play Rules/No force capture sequence allowed" }
+)
+(logitTree P2
+(if "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/8,0}, !f{0,0,-3/8,1/4}]>"
+        then:(if "rel:from=<{}>:pat=<els=[-{0}]>"
+            then:(if "rel:from=<{}>:pat=<els=[e{0,0,0}]>"
+                then:(if "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/4}, N8{0,0,0,1/4}]>"
+                    then:(leaf { (pair "Intercept" 4.9406066) })
+                    else:(leaf { (pair "Intercept" 4.435365) })
+                )
+                else:(if "rel:from=<{0,0}>:to=<{}>:pat=<els=[!e{1/4,3/8}, -{0,0,1/4,-1/8}]>"
+                    then:(leaf { (pair "Intercept" 5.74854) })
+                    else:(leaf { (pair "Intercept" 5.1374607) })
+                )
+            )
+            else:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[f{0,1/4}, !-{0,1/4,-1/8,1/4}]>"
+                then:(if "rel:from=<{}>:pat=<els=[e{0,0,0}]>"
+                    then:(leaf { (pair "Intercept" 4.2372775) })
+                    else:(leaf { (pair "Intercept" 4.9825377) })
+                )
+                else:(if "rel:from=<{}>:pat=<els=[e{0,0,0}]>"
+                    then:(leaf { (pair "Intercept" 3.5814993) })
+                    else:(leaf { (pair "Intercept" 4.165149) })
+                )
+            )
+        )
+        else:(if "rel:from=<{}>:pat=<els=[e{0,0,0}]>"
+            then:(if "rel:to=<{}>:pat=<els=[N4{}]>"
+                then:(if "rel:from=<{}>:pat=<els=[N8{}]>"
+                    then:(leaf { (pair "Intercept" 2.1434336) })
+                    else:(leaf { (pair "Intercept" 3.8615396) })
+                )
+                else:(if "rel:from=<{}>:pat=<els=[e{0}]>"
+                    then:(leaf { (pair "Intercept" 2.8938498) })
+                    else:(leaf { (pair "Intercept" 2.4686308) })
+                )
+            )
+            else:(if "rel:from=<{0,0}>:to=<{}>:pat=<els=[!e{-1/2,-1/4}, -{0,0,-1/2,1/4}]>"
+                then:(if "rel:from=<{}>:pat=<els=[-{0}]>"
+                    then:(leaf { (pair "Intercept" 5.141321) })
+                    else:(leaf { (pair "Intercept" 4.201981) })
+                )
+                else:(if "rel:to=<{}>:pat=<els=[#{0,1/4}]>"
+                    then:(leaf { (pair "Intercept" 3.002418) })
+                    else:(leaf { (pair "Intercept" 2.5957038) })
+                )
+            )
+        )
+    )
+)
+}
+)
+    
+
+)
+(useFor { "Ruleset/Murray (Suggested)" }
+    
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
-            (material)
-        })
-        
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[f{0,0,-1/2,0,1/2,0}]>" 0.6628571)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,0,0}, f{0,0,-1/2,0,1/2,0}]>" 1.1700747)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,0,0}]>" 1.1700747)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{0}]>" 0.6628571)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{0,0,3/8,1/8}]>" 0.64125687)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{0}, !-{0,0,3/8,1/8}]>" 0.64125687)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,3/8,0}]>" 0.78147596)
+        (pair "rel:last_to=<{0,0,-1/2}>:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,3/8,0}]>" 1.0926684)
+        (pair "rel:from=<{}>:to=<{1/4,0}>:pat=<els=[#{0,1/8}]>" 0.52581227)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[f{3/8,-3/8}]>" 0.90049905)
+        (pair "rel:last_to=<{0,0,-1/2}>:from=<{0,0}>:to=<{}>:pat=<els=[-{0,0,0}, f{0,0,-1/2,0,1/2,0}]>" 1.4511353)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{-1/4,1/8}, -{0,0,3/8,0}]>" 0.6572178)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/8,1/8}]>" 0.58229935)
+        (pair "rel:last_to=<{0,0,-1/2}>:from=<{0,0}>:to=<{}>:pat=<els=[f{0,0,-1/2,0,1/2,0}]>" 0.7991304)
+    }
     )
-    (useFor { "Play Rules/Force capture in sequence and huff rule" }
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!e{0,0,1/2,-3/8}]>" 1.424767)
+        (pair "rel:from=<{}>:to=<{1/4,0}>:pat=<els=[!e{0}]>" 1.4291044)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!e{1/2}]>" 1.5517104)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[#{1/4,1/4}]>" 1.6488519)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!e{1/2}, !-{0,0,1/4,3/8}]>" 1.5318335)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!e{-1/4}, !e{0,0,1/2,-3/8}]>" 1.4147735)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,1/4,3/8}]>" 1.4234523)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/2}, !e{-1/4}, !e{0,0,1/2,-3/8}]>" 1.9267255)
+        (pair "rel:from=<{}>:to=<{3/8,0}>:pat=<els=[N4{0}]>" 1.6430346)
+    }
+    )
+})
+
+    
+
+)
+(useFor { "Ruleset/Covarrubias (Described)" }
+    
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
-            (material)
-        })
-        
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!f{1/2,1/4}]>" 0.64315444)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,0,-1/4,1/8}]>" 0.8470829)
+        (pair "rel:from=<{}>:to=<{1/4,0}>:pat=<els=[-{0,-1/8}]>" 0.8470829)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!#{0,0,1/2,0,0}]>" 0.74661446)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!f{1/2,1/4}, -{0,0,-1/4,1/8}]>" 0.8731435)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/4,3/8}, !#{0,0,1/2,0,0}]>" 0.78765357)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/4,3/8}]>" 0.76760733)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{-1/4,-1/8}, #{0,0,-1/4,3/8}]>" 1.017415)
+        (pair "rel:last_to=<{0,1/4,3/8}>:from=<{0,1/4}>:to=<{}>:pat=<els=[e{0,3/8}]>" 1.3096017)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N8{}, -{3/8}, f{3/8,-3/8}, !#{0,0,-1/2,0,0}]>" 0.955573)
+    }
     )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N8{0,0,3/8,0}]>" 0.9243946)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!f{0,0,1/4}]>" 0.7145687)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{1/8,1/4}, !-{0,0,-1/4,1/4}, !-{0,0,-1/4,3/8}]>" 0.79584783)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,0,-1/2,3/8}]>" 0.72129923)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,0,-1/2,3/8}, -{0,0,-1/4,3/8}]>" 1.0374229)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[N8{-1/8,0}, -{0,0,-1/2,3/8}]>" 0.976514)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,-1/4,1/4}, !e{0,0,1/4,3/8}, !-{0,0,-1/4,3/8}]>" 0.8534097)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[N4{1/8}]>" 1.0051703)
+        (pair "rel:last_to=<{0,0,3/8,3/8}>:from=<{}>:to=<{0,0}>:pat=<els=[N8{0,0,-1/2,0}, N8{0,0,3/8,0}]>" 1.0044156)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{1/8,1/4}, !e{0,0,1/4,3/8}, !-{0,0,-1/4,3/8}]>" 1.0728521)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[N4{1/8}, -{0,0,-1/2,3/8}]>" 1.0379133)
+        (pair "rel:last_to=<{0,0,3/8,3/8}>:from=<{}>:to=<{0,0}>:pat=<els=[N8{0,0,3/8,0}]>" 1.0044156)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[N8{-1/8,0}, -{0,0,-1/4,3/8}]>" 1.1196717)
+    }
+    )
+})
+
+    
+
+)
 )

@@ -1,7 +1,38 @@
 (define "Gurgaldaj_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (lineCompletionHeuristic)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (lineCompletionHeuristic)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4}, f{0,1/4}]>" 1.6176559)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0}]>" 0.56896645)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{-1/2,0}, f{0,-1/4}, f{0,1/4}]>" 1.7233313)
+        (pair "rel:from=<{}>:pat=<els=[f{0,-1/4}, f{0,1/4}]>" 1.2402806)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, f{1/3,0}]>" 0.3215049)
+        (pair "rel:to=<{}>:pat=<els=[N3{1/6}, f{0,0}]>" 0.8241671)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N3{-1/2,1/3}, !e{0,1/4,-1/3}]>" 1.2277373)
+        (pair "rel:last_to=<{1/2}>:to=<{}>:pat=<els=[N4{1/6,-1/4}, #{0,1/4}]>" 0.49427265)
+        (pair "rel:to=<{0}>:pat=<els=[N4{0,0,0}, #{0,1/4,-1/4}]>" -4.5240574)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,1/4,1/4}]>" 1.2391901)
+        (pair "rel:last_from=<{0,-1/2,1/6}>:from=<{}>:to=<{0}>:pat=<els=[!-{0,-1/2,0,0,0,0}]>" 1.3031985)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[!#{0,0,0}, f{1/3,0}, !f{1/2,1/3}]>" 0.4928172)
+        (pair "rel:to=<{}>:pat=<els=[-{1/3,1/3}, !#{-1/3,0,0}, f{0,0}, !f{1/6,1/3}]>" 0.5521682)
+        (pair "rel:to=<{}>:pat=<els=[-{1/3,1/3}, f{0,0}, !f{1/6,1/3}]>" 0.3377178)
+        (pair "rel:to=<{0}>:pat=<els=[f{-1/2,-1/4}, N3{0,-1/4,1/6}]>" -1.6914433)
+        (pair "rel:to=<{0}>:pat=<els=[N3{0,-1/4,1/6}]>" -1.6914433)
+        (pair "rel:to=<{}>:pat=<els=[!e{0,-1/4,1/3}, !#{0,-1/2,-1/6,0,0}, f{0,-1/2,1/6,0}, !f{0,-1/2,1/3,1/3}]>" 0.3257574)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[#{-1/6}, f{0,-1/2,1/6,0}, !f{0,-1/2,1/3,1/3}]>" 0.72220397)
+        (pair "rel:to=<{1/2}>:pat=<els=[f{0,-1/4}]>" -1.6914433)
+    }
+    )
+})
+
+    
+
 )

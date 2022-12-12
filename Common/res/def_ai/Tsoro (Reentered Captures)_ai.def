@@ -1,9 +1,30 @@
 (define "Tsoro (Reentered Captures)_ai"
-    (useFor { "Board Size/8" }
+(useFor { "Ruleset/Tsoro (Reentered Captures) (Observed)" }
+    
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
-            (mobilitySimple)
-        })
-        
+    (mobilitySimple)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{1/2,1/4}]>" 0.031147463)
+        (pair "rel:to=<{}>:pat=<els=[#{0,-1/4}, -{1/4,0,0}, #{-1/4}, -{0,0,0}]>" 0.077750295)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{0,0}, !-{1/2}]>" 0.18044232)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" 1.5523791E-4)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}, #{1/2,-1/4}, #{1/4}]>" -0.03724021)
+    }
     )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{0,1/4}, !-{0}]>" -0.066613145)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}, !-{1/4,1/4}, -{0}]>" -3.412746E-4)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{-1/4,0}, !-{1/2,-1/4}, -{1/4,-1/4}]>" -0.0035696023)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, #{1/2,1/4}, -{1/4,-1/4}]>" -0.006107129)
+    }
+    )
+})
+
+    
+
+)
 )

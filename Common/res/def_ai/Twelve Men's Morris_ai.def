@@ -1,34 +1,95 @@
 (define "Twelve Men's Morris_ai"
-    (useFor { "Board/With Diagonal" }
+(useFor { "Ruleset/With Diagonal (Suggested)" }
+    
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
-            (lineCompletionHeuristic weight:-0.32944024)
-            (centreProximity pieceWeights:{
-                (pair "Marker1" -1.9657472)
-                (pair "Marker2" -0.8274345)
-            })
-            (cornerProximity pieceWeights:{
-                (pair "Marker1" 0.38177708)
-                (pair "Marker2" -0.014589178)
-            })
-            (material pieceWeights:{
-                (pair "Marker1" 2.1043274)
-                (pair "Marker2" 2.7570078)
-            })
-            (mobilitySimple weight:-0.1393604)
-            (influence weight:3.3066916)
-            (sidesProximity pieceWeights:{
-                (pair "Marker1" -1.1077263)
-                (pair "Marker2" -0.9854738)
-            })
-        })
-        
+    (lineCompletionHeuristic weight:-0.32944024)
+    (centreProximity pieceWeights:{
+        (pair "Marker1" -1.9657472)
+        (pair "Marker2" -0.8274345)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" 0.38177708)
+        (pair "Marker2" -0.014589178)
+    })
+    (material pieceWeights:{
+        (pair "Marker1" 2.1043274)
+        (pair "Marker2" 2.7570078)
+    })
+    (mobilitySimple weight:-0.1393604)
+    (influence weight:3.3066916)
+    (sidesProximity pieceWeights:{
+        (pair "Marker1" -1.1077263)
+        (pair "Marker2" -0.9854738)
+    })
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,-1/4}]>" 1.6660653)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{-1/4}, f{0,1/4}, f{0,-1/4}]>" 1.7576095)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0}, !-{0}]>" 0.6684719)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0}]>" 0.45000443)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,3/8,1/8}]>" 0.67775327)
+        (pair "rel:from=<{}>:pat=<els=[f{0,1/4}, f{0,-1/4}]>" 0.92614365)
+        (pair "rel:from=<{}>:to=<{1/2}>:pat=<els=[!f{0,-1/4}]>" 0.66557926)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/8,-1/3}, !#{0,-1/8,1/8}, f{1/12,-1/8}]>" 0.5275916)
+    }
     )
-    (useFor { "Board/Without Diagonal" }
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0}]>" 1.0916044)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/3}, f{0,1/4}]>" 1.4330945)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{-1/2,1/8}, f{0,1/4}, f{0,-1/4}]>" 1.4330945)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,-1/4}]>" 1.4330945)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 0.267559)
+        (pair "rel:from=<{}>:pat=<els=[]>" 0.19980927)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/3}, f{0,1/4}, f{0,-3/8,-1/3}]>" 1.6266794)
+        (pair "rel:from=<{}>:pat=<els=[#{0,1/8}, f{1/2,1/4}]>" 0.36283562)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[f{0,1/8}, f{1/8,1/3}]>" 0.5112027)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{-1/2,-1/8}, -{0,-1/6,1/3}]>" 0.83762324)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[f{0,1/8}, f{1/2}, f{1/8,1/3}]>" 1.1494437)
+    }
+    )
+})
+
+    
+
+)
+(useFor { "Ruleset/Board Game Geek (Suggested)" }
+    
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
-            (sidesProximity)
-        })
-        
+    (sidesProximity)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 1.991285)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{1/2}, f{0,1/4}, f{0,1/4,0}]>" 2.0247846)
+        (pair "rel:from=<{-1/4}>:to=<{}>:pat=<els=[f{0}, f{1/2}]>" 2.0484548)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, f{0,1/2,1/4}]>" 2.0484548)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{1/4,-1/4}, f{0,1/4}, f{0,1/4,0}]>" 2.1563282)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, f{-1/4}, !-{0,-1/2,-1/4}]>" 2.0484548)
+        (pair "rel:to=<{}>:pat=<els=[f{1/4}, f{0,1/2,1/4}]>" 1.2957145)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{1/2}, f{0,1/4}]>" 0.71437436)
+        (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/2}, !-{-1/4,-1/2,-1/4}]>" 1.2585264)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}]>" 0.7095922)
+    }
     )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,1/2,1/4}, f{0,1/2,1/4,0}]>" 1.626833)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{-1/4,0}, f{0,1/2,1/4}]>" 1.626833)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, f{0,-1/2,-1/4,0}]>" 1.626833)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{-1/4,0}, !-{0,-1/4,0}, f{0,1/2,1/4}]>" 1.6898073)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, f{0,1/2,1/4}]>" 1.5120885)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!e{0,0,0,0}, f{0,-1/2,-1/4}, f{0,-1/2,1/4}]>" 1.5120885)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,-1/2,-1/4}, f{0,-1/2,1/4}]>" 1.5120885)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}]>" 0.61507154)
+    }
+    )
+})
+
+    
+
+)
 )

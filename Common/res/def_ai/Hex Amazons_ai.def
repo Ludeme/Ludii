@@ -1,7 +1,37 @@
 (define "Hex Amazons_ai"
-    (bestAgent "MC-GRAVE")
-    trainedHeuristics:(heuristics {
-        (mobilitySimple)
-    })
     
+        (bestAgent "MC-GRAVE")
+        trainedHeuristics:(heuristics {
+    (mobilitySimple)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,0,0,0}>:pat=<els=[-{0,0,0,0,0,1/6}]>" 0.26041457)
+        (pair "rel:to=<{}>:pat=<els=[I3{1/6,-1/3}, e{0,1/3}]>" 0.2800793)
+        (pair "rel:to=<{0,0}>:pat=<els=[!-{-1/2,0}, #{0,0,1/6,0}, -{0,0,1/3,0,0,0}]>" -1.1990813)
+        (pair "rel:to=<{}>:pat=<els=[I3{0,-1/3}, e{-1/6,1/3}, I3{1/6,0,0}]>" 0.7009631)
+        (pair "rel:to=<{0,0}>:pat=<els=[!-{-1/3,-1/6}, -{0,0,-1/6,-1/3}, #{0,0,0,1/6}, #{0,0,1/6,0,0}]>" -1.1990813)
+        (pair "rel:from=<{0,0,0,0}>:to=<{}>:pat=<els=[!-{0,0,0,0,1/6,1/3}]>" 0.0730734)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{-1/3,-1/6}, -{0,0,-1/6,-1/3}, #{0,0,-1/6,0,0}, #{0,0,1/6,0,0}]>" -0.12929732)
+        (pair "rel:last_to=<{0,1/6}>:to=<{}>:pat=<els=[!-{0,0,0}]>" 0.03500111)
+        (pair "rel:from=<{}>:pat=<els=[!-{1/2,1/3}, !-{0,-1/3}]>" 0.037589565)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{1/2,1/3}>:to=<{}>:pat=<els=[I3{0}, !-{0,0}]>" -0.6315708)
+        (pair "rel:last_to=<{-1/2,-1/3}>:to=<{}>:pat=<els=[I3{0,0}, !-{-1/3,1/3}, I3{0}]>" -0.6856074)
+        (pair "rel:last_to=<{1/2,1/3}>:to=<{}>:pat=<els=[I3{0,0}, I3{0}, !-{0,0}]>" -0.61782956)
+        (pair "rel:from=<{}>:pat=<els=[I3{0,0,0,0}, -{0,1/6,-1/2,0,0}, -{0,1/6,1/6,0,0,0}]>" 0.009328716)
+        (pair "rel:to=<{}>:pat=<els=[I1{0,0}, -{1/3,1/6,0,0,0}]>" 0.097919546)
+        (pair "rel:last_to=<{0,-1/3}>:to=<{}>:pat=<els=[!-{1/6,1/3}, !-{1/2,0}]>" -0.72037673)
+        (pair "rel:to=<{}>:pat=<els=[I3{0,0,0,0}, -{1/3,0,0,0}]>" -0.04181993)
+        (pair "rel:from=<{}>:to=<{0,1/6}>:pat=<els=[I3{0,0,0,0}, -{0,1/6,-1/2,0,0}, -{0,1/6,1/6,0,0,0}]>" 0.013621668)
+        (pair "rel:last_to=<{0,-1/3}>:to=<{}>:pat=<els=[I3{1/2,0}, !-{1/6,1/3}]>" -0.6755273)
+    }
+    )
+})
+
+    
+
 )

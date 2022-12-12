@@ -1,7 +1,39 @@
 (define "Niranchy_ai"
-    (bestAgent "MC-GRAVE")
-    trainedHeuristics:(heuristics {
-        (centreProximity weight:-1.0)
-    })
     
+        (bestAgent "MC-GRAVE")
+        trainedHeuristics:(heuristics {
+    (centreProximity weight:-1.0)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[e{0,1/8}, e{0}, !-{1/2}]>" 1.633268)
+        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[e{0,1/8}, e{0}, !-{-1/2}]>" 2.6789057)
+        (pair "rel:to=<{}>:pat=<els=[e{0,1/8}, e{0}]>" 1.2315992)
+        (pair "rel:to=<{}>:pat=<els=[e{0}, !-{1/2}]>" 1.1005459)
+        (pair "rel:to=<{}>:pat=<els=[e{0}, N4{0,1/3}, -{-3/8}]>" 1.1952839)
+        (pair "rel:to=<{}>:pat=<els=[-{-4/19}, e{1/2}, !-{0}]>" 1.0645226)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[e{0}, e{1/2}, N8{-3/8}]>" 2.8910801)
+        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[e{0}, N4{0,1/3}]>" 2.6008244)
+        (pair "rel:last_to=<{1/2}>:to=<{}>:pat=<els=[e{-1/8}, !-{0}, !-{1/8}]>" 2.2353635)
+        (pair "rel:to=<{}>:pat=<els=[e{-1/8}, !-{3/8}, !-{0}, !-{1/8}]>" 1.1494299)
+        (pair "rel:to=<{}>:pat=<els=[!#{-1/4,0}, e{1/2}, !-{0}]>" 1.1871858)
+        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[e{1/2}, !-{0}, !-{3/8}, -{-1/4,1/3}]>" 3.152803)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0}]>" 2.6282718)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0}]>" 1.2060033)
+        (pair "rel:to=<{}>:pat=<els=[f{0}]>" 0.96133786)
+        (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/2}]>" 2.5531483)
+        (pair "rel:to=<{}>:pat=<els=[-{0}, f{1/3}, !-{-1/6}, f{-1/3}, !-{1/6}]>" 2.5857956)
+        (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/3}, !-{-1/6}]>" 1.0102804)
+        (pair "rel:to=<{}>:pat=<els=[-{1/3}, f{0}, !-{1/2}]>" 0.99124753)
+        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[N8{0,1/3}, f{0,-1/6}]>" -0.46455678)
+    }
+    )
+})
+
+    
+
 )

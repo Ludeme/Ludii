@@ -1,11 +1,25 @@
 (define "Bison_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (material)
-        (cornerProximity pieceWeights:{
-            (pair "Bull1" 0.047846407)
-            (pair "Dog2" -0.02797991)
-        })
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (material)
+    (cornerProximity pieceWeights:{
+        (pair "Bull1" 0.047846407)
+        (pair "Dog2" -0.02797991)
+    })
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,0,0}]>" 0.46029)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0}>:pat=<els=[-{1/4,0}, -{0,1/4,0}]>" -0.56795496)
+    }
+    )
+})
+
+    
+
 )

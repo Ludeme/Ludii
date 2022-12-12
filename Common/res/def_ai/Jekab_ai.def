@@ -1,46 +1,81 @@
 (define "Jekab_ai"
-    (bestAgent "ProgressiveHistory")
-    trainedHeuristics:(heuristics {
-        (sidesProximity)
-        (centreProximity pieceWeights:{
-            (pair "Counter1" 0.87763697)
-            (pair "Counter2" 0.4641873)
-            (pair "DoubleCounter1" -0.59867334)
-            (pair "DoubleCounter2" 0.41695994)
-        })
-        (cornerProximity pieceWeights:{
-            (pair "Counter1" -0.08068862)
-            (pair "Counter2" 0.08900378)
-            (pair "DoubleCounter1" 0.9758964)
-            (pair "DoubleCounter2" 0.23214965)
-        })
-        (lineCompletionHeuristic weight:0.5373537)
-        (material pieceWeights:{
-            (pair "Counter1" 0.21937707)
-            (pair "Counter2" 0.11260557)
-            (pair "DoubleCounter1" 0.8000295)
-            (pair "DoubleCounter2" 1.7822866)
-        })
-        (mobilitySimple weight:-0.016337547)
-        (influence weight:2.2531586)
-        (ownRegionsCount weight:0.5073335)
-        (playerRegionsProximity player:1 pieceWeights:{
-            (pair "Counter1" -0.059524573)
-            (pair "DoubleCounter1" -2.04487)
-            (pair "DoubleCounter2" 0.660682)
-        })
-        (regionProximity region:0 pieceWeights:{
-            (pair "Counter1" 0.17426324)
-            (pair "Counter2" 0.7650224)
-            (pair "DoubleCounter1" 1.6089648)
-            (pair "DoubleCounter2" 0.36356273)
-        })
-        (regionProximity region:1 pieceWeights:{
-            (pair "Counter1" 0.5312142)
-            (pair "Counter2" -0.08452174)
-            (pair "DoubleCounter1" 0.18825005)
-            (pair "DoubleCounter2" 0.30453774)
-        })
-    })
     
+        (bestAgent "ProgressiveHistory")
+        trainedHeuristics:(heuristics {
+    (sidesProximity)
+    (centreProximity pieceWeights:{
+        (pair "Counter1" 0.87763697)
+        (pair "Counter2" 0.4641873)
+        (pair "DoubleCounter1" -0.59867334)
+        (pair "DoubleCounter2" 0.41695994)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Counter1" -0.08068862)
+        (pair "Counter2" 0.08900378)
+        (pair "DoubleCounter1" 0.9758964)
+        (pair "DoubleCounter2" 0.23214965)
+    })
+    (lineCompletionHeuristic weight:0.5373537)
+    (material pieceWeights:{
+        (pair "Counter1" 0.21937707)
+        (pair "Counter2" 0.11260557)
+        (pair "DoubleCounter1" 0.8000295)
+        (pair "DoubleCounter2" 1.7822866)
+    })
+    (mobilitySimple weight:-0.016337547)
+    (influence weight:2.2531586)
+    (ownRegionsCount weight:0.5073335)
+    (playerRegionsProximity player:1 pieceWeights:{
+        (pair "Counter1" -0.059524573)
+        (pair "DoubleCounter1" -2.04487)
+        (pair "DoubleCounter2" 0.660682)
+    })
+    (regionProximity region:0 pieceWeights:{
+        (pair "Counter1" 0.17426324)
+        (pair "Counter2" 0.7650224)
+        (pair "DoubleCounter1" 1.6089648)
+        (pair "DoubleCounter2" 0.36356273)
+    })
+    (regionProximity region:1 pieceWeights:{
+        (pair "Counter1" 0.5312142)
+        (pair "Counter2" -0.08452174)
+        (pair "DoubleCounter1" 0.18825005)
+        (pair "DoubleCounter2" 0.30453774)
+    })
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{-1/4,-1/4}>:from=<{0,1/4}>:to=<{}>:pat=<els=[!-{0,1/4,0,-1/4}, #{0,1/4,1/4,1/4,1/4,0,0}]>" -1.5181688)
+        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[!-{1/4,1/4,0,-1/4}]>" -0.46415123)
+        (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[e{1/4,-1/4}, -{0,0,1/4,0,0,-1/4}]>" 1.66085)
+        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[-{1/4,0}, I2{0,1/4,-1/2,1/4}, !-{0,1/4,1/4,0}]>" -0.48062432)
+        (pair "rel:last_from=<{-1/2,0}>:to=<{}>:pat=<els=[-{0,1/4,0,1/4}, -{0,1/4,-1/4,1/4}]>" -0.15141806)
+        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[-{1/4,0}, !-{0,1/4,1/4,0}]>" -0.10416655)
+        (pair "rel:last_to=<{0,0,1/4,0,1/4,1/4}>:to=<{0,0,1/4,0}>:pat=<els=[I2{0,0,1/4,0,-1/2,-1/4}, !-{0,0,1/4,0,0,0,0}]>" 2.4484944)
+        (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" -9.6376013E-4)
+        (pair "rel:last_to=<{0,1/4,-1/2,1/4}>:from=<{}>:to=<{0,1/4}>:pat=<els=[-{1/4,0}, I2{0,1/4,-1/2,1/4}]>" -0.66540366)
+        (pair "rel:to=<{}>:pat=<els=[e{1/4,-1/4}, -{0,0,1/4,0,1/4,-1/4}]>" -0.4162366)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[R0{0}, #{-1/4,0,0}, I1{0,1/4,-1/2,0}]>" 0.5617482)
+        (pair "rel:to=<{}>:pat=<els=[#{0}]>" 0.62152773)
+        (pair "rel:to=<{}>:pat=<els=[R1{0,0}, I1{1/4,1/4}, -{0,1/4}]>" -0.5930488)
+        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[#{0,0}, I1{0,1/4,1/4,-1/4}]>" 0.92771584)
+        (pair "rel:last_to=<{0,1/4,0,-1/4}>:from=<{}>:pat=<els=[!-{0,1/4,-1/2,0}]>" -0.51486623)
+        (pair "rel:from=<{0,-1/4}>:to=<{}>:pat=<els=[R1{0,0,0}, I1{1/2,-1/4}]>" -0.48578516)
+        (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[R1{0,0}, I2{0,-1/4}, I1{1/4,1/4}, -{0,1/4}]>" -1.1080106)
+        (pair "rel:to=<{}>:pat=<els=[I2{0,-1/4}, I1{1/4,1/4}, -{0,1/4}]>" -0.4015823)
+        (pair "rel:to=<{0,1/4}>:pat=<els=[R1{-1/4,0,0}, -{0,1/4,-1/2,0}, I2{0,1/4,-1/2,-1/4,1/4,0}]>" -2.0871918)
+        (pair "rel:last_from=<{0,1/4,1/4,-1/4}>:to=<{0,1/4}>:pat=<els=[R0{1/4,0,0,0}, -{0,1/4,0,-1/4}]>" -2.0871918)
+        (pair "rel:from=<{}>:pat=<els=[R0{0}, #{-1/4,0,0}, I1{0,1/4,-1/2,0}]>" 0.66745925)
+        (pair "rel:to=<{}>:pat=<els=[R1{0,0,0}, R0{1/2,0,0}]>" 0.0055440124)
+        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[#{1/4,0}]>" 0.348462)
+    }
+    )
+})
+
+    
+
 )

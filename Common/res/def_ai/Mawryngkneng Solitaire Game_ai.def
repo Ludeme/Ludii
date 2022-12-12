@@ -1,3 +1,13 @@
 (define "Mawryngkneng Solitaire Game_ai"
-    (bestAgent "UCT")
+    
+        (bestAgent "UCT")
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_from=<{-1/2}>:from=<{}>:pat=<els=[I1{1/2,0,0}, I2{0,0}, I2{0,0,0}]>" -0.83885413)
+    }
+    )
+})
+
+    
+
 )

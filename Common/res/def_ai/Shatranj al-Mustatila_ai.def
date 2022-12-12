@@ -1,7 +1,32 @@
 (define "Shatranj al-Mustatila_ai"
-    (bestAgent "MAST")
-    trainedHeuristics:(heuristics {
-        (regionProximity region:1)
-    })
     
+        (bestAgent "MAST")
+        trainedHeuristics:(heuristics {
+    (regionProximity region:1)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[f{0,0,1/4,0,-1/4,0}]>" -0.060938593)
+        (pair "rel:to=<{}>:pat=<els=[I10{0,0,0,0}]>" -0.370614)
+        (pair "rel:to=<{}>:pat=<els=[-{1/2,0,0,0}, !-{0,-1/4}, !-{0,1/4}]>" -0.06110589)
+        (pair "rel:to=<{}>:pat=<els=[f{0,1/4,0,0}]>" -0.05750328)
+        (pair "rel:from=<{}>:to=<{0,1/4,0}>:pat=<els=[!-{-1/2,-1/4}, f{0,1/4,0,-1/4}, -{0,1/4,0,1/4,1/4}]>" -0.13098687)
+        (pair "rel:from=<{}>:to=<{0,1/4,0}>:pat=<els=[-{0,1/4,0,1/4,1/4}]>" -0.0992766)
+        (pair "rel:to=<{}>:pat=<els=[-{0}]>" 0.021760674)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, I7{1/4,1/4,1/4,0}]>" 0.08385162)
+        (pair "rel:from=<{0,0,0,0}>:to=<{}>:pat=<els=[!I4{}, !-{0,0,0,0,1/4,-1/4}]>" -0.10250994)
+        (pair "rel:from=<{0,1/4}>:pat=<els=[-{-1/4,1/4}, I7{0,1/4,1/4,0}]>" -3.0055578)
+        (pair "rel:to=<{}>:pat=<els=[I7{0,1/4,1/4,0}]>" -0.025852466)
+        (pair "rel:from=<{}>:pat=<els=[!R0{0,1/4}, !I12{0,0,0,0,-1/2,-1/4}]>" 0.0)
+        (pair "rel:to=<{0,0,0}>:pat=<els=[!R0{1/4,0,0,0}]>" -3.0055578)
+    }
+    )
+})
+
+    
+
 )

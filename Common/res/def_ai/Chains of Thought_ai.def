@@ -1,0 +1,39 @@
+(define "Chains of Thought_ai"
+    
+        (heuristics {
+    (score weight:2.0)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[e{1/3,1/3}, e{0,-1/3}]>" 2.4198267)
+        (pair "rel:to=<{}>:pat=<els=[e{1/3,1/3}, e{0,1/3}]>" 2.3505828)
+        (pair "rel:last_to=<{0,1/3}>:to=<{}>:pat=<els=[e{1/3,1/3}]>" 2.5602622)
+        (pair "rel:last_to=<{1/3}>:to=<{}>:pat=<els=[e{0}]>" 2.4509883)
+        (pair "rel:last_to=<{0,1/3}>:to=<{}>:pat=<els=[e{1/3,1/3}, e{0,1/3}]>" 2.5602622)
+        (pair "rel:to=<{}>:pat=<els=[e{0,-1/3}, !-{1/3}, !-{0}, !-{-1/3,1/3}]>" 0.9990018)
+        (pair "rel:to=<{}>:pat=<els=[e{0,1/3}, !-{0}]>" 1.1926062)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{1/3}, #{0,-1/2,0}]>" 0.8248796)
+        (pair "rel:last_to=<{0,1/3}>:from=<{}>:to=<{0}>:pat=<els=[!-{1/3}, #{0,-1/2,0}, -{0,0,0,0}]>" 1.6767159)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{1/6,0,0}]>" 0.68340904)
+        (pair "rel:to=<{}>:pat=<els=[e{0}, #{1/2,0}]>" 0.20322004)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,1/2,0}, -{0,0,0,0}]>" 0.9827417)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[e{0,-1/3}, e{1/3,-1/3}]>" 2.1679785)
+        (pair "rel:to=<{}>:pat=<els=[!-{0}, e{0,1/3}]>" 1.1838923)
+        (pair "rel:last_to=<{0,1/3}>:to=<{}>:pat=<els=[e{0,-1/3}, e{1/3,-1/3}]>" 2.2998664)
+        (pair "rel:to=<{}>:pat=<els=[f{0}]>" 0.8762725)
+        (pair "rel:to=<{}>:pat=<els=[e{0}, e{1/3,1/3}]>" 1.7563661)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/3}]>" 1.7399914)
+        (pair "rel:to=<{}>:pat=<els=[e{1/6,1/3}, -{0,0}, e{-1/3,1/3}]>" 1.6777207)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/6,0}]>" 0.8340023)
+        (pair "rel:to=<{}>:pat=<els=[!#{0,0,0,0}]>" -0.0073478497)
+    }
+    )
+})
+
+    
+
+)

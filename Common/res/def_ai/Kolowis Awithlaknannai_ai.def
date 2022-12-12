@@ -1,7 +1,36 @@
 (define "Kolowis Awithlaknannai_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (material)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/3}]>" -0.1611394)
+        (pair "rel:to=<{0}>:pat=<els=[e{0,1/2,0,0,0}]>" 0.48251387)
+        (pair "rel:to=<{0}>:pat=<els=[e{1/6,0}]>" 0.48251387)
+        (pair "rel:from=<{1/3}>:to=<{}>:pat=<els=[-{0,-3/8}]>" 0.02300508)
+        (pair "rel:from=<{1/3}>:pat=<els=[-{0,-3/8}]>" 0.48251387)
+        (pair "rel:from=<{1/6}>:to=<{}>:pat=<els=[N8{0,-1/4}]>" -0.06630237)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -0.0033900389)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N8{-1/6,-1/4}, -{0,1/4}, -{0,3/8,0}]>" -0.23495142)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" -0.028228775)
+        (pair "rel:to=<{}>:pat=<els=[N8{0,-1/4}, -{1/6,1/4}]>" -0.08580949)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[e{0,0,1/3,1/8}]>" -0.0534305)
+        (pair "rel:from=<{}>:pat=<els=[!e{0}]>" -4.028176E-5)
+        (pair "rel:from=<{}>:pat=<els=[f{0,1/2,0,0,0}]>" 0.016141186)
+        (pair "rel:from=<{}>:pat=<els=[!f{0,0}]>" 1.6081976E-4)
+        (pair "rel:from=<{0,0}>:pat=<els=[!f{1/3}]>" 0.09063948)
+        (pair "rel:from=<{0,0}>:pat=<els=[!f{1/3}, e{0,0,1/3,1/8}]>" 0.09063948)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -0.00741276)
+    }
+    )
+})
+
+    
+
 )

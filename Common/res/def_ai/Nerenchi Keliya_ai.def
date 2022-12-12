@@ -1,7 +1,36 @@
 (define "Nerenchi Keliya_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (mobilitySimple)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (mobilitySimple)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4,0}, f{0,-1/2,1/2,-1/4}]>" 1.731851)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{-1/4,0}, f{0,-1/2,1/4}]>" 1.731851)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}, f{0,-1/2,-1/2,1/4}]>" 1.731851)
+        (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[f{1/2}, f{0}]>" 1.4033945)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{-1/4}, f{0,-1/4,0}, f{0,-1/2,1/2,-1/4}]>" 1.6888967)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, f{-1/4}, -{0,1/4,1/4}]>" 1.6260009)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{-1/2}, !-{0,0}, f{0,1/4,0}, f{0,-1/2,-1/2,1/4}]>" 1.6178797)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}]>" 0.29126862)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,1/2,1/4}, f{-1/4,0}]>" 1.3947709)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}, f{0,1/2,-1/2,1/4}]>" 1.3947709)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{-1/2,0,0}, f{0,-1/4}, f{0,1/4}]>" 1.8261974)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{1/2,-1/4}, f{0,1/4,0}, f{0,1/2,-1/2,1/4}]>" 1.3804747)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4}, e{0,-1/2,1/2,0}, f{0,1/4}]>" 2.7554977)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{-1/2,0,0}, f{0,-1/4}, e{0,-1/2,1/2,0}, e{0,1/2,-1/2,0}]>" 0.93620634)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{-1/2,0,0}, f{0,-1/4}, e{0,1/2,-1/2,0}]>" 0.93620634)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/2}, f{0,1/2,1/4}, f{-1/4,0}]>" 1.4308914)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{-1/2,0,0}, f{0,-1/4}, e{0,-1/2,1/2,0}]>" 0.93620634)
+    }
+    )
+})
+
+    
+
 )

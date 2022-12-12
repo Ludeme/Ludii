@@ -1,0 +1,31 @@
+(define "Kiust Oyun_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[!R1{0,1/4}, R1{-1/4,1/4}]>" -0.16571157)
+        (pair "rel:from=<{0,0}>:pat=<els=[f{0,0,0,0,0}]>" -0.2696875)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/2,0,0}, -{0,0,-1/2,0,0}]>" -1.4884222)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/2,0,0}]>" -1.3192855)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[f{0,0,0}]>" -0.6455552)
+        (pair "rel:from=<{}>:pat=<els=[!-{0}, -{0,1/4,0,0,0,0}]>" -0.048870422)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[!-{0,1/4}]>" -0.4715563)
+        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" -0.38900006)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{0,1/4}>:pat=<els=[!-{0,1/4,-1/4}]>" -0.56256366)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4,0,0,0}, R1{0}]>" 0.09632778)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{0,0,0,0,0,0,-1/2,0}]>" -0.032342557)
+        (pair "rel:from=<{0,0,0}>:to=<{}>:pat=<els=[-{0,0,0,-1/4,1/4}]>" 0.41038027)
+        (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}, !-{1/2,-1/4}, -{0,-1/4}, !-{1/4,-1/4}]>" 0.0993489)
+        (pair "rel:from=<{}>:pat=<els=[f{0,0,0,-1/2,-1/4}, !-{0,0,0,-1/2,1/4}]>" -0.05124794)
+        (pair "rel:from=<{0,0,0}>:to=<{}>:pat=<els=[]>" 0.023830445)
+        (pair "rel:from=<{1/4,0,0}>:pat=<els=[f{0,-1/4}]>" -0.56256366)
+        (pair "rel:to=<{}>:pat=<els=[-{1/4,1/4}, !-{0,1/4}, !-{-1/4}, -{1/2,0,0}]>" -0.012615449)
+    }
+    )
+})
+
+    
+
+)

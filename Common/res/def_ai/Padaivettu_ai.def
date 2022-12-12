@@ -1,7 +1,39 @@
 (define "Padaivettu_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (material)
-    })
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (material)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!f{-1/4,1/4}, -{0,0,-1/2,0,0}]>" 0.29071486)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!e{0,0,-1/12,1/4}, -{0,0,-4/19,0,0}, N4{0,0,-1/2,0,0}]>" 0.42057192)
+        (pair "rel:from=<{}>:to=<{1/4,0}>:pat=<els=[!f{0,1/4}]>" 0.13135906)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/2,0,0}]>" 0.28181478)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,1/4}, !e{0,0,-1/12,1/4}, -{0,0,-4/19,0,0}, N4{0,0,-1/2,0,0}]>" 0.4071813)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,1/4}, !e{0,0,-1/12,1/4}, N4{0,0,-1/2,0,0}]>" 0.3071486)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,1/4}, -{0,0,-4/19,0,0}, N4{0,0,-1/2,0,0}]>" 0.3838026)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,1/4}, !e{0,0,-1/12,1/4}, -{0,0,-4/19,0,0}]>" 0.30343333)
+        (pair "rel:last_to=<{0,0,-1/3,-3/8}>:from=<{}>:to=<{0,0}>:pat=<els=[!e{0,0,-1/12,1/4}, -{0,0,-4/19,0,0}]>" 0.27545136)
+        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N8{1/8,3/8}, e{0,0,3/8}]>" 0.23495561)
+        (pair "rel:from=<{}>:pat=<els=[!-{0,-1/6}, !-{1/2,1/8,-1/8}]>" 0.0069332016)
+        (pair "rel:last_to=<{0,0,-1/3,-3/8}>:from=<{}>:to=<{0,0}>:pat=<els=[-{0,1/4}, N4{0,0,-1/2,0,0}]>" 0.21167041)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[N2{}]>" 1.289627)
+        (pair "rel:to=<{0}>:pat=<els=[f{-1/6,1/6}, -{0,1/4,-1/3}]>" -3.2266665)
+        (pair "rel:last_to=<{0,0,1/4,3/8}>:from=<{}>:pat=<els=[N4{0,0,-1/2,1/3}]>" 0.020664914)
+        (pair "rel:from=<{0,0}>:pat=<els=[!-{-3/8,1/4}, !-{0,0,-1/2,-1/8}]>" -3.2266665)
+        (pair "rel:last_to=<{0,0,1/4,3/8}>:to=<{0,0}>:pat=<els=[N4{0,0,-1/2,1/3}]>" -3.2266665)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,1/4,-1/6}]>" -0.11197797)
+        (pair "rel:last_to=<{0,-3/8}>:from=<{0}>:pat=<els=[#{0,1/2,0,0,0}]>" -3.2266665)
+        (pair "rel:from=<{1/2}>:to=<{}>:pat=<els=[N2{0,0}]>" 0.5741127)
+    }
+    )
+})
+
+    
+
 )

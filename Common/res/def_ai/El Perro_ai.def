@@ -1,0 +1,21 @@
+(define "El Perro_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[-{0,0,1/2,0,0}]>" 0.0787453)
+        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{1/2}]>" 0.4152336)
+        (pair "rel:to=<{}>:pat=<els=[N8{0,0}, N4{3/8,1/8}, -{1/2,-3/8}]>" 0.30261892)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[N8{0,-1/4}, !-{1/4,-1/8}]>" 0.010516571)
+        (pair "rel:last_to=<{0,3/8,1/8}>:to=<{}>:pat=<els=[f{0,3/8}]>" 0.042194314)
+        (pair "rel:to=<{}>:pat=<els=[N4{0,1/8}]>" 0.010508215)
+        (pair "rel:from=<{}>:pat=<els=[e{0,-3/8,1/4}]>" 0.009735752)
+    }
+    )
+})
+
+    
+
+)

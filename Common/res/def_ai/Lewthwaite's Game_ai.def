@@ -1,0 +1,28 @@
+(define "Lewthwaite's Game_ai"
+    
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0}>:pat=<els=[!e{1/2,0}, f{0,-1/4,-1/4}, f{0,1/4,1/4}]>" 0.06313573)
+        (pair "rel:from=<{0}>:pat=<els=[e{1/4,-1/4}, e{-1/2,-1/4}, e{0,1/4,0,0}]>" 0.06313573)
+        (pair "rel:from=<{}>:to=<{1/4}>:pat=<els=[e{1/4,0,0}, e{0,1/4}, #{0,-1/4}]>" 0.18926346)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0,0}, !f{-1/2,1/4}, #{-1/4,-1/4}]>" -0.019679086)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_to=<{-1/2}>:from=<{0}>:to=<{}>:pat=<els=[e{1/2,-1/4}, f{0,-1/4,-1/4}]>" 3.4742908)
+        (pair "rel:to=<{}>:pat=<els=[e{0,0,0}]>" -1.3485701)
+        (pair "rel:to=<{}>:pat=<els=[e{0,-1/4}, f{1/2,-1/4,-1/4}]>" 0.027341196)
+        (pair "rel:from=<{0}>:pat=<els=[e{0,1/4}]>" 0.7972798)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4,0}, f{0,0,-1/4}, !e{0,-1/2,0,-1/4}]>" 1.745574)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4,0}, !e{0,-1/2,0,-1/4}, f{0,-1/2,1/2,1/2,1/4}]>" 1.5634269)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!e{0,-1/2,0,-1/4}, f{0,-1/2,1/2,1/2,1/4}]>" 0.07301528)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,1/4}, e{0,0,0}]>" 0.9791585)
+        (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0,-1/4}, !e{0,-1/2,0,-1/4}, f{0,-1/2,1/2,1/2,1/4}]>" 0.048983943)
+    }
+    )
+})
+
+    
+
+)

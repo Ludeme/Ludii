@@ -1,7 +1,71 @@
 (define "Haretavl_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (influence)
-    })
+(useFor { "Ruleset/Haretavl Eleven Points (Described)" }
     
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (influence)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{0,1/2,1/8}>:to=<{}>:pat=<els=[#{1/2}]>" 0.61806744)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{3/8}, #{1/2,3/8}]>" 0.6410668)
+        (pair "rel:last_to=<{0,1/2,1/8}>:from=<{0}>:to=<{}>:pat=<els=[#{1/2}]>" 0.81161845)
+        (pair "rel:last_to=<{0,1/4,-3/8}>:from=<{}>:to=<{0}>:pat=<els=[-{1/8,0,0,0}]>" 0.657646)
+        (pair "rel:to=<{}>:pat=<els=[e{3/8}, #{1/2,3/8}, !e{0,-1/4}]>" 0.40886155)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{3/8}, !e{0,-1/4}]>" 0.2133241)
+        (pair "rel:last_to=<{0,1/4,-3/8}>:from=<{}>:to=<{0}>:pat=<els=[-{1/8,0,0,0}, !-{0,-1/2,-1/4,1/8}]>" 0.657646)
+        (pair "rel:from=<{}>:pat=<els=[f{0,1/8}]>" -1.8924086E-4)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:last_from=<{-3/8,3/8}>:from=<{0}>:to=<{}>:pat=<els=[e{-1/4,1/4}, #{0,0,1/4}, !-{1/2,3/8}]>" 0.057290934)
+        (pair "rel:from=<{0}>:pat=<els=[N4{-1/4,1/8}, !-{0,1/4,-3/8}]>" -1.1376442)
+        (pair "rel:last_to=<{0,-1/2,1/2,-1/4}>:from=<{0}>:pat=<els=[-{-1/8,1/4}, !f{0,-1/2,1/2,1/4,0,0,0}]>" -1.1376442)
+        (pair "rel:to=<{}>:pat=<els=[-{0,-1/2,1/8}]>" -0.024337655)
+    }
+    )
+})
+
+    
+
+)
+(useFor { "Ruleset/Hare Wins (Suggested)" }
+    
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+    (influence)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{1/8,3/8}>:from=<{0}>:to=<{}>:pat=<els=[f{1/8}, !f{0,3/8,0,0,0}]>" 1.2880648)
+        (pair "rel:last_to=<{1/8,3/8}>:from=<{0}>:to=<{}>:pat=<els=[!f{0,3/8,0,0,0}]>" 0.9018154)
+        (pair "rel:last_to=<{1/8,3/8}>:from=<{0}>:to=<{}>:pat=<els=[N8{0,-1/4}, f{1/8}]>" 0.9033273)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/8}, e{0,1/4,1/4}]>" 0.90267444)
+        (pair "rel:last_to=<{0,-1/4,3/8}>:from=<{}>:to=<{0}>:pat=<els=[!#{-3/8,-1/4}]>" 2.0144193)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,1/4,1/4}]>" 0.4449268)
+        (pair "rel:to=<{}>:pat=<els=[e{0,1/4,1/4}, -{0,0,1/4}]>" 0.6748505)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,1/4,1/4}, -{0,0,1/4}]>" 0.9664869)
+    }
+    )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[e{0,3/8}, N8{0,1/2,3/8}]>" -0.12987278)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" -0.051232554)
+        (pair "rel:to=<{}>:pat=<els=[-{0,1/2,1/4}]>" 0.015341073)
+        (pair "rel:last_to=<{0,0,3/8}>:to=<{0}>:pat=<els=[#{-1/2}, -{0,-1/4,1/8}, !e{0,-1/2,1/4,0}, -{0,-1/2,-1/2,0,-3/8}]>" -0.8908807)
+        (pair "rel:from=<{}>:pat=<els=[!e{1/2,0,0}, -{0,1/4}]>" 0.0078007635)
+        (pair "rel:to=<{0}>:pat=<els=[!e{1/2,0,0}, -{0,1/4}]>" -0.8908807)
+        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,3/8}]>" 0.26256657)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{-1/4,1/8}, #{0,0,-1/8}]>" 0.10079987)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N8{0,1/2,3/8}]>" -0.11923914)
+        (pair "rel:last_from=<{0,0,-3/8}>:from=<{}>:pat=<els=[!-{-1/4,-1/8}, -{0,-1/2,3/8}, -{0,0,-3/8}]>" 0.036314446)
+        (pair "rel:last_from=<{}>:from=<{0}>:pat=<els=[!#{0,1/2,0,0}]>" -0.8908807)
+    }
+    )
+})
+
+    
+
+)
 )

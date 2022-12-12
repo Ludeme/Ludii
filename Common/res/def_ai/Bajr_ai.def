@@ -1,23 +1,80 @@
 (define "Bajr_ai"
-    (useFor { "Board/6x6" "Players/2" }
+(useFor { "Ruleset/Bajr Small (Observed)" }
+    
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
-            (ownRegionsCount weight:-1.0)
-        })
-        
+    (ownRegionsCount weight:-1.0)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:last_to=<{0,1/4,-1/4,-1/4}>:from=<{}>:pat=<els=[-{0,0,0,0}, -{0,1/4,0,0,0}]>" 0.29609013)
+        (pair "rel:last_to=<{0,1/4,0,1/4}>:to=<{0,1/4}>:pat=<els=[R1{0}]>" -2.511111)
+        (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[]>" 0.04132755)
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R1{1/4,1/4}, !-{0,0}]>" 0.14875297)
+        (pair "rel:last_to=<{0,-1/4,-1/4}>:from=<{}>:pat=<els=[!-{1/2}, f{0,-1/2}]>" -0.06256511)
+        (pair "rel:last_to=<{0,-1/4,0,-1/4}>:from=<{}>:to=<{0,-1/4}>:pat=<els=[R1{0}, -{0,-1/4,1/4,0,0}]>" 0.42575607)
+        (pair "rel:last_to=<{0,-1/4,0,-1/4}>:from=<{}>:pat=<els=[-{0,-1/4,1/4,0,0}]>" 0.23680288)
+        (pair "rel:to=<{}>:pat=<els=[f{0,0,0,0}]>" 0.21752262)
+    }
     )
-    (useFor { "Board/8x8" "Players/2" }
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[f{0}, !-{0,1/4,0,1/4}]>" 0.41407523)
+        (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+        (pair "rel:from=<{}>:pat=<els=[!-{0}]>" 0.07188625)
+        (pair "rel:to=<{}>:pat=<els=[!R0{0,0}, R0{1/2,0}]>" -0.118909836)
+        (pair "rel:from=<{}>:pat=<els=[f{0}, !-{0,1/4,0,1/4}]>" 0.44071308)
+        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[]>" 0.048719317)
+        (pair "rel:to=<{0}>:pat=<els=[#{1/4}, f{0,-1/4,0,0,0}]>" -1.8707696)
+        (pair "rel:to=<{0}>:pat=<els=[#{1/4}]>" -1.8707696)
+        (pair "rel:from=<{}>:pat=<els=[!R0{0,0,0,0}]>" -0.054173466)
+    }
+    )
+})
+
+    
+
+)
+(useFor { "Ruleset/Bajr Medium (Observed)" }
+    
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
-            (ownRegionsCount weight:-1.0)
-        })
-        
+    (ownRegionsCount weight:-1.0)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[#{1/4,0}, !-{0,0,1/4}]>" -0.123505555)
+    }
     )
-    (useFor { "Board/10x10" "Players/2" }
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:to=<{}>:pat=<els=[!R1{0,1/4}]>" -0.043984465)
+    }
+    )
+})
+
+    
+
+)
+(useFor { "Ruleset/Bajr Large (Observed)" }
+    
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
-            (regionProximity region:1)
-        })
-        
+    (regionProximity region:1)
+})
+
+        trainedFeatures:(features {
+    (featureSet P1 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[f{0,0,0}]>" 0.049679123)
+    }
     )
+    (featureSet P2 selectionFeatures:{
+        (pair "rel:from=<{}>:pat=<els=[!R0{0}]>" 0.0025346642)
+    }
+    )
+})
+
+    
+
+)
 )
