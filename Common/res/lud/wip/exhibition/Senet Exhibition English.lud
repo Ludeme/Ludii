@@ -283,14 +283,14 @@
     (rules 
         #1 // Starting rules
         (play 
-                (do 
-                    (roll #5)
-                    next:(if (can Move ("KendallMoves" #2 #3 #4 #6))
-                        ("KendallMoves" #2 #3 #4 #6)
-                        (move Pass (then (if (is In ("Throw") (sites {1 4 5})) (moveAgain))))
-                    )
+            (do 
+                (roll #5)
+                next:(if (can Move ("KendallMoves" #2 #3 #4 #6))
+                    ("KendallMoves" #2 #3 #4 #6)
+                    (move Pass (then (if (is In ("Throw") (sites {1 4 5})) (moveAgain))))
                 )
             )
+        )
         
         (end ("EscapeWin"))
     )
