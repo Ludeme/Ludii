@@ -195,15 +195,15 @@ public class EvaluationDialog extends JDialog
 		lblSkillTrace.setBounds(26, 431, 175, 15);
 		LeftPanel.add(lblSkillTrace);
 		
-		final JLabel lblNumMatches = new JLabel("Levels");
+		final JLabel lblNumMatches = new JLabel("Maximum Levels");
 		lblNumMatches.setBounds(26, 457, 175, 15);
 		LeftPanel.add(lblNumMatches);
 		
-		final JLabel lblTrailsPerMatch = new JLabel("Trials");
+		final JLabel lblTrailsPerMatch = new JLabel("Trials Per Level");
 		lblTrailsPerMatch.setBounds(26, 483, 175, 15);
 		LeftPanel.add(lblTrailsPerMatch);
 		
-		final JLabel lblHardTimeLimit = new JLabel("Time Limit");
+		final JLabel lblHardTimeLimit = new JLabel("Maximium Time (s)");
 		lblHardTimeLimit.setBounds(26, 509, 175, 15);
 		LeftPanel.add(lblHardTimeLimit);
 		
@@ -227,12 +227,12 @@ public class EvaluationDialog extends JDialog
 		
 		txtcommonresoutput = new JTextField();
 		txtcommonresoutput.setText("");
-		txtcommonresoutput.setBounds(161, 430, 220, 19);
+		txtcommonresoutput.setBounds(140, 430, 180, 19);
 		LeftPanel.add(txtcommonresoutput);
 		txtcommonresoutput.setColumns(10);
 		
-		final JButton buttonSelectDir = new JButton("");
-		buttonSelectDir.setBounds(386, 430, 25, 18);
+		final JButton buttonSelectDir = new JButton("Folder");
+		buttonSelectDir.setBounds(324, 430, 55, 18);
 		final ActionListener buttonListener = new ActionListener()
 		{
 			@Override
