@@ -1,31 +1,29 @@
 (define "Gundru_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (material)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}]>" 0.7645376)
-        (pair "rel:to=<{}>:pat=<els=[!f{0}, !f{1/2}]>" -0.053761493)
-        (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
-        (pair "rel:from=<{}>:pat=<els=[!f{0,1/4}]>" 0.024688179)
-        (pair "rel:from=<{}>:pat=<els=[f{0,0,0}]>" 1.1376265)
-        (pair "rel:last_from=<{0,0,0}>:from=<{}>:pat=<els=[]>" -0.38471863)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" 0.009815901)
-        (pair "rel:to=<{}>:pat=<els=[!f{0}]>" 0.0038175862)
-        (pair "rel:from=<{}>:pat=<els=[f{0,0}, e{1/2,0,0}]>" 0.09810818)
-        (pair "rel:from=<{}>:pat=<els=[e{0,1/4}]>" 0.07229021)
-        (pair "rel:from=<{}>:pat=<els=[f{0,1/4}]>" -0.28025344)
-        (pair "rel:to=<{}>:pat=<els=[!-{0,0,0}]>" 0.04222999)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (material)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}]>" 0.7645376)
+            (pair "rel:to=<{}>:pat=<els=[!f{0}, !f{1/2}]>" -0.053761493)
+            (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:from=<{}>:pat=<els=[!f{0,1/4}]>" 0.024688179)
+            (pair "rel:from=<{}>:pat=<els=[f{0,0,0}]>" 1.1376265)
+            (pair "rel:last_from=<{0,0,0}>:from=<{}>:pat=<els=[]>" -0.38471863)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" 0.009815901)
+            (pair "rel:to=<{}>:pat=<els=[!f{0}]>" 0.0038175862)
+            (pair "rel:from=<{}>:pat=<els=[f{0,0}, e{1/2,0,0}]>" 0.09810818)
+            (pair "rel:from=<{}>:pat=<els=[e{0,1/4}]>" 0.07229021)
+            (pair "rel:from=<{}>:pat=<els=[f{0,1/4}]>" -0.28025344)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,0,0}]>" 0.04222999)
+            }
+        )
+    })
+    
 )

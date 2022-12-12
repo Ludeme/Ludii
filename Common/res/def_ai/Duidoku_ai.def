@@ -1,31 +1,29 @@
 (define "Duidoku_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[I8{0}]>" 0.20791173)
-        (pair "rel:to=<{}>:pat=<els=[I5{0,0,0}]>" 0.22896357)
-        (pair "rel:to=<{}>:pat=<els=[I1{0,0,0}, I1{1/4,0,0}]>" 0.10148743)
-        (pair "rel:to=<{}>:pat=<els=[I8{1/4}, I6{0,0,0,0}]>" 0.04508021)
-        (pair "rel:to=<{}>:pat=<els=[I3{0,0,0}]>" 0.09919446)
-        (pair "rel:to=<{}>:pat=<els=[!-{0,0}]>" 0.21049145)
-        (pair "rel:to=<{}>:pat=<els=[#{0,0,0,0}]>" 0.010981853)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[-{1/4,0,0,0}, I1{0,1/4}]>" 0.19350478)
-        (pair "rel:last_to=<{1/2,-1/4}>:to=<{}>:pat=<els=[R5{0}]>" -0.4032243)
-        (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[-{0,0,0,0}]>" -0.19045259)
-        (pair "rel:last_to=<{1/2,-1/4}>:to=<{}>:pat=<els=[R5{0,-1/4}]>" -0.467927)
-        (pair "rel:to=<{}>:pat=<els=[!-{0,0,0,0}]>" 0.0033057919)
-        (pair "rel:to=<{}>:pat=<els=[R0{0}]>" 0.04471522)
-        (pair "rel:to=<{}>:pat=<els=[I3{1/4,0}, !R4{0,1/4}]>" -0.11528524)
-        (pair "rel:to=<{}>:pat=<els=[!R4{0,1/4}]>" -0.12465151)
-        (pair "rel:to=<{}>:pat=<els=[I1{0,0,0,0}]>" -0.110288166)
-        (pair "rel:to=<{}>:pat=<els=[I7{0}]>" 0.24690965)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[I8{0}]>" 0.20791173)
+            (pair "rel:to=<{}>:pat=<els=[I5{0,0,0}]>" 0.22896357)
+            (pair "rel:to=<{}>:pat=<els=[I1{0,0,0}, I1{1/4,0,0}]>" 0.10148743)
+            (pair "rel:to=<{}>:pat=<els=[I8{1/4}, I6{0,0,0,0}]>" 0.04508021)
+            (pair "rel:to=<{}>:pat=<els=[I3{0,0,0}]>" 0.09919446)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,0}]>" 0.21049145)
+            (pair "rel:to=<{}>:pat=<els=[#{0,0,0,0}]>" 0.010981853)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{1/4,0,0,0}, I1{0,1/4}]>" 0.19350478)
+            (pair "rel:last_to=<{1/2,-1/4}>:to=<{}>:pat=<els=[R5{0}]>" -0.4032243)
+            (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[-{0,0,0,0}]>" -0.19045259)
+            (pair "rel:last_to=<{1/2,-1/4}>:to=<{}>:pat=<els=[R5{0,-1/4}]>" -0.467927)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,0,0,0}]>" 0.0033057919)
+            (pair "rel:to=<{}>:pat=<els=[R0{0}]>" 0.04471522)
+            (pair "rel:to=<{}>:pat=<els=[I3{1/4,0}, !R4{0,1/4}]>" -0.11528524)
+            (pair "rel:to=<{}>:pat=<els=[!R4{0,1/4}]>" -0.12465151)
+            (pair "rel:to=<{}>:pat=<els=[I1{0,0,0,0}]>" -0.110288166)
+            (pair "rel:to=<{}>:pat=<els=[I7{0}]>" 0.24690965)
+            }
+        )
+    })
     
-
 )

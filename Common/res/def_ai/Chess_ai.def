@@ -1,48 +1,46 @@
 (define "Chess_ai"
     
-        (bestAgent "UBFM")
-        (heuristics {
-    (material transformation:(divNumInitPlacement) pieceWeights:{
-        (pair "Pawn1" 1.0)
-        (pair "Pawn2" 1.0)
-        (pair "Rook1" 5.0)
-        (pair "Rook2" 5.0)
-        (pair "Bishop1" 3.0)
-        (pair "Bishop2" 3.0)
-        (pair "Knight1" 3.0)
-        (pair "Knight2" 3.0)
-        (pair "Queen1" 9.0)
-        (pair "Queen2" 9.0)
+    (bestAgent "UBFM")
+    (heuristics {
+        (material transformation:(divNumInitPlacement) pieceWeights:{
+            (pair "Pawn1" 1.0)
+            (pair "Pawn2" 1.0)
+            (pair "Rook1" 5.0)
+            (pair "Rook2" 5.0)
+            (pair "Bishop1" 3.0)
+            (pair "Bishop2" 3.0)
+            (pair "Knight1" 3.0)
+            (pair "Knight2" 3.0)
+            (pair "Queen1" 9.0)
+            (pair "Queen2" 9.0)
+        })
+        (mobilityAdvanced weight:0.02)
     })
-    (mobilityAdvanced weight:0.02)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{0,0,1/4}>:pat=<els=[I1{0}]>" -3.552975)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,0,0}]>" -0.18741491)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{0,1/2,0}]>" -5.9735245E-4)
-        (pair "rel:to=<{}>:pat=<els=[!e{0,1/4}]>" -4.238945E-5)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 0.252951)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!R0{1/4,-1/4}, I9{0,0,0}]>" -0.8265994)
-        (pair "rel:to=<{}>:pat=<els=[I3{0,0,0}, I3{1/2,0,0}]>" -0.26841235)
-        (pair "rel:to=<{}>:pat=<els=[I3{0,0,0}]>" -0.026921136)
-        (pair "rel:from=<{0,0,0,0}>:pat=<els=[#{-1/4,0,0}, !f{0,0,0,0,-1/2,1/4}, -{0,0,0,0,-1/2,0,0,0}, #{0,0,0,0,0,0,0}, -{0,0,0,0,1/4,0,0,0}]>" -3.552975)
-        (pair "rel:last_to=<{0,0,0,0}>:to=<{}>:pat=<els=[]>" -0.132276)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
-        (pair "rel:last_from=<{0,0,1/4}>:to=<{0,0}>:pat=<els=[R0{-1/2,-1/4}, !-{0,0,0}]>" -3.9312553)
-        (pair "rel:to=<{}>:pat=<els=[#{1/2}, -{0,0,0,0}]>" 0.0035164987)
-        (pair "rel:last_to=<{}>:from=<{0,1/4}>:to=<{}>:pat=<els=[!#{0,1/4,0,0}]>" 0.5165145)
-        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
-        (pair "rel:last_from=<{0,1/4,0,1/4,0,0}>:from=<{}>:to=<{0,1/4,0}>:pat=<els=[]>" -0.06040902)
-        (pair "rel:to=<{}>:pat=<els=[!#{0,1/4,0,0}]>" 0.0)
-    }
-    )
-})
-
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{0,0,1/4}>:pat=<els=[I1{0}]>" -3.552975)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,0,0}]>" -0.18741491)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{0,1/2,0}]>" -5.9735245E-4)
+            (pair "rel:to=<{}>:pat=<els=[!e{0,1/4}]>" -4.238945E-5)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 0.252951)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!R0{1/4,-1/4}, I9{0,0,0}]>" -0.8265994)
+            (pair "rel:to=<{}>:pat=<els=[I3{0,0,0}, I3{1/2,0,0}]>" -0.26841235)
+            (pair "rel:to=<{}>:pat=<els=[I3{0,0,0}]>" -0.026921136)
+            (pair "rel:from=<{0,0,0,0}>:pat=<els=[#{-1/4,0,0}, !f{0,0,0,0,-1/2,1/4}, -{0,0,0,0,-1/2,0,0,0}, #{0,0,0,0,0,0,0}, -{0,0,0,0,1/4,0,0,0}]>" -3.552975)
+            (pair "rel:last_to=<{0,0,0,0}>:to=<{}>:pat=<els=[]>" -0.132276)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:last_from=<{0,0,1/4}>:to=<{0,0}>:pat=<els=[R0{-1/2,-1/4}, !-{0,0,0}]>" -3.9312553)
+            (pair "rel:to=<{}>:pat=<els=[#{1/2}, -{0,0,0,0}]>" 0.0035164987)
+            (pair "rel:last_to=<{}>:from=<{0,1/4}>:to=<{}>:pat=<els=[!#{0,1/4,0,0}]>" 0.5165145)
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:last_from=<{0,1/4,0,1/4,0,0}>:from=<{}>:to=<{0,1/4,0}>:pat=<els=[]>" -0.06040902)
+            (pair "rel:to=<{}>:pat=<els=[!#{0,1/4,0,0}]>" 0.0)
+            }
+        )
+    })
+    
 )

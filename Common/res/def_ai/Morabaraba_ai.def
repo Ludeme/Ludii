@@ -1,50 +1,48 @@
 (define "Morabaraba_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (centreProximity)
-    (cornerProximity pieceWeights:{
-        (pair "Marker1" 0.76991516)
-        (pair "Marker2" 0.36088896)
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (centreProximity)
+        (cornerProximity pieceWeights:{
+            (pair "Marker1" 0.76991516)
+            (pair "Marker2" 0.36088896)
+        })
+        (lineCompletionHeuristic weight:4.785861)
+        (material pieceWeights:{
+            (pair "Marker1" 2.0135388)
+            (pair "Marker2" 3.539749)
+        })
+        (mobilitySimple weight:-0.17473876)
+        (influence weight:6.63779)
+        (sidesProximity pieceWeights:{
+            (pair "Marker1" 4.006565)
+            (pair "Marker2" 3.8768773)
+        })
     })
-    (lineCompletionHeuristic weight:4.785861)
-    (material pieceWeights:{
-        (pair "Marker1" 2.0135388)
-        (pair "Marker2" 3.539749)
-    })
-    (mobilitySimple weight:-0.17473876)
-    (influence weight:6.63779)
-    (sidesProximity pieceWeights:{
-        (pair "Marker1" 4.006565)
-        (pair "Marker2" 3.8768773)
-    })
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, N4{-1/4,1/3}]>" 0.9124088)
-        (pair "rel:to=<{}>:pat=<els=[N6{0,-1/8}, #{1/4,-1/3}]>" 0.6091035)
-        (pair "rel:to=<{}>:pat=<els=[#{1/2,0,0}, N6{0,0}]>" -0.38363156)
-        (pair "rel:to=<{}>:pat=<els=[!-{0,1/6}]>" -0.0019904685)
-        (pair "rel:to=<{}>:pat=<els=[e{0,0,0}]>" 0.2509273)
-        (pair "rel:to=<{}>:pat=<els=[e{0,3/8}, N4{1/2,1/3}]>" 0.50248533)
-        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, e{1/4,3/8}]>" 0.79978395)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{1/4}>:pat=<els=[e{1/2}, !#{0,-1/6}]>" 0.024710892)
-        (pair "rel:to=<{0}>:pat=<els=[e{1/4}, !#{-1/4,-1/6}, !e{1/2}, f{0,3/8,-1/8}]>" 2.8179321)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,-1/4,-3/8}, f{0,-1/2,1/4,-1/8}]>" 0.5856474)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{1/2}, f{0,3/8,-1/8}]>" 0.4945729)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{0,-1/6,1/4}, f{0,-1/4,-3/8}, f{0,-1/2,1/4,-1/8}]>" 0.57048917)
-        (pair "rel:from=<{}>:pat=<els=[e{1/2}, !#{0,-1/6}, f{1/4,3/8,-1/8}]>" 0.1824832)
-        (pair "rel:to=<{}>:pat=<els=[e{0}]>" -0.04578796)
-        (pair "rel:to=<{}>:pat=<els=[e{0,1/8}]>" -0.067231566)
-        (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[N6{0,1/3}]>" 1.0461125)
-    }
-    )
-})
-
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, N4{-1/4,1/3}]>" 0.9124088)
+            (pair "rel:to=<{}>:pat=<els=[N6{0,-1/8}, #{1/4,-1/3}]>" 0.6091035)
+            (pair "rel:to=<{}>:pat=<els=[#{1/2,0,0}, N6{0,0}]>" -0.38363156)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,1/6}]>" -0.0019904685)
+            (pair "rel:to=<{}>:pat=<els=[e{0,0,0}]>" 0.2509273)
+            (pair "rel:to=<{}>:pat=<els=[e{0,3/8}, N4{1/2,1/3}]>" 0.50248533)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, e{1/4,3/8}]>" 0.79978395)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{1/4}>:pat=<els=[e{1/2}, !#{0,-1/6}]>" 0.024710892)
+            (pair "rel:to=<{0}>:pat=<els=[e{1/4}, !#{-1/4,-1/6}, !e{1/2}, f{0,3/8,-1/8}]>" 2.8179321)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,-1/4,-3/8}, f{0,-1/2,1/4,-1/8}]>" 0.5856474)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{1/2}, f{0,3/8,-1/8}]>" 0.4945729)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{0,-1/6,1/4}, f{0,-1/4,-3/8}, f{0,-1/2,1/4,-1/8}]>" 0.57048917)
+            (pair "rel:from=<{}>:pat=<els=[e{1/2}, !#{0,-1/6}, f{1/4,3/8,-1/8}]>" 0.1824832)
+            (pair "rel:to=<{}>:pat=<els=[e{0}]>" -0.04578796)
+            (pair "rel:to=<{}>:pat=<els=[e{0,1/8}]>" -0.067231566)
+            (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[N6{0,1/3}]>" 1.0461125)
+            }
+        )
+    })
+    
 )

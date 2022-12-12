@@ -1,30 +1,28 @@
 (define "Dragonchess_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
-        (pair "rel:from=<{}>:pat=<els=[!-{1/4}, !-{0}]>" 0.2423551)
-        (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[]>" -0.1844872)
-        (pair "rel:from=<{}>:pat=<els=[I9{0,0,0}]>" 0.14407103)
-        (pair "rel:from=<{}>:pat=<els=[#{0,0,0}]>" 0.07582663)
-        (pair "rel:to=<{0}>:pat=<els=[#{0,0,0}]>" -1.4391758)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[I3{1/4,0}]>" -0.22686832)
-        (pair "rel:last_from=<{0,0}>:to=<{}>:pat=<els=[]>" -0.12248512)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{1/2}]>" -0.16988477)
-        (pair "rel:to=<{}>:pat=<els=[!f{0}]>" 0.006537683)
-        (pair "rel:to=<{}>:pat=<els=[I2{0}]>" -0.60410905)
-        (pair "rel:to=<{}>:pat=<els=[-{0}]>" 0.0015568788)
-        (pair "rel:to=<{}>:pat=<els=[-{1/2}, I2{0,0,1/2,0,0,0}]>" -0.68483394)
-        (pair "rel:to=<{}>:pat=<els=[I10{0,0}]>" -0.06587663)
-        (pair "rel:from=<{}>:pat=<els=[I2{0,0,0,0}]>" -0.2535385)
-        (pair "rel:from=<{}>:pat=<els=[I4{0}]>" -0.7035237)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:from=<{}>:pat=<els=[!-{1/4}, !-{0}]>" 0.2423551)
+            (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[]>" -0.1844872)
+            (pair "rel:from=<{}>:pat=<els=[I9{0,0,0}]>" 0.14407103)
+            (pair "rel:from=<{}>:pat=<els=[#{0,0,0}]>" 0.07582663)
+            (pair "rel:to=<{0}>:pat=<els=[#{0,0,0}]>" -1.4391758)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[I3{1/4,0}]>" -0.22686832)
+            (pair "rel:last_from=<{0,0}>:to=<{}>:pat=<els=[]>" -0.12248512)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{1/2}]>" -0.16988477)
+            (pair "rel:to=<{}>:pat=<els=[!f{0}]>" 0.006537683)
+            (pair "rel:to=<{}>:pat=<els=[I2{0}]>" -0.60410905)
+            (pair "rel:to=<{}>:pat=<els=[-{0}]>" 0.0015568788)
+            (pair "rel:to=<{}>:pat=<els=[-{1/2}, I2{0,0,1/2,0,0,0}]>" -0.68483394)
+            (pair "rel:to=<{}>:pat=<els=[I10{0,0}]>" -0.06587663)
+            (pair "rel:from=<{}>:pat=<els=[I2{0,0,0,0}]>" -0.2535385)
+            (pair "rel:from=<{}>:pat=<els=[I4{0}]>" -0.7035237)
+            }
+        )
+    })
     
-
 )

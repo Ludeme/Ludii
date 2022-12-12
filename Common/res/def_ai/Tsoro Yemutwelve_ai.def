@@ -1,36 +1,34 @@
 (define "Tsoro Yemutwelve_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0}, !f{-1/4,1/6,-3/8}]>" 0.71891767)
-        (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[f{0}, f{0,0}]>" 1.2123089)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, f{1/4,0}, !f{0,1/6,-3/8}]>" 1.6235412)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 1.3756276)
-        (pair "rel:to=<{}>:pat=<els=[f{1/4,0}, !f{0,1/6,-3/8}]>" 0.37424466)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}, !f{0,-1/2,-1/6,3/8}]>" 0.91800106)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/2}, f{0,1/4}, f{0,1/4,0}, !f{0,-1/2,-1/6,3/8}]>" 1.642445)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}, !f{0,1/6,-3/8}]>" 0.91800106)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, !f{0,1/6,-3/8}]>" 0.7468573)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/2}, f{0,1/4}, f{0,1/4,0}]>" 1.4626776)
-        (pair "rel:to=<{}>:pat=<els=[f{-1/4}, e{-3/8}, -{0,1/4}]>" 0.39055425)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/8}, f{0,1/6,0}]>" 1.9209981)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{-1/4,-1/8}, f{0,-1/4}, f{0,1/4}]>" 2.3128738)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{1/4}, f{0,1/4}, f{0,-1/4}]>" 2.3058755)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,-1/4}]>" 2.3115644)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/6,0}]>" 1.3223076)
-        (pair "rel:from=<{}>:pat=<els=[f{0,1/4}, f{0,-1/4}]>" 1.290767)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}]>" 1.1060477)
-        (pair "rel:to=<{}>:pat=<els=[-{0}, N8{0,1/6}]>" -0.45264876)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,-1/2,1/8,0,0}]>" 0.86470884)
-        (pair "rel:to=<{}>:pat=<els=[N8{0,1/3}]>" -0.2235404)
-        (pair "rel:from=<{}>:pat=<els=[f{0,1/8}, f{0,1/6,0}]>" 1.2134684)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0}, !f{-1/4,1/6,-3/8}]>" 0.71891767)
+            (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[f{0}, f{0,0}]>" 1.2123089)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, f{1/4,0}, !f{0,1/6,-3/8}]>" 1.6235412)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 1.3756276)
+            (pair "rel:to=<{}>:pat=<els=[f{1/4,0}, !f{0,1/6,-3/8}]>" 0.37424466)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}, !f{0,-1/2,-1/6,3/8}]>" 0.91800106)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/2}, f{0,1/4}, f{0,1/4,0}, !f{0,-1/2,-1/6,3/8}]>" 1.642445)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}, !f{0,1/6,-3/8}]>" 0.91800106)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, !f{0,1/6,-3/8}]>" 0.7468573)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/2}, f{0,1/4}, f{0,1/4,0}]>" 1.4626776)
+            (pair "rel:to=<{}>:pat=<els=[f{-1/4}, e{-3/8}, -{0,1/4}]>" 0.39055425)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/8}, f{0,1/6,0}]>" 1.9209981)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{-1/4,-1/8}, f{0,-1/4}, f{0,1/4}]>" 2.3128738)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{1/4}, f{0,1/4}, f{0,-1/4}]>" 2.3058755)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,-1/4}]>" 2.3115644)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/6,0}]>" 1.3223076)
+            (pair "rel:from=<{}>:pat=<els=[f{0,1/4}, f{0,-1/4}]>" 1.290767)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}]>" 1.1060477)
+            (pair "rel:to=<{}>:pat=<els=[-{0}, N8{0,1/6}]>" -0.45264876)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,-1/2,1/8,0,0}]>" 0.86470884)
+            (pair "rel:to=<{}>:pat=<els=[N8{0,1/3}]>" -0.2235404)
+            (pair "rel:from=<{}>:pat=<els=[f{0,1/8}, f{0,1/6,0}]>" 1.2134684)
+            }
+        )
+    })
     
-
 )

@@ -1,74 +1,68 @@
 (define "Poprad Game_ai"
-(useFor { "Ruleset/17x17 (Tablut Rules) (Suggested)" }
-    
+    (useFor { "Ruleset/17x17 (Tablut Rules) (Suggested)" }
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{}>:pat=<els=[e{0,0}]>" -0.21398297)
-        (pair "rel:to=<{0,0,0,0,0,0,0,0,0,0,0}>:pat=<els=[I1{1/4,0}, I2{0,0,0,0,0,0,0,0,0,0,0,0,0,0}]>" -1.0204757)
-        (pair "rel:from=<{}>:pat=<els=[-{0,0,0}]>" 2.0091464E-5)
-        (pair "rel:to=<{0,0,0,0,0,0,0,0,0,0,0}>:pat=<els=[I2{0,0,0,0,0,0,0,0,0,0,0,0,0,0}]>" -1.0204757)
-        (pair "rel:to=<{}>:pat=<els=[!I1{0,0}]>" 5.4435364E-5)
-        (pair "rel:from=<{}>:pat=<els=[I1{0,0}]>" -0.23799895)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[e{0,0}]>" -0.21398297)
+                (pair "rel:to=<{0,0,0,0,0,0,0,0,0,0,0}>:pat=<els=[I1{1/4,0}, I2{0,0,0,0,0,0,0,0,0,0,0,0,0,0}]>" -1.0204757)
+                (pair "rel:from=<{}>:pat=<els=[-{0,0,0}]>" 2.0091464E-5)
+                (pair "rel:to=<{0,0,0,0,0,0,0,0,0,0,0}>:pat=<els=[I2{0,0,0,0,0,0,0,0,0,0,0,0,0,0}]>" -1.0204757)
+                (pair "rel:to=<{}>:pat=<els=[!I1{0,0}]>" 5.4435364E-5)
+                (pair "rel:from=<{}>:pat=<els=[I1{0,0}]>" -0.23799895)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0,0,0,0,0,0,0,0}>:pat=<els=[!I2{}, #{0,0,0,0,0,0,0,0,-1/4,1/4}]>" 2.6277971)
+                (pair "rel:from=<{}>:to=<{0,0,0,0,0,0,0,0}>:pat=<els=[!I2{}]>" 2.2547364)
+                (pair "rel:to=<{0,0,0,0}>:pat=<els=[I3{}]>" -0.9763846)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!I2{}]>" -0.018280106)
+                (pair "rel:from=<{}>:pat=<els=[!I2{}]>" 0.21362473)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{0,0,0,0,0,0,0,0}>:pat=<els=[!I2{}, #{0,0,0,0,0,0,0,0,-1/4,1/4}]>" 2.6277971)
-        (pair "rel:from=<{}>:to=<{0,0,0,0,0,0,0,0}>:pat=<els=[!I2{}]>" 2.2547364)
-        (pair "rel:to=<{0,0,0,0}>:pat=<els=[I3{}]>" -0.9763846)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!I2{}]>" -0.018280106)
-        (pair "rel:from=<{}>:pat=<els=[!I2{}]>" 0.21362473)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/17x17 (Tablut Rules More Pieces) (Suggested)" }
-    
+    (useFor { "Ruleset/17x17 (Tablut Rules More Pieces) (Suggested)" }
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[#{1/4,0,0}, f{0,0,0,0,0,0,0,0,-1/4,0}]>" -0.11342162)
-        (pair "rel:from=<{}>:pat=<els=[I2{0}]>" -0.073612034)
-        (pair "rel:from=<{0,0,0,0,0,0,0,0}>:to=<{}>:pat=<els=[#{1/4,0,0}, #{0,0,0,0,0,0,0,0,0}]>" 0.6867895)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[#{1/4,0,0}, f{0,0,0,0,0,0,0,0,-1/4,0}]>" -0.11342162)
+                (pair "rel:from=<{}>:pat=<els=[I2{0}]>" -0.073612034)
+                (pair "rel:from=<{0,0,0,0,0,0,0,0}>:to=<{}>:pat=<els=[#{1/4,0,0}, #{0,0,0,0,0,0,0,0,0}]>" 0.6867895)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[!I2{}, #{0,0,0,0,0,0,-1/4,1/4}]>" 1.3662889)
+                (pair "rel:from=<{}>:pat=<els=[I3{}]>" 0.8413126)
+                (pair "rel:from=<{}>:to=<{0,0,0,0,0}>:pat=<els=[I3{}, #{0,0,0,0,0,0}]>" 3.2096422)
+                (pair "rel:from=<{}>:to=<{0,0,0,0,0,0,0,0}>:pat=<els=[I3{}, #{0,0,0,0,0,0,0,0,1/4,-1/4}]>" 3.1834073)
+                (pair "rel:from=<{}>:pat=<els=[!I2{}]>" 0.8413126)
+                (pair "rel:from=<{}>:pat=<els=[I3{}, #{0,0,0,0,0,0,0,0,1/4,-1/4}]>" 0.8413126)
+                (pair "rel:from=<{}>:to=<{0,0,0,0,0}>:pat=<els=[I3{}]>" 1.3191779)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[#{0,0,1/2,0,0}]>" 0.82586175)
+                (pair "rel:to=<{0,0,0,0,0,0,0,0}>:pat=<els=[I3{}]>" -1.9832348)
+                (pair "rel:to=<{0,0,0,0,0}>:pat=<els=[#{0,0,0,0,0,0}]>" -1.9832348)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:pat=<els=[!I2{}, #{0,0,0,0,0,0,-1/4,1/4}]>" 1.3662889)
-        (pair "rel:from=<{}>:pat=<els=[I3{}]>" 0.8413126)
-        (pair "rel:from=<{}>:to=<{0,0,0,0,0}>:pat=<els=[I3{}, #{0,0,0,0,0,0}]>" 3.2096422)
-        (pair "rel:from=<{}>:to=<{0,0,0,0,0,0,0,0}>:pat=<els=[I3{}, #{0,0,0,0,0,0,0,0,1/4,-1/4}]>" 3.1834073)
-        (pair "rel:from=<{}>:pat=<els=[!I2{}]>" 0.8413126)
-        (pair "rel:from=<{}>:pat=<els=[I3{}, #{0,0,0,0,0,0,0,0,1/4,-1/4}]>" 0.8413126)
-        (pair "rel:from=<{}>:to=<{0,0,0,0,0}>:pat=<els=[I3{}]>" 1.3191779)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[#{0,0,1/2,0,0}]>" 0.82586175)
-        (pair "rel:to=<{0,0,0,0,0,0,0,0}>:pat=<els=[I3{}]>" -1.9832348)
-        (pair "rel:to=<{0,0,0,0,0}>:pat=<els=[#{0,0,0,0,0,0}]>" -1.9832348)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/17x18 (Seega Rules) (Suggested)" }
-    
+    (useFor { "Ruleset/17x18 (Seega Rules) (Suggested)" }
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[]>" 6.2332134)
-        (pair "rel:to=<{}>:pat=<els=[!e{0,1/4}]>" -0.007670688)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[]>" 6.2332134)
+                (pair "rel:to=<{}>:pat=<els=[!e{0,1/4}]>" -0.007670688)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[f{0,0,0}]>" 1.4276187)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 2.2928128)
+                (pair "rel:from=<{}>:pat=<els=[e{1/4,0,0,0}, #{0,1/2,0,0,0}]>" 1.3417714)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4,1/4}]>" 2.3640819)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}]>" 1.4276187)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 2.2928128)
-        (pair "rel:from=<{}>:pat=<els=[e{1/4,0,0,0}, #{0,1/2,0,0,0}]>" 1.3417714)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4,1/4}]>" 2.3640819)
-    }
-    )
-})
-
-    
-
-)
 )

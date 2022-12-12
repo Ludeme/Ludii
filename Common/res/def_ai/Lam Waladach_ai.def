@@ -1,16 +1,14 @@
 (define "Lam Waladach_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, !R0{-1/4,0,0,0}]>" 0.00990323)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!R1{0,0,0,0}]>" -0.0033048624)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, !R0{-1/4,0,0,0}]>" 0.00990323)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!R1{0,0,0,0}]>" -0.0033048624)
+            }
+        )
+    })
     
-
 )

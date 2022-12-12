@@ -1,37 +1,35 @@
 (define "Jeu de Renard_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (cornerProximity)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{}>:pat=<els=[e{0,1/4}]>" 0.0563773)
-        (pair "rel:from=<{}>:pat=<els=[!-{0,0}, #{1/4,-1/4,0,1/4}]>" 0.09398372)
-        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
-        (pair "rel:to=<{0,1/4}>:pat=<els=[!-{1/4,0,0}, !-{0,1/4,-1/4,0,0}]>" -3.2489383)
-        (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[-{0,-1/4,1/4,-1/4}]>" -0.06037686)
-        (pair "rel:to=<{0,-1/4}>:pat=<els=[#{1/4,0,0}, -{0,-1/4,0,-1/4}]>" -3.2489383)
-        (pair "rel:from=<{}>:pat=<els=[-{0,-1/4,0,-1/4}, -{0,-1/4,1/4,-1/4}]>" 0.0072568064)
-        (pair "rel:to=<{0,-1/4}>:pat=<els=[-{0,-1/4,0,-1/4}, -{0,-1/4,1/4,-1/4}]>" -3.2489383)
-        (pair "rel:to=<{0,-1/4}>:pat=<els=[#{1/4,0,0}, -{0,-1/4,1/4,-1/4}]>" -3.2489383)
-        (pair "rel:from=<{}>:pat=<els=[!-{0,0,0}]>" 0.03362669)
-        (pair "rel:from=<{1/4,1/4}>:to=<{}>:pat=<els=[#{0,0,0}]>" 0.05428316)
-        (pair "rel:to=<{}>:pat=<els=[e{0,1/4}]>" -0.027994635)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{1/4,-1/4}>:pat=<els=[-{0,0,0,0}]>" -0.04687276)
-        (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}, !-{1/4,1/4,1/4,0,0}]>" 0.027142763)
-        (pair "rel:to=<{}>:pat=<els=[f{0,0,0,0}]>" 0.00924026)
-        (pair "rel:to=<{0,-1/4}>:pat=<els=[!f{0,-1/4,-1/4,1/4}, !-{0,-1/4,-1/4,-1/4,1/4,1/4}]>" 0.010097552)
-        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[-{1/2,0}]>" 0.07038577)
-        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.010097552)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (cornerProximity)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[e{0,1/4}]>" 0.0563773)
+            (pair "rel:from=<{}>:pat=<els=[!-{0,0}, #{1/4,-1/4,0,1/4}]>" 0.09398372)
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:to=<{0,1/4}>:pat=<els=[!-{1/4,0,0}, !-{0,1/4,-1/4,0,0}]>" -3.2489383)
+            (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[-{0,-1/4,1/4,-1/4}]>" -0.06037686)
+            (pair "rel:to=<{0,-1/4}>:pat=<els=[#{1/4,0,0}, -{0,-1/4,0,-1/4}]>" -3.2489383)
+            (pair "rel:from=<{}>:pat=<els=[-{0,-1/4,0,-1/4}, -{0,-1/4,1/4,-1/4}]>" 0.0072568064)
+            (pair "rel:to=<{0,-1/4}>:pat=<els=[-{0,-1/4,0,-1/4}, -{0,-1/4,1/4,-1/4}]>" -3.2489383)
+            (pair "rel:to=<{0,-1/4}>:pat=<els=[#{1/4,0,0}, -{0,-1/4,1/4,-1/4}]>" -3.2489383)
+            (pair "rel:from=<{}>:pat=<els=[!-{0,0,0}]>" 0.03362669)
+            (pair "rel:from=<{1/4,1/4}>:to=<{}>:pat=<els=[#{0,0,0}]>" 0.05428316)
+            (pair "rel:to=<{}>:pat=<els=[e{0,1/4}]>" -0.027994635)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{1/4,-1/4}>:pat=<els=[-{0,0,0,0}]>" -0.04687276)
+            (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}, !-{1/4,1/4,1/4,0,0}]>" 0.027142763)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0,0}]>" 0.00924026)
+            (pair "rel:to=<{0,-1/4}>:pat=<els=[!f{0,-1/4,-1/4,1/4}, !-{0,-1/4,-1/4,-1/4,1/4,1/4}]>" 0.010097552)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[-{1/2,0}]>" 0.07038577)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.010097552)
+            }
+        )
+    })
+    
 )

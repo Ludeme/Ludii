@@ -1,18 +1,16 @@
 (define "Addi Kul_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{}>:pat=<els=[#{0}]>" 0.0052385596)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0,0,0}, !e{0,-1/4,1/4}]>" -0.018419156)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/2}]>" 0.044727784)
-        (pair "rel:to=<{0}>:pat=<els=[#{0,1/4}, -{0,0}]>" -1.6359845)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[#{0}]>" 0.0052385596)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0,0,0}, !e{0,-1/4,1/4}]>" -0.018419156)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/2}]>" 0.044727784)
+            (pair "rel:to=<{0}>:pat=<els=[#{0,1/4}, -{0,0}]>" -1.6359845)
+            }
+        )
+    })
     
-
 )

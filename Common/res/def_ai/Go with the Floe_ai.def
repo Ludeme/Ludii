@@ -1,21 +1,19 @@
 (define "Go with the Floe_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (material)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[I3{0,-1/4,-1/4,1/4}]>" -0.0067482125)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[I3{0,1/4,-1/4}, #{0,-1/4,0,0}]>" 0.0012559758)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (material)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[I3{0,-1/4,-1/4,1/4}]>" -0.0067482125)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[I3{0,1/4,-1/4}, #{0,-1/4,0,0}]>" 0.0012559758)
+            }
+        )
+    })
+    
 )

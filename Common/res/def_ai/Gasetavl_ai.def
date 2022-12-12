@@ -1,22 +1,20 @@
 (define "Gasetavl_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (material)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:last_from=<{1/4,-1/8}>:to=<{}>:pat=<els=[!-{-3/8,0}, !-{0,0}]>" 0.06424815)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,-1/8,1/8}]>" 0.003683214)
-        (pair "rel:to=<{0}>:pat=<els=[N8{0,0,1/4}]>" -1.4655681)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (material)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_from=<{1/4,-1/8}>:to=<{}>:pat=<els=[!-{-3/8,0}, !-{0,0}]>" 0.06424815)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,-1/8,1/8}]>" 0.003683214)
+            (pair "rel:to=<{0}>:pat=<els=[N8{0,0,1/4}]>" -1.4655681)
+            }
+        )
+    })
+    
 )

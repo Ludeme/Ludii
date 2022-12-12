@@ -1,16 +1,14 @@
 (define "Shanzak Kammar_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!R0{0,1/8}]>" 0.0031694772)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!R0{0,0}]>" -0.0021671248)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!R0{0,1/8}]>" 0.0031694772)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!R0{0,0}]>" -0.0021671248)
+            }
+        )
+    })
     
-
 )

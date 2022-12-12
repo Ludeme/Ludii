@@ -1,69 +1,67 @@
 (define "Breakthrough Checkers_ai"
     
-        (bestAgent "MAST")
-        trainedHeuristics:(heuristics {
-    (ownRegionsCount weight:-1.0798367)
-    (centreProximity pieceWeights:{
-        (pair "Counter1" 0.10730263)
-        (pair "Counter2" -0.087361)
+    (bestAgent "MAST")
+    trainedHeuristics:(heuristics {
+        (ownRegionsCount weight:-1.0798367)
+        (centreProximity pieceWeights:{
+            (pair "Counter1" 0.10730263)
+            (pair "Counter2" -0.087361)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Counter1" 0.23756658)
+            (pair "Counter2" -0.22537096)
+        })
+        (lineCompletionHeuristic weight:0.14054273)
+        (material pieceWeights:{
+            (pair "Counter1" 0.1585638)
+            (pair "Counter2" -0.1585638)
+        })
+        (mobilitySimple weight:-0.014788825)
+        (influence weight:-0.02508911)
+        (playerRegionsProximity player:2 pieceWeights:{
+            (pair "Counter1" 0.05387311)
+        })
+        (regionProximity region:0 pieceWeights:{
+            (pair "Counter1" 0.09028886)
+            (pair "Counter2" -0.14392334)
+        })
+        (regionProximity region:1 pieceWeights:{
+            (pair "Counter1" 0.14383566)
+            (pair "Counter2" -0.090881705)
+        })
+        (sidesProximity pieceWeights:{
+            (pair "Counter1" 0.13613506)
+            (pair "Counter2" -0.1453649)
+        })
     })
-    (cornerProximity pieceWeights:{
-        (pair "Counter1" 0.23756658)
-        (pair "Counter2" -0.22537096)
-    })
-    (lineCompletionHeuristic weight:0.14054273)
-    (material pieceWeights:{
-        (pair "Counter1" 0.1585638)
-        (pair "Counter2" -0.1585638)
-    })
-    (mobilitySimple weight:-0.014788825)
-    (influence weight:-0.02508911)
-    (playerRegionsProximity player:2 pieceWeights:{
-        (pair "Counter1" 0.05387311)
-    })
-    (regionProximity region:0 pieceWeights:{
-        (pair "Counter1" 0.09028886)
-        (pair "Counter2" -0.14392334)
-    })
-    (regionProximity region:1 pieceWeights:{
-        (pair "Counter1" 0.14383566)
-        (pair "Counter2" -0.090881705)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "Counter1" 0.13613506)
-        (pair "Counter2" -0.1453649)
-    })
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!-{0}, R1{1/2,0,0,0}]>" 1.172197)
-        (pair "rel:to=<{0,1/4}>:pat=<els=[#{1/2}, -{0,1/4,-1/4,-1/4}]>" 0.4044141)
-        (pair "rel:to=<{}>:pat=<els=[R1{0,0,0,0}]>" 0.17849335)
-        (pair "rel:from=<{}>:pat=<els=[]>" -0.0012125189)
-        (pair "rel:to=<{0,0,1/4,0}>:pat=<els=[!-{0,0,1/4,0,1/4,0,0}]>" 0.4044141)
-        (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[R0{0,0,0}, !-{0,-1/4,1/4,0,0}]>" 0.92173654)
-        (pair "rel:from=<{}>:pat=<els=[R0{0,0,0}]>" -0.021602532)
-        (pair "rel:last_from=<{}>:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[R0{-1/4,0}, -{0,0,1/4,0,-1/4,0,0,0}]>" -0.9027729)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:pat=<els=[R0{0,0,0,0}]>" 0.863553)
-        (pair "rel:from=<{}>:pat=<els=[R0{0,0,0,0}, !e{1/2,0,1/4,0,-1/2,1/4}]>" 0.92432547)
-        (pair "rel:to=<{}>:pat=<els=[#{1/2}, R0{0,0}]>" 1.5943997)
-        (pair "rel:from=<{}>:to=<{1/2,0,1/4,0}>:pat=<els=[R0{0,0,0,0}]>" 1.0022951)
-        (pair "rel:from=<{}>:pat=<els=[!e{0,0}, !e{1/2,0}]>" -0.057821434)
-        (pair "rel:last_to=<{0,0,1/4,0,1/4,1/4}>:to=<{}>:pat=<els=[R1{1/2,0}, #{0,0,1/4,0,-1/4,0,0}]>" -0.46998572)
-        (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[!-{0,0,0}, #{0,0,1/4,0,-1/4,0,0}]>" -0.7795749)
-        (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[R1{1/2,0}, #{0,0,1/4,0,-1/4,0,0}]>" -0.6219754)
-        (pair "rel:to=<{0,1/4}>:pat=<els=[e{1/4,1/4}, e{0,1/4,-1/4,0,0,0}]>" 0.7123248)
-        (pair "rel:to=<{}>:pat=<els=[!-{1/4,0,0}, #{0,1/4,1/4,0,0}]>" 0.06598758)
-        (pair "rel:last_to=<{0,1/4,-1/4,1/4}>:from=<{}>:pat=<els=[e{1/4,1/4}]>" -0.078553036)
-        (pair "rel:last_from=<{0,0}>:to=<{}>:pat=<els=[]>" 0.4834855)
-    }
-    )
-})
-
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!-{0}, R1{1/2,0,0,0}]>" 1.172197)
+            (pair "rel:to=<{0,1/4}>:pat=<els=[#{1/2}, -{0,1/4,-1/4,-1/4}]>" 0.4044141)
+            (pair "rel:to=<{}>:pat=<els=[R1{0,0,0,0}]>" 0.17849335)
+            (pair "rel:from=<{}>:pat=<els=[]>" -0.0012125189)
+            (pair "rel:to=<{0,0,1/4,0}>:pat=<els=[!-{0,0,1/4,0,1/4,0,0}]>" 0.4044141)
+            (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[R0{0,0,0}, !-{0,-1/4,1/4,0,0}]>" 0.92173654)
+            (pair "rel:from=<{}>:pat=<els=[R0{0,0,0}]>" -0.021602532)
+            (pair "rel:last_from=<{}>:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[R0{-1/4,0}, -{0,0,1/4,0,-1/4,0,0,0}]>" -0.9027729)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[R0{0,0,0,0}]>" 0.863553)
+            (pair "rel:from=<{}>:pat=<els=[R0{0,0,0,0}, !e{1/2,0,1/4,0,-1/2,1/4}]>" 0.92432547)
+            (pair "rel:to=<{}>:pat=<els=[#{1/2}, R0{0,0}]>" 1.5943997)
+            (pair "rel:from=<{}>:to=<{1/2,0,1/4,0}>:pat=<els=[R0{0,0,0,0}]>" 1.0022951)
+            (pair "rel:from=<{}>:pat=<els=[!e{0,0}, !e{1/2,0}]>" -0.057821434)
+            (pair "rel:last_to=<{0,0,1/4,0,1/4,1/4}>:to=<{}>:pat=<els=[R1{1/2,0}, #{0,0,1/4,0,-1/4,0,0}]>" -0.46998572)
+            (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[!-{0,0,0}, #{0,0,1/4,0,-1/4,0,0}]>" -0.7795749)
+            (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[R1{1/2,0}, #{0,0,1/4,0,-1/4,0,0}]>" -0.6219754)
+            (pair "rel:to=<{0,1/4}>:pat=<els=[e{1/4,1/4}, e{0,1/4,-1/4,0,0,0}]>" 0.7123248)
+            (pair "rel:to=<{}>:pat=<els=[!-{1/4,0,0}, #{0,1/4,1/4,0,0}]>" 0.06598758)
+            (pair "rel:last_to=<{0,1/4,-1/4,1/4}>:from=<{}>:pat=<els=[e{1/4,1/4}]>" -0.078553036)
+            (pair "rel:last_from=<{0,0}>:to=<{}>:pat=<els=[]>" 0.4834855)
+            }
+        )
+    })
+    
 )

@@ -1,21 +1,19 @@
 (define "Ko-app-paw-na_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (regionProximity region:0)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{}>:pat=<els=[-{0,0}]>" -9.260897E-5)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -0.012202629)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (regionProximity region:0)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[-{0,0}]>" -9.260897E-5)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -0.012202629)
+            }
+        )
+    })
+    
 )

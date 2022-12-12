@@ -1,26 +1,24 @@
 (define "Bheri Bakhri_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[e{}, f{0}]>" 1.8345642)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 1.717927)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0,0}, !-{1/4,-1/4}]>" 1.8225927)
-        (pair "rel:to=<{}>:pat=<els=[e{}]>" 1.3073138)
-        (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0,0}>:pat=<els=[]>" -3.1350315)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0}, !-{1/4,-1/4}]>" 0.15772165)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/2}, -{0,1/2,0,0}]>" 1.7505637)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[R0{0,1/4}]>" 0.019935068)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[f{0,0}]>" 2.468131)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,-1/4,1/4}, -{0,0,-1/2,0,0}]>" -0.48997182)
-        (pair "rel:last_to=<{0,0}>:from=<{0,0}>:pat=<els=[-{1/4}, !-{0,0,-1/4,1/4}]>" -1.4897735)
-        (pair "rel:last_to=<{0,0}>:from=<{0,0}>:to=<{}>:pat=<els=[-{1/4}, !-{0,0,-1/4,1/4}, -{0,0,-1/2,0,0}]>" 0.897151)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[e{}, f{0}]>" 1.8345642)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 1.717927)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0,0}, !-{1/4,-1/4}]>" 1.8225927)
+            (pair "rel:to=<{}>:pat=<els=[e{}]>" 1.3073138)
+            (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0,0}>:pat=<els=[]>" -3.1350315)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0}, !-{1/4,-1/4}]>" 0.15772165)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/2}, -{0,1/2,0,0}]>" 1.7505637)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[R0{0,1/4}]>" 0.019935068)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[f{0,0}]>" 2.468131)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,-1/4,1/4}, -{0,0,-1/2,0,0}]>" -0.48997182)
+            (pair "rel:last_to=<{0,0}>:from=<{0,0}>:pat=<els=[-{1/4}, !-{0,0,-1/4,1/4}]>" -1.4897735)
+            (pair "rel:last_to=<{0,0}>:from=<{0,0}>:to=<{}>:pat=<els=[-{1/4}, !-{0,0,-1/4,1/4}, -{0,0,-1/2,0,0}]>" 0.897151)
+            }
+        )
+    })
     
-
 )

@@ -1,13 +1,11 @@
 (define "Lam Turki_ai"
     
-        (bestAgent "UCT")
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!-{0,0,0,0}]>" -0.008908015)
-    }
-    )
-})
-
+    (bestAgent "UCT")
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!-{0,0,0,0}]>" -0.008908015)
+            }
+        )
+    })
     
-
 )

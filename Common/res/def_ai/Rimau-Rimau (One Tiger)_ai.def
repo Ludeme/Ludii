@@ -1,31 +1,29 @@
 (define "Rimau-Rimau (One Tiger)_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (material)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[N8{0}]>" 1.930099)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!e{0,0,1/8}, !-{0,0,1/4,0,0}]>" 1.2044646)
-        (pair "rel:last_from=<{0,1/8}>:from=<{}>:pat=<els=[]>" 0.090115406)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N4{-1/4,-1/4}, !e{0,0,-1/2,0,0,-1/4}, -{0,0,-1/2,0,1/2,0,-1/2,-3/8}, !e{0,0,-1/2,0,1/2,0,-1/2,0,0,0}]>" 2.316997)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{0}>:pat=<els=[f{1/4,-1/4}, !f{1/2}]>" -7.796238)
-        (pair "rel:to=<{}>:pat=<els=[f{3/8,0,0}, #{0,-1/8,0}]>" -0.2082019)
-        (pair "rel:last_to=<{0,1/8,1/4}>:to=<{0}>:pat=<els=[N8{1/4,-1/4}]>" -7.796238)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" 0.14029029)
-        (pair "rel:from=<{0}>:pat=<els=[f{3/8,0,0}, #{0,-1/2,-1/4,0}]>" -7.796238)
-        (pair "rel:last_to=<{1/8,0}>:from=<{}>:to=<{0}>:pat=<els=[]>" 0.09455858)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{3/8,0,0}, #{0,-1/2,-1/4,0}]>" 0.8337521)
-        (pair "rel:to=<{}>:pat=<els=[N8{0}]>" 0.004213268)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (material)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[N8{0}]>" 1.930099)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!e{0,0,1/8}, !-{0,0,1/4,0,0}]>" 1.2044646)
+            (pair "rel:last_from=<{0,1/8}>:from=<{}>:pat=<els=[]>" 0.090115406)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N4{-1/4,-1/4}, !e{0,0,-1/2,0,0,-1/4}, -{0,0,-1/2,0,1/2,0,-1/2,-3/8}, !e{0,0,-1/2,0,1/2,0,-1/2,0,0,0}]>" 2.316997)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{0}>:pat=<els=[f{1/4,-1/4}, !f{1/2}]>" -7.796238)
+            (pair "rel:to=<{}>:pat=<els=[f{3/8,0,0}, #{0,-1/8,0}]>" -0.2082019)
+            (pair "rel:last_to=<{0,1/8,1/4}>:to=<{0}>:pat=<els=[N8{1/4,-1/4}]>" -7.796238)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" 0.14029029)
+            (pair "rel:from=<{0}>:pat=<els=[f{3/8,0,0}, #{0,-1/2,-1/4,0}]>" -7.796238)
+            (pair "rel:last_to=<{1/8,0}>:from=<{}>:to=<{0}>:pat=<els=[]>" 0.09455858)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{3/8,0,0}, #{0,-1/2,-1/4,0}]>" 0.8337521)
+            (pair "rel:to=<{}>:pat=<els=[N8{0}]>" 0.004213268)
+            }
+        )
+    })
+    
 )

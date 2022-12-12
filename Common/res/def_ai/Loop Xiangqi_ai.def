@@ -1,31 +1,29 @@
 (define "Loop Xiangqi_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[I9{0,0,0,0}]>" -0.5935909)
-        (pair "rel:from=<{}>:pat=<els=[!e{0,1/4}]>" 1.7651684)
-        (pair "rel:to=<{}>:pat=<els=[I3{0,1/4}]>" -0.526734)
-        (pair "rel:from=<{}>:pat=<els=[!e{0,1/4}, !-{-1/4,0}]>" 1.9007083)
-        (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[R2{0,0,0,0}, R4{1/4,0}]>" -1.5159588)
-        (pair "rel:to=<{}>:pat=<els=[I5{0}]>" -1.2662351)
-        (pair "rel:to=<{}>:pat=<els=[e{0}]>" -0.37065792)
-        (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:last_from=<{1/4,1/4}>:to=<{}>:pat=<els=[f{0,0}]>" -0.8024158)
-        (pair "rel:to=<{}>:pat=<els=[!I3{}]>" -0.0011124401)
-        (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[]>" -0.5067117)
-        (pair "rel:to=<{}>:pat=<els=[e{1/4}, I9{0,-1/4}]>" 1.1777133)
-        (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}]>" 8.3676435E-4)
-        (pair "rel:from=<{}>:pat=<els=[#{0}, R2{1/2,0,0}]>" -1.7341251)
-        (pair "rel:to=<{}>:pat=<els=[f{0}]>" -0.19191422)
-        (pair "rel:to=<{}>:pat=<els=[I3{0,1/4}, #{0,-1/4}]>" 0.6716648)
-        (pair "rel:from=<{}>:pat=<els=[e{0,0}]>" 0.06885367)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[I9{0,0,0,0}]>" -0.5935909)
+            (pair "rel:from=<{}>:pat=<els=[!e{0,1/4}]>" 1.7651684)
+            (pair "rel:to=<{}>:pat=<els=[I3{0,1/4}]>" -0.526734)
+            (pair "rel:from=<{}>:pat=<els=[!e{0,1/4}, !-{-1/4,0}]>" 1.9007083)
+            (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[R2{0,0,0,0}, R4{1/4,0}]>" -1.5159588)
+            (pair "rel:to=<{}>:pat=<els=[I5{0}]>" -1.2662351)
+            (pair "rel:to=<{}>:pat=<els=[e{0}]>" -0.37065792)
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:last_from=<{1/4,1/4}>:to=<{}>:pat=<els=[f{0,0}]>" -0.8024158)
+            (pair "rel:to=<{}>:pat=<els=[!I3{}]>" -0.0011124401)
+            (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[]>" -0.5067117)
+            (pair "rel:to=<{}>:pat=<els=[e{1/4}, I9{0,-1/4}]>" 1.1777133)
+            (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}]>" 8.3676435E-4)
+            (pair "rel:from=<{}>:pat=<els=[#{0}, R2{1/2,0,0}]>" -1.7341251)
+            (pair "rel:to=<{}>:pat=<els=[f{0}]>" -0.19191422)
+            (pair "rel:to=<{}>:pat=<els=[I3{0,1/4}, #{0,-1/4}]>" 0.6716648)
+            (pair "rel:from=<{}>:pat=<els=[e{0,0}]>" 0.06885367)
+            }
+        )
+    })
     
-
 )

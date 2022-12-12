@@ -1,18 +1,16 @@
 (define "Shatranj Diwana Shah_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/2,0,0}, R0{1/2,1/4}, !-{0,0,0}]>" 0.18821168)
-        (pair "rel:from=<{}>:pat=<els=[R0{1/4,0,0}, #{0,0,1/4,-1/4}]>" 0.09474236)
-        (pair "rel:from=<{0,0,0,1/4,0,0}>:pat=<els=[!-{-1/4,0,0}, -{-1/2}, -{0,-1/4}, !R0{-1/4,-1/4}, !-{0,0,0,1/4,0,0,0,0,0}]>" -3.0510316)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{0,0,1/4}>:pat=<els=[f{-1/4,1/4}, #{0,0,1/4,-1/4,1/4}, I6{0,0,1/4,-1/2,0,0}]>" -0.73202324)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/2,0,0}, R0{1/2,1/4}, !-{0,0,0}]>" 0.18821168)
+            (pair "rel:from=<{}>:pat=<els=[R0{1/4,0,0}, #{0,0,1/4,-1/4}]>" 0.09474236)
+            (pair "rel:from=<{0,0,0,1/4,0,0}>:pat=<els=[!-{-1/4,0,0}, -{-1/2}, -{0,-1/4}, !R0{-1/4,-1/4}, !-{0,0,0,1/4,0,0,0,0,0}]>" -3.0510316)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{0,0,1/4}>:pat=<els=[f{-1/4,1/4}, #{0,0,1/4,-1/4,1/4}, I6{0,0,1/4,-1/2,0,0}]>" -0.73202324)
+            }
+        )
+    })
     
-
 )

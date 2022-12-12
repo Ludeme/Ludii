@@ -1,37 +1,35 @@
 (define "Wali_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!f{0,0}, f{0,1/4,1/4}, f{0,-1/2,-1/4,0}]>" 2.3449366)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{-1/4,1/4}, f{0,-1/4,0}]>" 2.333471)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,-1/4,-1/4}, f{0,-1/2,1/4,0}]>" 2.333471)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I3{1/4,0,0}, f{0,1/4,1/4}, f{0,-1/2,-1/4,0}]>" 2.9007213)
-        (pair "rel:to=<{}>:pat=<els=[!f{0,0}, f{0,1/4,1/4}, f{0,-1/2,-1/4,0}]>" 0.86751586)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/2}, f{-1/4,1/4}, f{0,-1/4,0}]>" 2.5794265)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!f{0,0}, f{0,1/4,1/4}]>" 1.2490842)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I3{1/4,0,0}, f{0,1/4,1/4}]>" 1.7301869)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I1{1/2,0}]>" 1.1148663)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I3{1/4,0,0}, !f{0,0}, f{0,1/4,1/4}]>" 1.7410597)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[I3{0,0,0}]>" 1.9603494)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0,0}]>" 1.9603494)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0}, I3{0,0,0}]>" 2.7956991)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}, f{0,0}, I3{0,0,0}]>" 3.040024)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[I1{0,1/4,-1/4}]>" 1.638497)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0}]>" 1.6158195)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}, I3{0,0,0}]>" 1.9753225)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0,0}, -{0,1/4,-1/4}]>" 1.9822329)
-        (pair "rel:to=<{}>:pat=<els=[#{0,1/4}]>" -0.41426745)
-        (pair "rel:to=<{}>:pat=<els=[#{0,1/4}, -{1/4,0,0,0}]>" -0.7602497)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 1.3323323)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}, f{0,0}]>" 1.5886087)
-        (pair "rel:to=<{}>:pat=<els=[#{0}]>" -0.41426745)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!f{0,0}, f{0,1/4,1/4}, f{0,-1/2,-1/4,0}]>" 2.3449366)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{-1/4,1/4}, f{0,-1/4,0}]>" 2.333471)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,-1/4,-1/4}, f{0,-1/2,1/4,0}]>" 2.333471)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I3{1/4,0,0}, f{0,1/4,1/4}, f{0,-1/2,-1/4,0}]>" 2.9007213)
+            (pair "rel:to=<{}>:pat=<els=[!f{0,0}, f{0,1/4,1/4}, f{0,-1/2,-1/4,0}]>" 0.86751586)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/2}, f{-1/4,1/4}, f{0,-1/4,0}]>" 2.5794265)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!f{0,0}, f{0,1/4,1/4}]>" 1.2490842)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I3{1/4,0,0}, f{0,1/4,1/4}]>" 1.7301869)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I1{1/2,0}]>" 1.1148663)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I3{1/4,0,0}, !f{0,0}, f{0,1/4,1/4}]>" 1.7410597)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[I3{0,0,0}]>" 1.9603494)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0,0}]>" 1.9603494)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0}, I3{0,0,0}]>" 2.7956991)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}, f{0,0}, I3{0,0,0}]>" 3.040024)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[I1{0,1/4,-1/4}]>" 1.638497)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0}]>" 1.6158195)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}, I3{0,0,0}]>" 1.9753225)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0,0}, -{0,1/4,-1/4}]>" 1.9822329)
+            (pair "rel:to=<{}>:pat=<els=[#{0,1/4}]>" -0.41426745)
+            (pair "rel:to=<{}>:pat=<els=[#{0,1/4}, -{1/4,0,0,0}]>" -0.7602497)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 1.3323323)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}, f{0,0}]>" 1.5886087)
+            (pair "rel:to=<{}>:pat=<els=[#{0}]>" -0.41426745)
+            }
+        )
+    })
     
-
 )

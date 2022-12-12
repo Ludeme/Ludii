@@ -1,32 +1,30 @@
 (define "Sig (El Oued Capture)_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0,1/4}]>" 1.3112849)
-        (pair "rel:from=<{}>:pat=<els=[-{0,0,0,0}]>" -0.046196956)
-        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!-{0,1/4,-1/2,-1/4}]>" 0.039568137)
-        (pair "rel:last_to=<{0,-1/2}>:to=<{}>:pat=<els=[#{0,0,-1/4}, -{0,1/4}]>" 1.3112849)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{1/4}, -{0,1/4}]>" 1.283708)
-        (pair "rel:from=<{}>:pat=<els=[!-{0,1/4,-1/2,-1/4}]>" 0.0)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{1/2}, -{0}]>" 1.4939313)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[e{}, -{0,1/4}]>" 1.8524411)
-        (pair "rel:to=<{}>:pat=<els=[e{}]>" 1.8760823)
-        (pair "rel:to=<{}>:pat=<els=[e{}, -{0,0}]>" 2.0072434)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0,0}]>" 2.6957123)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 2.6018934)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!#{0,0,0,0}]>" 2.5489478)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{1/2,0}, -{0,-1/4}]>" 2.8193998)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0,0,0}, -{0,1/4}]>" 2.67367)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0,0,0}, -{1/2,0}]>" 2.9540544)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0}, -{0,1/4}, -{0,-1/4,1/4}]>" 2.3691378)
-        (pair "rel:to=<{0}>:pat=<els=[-{0,1/4}, -{0,-1/4,1/4}]>" -0.15566619)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0,1/4}]>" 1.3112849)
+            (pair "rel:from=<{}>:pat=<els=[-{0,0,0,0}]>" -0.046196956)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!-{0,1/4,-1/2,-1/4}]>" 0.039568137)
+            (pair "rel:last_to=<{0,-1/2}>:to=<{}>:pat=<els=[#{0,0,-1/4}, -{0,1/4}]>" 1.3112849)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{1/4}, -{0,1/4}]>" 1.283708)
+            (pair "rel:from=<{}>:pat=<els=[!-{0,1/4,-1/2,-1/4}]>" 0.0)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{1/2}, -{0}]>" 1.4939313)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[e{}, -{0,1/4}]>" 1.8524411)
+            (pair "rel:to=<{}>:pat=<els=[e{}]>" 1.8760823)
+            (pair "rel:to=<{}>:pat=<els=[e{}, -{0,0}]>" 2.0072434)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0,0}]>" 2.6957123)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 2.6018934)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!#{0,0,0,0}]>" 2.5489478)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{1/2,0}, -{0,-1/4}]>" 2.8193998)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0,0,0}, -{0,1/4}]>" 2.67367)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0,0,0}, -{1/2,0}]>" 2.9540544)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0}, -{0,1/4}, -{0,-1/4,1/4}]>" 2.3691378)
+            (pair "rel:to=<{0}>:pat=<els=[-{0,1/4}, -{0,-1/4,1/4}]>" -0.15566619)
+            }
+        )
+    })
     
-
 )

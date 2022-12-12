@@ -1,39 +1,37 @@
 (define "Triodi (Diagonal)_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (lineCompletionHeuristic)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 2.6615233)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N8{0,-1/8}, f{0,-1/4}, f{0,1/4}]>" 2.8068686)
-        (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/2}]>" 1.7694653)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4}, f{0,1/4}]>" 2.7602396)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{}, f{0,-1/4}, f{0,1/4}]>" 2.8590758)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}]>" 1.5563939)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N8{0,-1/8}, f{0,1/4}]>" 1.4096801)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{3/8}]>" 1.4587489)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{}, f{0,1/4}]>" 1.335598)
-        (pair "rel:to=<{}>:pat=<els=[!-{1/2}, !-{0}, f{1/8,1/6}]>" 0.9577808)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{1/2,1/4}, f{0,3/8,0}, f{0,-1/2,1/2,1/3}]>" 2.4479315)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,3/8,0}, f{0,-1/2,1/2,1/3}]>" 2.4010026)
-        (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/2}]>" 1.4666935)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{1/2,1/4}, f{0,-1/2,1/2,1/3}]>" 1.0062977)
-        (pair "rel:from=<{}>:to=<{1/4}>:pat=<els=[N8{0,1/3}]>" 0.9742974)
-        (pair "rel:to=<{}>:pat=<els=[f{0,0}]>" 0.4940419)
-        (pair "rel:from=<{}>:pat=<els=[!e{1/2,1/4}, f{0,3/8,0}, f{0,-1/2,1/2,1/3}]>" 1.2665826)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{1/2,1/4}, f{0,3/8,0}]>" 0.9565375)
-        (pair "rel:to=<{}>:pat=<els=[-{0,1/6}, -{1/8}, -{0}]>" -0.32513383)
-        (pair "rel:from=<{}>:pat=<els=[N8{0,1/3}, !e{1/4,-1/2,-1/2,-1/8}]>" 0.8262874)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (lineCompletionHeuristic)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 2.6615233)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N8{0,-1/8}, f{0,-1/4}, f{0,1/4}]>" 2.8068686)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/2}]>" 1.7694653)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4}, f{0,1/4}]>" 2.7602396)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{}, f{0,-1/4}, f{0,1/4}]>" 2.8590758)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}]>" 1.5563939)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N8{0,-1/8}, f{0,1/4}]>" 1.4096801)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{3/8}]>" 1.4587489)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{}, f{0,1/4}]>" 1.335598)
+            (pair "rel:to=<{}>:pat=<els=[!-{1/2}, !-{0}, f{1/8,1/6}]>" 0.9577808)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{1/2,1/4}, f{0,3/8,0}, f{0,-1/2,1/2,1/3}]>" 2.4479315)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,3/8,0}, f{0,-1/2,1/2,1/3}]>" 2.4010026)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/2}]>" 1.4666935)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{1/2,1/4}, f{0,-1/2,1/2,1/3}]>" 1.0062977)
+            (pair "rel:from=<{}>:to=<{1/4}>:pat=<els=[N8{0,1/3}]>" 0.9742974)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0}]>" 0.4940419)
+            (pair "rel:from=<{}>:pat=<els=[!e{1/2,1/4}, f{0,3/8,0}, f{0,-1/2,1/2,1/3}]>" 1.2665826)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{1/2,1/4}, f{0,3/8,0}]>" 0.9565375)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/6}, -{1/8}, -{0}]>" -0.32513383)
+            (pair "rel:from=<{}>:pat=<els=[N8{0,1/3}, !e{1/4,-1/2,-1/2,-1/8}]>" 0.8262874)
+            }
+        )
+    })
+    
 )

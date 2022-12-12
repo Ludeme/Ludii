@@ -1,32 +1,30 @@
 (define "Arimaa_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (regionProximity region:1)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[-{0}]>" -0.042259187)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!I6{}, !e{0,1/2}]>" 0.027847152)
-        (pair "rel:to=<{}>:pat=<els=[-{1/4}, #{0,0}]>" -0.045299795)
-        (pair "rel:to=<{0}>:pat=<els=[R4{0}, I5{0,1/2,0,0}]>" 1.7057691)
-        (pair "rel:to=<{}>:pat=<els=[-{1/4}, !-{0,0}]>" -0.042456448)
-        (pair "rel:from=<{}>:pat=<els=[R4{0}, I5{0,1/2,0,0}]>" -0.00278258)
-        (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[R0{1/2,0}, #{0,1/4}]>" -0.5793631)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:pat=<els=[I1{0}]>" -0.33858415)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" -0.057197593)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[I1{0}]>" -1.6137851)
-        (pair "rel:last_from=<{0,1/4}>:from=<{}>:pat=<els=[]>" -0.15540059)
-        (pair "rel:from=<{}>:pat=<els=[!-{0}, -{0,0}]>" -0.15513706)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0}]>" -1.6281317)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (regionProximity region:1)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{0}]>" -0.042259187)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!I6{}, !e{0,1/2}]>" 0.027847152)
+            (pair "rel:to=<{}>:pat=<els=[-{1/4}, #{0,0}]>" -0.045299795)
+            (pair "rel:to=<{0}>:pat=<els=[R4{0}, I5{0,1/2,0,0}]>" 1.7057691)
+            (pair "rel:to=<{}>:pat=<els=[-{1/4}, !-{0,0}]>" -0.042456448)
+            (pair "rel:from=<{}>:pat=<els=[R4{0}, I5{0,1/2,0,0}]>" -0.00278258)
+            (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[R0{1/2,0}, #{0,1/4}]>" -0.5793631)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[I1{0}]>" -0.33858415)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" -0.057197593)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[I1{0}]>" -1.6137851)
+            (pair "rel:last_from=<{0,1/4}>:from=<{}>:pat=<els=[]>" -0.15540059)
+            (pair "rel:from=<{}>:pat=<els=[!-{0}, -{0,0}]>" -0.15513706)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0}]>" -1.6281317)
+            }
+        )
+    })
+    
 )

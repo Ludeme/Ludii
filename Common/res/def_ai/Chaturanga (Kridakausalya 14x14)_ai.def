@@ -1,24 +1,22 @@
 (define "Chaturanga (Kridakausalya 14x14)_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[I9{0,1/4}]>" -2.1447895)
-        (pair "rel:to=<{}>:pat=<els=[I1{0,1/4}]>" 0.3825143)
-        (pair "rel:to=<{}>:pat=<els=[I17{0}]>" -1.9039357)
-        (pair "rel:to=<{}>:pat=<els=[!e{0,0}]>" 0.0030570466)
-        (pair "rel:to=<{}>:pat=<els=[I1{0,0}]>" 0.6475856)
-        (pair "rel:to=<{}>:pat=<els=[I4{0}]>" -1.3279718)
-        (pair "rel:to=<{}>:pat=<els=[!I14{}]>" 4.3906982E-4)
-        (pair "rel:from=<{}>:pat=<els=[I12{0,0,0}]>" -3.453382)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
-        (pair "rel:from=<{}>:pat=<els=[!f{0,0}]>" 0.0030699035)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[I9{0,1/4}]>" -2.1447895)
+            (pair "rel:to=<{}>:pat=<els=[I1{0,1/4}]>" 0.3825143)
+            (pair "rel:to=<{}>:pat=<els=[I17{0}]>" -1.9039357)
+            (pair "rel:to=<{}>:pat=<els=[!e{0,0}]>" 0.0030570466)
+            (pair "rel:to=<{}>:pat=<els=[I1{0,0}]>" 0.6475856)
+            (pair "rel:to=<{}>:pat=<els=[I4{0}]>" -1.3279718)
+            (pair "rel:to=<{}>:pat=<els=[!I14{}]>" 4.3906982E-4)
+            (pair "rel:from=<{}>:pat=<els=[I12{0,0,0}]>" -3.453382)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:from=<{}>:pat=<els=[!f{0,0}]>" 0.0030699035)
+            }
+        )
+    })
     
-
 )

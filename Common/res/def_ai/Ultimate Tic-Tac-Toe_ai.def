@@ -1,110 +1,108 @@
 (define "Ultimate Tic-Tac-Toe_ai"
     
-        (bestAgent "ProgressiveHistory")
-        trainedHeuristics:(heuristics {
-    (regionProximity region:5)
-    (centreProximity pieceWeights:{
-        (pair "Disc" -0.4858806)
-        (pair "Disc1" -0.4858806)
-        (pair "DiscLarge1" 0.4222665)
-        (pair "Cross2" -0.3209204)
-        (pair "CrossLarge2" 0.7235462)
+    (bestAgent "ProgressiveHistory")
+    trainedHeuristics:(heuristics {
+        (regionProximity region:5)
+        (centreProximity pieceWeights:{
+            (pair "Disc" -0.4858806)
+            (pair "Disc1" -0.4858806)
+            (pair "DiscLarge1" 0.4222665)
+            (pair "Cross2" -0.3209204)
+            (pair "CrossLarge2" 0.7235462)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Disc" -0.033474367)
+            (pair "Disc1" -0.033474367)
+            (pair "DiscLarge1" -0.45188937)
+            (pair "CrossLarge2" -0.2228314)
+        })
+        (lineCompletionHeuristic weight:0.026748028)
+        (material pieceWeights:{
+            (pair "Disc" -0.10880762)
+            (pair "Disc1" -0.10880762)
+            (pair "DiscLarge1" 0.014857029)
+            (pair "Cross2" 0.16790992)
+        })
+        (mobilitySimple weight:0.019473562)
+        (playerSiteMapCount weight:0.14389153)
+        (regionProximity region:1 pieceWeights:{
+            (pair "Disc" -0.03836671)
+            (pair "Disc1" -0.03836671)
+            (pair "DiscLarge1" 0.014857029)
+            (pair "Cross2" -0.4430419)
+        })
+        (regionProximity region:2 pieceWeights:{
+            (pair "Disc" 0.19480363)
+            (pair "Disc1" 0.19480363)
+            (pair "DiscLarge1" 0.014857029)
+            (pair "Cross2" 0.2191279)
+        })
+        (regionProximity region:3 pieceWeights:{
+            (pair "Disc" 0.16601548)
+            (pair "Disc1" 0.16601548)
+            (pair "DiscLarge1" 0.014857029)
+        })
+        (regionProximity region:4 pieceWeights:{
+            (pair "Disc" 0.47382766)
+            (pair "Disc1" 0.47382766)
+            (pair "DiscLarge1" 0.014857029)
+            (pair "Cross2" 0.16395041)
+        })
+        (regionProximity region:6 pieceWeights:{
+            (pair "Disc" -0.07178062)
+            (pair "Disc1" -0.07178062)
+            (pair "DiscLarge1" 0.014857029)
+            (pair "Cross2" -0.29018432)
+        })
+        (regionProximity region:7 pieceWeights:{
+            (pair "Disc" -0.21855748)
+            (pair "Disc1" -0.21855748)
+            (pair "DiscLarge1" 0.014857029)
+            (pair "Cross2" 0.1795403)
+        })
+        (regionProximity region:8 pieceWeights:{
+            (pair "Disc" 0.27107984)
+            (pair "Disc1" 0.27107984)
+            (pair "DiscLarge1" 0.014857029)
+            (pair "Cross2" -0.3637504)
+        })
+        (regionProximity region:9 pieceWeights:{
+            (pair "Disc" 0.1617229)
+            (pair "Disc1" 0.1617229)
+            (pair "DiscLarge1" 0.014857029)
+            (pair "Cross2" 0.29127058)
+        })
+        (sidesProximity pieceWeights:{
+            (pair "Disc" 0.015990175)
+            (pair "Disc1" 0.015990175)
+            (pair "DiscLarge1" -0.3075823)
+            (pair "Cross2" 0.25919318)
+            (pair "CrossLarge2" -0.62577176)
+        })
     })
-    (cornerProximity pieceWeights:{
-        (pair "Disc" -0.033474367)
-        (pair "Disc1" -0.033474367)
-        (pair "DiscLarge1" -0.45188937)
-        (pair "CrossLarge2" -0.2228314)
-    })
-    (lineCompletionHeuristic weight:0.026748028)
-    (material pieceWeights:{
-        (pair "Disc" -0.10880762)
-        (pair "Disc1" -0.10880762)
-        (pair "DiscLarge1" 0.014857029)
-        (pair "Cross2" 0.16790992)
-    })
-    (mobilitySimple weight:0.019473562)
-    (playerSiteMapCount weight:0.14389153)
-    (regionProximity region:1 pieceWeights:{
-        (pair "Disc" -0.03836671)
-        (pair "Disc1" -0.03836671)
-        (pair "DiscLarge1" 0.014857029)
-        (pair "Cross2" -0.4430419)
-    })
-    (regionProximity region:2 pieceWeights:{
-        (pair "Disc" 0.19480363)
-        (pair "Disc1" 0.19480363)
-        (pair "DiscLarge1" 0.014857029)
-        (pair "Cross2" 0.2191279)
-    })
-    (regionProximity region:3 pieceWeights:{
-        (pair "Disc" 0.16601548)
-        (pair "Disc1" 0.16601548)
-        (pair "DiscLarge1" 0.014857029)
-    })
-    (regionProximity region:4 pieceWeights:{
-        (pair "Disc" 0.47382766)
-        (pair "Disc1" 0.47382766)
-        (pair "DiscLarge1" 0.014857029)
-        (pair "Cross2" 0.16395041)
-    })
-    (regionProximity region:6 pieceWeights:{
-        (pair "Disc" -0.07178062)
-        (pair "Disc1" -0.07178062)
-        (pair "DiscLarge1" 0.014857029)
-        (pair "Cross2" -0.29018432)
-    })
-    (regionProximity region:7 pieceWeights:{
-        (pair "Disc" -0.21855748)
-        (pair "Disc1" -0.21855748)
-        (pair "DiscLarge1" 0.014857029)
-        (pair "Cross2" 0.1795403)
-    })
-    (regionProximity region:8 pieceWeights:{
-        (pair "Disc" 0.27107984)
-        (pair "Disc1" 0.27107984)
-        (pair "DiscLarge1" 0.014857029)
-        (pair "Cross2" -0.3637504)
-    })
-    (regionProximity region:9 pieceWeights:{
-        (pair "Disc" 0.1617229)
-        (pair "Disc1" 0.1617229)
-        (pair "DiscLarge1" 0.014857029)
-        (pair "Cross2" 0.29127058)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "Disc" 0.015990175)
-        (pair "Disc1" 0.015990175)
-        (pair "DiscLarge1" -0.3075823)
-        (pair "Cross2" 0.25919318)
-        (pair "CrossLarge2" -0.62577176)
-    })
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[f{-1/2}, R7{0,-1/4}, !R3{0,1/4}]>" 0.12776929)
-        (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0,0}, !R3{1/2,1/4}]>" 0.39896622)
-        (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}, !f{1/2,0}, !I1{0}, !I3{1/2,1/4}, !I1{1/4,0}]>" -0.035158027)
-        (pair "rel:to=<{}>:pat=<els=[f{0}, R7{1/2,-1/4}, f{0,0,0}, !R3{1/2,1/4}]>" 0.42747042)
-        (pair "rel:to=<{}>:pat=<els=[!f{1/4,0}, !I1{-1/4}, !I3{1/4,1/4}, !I1{0,0}, !I1{-1/2}, !I3{0,1/4}]>" -0.026756)
-        (pair "rel:to=<{}>:pat=<els=[I1{0,0,0}, e{1/4}]>" 0.31293553)
-        (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}, !f{1/2,0}, !I1{0}, !I3{1/2,1/4}, !I3{1/4,1/4}]>" -0.042380054)
-        (pair "rel:to=<{}>:pat=<els=[#{0,0,0,0}]>" -0.013169629)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[!R4{1/4,-1/4}, R2{0,1/4}, !R3{1/2,-1/4}, R9{-1/4,0,0}]>" 0.26812086)
-        (pair "rel:last_to=<{1/4,0}>:to=<{}>:pat=<els=[R8{0,0,0,0}, R5{0,1/4}]>" 0.46665788)
-        (pair "rel:to=<{}>:pat=<els=[!R2{-1/2,-1/4}, !R2{0,1/4}, -{0,0,0}]>" 0.016926195)
-        (pair "rel:to=<{}>:pat=<els=[!R3{0,1/4}]>" 0.048695534)
-        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[!R4{1/4,-1/4}, !R3{1/2,-1/4}]>" -0.027240938)
-        (pair "rel:last_to=<{1/4,0}>:to=<{}>:pat=<els=[!R4{1/2,-1/4}, R9{0,0,0}]>" -0.13541768)
-        (pair "rel:to=<{}>:pat=<els=[#{-1/4}, !R1{0,1/4}]>" 0.031985853)
-    }
-    )
-})
-
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{-1/2}, R7{0,-1/4}, !R3{0,1/4}]>" 0.12776929)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0,0}, !R3{1/2,1/4}]>" 0.39896622)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}, !f{1/2,0}, !I1{0}, !I3{1/2,1/4}, !I1{1/4,0}]>" -0.035158027)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, R7{1/2,-1/4}, f{0,0,0}, !R3{1/2,1/4}]>" 0.42747042)
+            (pair "rel:to=<{}>:pat=<els=[!f{1/4,0}, !I1{-1/4}, !I3{1/4,1/4}, !I1{0,0}, !I1{-1/2}, !I3{0,1/4}]>" -0.026756)
+            (pair "rel:to=<{}>:pat=<els=[I1{0,0,0}, e{1/4}]>" 0.31293553)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}, !f{1/2,0}, !I1{0}, !I3{1/2,1/4}, !I3{1/4,1/4}]>" -0.042380054)
+            (pair "rel:to=<{}>:pat=<els=[#{0,0,0,0}]>" -0.013169629)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[!R4{1/4,-1/4}, R2{0,1/4}, !R3{1/2,-1/4}, R9{-1/4,0,0}]>" 0.26812086)
+            (pair "rel:last_to=<{1/4,0}>:to=<{}>:pat=<els=[R8{0,0,0,0}, R5{0,1/4}]>" 0.46665788)
+            (pair "rel:to=<{}>:pat=<els=[!R2{-1/2,-1/4}, !R2{0,1/4}, -{0,0,0}]>" 0.016926195)
+            (pair "rel:to=<{}>:pat=<els=[!R3{0,1/4}]>" 0.048695534)
+            (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[!R4{1/4,-1/4}, !R3{1/2,-1/4}]>" -0.027240938)
+            (pair "rel:last_to=<{1/4,0}>:to=<{}>:pat=<els=[!R4{1/2,-1/4}, R9{0,0,0}]>" -0.13541768)
+            (pair "rel:to=<{}>:pat=<els=[#{-1/4}, !R1{0,1/4}]>" 0.031985853)
+            }
+        )
+    })
+    
 )

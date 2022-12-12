@@ -1,1351 +1,1313 @@
 (define "Senet_ai"
-(useFor { "Ruleset/Kendall (Scholarly)" }
-    
+    (useFor { "Ruleset/Kendall (Scholarly)" }
+        
         (bestAgent "Biased MCTS")
         trainedHeuristics:(heuristics {
-    (influence)
-})
-
+            (influence)
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{-1/4,0}, !R2{0,0}, -{0,0}, !-{0,1/4}]>" 0.44214106)
-        (pair "rel:to=<{}>:pat=<els=[-{-1/4,0}, !R2{0,0}, !R0{-1/4,1/4}, -{0,0}, !-{0,1/4}, !R5{0,-1/4}]>" 0.43408695)
-        (pair "rel:last_from=<{1/4,1/4,1/4}>:to=<{}>:pat=<els=[!R3{0,-1/4}]>" -0.2940748)
-        (pair "rel:to=<{}>:pat=<els=[f{1/2,0,0,0}, !R5{0,0}]>" 0.13409631)
-        (pair "rel:to=<{}>:pat=<els=[]>" 2.1666664E-4)
-        (pair "rel:to=<{}>:pat=<els=[!R0{0,0}]>" 0.010896509)
-        (pair "rel:to=<{}>:pat=<els=[f{1/4,0,0,0}, !R1{0,0}]>" 0.49055216)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{-1/4,0}, !R2{0,0}, -{0,0}, !-{0,1/4}]>" 0.44214106)
+                (pair "rel:to=<{}>:pat=<els=[-{-1/4,0}, !R2{0,0}, !R0{-1/4,1/4}, -{0,0}, !-{0,1/4}, !R5{0,-1/4}]>" 0.43408695)
+                (pair "rel:last_from=<{1/4,1/4,1/4}>:to=<{}>:pat=<els=[!R3{0,-1/4}]>" -0.2940748)
+                (pair "rel:to=<{}>:pat=<els=[f{1/2,0,0,0}, !R5{0,0}]>" 0.13409631)
+                (pair "rel:to=<{}>:pat=<els=[]>" 2.1666664E-4)
+                (pair "rel:to=<{}>:pat=<els=[!R0{0,0}]>" 0.010896509)
+                (pair "rel:to=<{}>:pat=<els=[f{1/4,0,0,0}, !R1{0,0}]>" 0.49055216)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{}>:from=<{0}>:to=<{}>:pat=<els=[!e{0,0,1/4}]>" 0.56790704)
+                (pair "rel:from=<{1/2}>:to=<{}>:pat=<els=[-{0,0,0}, !R2{0,0,0,0}, !e{1/2,-1/4,0,0,0}]>" 0.19332542)
+                (pair "rel:last_to=<{0,0,0}>:from=<{0,0,0}>:pat=<els=[R3{0,1/4}, !R5{1/4,0}]>" 0.07898219)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[R4{0}, -{0,0,0}, !R2{0,0,0,0}]>" 0.6115462)
+                (pair "rel:last_to=<{}>:from=<{0}>:to=<{}>:pat=<els=[R4{1/2}, !e{0,1/4,0,0,0}]>" 0.85338527)
+                (pair "rel:last_to=<{}>:from=<{}>:to=<{0,0}>:pat=<els=[R7{-1/4,0}, #{0,0,1/4}]>" 0.8900644)
+                (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[!R6{0,0,0}]>" -1.0801295)
+                (pair "rel:last_to=<{}>:from=<{1/2}>:to=<{}>:pat=<els=[R4{0}, !R2{0,0,0,0}, !e{1/2,-1/4,0,0,0}]>" 0.884558)
+                (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[R3{0,1/4}, !R5{1/4,0}]>" 0.49441466)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:last_to=<{}>:from=<{0}>:to=<{}>:pat=<els=[!e{0,0,1/4}]>" 0.56790704)
-        (pair "rel:from=<{1/2}>:to=<{}>:pat=<els=[-{0,0,0}, !R2{0,0,0,0}, !e{1/2,-1/4,0,0,0}]>" 0.19332542)
-        (pair "rel:last_to=<{0,0,0}>:from=<{0,0,0}>:pat=<els=[R3{0,1/4}, !R5{1/4,0}]>" 0.07898219)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[R4{0}, -{0,0,0}, !R2{0,0,0,0}]>" 0.6115462)
-        (pair "rel:last_to=<{}>:from=<{0}>:to=<{}>:pat=<els=[R4{1/2}, !e{0,1/4,0,0,0}]>" 0.85338527)
-        (pair "rel:last_to=<{}>:from=<{}>:to=<{0,0}>:pat=<els=[R7{-1/4,0}, #{0,0,1/4}]>" 0.8900644)
-        (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[!R6{0,0,0}]>" -1.0801295)
-        (pair "rel:last_to=<{}>:from=<{1/2}>:to=<{}>:pat=<els=[R4{0}, !R2{0,0,0,0}, !e{1/2,-1/4,0,0,0}]>" 0.884558)
-        (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[R3{0,1/4}, !R5{1/4,0}]>" 0.49441466)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/Kendall Five Pieces (Scholarly)" }
-    
+    (useFor { "Ruleset/Kendall Five Pieces (Scholarly)" }
+        
         (bestAgent "Biased MCTS (Uniform Playouts)")
         trainedHeuristics:(heuristics {
-    (mobilitySimple weight:0.025331752)
-    (centreProximity pieceWeights:{
-        (pair "SenetPiece1" -0.20444703)
-        (pair "SenetPiece2" 0.5516502)
-    })
-    (cornerProximity pieceWeights:{
-        (pair "SenetPiece1" -0.05444947)
-        (pair "SenetPiece2" 0.026978062)
-    })
-    (lineCompletionHeuristic weight:0.041407432)
-    (material pieceWeights:{
-        (pair "SenetPiece1" -0.19563702)
-        (pair "SenetPiece2" -0.10696431)
-    })
-    (influence weight:-1.1986558)
-    (playerSiteMapCount weight:0.09935923)
-    (regionProximity region:0 pieceWeights:{
-        (pair "SenetPiece1" 0.17346525)
-        (pair "SenetPiece2" -0.24460761)
-    })
-    (regionProximity region:1 pieceWeights:{
-        (pair "SenetPiece1" -0.024828667)
-        (pair "SenetPiece2" -0.27335075)
-    })
-    (regionProximity region:2 pieceWeights:{
-        (pair "SenetPiece1" 0.5974782)
-        (pair "SenetPiece2" -0.30392286)
-    })
-    (regionProximity region:3 pieceWeights:{
-        (pair "SenetPiece1" -0.063492686)
-        (pair "SenetPiece2" -0.2628162)
-    })
-    (regionProximity region:4 pieceWeights:{
-        (pair "SenetPiece1" -0.51249045)
-        (pair "SenetPiece2" 0.4687984)
-    })
-    (regionProximity region:5 pieceWeights:{
-        (pair "SenetPiece1" 0.38720438)
-        (pair "SenetPiece2" -0.1220181)
-    })
-    (regionProximity region:6 pieceWeights:{
-        (pair "SenetPiece1" 0.054811943)
-        (pair "SenetPiece2" 0.0575799)
-    })
-    (regionProximity region:7 pieceWeights:{
-        (pair "SenetPiece1" -0.15064381)
-        (pair "SenetPiece2" -0.21285075)
-    })
-    (regionProximity region:8 pieceWeights:{
-        (pair "SenetPiece1" 0.19356342)
-        (pair "SenetPiece2" 0.02763695)
-    })
-    (regionProximity region:9 pieceWeights:{
-        (pair "SenetPiece1" 0.04835326)
-        (pair "SenetPiece2" 0.033904426)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "SenetPiece1" 0.07681809)
-        (pair "SenetPiece2" 0.04405238)
-    })
-})
-
+            (mobilitySimple weight:0.025331752)
+            (centreProximity pieceWeights:{
+                (pair "SenetPiece1" -0.20444703)
+                (pair "SenetPiece2" 0.5516502)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "SenetPiece1" -0.05444947)
+                (pair "SenetPiece2" 0.026978062)
+            })
+            (lineCompletionHeuristic weight:0.041407432)
+            (material pieceWeights:{
+                (pair "SenetPiece1" -0.19563702)
+                (pair "SenetPiece2" -0.10696431)
+            })
+            (influence weight:-1.1986558)
+            (playerSiteMapCount weight:0.09935923)
+            (regionProximity region:0 pieceWeights:{
+                (pair "SenetPiece1" 0.17346525)
+                (pair "SenetPiece2" -0.24460761)
+            })
+            (regionProximity region:1 pieceWeights:{
+                (pair "SenetPiece1" -0.024828667)
+                (pair "SenetPiece2" -0.27335075)
+            })
+            (regionProximity region:2 pieceWeights:{
+                (pair "SenetPiece1" 0.5974782)
+                (pair "SenetPiece2" -0.30392286)
+            })
+            (regionProximity region:3 pieceWeights:{
+                (pair "SenetPiece1" -0.063492686)
+                (pair "SenetPiece2" -0.2628162)
+            })
+            (regionProximity region:4 pieceWeights:{
+                (pair "SenetPiece1" -0.51249045)
+                (pair "SenetPiece2" 0.4687984)
+            })
+            (regionProximity region:5 pieceWeights:{
+                (pair "SenetPiece1" 0.38720438)
+                (pair "SenetPiece2" -0.1220181)
+            })
+            (regionProximity region:6 pieceWeights:{
+                (pair "SenetPiece1" 0.054811943)
+                (pair "SenetPiece2" 0.0575799)
+            })
+            (regionProximity region:7 pieceWeights:{
+                (pair "SenetPiece1" -0.15064381)
+                (pair "SenetPiece2" -0.21285075)
+            })
+            (regionProximity region:8 pieceWeights:{
+                (pair "SenetPiece1" 0.19356342)
+                (pair "SenetPiece2" 0.02763695)
+            })
+            (regionProximity region:9 pieceWeights:{
+                (pair "SenetPiece1" 0.04835326)
+                (pair "SenetPiece2" 0.033904426)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "SenetPiece1" 0.07681809)
+                (pair "SenetPiece2" 0.04405238)
+            })
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[f{1/4}, R4{0}]>" 0.12636407)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{1/2}]>" 0.519203)
-        (pair "rel:to=<{}>:pat=<els=[f{0,0,0,0}, R1{0,1/4}]>" 0.117097184)
-        (pair "rel:to=<{}>:pat=<els=[-{1/4}, !R1{0,1/4}]>" -0.032307997)
-        (pair "rel:to=<{0,0}>:pat=<els=[e{1/2}]>" -1.7355694)
-        (pair "rel:from=<{0,0}>:pat=<els=[#{0,0,0}]>" -1.7355694)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[f{1/4}, R4{0}]>" 0.12636407)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{1/2}]>" 0.519203)
+                (pair "rel:to=<{}>:pat=<els=[f{0,0,0,0}, R1{0,1/4}]>" 0.117097184)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4}, !R1{0,1/4}]>" -0.032307997)
+                (pair "rel:to=<{0,0}>:pat=<els=[e{1/2}]>" -1.7355694)
+                (pair "rel:from=<{0,0}>:pat=<els=[#{0,0,0}]>" -1.7355694)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}, R1{1/4}]>" 0.1566985)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[R5{1/2,0}, !R6{0,1/4}, R1{1/4}]>" 0.9685139)
+                (pair "rel:from=<{0}>:pat=<els=[R7{-1/2,-1/4}, R1{1/4}, !-{-1/4,1/4}, -{0,-1/2,0,0}]>" -0.48769218)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,0}, R1{0}]>" 0.1566985)
+                (pair "rel:to=<{}>:pat=<els=[e{0,0}, R3{1/4,-1/4}, !-{1/2,-1/4}]>" 0.20481786)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{-1/4,1/4}, -{0,-1/2,0,0}]>" -0.08331466)
+                (pair "rel:to=<{}>:pat=<els=[R5{1/4,0}, -{0}, R1{0}, !-{-1/2,1/4}]>" 0.14038713)
+                (pair "rel:from=<{0}>:pat=<els=[R7{-1/2,-1/4}, !-{-1/4,1/4}, -{0,-1/2,0,0}]>" -0.48769218)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[!-{0,1/4}]>" 0.1197693)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[e{0,0}, -{0}, R3{1/4,-1/4}]>" 0.27879035)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[-{0,0}, R1{1/4}]>" 0.1566985)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[R5{1/2,0}, !R6{0,1/4}, R1{1/4}]>" 0.9685139)
-        (pair "rel:from=<{0}>:pat=<els=[R7{-1/2,-1/4}, R1{1/4}, !-{-1/4,1/4}, -{0,-1/2,0,0}]>" -0.48769218)
-        (pair "rel:to=<{}>:pat=<els=[-{1/4,0}, R1{0}]>" 0.1566985)
-        (pair "rel:to=<{}>:pat=<els=[e{0,0}, R3{1/4,-1/4}, !-{1/2,-1/4}]>" 0.20481786)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{-1/4,1/4}, -{0,-1/2,0,0}]>" -0.08331466)
-        (pair "rel:to=<{}>:pat=<els=[R5{1/4,0}, -{0}, R1{0}, !-{-1/2,1/4}]>" 0.14038713)
-        (pair "rel:from=<{0}>:pat=<els=[R7{-1/2,-1/4}, !-{-1/4,1/4}, -{0,-1/2,0,0}]>" -0.48769218)
-        (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[!-{0,1/4}]>" 0.1197693)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[e{0,0}, -{0}, R3{1/4,-1/4}]>" 0.27879035)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/Kendall Trap (Scholarly)" }
-    
+    (useFor { "Ruleset/Kendall Trap (Scholarly)" }
+        
         (bestAgent "Biased MCTS (Uniform Playouts)")
         trainedHeuristics:(heuristics {
-    (influence weight:2.2101781)
-    (centreProximity pieceWeights:{
-        (pair "SenetPiece1" -0.85952103)
-        (pair "SenetPiece2" -0.54550177)
-    })
-    (cornerProximity pieceWeights:{
-        (pair "SenetPiece1" 0.08051815)
-        (pair "SenetPiece2" -0.011724306)
-    })
-    (lineCompletionHeuristic weight:-0.065487154)
-    (material pieceWeights:{
-        (pair "SenetPiece1" 0.19307135)
-        (pair "SenetPiece2" -0.13255411)
-    })
-    (mobilitySimple weight:-0.039782338)
-    (playerSiteMapCount weight:-0.025490498)
-    (regionProximity region:0 pieceWeights:{
-        (pair "SenetPiece1" 0.03624137)
-    })
-    (regionProximity region:1 pieceWeights:{
-        (pair "SenetPiece1" 0.31641516)
-        (pair "SenetPiece2" -0.39977902)
-    })
-    (regionProximity region:2 pieceWeights:{
-        (pair "SenetPiece1" -0.07076381)
-        (pair "SenetPiece2" 0.79914266)
-    })
-    (regionProximity region:3 pieceWeights:{
-        (pair "SenetPiece1" 0.2477379)
-        (pair "SenetPiece2" 0.4831831)
-    })
-    (regionProximity region:4 pieceWeights:{
-        (pair "SenetPiece1" -0.46726152)
-        (pair "SenetPiece2" 0.46557432)
-    })
-    (regionProximity region:5 pieceWeights:{
-        (pair "SenetPiece1" 0.58700335)
-        (pair "SenetPiece2" -0.13112794)
-    })
-    (regionProximity region:6 pieceWeights:{
-        (pair "SenetPiece1" -0.44736743)
-        (pair "SenetPiece2" -0.5161203)
-    })
-    (regionProximity region:7 pieceWeights:{
-        (pair "SenetPiece1" 0.058805835)
-        (pair "SenetPiece2" -0.17005767)
-    })
-    (regionProximity region:8 pieceWeights:{
-        (pair "SenetPiece1" -0.21953994)
-        (pair "SenetPiece2" 0.13779059)
-    })
-    (regionProximity region:9 pieceWeights:{
-        (pair "SenetPiece1" 0.23543437)
-        (pair "SenetPiece2" -0.24166617)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "SenetPiece1" -0.2738181)
-        (pair "SenetPiece2" 0.14556248)
-    })
-})
-
+            (influence weight:2.2101781)
+            (centreProximity pieceWeights:{
+                (pair "SenetPiece1" -0.85952103)
+                (pair "SenetPiece2" -0.54550177)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "SenetPiece1" 0.08051815)
+                (pair "SenetPiece2" -0.011724306)
+            })
+            (lineCompletionHeuristic weight:-0.065487154)
+            (material pieceWeights:{
+                (pair "SenetPiece1" 0.19307135)
+                (pair "SenetPiece2" -0.13255411)
+            })
+            (mobilitySimple weight:-0.039782338)
+            (playerSiteMapCount weight:-0.025490498)
+            (regionProximity region:0 pieceWeights:{
+                (pair "SenetPiece1" 0.03624137)
+            })
+            (regionProximity region:1 pieceWeights:{
+                (pair "SenetPiece1" 0.31641516)
+                (pair "SenetPiece2" -0.39977902)
+            })
+            (regionProximity region:2 pieceWeights:{
+                (pair "SenetPiece1" -0.07076381)
+                (pair "SenetPiece2" 0.79914266)
+            })
+            (regionProximity region:3 pieceWeights:{
+                (pair "SenetPiece1" 0.2477379)
+                (pair "SenetPiece2" 0.4831831)
+            })
+            (regionProximity region:4 pieceWeights:{
+                (pair "SenetPiece1" -0.46726152)
+                (pair "SenetPiece2" 0.46557432)
+            })
+            (regionProximity region:5 pieceWeights:{
+                (pair "SenetPiece1" 0.58700335)
+                (pair "SenetPiece2" -0.13112794)
+            })
+            (regionProximity region:6 pieceWeights:{
+                (pair "SenetPiece1" -0.44736743)
+                (pair "SenetPiece2" -0.5161203)
+            })
+            (regionProximity region:7 pieceWeights:{
+                (pair "SenetPiece1" 0.058805835)
+                (pair "SenetPiece2" -0.17005767)
+            })
+            (regionProximity region:8 pieceWeights:{
+                (pair "SenetPiece1" -0.21953994)
+                (pair "SenetPiece2" 0.13779059)
+            })
+            (regionProximity region:9 pieceWeights:{
+                (pair "SenetPiece1" 0.23543437)
+                (pair "SenetPiece2" -0.24166617)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "SenetPiece1" -0.2738181)
+                (pair "SenetPiece2" 0.14556248)
+            })
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{0,0,0}>:to=<{}>:pat=<els=[-{0,0}, e{0,0,0,0,0,0}]>" -0.18575554)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}, R8{-1/2,-1/4}, R3{0}, !R0{1/4,1/4}]>" 0.819755)
-        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[R8{-1/4,1/4}, R3{1/4}, !R0{0,-1/4}]>" 0.94844437)
-        (pair "rel:to=<{}>:pat=<els=[R8{1/2,1/4}, R3{0}]>" 0.71430165)
-        (pair "rel:to=<{}>:pat=<els=[e{0,0,0,0,0,0}]>" -0.1529391)
-        (pair "rel:to=<{}>:pat=<els=[R8{0,1/4}, !R0{1/4,-1/4}]>" 0.29069188)
-        (pair "rel:to=<{}>:pat=<els=[R3{0}, -{1/2,0,0}]>" 0.6694829)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0,0,0}>:to=<{}>:pat=<els=[-{0,0}, e{0,0,0,0,0,0}]>" -0.18575554)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}, R8{-1/2,-1/4}, R3{0}, !R0{1/4,1/4}]>" 0.819755)
+                (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[R8{-1/4,1/4}, R3{1/4}, !R0{0,-1/4}]>" 0.94844437)
+                (pair "rel:to=<{}>:pat=<els=[R8{1/2,1/4}, R3{0}]>" 0.71430165)
+                (pair "rel:to=<{}>:pat=<els=[e{0,0,0,0,0,0}]>" -0.1529391)
+                (pair "rel:to=<{}>:pat=<els=[R8{0,1/4}, !R0{1/4,-1/4}]>" 0.29069188)
+                (pair "rel:to=<{}>:pat=<els=[R3{0}, -{1/2,0,0}]>" 0.6694829)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[!R6{1/4,-1/4}, !-{-1/4,1/4}]>" -0.62914026)
+                (pair "rel:to=<{}>:pat=<els=[!e{0,1/4}, R2{1/4}, !f{1/2,1/4}]>" -0.053163376)
+                (pair "rel:to=<{}>:pat=<els=[!f{-1/4}, !R4{0,0}, !e{1/2,1/4}, R2{-1/4}, !f{0,1/4}]>" -0.09309233)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[f{-1/4,1/4}, #{0,0,0,-1/4}]>" -0.3351139)
+                (pair "rel:to=<{}>:pat=<els=[!e{0}, R2{1/4}]>" -0.035335194)
+                (pair "rel:to=<{}>:pat=<els=[e{1/2}, !-{0,1/4}]>" -0.02612492)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[!R6{1/4,-1/4}, !-{-1/4,1/4}]>" -0.62914026)
-        (pair "rel:to=<{}>:pat=<els=[!e{0,1/4}, R2{1/4}, !f{1/2,1/4}]>" -0.053163376)
-        (pair "rel:to=<{}>:pat=<els=[!f{-1/4}, !R4{0,0}, !e{1/2,1/4}, R2{-1/4}, !f{0,1/4}]>" -0.09309233)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[f{-1/4,1/4}, #{0,0,0,-1/4}]>" -0.3351139)
-        (pair "rel:to=<{}>:pat=<els=[!e{0}, R2{1/4}]>" -0.035335194)
-        (pair "rel:to=<{}>:pat=<els=[e{1/2}, !-{0,1/4}]>" -0.02612492)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/Kendall Home Row (Scholarly)" }
-    
+    (useFor { "Ruleset/Kendall Home Row (Scholarly)" }
+        
         (bestAgent "Biased MCTS (Uniform Playouts)")
         trainedHeuristics:(heuristics {
-    (influence weight:0.8339782)
-    (centreProximity pieceWeights:{
-        (pair "SenetPiece1" -0.39811385)
-        (pair "SenetPiece2" 0.07754466)
-    })
-    (cornerProximity pieceWeights:{
-        (pair "SenetPiece1" 0.10331272)
-    })
-    (lineCompletionHeuristic weight:-0.07876198)
-    (material pieceWeights:{
-        (pair "SenetPiece1" -0.24580012)
-        (pair "SenetPiece2" -0.04426707)
-    })
-    (mobilitySimple weight:-0.024878632)
-    (playerSiteMapCount weight:0.043351352)
-    (regionProximity region:0 pieceWeights:{
-        (pair "SenetPiece1" 0.027079204)
-        (pair "SenetPiece2" -0.41642147)
-    })
-    (regionProximity region:1 pieceWeights:{
-        (pair "SenetPiece1" -0.3163032)
-        (pair "SenetPiece2" -0.21844278)
-    })
-    (regionProximity region:2 pieceWeights:{
-        (pair "SenetPiece1" 0.1713812)
-        (pair "SenetPiece2" 0.21927539)
-    })
-    (regionProximity region:3 pieceWeights:{
-        (pair "SenetPiece1" 0.35293192)
-        (pair "SenetPiece2" 0.043003485)
-    })
-    (regionProximity region:4 pieceWeights:{
-        (pair "SenetPiece1" -0.44799435)
-        (pair "SenetPiece2" -0.5153394)
-    })
-    (regionProximity region:5 pieceWeights:{
-        (pair "SenetPiece1" -0.09750751)
-        (pair "SenetPiece2" 0.3788349)
-    })
-    (regionProximity region:6 pieceWeights:{
-        (pair "SenetPiece1" 0.4060775)
-        (pair "SenetPiece2" 0.43563175)
-    })
-    (regionProximity region:7 pieceWeights:{
-        (pair "SenetPiece1" -0.13485077)
-        (pair "SenetPiece2" -0.02615986)
-    })
-    (regionProximity region:8 pieceWeights:{
-        (pair "SenetPiece1" -0.014829318)
-        (pair "SenetPiece2" -0.22552344)
-    })
-    (regionProximity region:9 pieceWeights:{
-        (pair "SenetPiece1" -0.222709)
-        (pair "SenetPiece2" -0.02850479)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "SenetPiece1" 0.17424129)
-    })
-})
-
+            (influence weight:0.8339782)
+            (centreProximity pieceWeights:{
+                (pair "SenetPiece1" -0.39811385)
+                (pair "SenetPiece2" 0.07754466)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "SenetPiece1" 0.10331272)
+            })
+            (lineCompletionHeuristic weight:-0.07876198)
+            (material pieceWeights:{
+                (pair "SenetPiece1" -0.24580012)
+                (pair "SenetPiece2" -0.04426707)
+            })
+            (mobilitySimple weight:-0.024878632)
+            (playerSiteMapCount weight:0.043351352)
+            (regionProximity region:0 pieceWeights:{
+                (pair "SenetPiece1" 0.027079204)
+                (pair "SenetPiece2" -0.41642147)
+            })
+            (regionProximity region:1 pieceWeights:{
+                (pair "SenetPiece1" -0.3163032)
+                (pair "SenetPiece2" -0.21844278)
+            })
+            (regionProximity region:2 pieceWeights:{
+                (pair "SenetPiece1" 0.1713812)
+                (pair "SenetPiece2" 0.21927539)
+            })
+            (regionProximity region:3 pieceWeights:{
+                (pair "SenetPiece1" 0.35293192)
+                (pair "SenetPiece2" 0.043003485)
+            })
+            (regionProximity region:4 pieceWeights:{
+                (pair "SenetPiece1" -0.44799435)
+                (pair "SenetPiece2" -0.5153394)
+            })
+            (regionProximity region:5 pieceWeights:{
+                (pair "SenetPiece1" -0.09750751)
+                (pair "SenetPiece2" 0.3788349)
+            })
+            (regionProximity region:6 pieceWeights:{
+                (pair "SenetPiece1" 0.4060775)
+                (pair "SenetPiece2" 0.43563175)
+            })
+            (regionProximity region:7 pieceWeights:{
+                (pair "SenetPiece1" -0.13485077)
+                (pair "SenetPiece2" -0.02615986)
+            })
+            (regionProximity region:8 pieceWeights:{
+                (pair "SenetPiece1" -0.014829318)
+                (pair "SenetPiece2" -0.22552344)
+            })
+            (regionProximity region:9 pieceWeights:{
+                (pair "SenetPiece1" -0.222709)
+                (pair "SenetPiece2" -0.02850479)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "SenetPiece1" 0.17424129)
+            })
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!R0{-1/4,-1/4}, #{0,0,1/4,1/4}, !-{0,0,1/4}]>" 0.32048935)
-        (pair "rel:last_to=<{0,-1/4,-1/2,1/4}>:to=<{0,-1/4}>:pat=<els=[-{0,-1/4,-1/2,0}]>" -0.9536615)
-        (pair "rel:to=<{}>:pat=<els=[R2{0}, f{0,1/2,0}]>" 0.09098866)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[#{-1/4}, R2{0}, !-{1/2,-1/4}, !R0{0,1/4}]>" 1.5438764)
-        (pair "rel:from=<{0}>:pat=<els=[R2{0}]>" -0.9536615)
-        (pair "rel:from=<{}>:pat=<els=[!R0{-1/4,-1/4}, #{0,0,1/4,1/4}, !-{0,0,1/4}, !e{0,0,-1/4,-1/4}]>" -0.016032128)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 0.34796938)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!R0{-1/4,-1/4}, #{0,0,1/4,1/4}, !-{0,0,1/4}]>" 0.32048935)
+                (pair "rel:last_to=<{0,-1/4,-1/2,1/4}>:to=<{0,-1/4}>:pat=<els=[-{0,-1/4,-1/2,0}]>" -0.9536615)
+                (pair "rel:to=<{}>:pat=<els=[R2{0}, f{0,1/2,0}]>" 0.09098866)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[#{-1/4}, R2{0}, !-{1/2,-1/4}, !R0{0,1/4}]>" 1.5438764)
+                (pair "rel:from=<{0}>:pat=<els=[R2{0}]>" -0.9536615)
+                (pair "rel:from=<{}>:pat=<els=[!R0{-1/4,-1/4}, #{0,0,1/4,1/4}, !-{0,0,1/4}, !e{0,0,-1/4,-1/4}]>" -0.016032128)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 0.34796938)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[R1{1/2,1/4}, !e{0}, !e{0,1/4,-1/4,0}]>" -0.041496355)
+                (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[R1{1/2,1/4}, !e{0,1/4,-1/4,0}]>" -0.19208558)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[]>" 0.14830178)
+                (pair "rel:last_to=<{0,1/4,1/4}>:from=<{0}>:to=<{}>:pat=<els=[]>" 0.5664642)
+                (pair "rel:to=<{}>:pat=<els=[!R1{0,0,0,0}]>" -0.012908524)
+                (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[R1{1/2,1/4}, R2{-1/4}, !e{0}]>" -0.21105066)
+                (pair "rel:from=<{0,1/4}>:pat=<els=[R2{-1/4}, !e{0}, !e{0,1/4,-1/4,0}]>" 0.14830178)
+                (pair "rel:to=<{}>:pat=<els=[f{0,0,0,0}]>" 0.08979932)
+                (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[R2{-1/4}, !e{0}, !e{0,1/4,-1/4,0}]>" -0.07339387)
+                (pair "rel:last_to=<{0,1/4,1/4}>:from=<{0}>:to=<{}>:pat=<els=[R7{1/4}]>" 0.6607941)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[R1{1/2,1/4}, !e{0}, !e{0,1/4,-1/4,0}]>" -0.041496355)
-        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[R1{1/2,1/4}, !e{0,1/4,-1/4,0}]>" -0.19208558)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[]>" 0.14830178)
-        (pair "rel:last_to=<{0,1/4,1/4}>:from=<{0}>:to=<{}>:pat=<els=[]>" 0.5664642)
-        (pair "rel:to=<{}>:pat=<els=[!R1{0,0,0,0}]>" -0.012908524)
-        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[R1{1/2,1/4}, R2{-1/4}, !e{0}]>" -0.21105066)
-        (pair "rel:from=<{0,1/4}>:pat=<els=[R2{-1/4}, !e{0}, !e{0,1/4,-1/4,0}]>" 0.14830178)
-        (pair "rel:to=<{}>:pat=<els=[f{0,0,0,0}]>" 0.08979932)
-        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[R2{-1/4}, !e{0}, !e{0,1/4,-1/4,0}]>" -0.07339387)
-        (pair "rel:last_to=<{0,1/4,1/4}>:from=<{0}>:to=<{}>:pat=<els=[R7{1/4}]>" 0.6607941)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/Kendall Starting Throw (Scholarly)" }
-    
+    (useFor { "Ruleset/Kendall Starting Throw (Scholarly)" }
+        
         (bestAgent "MAST")
         trainedHeuristics:(heuristics {
-    (regionProximity weight:-1.0 region:1)
-})
-
+            (regionProximity weight:-1.0 region:1)
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{}>:pat=<els=[e{0,0,0,0}]>" 0.029799718)
-        (pair "rel:from=<{0,0,0}>:pat=<els=[R1{0}, !R0{1/4,-1/4}]>" -1.5113881)
-        (pair "rel:from=<{0,0,0}>:to=<{}>:pat=<els=[R1{0}, !R0{1/4,-1/4}, !-{0,0,0,1/4,-1/4}]>" 0.9594736)
-        (pair "rel:last_to=<{}>:from=<{}>:pat=<els=[R8{0}, !R4{1/4,0,0,0}]>" 0.45379242)
-        (pair "rel:from=<{}>:pat=<els=[R8{1/4}, e{0}, !R4{1/2,0,0,0}]>" 0.6273286)
-        (pair "rel:from=<{}>:pat=<els=[R0{1/4}, R5{0,0,0,0}]>" 1.1068441)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!R5{1/2,0,0}, !R0{0,0}, !-{0,1/4}, #{1/4,1/4}, !R6{1/2,1/4}]>" 0.8554097)
-        (pair "rel:to=<{}>:pat=<els=[!R5{1/2,0,0}, -{1/2,0,0,0}, !R0{0,0}, !-{0,1/4}, #{1/4,1/4}]>" 0.1913651)
-        (pair "rel:to=<{}>:pat=<els=[-{1/2,0,0,0}, !R0{0,0}, !-{0,1/4}, #{1/4,1/4}, !R6{1/2,1/4}]>" 0.1913651)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[e{0,0,0,0}]>" 0.029799718)
+                (pair "rel:from=<{0,0,0}>:pat=<els=[R1{0}, !R0{1/4,-1/4}]>" -1.5113881)
+                (pair "rel:from=<{0,0,0}>:to=<{}>:pat=<els=[R1{0}, !R0{1/4,-1/4}, !-{0,0,0,1/4,-1/4}]>" 0.9594736)
+                (pair "rel:last_to=<{}>:from=<{}>:pat=<els=[R8{0}, !R4{1/4,0,0,0}]>" 0.45379242)
+                (pair "rel:from=<{}>:pat=<els=[R8{1/4}, e{0}, !R4{1/2,0,0,0}]>" 0.6273286)
+                (pair "rel:from=<{}>:pat=<els=[R0{1/4}, R5{0,0,0,0}]>" 1.1068441)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!R5{1/2,0,0}, !R0{0,0}, !-{0,1/4}, #{1/4,1/4}, !R6{1/2,1/4}]>" 0.8554097)
+                (pair "rel:to=<{}>:pat=<els=[!R5{1/2,0,0}, -{1/2,0,0,0}, !R0{0,0}, !-{0,1/4}, #{1/4,1/4}]>" 0.1913651)
+                (pair "rel:to=<{}>:pat=<els=[-{1/2,0,0,0}, !R0{0,0}, !-{0,1/4}, #{1/4,1/4}, !R6{1/2,1/4}]>" 0.1913651)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!R3{0,-1/4}, !e{1/2}, !-{-1/4}, !e{1/4,1/4}, !-{0}, !e{-1/2,1/4}]>" -0.04633329)
+                (pair "rel:to=<{}>:pat=<els=[!R3{-1/2,-1/4}, !e{0}, !-{1/4}, !e{-1/4,1/4}, !e{0,1/4}]>" -0.014473249)
+                (pair "rel:last_to=<{}>:from=<{}>:to=<{0,-1/4}>:pat=<els=[-{0,-1/4,1/4,-1/4}]>" 0.40863687)
+                (pair "rel:last_to=<{}>:from=<{}>:pat=<els=[f{0,-1/4,-1/2,1/4}, -{0,-1/4,1/4,-1/4}]>" 0.02442428)
+                (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[f{0,-1/4,-1/2,1/4}, -{0,-1/4,-1/2,0}]>" -0.044905245)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!R3{0,-1/4}, !e{1/2}, !-{-1/4}, !e{1/4,1/4}, !-{0}, !e{-1/2,1/4}]>" -0.04633329)
-        (pair "rel:to=<{}>:pat=<els=[!R3{-1/2,-1/4}, !e{0}, !-{1/4}, !e{-1/4,1/4}, !e{0,1/4}]>" -0.014473249)
-        (pair "rel:last_to=<{}>:from=<{}>:to=<{0,-1/4}>:pat=<els=[-{0,-1/4,1/4,-1/4}]>" 0.40863687)
-        (pair "rel:last_to=<{}>:from=<{}>:pat=<els=[f{0,-1/4,-1/2,1/4}, -{0,-1/4,1/4,-1/4}]>" 0.02442428)
-        (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[f{0,-1/4,-1/2,1/4}, -{0,-1/4,-1/2,0}]>" -0.044905245)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/Kendall Trap Home Row (Scholarly)" }
-    
+    (useFor { "Ruleset/Kendall Trap Home Row (Scholarly)" }
+        
         (bestAgent "Biased MCTS (Uniform Playouts)")
         trainedHeuristics:(heuristics {
-    (regionProximity weight:-1.0 region:3)
-})
-
+            (regionProximity weight:-1.0 region:3)
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[R8{0}]>" -0.05179402)
-        (pair "rel:to=<{}>:pat=<els=[!f{1/4}, R3{0}]>" 0.04745574)
-        (pair "rel:from=<{}>:pat=<els=[R4{0,1/4}, -{0,0,0,1/4}]>" 0.0049703377)
-        (pair "rel:to=<{}>:pat=<els=[!R5{0,0}, !f{1/2}, !f{0,1/4}]>" -0.02846597)
-        (pair "rel:to=<{}>:pat=<els=[!R1{1/4,1/4}, R3{1/2}, !e{0,1/4}]>" 0.82663375)
-        (pair "rel:from=<{}>:pat=<els=[e{0,1/4,1/4}]>" 0.14204916)
-        (pair "rel:to=<{}>:pat=<els=[!e{0}]>" 0.023226663)
-        (pair "rel:to=<{}>:pat=<els=[!e{1/4,1/4}, !e{0,1/4}]>" -0.00296927)
-        (pair "rel:to=<{0,0}>:pat=<els=[R3{0,0,0,0}]>" -1.1124209)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}, !e{-1/4}, !e{0,1/4}]>" -0.03423096)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[R8{0}]>" -0.05179402)
+                (pair "rel:to=<{}>:pat=<els=[!f{1/4}, R3{0}]>" 0.04745574)
+                (pair "rel:from=<{}>:pat=<els=[R4{0,1/4}, -{0,0,0,1/4}]>" 0.0049703377)
+                (pair "rel:to=<{}>:pat=<els=[!R5{0,0}, !f{1/2}, !f{0,1/4}]>" -0.02846597)
+                (pair "rel:to=<{}>:pat=<els=[!R1{1/4,1/4}, R3{1/2}, !e{0,1/4}]>" 0.82663375)
+                (pair "rel:from=<{}>:pat=<els=[e{0,1/4,1/4}]>" 0.14204916)
+                (pair "rel:to=<{}>:pat=<els=[!e{0}]>" 0.023226663)
+                (pair "rel:to=<{}>:pat=<els=[!e{1/4,1/4}, !e{0,1/4}]>" -0.00296927)
+                (pair "rel:to=<{0,0}>:pat=<els=[R3{0,0,0,0}]>" -1.1124209)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}, !e{-1/4}, !e{0,1/4}]>" -0.03423096)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[f{1/4,1/4}, R4{0,1/4}]>" -0.103236794)
+                (pair "rel:from=<{}>:pat=<els=[!-{0}, !f{0,1/4}, f{-1/4,1/4}]>" -0.073109515)
+                (pair "rel:to=<{}>:pat=<els=[R2{0,1/4}]>" 0.13562259)
+                (pair "rel:to=<{}>:pat=<els=[R6{0,0,0}]>" 0.08767093)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[-{0,0}]>" -0.20581031)
+                (pair "rel:from=<{}>:pat=<els=[R5{0,1/4}]>" 0.11616018)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:pat=<els=[f{1/4,1/4}, R4{0,1/4}]>" -0.103236794)
-        (pair "rel:from=<{}>:pat=<els=[!-{0}, !f{0,1/4}, f{-1/4,1/4}]>" -0.073109515)
-        (pair "rel:to=<{}>:pat=<els=[R2{0,1/4}]>" 0.13562259)
-        (pair "rel:to=<{}>:pat=<els=[R6{0,0,0}]>" 0.08767093)
-        (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[-{0,0}]>" -0.20581031)
-        (pair "rel:from=<{}>:pat=<els=[R5{0,1/4}]>" 0.11616018)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/Kendall Five Pieces Starting Throw (Scholarly)" }
-    
+    (useFor { "Ruleset/Kendall Five Pieces Starting Throw (Scholarly)" }
+        
         (bestAgent "Biased MCTS")
         trainedHeuristics:(heuristics {
-    (influence weight:-0.14620553)
-    (centreProximity pieceWeights:{
-        (pair "SenetPiece1" -0.21333219)
-        (pair "SenetPiece2" -0.43998906)
-    })
-    (cornerProximity pieceWeights:{
-        (pair "SenetPiece1" -0.015026843)
-        (pair "SenetPiece2" 0.08873469)
-    })
-    (lineCompletionHeuristic weight:0.06780641)
-    (material pieceWeights:{
-        (pair "SenetPiece1" 0.18141185)
-        (pair "SenetPiece2" 0.029285947)
-    })
-    (mobilitySimple weight:-0.0129110925)
-    (playerSiteMapCount weight:0.04707667)
-    (regionProximity region:0 pieceWeights:{
-        (pair "SenetPiece1" 0.17830418)
-        (pair "SenetPiece2" 0.27988297)
-    })
-    (regionProximity region:1 pieceWeights:{
-        (pair "SenetPiece1" 0.18826114)
-        (pair "SenetPiece2" 0.40939155)
-    })
-    (regionProximity region:2 pieceWeights:{
-        (pair "SenetPiece1" -0.1660295)
-        (pair "SenetPiece2" -0.33448866)
-    })
-    (regionProximity region:3 pieceWeights:{
-        (pair "SenetPiece1" 0.25323242)
-        (pair "SenetPiece2" -0.47104478)
-    })
-    (regionProximity region:4 pieceWeights:{
-        (pair "SenetPiece1" 0.19597086)
-        (pair "SenetPiece2" -0.17898835)
-    })
-    (regionProximity region:5 pieceWeights:{
-        (pair "SenetPiece1" -0.32343045)
-        (pair "SenetPiece2" 0.33361596)
-    })
-    (regionProximity region:6 pieceWeights:{
-        (pair "SenetPiece1" -0.2551189)
-        (pair "SenetPiece2" 0.050787415)
-    })
-    (regionProximity region:7 pieceWeights:{
-        (pair "SenetPiece1" 0.04424692)
-        (pair "SenetPiece2" 0.05196286)
-    })
-    (regionProximity region:8 pieceWeights:{
-        (pair "SenetPiece1" -0.09781277)
-        (pair "SenetPiece2" -0.14147334)
-    })
-    (regionProximity region:9 pieceWeights:{
-        (pair "SenetPiece1" -0.046101153)
-        (pair "SenetPiece2" 0.10165194)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "SenetPiece1" -0.027695196)
-        (pair "SenetPiece2" -0.104891285)
-    })
-})
-
+            (influence weight:-0.14620553)
+            (centreProximity pieceWeights:{
+                (pair "SenetPiece1" -0.21333219)
+                (pair "SenetPiece2" -0.43998906)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "SenetPiece1" -0.015026843)
+                (pair "SenetPiece2" 0.08873469)
+            })
+            (lineCompletionHeuristic weight:0.06780641)
+            (material pieceWeights:{
+                (pair "SenetPiece1" 0.18141185)
+                (pair "SenetPiece2" 0.029285947)
+            })
+            (mobilitySimple weight:-0.0129110925)
+            (playerSiteMapCount weight:0.04707667)
+            (regionProximity region:0 pieceWeights:{
+                (pair "SenetPiece1" 0.17830418)
+                (pair "SenetPiece2" 0.27988297)
+            })
+            (regionProximity region:1 pieceWeights:{
+                (pair "SenetPiece1" 0.18826114)
+                (pair "SenetPiece2" 0.40939155)
+            })
+            (regionProximity region:2 pieceWeights:{
+                (pair "SenetPiece1" -0.1660295)
+                (pair "SenetPiece2" -0.33448866)
+            })
+            (regionProximity region:3 pieceWeights:{
+                (pair "SenetPiece1" 0.25323242)
+                (pair "SenetPiece2" -0.47104478)
+            })
+            (regionProximity region:4 pieceWeights:{
+                (pair "SenetPiece1" 0.19597086)
+                (pair "SenetPiece2" -0.17898835)
+            })
+            (regionProximity region:5 pieceWeights:{
+                (pair "SenetPiece1" -0.32343045)
+                (pair "SenetPiece2" 0.33361596)
+            })
+            (regionProximity region:6 pieceWeights:{
+                (pair "SenetPiece1" -0.2551189)
+                (pair "SenetPiece2" 0.050787415)
+            })
+            (regionProximity region:7 pieceWeights:{
+                (pair "SenetPiece1" 0.04424692)
+                (pair "SenetPiece2" 0.05196286)
+            })
+            (regionProximity region:8 pieceWeights:{
+                (pair "SenetPiece1" -0.09781277)
+                (pair "SenetPiece2" -0.14147334)
+            })
+            (regionProximity region:9 pieceWeights:{
+                (pair "SenetPiece1" -0.046101153)
+                (pair "SenetPiece2" 0.10165194)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "SenetPiece1" -0.027695196)
+                (pair "SenetPiece2" -0.104891285)
+            })
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{}>:pat=<els=[R0{0,0}, !R3{1/2,-1/4}]>" -0.10988851)
-        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" 0.0011981903)
-        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{1/2,0,0,0}, e{0}, !R3{-1/4,0}]>" -0.13469198)
-        (pair "rel:from=<{}>:pat=<els=[!R0{0}, !R3{1/2,-1/4}]>" -0.07665072)
-        (pair "rel:to=<{}>:pat=<els=[R1{0}, !e{1/4}]>" 0.036148924)
-        (pair "rel:last_to=<{}>:from=<{}>:pat=<els=[R0{0,0}, !R0{0}, !R3{1/2,-1/4}]>" 0.13106754)
-        (pair "rel:to=<{}>:pat=<els=[]>" -0.0023945253)
-        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{1/2,0,0,0}, e{0}]>" -0.093219094)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[R0{0,0}, !R3{1/2,-1/4}]>" -0.10988851)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" 0.0011981903)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{1/2,0,0,0}, e{0}, !R3{-1/4,0}]>" -0.13469198)
+                (pair "rel:from=<{}>:pat=<els=[!R0{0}, !R3{1/2,-1/4}]>" -0.07665072)
+                (pair "rel:to=<{}>:pat=<els=[R1{0}, !e{1/4}]>" 0.036148924)
+                (pair "rel:last_to=<{}>:from=<{}>:pat=<els=[R0{0,0}, !R0{0}, !R3{1/2,-1/4}]>" 0.13106754)
+                (pair "rel:to=<{}>:pat=<els=[]>" -0.0023945253)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{1/2,0,0,0}, e{0}]>" -0.093219094)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!R1{0,1/4}]>" 0.23882055)
+                (pair "rel:last_from=<{1/4,1/4}>:from=<{}>:pat=<els=[!R3{0}]>" -0.25750786)
+                (pair "rel:to=<{}>:pat=<els=[f{}]>" 0.726055)
+                (pair "rel:to=<{}>:pat=<els=[!R0{1/2,-1/4}, -{0,0}]>" 0.006689371)
+                (pair "rel:to=<{}>:pat=<els=[R6{0,1/4}]>" -0.05155798)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!R1{0,1/4}]>" 0.23882055)
-        (pair "rel:last_from=<{1/4,1/4}>:from=<{}>:pat=<els=[!R3{0}]>" -0.25750786)
-        (pair "rel:to=<{}>:pat=<els=[f{}]>" 0.726055)
-        (pair "rel:to=<{}>:pat=<els=[!R0{1/2,-1/4}, -{0,0}]>" 0.006689371)
-        (pair "rel:to=<{}>:pat=<els=[R6{0,1/4}]>" -0.05155798)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/Kendall Starting Throw Trap (Scholarly)" }
-    
+    (useFor { "Ruleset/Kendall Starting Throw Trap (Scholarly)" }
+        
         (bestAgent "MAST")
         trainedHeuristics:(heuristics {
-    (influence weight:2.7728796)
-    (centreProximity pieceWeights:{
-        (pair "SenetPiece1" -0.06696363)
-        (pair "SenetPiece2" 0.024556959)
-    })
-    (cornerProximity pieceWeights:{
-        (pair "SenetPiece1" -0.023160042)
-        (pair "SenetPiece2" -0.063988365)
-    })
-    (lineCompletionHeuristic weight:-0.21245816)
-    (material pieceWeights:{
-        (pair "SenetPiece1" -0.083965294)
-        (pair "SenetPiece2" -0.20566)
-    })
-    (mobilitySimple weight:-0.09642589)
-    (playerSiteMapCount weight:0.024803627)
-    (regionProximity region:0 pieceWeights:{
-        (pair "SenetPiece1" 0.60541606)
-        (pair "SenetPiece2" 0.15420952)
-    })
-    (regionProximity region:1 pieceWeights:{
-        (pair "SenetPiece1" -0.16583572)
-        (pair "SenetPiece2" -0.012475644)
-    })
-    (regionProximity region:2 pieceWeights:{
-        (pair "SenetPiece1" 0.235555)
-        (pair "SenetPiece2" 0.12473384)
-    })
-    (regionProximity region:3 pieceWeights:{
-        (pair "SenetPiece1" -0.55896866)
-        (pair "SenetPiece2" 0.20634201)
-    })
-    (regionProximity region:4 pieceWeights:{
-        (pair "SenetPiece1" 0.15627304)
-        (pair "SenetPiece2" -0.6414954)
-    })
-    (regionProximity region:5 pieceWeights:{
-        (pair "SenetPiece1" 0.33058104)
-        (pair "SenetPiece2" 0.58099097)
-    })
-    (regionProximity region:6 pieceWeights:{
-        (pair "SenetPiece1" -0.54082847)
-        (pair "SenetPiece2" -0.2093467)
-    })
-    (regionProximity region:7 pieceWeights:{
-        (pair "SenetPiece1" -0.16552423)
-        (pair "SenetPiece2" -0.08842437)
-    })
-    (regionProximity region:8 pieceWeights:{
-        (pair "SenetPiece1" 0.057801843)
-        (pair "SenetPiece2" 0.23538317)
-    })
-    (regionProximity region:9 pieceWeights:{
-        (pair "SenetPiece1" -0.25625172)
-        (pair "SenetPiece2" -0.1600638)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "SenetPiece1" 0.14536032)
-        (pair "SenetPiece2" 0.21406806)
-    })
-})
-
+            (influence weight:2.7728796)
+            (centreProximity pieceWeights:{
+                (pair "SenetPiece1" -0.06696363)
+                (pair "SenetPiece2" 0.024556959)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "SenetPiece1" -0.023160042)
+                (pair "SenetPiece2" -0.063988365)
+            })
+            (lineCompletionHeuristic weight:-0.21245816)
+            (material pieceWeights:{
+                (pair "SenetPiece1" -0.083965294)
+                (pair "SenetPiece2" -0.20566)
+            })
+            (mobilitySimple weight:-0.09642589)
+            (playerSiteMapCount weight:0.024803627)
+            (regionProximity region:0 pieceWeights:{
+                (pair "SenetPiece1" 0.60541606)
+                (pair "SenetPiece2" 0.15420952)
+            })
+            (regionProximity region:1 pieceWeights:{
+                (pair "SenetPiece1" -0.16583572)
+                (pair "SenetPiece2" -0.012475644)
+            })
+            (regionProximity region:2 pieceWeights:{
+                (pair "SenetPiece1" 0.235555)
+                (pair "SenetPiece2" 0.12473384)
+            })
+            (regionProximity region:3 pieceWeights:{
+                (pair "SenetPiece1" -0.55896866)
+                (pair "SenetPiece2" 0.20634201)
+            })
+            (regionProximity region:4 pieceWeights:{
+                (pair "SenetPiece1" 0.15627304)
+                (pair "SenetPiece2" -0.6414954)
+            })
+            (regionProximity region:5 pieceWeights:{
+                (pair "SenetPiece1" 0.33058104)
+                (pair "SenetPiece2" 0.58099097)
+            })
+            (regionProximity region:6 pieceWeights:{
+                (pair "SenetPiece1" -0.54082847)
+                (pair "SenetPiece2" -0.2093467)
+            })
+            (regionProximity region:7 pieceWeights:{
+                (pair "SenetPiece1" -0.16552423)
+                (pair "SenetPiece2" -0.08842437)
+            })
+            (regionProximity region:8 pieceWeights:{
+                (pair "SenetPiece1" 0.057801843)
+                (pair "SenetPiece2" 0.23538317)
+            })
+            (regionProximity region:9 pieceWeights:{
+                (pair "SenetPiece1" -0.25625172)
+                (pair "SenetPiece2" -0.1600638)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "SenetPiece1" 0.14536032)
+                (pair "SenetPiece2" 0.21406806)
+            })
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!R2{1/2,0}, -{0,0,0,0}, !e{1/2}, !R1{0,-1/4}, !R6{-1/4,0}]>" 0.84939164)
-        (pair "rel:from=<{}>:pat=<els=[!R0{0,0,0,0}, R4{0,0,0,0}]>" 0.19127283)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}, !e{1/2}, !R1{0,-1/4}, !R6{-1/4,0}, !R9{1/2,1/4}]>" 0.9549785)
-        (pair "rel:last_to=<{0,1/4}>:from=<{0,1/4}>:to=<{}>:pat=<els=[!R0{1/2,1/4}]>" 0.11964805)
-        (pair "rel:last_to=<{0,0}>:from=<{0,0}>:pat=<els=[R2{1/4,-1/4}]>" 0.3003626)
-        (pair "rel:last_to=<{0,0}>:from=<{0,0}>:pat=<els=[]>" 0.3003626)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}, !e{1/2,1/4}, !e{1/2}, !R1{0,-1/4}, !R6{-1/4,0}]>" 0.9063254)
-        (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.01481534)
-        (pair "rel:to=<{}>:pat=<els=[-{-1/2,0,0,0}, !e{0,1/4}, !e{0}, !R1{-1/2,-1/4}, !R6{1/4,0}, !R9{0,1/4}]>" 1.039629)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[R6{-1/4}, e{0,0,1/4}]>" 0.43132496)
-        (pair "rel:last_to=<{0,1/4}>:from=<{0,1/4}>:pat=<els=[]>" 0.3003626)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!R2{1/2,0}, -{0,0,0,0}, !e{1/2}, !R1{0,-1/4}, !R6{-1/4,0}]>" 0.84939164)
+                (pair "rel:from=<{}>:pat=<els=[!R0{0,0,0,0}, R4{0,0,0,0}]>" 0.19127283)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}, !e{1/2}, !R1{0,-1/4}, !R6{-1/4,0}, !R9{1/2,1/4}]>" 0.9549785)
+                (pair "rel:last_to=<{0,1/4}>:from=<{0,1/4}>:to=<{}>:pat=<els=[!R0{1/2,1/4}]>" 0.11964805)
+                (pair "rel:last_to=<{0,0}>:from=<{0,0}>:pat=<els=[R2{1/4,-1/4}]>" 0.3003626)
+                (pair "rel:last_to=<{0,0}>:from=<{0,0}>:pat=<els=[]>" 0.3003626)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}, !e{1/2,1/4}, !e{1/2}, !R1{0,-1/4}, !R6{-1/4,0}]>" 0.9063254)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.01481534)
+                (pair "rel:to=<{}>:pat=<els=[-{-1/2,0,0,0}, !e{0,1/4}, !e{0}, !R1{-1/2,-1/4}, !R6{1/4,0}, !R9{0,1/4}]>" 1.039629)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[R6{-1/4}, e{0,0,1/4}]>" 0.43132496)
+                (pair "rel:last_to=<{0,1/4}>:from=<{0,1/4}>:pat=<els=[]>" 0.3003626)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[f{0,0,0}]>" 0.048841793)
+                (pair "rel:to=<{}>:pat=<els=[e{1/4}, !-{0,1/4,0,1/4}]>" 0.016042875)
+                (pair "rel:from=<{}>:pat=<els=[-{0,1/4}]>" 0.02476752)
+                (pair "rel:from=<{0,0}>:pat=<els=[!R3{1/2,0,0,0}]>" 0.50034547)
+                (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[]>" 0.78077096)
+                (pair "rel:from=<{}>:pat=<els=[-{0,-1/4,0,1/4}]>" -0.13734476)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}]>" 0.048841793)
-        (pair "rel:to=<{}>:pat=<els=[e{1/4}, !-{0,1/4,0,1/4}]>" 0.016042875)
-        (pair "rel:from=<{}>:pat=<els=[-{0,1/4}]>" 0.02476752)
-        (pair "rel:from=<{0,0}>:pat=<els=[!R3{1/2,0,0,0}]>" 0.50034547)
-        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[]>" 0.78077096)
-        (pair "rel:from=<{}>:pat=<els=[-{0,-1/4,0,1/4}]>" -0.13734476)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/Kendall Starting Throw Home Row (Scholarly)" }
-    
+    (useFor { "Ruleset/Kendall Starting Throw Home Row (Scholarly)" }
+        
         (bestAgent "Biased MCTS (Uniform Playouts)")
         trainedHeuristics:(heuristics {
-    (mobilitySimple weight:0.02576144)
-    (centreProximity pieceWeights:{
-        (pair "SenetPiece1" -0.1762193)
-        (pair "SenetPiece2" -0.6421643)
-    })
-    (cornerProximity pieceWeights:{
-        (pair "SenetPiece1" 0.06684956)
-        (pair "SenetPiece2" 0.038413424)
-    })
-    (lineCompletionHeuristic weight:-0.13004757)
-    (material pieceWeights:{
-        (pair "SenetPiece1" -0.047448024)
-        (pair "SenetPiece2" -0.05591897)
-    })
-    (influence weight:-0.62826544)
-    (playerSiteMapCount weight:0.11866467)
-    (regionProximity region:0 pieceWeights:{
-        (pair "SenetPiece1" -0.2610535)
-        (pair "SenetPiece2" 0.012800292)
-    })
-    (regionProximity region:1 pieceWeights:{
-        (pair "SenetPiece1" 0.41583967)
-        (pair "SenetPiece2" 0.46865007)
-    })
-    (regionProximity region:2 pieceWeights:{
-        (pair "SenetPiece1" -0.28367376)
-        (pair "SenetPiece2" 0.20226036)
-    })
-    (regionProximity region:3 pieceWeights:{
-        (pair "SenetPiece1" -0.4284901)
-        (pair "SenetPiece2" 0.31279194)
-    })
-    (regionProximity region:4 pieceWeights:{
-        (pair "SenetPiece1" -0.2373239)
-        (pair "SenetPiece2" 0.08473807)
-    })
-    (regionProximity region:5 pieceWeights:{
-        (pair "SenetPiece1" -0.20416349)
-        (pair "SenetPiece2" -0.5892539)
-    })
-    (regionProximity region:6 pieceWeights:{
-        (pair "SenetPiece1" 0.878466)
-        (pair "SenetPiece2" 0.19653636)
-    })
-    (regionProximity region:7 pieceWeights:{
-        (pair "SenetPiece1" -0.052467696)
-        (pair "SenetPiece2" -0.17482966)
-    })
-    (regionProximity region:8 pieceWeights:{
-        (pair "SenetPiece1" 0.020301186)
-        (pair "SenetPiece2" -0.11377727)
-    })
-    (regionProximity region:9 pieceWeights:{
-        (pair "SenetPiece1" 0.07998566)
-        (pair "SenetPiece2" -0.051202532)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "SenetPiece1" -0.2024707)
-        (pair "SenetPiece2" -0.020261765)
-    })
-})
-
+            (mobilitySimple weight:0.02576144)
+            (centreProximity pieceWeights:{
+                (pair "SenetPiece1" -0.1762193)
+                (pair "SenetPiece2" -0.6421643)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "SenetPiece1" 0.06684956)
+                (pair "SenetPiece2" 0.038413424)
+            })
+            (lineCompletionHeuristic weight:-0.13004757)
+            (material pieceWeights:{
+                (pair "SenetPiece1" -0.047448024)
+                (pair "SenetPiece2" -0.05591897)
+            })
+            (influence weight:-0.62826544)
+            (playerSiteMapCount weight:0.11866467)
+            (regionProximity region:0 pieceWeights:{
+                (pair "SenetPiece1" -0.2610535)
+                (pair "SenetPiece2" 0.012800292)
+            })
+            (regionProximity region:1 pieceWeights:{
+                (pair "SenetPiece1" 0.41583967)
+                (pair "SenetPiece2" 0.46865007)
+            })
+            (regionProximity region:2 pieceWeights:{
+                (pair "SenetPiece1" -0.28367376)
+                (pair "SenetPiece2" 0.20226036)
+            })
+            (regionProximity region:3 pieceWeights:{
+                (pair "SenetPiece1" -0.4284901)
+                (pair "SenetPiece2" 0.31279194)
+            })
+            (regionProximity region:4 pieceWeights:{
+                (pair "SenetPiece1" -0.2373239)
+                (pair "SenetPiece2" 0.08473807)
+            })
+            (regionProximity region:5 pieceWeights:{
+                (pair "SenetPiece1" -0.20416349)
+                (pair "SenetPiece2" -0.5892539)
+            })
+            (regionProximity region:6 pieceWeights:{
+                (pair "SenetPiece1" 0.878466)
+                (pair "SenetPiece2" 0.19653636)
+            })
+            (regionProximity region:7 pieceWeights:{
+                (pair "SenetPiece1" -0.052467696)
+                (pair "SenetPiece2" -0.17482966)
+            })
+            (regionProximity region:8 pieceWeights:{
+                (pair "SenetPiece1" 0.020301186)
+                (pair "SenetPiece2" -0.11377727)
+            })
+            (regionProximity region:9 pieceWeights:{
+                (pair "SenetPiece1" 0.07998566)
+                (pair "SenetPiece2" -0.051202532)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "SenetPiece1" -0.2024707)
+                (pair "SenetPiece2" -0.020261765)
+            })
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}, -{0,0}, !f{-1/2,1/4}, !e{1/4,-1/4}, R2{0}]>" -0.0016077623)
-        (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}, -{0,0}, !e{-1/4}, R2{0}, !f{-1/4,-1/4}]>" -0.011661304)
-        (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}, -{0,0}, !f{-1/2,1/4}, !e{1/4,-1/4}, !f{-1/4,-1/4}]>" 0.0041397586)
-        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!R6{1/4,0,0}, -{0,1/4,0,0,0,0}]>" 0.51216644)
-        (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}, -{0,0}, !f{-1/2,1/4}, !e{-1/4}, !e{1/4,-1/4}]>" -0.004635715)
-        (pair "rel:to=<{}>:pat=<els=[!f{1/4,1/4}, !f{-1/4,1/4}, !e{0}, !e{-1/2,-1/4}, R2{1/4}, !f{0,-1/4}]>" -0.12728518)
-        (pair "rel:to=<{}>:pat=<els=[!R0{0,0,0,0}, R4{0}]>" 0.2920755)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}, -{0,0}, !f{-1/2,1/4}, !e{1/4,-1/4}, R2{0}]>" -0.0016077623)
+                (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}, -{0,0}, !e{-1/4}, R2{0}, !f{-1/4,-1/4}]>" -0.011661304)
+                (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}, -{0,0}, !f{-1/2,1/4}, !e{1/4,-1/4}, !f{-1/4,-1/4}]>" 0.0041397586)
+                (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!R6{1/4,0,0}, -{0,1/4,0,0,0,0}]>" 0.51216644)
+                (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}, -{0,0}, !f{-1/2,1/4}, !e{-1/4}, !e{1/4,-1/4}]>" -0.004635715)
+                (pair "rel:to=<{}>:pat=<els=[!f{1/4,1/4}, !f{-1/4,1/4}, !e{0}, !e{-1/2,-1/4}, R2{1/4}, !f{0,-1/4}]>" -0.12728518)
+                (pair "rel:to=<{}>:pat=<els=[!R0{0,0,0,0}, R4{0}]>" 0.2920755)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[e{0,0,0}]>" -0.02103111)
+                (pair "rel:from=<{0}>:pat=<els=[R3{1/4,0}, e{0,1/2,0}]>" -0.72129476)
+                (pair "rel:to=<{}>:pat=<els=[R1{0,1/4}, !R0{1/4,0}, !R6{0,0}]>" 4.7131872E-4)
+                (pair "rel:to=<{}>:pat=<els=[R1{0,1/4}, !e{-1/2}, !R6{0,0}]>" -0.118494585)
+                (pair "rel:from=<{0,0,0}>:pat=<els=[e{0}, #{0,0,0,0,1/4}]>" -0.72129476)
+                (pair "rel:to=<{0,0}>:pat=<els=[!R2{1/2,0,0,0}]>" -0.72129476)
+                (pair "rel:from=<{0}>:pat=<els=[e{0,1/2,0}]>" -0.72129476)
+                (pair "rel:to=<{}>:pat=<els=[!R0{-1/4,0}, !e{0}, !R6{1/2,0}]>" 0.0013264911)
+                (pair "rel:to=<{0,0}>:pat=<els=[e{0,0,0}]>" -0.72129476)
+                (pair "rel:from=<{0}>:pat=<els=[R3{1/4,0}]>" -0.72129476)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:pat=<els=[e{0,0,0}]>" -0.02103111)
-        (pair "rel:from=<{0}>:pat=<els=[R3{1/4,0}, e{0,1/2,0}]>" -0.72129476)
-        (pair "rel:to=<{}>:pat=<els=[R1{0,1/4}, !R0{1/4,0}, !R6{0,0}]>" 4.7131872E-4)
-        (pair "rel:to=<{}>:pat=<els=[R1{0,1/4}, !e{-1/2}, !R6{0,0}]>" -0.118494585)
-        (pair "rel:from=<{0,0,0}>:pat=<els=[e{0}, #{0,0,0,0,1/4}]>" -0.72129476)
-        (pair "rel:to=<{0,0}>:pat=<els=[!R2{1/2,0,0,0}]>" -0.72129476)
-        (pair "rel:from=<{0}>:pat=<els=[e{0,1/2,0}]>" -0.72129476)
-        (pair "rel:to=<{}>:pat=<els=[!R0{-1/4,0}, !e{0}, !R6{1/2,0}]>" 0.0013264911)
-        (pair "rel:to=<{0,0}>:pat=<els=[e{0,0,0}]>" -0.72129476)
-        (pair "rel:from=<{0}>:pat=<els=[R3{1/4,0}]>" -0.72129476)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/Kendall Five Pieces Trap (Scholarly)" }
-    
+    (useFor { "Ruleset/Kendall Five Pieces Trap (Scholarly)" }
+        
         (bestAgent "MAST")
         trainedHeuristics:(heuristics {
-    (centreProximity pieceWeights:{
-        (pair "SenetPiece1" 0.3974237)
-        (pair "SenetPiece2" -0.16450025)
-    })
-    (cornerProximity pieceWeights:{
-        (pair "SenetPiece1" -0.20124453)
-        (pair "SenetPiece2" 0.108539745)
-    })
-    (lineCompletionHeuristic weight:0.115945436)
-    (material pieceWeights:{
-        (pair "SenetPiece1" 0.06999017)
-    })
-    (influence weight:-0.46736488)
-    (playerSiteMapCount weight:-0.097614385)
-    (regionProximity region:0 pieceWeights:{
-        (pair "SenetPiece1" 0.5569104)
-        (pair "SenetPiece2" 0.2759944)
-    })
-    (regionProximity region:1 pieceWeights:{
-        (pair "SenetPiece1" -0.456369)
-        (pair "SenetPiece2" 0.1412076)
-    })
-    (regionProximity region:2 pieceWeights:{
-        (pair "SenetPiece1" 0.42537066)
-        (pair "SenetPiece2" -0.9152286)
-    })
-    (regionProximity region:3 pieceWeights:{
-        (pair "SenetPiece1" 0.26501015)
-    })
-    (regionProximity region:4 pieceWeights:{
-        (pair "SenetPiece1" -0.5284927)
-        (pair "SenetPiece2" 0.69175524)
-    })
-    (regionProximity region:5 pieceWeights:{
-        (pair "SenetPiece1" 0.07022775)
-        (pair "SenetPiece2" -0.36465752)
-    })
-    (regionProximity region:6 pieceWeights:{
-        (pair "SenetPiece1" 0.18997596)
-        (pair "SenetPiece2" -0.49845466)
-    })
-    (regionProximity region:7 pieceWeights:{
-        (pair "SenetPiece1" -0.079201825)
-        (pair "SenetPiece2" 0.09078193)
-    })
-    (regionProximity region:8 pieceWeights:{
-        (pair "SenetPiece1" -0.10772138)
-        (pair "SenetPiece2" -0.4165344)
-    })
-    (regionProximity region:9 pieceWeights:{
-        (pair "SenetPiece1" -0.01205127)
-        (pair "SenetPiece2" 0.25158226)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "SenetPiece1" -0.056337707)
-        (pair "SenetPiece2" -0.39338818)
-    })
-})
-
+            (centreProximity pieceWeights:{
+                (pair "SenetPiece1" 0.3974237)
+                (pair "SenetPiece2" -0.16450025)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "SenetPiece1" -0.20124453)
+                (pair "SenetPiece2" 0.108539745)
+            })
+            (lineCompletionHeuristic weight:0.115945436)
+            (material pieceWeights:{
+                (pair "SenetPiece1" 0.06999017)
+            })
+            (influence weight:-0.46736488)
+            (playerSiteMapCount weight:-0.097614385)
+            (regionProximity region:0 pieceWeights:{
+                (pair "SenetPiece1" 0.5569104)
+                (pair "SenetPiece2" 0.2759944)
+            })
+            (regionProximity region:1 pieceWeights:{
+                (pair "SenetPiece1" -0.456369)
+                (pair "SenetPiece2" 0.1412076)
+            })
+            (regionProximity region:2 pieceWeights:{
+                (pair "SenetPiece1" 0.42537066)
+                (pair "SenetPiece2" -0.9152286)
+            })
+            (regionProximity region:3 pieceWeights:{
+                (pair "SenetPiece1" 0.26501015)
+            })
+            (regionProximity region:4 pieceWeights:{
+                (pair "SenetPiece1" -0.5284927)
+                (pair "SenetPiece2" 0.69175524)
+            })
+            (regionProximity region:5 pieceWeights:{
+                (pair "SenetPiece1" 0.07022775)
+                (pair "SenetPiece2" -0.36465752)
+            })
+            (regionProximity region:6 pieceWeights:{
+                (pair "SenetPiece1" 0.18997596)
+                (pair "SenetPiece2" -0.49845466)
+            })
+            (regionProximity region:7 pieceWeights:{
+                (pair "SenetPiece1" -0.079201825)
+                (pair "SenetPiece2" 0.09078193)
+            })
+            (regionProximity region:8 pieceWeights:{
+                (pair "SenetPiece1" -0.10772138)
+                (pair "SenetPiece2" -0.4165344)
+            })
+            (regionProximity region:9 pieceWeights:{
+                (pair "SenetPiece1" -0.01205127)
+                (pair "SenetPiece2" 0.25158226)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "SenetPiece1" -0.056337707)
+                (pair "SenetPiece2" -0.39338818)
+            })
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!R0{1/4,1/4}]>" -0.08702239)
-        (pair "rel:from=<{0}>:pat=<els=[R1{0}, !R0{1/4,1/4}]>" -0.7776984)
-        (pair "rel:from=<{}>:pat=<els=[!R4{0,0}, !#{1/4,1/4}, !-{0,1/4}]>" 0.023243878)
-        (pair "rel:to=<{}>:pat=<els=[!R5{0,1/4}, !R5{-1/4,1/4}, !R3{0,0}]>" 0.36632422)
-        (pair "rel:from=<{}>:pat=<els=[!R4{0,0}, !-{0,1/4}]>" -0.065770715)
-        (pair "rel:last_from=<{0}>:to=<{}>:pat=<els=[R2{0,1/4}, !-{1/2,1/4}, R0{0,1/4}]>" 0.12599005)
-        (pair "rel:to=<{}>:pat=<els=[!R6{1/2,0,0,0}, R1{1/4,-1/4}, !R1{0,0}]>" -0.3849991)
-        (pair "rel:to=<{0,-1/4}>:pat=<els=[!R7{1/4,0}, -{0,-1/4,0}]>" -0.7776984)
-        (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.15885718)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!R0{1/4,1/4}]>" -0.08702239)
+                (pair "rel:from=<{0}>:pat=<els=[R1{0}, !R0{1/4,1/4}]>" -0.7776984)
+                (pair "rel:from=<{}>:pat=<els=[!R4{0,0}, !#{1/4,1/4}, !-{0,1/4}]>" 0.023243878)
+                (pair "rel:to=<{}>:pat=<els=[!R5{0,1/4}, !R5{-1/4,1/4}, !R3{0,0}]>" 0.36632422)
+                (pair "rel:from=<{}>:pat=<els=[!R4{0,0}, !-{0,1/4}]>" -0.065770715)
+                (pair "rel:last_from=<{0}>:to=<{}>:pat=<els=[R2{0,1/4}, !-{1/2,1/4}, R0{0,1/4}]>" 0.12599005)
+                (pair "rel:to=<{}>:pat=<els=[!R6{1/2,0,0,0}, R1{1/4,-1/4}, !R1{0,0}]>" -0.3849991)
+                (pair "rel:to=<{0,-1/4}>:pat=<els=[!R7{1/4,0}, -{0,-1/4,0}]>" -0.7776984)
+                (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.15885718)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0,1/4}>:pat=<els=[-{1/2,0,0}, -{1/2,0}, !e{0,1/4,1/4}]>" 0.25713488)
+                (pair "rel:to=<{}>:pat=<els=[!R0{0,1/4}, !R4{1/4,0}]>" 0.023145918)
+                (pair "rel:to=<{}>:pat=<els=[f{0,0,0}]>" -0.089407)
+                (pair "rel:to=<{}>:pat=<els=[!-{0}, !R0{0,1/4}]>" -0.020904373)
+                (pair "rel:to=<{}>:pat=<els=[R3{0}, !R9{1/2,-1/4}]>" 0.2731906)
+                (pair "rel:to=<{}>:pat=<els=[R0{0,0}]>" -0.06340323)
+                (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[-{1/2,0}, R7{-1/4,-1/4}, !e{0,1/4,1/4}]>" 0.33867657)
+                (pair "rel:to=<{}>:pat=<els=[-{1/2,0}, R7{-1/4,-1/4}, !e{0,1/4,1/4}]>" 0.09972969)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{0,1/4}>:pat=<els=[-{1/2,0,0}, -{1/2,0}, !e{0,1/4,1/4}]>" 0.25713488)
-        (pair "rel:to=<{}>:pat=<els=[!R0{0,1/4}, !R4{1/4,0}]>" 0.023145918)
-        (pair "rel:to=<{}>:pat=<els=[f{0,0,0}]>" -0.089407)
-        (pair "rel:to=<{}>:pat=<els=[!-{0}, !R0{0,1/4}]>" -0.020904373)
-        (pair "rel:to=<{}>:pat=<els=[R3{0}, !R9{1/2,-1/4}]>" 0.2731906)
-        (pair "rel:to=<{}>:pat=<els=[R0{0,0}]>" -0.06340323)
-        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[-{1/2,0}, R7{-1/4,-1/4}, !e{0,1/4,1/4}]>" 0.33867657)
-        (pair "rel:to=<{}>:pat=<els=[-{1/2,0}, R7{-1/4,-1/4}, !e{0,1/4,1/4}]>" 0.09972969)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/Kendall Five Pieces Home Row (Scholarly)" }
-    
+    (useFor { "Ruleset/Kendall Five Pieces Home Row (Scholarly)" }
+        
         (bestAgent "Biased MCTS (Uniform Playouts)")
         trainedHeuristics:(heuristics {
-    (mobilitySimple weight:0.046441086)
-    (centreProximity pieceWeights:{
-        (pair "SenetPiece1" -0.38025728)
-        (pair "SenetPiece2" 0.07561668)
-    })
-    (lineCompletionHeuristic weight:-0.077912554)
-    (material pieceWeights:{
-        (pair "SenetPiece1" 0.1091724)
-        (pair "SenetPiece2" 0.06388312)
-    })
-    (influence weight:-1.6933738)
-    (playerSiteMapCount weight:0.106769435)
-    (regionProximity region:0 pieceWeights:{
-        (pair "SenetPiece1" 0.10502621)
-        (pair "SenetPiece2" 0.34324944)
-    })
-    (regionProximity region:1 pieceWeights:{
-        (pair "SenetPiece1" -0.10171573)
-        (pair "SenetPiece2" -0.2728336)
-    })
-    (regionProximity region:2 pieceWeights:{
-        (pair "SenetPiece1" 0.47998685)
-        (pair "SenetPiece2" 0.2184025)
-    })
-    (regionProximity region:3 pieceWeights:{
-        (pair "SenetPiece1" -0.45806798)
-        (pair "SenetPiece2" -0.43501917)
-    })
-    (regionProximity region:4 pieceWeights:{
-        (pair "SenetPiece1" -0.09398791)
-        (pair "SenetPiece2" 0.20914918)
-    })
-    (regionProximity region:5 pieceWeights:{
-        (pair "SenetPiece1" 0.5551803)
-        (pair "SenetPiece2" -0.10059706)
-    })
-    (regionProximity region:6 pieceWeights:{
-        (pair "SenetPiece1" -0.13775142)
-        (pair "SenetPiece2" -0.10399227)
-    })
-    (regionProximity region:7 pieceWeights:{
-        (pair "SenetPiece2" 0.14104934)
-    })
-    (regionProximity region:8 pieceWeights:{
-        (pair "SenetPiece1" -0.07977971)
-        (pair "SenetPiece2" -0.043525137)
-    })
-    (regionProximity region:9 pieceWeights:{
-        (pair "SenetPiece2" 0.09521997)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "SenetPiece1" -0.056653187)
-        (pair "SenetPiece2" -0.10817622)
-    })
-})
-
+            (mobilitySimple weight:0.046441086)
+            (centreProximity pieceWeights:{
+                (pair "SenetPiece1" -0.38025728)
+                (pair "SenetPiece2" 0.07561668)
+            })
+            (lineCompletionHeuristic weight:-0.077912554)
+            (material pieceWeights:{
+                (pair "SenetPiece1" 0.1091724)
+                (pair "SenetPiece2" 0.06388312)
+            })
+            (influence weight:-1.6933738)
+            (playerSiteMapCount weight:0.106769435)
+            (regionProximity region:0 pieceWeights:{
+                (pair "SenetPiece1" 0.10502621)
+                (pair "SenetPiece2" 0.34324944)
+            })
+            (regionProximity region:1 pieceWeights:{
+                (pair "SenetPiece1" -0.10171573)
+                (pair "SenetPiece2" -0.2728336)
+            })
+            (regionProximity region:2 pieceWeights:{
+                (pair "SenetPiece1" 0.47998685)
+                (pair "SenetPiece2" 0.2184025)
+            })
+            (regionProximity region:3 pieceWeights:{
+                (pair "SenetPiece1" -0.45806798)
+                (pair "SenetPiece2" -0.43501917)
+            })
+            (regionProximity region:4 pieceWeights:{
+                (pair "SenetPiece1" -0.09398791)
+                (pair "SenetPiece2" 0.20914918)
+            })
+            (regionProximity region:5 pieceWeights:{
+                (pair "SenetPiece1" 0.5551803)
+                (pair "SenetPiece2" -0.10059706)
+            })
+            (regionProximity region:6 pieceWeights:{
+                (pair "SenetPiece1" -0.13775142)
+                (pair "SenetPiece2" -0.10399227)
+            })
+            (regionProximity region:7 pieceWeights:{
+                (pair "SenetPiece2" 0.14104934)
+            })
+            (regionProximity region:8 pieceWeights:{
+                (pair "SenetPiece1" -0.07977971)
+                (pair "SenetPiece2" -0.043525137)
+            })
+            (regionProximity region:9 pieceWeights:{
+                (pair "SenetPiece2" 0.09521997)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "SenetPiece1" -0.056653187)
+                (pair "SenetPiece2" -0.10817622)
+            })
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!R5{0,0}, !R0{0,1/4}, !R0{1/4,1/4}, !R6{1/4,0}, -{1/2,0}]>" 0.3590762)
-        (pair "rel:to=<{}>:pat=<els=[!R0{1/2,0,0}, -{0,1/4,1/4,0,0}]>" -0.016604304)
-        (pair "rel:to=<{0,1/4,0}>:pat=<els=[!R7{0,0}, !f{0,1/4,0,1/4}]>" 0.46626958)
-        (pair "rel:from=<{}>:to=<{0,1/4,0}>:pat=<els=[]>" 0.29333058)
-        (pair "rel:to=<{}>:pat=<els=[!R5{0,0}, !R0{0,1/4}, !R0{1/4,1/4}, -{1/2,0}]>" 0.008052826)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!R0{0,1/4}, !R0{1/4,1/4}, -{1/2,0}]>" 0.60344315)
-        (pair "rel:from=<{}>:pat=<els=[R7{1/4,1/4}, e{0,0,0,1/4,0}]>" 0.560591)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!R5{0,0}, !R0{0,1/4}, !R0{1/4,1/4}, !R6{1/4,0}, -{1/2,0}]>" 0.3590762)
+                (pair "rel:to=<{}>:pat=<els=[!R0{1/2,0,0}, -{0,1/4,1/4,0,0}]>" -0.016604304)
+                (pair "rel:to=<{0,1/4,0}>:pat=<els=[!R7{0,0}, !f{0,1/4,0,1/4}]>" 0.46626958)
+                (pair "rel:from=<{}>:to=<{0,1/4,0}>:pat=<els=[]>" 0.29333058)
+                (pair "rel:to=<{}>:pat=<els=[!R5{0,0}, !R0{0,1/4}, !R0{1/4,1/4}, -{1/2,0}]>" 0.008052826)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!R0{0,1/4}, !R0{1/4,1/4}, -{1/2,0}]>" 0.60344315)
+                (pair "rel:from=<{}>:pat=<els=[R7{1/4,1/4}, e{0,0,0,1/4,0}]>" 0.560591)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[]>" 0.25162005)
+                (pair "rel:from=<{}>:pat=<els=[e{0,0,0,0}]>" -0.1942761)
+                (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[!f{1/4,-1/4}]>" 0.19672464)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R3{0,0,0}]>" 0.5699906)
+                (pair "rel:from=<{}>:pat=<els=[e{0}]>" 0.083252504)
+                (pair "rel:last_to=<{0,1/4}>:from=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.39219847)
+                (pair "rel:to=<{}>:pat=<els=[!R6{0,0,0}]>" -0.08021934)
+                (pair "rel:last_to=<{0,1/4}>:from=<{0,1/4}>:to=<{}>:pat=<els=[R9{0,1/4}]>" 1.2320129)
+                (pair "rel:last_to=<{0}>:from=<{0}>:to=<{}>:pat=<els=[]>" 0.35031185)
+                (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}]>" -0.0011393842)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[]>" 0.25162005)
-        (pair "rel:from=<{}>:pat=<els=[e{0,0,0,0}]>" -0.1942761)
-        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[!f{1/4,-1/4}]>" 0.19672464)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R3{0,0,0}]>" 0.5699906)
-        (pair "rel:from=<{}>:pat=<els=[e{0}]>" 0.083252504)
-        (pair "rel:last_to=<{0,1/4}>:from=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.39219847)
-        (pair "rel:to=<{}>:pat=<els=[!R6{0,0,0}]>" -0.08021934)
-        (pair "rel:last_to=<{0,1/4}>:from=<{0,1/4}>:to=<{}>:pat=<els=[R9{0,1/4}]>" 1.2320129)
-        (pair "rel:last_to=<{0}>:from=<{0}>:to=<{}>:pat=<els=[]>" 0.35031185)
-        (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}]>" -0.0011393842)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/Kendall Five Pieces Starting Throw Home Row (Scholarly)" }
-    
+    (useFor { "Ruleset/Kendall Five Pieces Starting Throw Home Row (Scholarly)" }
+        
         (bestAgent "UCT")
         trainedHeuristics:(heuristics {
-    (regionProximity weight:-1.0 region:2)
-})
-
+            (regionProximity weight:-1.0 region:2)
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!R2{-1/4,1/4}, !R9{0,-1/4}, R2{1/4}, !R0{0,0}, !R3{-1/4,1/4}, !R0{0,-1/4}, !f{1/4}]>" 0.7414256)
-        (pair "rel:to=<{}>:pat=<els=[!R0{0,0}, !R2{0,-1/4}, !R3{-1/4,1/4}, R2{1/4}, !f{1/4}]>" 0.7084913)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!R6{0,0}, -{0}, -{0,0}]>" 0.6084156)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!-{}, -{0,0}]>" 0.28500998)
-        (pair "rel:to=<{}>:pat=<els=[!R9{0,-1/4}, R2{1/4}, !R1{0,-1/4}, !R2{0,-1/4}, !R3{-1/4,1/4}, !R0{0,-1/4}, !f{1/4}]>" 0.44358018)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!R6{-1/4,0,0}, -{0}, -{0,0}, -{1/4,-1/4}]>" 1.2836719)
-        (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[R6{0,0,0,0}]>" 0.25949526)
-        (pair "rel:to=<{}>:pat=<els=[!R2{0,-1/4}, !R3{-1/4,1/4}, !R1{0,-1/4}, R2{1/4}, !R0{0,-1/4}]>" 0.33235025)
-        (pair "rel:to=<{}>:pat=<els=[!R2{-1/4,1/4}, !R9{0,-1/4}, R2{1/4}, !R1{0,-1/4}, !R0{0,0}, !R2{0,-1/4}, !R3{-1/4,1/4}]>" 0.6298873)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!R2{-1/4,1/4}, !R9{0,-1/4}, R2{1/4}, !R0{0,0}, !R3{-1/4,1/4}, !R0{0,-1/4}, !f{1/4}]>" 0.7414256)
+                (pair "rel:to=<{}>:pat=<els=[!R0{0,0}, !R2{0,-1/4}, !R3{-1/4,1/4}, R2{1/4}, !f{1/4}]>" 0.7084913)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!R6{0,0}, -{0}, -{0,0}]>" 0.6084156)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!-{}, -{0,0}]>" 0.28500998)
+                (pair "rel:to=<{}>:pat=<els=[!R9{0,-1/4}, R2{1/4}, !R1{0,-1/4}, !R2{0,-1/4}, !R3{-1/4,1/4}, !R0{0,-1/4}, !f{1/4}]>" 0.44358018)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!R6{-1/4,0,0}, -{0}, -{0,0}, -{1/4,-1/4}]>" 1.2836719)
+                (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[R6{0,0,0,0}]>" 0.25949526)
+                (pair "rel:to=<{}>:pat=<els=[!R2{0,-1/4}, !R3{-1/4,1/4}, !R1{0,-1/4}, R2{1/4}, !R0{0,-1/4}]>" 0.33235025)
+                (pair "rel:to=<{}>:pat=<els=[!R2{-1/4,1/4}, !R9{0,-1/4}, R2{1/4}, !R1{0,-1/4}, !R0{0,0}, !R2{0,-1/4}, !R3{-1/4,1/4}]>" 0.6298873)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[R3{0}, #{1/4}]>" 0.13687076)
+                (pair "rel:to=<{}>:pat=<els=[!R6{1/2,0}, #{0}]>" -0.13330378)
+                (pair "rel:last_to=<{0,1/4,1/4,1/4}>:from=<{}>:pat=<els=[!R1{1/4,0,0}]>" 0.14319868)
+                (pair "rel:to=<{}>:pat=<els=[!R6{1/4,0,0}, #{0}]>" -0.2383533)
+                (pair "rel:last_to=<{0,1/4,1/4,1/4}>:from=<{}>:to=<{0,1/4}>:pat=<els=[!R1{1/4,0,0}]>" 0.5397886)
+                (pair "rel:to=<{}>:pat=<els=[R3{1/4}, #{0}]>" 0.13687076)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[R3{0}, #{1/4}]>" 0.13687076)
-        (pair "rel:to=<{}>:pat=<els=[!R6{1/2,0}, #{0}]>" -0.13330378)
-        (pair "rel:last_to=<{0,1/4,1/4,1/4}>:from=<{}>:pat=<els=[!R1{1/4,0,0}]>" 0.14319868)
-        (pair "rel:to=<{}>:pat=<els=[!R6{1/4,0,0}, #{0}]>" -0.2383533)
-        (pair "rel:last_to=<{0,1/4,1/4,1/4}>:from=<{}>:to=<{0,1/4}>:pat=<els=[!R1{1/4,0,0}]>" 0.5397886)
-        (pair "rel:to=<{}>:pat=<els=[R3{1/4}, #{0}]>" 0.13687076)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/Kendall Five Pieces Trap Home Row (Scholarly)" }
-    
+    (useFor { "Ruleset/Kendall Five Pieces Trap Home Row (Scholarly)" }
+        
         (bestAgent "Biased MCTS (Uniform Playouts)")
         trainedHeuristics:(heuristics {
-    (influence weight:2.6709802)
-    (centreProximity pieceWeights:{
-        (pair "SenetPiece1" -0.31098318)
-        (pair "SenetPiece2" -0.25404108)
-    })
-    (cornerProximity pieceWeights:{
-        (pair "SenetPiece1" 0.049533684)
-        (pair "SenetPiece2" 0.22778752)
-    })
-    (lineCompletionHeuristic weight:-0.12714744)
-    (material pieceWeights:{
-        (pair "SenetPiece2" -0.049683094)
-    })
-    (mobilitySimple weight:-0.081785224)
-    (playerSiteMapCount weight:-0.064706385)
-    (regionProximity region:0 pieceWeights:{
-        (pair "SenetPiece1" -0.36424914)
-        (pair "SenetPiece2" 0.053525083)
-    })
-    (regionProximity region:1 pieceWeights:{
-        (pair "SenetPiece1" 0.3311309)
-        (pair "SenetPiece2" -0.39014742)
-    })
-    (regionProximity region:2 pieceWeights:{
-        (pair "SenetPiece1" -0.015924945)
-        (pair "SenetPiece2" -0.6662007)
-    })
-    (regionProximity region:3 pieceWeights:{
-        (pair "SenetPiece1" -0.37655455)
-        (pair "SenetPiece2" 0.07416323)
-    })
-    (regionProximity region:4 pieceWeights:{
-        (pair "SenetPiece1" 0.13197473)
-        (pair "SenetPiece2" 0.4606258)
-    })
-    (regionProximity region:5 pieceWeights:{
-        (pair "SenetPiece1" 0.71604216)
-        (pair "SenetPiece2" -0.49238107)
-    })
-    (regionProximity region:6 pieceWeights:{
-        (pair "SenetPiece1" -0.06711667)
-        (pair "SenetPiece2" 0.32219705)
-    })
-    (regionProximity region:7 pieceWeights:{
-        (pair "SenetPiece1" -0.08331424)
-    })
-    (regionProximity region:8 pieceWeights:{
-        (pair "SenetPiece1" 0.051232874)
-        (pair "SenetPiece2" -0.19767436)
-    })
-    (regionProximity region:9 pieceWeights:{
-        (pair "SenetPiece1" -0.17979477)
-        (pair "SenetPiece2" 0.030050894)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "SenetPiece1" -0.03607414)
-        (pair "SenetPiece2" -0.15489292)
-    })
-})
-
+            (influence weight:2.6709802)
+            (centreProximity pieceWeights:{
+                (pair "SenetPiece1" -0.31098318)
+                (pair "SenetPiece2" -0.25404108)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "SenetPiece1" 0.049533684)
+                (pair "SenetPiece2" 0.22778752)
+            })
+            (lineCompletionHeuristic weight:-0.12714744)
+            (material pieceWeights:{
+                (pair "SenetPiece2" -0.049683094)
+            })
+            (mobilitySimple weight:-0.081785224)
+            (playerSiteMapCount weight:-0.064706385)
+            (regionProximity region:0 pieceWeights:{
+                (pair "SenetPiece1" -0.36424914)
+                (pair "SenetPiece2" 0.053525083)
+            })
+            (regionProximity region:1 pieceWeights:{
+                (pair "SenetPiece1" 0.3311309)
+                (pair "SenetPiece2" -0.39014742)
+            })
+            (regionProximity region:2 pieceWeights:{
+                (pair "SenetPiece1" -0.015924945)
+                (pair "SenetPiece2" -0.6662007)
+            })
+            (regionProximity region:3 pieceWeights:{
+                (pair "SenetPiece1" -0.37655455)
+                (pair "SenetPiece2" 0.07416323)
+            })
+            (regionProximity region:4 pieceWeights:{
+                (pair "SenetPiece1" 0.13197473)
+                (pair "SenetPiece2" 0.4606258)
+            })
+            (regionProximity region:5 pieceWeights:{
+                (pair "SenetPiece1" 0.71604216)
+                (pair "SenetPiece2" -0.49238107)
+            })
+            (regionProximity region:6 pieceWeights:{
+                (pair "SenetPiece1" -0.06711667)
+                (pair "SenetPiece2" 0.32219705)
+            })
+            (regionProximity region:7 pieceWeights:{
+                (pair "SenetPiece1" -0.08331424)
+            })
+            (regionProximity region:8 pieceWeights:{
+                (pair "SenetPiece1" 0.051232874)
+                (pair "SenetPiece2" -0.19767436)
+            })
+            (regionProximity region:9 pieceWeights:{
+                (pair "SenetPiece1" -0.17979477)
+                (pair "SenetPiece2" 0.030050894)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "SenetPiece1" -0.03607414)
+                (pair "SenetPiece2" -0.15489292)
+            })
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:last_from=<{1/4}>:to=<{}>:pat=<els=[-{0,0,0,0}, -{1/2,0,0,0}]>" 0.6556464)
-        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, !R2{1/4,0}, !R0{1/2,-1/4}, R2{0}, !e{-1/4}]>" -0.2675984)
-        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!R0{1/2,0,0,0}]>" 0.91508555)
-        (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[f{0,0,0,0}]>" 0.11017977)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0}, !R2{0,1/4}, R2{-1/4}, !e{-1/2}]>" -0.34131312)
-        (pair "rel:last_from=<{1/4}>:from=<{0,1/4}>:pat=<els=[!R0{1/2,0,0,0}]>" -0.15290669)
-        (pair "rel:to=<{}>:pat=<els=[-{1/4,1/4}, !R2{1/2,0}, !e{0}]>" 0.025138602)
-        (pair "rel:to=<{}>:pat=<els=[R2{0}]>" -0.0940675)
-        (pair "rel:to=<{}>:pat=<els=[!R2{1/2,0}, !R0{-1/4,-1/4}, R2{1/4}, !e{0}]>" -0.33277574)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{1/4}>:to=<{}>:pat=<els=[-{0,0,0,0}, -{1/2,0,0,0}]>" 0.6556464)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, !R2{1/4,0}, !R0{1/2,-1/4}, R2{0}, !e{-1/4}]>" -0.2675984)
+                (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!R0{1/2,0,0,0}]>" 0.91508555)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[f{0,0,0,0}]>" 0.11017977)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}, !R2{0,1/4}, R2{-1/4}, !e{-1/2}]>" -0.34131312)
+                (pair "rel:last_from=<{1/4}>:from=<{0,1/4}>:pat=<els=[!R0{1/2,0,0,0}]>" -0.15290669)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,1/4}, !R2{1/2,0}, !e{0}]>" 0.025138602)
+                (pair "rel:to=<{}>:pat=<els=[R2{0}]>" -0.0940675)
+                (pair "rel:to=<{}>:pat=<els=[!R2{1/2,0}, !R0{-1/4,-1/4}, R2{1/4}, !e{0}]>" -0.33277574)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!R0{0,0}, !R9{0,1/4}, R3{0}, #{1/2,1/4}]>" 0.8144573)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" -0.021570958)
+                (pair "rel:last_to=<{}>:from=<{}>:pat=<els=[f{0,-1/4}, !e{1/4,0}]>" 0.30177525)
+                (pair "rel:to=<{}>:pat=<els=[!R0{0,0}, !-{-1/4,1/4}, !-{0,-1/4}, R3{0}]>" 0.49350798)
+                (pair "rel:to=<{}>:pat=<els=[!R0{0,0}, !-{-1/4,1/4}, !R9{0,1/4}, R3{0}, #{1/2,1/4}]>" 0.86002475)
+                (pair "rel:to=<{}>:pat=<els=[!R0{0,0}, !-{-1/4,1/4}, !-{0,-1/4}, #{1/2,1/4}]>" 0.072301686)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!R0{0,0}, !R9{0,1/4}, R3{0}, #{1/2,1/4}]>" 0.8144573)
-        (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" -0.021570958)
-        (pair "rel:last_to=<{}>:from=<{}>:pat=<els=[f{0,-1/4}, !e{1/4,0}]>" 0.30177525)
-        (pair "rel:to=<{}>:pat=<els=[!R0{0,0}, !-{-1/4,1/4}, !-{0,-1/4}, R3{0}]>" 0.49350798)
-        (pair "rel:to=<{}>:pat=<els=[!R0{0,0}, !-{-1/4,1/4}, !R9{0,1/4}, R3{0}, #{1/2,1/4}]>" 0.86002475)
-        (pair "rel:to=<{}>:pat=<els=[!R0{0,0}, !-{-1/4,1/4}, !-{0,-1/4}, #{1/2,1/4}]>" 0.072301686)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/Kendall Five Pieces Starting Throw Trap (Scholarly)" }
-    
+    (useFor { "Ruleset/Kendall Five Pieces Starting Throw Trap (Scholarly)" }
+        
         (bestAgent "MAST")
         trainedHeuristics:(heuristics {
-    (influence weight:0.29874873)
-    (centreProximity pieceWeights:{
-        (pair "SenetPiece1" -0.025625428)
-        (pair "SenetPiece2" 0.40149012)
-    })
-    (cornerProximity pieceWeights:{
-        (pair "SenetPiece1" 0.0711383)
-        (pair "SenetPiece2" -0.14200477)
-    })
-    (material pieceWeights:{
-        (pair "SenetPiece1" -0.27591825)
-        (pair "SenetPiece2" -0.07184072)
-    })
-    (regionProximity region:0 pieceWeights:{
-        (pair "SenetPiece1" -0.95563877)
-        (pair "SenetPiece2" 0.04229944)
-    })
-    (regionProximity region:1 pieceWeights:{
-        (pair "SenetPiece1" 0.051937446)
-        (pair "SenetPiece2" -0.49060166)
-    })
-    (regionProximity region:2 pieceWeights:{
-        (pair "SenetPiece1" 0.26518282)
-        (pair "SenetPiece2" 0.55392957)
-    })
-    (regionProximity region:3 pieceWeights:{
-        (pair "SenetPiece1" 0.06506619)
-        (pair "SenetPiece2" 0.30691388)
-    })
-    (regionProximity region:4 pieceWeights:{
-        (pair "SenetPiece1" -0.587278)
-        (pair "SenetPiece2" -0.033618994)
-    })
-    (regionProximity region:5 pieceWeights:{
-        (pair "SenetPiece1" 0.12656379)
-        (pair "SenetPiece2" -0.17365673)
-    })
-    (regionProximity region:6 pieceWeights:{
-        (pair "SenetPiece1" 1.1312557)
-        (pair "SenetPiece2" -0.015096016)
-    })
-    (regionProximity region:7 pieceWeights:{
-        (pair "SenetPiece1" -0.30753773)
-        (pair "SenetPiece2" -0.15554793)
-    })
-    (regionProximity region:8 pieceWeights:{
-        (pair "SenetPiece1" 0.18455358)
-        (pair "SenetPiece2" 0.08556639)
-    })
-    (regionProximity region:9 pieceWeights:{
-        (pair "SenetPiece1" -0.018579002)
-        (pair "SenetPiece2" -0.031167893)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "SenetPiece1" 0.111487135)
-        (pair "SenetPiece2" 0.11755154)
-    })
-})
-
+            (influence weight:0.29874873)
+            (centreProximity pieceWeights:{
+                (pair "SenetPiece1" -0.025625428)
+                (pair "SenetPiece2" 0.40149012)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "SenetPiece1" 0.0711383)
+                (pair "SenetPiece2" -0.14200477)
+            })
+            (material pieceWeights:{
+                (pair "SenetPiece1" -0.27591825)
+                (pair "SenetPiece2" -0.07184072)
+            })
+            (regionProximity region:0 pieceWeights:{
+                (pair "SenetPiece1" -0.95563877)
+                (pair "SenetPiece2" 0.04229944)
+            })
+            (regionProximity region:1 pieceWeights:{
+                (pair "SenetPiece1" 0.051937446)
+                (pair "SenetPiece2" -0.49060166)
+            })
+            (regionProximity region:2 pieceWeights:{
+                (pair "SenetPiece1" 0.26518282)
+                (pair "SenetPiece2" 0.55392957)
+            })
+            (regionProximity region:3 pieceWeights:{
+                (pair "SenetPiece1" 0.06506619)
+                (pair "SenetPiece2" 0.30691388)
+            })
+            (regionProximity region:4 pieceWeights:{
+                (pair "SenetPiece1" -0.587278)
+                (pair "SenetPiece2" -0.033618994)
+            })
+            (regionProximity region:5 pieceWeights:{
+                (pair "SenetPiece1" 0.12656379)
+                (pair "SenetPiece2" -0.17365673)
+            })
+            (regionProximity region:6 pieceWeights:{
+                (pair "SenetPiece1" 1.1312557)
+                (pair "SenetPiece2" -0.015096016)
+            })
+            (regionProximity region:7 pieceWeights:{
+                (pair "SenetPiece1" -0.30753773)
+                (pair "SenetPiece2" -0.15554793)
+            })
+            (regionProximity region:8 pieceWeights:{
+                (pair "SenetPiece1" 0.18455358)
+                (pair "SenetPiece2" 0.08556639)
+            })
+            (regionProximity region:9 pieceWeights:{
+                (pair "SenetPiece1" -0.018579002)
+                (pair "SenetPiece2" -0.031167893)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "SenetPiece1" 0.111487135)
+                (pair "SenetPiece2" 0.11755154)
+            })
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[R2{1/2}, -{0}, -{0,-1/4}, !-{1/4}, -{1/2,0,0}, R8{-1/4}, !R5{0,-1/4}]>" 0.5196934)
-        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[R2{0}, -{-1/2}, !-{-1/4,1/4}, -{0,0,0}, R8{1/4}, !R5{-1/2,-1/4}]>" 0.87263566)
-        (pair "rel:to=<{}>:pat=<els=[!f{0}]>" 0.040549114)
-        (pair "rel:to=<{}>:pat=<els=[!R4{0,0}, R2{0}, -{1/2}, !R0{-1/2,0,0}, !-{1/4,-1/4}]>" -0.7702377)
-        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[R2{0}, -{-1/2}, -{-1/2,-1/4}, !-{-1/4}, -{0,0,0}, R8{1/4}]>" 0.146165)
-        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!R4{0,0}, R2{0}, -{1/2}]>" -0.58032477)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[R2{1/2}, -{0}, -{0,-1/4}, !-{1/4}, -{1/2,0,0}, R8{-1/4}, !R5{0,-1/4}]>" 0.5196934)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[R2{0}, -{-1/2}, !-{-1/4,1/4}, -{0,0,0}, R8{1/4}, !R5{-1/2,-1/4}]>" 0.87263566)
+                (pair "rel:to=<{}>:pat=<els=[!f{0}]>" 0.040549114)
+                (pair "rel:to=<{}>:pat=<els=[!R4{0,0}, R2{0}, -{1/2}, !R0{-1/2,0,0}, !-{1/4,-1/4}]>" -0.7702377)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[R2{0}, -{-1/2}, -{-1/2,-1/4}, !-{-1/4}, -{0,0,0}, R8{1/4}]>" 0.146165)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!R4{0,0}, R2{0}, -{1/2}]>" -0.58032477)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0,0}>:pat=<els=[!#{0,0,1/2,0,0}]>" 0.102205545)
+                (pair "rel:to=<{}>:pat=<els=[R4{1/4,0,0}, !R3{0,1/4}, !R1{0,0}]>" 1.1639417)
+                (pair "rel:to=<{}>:pat=<els=[-{-1/4,0}, !-{1/2}, !R5{0,1/4}]>" -0.06493076)
+                (pair "rel:to=<{0}>:pat=<els=[f{0,1/4}]>" 0.102205545)
+                (pair "rel:from=<{}>:pat=<els=[e{0,0,0}]>" 0.023816185)
+                (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!R3{0,0}]>" 0.41701317)
+                (pair "rel:from=<{0,1/4}>:pat=<els=[-{0,1/4,-1/4,0}]>" 0.102205545)
+                (pair "rel:last_to=<{0,0}>:from=<{0,0}>:pat=<els=[]>" 0.102205545)
+                (pair "rel:to=<{}>:pat=<els=[R2{0,0}]>" 0.07705725)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{0,0}>:pat=<els=[!#{0,0,1/2,0,0}]>" 0.102205545)
-        (pair "rel:to=<{}>:pat=<els=[R4{1/4,0,0}, !R3{0,1/4}, !R1{0,0}]>" 1.1639417)
-        (pair "rel:to=<{}>:pat=<els=[-{-1/4,0}, !-{1/2}, !R5{0,1/4}]>" -0.06493076)
-        (pair "rel:to=<{0}>:pat=<els=[f{0,1/4}]>" 0.102205545)
-        (pair "rel:from=<{}>:pat=<els=[e{0,0,0}]>" 0.023816185)
-        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!R3{0,0}]>" 0.41701317)
-        (pair "rel:from=<{0,1/4}>:pat=<els=[-{0,1/4,-1/4,0}]>" 0.102205545)
-        (pair "rel:last_to=<{0,0}>:from=<{0,0}>:pat=<els=[]>" 0.102205545)
-        (pair "rel:to=<{}>:pat=<els=[R2{0,0}]>" 0.07705725)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/Kendall Starting Throw Trap Home Row (Scholarly)" }
-    
+    (useFor { "Ruleset/Kendall Starting Throw Trap Home Row (Scholarly)" }
+        
         (bestAgent "ProgressiveHistory")
         trainedHeuristics:(heuristics {
-    (influence)
-})
-
+            (influence)
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[-{0,1/4,0,0,0,0}]>" -0.018826833)
-        (pair "rel:to=<{}>:pat=<els=[R1{1/2}, !#{0,0,0}]>" -0.2713851)
-        (pair "rel:from=<{0}>:pat=<els=[R1{1/2}, !#{0,0,0}]>" -1.4549291)
-        (pair "rel:from=<{}>:pat=<els=[!R1{0,0,0,0}, -{1/4,0}]>" 0.40084904)
-        (pair "rel:from=<{}>:pat=<els=[!R1{0,0,0,0}]>" 0.16145454)
-        (pair "rel:from=<{0,1/4}>:pat=<els=[R3{1/4,0,0}]>" -1.4549291)
-        (pair "rel:from=<{}>:pat=<els=[!R8{1/2}, -{0,0}]>" 0.1160908)
-        (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[]>" 0.5731107)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4,0,0,0,0}]>" -0.018826833)
+                (pair "rel:to=<{}>:pat=<els=[R1{1/2}, !#{0,0,0}]>" -0.2713851)
+                (pair "rel:from=<{0}>:pat=<els=[R1{1/2}, !#{0,0,0}]>" -1.4549291)
+                (pair "rel:from=<{}>:pat=<els=[!R1{0,0,0,0}, -{1/4,0}]>" 0.40084904)
+                (pair "rel:from=<{}>:pat=<els=[!R1{0,0,0,0}]>" 0.16145454)
+                (pair "rel:from=<{0,1/4}>:pat=<els=[R3{1/4,0,0}]>" -1.4549291)
+                (pair "rel:from=<{}>:pat=<els=[!R8{1/2}, -{0,0}]>" 0.1160908)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[]>" 0.5731107)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{0,0}>:from=<{0,0}>:pat=<els=[!R6{0,1/4}, -{0,0,-1/2,0,-1/2,1/4}]>" 0.20268543)
+                (pair "rel:from=<{}>:pat=<els=[e{0,0,0}]>" 0.20115693)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[R1{1/4,1/4}, f{0,0,-1/4}]>" -0.8662642)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!R6{0,1/4}, !R3{1/4,1/4}, -{0,0,-1/2,0,-1/2,1/4}]>" 0.5872553)
+                (pair "rel:to=<{}>:pat=<els=[!R5{1/4,1/4}, !f{1/2}, R1{0,-1/4}]>" -0.50700665)
+                (pair "rel:to=<{}>:pat=<els=[!f{0}, !f{1/2}]>" 0.007850209)
+                (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[R2{0}]>" 0.21386138)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:last_to=<{0,0}>:from=<{0,0}>:pat=<els=[!R6{0,1/4}, -{0,0,-1/2,0,-1/2,1/4}]>" 0.20268543)
-        (pair "rel:from=<{}>:pat=<els=[e{0,0,0}]>" 0.20115693)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[R1{1/4,1/4}, f{0,0,-1/4}]>" -0.8662642)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!R6{0,1/4}, !R3{1/4,1/4}, -{0,0,-1/2,0,-1/2,1/4}]>" 0.5872553)
-        (pair "rel:to=<{}>:pat=<els=[!R5{1/4,1/4}, !f{1/2}, R1{0,-1/4}]>" -0.50700665)
-        (pair "rel:to=<{}>:pat=<els=[!f{0}, !f{1/2}]>" 0.007850209)
-        (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[R2{0}]>" 0.21386138)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/Kendall All Options (Scholarly)" }
-    
+    (useFor { "Ruleset/Kendall All Options (Scholarly)" }
+        
         (bestAgent "Biased MCTS (Uniform Playouts)")
         trainedHeuristics:(heuristics {
-    (influence weight:0.6793261)
-    (centreProximity pieceWeights:{
-        (pair "SenetPiece1" -0.45824775)
-        (pair "SenetPiece2" -0.03227871)
-    })
-    (cornerProximity pieceWeights:{
-        (pair "SenetPiece1" 0.14977922)
-        (pair "SenetPiece2" 0.1521882)
-    })
-    (material pieceWeights:{
-        (pair "SenetPiece1" -0.05723075)
-        (pair "SenetPiece2" -0.29123804)
-    })
-    (mobilitySimple weight:-0.013088356)
-    (playerSiteMapCount weight:0.06314291)
-    (regionProximity region:0 pieceWeights:{
-        (pair "SenetPiece1" 0.4026419)
-        (pair "SenetPiece2" 0.119352005)
-    })
-    (regionProximity region:1 pieceWeights:{
-        (pair "SenetPiece1" -0.44493178)
-        (pair "SenetPiece2" -0.6056512)
-    })
-    (regionProximity region:2 pieceWeights:{
-        (pair "SenetPiece1" 0.23460753)
-        (pair "SenetPiece2" -0.11797462)
-    })
-    (regionProximity region:3 pieceWeights:{
-        (pair "SenetPiece1" -0.38163978)
-        (pair "SenetPiece2" -0.4324284)
-    })
-    (regionProximity region:4 pieceWeights:{
-        (pair "SenetPiece1" -0.462837)
-        (pair "SenetPiece2" 0.31640708)
-    })
-    (regionProximity region:5 pieceWeights:{
-        (pair "SenetPiece1" 0.47020432)
-        (pair "SenetPiece2" 0.46849915)
-    })
-    (regionProximity region:6 pieceWeights:{
-        (pair "SenetPiece1" 0.02541954)
-        (pair "SenetPiece2" -0.13492984)
-    })
-    (regionProximity region:7 pieceWeights:{
-        (pair "SenetPiece1" -0.12911418)
-        (pair "SenetPiece2" -0.1804997)
-    })
-    (regionProximity region:8 pieceWeights:{
-        (pair "SenetPiece1" -0.3061821)
-        (pair "SenetPiece2" -0.18171404)
-    })
-    (regionProximity region:9 pieceWeights:{
-        (pair "SenetPiece1" -0.023023702)
-        (pair "SenetPiece2" -0.021047411)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "SenetPiece1" -0.30065596)
-        (pair "SenetPiece2" -0.11006725)
-    })
-})
-
+            (influence weight:0.6793261)
+            (centreProximity pieceWeights:{
+                (pair "SenetPiece1" -0.45824775)
+                (pair "SenetPiece2" -0.03227871)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "SenetPiece1" 0.14977922)
+                (pair "SenetPiece2" 0.1521882)
+            })
+            (material pieceWeights:{
+                (pair "SenetPiece1" -0.05723075)
+                (pair "SenetPiece2" -0.29123804)
+            })
+            (mobilitySimple weight:-0.013088356)
+            (playerSiteMapCount weight:0.06314291)
+            (regionProximity region:0 pieceWeights:{
+                (pair "SenetPiece1" 0.4026419)
+                (pair "SenetPiece2" 0.119352005)
+            })
+            (regionProximity region:1 pieceWeights:{
+                (pair "SenetPiece1" -0.44493178)
+                (pair "SenetPiece2" -0.6056512)
+            })
+            (regionProximity region:2 pieceWeights:{
+                (pair "SenetPiece1" 0.23460753)
+                (pair "SenetPiece2" -0.11797462)
+            })
+            (regionProximity region:3 pieceWeights:{
+                (pair "SenetPiece1" -0.38163978)
+                (pair "SenetPiece2" -0.4324284)
+            })
+            (regionProximity region:4 pieceWeights:{
+                (pair "SenetPiece1" -0.462837)
+                (pair "SenetPiece2" 0.31640708)
+            })
+            (regionProximity region:5 pieceWeights:{
+                (pair "SenetPiece1" 0.47020432)
+                (pair "SenetPiece2" 0.46849915)
+            })
+            (regionProximity region:6 pieceWeights:{
+                (pair "SenetPiece1" 0.02541954)
+                (pair "SenetPiece2" -0.13492984)
+            })
+            (regionProximity region:7 pieceWeights:{
+                (pair "SenetPiece1" -0.12911418)
+                (pair "SenetPiece2" -0.1804997)
+            })
+            (regionProximity region:8 pieceWeights:{
+                (pair "SenetPiece1" -0.3061821)
+                (pair "SenetPiece2" -0.18171404)
+            })
+            (regionProximity region:9 pieceWeights:{
+                (pair "SenetPiece1" -0.023023702)
+                (pair "SenetPiece2" -0.021047411)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "SenetPiece1" -0.30065596)
+                (pair "SenetPiece2" -0.11006725)
+            })
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[R4{0,-1/4}, -{1/2,0,0}, !R9{-1/4,-1/4}]>" 0.49350512)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!R3{1/4,1/4}]>" 0.22979772)
-        (pair "rel:to=<{}>:pat=<els=[!R3{0,1/4}]>" 0.13469198)
-        (pair "rel:to=<{}>:pat=<els=[!R0{1/2,1/4}, !-{0,1/4}]>" 0.11356298)
-        (pair "rel:to=<{}>:pat=<els=[R2{1/2,0,0,0}, !R9{0,1/4}, !R0{0,-1/4}, !-{1/2,-1/4}]>" 0.6595872)
-        (pair "rel:last_to=<{0,1/4}>:from=<{0,1/4}>:pat=<els=[]>" -1.0389189)
-        (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[R6{0,1/4}]>" 0.3273626)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[R4{0,-1/4}, -{1/2,0,0}, !R9{-1/4,-1/4}]>" 0.49350512)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!R3{1/4,1/4}]>" 0.22979772)
+                (pair "rel:to=<{}>:pat=<els=[!R3{0,1/4}]>" 0.13469198)
+                (pair "rel:to=<{}>:pat=<els=[!R0{1/2,1/4}, !-{0,1/4}]>" 0.11356298)
+                (pair "rel:to=<{}>:pat=<els=[R2{1/2,0,0,0}, !R9{0,1/4}, !R0{0,-1/4}, !-{1/2,-1/4}]>" 0.6595872)
+                (pair "rel:last_to=<{0,1/4}>:from=<{0,1/4}>:pat=<els=[]>" -1.0389189)
+                (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[R6{0,1/4}]>" 0.3273626)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{1/4,0}>:pat=<els=[!R8{0,1/4}]>" 1.1194624)
+                (pair "rel:from=<{0,-1/4}>:to=<{}>:pat=<els=[-{1/4,0,0}, #{0,-1/4,1/4,-1/4}]>" 0.7368339)
+                (pair "rel:last_to=<{}>:from=<{}>:to=<{0,1/4}>:pat=<els=[-{0,1/4,1/2,0,0,0}]>" 0.8668269)
+                (pair "rel:last_to=<{}>:from=<{}>:to=<{0,1/4}>:pat=<els=[!-{0,0,0,0}]>" 0.789128)
+                (pair "rel:from=<{}>:pat=<els=[!R8{0,-1/4}, !R7{0,0,0}, #{1/2,-1/4}]>" 0.18292437)
+                (pair "rel:from=<{}>:pat=<els=[R9{0,1/4}, f{1/2}]>" -0.20297924)
+                (pair "rel:from=<{}>:pat=<els=[!-{0,0,0,0}, !R6{-1/4,1/4}, -{0,-1/4,-1/2,0,0,0}]>" -0.075197086)
+                (pair "rel:to=<{}>:pat=<els=[!R9{0,-1/4}, !f{-1/4}, !R9{0,1/4}, !R0{0,-1/4}]>" -0.107163474)
+                (pair "rel:last_from=<{1/4,0,-1/4,-1/4}>:from=<{}>:pat=<els=[!R8{0,1/4}]>" -0.7405626)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{1/4,0}>:pat=<els=[!R8{0,1/4}]>" 1.1194624)
-        (pair "rel:from=<{0,-1/4}>:to=<{}>:pat=<els=[-{1/4,0,0}, #{0,-1/4,1/4,-1/4}]>" 0.7368339)
-        (pair "rel:last_to=<{}>:from=<{}>:to=<{0,1/4}>:pat=<els=[-{0,1/4,1/2,0,0,0}]>" 0.8668269)
-        (pair "rel:last_to=<{}>:from=<{}>:to=<{0,1/4}>:pat=<els=[!-{0,0,0,0}]>" 0.789128)
-        (pair "rel:from=<{}>:pat=<els=[!R8{0,-1/4}, !R7{0,0,0}, #{1/2,-1/4}]>" 0.18292437)
-        (pair "rel:from=<{}>:pat=<els=[R9{0,1/4}, f{1/2}]>" -0.20297924)
-        (pair "rel:from=<{}>:pat=<els=[!-{0,0,0,0}, !R6{-1/4,1/4}, -{0,-1/4,-1/2,0,0,0}]>" -0.075197086)
-        (pair "rel:to=<{}>:pat=<els=[!R9{0,-1/4}, !f{-1/4}, !R9{0,1/4}, !R0{0,-1/4}]>" -0.107163474)
-        (pair "rel:last_from=<{1/4,0,-1/4,-1/4}>:from=<{}>:pat=<els=[!R8{0,1/4}]>" -0.7405626)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/Bell (Suggested)" }
-    
+    (useFor { "Ruleset/Bell (Suggested)" }
+        
         (bestAgent "ProgressiveHistory")
         trainedHeuristics:(heuristics {
-    (material)
-})
-
+            (material)
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[e{0,0,1/2,0}]>" 0.7939476)
-        (pair "rel:to=<{}>:pat=<els=[!R1{0,0,0,0}, e{0,0,1/2,0}]>" 0.9819937)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[e{0,0,1/2,0}]>" 1.1225983)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R0{1/2,0,0,0}]>" 0.5916883)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!R1{0,0,0,0}, e{0,0,1/2,0}]>" 1.1771513)
-        (pair "rel:from=<{0,0,0}>:pat=<els=[e{0,0,0,1/4}]>" 0.5963594)
-        (pair "rel:to=<{}>:pat=<els=[R5{0}]>" -0.002054693)
-        (pair "rel:from=<{0}>:pat=<els=[R0{1/2,0,0,0}, f{0,1/2,0}]>" 0.5963594)
-        (pair "rel:to=<{}>:pat=<els=[R0{0,1/4}]>" -0.08735868)
-        (pair "rel:from=<{0,0}>:pat=<els=[!R1{0,0,0,0}]>" 0.5963594)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[e{0,0,1/2,0}]>" 0.7939476)
+                (pair "rel:to=<{}>:pat=<els=[!R1{0,0,0,0}, e{0,0,1/2,0}]>" 0.9819937)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[e{0,0,1/2,0}]>" 1.1225983)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R0{1/2,0,0,0}]>" 0.5916883)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!R1{0,0,0,0}, e{0,0,1/2,0}]>" 1.1771513)
+                (pair "rel:from=<{0,0,0}>:pat=<els=[e{0,0,0,1/4}]>" 0.5963594)
+                (pair "rel:to=<{}>:pat=<els=[R5{0}]>" -0.002054693)
+                (pair "rel:from=<{0}>:pat=<els=[R0{1/2,0,0,0}, f{0,1/2,0}]>" 0.5963594)
+                (pair "rel:to=<{}>:pat=<els=[R0{0,1/4}]>" -0.08735868)
+                (pair "rel:from=<{0,0}>:pat=<els=[!R1{0,0,0,0}]>" 0.5963594)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!-{}, !e{0,0,0,0,1/4,0}]>" 0.7622471)
+                (pair "rel:to=<{}>:pat=<els=[!-{}]>" 0.7622471)
+                (pair "rel:from=<{0,0,0,0}>:to=<{}>:pat=<els=[!-{}, !e{0,0,0,0,1/4,0}]>" 1.050008)
+                (pair "rel:from=<{}>:pat=<els=[#{0,0,0}]>" -0.009162499)
+                (pair "rel:last_from=<{0,0,1/4,1/4}>:to=<{0,0}>:pat=<els=[]>" 1.3827281)
+                (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[!R0{0}]>" -0.034363993)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[!-{}, !e{0,0,0,0,1/4,0}]>" 0.7622471)
-        (pair "rel:to=<{}>:pat=<els=[!-{}]>" 0.7622471)
-        (pair "rel:from=<{0,0,0,0}>:to=<{}>:pat=<els=[!-{}, !e{0,0,0,0,1/4,0}]>" 1.050008)
-        (pair "rel:from=<{}>:pat=<els=[#{0,0,0}]>" -0.009162499)
-        (pair "rel:last_from=<{0,0,1/4,1/4}>:to=<{0,0}>:pat=<els=[]>" 1.3827281)
-        (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[!R0{0}]>" -0.034363993)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/Piccione (Scholarly)" }
-    
+    (useFor { "Ruleset/Piccione (Scholarly)" }
+        
         (bestAgent "MAST")
         trainedHeuristics:(heuristics {
-    (regionProximity region:3)
-    (centreProximity pieceWeights:{
-        (pair "SenetPiece1" 0.19659172)
-        (pair "SenetPiece2" 0.4147639)
-    })
-    (cornerProximity pieceWeights:{
-        (pair "SenetPiece1" -0.060012408)
-        (pair "SenetPiece2" 0.023156634)
-    })
-    (lineCompletionHeuristic weight:0.22460827)
-    (material pieceWeights:{
-        (pair "SenetPiece1" -0.40624645)
-        (pair "SenetPiece2" -0.8481644)
-    })
-    (mobilitySimple weight:-0.030562686)
-    (influence weight:1.7571393)
-    (playerSiteMapCount weight:-0.028464131)
-    (regionProximity region:0 pieceWeights:{
-        (pair "SenetPiece1" 0.21378876)
-        (pair "SenetPiece2" 0.6552283)
-    })
-    (regionProximity region:1 pieceWeights:{
-        (pair "SenetPiece1" 0.04805961)
-        (pair "SenetPiece2" -0.7770865)
-    })
-    (regionProximity region:2 pieceWeights:{
-        (pair "SenetPiece1" 0.018030748)
-        (pair "SenetPiece2" -0.93022704)
-    })
-    (regionProximity region:4 pieceWeights:{
-        (pair "SenetPiece1" 0.26807463)
-        (pair "SenetPiece2" 0.9898826)
-    })
-    (regionProximity region:5 pieceWeights:{
-        (pair "SenetPiece1" -0.21996576)
-        (pair "SenetPiece2" -0.38357896)
-    })
-    (regionProximity region:6 pieceWeights:{
-        (pair "SenetPiece1" -0.047363788)
-        (pair "SenetPiece2" -0.6754754)
-    })
-    (regionProximity region:7 pieceWeights:{
-        (pair "SenetPiece1" 0.16151623)
-        (pair "SenetPiece2" 0.5177283)
-    })
-    (regionProximity region:8 pieceWeights:{
-        (pair "SenetPiece1" 0.052964587)
-        (pair "SenetPiece2" 0.0693712)
-    })
-    (regionProximity region:9 pieceWeights:{
-        (pair "SenetPiece1" 0.16286522)
-        (pair "SenetPiece2" 0.46474966)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "SenetPiece2" 0.1707771)
-    })
-})
-
+            (regionProximity region:3)
+            (centreProximity pieceWeights:{
+                (pair "SenetPiece1" 0.19659172)
+                (pair "SenetPiece2" 0.4147639)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "SenetPiece1" -0.060012408)
+                (pair "SenetPiece2" 0.023156634)
+            })
+            (lineCompletionHeuristic weight:0.22460827)
+            (material pieceWeights:{
+                (pair "SenetPiece1" -0.40624645)
+                (pair "SenetPiece2" -0.8481644)
+            })
+            (mobilitySimple weight:-0.030562686)
+            (influence weight:1.7571393)
+            (playerSiteMapCount weight:-0.028464131)
+            (regionProximity region:0 pieceWeights:{
+                (pair "SenetPiece1" 0.21378876)
+                (pair "SenetPiece2" 0.6552283)
+            })
+            (regionProximity region:1 pieceWeights:{
+                (pair "SenetPiece1" 0.04805961)
+                (pair "SenetPiece2" -0.7770865)
+            })
+            (regionProximity region:2 pieceWeights:{
+                (pair "SenetPiece1" 0.018030748)
+                (pair "SenetPiece2" -0.93022704)
+            })
+            (regionProximity region:4 pieceWeights:{
+                (pair "SenetPiece1" 0.26807463)
+                (pair "SenetPiece2" 0.9898826)
+            })
+            (regionProximity region:5 pieceWeights:{
+                (pair "SenetPiece1" -0.21996576)
+                (pair "SenetPiece2" -0.38357896)
+            })
+            (regionProximity region:6 pieceWeights:{
+                (pair "SenetPiece1" -0.047363788)
+                (pair "SenetPiece2" -0.6754754)
+            })
+            (regionProximity region:7 pieceWeights:{
+                (pair "SenetPiece1" 0.16151623)
+                (pair "SenetPiece2" 0.5177283)
+            })
+            (regionProximity region:8 pieceWeights:{
+                (pair "SenetPiece1" 0.052964587)
+                (pair "SenetPiece2" 0.0693712)
+            })
+            (regionProximity region:9 pieceWeights:{
+                (pair "SenetPiece1" 0.16286522)
+                (pair "SenetPiece2" 0.46474966)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "SenetPiece2" 0.1707771)
+            })
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:last_to=<{0,0}>:from=<{0,0}>:to=<{}>:pat=<els=[#{0,0,-1/2,0,1/4,0}]>" 0.9611947)
-        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[-{-1/2}, #{0,0,-1/2,0,1/4,0}]>" 0.68702626)
-        (pair "rel:last_to=<{0,0}>:from=<{0,0}>:to=<{}>:pat=<els=[-{1/2}]>" 1.0030524)
-        (pair "rel:last_to=<{0,0}>:from=<{0,0}>:to=<{}>:pat=<els=[-{-1/2}, #{0,0,-1/2,0,1/4,0}]>" 1.0030524)
-        (pair "rel:last_from=<{0,0}>:to=<{}>:pat=<els=[R4{0,1/4}, R1{0}, R7{1/4}]>" -0.29018703)
-        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[-{1/2}]>" 0.68702626)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[]>" 0.57074016)
-        (pair "rel:last_from=<{0,0}>:to=<{}>:pat=<els=[R4{0,1/4}, R1{0}, R1{0,1/4}]>" -0.6365829)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[R2{1/4,1/4}]>" 0.109114505)
-        (pair "rel:last_from=<{0,0}>:to=<{}>:pat=<els=[R4{0,1/4}, !-{-1/2,1/4}, R7{1/4}, R1{0,1/4}]>" -1.1589789)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,0}>:from=<{0,0}>:to=<{}>:pat=<els=[#{0,0,-1/2,0,1/4,0}]>" 0.9611947)
+                (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[-{-1/2}, #{0,0,-1/2,0,1/4,0}]>" 0.68702626)
+                (pair "rel:last_to=<{0,0}>:from=<{0,0}>:to=<{}>:pat=<els=[-{1/2}]>" 1.0030524)
+                (pair "rel:last_to=<{0,0}>:from=<{0,0}>:to=<{}>:pat=<els=[-{-1/2}, #{0,0,-1/2,0,1/4,0}]>" 1.0030524)
+                (pair "rel:last_from=<{0,0}>:to=<{}>:pat=<els=[R4{0,1/4}, R1{0}, R7{1/4}]>" -0.29018703)
+                (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[-{1/2}]>" 0.68702626)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[]>" 0.57074016)
+                (pair "rel:last_from=<{0,0}>:to=<{}>:pat=<els=[R4{0,1/4}, R1{0}, R1{0,1/4}]>" -0.6365829)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[R2{1/4,1/4}]>" 0.109114505)
+                (pair "rel:last_from=<{0,0}>:to=<{}>:pat=<els=[R4{0,1/4}, !-{-1/2,1/4}, R7{1/4}, R1{0,1/4}]>" -1.1589789)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{0}>:from=<{0}>:to=<{}>:pat=<els=[!e{0,1/4,0,0}, R1{0,1/4}]>" -0.472252)
+                (pair "rel:to=<{}>:pat=<els=[R5{0,0,0,0}, !R4{1/4,0}]>" 0.19726339)
+                (pair "rel:last_to=<{0}>:from=<{0}>:to=<{}>:pat=<els=[!R0{0,0,0}, !e{0,1/4,0,0}, !R6{1/4,0}]>" -0.15578844)
+                (pair "rel:from=<{}>:pat=<els=[!#{0,1/4,1/4}]>" -0.0280902)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!e{0,1/4,0,0}, !R6{1/4,0}, R1{0,1/4}]>" -0.16678475)
+                (pair "rel:to=<{}>:pat=<els=[e{0,0}]>" 0.10222274)
+                (pair "rel:to=<{}>:pat=<els=[R5{0,0,0,0}, #{1/2}]>" 0.38229033)
+                (pair "rel:to=<{0,1/4}>:pat=<els=[!-{0,1/4,0,1/4}]>" 0.1526769)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:last_to=<{0}>:from=<{0}>:to=<{}>:pat=<els=[!e{0,1/4,0,0}, R1{0,1/4}]>" -0.472252)
-        (pair "rel:to=<{}>:pat=<els=[R5{0,0,0,0}, !R4{1/4,0}]>" 0.19726339)
-        (pair "rel:last_to=<{0}>:from=<{0}>:to=<{}>:pat=<els=[!R0{0,0,0}, !e{0,1/4,0,0}, !R6{1/4,0}]>" -0.15578844)
-        (pair "rel:from=<{}>:pat=<els=[!#{0,1/4,1/4}]>" -0.0280902)
-        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!e{0,1/4,0,0}, !R6{1/4,0}, R1{0,1/4}]>" -0.16678475)
-        (pair "rel:to=<{}>:pat=<els=[e{0,0}]>" 0.10222274)
-        (pair "rel:to=<{}>:pat=<els=[R5{0,0,0,0}, #{1/2}]>" 0.38229033)
-        (pair "rel:to=<{0,1/4}>:pat=<els=[!-{0,1/4,0,1/4}]>" 0.1526769)
-    }
-    )
-})
-
-    
-
-)
-(useFor { "Ruleset/Jequier (Scholarly)" }
-    
+    (useFor { "Ruleset/Jequier (Scholarly)" }
+        
         (bestAgent "MAST")
         trainedHeuristics:(heuristics {
-    (regionProximity weight:-1.0 region:7)
-})
-
+            (regionProximity weight:-1.0 region:7)
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[]>" -4.7639885)
-        (pair "rel:from=<{}>:pat=<els=[!R9{0,1/4}]>" -0.22654338)
-        (pair "rel:from=<{}>:pat=<els=[!R9{1/2,1/4}, e{0,0,0,0,0}]>" -0.046384163)
-        (pair "rel:from=<{0,1/4}>:pat=<els=[!R6{0,1/4}]>" -4.7639885)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!R3{1/2,1/4}, !-{0,1/4,-1/4}]>" -0.14988907)
-        (pair "rel:from=<{0,0}>:pat=<els=[!R3{1/2,1/4}, #{0,0,0,0,0,0}]>" -4.7639885)
-        (pair "rel:to=<{}>:pat=<els=[!R3{1/2,0}, !R3{0,0}]>" -0.03637626)
-        (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -0.011644787)
-        (pair "rel:from=<{}>:pat=<els=[f{0,0}]>" 0.19416238)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!R5{0,0}]>" -0.08374485)
-        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" -0.024272306)
-        (pair "rel:to=<{0,0,0}>:pat=<els=[!R9{1/2,1/4}, e{0,0,0,0,0}]>" -4.7639885)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[]>" -4.7639885)
+                (pair "rel:from=<{}>:pat=<els=[!R9{0,1/4}]>" -0.22654338)
+                (pair "rel:from=<{}>:pat=<els=[!R9{1/2,1/4}, e{0,0,0,0,0}]>" -0.046384163)
+                (pair "rel:from=<{0,1/4}>:pat=<els=[!R6{0,1/4}]>" -4.7639885)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!R3{1/2,1/4}, !-{0,1/4,-1/4}]>" -0.14988907)
+                (pair "rel:from=<{0,0}>:pat=<els=[!R3{1/2,1/4}, #{0,0,0,0,0,0}]>" -4.7639885)
+                (pair "rel:to=<{}>:pat=<els=[!R3{1/2,0}, !R3{0,0}]>" -0.03637626)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -0.011644787)
+                (pair "rel:from=<{}>:pat=<els=[f{0,0}]>" 0.19416238)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!R5{0,0}]>" -0.08374485)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" -0.024272306)
+                (pair "rel:to=<{0,0,0}>:pat=<els=[!R9{1/2,1/4}, e{0,0,0,0,0}]>" -4.7639885)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!f{0,1/4,-1/4}]>" 0.15393235)
+                (pair "rel:last_to=<{}>:from=<{}>:to=<{0}>:pat=<els=[]>" -2.6546297)
+                (pair "rel:from=<{}>:pat=<els=[!-{0}, !f{0,0,-1/2,1/4}]>" -0.0054322947)
+                (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.03458129)
+                (pair "rel:from=<{}>:pat=<els=[R6{0,1/4}]>" 0.02658391)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[]>" -2.6546297)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!R4{1/2,0,0,0}]>" -0.0556777)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!f{0,1/4,-1/4}]>" 0.15393235)
-        (pair "rel:last_to=<{}>:from=<{}>:to=<{0}>:pat=<els=[]>" -2.6546297)
-        (pair "rel:from=<{}>:pat=<els=[!-{0}, !f{0,0,-1/2,1/4}]>" -0.0054322947)
-        (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.03458129)
-        (pair "rel:from=<{}>:pat=<els=[R6{0,1/4}]>" 0.02658391)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[]>" -2.6546297)
-        (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!R4{1/2,0,0,0}]>" -0.0556777)
-    }
-    )
-})
-
-    
-
-)
 )

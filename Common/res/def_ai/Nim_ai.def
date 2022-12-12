@@ -1,34 +1,32 @@
 (define "Nim_ai"
-(useFor { "Ruleset/Basic (Described)" }
-    
+    (useFor { "Ruleset/Basic (Described)" }
+        
         (bestAgent "Biased MCTS (Uniform Playouts)")
         trainedHeuristics:(heuristics {
-    (mobilitySimple)
-})
-
+            (mobilitySimple)
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!-{0}, -{1/2}]>" 0.11459643)
-        (pair "rel:to=<{}>:pat=<els=[I1{0}, I1{1/2,0}]>" -0.1064017)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0,0}]>" 0.05357544)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0}, I1{1/2,0}]>" 0.19821888)
-        (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/2,0}]>" 0.11726444)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!-{0}, I1{1/2,0}]>" -0.086967334)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[I1{0,0}, -{0}]>" 0.25922814)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!-{0}, -{1/2}]>" 0.11459643)
+                (pair "rel:to=<{}>:pat=<els=[I1{0}, I1{1/2,0}]>" -0.1064017)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0,0}]>" 0.05357544)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0}, I1{1/2,0}]>" 0.19821888)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/2,0}]>" 0.11726444)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!-{0}, I1{1/2,0}]>" -0.086967334)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[I1{0,0}, -{0}]>" 0.25922814)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[I1{0,0,0,0}]>" 0.008094986)
+                (pair "rel:to=<{}>:pat=<els=[!-{0}, I1{0}]>" -0.014877296)
+                (pair "rel:to=<{}>:pat=<els=[I1{0}, -{0,0}]>" 0.0022611248)
+                (pair "rel:to=<{}>:pat=<els=[!I1{0}, !-{1/2}, -{0,0}, I1{1/2}]>" 0.06360624)
+                (pair "rel:to=<{}>:pat=<els=[!-{1/2}, -{0,0}]>" 0.014400602)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[I1{0,0}]>" 0.03317865)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[I1{0,0,0,0}]>" 0.008094986)
-        (pair "rel:to=<{}>:pat=<els=[!-{0}, I1{0}]>" -0.014877296)
-        (pair "rel:to=<{}>:pat=<els=[I1{0}, -{0,0}]>" 0.0022611248)
-        (pair "rel:to=<{}>:pat=<els=[!I1{0}, !-{1/2}, -{0,0}, I1{1/2}]>" 0.06360624)
-        (pair "rel:to=<{}>:pat=<els=[!-{1/2}, -{0,0}]>" 0.014400602)
-        (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[I1{0,0}]>" 0.03317865)
-    }
-    )
-})
-
-    
-
-)
 )

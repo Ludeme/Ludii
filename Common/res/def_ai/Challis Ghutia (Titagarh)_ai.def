@@ -1,24 +1,22 @@
 (define "Challis Ghutia (Titagarh)_ai"
-(useFor { "Ruleset/Challis Ghutia (Titagarh) (Observed)" }
-    
+    (useFor { "Ruleset/Challis Ghutia (Titagarh) (Observed)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
-    (material)
-})
-
+            (material)
+        })
+        
         trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
-    }
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{1/2,0}>:to=<{}>:pat=<els=[-{0,3/8}]>" 1.5318055)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,0,-3/8,1/8}]>" 1.3086278)
+                }
+            )
+        })
+        
     )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{1/2,0}>:to=<{}>:pat=<els=[-{0,3/8}]>" 1.5318055)
-        (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,0,-3/8,1/8}]>" 1.3086278)
-    }
-    )
-})
-
-    
-
-)
 )

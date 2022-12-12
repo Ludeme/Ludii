@@ -1,34 +1,32 @@
 (define "Tsatsarandi_ai"
     
-        (bestAgent "AlphaBeta")
-        trainedHeuristics:(heuristics {
-    (mobilitySimple)
-})
-
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:last_from=<{0,0,0,0}>:from=<{0}>:pat=<els=[!f{-1/4}, -{0,1/4}, -{1/2}]>" -3.4747689)
-        (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" 0.39018914)
-        (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0}]>" 0.19144422)
-        (pair "rel:to=<{0}>:pat=<els=[-{0}]>" -3.4747689)
-        (pair "rel:last_from=<{0,1/4}>:from=<{}>:pat=<els=[]>" 0.3144363)
-        (pair "rel:to=<{0,1/4}>:pat=<els=[!I7{}]>" -3.4747689)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:from=<{}>:pat=<els=[-{0,0}]>" -4.4105577E-4)
-        (pair "rel:to=<{}>:pat=<els=[e{0}]>" 0.031065213)
-        (pair "rel:to=<{}>:pat=<els=[I8{0,0,0,0}]>" 0.05494397)
-        (pair "rel:from=<{}>:pat=<els=[!e{0,1/4,1/4}]>" 0.0)
-        (pair "rel:to=<{0,1/4}>:pat=<els=[#{0,0}, -{0,1/4,1/4,0,0,0}]>" -3.911234)
-        (pair "rel:to=<{}>:pat=<els=[I12{0,0,0}]>" 0.16628975)
-        (pair "rel:to=<{0,1/4}>:pat=<els=[#{0,0}]>" -3.911234)
-        (pair "rel:to=<{0,1/4}>:pat=<els=[!I12{}, !e{0,1/4,1/4}]>" -3.911234)
-        (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!e{0,1/4,1/4}]>" 0.23337513)
-    }
-    )
-})
-
+    (bestAgent "AlphaBeta")
+    trainedHeuristics:(heuristics {
+        (mobilitySimple)
+    })
     
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_from=<{0,0,0,0}>:from=<{0}>:pat=<els=[!f{-1/4}, -{0,1/4}, -{1/2}]>" -3.4747689)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" 0.39018914)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0}]>" 0.19144422)
+            (pair "rel:to=<{0}>:pat=<els=[-{0}]>" -3.4747689)
+            (pair "rel:last_from=<{0,1/4}>:from=<{}>:pat=<els=[]>" 0.3144363)
+            (pair "rel:to=<{0,1/4}>:pat=<els=[!I7{}]>" -3.4747689)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[-{0,0}]>" -4.4105577E-4)
+            (pair "rel:to=<{}>:pat=<els=[e{0}]>" 0.031065213)
+            (pair "rel:to=<{}>:pat=<els=[I8{0,0,0,0}]>" 0.05494397)
+            (pair "rel:from=<{}>:pat=<els=[!e{0,1/4,1/4}]>" 0.0)
+            (pair "rel:to=<{0,1/4}>:pat=<els=[#{0,0}, -{0,1/4,1/4,0,0,0}]>" -3.911234)
+            (pair "rel:to=<{}>:pat=<els=[I12{0,0,0}]>" 0.16628975)
+            (pair "rel:to=<{0,1/4}>:pat=<els=[#{0,0}]>" -3.911234)
+            (pair "rel:to=<{0,1/4}>:pat=<els=[!I12{}, !e{0,1/4,1/4}]>" -3.911234)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!e{0,1/4,1/4}]>" 0.23337513)
+            }
+        )
+    })
+    
 )

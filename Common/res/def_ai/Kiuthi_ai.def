@@ -1,21 +1,19 @@
 (define "Kiuthi_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{0,1/3}, -{1/12,0}]>" -0.1317309)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[N2{0,1/4}]>" 0.011935017)
-        (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[N6{1/4,-1/4}, N6{0,1/4}, !R1{-1/4,0,0,0}]>" 0.031198679)
-        (pair "rel:to=<{}>:pat=<els=[-{1/4,-1/6}, !R1{-1/4,1/4}, R0{0,-1/4}]>" -0.0029701022)
-        (pair "rel:last_to=<{1/3,-1/4}>:from=<{0,0,0,0,0,1/6}>:to=<{}>:pat=<els=[N6{1/3,1/4}, #{0,0,0,0,0,1/6,0,0,0,0}]>" -0.20782602)
-        (pair "rel:to=<{}>:pat=<els=[N6{1/2,-1/4}, !R1{0,0,0,0}]>" 0.04832116)
-        (pair "rel:to=<{}>:pat=<els=[N6{0,-1/6}, -{0}, R0{-1/3,1/4}]>" 0.120672554)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{0,1/3}, -{1/12,0}]>" -0.1317309)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[N2{0,1/4}]>" 0.011935017)
+            (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[N6{1/4,-1/4}, N6{0,1/4}, !R1{-1/4,0,0,0}]>" 0.031198679)
+            (pair "rel:to=<{}>:pat=<els=[-{1/4,-1/6}, !R1{-1/4,1/4}, R0{0,-1/4}]>" -0.0029701022)
+            (pair "rel:last_to=<{1/3,-1/4}>:from=<{0,0,0,0,0,1/6}>:to=<{}>:pat=<els=[N6{1/3,1/4}, #{0,0,0,0,0,1/6,0,0,0,0}]>" -0.20782602)
+            (pair "rel:to=<{}>:pat=<els=[N6{1/2,-1/4}, !R1{0,0,0,0}]>" 0.04832116)
+            (pair "rel:to=<{}>:pat=<els=[N6{0,-1/6}, -{0}, R0{-1/3,1/4}]>" 0.120672554)
+            }
+        )
+    })
     
-
 )

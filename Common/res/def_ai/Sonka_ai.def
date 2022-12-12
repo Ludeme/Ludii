@@ -1,16 +1,14 @@
 (define "Sonka_ai"
     
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[!R0{0,1/6}]>" 0.05203304)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[R0{0,1/6}]>" 0.0)
-    }
-    )
-})
-
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[!R0{0,1/6}]>" 0.05203304)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[R0{0,1/6}]>" 0.0)
+            }
+        )
+    })
     
-
 )

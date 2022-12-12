@@ -1,30 +1,28 @@
 (define "Alquerque de Tres_ai"
     
-        (bestAgent "ProgressiveHistory")
-        trainedFeatures:(features {
-    (featureSet P1 selectionFeatures:{
-        (pair "rel:to=<{}>:pat=<els=[e{0}, e{0,0}]>" 6.06119)
-        (pair "rel:last_to=<{1/8,3/8}>:to=<{}>:pat=<els=[!-{0,3/8}, -{0,1/8}, e{1/4}, -{1/8,-3/8}]>" 1.6583115)
-        (pair "rel:to=<{}>:pat=<els=[-{0,-3/8}, f{0,-1/4}, #{1/4,3/8}, e{-1/4}, -{-1/8,3/8}]>" 1.8517765)
-        (pair "rel:last_to=<{0,-3/8}>:to=<{}>:pat=<els=[f{1/8,-1/4}, #{1/2,-3/8}, e{-1/8}, -{0,3/8}]>" 1.9050502)
-        (pair "rel:last_to=<{1/8,3/8}>:to=<{}>:pat=<els=[f{-1/4,3/8}, e{0,0}, !-{0,3/8}, e{1/4}, -{1/8,-3/8}]>" 2.200337)
-        (pair "rel:to=<{}>:pat=<els=[e{0,0}]>" 0.45073014)
-        (pair "rel:last_to=<{0,3/8}>:to=<{}>:pat=<els=[f{-3/8,3/8}, -{-1/8,1/8}, e{1/8}, -{0,-3/8}]>" 0.981976)
-    }
-    )
-    (featureSet P2 selectionFeatures:{
-        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[!#{1/8,0}, e{0}]>" 4.079437)
-        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[-{0,-1/4}, !#{-1/8,0}, #{3/8}, e{0}]>" 4.5561614)
-        (pair "rel:to=<{}>:pat=<els=[e{0,0}, -{0,1/8}]>" 1.9726796)
-        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[-{0,1/4}, -{0,-1/8}, e{0}]>" 5.2897987)
-        (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[-{0,1/4}, -{0,3/8}, e{0}]>" 5.0032115)
-        (pair "rel:to=<{}>:pat=<els=[-{-3/8,-1/8}, -{0,-3/8}, -{0,3/8}]>" 0.42257258)
-        (pair "rel:to=<{}>:pat=<els=[-{0,-1/8}, -{3/8,3/8}]>" 0.40808612)
-        (pair "rel:to=<{}>:pat=<els=[-{0,1/8}]>" 5.853749E-4)
-    }
-    )
-})
-
+    (bestAgent "ProgressiveHistory")
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[e{0}, e{0,0}]>" 6.06119)
+            (pair "rel:last_to=<{1/8,3/8}>:to=<{}>:pat=<els=[!-{0,3/8}, -{0,1/8}, e{1/4}, -{1/8,-3/8}]>" 1.6583115)
+            (pair "rel:to=<{}>:pat=<els=[-{0,-3/8}, f{0,-1/4}, #{1/4,3/8}, e{-1/4}, -{-1/8,3/8}]>" 1.8517765)
+            (pair "rel:last_to=<{0,-3/8}>:to=<{}>:pat=<els=[f{1/8,-1/4}, #{1/2,-3/8}, e{-1/8}, -{0,3/8}]>" 1.9050502)
+            (pair "rel:last_to=<{1/8,3/8}>:to=<{}>:pat=<els=[f{-1/4,3/8}, e{0,0}, !-{0,3/8}, e{1/4}, -{1/8,-3/8}]>" 2.200337)
+            (pair "rel:to=<{}>:pat=<els=[e{0,0}]>" 0.45073014)
+            (pair "rel:last_to=<{0,3/8}>:to=<{}>:pat=<els=[f{-3/8,3/8}, -{-1/8,1/8}, e{1/8}, -{0,-3/8}]>" 0.981976)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[!#{1/8,0}, e{0}]>" 4.079437)
+            (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[-{0,-1/4}, !#{-1/8,0}, #{3/8}, e{0}]>" 4.5561614)
+            (pair "rel:to=<{}>:pat=<els=[e{0,0}, -{0,1/8}]>" 1.9726796)
+            (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[-{0,1/4}, -{0,-1/8}, e{0}]>" 5.2897987)
+            (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[-{0,1/4}, -{0,3/8}, e{0}]>" 5.0032115)
+            (pair "rel:to=<{}>:pat=<els=[-{-3/8,-1/8}, -{0,-3/8}, -{0,3/8}]>" 0.42257258)
+            (pair "rel:to=<{}>:pat=<els=[-{0,-1/8}, -{3/8,3/8}]>" 0.40808612)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/8}]>" 5.853749E-4)
+            }
+        )
+    })
     
-
 )
