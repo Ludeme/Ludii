@@ -1,0 +1,144 @@
+(game "Sahkku (Lujavvr)" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Counter" P1 N)
+        
+        (piece "Counter" P2 S)
+        
+        (piece "DoubleCounter" Each)
+        
+        (regions P1 
+            (sites Bottom)
+        )
+        
+        (regions P2 
+            (sites Top)
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Counter1" 
+                (difference 
+                    (expand 
+                        (sites Bottom)
+                        steps:
+                        (- 4 1)
+                    )
+                    
+                    (sites Phase 1)
+                )
+            )
+            
+            (place "Counter2" 
+                (difference 
+                    (expand 
+                        (sites Top)
+                        steps:
+                        (- 4 1)
+                    )
+                    
+                    (sites Phase 1)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (move Add 
+                (to 
+                    (sites Empty)
+                    if:
+                    (= 
+                        (state at:
+                            (to)
+                        )
+                    0)
+                )
+                
+                (then 
+                    (and 
+                        (forEach Site 
+                            (sites Empty)
+                            
+                            (if 
+                                (!= 0 
+                                    (state at:
+                                        (site)
+                                    )
+                                )
+                                
+                                (set State at:
+                                    (site)
+                                0)
+                            )
+                        )
+                        
+                        (enclose 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between if:
+                                (or 
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (is Empty 
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (and 
+                                        (if 
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                            
+                                            (remove 
+                                                (between)
+                                            )
+                                        )
+                                        
+                                        (set State at:
+                                            (between)
+                                            
+                                            (mover)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (no Moves Next)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+

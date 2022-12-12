@@ -966,19 +966,22 @@ public final class FromTo extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		String englishString = "from " + typeFrom.name().toLowerCase() + 
+		final SiteType realTypeFrom = (typeFrom != null) ? typeFrom : game.board().defaultSite();
+		String englishString = "from " + realTypeFrom.name().toLowerCase() + 
 								(regionFrom == null ? "" : " in " + regionFrom.toEnglish(game)) +
 								(locFrom == null ? "" : " in " + locFrom.toEnglish(game)) +
 								(levelFrom == null ? "" : " " + levelFrom.toEnglish(game)) + 
 								(fromCondition == null ? "" : " if " + fromCondition.toEnglish(game));
 		
+
+		final SiteType realTypeTo = (typeTo != null) ? typeTo : game.board().defaultSite();
 		if (regionTo != null)
-			englishString += " to " + typeTo.name().toLowerCase() + 
+			englishString += " to " + realTypeTo.name().toLowerCase() + 
 								" in " + regionTo.toEnglish(game) + 
 								(levelTo == null ? "" : " " + levelTo.toEnglish(game));
 		
 		if (locTo != null)
-			englishString += " to " + typeTo.name().toLowerCase() + 
+			englishString += " to " + realTypeTo.name().toLowerCase() + 
 								" " + locTo.toEnglish(game) + 
 								(levelTo == null ? "" : " " + levelTo.toEnglish(game));
 		

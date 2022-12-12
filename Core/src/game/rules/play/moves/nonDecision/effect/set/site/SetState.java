@@ -242,6 +242,8 @@ public final class SetState extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
+		final SiteType realType = (type != null) ? type : game.board().defaultSite();
+		
 		String siteString = "";
 		if (siteFn != null)
 			siteString = " " + siteFn.toEnglish(game);
@@ -254,6 +256,6 @@ public final class SetState extends Effect
 		if (then() != null)
 			thenString = " then " + then().toEnglish(game);
 		
-		return "set the state of the " + type.name() + siteString + levelString + " to " + state.toEnglish(game) + thenString;
+		return "set the state of the " + realType.name() + siteString + levelString + " to " + state.toEnglish(game) + thenString;
 	}
 }

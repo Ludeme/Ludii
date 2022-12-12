@@ -1,0 +1,308 @@
+(game "Sahkku (Lujavvr)" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (hand Each size:5)
+        
+        (piece "KingnoCross" Each 
+            (or 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                
+                (if 
+                    (= 1 
+                        (state at:
+                            (from)
+                        )
+                    )
+                    
+                    (move Leap { { F F R F }
+                        { F F L F }
+                        }
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (= 
+                            (state at:
+                                (last To)
+                            )
+                        1)
+                        
+                        (set State at:
+                            (last To)
+                        0)
+                    )
+                )
+            )
+        )
+        
+        (piece "Boat" Each 
+            (move Slide Orthogonal 
+                (to if:
+                    (is Enemy 
+                        (who at:
+                            (to)
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "FerznoCross" Each 
+            (or 
+                (move Step Diagonal 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                
+                (move Step Forward 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Knight" Each 
+            (move Leap { { F F R F }
+                { F F L F }
+                }
+                
+                (to if:
+                    (not 
+                        (is Friend 
+                            (who at:
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (apply 
+                        (if 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Fish" Each 
+            (or { 
+                (move Step Forward 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (directions { FR FL }
+                    )
+                    
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                }
+                
+                (then 
+                    (if 
+                        (is In 
+                            (last To)
+                            
+                            (sites Mover "Promotion")
+                        )
+                        
+                        (promote 
+                            (last To)
+                            
+                            (piece "Queen")
+                        Mover)
+                    )
+                )
+            )
+        )
+        
+        (piece "Queen" Each 
+            (or 
+                (move Step Diagonal 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                
+                (if 
+                    (= 1 
+                        (state at:
+                            (from)
+                        )
+                    )
+                    
+                    (move Hop Forward 
+                        (between if:True)
+                        
+                        (to if:
+                            (not 
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (= 
+                            (state at:
+                                (last To)
+                            )
+                        1)
+                        
+                        (set State at:
+                            (last To)
+                        0)
+                    )
+                )
+            )
+        )
+        
+        (regions "Promotion" P1 
+            (sites Row 5)
+        )
+        
+        (regions "Promotion" P2 
+            (sites Row 2)
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Knight1" 
+                (sites Bottom)
+            )
+            
+            (place "Knight2" 
+                (sites Top)
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Moves Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+
