@@ -94,7 +94,7 @@ public final class OverlayView extends View
 			}
 			
 			g2d.setColor(new Color(29,136,188));
-			g2d.drawString(EnglishSwedishTranslations.MYOGTITLE.toString(), 40, 75);
+			g2d.drawString(EnglishSwedishTranslations.MYOGTITLE.toString(), 45, 80);
 			
 			if (app.manager().ref().context().game().hasSharedPlayer())
 			{
@@ -111,10 +111,10 @@ public final class OverlayView extends View
 					e.printStackTrace();
 				}
 				
-				g2d.drawString("1. " + EnglishSwedishTranslations.CHOOSEBOARD.toString(), 30, 150);
+				g2d.drawString("1. " + EnglishSwedishTranslations.CHOOSEBOARD.toString(), 50, 150);
 				
 				if (app.manager().ref().context().board().numSites() > 1)
-					g2d.drawString("2. " + EnglishSwedishTranslations.DRAGPIECES.toString(), 30, 375);
+					g2d.drawString("2. " + EnglishSwedishTranslations.DRAGPIECES.toString(), 50, 375);
 			}
 			else
 			{
