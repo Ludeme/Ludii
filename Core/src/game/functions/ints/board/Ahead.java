@@ -276,6 +276,7 @@ public final class Ahead extends BaseIntFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return " the " + type.name() + " " + stepsFn.toEnglish(game) + " steps ahead of " + siteFn.toEnglish(game) + " in the direction " + dirnChoice.toEnglish(game);
+		final SiteType realType = (type != null) ? type : game.board().defaultSite();
+		return " the " + realType.name() + " " + stepsFn.toEnglish(game) + " steps ahead of " + siteFn.toEnglish(game) + " in the direction " + dirnChoice.toEnglish(game);
 	}
 }

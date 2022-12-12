@@ -1,0 +1,59 @@
+(game "Lupo e Pecore" // Hunt game
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment {
+            ("CrossBoard" 3 9 use:Vertex diagonals:Alternating)
+            (piece "Counter" P1 (move [#]))
+            (piece "Counter" P2 (move [#]))
+        }) 
+        
+        (rules 
+            (start [#])
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Lupo e Pecore is a game which is included in  a sixteenth century compendium of games from Venice.")
+        (rules "Four 2x3 rectangles, arranged in the form of a cross, with 2x2 squares in the center. Diagonals drawn in every 2x2 square. Played on the intersections of the lines.")
+        (source "DLP evidence.")
+        (id "996")
+        (version "1.3.8")
+        (classification "board/hunt/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Italy, from around 1500 to 1599.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+    })
+    
+)

@@ -1,4 +1,5 @@
 (define "Nine Holes_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (influence weight:-0.10943389)
@@ -20,6 +21,31 @@
             (pair "Marker1" 0.05243925)
             (pair "Marker2" 0.2380762)
         })
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{1/4,-1/4}, f{0,1/4,0}]>" 2.389507)
+            (pair "rel:last_from=<{}>:from=<{0}>:pat=<els=[e{0,1/4,0}]>" 0.8360572)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[e{0,1/4,1/2,0}]>" -0.475073)
+            (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/4,-1/4}, e{0,-1/4,0}, #{0,1/4}]>" -0.58421355)
+            (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[e{0,-1/4}, !f{0,0,0}, !e{0,0}, !-{0,1/4,-1/4}]>" -0.5807439)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0}]>" 0.044137713)
+            (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/4,-1/4}, e{0,-1/4}, #{0,1/4}]>" -1.0129849)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:last_to=<{0}>:to=<{0,0,-1/4}>:pat=<els=[!-{1/2}, e{0,0,-1/4,0}, e{-1/4}, !e{1/2,0}]>" -5.642494)
+            (pair "rel:from=<{}>:pat=<els=[!e{0}, !e{1/4,0}]>" 0.12987094)
+            (pair "rel:last_to=<{1/2}>:to=<{}>:pat=<els=[e{0}, -{1/4,1/4}]>" 1.3382998)
+            (pair "rel:from=<{}>:pat=<els=[-{1/2,1/4}, -{0,1/2,1/4,1/4}]>" -0.20585836)
+            (pair "rel:last_to=<{0,1/4,1/4}>:from=<{0,1/4}>:pat=<els=[-{-1/4}, !e{0,1/4,-1/4,0}, -{0,1/4,-1/2,-1/4}]>" -5.642494)
+            (pair "rel:last_to=<{0,0,1/4,0}>:from=<{}>:pat=<els=[-{0,0,1/4,1/4,-1/4}]>" 0.87129873)
+            (pair "rel:to=<{}>:pat=<els=[e{-1/4}, -{0,0}, -{0,1/4}]>" -0.64629614)
+            (pair "rel:to=<{}>:pat=<els=[-{-1/4}, !e{0,1/4,1/4,-1/4}, !e{0,1/4,-1/4,0}, -{0,1/4,-1/2,-1/4}]>" -0.27149802)
+            (pair "rel:last_to=<{0,1/4,1/4}>:to=<{}>:pat=<els=[-{-1/4}, !e{0,1/4,1/4,-1/4}, !e{0,1/4,-1/4,0}, -{0,1/4,-1/2,-1/4}]>" -0.6341503)
+            }
+        )
     })
     
 )

@@ -1,7 +1,32 @@
 (define "BlooGo_ai"
+    
     (bestAgent "MC-GRAVE")
     trainedHeuristics:(heuristics {
         (centreProximity)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 0.32240692)
+            (pair "rel:to=<{}>:pat=<els=[e{1/2}, -{1/4,1/4}, e{0}]>" 0.11787475)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[e{-1/4}, -{1/4,1/4}]>" 0.24756144)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[e{-1/4}, e{-1/2}, e{0}]>" -0.949782)
+            (pair "rel:to=<{}>:pat=<els=[e{0}, -{1/4,0}, e{1/4}, -{0,-1/4}]>" -0.07353981)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[e{0}, f{0,1/4}, f{0,-1/4}]>" 1.2567049)
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/4}, e{0}]>" 0.5943725)
+            (pair "rel:to=<{}>:pat=<els=[#{1/2,0,0,0}, !e{0}, !e{0,-1/4}, e{-1/4}, !-{0}, !-{1/2}]>" 1.2486777)
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/4}, e{0}, #{0,0,0}]>" 0.77641976)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0}, e{0}, f{0,1/4}, f{0,-1/4}]>" 1.7857126)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0}, e{0}, f{0,1/4}]>" 0.84075713)
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/4}, f{0,-1/4}, e{0}, #{0,0,0}]>" 1.7836137)
+            (pair "rel:to=<{}>:pat=<els=[#{0,0,0,0}, !e{-1/2}, !e{-1/2,-1/4}, !-{0,-1/4}, e{1/4}, !-{0}]>" 0.44536403)
+            (pair "rel:to=<{}>:pat=<els=[#{1/2,0,0,0}, !e{0}, !e{0,-1/4}, !-{1/2,-1/4}, e{-1/4}, !-{0}, !-{1/2}]>" 1.3912914)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0}, #{-1/2,0,0,0}, e{0}, f{0,1/4}, f{0,-1/4}]>" 1.9776618)
+            }
+        )
     })
     
 )

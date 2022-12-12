@@ -210,20 +210,7 @@
 (metadata
     (info
         {
-        (description "'Astralesce' and 'Constellate' are games based loosely on Kanare Kato's 'Advanced Squish'.
-            
-            The mechanism found in 'advanced Squish' of: 'move toward in-line-targets that are part of larger groups', is extended in these games to a future look-ahead restriction, i.e.:
-            'move along a line from a starting location to a location that is in line with a larger group than the moving piece had been in line with before.'
-            
-            This is inherently difficult perceptually, and it remains to be seen if the game can be played without the assistance of an app.
-            
-            However the game is both interesting and exciting, and appears to have various levels of strategy.     
-            
-            The goal is unification, and causing a stalemate before achieving the goal is considered a loss.
-            
-            'Astralesce' has sliding moves and captures that can remove multiple pieces. Thus stalemate is impossible, as the opponent cannot block movement. This is the preferred game.
-            
-        'Constellation' also has sliding moves, but only allows capture at the move's desination. This means opponent's pieces can block some potential destinations.")
+        (description "'Astralesce' and 'Constellate' are games based loosely on Kanare Kato's 'Advanced Squish'.        The mechanism found in 'advanced Squish' of: 'move toward in-line-targets that are part of larger groups', is extended in these games to a future look-ahead restriction, i.e.:    'move along a line from a starting location to a location that is in line with a larger group than the moving piece had been in line with before.'        This is inherently difficult perceptually, and it remains to be seen if the game can be played without the assistance of an app.        However the game is both interesting and exciting, and appears to have various levels of strategy.               The goal is unification, and causing a stalemate before achieving the goal is considered a loss.        'Astralesce' has sliding moves and captures that can remove multiple pieces. Thus stalemate is impossible, as the opponent cannot block movement. This is the preferred game.        'Constellation' also has sliding moves, but only allows capture at the move's desination. This means opponent's pieces can block some potential destinations.")
         (rules "Setup: Pieces of each color are distributed symmetrically on every 3rd cell of the board.
             Play
             - Decide which player will play with which color (Dark or Light).
@@ -252,7 +239,7 @@ C) move to join a non-in-line group that is at least as big as the largest in-li
 D) move to connect 2 groups to make the result larger than the largest in-line group
 E) find the all the lines radiating from all pieces of all groups that are larger than the largest in-line group, and move to a location on one of those lines.")
 (id "1731")
-(version "1.3.7")
+(version "1.3.8")
 (classification "experimental")
 (author "Dale W. Walton")
 (credit "Dale W. Walton")
@@ -268,19 +255,22 @@ E) find the all the lines radiating from all pieces of all groups that are large
     (piece Colour P1 strokeColour:(colour VeryDarkGrey))
     (piece Colour P2 strokeColour:(colour DarkGrey))
     (piece Background "Disc" image:"Disc" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:0.95 offsetX:-1 offsetY:2)
-(piece Foreground "Disc1" image:<Game:token> scale:0.75) // fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:0.70)
-(piece Foreground "Disc2" image:<Game:token> fillColour:(colour 255 255 255 60) edgeColour:(colour 255 255 255 120) scale:0.70)
-(board Colour Phase0 (colour 220 230 245))
-(board StyleThickness InnerEdges 1.6)
-(board StyleThickness OuterEdges 1.6)
-(board StyleThickness InnerVertices 0.45)
-(board StyleThickness OuterVertices 0.45)
-(board Colour InnerVertices (colour Grey))
-(board Colour OuterVertices (colour Grey))
-(board Colour InnerEdges (colour Black))
-(board Colour OuterEdges (colour Black))
-(region Colour (sites Outer) (colour 180 192 210))
-
-}
+    (piece Foreground "Disc1" image:<Game:token> scale:0.75) // fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:0.70
+    (piece Foreground "Disc2" image:<Game:token> fillColour:(colour 255 255 255 60) edgeColour:(colour 255 255 255 120) scale:0.70)
+    (board Colour Phase0 (colour 220 230 245))
+    (board StyleThickness InnerEdges 1.6)
+    (board StyleThickness OuterEdges 1.6)
+    (board StyleThickness InnerVertices 0.45)
+    (board StyleThickness OuterVertices 0.45)
+    (board Colour InnerVertices (colour Grey))
+    (board Colour OuterVertices (colour Grey))
+    (board Colour InnerEdges (colour Black))
+    (board Colour OuterEdges (colour Black))
+    (region Colour (sites Outer) (colour 180 192 210))
+    
+    }
+)
+(ai
+    "Astralesce and Constellation_ai"
 )
 )

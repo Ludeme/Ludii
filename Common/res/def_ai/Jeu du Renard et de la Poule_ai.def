@@ -1,7 +1,27 @@
 (define "Jeu du Renard et de la Poule_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (centreProximity)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N8{0,0,0}, !-{0,-1/4}, e{0,1/8,1/8}]>" 0.04686725)
+            (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[#{1/2,3/8}, -{1/8,1/8}]>" 0.088101976)
+            (pair "rel:last_to=<{}>:to=<{0,0}>:pat=<els=[-{0,0,3/8,0,0,0}]>" -0.035454113)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{-3/8,-1/4}, -{0,0,1/8,3/8}]>" 0.5106506)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{1/4,1/8}, f{0,-1/4,0,0}]>" -0.004606596)
+            (pair "rel:from=<{0}>:pat=<els=[#{1/8,-3/8}, -{0,-1/4,0,0}]>" 0.29589567)
+            (pair "rel:from=<{}>:pat=<els=[f{1/2,0,0}, -{0,1/4,-3/8}, -{0,-1/4,0,0}]>" 0.0014183816)
+            (pair "rel:last_to=<{0,3/8}>:from=<{0}>:pat=<els=[-{0,1/8}, -{-1/8,0}, !-{0,3/8}, -{0,-1/2,-1/2,-1/4}]>" 0.29589567)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N8{1/2,1/4}, N8{-1/4,-1/4}, -{0,-1/2,1/4}]>" -0.019191492)
+            (pair "rel:last_to=<{0,-3/8}>:to=<{}>:pat=<els=[-{1/8,0}]>" -0.01920797)
+            }
+        )
     })
     
 )

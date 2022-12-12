@@ -298,6 +298,10 @@ public final class SitesEquipmentRegion extends BaseRegionFunction
 			return precomputedRegion.toEnglish(game);
 		
 		String text = "";
+		
+		if(regionsPerPlayer == null)
+			return text;
+		
 		for (final List<Regions> regions : regionsPerPlayer) 
 		{
 			if (!regions.isEmpty()) 

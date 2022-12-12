@@ -7,6 +7,7 @@ import game.functions.booleans.BooleanFunction;
 import game.rules.end.Result;
 import game.types.play.ResultType;
 import game.types.play.RoleType;
+import main.Constants;
 import other.context.Context;
 
 /**
@@ -142,6 +143,9 @@ public class EndConcepts
 				else if(resultType.equals(ResultType.Draw))
 					endConcepts.set(Concept.NoOwnPiecesDraw.id(), true);
 			}
+			
+			if(result.concepts(game).get(Concept.Scoring.id))
+					endConcepts.set(Concept.NoOwnPiecesWin.id(), true);
 		}
 
 		// Fill End
@@ -152,10 +156,10 @@ public class EndConcepts
 			{
 				if(resultType.equals(ResultType.Win))
 				{
-					if(who.equals(RoleType.Mover))
-						endConcepts.set(Concept.FillWin.id(), true);
-					else if(who.equals(RoleType.Next) && game.players().count() == 2)
+					if(who.equals(RoleType.Next) && game.players().count() == 2)
 						endConcepts.set(Concept.FillLoss.id(), true);
+					else if(who.equals(RoleType.Mover) || who.owner() != Constants.NOBODY)
+							endConcepts.set(Concept.FillWin.id(), true);
 				}
 				else if(resultType.equals(ResultType.Loss))
 				{
@@ -247,7 +251,8 @@ public class EndConcepts
 		}
 		
 		// Eliminate Pieces End
-		if (condConcepts.get(Concept.NoPieceNext.id()) || condConcepts.get(Concept.CountPiecesNextComparison.id()))
+		if (condConcepts.get(Concept.NoPieceNext.id()) || condConcepts.get(Concept.CountPiecesNextComparison.id()) || 
+				(condConcepts.get(Concept.NoPiece.id()) && !condConcepts.get(Concept.NoPieceMover.id())))
 		{
 			endConcepts.set(Concept.EliminatePiecesEnd.id(), true);	
 			if(resultType != null && who != null)

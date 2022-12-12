@@ -1,0 +1,35 @@
+(define "The SmallHolder_ai"
+    (useFor { "Ruleset/The Smallholder- Gaps Original (Described)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/3,0,0}]>" 0.48564762)
+                (pair "rel:last_to=<{0,1/3}>:to=<{}>:pat=<els=[f{0}, !-{1/6,-1/6}]>" 0.88117814)
+                (pair "rel:to=<{}>:pat=<els=[#{1/3,1/6}, e{0,1/3}, e{-1/3,-1/3}]>" 0.8418316)
+                (pair "rel:to=<{}>:pat=<els=[#{1/3,-1/3}, f{0,1/6}]>" 0.84663844)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}, #{1/3,-1/6}, e{0,-1/3}]>" 0.37614605)
+                (pair "rel:to=<{}>:pat=<els=[f{0}]>" 0.3806197)
+                (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[f{1/2}, #{1/3,-1/6}]>" 0.6224643)
+                (pair "rel:to=<{}>:pat=<els=[#{1/3,-1/3}, f{0,1/6}, !-{1/6,1/6}]>" 0.84663844)
+                (pair "rel:last_to=<{0,1/6}>:to=<{}>:pat=<els=[f{0}, -{0,-1/3}]>" 0.62259436)
+                (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[f{1/2}]>" 0.4465091)
+                (pair "rel:last_to=<{1/3,1/6}>:to=<{}>:pat=<els=[#{1/2,0}, #{0,-1/6}]>" 0.9236098)
+                (pair "rel:last_to=<{0,1/3}>:to=<{}>:pat=<els=[e{0,-1/3}]>" 0.84735316)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[e{1/3}, #{1/6,1/6}, f{0,1/3}]>" 2.1541388)
+                (pair "rel:to=<{}>:pat=<els=[f{0,1/3}]>" 1.4020313)
+                (pair "rel:to=<{}>:pat=<els=[f{0,-1/3}, #{1/3,1/6}]>" 1.5434926)
+                (pair "rel:to=<{}>:pat=<els=[!-{1/6,0}, f{0}]>" 1.4457191)
+                (pair "rel:to=<{}>:pat=<els=[e{1/3}, #{1/6,1/6}, f{0,1/3}, e{1/2,-1/3}]>" 2.153296)
+                (pair "rel:to=<{}>:pat=<els=[-{0,-1/3}, #{1/3,1/3}, f{1/2,1/3}]>" 2.3768017)
+                (pair "rel:to=<{}>:pat=<els=[#{0,1/3}, f{1/6,1/3}]>" 2.1816256)
+                (pair "rel:to=<{}>:pat=<els=[!-{0,1/6}, #{-1/3,1/6}, f{-1/2,1/3}, e{0,-1/3}]>" 2.4371343)
+                (pair "rel:to=<{}>:pat=<els=[#{0,0}, f{0,1/3}]>" 1.5027654)
+                }
+            )
+        })
+        
+    )
+)

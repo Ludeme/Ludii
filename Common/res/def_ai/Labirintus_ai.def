@@ -1,0 +1,15 @@
+(define "Labirintus_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[I1{0,0,0}]>" 0.013114037)
+            (pair "rel:to=<{}>:pat=<els=[#{0,0}, #{1/4,0}]>" -0.008140872)
+            (pair "rel:last_to=<{0,0,0}>:from=<{0,0,0}>:pat=<els=[]>" -0.18927243)
+            (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[R2{1/4,0,0}]>" -0.031906236)
+            (pair "rel:last_to=<{}>:from=<{}>:pat=<els=[I1{0,0,0,0,0,0,0,0,1/4,0,0}]>" 0.007035221)
+            (pair "rel:last_to=<{0,0,0}>:from=<{0,0,0}>:to=<{}>:pat=<els=[R2{1/4,0,0}]>" -0.031906236)
+            }
+        )
+    })
+    
+)

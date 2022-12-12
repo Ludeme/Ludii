@@ -102,8 +102,7 @@
     
     (info
         {
-        (description "Onyx is a two-player abstract strategy board game invented by Larry Back in 1995. The game features a rule for performing captures, making Onyx unique among connection games.
-        The Onyx board is a grid of interlocking squares and triangles, with pieces played on the points of intersection (as in Go). Each side of the board comprises twelve points.")
+        (description "Onyx is a two-player abstract strategy board game invented by Larry Back in 1995. The game features a rule for performing captures, making Onyx unique among connection games.The Onyx board is a grid of interlocking squares and triangles, with pieces played on the points of intersection (as in Go). Each side of the board comprises twelve points.")
         (rules "The initial setup has four black pieces and four white pieces pre-placed. Black moves first by placing a black piece on any empty point of the board. White follows suit. Turns continue to alternate. A piece can be placed on the midpoint of a square only if all four corners of that square are currently unoccupied. Once placed, pieces do not move. Captured pieces are immediately removed from the game.
             
             The rule for capturing allows a player to capture two enemy pieces in a single turn. All of the following conditions must be met:
@@ -116,7 +115,7 @@
         Black tries to connect the two horizontal (black) sides with an unbroken chain of black pieces, while White tries to connect the two vertical (white) sides with an unbroken chain of white pieces. The first to do so wins the game.")
         (id "1770")
         (source "<a href=\"https://en.wikipedia.org/wiki/Onyx_(game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.7")
+        (version "1.3.8")
         (classification "board/space/connection")
         (author "Larry Back")
         (credit "Eric Piette")
@@ -133,4 +132,7 @@
         (board Colour InnerVertices (colour Hidden))
         (board Colour OuterVertices (colour Hidden)) 
     })
+    (ai
+        "Onyx_ai"
+    )
 )

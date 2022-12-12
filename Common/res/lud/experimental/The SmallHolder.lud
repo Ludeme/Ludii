@@ -7,41 +7,45 @@
 ))
 
 (define "HexBetweenSites"
-    (union {
+    (union
+        {
         ("Corner" #1 NNW SSE) 
         ("Corner" #1 NNE SSW) 
         ("Corner" #1 E W) 
-    })
-)
+        }
+))
 
 (define "HexHullSites"
-    (union {
+    (union
+        {
         ("Corner" #1 NNW E) 
         ("Corner" #1 NNE SSE) 
         ("Corner" #1 E SSW) 
         ("Corner" #1 SSE W) 
         ("Corner" #1 SSW NNW) 
         ("Corner" #1 W NNE) 
-    })
-)
+        }
+))
 
 (define "SquareBetweenSites"
-    (union {
+    (union
+        {
         ("Corner" #1 NE SW) 
         ("Corner" #1 S N) 
         ("Corner" #1 NE SW) 
         ("Corner" #1 E W) 
-    })
-)
+        }
+))
 
 (define "SquareHullSites"
-    (union {
+    (union
+        {
         ("Corner" #1 N E) 
         ("Corner" #1 S E) 
         ("Corner" #1 S W) 
         ("Corner" #1 N W) 
-    })
-)
+        }
+))
 
 (define "P1Territory"
     (difference
@@ -53,8 +57,7 @@
             (sites (values Remembered "P2")) 
             (difference (sites Occupied by:P2) (handSite P2 0))
         ) 
-    )
-)
+))
 
 (define "P2Territory"
     (difference
@@ -66,28 +69,25 @@
             (sites (values Remembered "P1")) 
             (difference (sites Occupied by:P1) (handSite P1 0))
         ) 
-    )
-) 
+)) 
 
 (define "CommonTerritory"
     (intersection
         (union (sites (values Remembered "P2")) (difference (sites Occupied by:P2) (handSite P2 0)))
         (union (sites (values Remembered "P1")) (difference (sites Occupied by:P1) (handSite P1 0)))
-    )
-)
+))
 
 (define "PiecewiseCapture" 
     (forEach Group Orthogonal
         if:(is In (to) (intersection (sites Board) (sites Occupied by:Next)))
         (remove (intersection (sites) (sites (values Remembered #2))))
         (then
-            (seq {
+            (seq
+                {
                 (forget Value #1 All)
                 ("UpdateAllTerritoryOfNext")
-            })
-        )
-    )
-)
+                }    
+))))
 
 (define "CaptureGroupsWithin" 
     (forEach Group Orthogonal
@@ -99,8 +99,7 @@
         )
         // Forget all to handle very rare case of removing a group that (partially?) is in common territory based on other groups.
         (then ("UpdateAllTerritoryOfNext"))              
-    )
-)
+))
 
 (define "UpdateAllTerritoryOfNext"
     (forEach Group Orthogonal
@@ -110,10 +109,7 @@
                 (= (mover) 1)
                 (remember Value "P2" (site) unique:True)
                 (remember Value "P1" (site) unique:True)
-            )
-        )
-    )
-) 
+)))) 
 
 (define "RecordTerritoryOfRevisedGroup"
     (forEach Site (<Territory:tVariant> (sites Group at:(last To) Orthogonal))
@@ -121,9 +117,7 @@
             (= (mover) 1)
             (remember Value "P1" (site) unique:True)
             (remember Value "P2" (site) unique:True)
-        )
-    )
-) 
+))) 
 
 (define "EmptySitesOutsideEnemyTerritoryFor" 
     (difference (sites Empty) (sites (values Remembered #1)))
@@ -134,9 +128,14 @@
         (= 1 (mover)) 
         ("EmptySitesOutsideEnemyTerritoryFor" "P2")
         ("EmptySitesOutsideEnemyTerritoryFor" "P1")
-    )
-)
+))
 
+(define "EmptySitesOutsideFriendlyTerritory" 
+    (if
+        (= 2 (mover)) 
+        ("EmptySitesOutsideEnemyTerritoryFor" "P2")
+        ("EmptySitesOutsideEnemyTerritoryFor" "P1")
+))
 (define "UpdateTotalMoverGroupCount" 
     (set Value at:(handSite Mover 0) (size Array (sizes Group Orthogonal Mover)))
 )
@@ -145,8 +144,7 @@
     (forEach Site 
         (sites Group at:(last To) Orthogonal)
         (set Value at:(site) (count Sites in:(sites Group at:(last To) Orthogonal)))
-    )
-)
+))
 
 (define "IsNotAnIsolatedPlacement"
     (< 0 (count Pieces Mover in:(sites Around (last To) Orthogonal)))
@@ -157,235 +155,477 @@
         (= (mover) 1)
         (<Capture:cVariant> "P2" "P1")
         (<Capture:cVariant> "P1" "P2")
-    )
-)
+))
+
+(define "MakeAnyCaptures"
+    (if
+        ("IsNotAnIsolatedPlacement")
+        (seq
+            {
+            ("RecordTerritoryOfRevisedGroup")
+            ("MakeCapture")
+            }
+)))
 
 (define "PlayWithoutSizeRestriction"
     (move Add
         (to <Capture:playableSites> )
-        (then
-            (if
-                ("IsNotAnIsolatedPlacement")
-                (seq {
-                    ("RecordTerritoryOfRevisedGroup")
-                    ("MakeCapture")
-                })
-            )
-        )
-    )
-)
+        (then "MakeAnyCaptures")
+))
 
-(define "Play2SmallestGroup"
-    (if
-        (> 2 (count Groups Orthogonal if:(is Mover (who at:(to)))))
-        (move Add
-            (to
-                <Capture:playableSites>
-                if:(all Sites
-                    (sites Around (to) Orthogonal)
-                    if:(not (is Mover (who at:(site))))
-                )
-            )
+(define "Isolated"
+    (all Sites
+        (sites Around (to) Orthogonal)
+        if:(not (is Mover (who at:(site))))
+))
+
+(define "SmallestPlayable"
+    (min
+        (results
+            from:(difference (sites Occupied by:Mover) (sites State 1)) 
+            to:(from)
+            (size Group at:(from) Orthogonal)
+        )
+))
+
+(define "SmallestGroup" (min (sizes Group Orthogonal Mover)))
+
+(define "NothingLarger"
+    (all Sites
+        (sites Around (to) Orthogonal if:(is Mover (who at:(to))))
+        if:(=
+            <ExtendMerge:playableMode> 
+            (size Group at:(site) Orthogonal)
+)))
+
+(define "MergeAny" 
+    (not
+        (all Sites
+            (sites Around (to) Orthogonal if:(is Mover (who at:(to))))
+            if:(<
+                <ExtendMerge:playableMode> 
+                (size Group at:(site) Orthogonal)
+))))
+
+(define "MarkUnPlayableNextGroups"
+    (forEach Group Orthogonal
+        if:(is In (to) (sites Occupied by:Next))
+        (if
+            (< 0
+                (size Array
+                    (array
+                        (intersection
+                            (sites Around (sites) Orthogonal if:(is Empty(to)))
+                            <Capture:nextPlayableSites>
+            ))))
+            (forEach Value (array (sites)) (set State at:(value) 0))
+            (forEach Value (array (sites)) (set State at:(value) 1))
+)))
+
+(define "CreateNewGroup"
+    (move Add
+        (to
+            <Capture:playableSites>
+            if:("Isolated")
+)))
+
+(define "ExtendGroup"
+    (move Add
+        (to
+            <Capture:playableSites>
+            if:<ExtendMerge:contactMode>
+)))
+
+(define "UpdatePlayableSitesAndGroups"
+    (seq
+        {
+        ("UpdateGroupSizeValue4PiecesConnected2Placement")     
+        ("MakeAnyCaptures")
+        ("MarkUnPlayableNextGroups")
+        //   <ExtendMerge:playableMode>
+        }
+))
+
+(define "IsolatedPiecePriority"
+    (priority
+        ("CreateNewGroup")
+        ("ExtendGroup")
+        (then "UpdatePlayableSitesAndGroups")
+))
+
+(define "GroupCreationPriority"
+    (priority
+        (if
+            (> 2 (count Groups Orthogonal <Group:playableRule>))
+            ("CreateNewGroup")
         )
         (or
-            (move Add
-                (to
-                    <Capture:playableSites>
-                    if:(all Sites
-                        (sites Around (to) Orthogonal)
-                        if:(not (is Mover (who at:(site))))
-                    )
-                )
-            )
-            (move Add
-                (to
-                    <Capture:playableSites>
-                    if:(not
-                        (all Sites
-                            (sites Around (to) Orthogonal if:(is Mover (who at:(to))))
-                            if:(<
-                                (min (sizes Group Orthogonal Mover))
-                                (size Group at:(site) Orthogonal)
-                            )
-                        )
-                    )
-                )
-            )
+            ("CreateNewGroup")
+            ("ExtendGroup")
         )
-        (then
-            (seq {
-                ("UpdateGroupSizeValue4PiecesConnected2Placement")
-                //    next:("UpdateTotalMoverGroupCount")
-                //    (then
-                    (if 
-                        ("IsNotAnIsolatedPlacement")
-                        (seq
-                            {
-                            ("RecordTerritoryOfRevisedGroup")
-                            ("MakeCapture")
-                            }
-                        )
-                    )
-                })
-            )
+        (then "UpdatePlayableSitesAndGroups")
+))
+
+(define "GroupCreationRequirement"
+    (if
+        (> 2 (count Groups Orthogonal <Group:playableRule>))
+        ("CreateNewGroup")
+        (or
+            ("CreateNewGroup")
+            ("ExtendGroup")
         )
-    )
-    
-    //--------------------------
-    
-    (game "The SmallHolder"
-        (players 2)
-        (equipment {
-            (board <Board:type> use:Cell)
-            //        (hand Each size:1)
-            (piece "Disc" Each)
-        })
-        (rules
-            //        (start
-                //            {
-                //            (place "Disc1" (handSite P1 0) value:0) 
-                //            (place "Disc2" (handSite P2 0) value:0) 
-                //            }
-            //        )
-            (play
-                <Placement:pVariant>
-            )
-            (end 
-                "EndNoMoves"
-            )
-        )
-    ) 
-    
-    (define "EndNoMoves"
-        (if (no Moves Next) (result Next Loss))
-    )
-    
-    //--------------------------------------
-    
-    (option "Board" <Board> args:{ <type> }
+        (then "UpdatePlayableSitesAndGroups")
+))
+
+//--------------------------
+
+(game "The SmallHolder"
+    (players 2)
+    (equipment
         {
-        (item "Hex3" <(hex Hexagon 3)> "3 Hexagon Board")
-        (item "Hex 343434" <(hex Limping 3)> "343434 Hexagon Board")
-        (item "Hex4" <(hex Hexagon 4)> "4 Hexagon Board")**
-        (item "Hex 454545" <(hex Limping 4)> "454545 Hexagon Board")
-        (item "Hex5" <(hex Hexagon 5)> "5 Hexagon Board")
-        (item "Hex6" <(hex Hexagon 6)> "6 Hexagon Board")
-        (item "Hex7" <(hex Hexagon 7)> "7 Hexagon Board")
-        }
-    ) 
-    
-    (option "Placement" <Placement> args:{ <pVariant> }
-        {
-        (item "New or Extend Smallest" 
-            <"Play2SmallestGroup">
-            "Standard"
-        )**
-        (item "Unrestricted" 
-            <"PlayWithoutSizeRestriction">
-            "Place a stone on an empty space."
-        )    
+        (board <Board:type> use:Cell)
+        //        (hand Each size:1)
+        (piece "Disc" Each)
         }
     )
-    
-    (option "Capture" <Capture> args:{ <cVariant> <playableSites> }
-        {
-        (item "Piecewise" 
-            <"PiecewiseCapture">
-            <"EmptySitesOutsideEnemyTerritory">
-            "Standard"
-        )**
-        (item "Groupwise" 
-            <"CaptureGroupsWithin">
-            <(union
-                ("EmptySitesOutsideEnemyTerritory")
-                (sites Around
-                    (intersection (sites Board) (sites Occupied by:Mover)) 
-                    Orthogonal 
-                    if:(is Empty (to))
-            ))>
-            "Placement in opponent's holdings is only allowed as an extension of a group. When you extend a group, capture every opponent's group lying completely within your holdings."
+    (rules
+        (play
+            <Group:creationRule>
         )
-        }
-    )    
+        (end 
+            "EndNoMoves"
+))) 
+
+(define "EndNoMoves"
+    (if (no Moves Next) (result Next Loss))
+)
+
+//--------------------------------------
+
+(option "Board" <Board> args:{ <type> }
+    {
+    (item "Hex 232323" <(hex Limping 2)> "232323 Hexagon Board")
+    (item "Hex3" <(hex Hexagon 3)> "3 Hexagon Board")
+    (item "Hex 343434" <(hex Limping 3)> "343434 Hexagon Board")
+    (item "Hex4" <(hex Hexagon 4)> "4 Hexagon Board")**
+    (item "Hex 454545" <(hex Limping 4)> "454545 Hexagon Board")
+    (item "Hex5" <(hex Hexagon 5)> "5 Hexagon Board")
+    (item "Hex6" <(hex Hexagon 6)> "6 Hexagon Board")
+    (item "Hex7" <(hex Hexagon 7)> "7 Hexagon Board")
+    }
+) 
+(option "Groups" <Group>
+    args:{ <creationRule> <playableRule>}
+    {
+    (item "Must create if only 1"
+        <"GroupCreationRequirement"> 
+        <if:(is Mover (who at:(to)))>
+        "A player with a single group must create a new group, or LOSE."
+    )
+    (item "Must create if 1 playable"
+        <"GroupCreationRequirement"> 
+        <if:(and (= 0 (state at:(to))) (is Mover (who at:(to))))>
+        "A player with less than 2 groups with adjacent playable sites must place a stone to create a new group, or LOSE."
+    )***
+    (item "Priority to create if 1"
+        <"GroupCreationPriority"> 
+        <if:(is Mover (who at:(to)))>
+        "A player with less than 2 groups must place a stone to create a new group, IF POSSIBLE."
+    )
+    (item "Priority to create if 1 playable"
+        <"GroupCreationPriority"> 
+        <if:(and (= 0 (state at:(to))) (is Mover (who at:(to))))>
+        "A player with less than 2 groups with adjacent playable sites must place a stone to create a new group, IF POSSIBLE."
+    )
+    (item "Priority to create"
+        <"IsolatedPiecePriority">
+        <>
+        "A player must place a stone to create a new group whenever possible."
+    )
+    }
+)
+
+(option "Adjacent play" <ExtendMerge>
+    args:{ <contactMode> <playableMode> }
+    {
     
-    (option "Territory" <Territory> args:{ <tVariant> }
-        {
-        (item "Gap"
-            <"HexBetweenSites">
-            "Standard"
-        )**
-        (item "Hull" 
-            <"HexHullSites">
-            "Each group's holdings is smallest grid-oriented hexagon that contains it."
-        )
-        }
+    (item "Smallest playable"
+        <"MergeAny"> 
+        <"SmallestPlayable">
+        "Otherwise, placement is allowed next to a group of the same size as the smallest mover's group with an adjacent playable site."
+    )***
+    
+    (item "Smallest playable only"
+        <"NothingLarger">
+        <"SmallestPlayable">
+        "Otherwise, placement is not allowed next to any group larger than the mover's smallest group with an adjacent playable site."
     )
     
-    //------------------------------------------------------------------------------
+    (item "Smallest, else lose"
+        <"MergeAny"> 
+        <"SmallestGroup">
+        "Otherwise, if placement is made adjacent to a group, it must be next to a group of the same size as the mover's smallest group."
+    )
     
-    // need to add Cascade if Value = 1, and Cascade if Piece is of mover.
-    (metadata
-        (info
-            {
-            (description "'The Smallholder' is an evolution of the game Offshore to find a similar game that is easier to play on a physical set.
-                The game gives up most of the counting: 
-                No territory - last to place wins; 
-                No tracking of the larger group sizes.
-                
-                The concept started with the ancestor of Offshore (no counting) and then    added in a different placement limitation:
-                
-                --Must play to form a new group, or, if there are already multiple groups, may also play to merge or extend the smallest group.
-                
-                This rule is much easier to visualize without counting.
-                
-                Next, piecewise capture was introduced, and finally, the 'hull' notion of territory was replaced with territory defined as spaces between two members of a group, to make the play tighter and more tactical, as well as being easier to visualize.
-            The options are left available so that players can assess on their own the value of these changes.")
-            (rules "Goal: Be the last to place a stone.
+    (item "Smallest only, else lose"
+        <"NothingLarger"> 
+        <"SmallestGroup">
+        "Otherwise, placement is not allowed next to any group larger than the mover's smallest group."
+    )
+    
+    }
+)
+
+(option "Territory" <Territory> args:{ <tVariant> }
+    {
+    (item "Gap"
+        <"HexBetweenSites">
+        "Group holdings are all the sites that lie between pairs of each group's members."
+    )***
+    (item "Hull" 
+        <"HexHullSites">
+        "Group holdings are the sites in the smallest grid-oriented hexagon that contains each group."
+    )
+    }
+)
+
+(option "Capture" <Capture> args:{ <cVariant> <playableSites> <nextPlayableSites> }
+    {
+    (item "Piecewise" 
+        <"PiecewiseCapture">
+        <"EmptySitesOutsideEnemyTerritory">
+        <"EmptySitesOutsideFriendlyTerritory">
+        "After placement, capture every enemy STONE within friendly holdings. Placement inside the opponent's holdings is forbidden."
+    )***
+    (item "Groupwise, No re-entry" 
+        <"CaptureGroupsWithin">
+        <"EmptySitesOutsideEnemyTerritory">
+        <"EmptySitesOutsideFriendlyTerritory">
+        "After placement, capture every complete enemy GROUP within friendly holdings. Placement inside the opponent's holdings is forbidden."
+    )
+    (item "Groupwise, Adjacent re-entry" 
+        <"CaptureGroupsWithin">
+        <(union
+            ("EmptySitesOutsideEnemyTerritory")
+            (sites Around
+                (intersection (sites Board) (sites Occupied by:Mover)) 
+                Orthogonal 
+                if:(is Empty (to))
+        ))>
+        <(union
+            ("EmptySitesOutsideFriendlyTerritory")
+            (sites Around
+                (intersection (sites Board) (sites Occupied by:Next)) 
+                Orthogonal 
+                if:(is Empty (to))
+        ))>
+        "After placement, capture every complete enemy GROUP within friendly holdings; Placement in the opponent's holdings is only allowed by extending a friendly group."
+    )
+    }
+)    
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/The Smallholder- Gaps Original (Described)" {
+        "Board/Hex4" "Groups/Must create if only 1" "Adjacent play/Smallest, else lose" "Territory/Gap" "Capture/Piecewise"
+    }) 
+    
+    (ruleset "Ruleset/The Smallholder- Nibbler (Described)" {
+        "Board/Hex4" "Groups/Must create if 1 playable" "Adjacent play/Smallest playable" "Territory/Gap" "Capture/Piecewise"
+    })*
+    
+    (ruleset "Ruleset/The Smallholder- Offshore Gaps (Described)" {
+        "Board/Hex4" "Groups/Priority to create if 1 playable" "Adjacent play/Smallest playable" "Territory/Gap" "Capture/Piecewise"
+    })
+    
+    (ruleset "Ruleset/The Smallholder- Stymie (Described)" {
+        "Board/Hex4" "Groups/Priority to create if 1 playable" "Adjacent play/Smallest, else lose" "Territory/Gap" "Capture/Groupwise, Adjacent re-entry"
+    })
+    
+    (ruleset "Ruleset/The Smallholder- Hull Setbacks (Described)" {
+        "Board/Hex4" "Groups/Must create if 1 playable" "Adjacent play/Smallest playable" "Territory/Hull" "Capture/Groupwise, No re-entry"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "'The Smallholder' is an evolution of the game Offshore to find a similar game that is easier to play on a physical set.
+            The game gives up most of the counting: 
+            No territory counting - last to place wins; 
+            No tracking of the larger group sizes.
+            
+            The concept started with the ancestor of Offshore (no counting) and then added in a different placement limitation:
+            
+            -- Must play to form a new group, or, if there are already multiple groups, may also play to merge or extend the smallest group.
+            
+            This rule is much easier to visualize without counting.
+            The rule has further evolved to require forming a new group if there are less than 2 groups that have adjacent playable sites.
+            
+            Next, piecewise capture was introduced, and finally, the 'hull' notion of territory was replaced with territory defined as spaces between two members of a group, to make the play tighter and more tactical, as well as being easier to visualize.
+            
+            Some further options improved play: Excluding blocked groups from counting as smallest group, or from counting towards the 2 viable group requirement, allows freer play, and make the Hull version more viable. 
+            
+            The options are left available so that players can assess on their own the value of these changes.
+            The main division is between Gap based territory and Hull based territory.
+            
+            ---------------     
+            Hull territory games such as 'Setback', feature more aggressive territorial fights.
+            If the Group option is set to any type of priority, the end game features a fill in phase, and territorial area is the primary concern.
+            
+            Otherwise, as in the 'Setback' game, itself, the strategy is to keep 2 groups as long as possible, and at the critical moment link them to wipe out all but one of the opponent groups, and to hold enough territory that the opponent has nowhere to form a new group. Link too early, and you will need to form your own new group. 
+            
+            In the case of placement being to the absolute smallest groups, an additional strategy gains dominance: Trapping a small group without capturing it - the smaller the better. Then the opponent must constantly create new groups instead of expanding to capture you.
+            
+            The Hull game played with Piecewise capture tends to lead to turnovers, and to lead to endings of one sparse group each - possibly the fastest version.  
+            
+            When applied together with the Group 'priority' option, however, these groups tend to fill in as opposing chevrons, first to fill-in losing.
+            
+            --------------
+            The Gap based games are tighter conflicts, suited to piecewise capture because holdings expand too slowly for groupwise capture to occur frequently.
+            
+            The original Gap game required group creation and adding to absolute smallest group, leading to the tactics of boxing in singletons at the corners or any other small groups so that expansion would be impossible. This is the game's tension as capture and control is driven by reducing many groups to fewer larger ones.
+            
+            This rule drives new group formation automatically. 
+            Easing the extension rule to placement 'next to the smallest PLAYABLE group,' makes the game more interesting: - then the Group formation rule keeps the same dynamic but less strictly. 
+            
+            With the group rule then set to 'must create if less than 2 playable' we get 'Nibbler' which is the closest to the original (strictest.) 
+            
+            If the rule less than 2 ABSOLUTE is used a trapped group becomes an advantage, and least strict rules, using Priority to drive group creation are no longer about trapping at all, and more similar to the source game 'Offshore' - building groups to capture each other maximise territory, except it is based on Gap territory rather than Hull territory.
+            
+        Finally, 'Stymie' is a Gap game that uses Group capture with re-entry to minimise the influence of capture, and minimal requirement for new group creation, to make a game focussing on filling, where the purpose of the filling is to trap a small group, and not run out of merging plays yourself.  One loses this game due to not being able to play next to one's smallest group.")
+        (useFor "Ruleset/The Smallholder- Nibbler (Described)" (rules "Goal: Last to place a stone, wins.
                 
                 Definitions:
                 -- Stones are connected if they are the same color and next to each other orthogonally.
-                -- Groups consist of connected stones. Every stone is part of exactly one group. Every group contains all the connected stones.
-                -- 'Holdings' are every space that lies between any two members of the same group. The group 'guards' a holding, preventing opponent placement there.
+                -- Groups consist of connected stones. 
+                Every stone is part of exactly one group. Every group contains all the stones connected to it. 
+                (Groups without any adjacent playable sites are shown with grey dots, for convenience.)
                 
                 Play starts with black. Turns alternate. Passing is not allowed.
                 
-                On their turn, the mover places a stone onto an empty space according to the following rules:
+                A player with less than 2 groups with adjacent playable sites must place a stone to create a new group, or LOSE.     
+                Otherwise, placement is allowed next to a group of the same size as the smallest mover's group with an adjacent playable site.
                 
-                - 1. If the player doesn't have 2 groups on the board, they must place a stone to form a group.
+                Group holdings are all the sites that lie between pairs of each group's members.
+                After placement, capture every enemy STONE within friendly holdings. 
                 
-                Otherwise, they must place a stone either to form a group, or to extend or merge a group that is no larger than their smallest group.
+                Placement inside the opponent's holdings is forbidden.
                 
-                - 2. Placement is not allowed in opponent's holdings. 
+        -- Nibbler is close to the original Gap game, but gives a bit more freedom in play, and may work better than the original on larger boards."))
+        (useFor "Ruleset/The Smallholder- Nibbler (Described)" (id "2001"))
+        (useFor "Ruleset/The Smallholder- Gaps Original (Described)" (rules "Goal: Last to place a stone, wins.
                 
-                After placement, the mover captures every stone within their holdings.
+                Definitions:
+                -- Stones are connected if they are the same color and next to each other orthogonally.
+                -- Groups consist of connected stones. 
+                Every stone is part of exactly one group. Every group contains all the stones connected to it. 
+                (Groups without any adjacent playable sites are shown with grey dots, for convenience.)
                 
-                The mover wins if the next player cannot make a legal placement.
+                Play starts with black. Turns alternate. Passing is not allowed.
                 
-            Options are available to redefine the rules for Placement, Capture and Holdings.")
-            (id "2001")
-            (version "1.3.7")
-            (classification "experimental")
-            (author "Dale Walton")
-            (credit "Dale Walton")
-            (date "07-2022")
-            }
-        )
-        
-        (graphics
-            {
-            (board Colour Phase0 (colour 100 200 250 120))
-            (board Colour OuterEdges (colour Black))
-            (board Colour InnerEdges (colour Black))
-            (board StyleThickness OuterEdges 1.5)
-            (board StyleThickness InnerEdges 0.4)
-            (board StyleThickness InnerVertices 0.4)
-            (board StyleThickness OuterVertices 0.4)
-            (board Colour Symbols (colour Black))
-            (player Colour P1 (colour Black))
-            (player Colour P2 (colour LightOrange))
-            (region Colour ("P1Territory")     (colour  60 120 170 120)) 
-            (region Colour ("CommonTerritory") (colour 120 157 185 120))  
-            (region Colour ("P2Territory")     (colour 180 195 200 120))
-            }
-        )
+                A player with a single group must create a new group, or LOSE.
+                Otherwise, if placement is made adjacent to a group, it must be next to a group of the same size as the mover's smallest group.
+                
+                Group holdings are all the sites that lie between pairs of each group's members.
+                After placement, capture every enemy STONE within friendly holdings. 
+                
+                Placement inside the opponent's holdings is forbidden.
+                
+        This game has a strong tactic of boxing in singletons at the corners (or any other small groups) so that expansion would be impossible. The game's tension is that capture and control is driven by reducing many groups to fewer larger ones, but larger groups mean turns get spent on enlarging a few small groups that might not have space to grow."))
+        (useFor "Ruleset/The Smallholder- Gaps Original (Described)" (id "2652"))
+        (useFor "Ruleset/The Smallholder- Offshore Gaps (Described)" (rules "Goal: Last to place a stone, wins.
+                
+                Definitions:
+                -- Stones are connected if they are the same color and next to each other orthogonally.
+                -- Groups consist of connected stones. 
+                Every stone is part of exactly one group. Every group contains all the stones connected to it. 
+                (Groups without any adjacent playable sites are shown with grey dots, for convenience.)
+                
+                Play starts with black. Turns alternate. Passing is not allowed.
+                
+                A player with less than 2 groups with adjacent playable sites must place a stone to create a new group, IF POSSIBLE. 
+                Otherwise, placement is allowed next to a group of the same size as the smallest mover's group with an adjacent playable site.
+                
+                Group holdings are all the sites that lie between pairs of each group's members.
+                After placement, capture every enemy STONE within friendly holdings. 
+                
+                Placement inside the opponent's holdings is forbidden.
+                
+        -- This game focuses on building groups to capture each other and to maximise territory available to fill in."))
+        (useFor "Ruleset/The Smallholder- Offshore Gaps (Described)" (id "2653"))
+        (useFor "Ruleset/The Smallholder- Stymie (Described)" (rules "Goal: Last to place a stone, wins.
+                
+                Definitions:
+                -- Stones are connected if they are the same color and next to each other orthogonally.
+                -- Groups consist of connected stones. 
+                Every stone is part of exactly one group. Every group contains all the stones connected to it. 
+                (Groups without any adjacent playable sites are shown with grey dots, for convenience.)
+                
+                Play starts with black. Turns alternate. Passing is not allowed.
+                
+                A player with less than 2 groups with adjacent playable sites must place a stone to create a new group, IF POSSIBLE. 
+                Otherwise, if placement is made adjacent to a group, it must be next to a group of the same size as the mover's smallest group.
+                
+                Group holdings are all the sites that lie between pairs of each group's members.
+                After placement, capture every complete enemy GROUP within friendly holdings; 
+                
+                Placement in the opponent's holdings is only allowed by extending a friendly group.
+                
+                This is a cold game focussing on creating many small groups and gradually merging them. 
+        Trapping a small opponent's group is advantageous tactically, but it is just as important not to run out of merging plays yourself."))
+        (useFor "Ruleset/The Smallholder- Stymie (Described)" (id "2654"))
+        (useFor "Ruleset/The Smallholder- Hull Setbacks (Described)" (rules "Goal: Last to place a stone, wins.
+                
+                Definitions:
+                -- Stones are connected if they are the same color and next to each other orthogonally.
+                -- Groups consist of connected stones. 
+                Every stone is part of exactly one group. Every group contains all the stones connected to it. 
+                (Groups without any adjacent playable sites are shown with grey dots, for convenience.)
+                
+                Play starts with black. Turns alternate. Passing is not allowed.
+                
+                A player with less than 2 groups with adjacent playable sites must place a stone to create a new group, or LOSE.   
+                Otherwise, placement is allowed next to a group of the same size as the smallest mover's group with an adjacent playable site.
+                
+                Group holdings are the sites in the smallest grid-oriented hexagon that contains each group.     
+                After placement, capture every complete enemy group within friendly holdings. 
+                
+        Placement inside the opponent's holdings is forbidden."))
+        (useFor "Ruleset/The Smallholder- Hull Setbacks (Described)" (id "2655"))
+        (id "2001")
+        (version "1.3.8")
+        (classification "experimental")
+        (author "Dale Walton")
+        (credit "Dale Walton")
+        (date "07-2022")
+        }
     )
+    
+    (graphics
+        {
+        (board Colour Phase0 (colour 100 200 250 120))
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board StyleThickness OuterEdges 1.5)
+        (board StyleThickness InnerEdges 0.4)
+        (board StyleThickness InnerVertices 0.4)
+        (board StyleThickness OuterVertices 0.4)
+        (board Colour Symbols (colour Black))
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour LightOrange))
+        (region Colour ("P1Territory")     (colour  60 120 170 120)) 
+        (region Colour ("CommonTerritory") (colour 120 157 185 120))  
+        (region Colour ("P2Territory")     (colour 180 195 200 120))
+        (piece Foreground "Disc" state:1 image:"Disc.svg" fillColour:(colour 150 150 150 150) edgeColour:(colour 150 150 150 150) scale:.5)
+        }
+    )
+    (ai
+        "The SmallHolder_ai"
+    )
+)

@@ -325,7 +325,11 @@ public final class CountPieces extends BaseIntFunction
 		if (whereFn != null)
 			whoString = " in the region " + whereFn.toEnglish(game);
 		
-		return "the number of " + name + typeString + whoString + whereString;
+		String pieceString = "the number of pieces";
+		if (name != null)
+			pieceString = "the number of " + name;
+		
+		return pieceString + typeString + whoString + whereString;
 	}
 	
 	//-------------------------------------------------------------------------

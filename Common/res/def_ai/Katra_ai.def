@@ -1,0 +1,22 @@
+(define "Katra_ai"
+    (useFor { "Ruleset/Sakalava (Described)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{1/2,1/4}>:to=<{}>:pat=<els=[!R3{0,1/4}, !-{-1/4}]>" 0.31413752)
+                (pair "rel:to=<{}>:pat=<els=[!-{1/4}, -{0,1/4}]>" 0.0022882675)
+                (pair "rel:to=<{}>:pat=<els=[#{0,1/4}]>" -0.011814572)
+                (pair "rel:to=<{}>:pat=<els=[!-{0}, -{-1/4,1/4}]>" -9.248831E-4)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{0,0,0}]>" 0.28577363)
+                (pair "rel:to=<{}>:pat=<els=[R2{0}]>" 0.046961557)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[#{1/2,1/4}, -{0}, -{1/4,0}, -{0,1/4}, -{-1/4,0}]>" 0.15779954)
+                (pair "rel:to=<{}>:pat=<els=[#{-1/4,1/4}, -{1/4}, -{1/2,0}, -{0,0}]>" 0.12816454)
+                }
+            )
+        })
+        
+    )
+)

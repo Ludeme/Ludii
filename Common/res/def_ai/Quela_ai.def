@@ -1,0 +1,16 @@
+(define "Quela_ai"
+    (useFor { "Ruleset/Quibala (Described)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!-{}, -{0,0,0}]>" -0.32122046)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[#{0}]>" 0.59632665)
+                }
+            )
+        })
+        
+    )
+)

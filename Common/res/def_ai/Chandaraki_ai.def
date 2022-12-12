@@ -1,0 +1,28 @@
+(define "Chandaraki_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[I1{1/4,0}, I2{0,0,0,0,0}, -{0,-1/4}, I9{0,0,-1/2,0,0}]>" -0.51808393)
+            (pair "rel:from=<{}>:pat=<els=[I1{0,0,0,0}]>" 0.056942232)
+            (pair "rel:from=<{}>:pat=<els=[f{0,1/4}]>" 0.088544436)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,1/4}, I9{0,0,1/2,0,0}]>" -0.03648273)
+            (pair "rel:from=<{}>:pat=<els=[I1{0,0,0}]>" 0.028893758)
+            (pair "rel:from=<{}>:pat=<els=[!-{1/4,0}, I9{0,-1/2,0}, I2{0,0,0,0,0}]>" 0.68723285)
+            (pair "rel:from=<{0,0}>:pat=<els=[f{0,0,1/4}, f{0,0,0}]>" -4.336336)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[!R0{0,1/4}, -{-1/2,0}, -{-1/4,1/4}, !-{0,0,0}, R0{0,-1/4}]>" -0.06448013)
+            (pair "rel:from=<{}>:pat=<els=[R0{0,1/4}]>" -0.008414266)
+            (pair "rel:from=<{}>:pat=<els=[-{1/4,0}, -{1/2,1/4}, -{0,0}]>" -0.08226865)
+            (pair "rel:from=<{0,1/4}>:pat=<els=[#{0,1/4,1/4,0,0}]>" -5.092451)
+            (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:from=<{}>:pat=<els=[!R0{1/2,1/4}, -{0,0}, -{1/4,1/4}, #{-1/4,0,0}]>" -0.09606732)
+            (pair "rel:from=<{0,1/4}>:pat=<els=[I12{0}, f{0,1/4,0}]>" -5.092451)
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:last_to=<{0,0,1/4}>:from=<{}>:to=<{0,0,1/4}>:pat=<els=[!R1{-1/4,1/4}]>" 0.48733255)
+            }
+        )
+    })
+    
+)

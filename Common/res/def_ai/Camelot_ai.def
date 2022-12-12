@@ -1,7 +1,33 @@
 (define "Camelot_ai"
+    
     (bestAgent "MAST")
     trainedHeuristics:(heuristics {
         (centreProximity)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[f{0,0}]>" 0.6042287)
+            (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}]>" -0.0024017068)
+            (pair "rel:from=<{0,1/4}>:pat=<els=[!R1{1/2,1/4}, !f{0,1/4,1/2,1/4}]>" 3.2411678)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[R1{-1/4,1/4}, #{0,0,-1/4,0}]>" -0.83439356)
+            (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[!I3{}, e{0,0,1/4,0,1/4,1/4}]>" 0.3443439)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[e{0,1/4}]>" -0.3245505)
+            (pair "rel:to=<{}>:pat=<els=[e{0}]>" -0.55769444)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[R1{1/4,0}]>" -1.0893673)
+            (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[!-{0,0,1/4,0,0,0,0,0}]>" -2.5109372)
+            (pair "rel:to=<{}>:pat=<els=[I1{0,1/4}]>" -0.32808667)
+            (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[-{1/4,1/4}, -{0,0,1/4,0,0,1/4}]>" -2.291517)
+            (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[I1{1/2,0,0}, !I4{0,0,1/4,0}, -{0,0,1/4,0,1/4,0,1/4,0,0,1/4}]>" -3.0190217)
+            (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[!I4{0,0,1/4,0}]>" -2.5688365)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[R1{1/4,0}, I2{0,0,-1/4}]>" -2.510661)
+            (pair "rel:to=<{}>:pat=<els=[I1{1/2,0,0}, !I4{0,0,1/4,0}, -{0,0,1/4,0,1/4,0,1/4,0,0,1/4}]>" 0.11527128)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[]>" -1.1218919)
+            }
+        )
     })
     
 )

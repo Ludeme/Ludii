@@ -1,0 +1,18 @@
+(define "Shatr ikh Padan_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{1/4}]>" 0.06731101)
+            (pair "rel:from=<{}>:pat=<els=[I3{0,0,0,0}]>" -9.108021E-4)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 0.0022794337)
+            (pair "rel:last_from=<{0,0,0,0}>:from=<{}>:to=<{0,1/4}>:pat=<els=[]>" 0.042847376)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{1/2}]>" 0.06590784)
+            (pair "rel:from=<{}>:pat=<els=[-{0,1/4,0,0}]>" 0.0)
+            }
+        )
+    })
+    
+)

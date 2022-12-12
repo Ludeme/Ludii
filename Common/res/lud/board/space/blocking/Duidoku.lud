@@ -94,7 +94,7 @@
         (rules "The player to play the last possible legal move wins the game.  The other player loses.  Unless, that is, the board is completely full, in which case the game is a tie.")
         (id "1774")
         (source "<a href=\"https://www.duidoku.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.duidoku.com/</a>")
-        (version "1.3.7")
+        (version "1.3.8")
         (classification "board/space/blocking")
         (author "Rudd Zwolinski")
         (credit "Eric Piette")
@@ -105,4 +105,7 @@
         (board Style Sudoku)
         (player Colour Neutral (colour 0 0 0 0))
     })
+    (ai
+        "Duidoku_ai"
+    )
 )

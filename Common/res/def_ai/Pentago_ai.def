@@ -1,0 +1,28 @@
+(define "Pentago_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{0}]>" 0.44775033)
+            (pair "rel:to=<{}>:pat=<els=[!#{0,0,0,0}, !R2{1/2,-1/4}, !-{0}, !R3{-1/2}, R3{1/4,0,0,0}]>" 0.5290895)
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!R1{0}, !R2{1/4,-1/4}, !-{-1/4}, !R3{1/4}]>" 0.69686085)
+            (pair "rel:to=<{}>:pat=<els=[R0{1/4,0,0}, !R3{0,0}]>" -0.4542141)
+            (pair "rel:to=<{}>:pat=<els=[R2{1/4,1/4}, e{0,-1/4}]>" 0.4151323)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,0}]>" 0.050195735)
+            (pair "rel:to=<{}>:pat=<els=[e{0,0}, e{0}, e{1/2}]>" 1.2340505)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[R2{0,1/4}, !-{-1/4,0}, !R0{0,1/4}, !R1{0,1/4}]>" 0.4008348)
+            (pair "rel:to=<{}>:pat=<els=[e{0,0,0}, e{0}, e{0,0}]>" 1.25915)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.13656044)
+            (pair "rel:to=<{}>:pat=<els=[e{0}, !-{1/2}, e{0,0}]>" 1.4061856)
+            (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[e{0,0}, e{0,0,0}]>" 0.92974764)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0,0}]>" 0.17126736)
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!-{0,0}, !R0{1/4,1/4}, !R1{1/4,1/4}]>" 0.79778194)
+            (pair "rel:to=<{}>:pat=<els=[-{1/2,1/4}, e{0,0,0}, e{0}]>" 0.76623887)
+            (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[!R0{0,1/4}, e{1/2,0,0}]>" 0.32916337)
+            }
+        )
+    })
+    
+)

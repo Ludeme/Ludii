@@ -1,8 +1,33 @@
 (define "Hoyito_ai"
-    (useFor { "Board Size/6" }
+    (useFor { "Ruleset/Hoyito I (Described)" }
+        
         (bestAgent "MAST")
         trainedHeuristics:(heuristics {
             (lineCompletionHeuristic)
+        })
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[!R1{0,0,0,0}]>" 0.2144554)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!R1{1/4,0,0,0}]>" 0.019671254)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{0,0}, -{1/4,1/4}]>" 0.31841838)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" 0.0054391506)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{1/4,-1/4}]>" 0.22585413)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" 0.02507602)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" -0.0019828556)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/4}, !#{0,0,0,0}]>" -0.22601572)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{-1/4,1/4}, !R0{0,0,0,0}]>" -0.16839817)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{-1/4,1/4}, !#{0,0,0,0}, !R0{0,0,0,0}]>" -0.16839817)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/2,-1/4}]>" -0.120673515)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{1/2,0}, -{0}]>" 0.3625128)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{0,1/4}]>" 0.056335744)
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:to=<{}>:pat=<els=[-{0,-1/4}, -{0,0}, -{-1/4,1/4}]>" 0.056335744)
+                }
+            )
         })
         
     )

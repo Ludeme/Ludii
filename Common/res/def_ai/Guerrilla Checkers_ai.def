@@ -1,7 +1,37 @@
 (define "Guerrilla Checkers_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (material)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[#{0,0,0}, #{1/4,0}, !-{-1/4,1/4}, !f{0}, -{1/2}, -{1/4,1/4}]>" 2.071655)
+            (pair "rel:to=<{}>:pat=<els=[#{0,0,0}, f{-1/4,0}, #{1/4,0,0}, #{1/4,0}, !-{-1/4,1/4}, !f{0}, -{1/2}]>" 1.9250323)
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[#{1/2,0}, !-{0,1/4}, !f{1/4}, -{-1/4}, -{0,-1/4}]>" 0.9980729)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, !-{1/2,0,0}, #{1/4,0}, !-{-1/4,-1/4}, !f{1/2}, -{0}]>" 1.8309274)
+            (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[-{-1/4}, -{0,-1/4}, !f{0}, -{1/2}, !-{0,1/4}]>" 0.6884733)
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[#{-1/2,0}, !-{0,1/4}, !f{1/4}, -{-1/4}, !-{1/4,-1/4}]>" 1.0179223)
+            (pair "rel:to=<{}>:pat=<els=[!-{-1/4,0,0}, #{1/2,0}, !-{0,-1/4}]>" 0.5742172)
+            (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[!-{0,1/4}, !f{0}, -{1/2}]>" 0.6941442)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:last_to=<{0,1/4}>:from=<{0}>:to=<{}>:pat=<els=[-{0,0,1/4}]>" 0.11369122)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{}]>" -0.27479985)
+            (pair "rel:from=<{}>:pat=<els=[!-{0,1/4}, #{1/4,-1/4,0,-1/4,0}]>" 0.64672685)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/2,0}]>" 0.7553682)
+            (pair "rel:from=<{}>:pat=<els=[#{1/2,0}, !-{0,-1/4,-1/4}]>" 0.10608745)
+            (pair "rel:to=<{0,-1/4,0}>:pat=<els=[!-{1/2}]>" -6.513632)
+            (pair "rel:last_to=<{0,1/4}>:from=<{0}>:pat=<els=[]>" -6.513632)
+            (pair "rel:last_to=<{0,-1/4,0}>:from=<{0,-1/4,0}>:pat=<els=[#{1/2,0}]>" -6.513632)
+            (pair "rel:from=<{}>:pat=<els=[e{0,0,0}]>" 0.028611464)
+            (pair "rel:to=<{}>:pat=<els=[#{0}]>" 0.33176148)
+            (pair "rel:from=<{0,-1/4,0}>:to=<{}>:pat=<els=[#{1/2,0}]>" -0.21138145)
+            (pair "rel:last_to=<{0,1/4,0}>:from=<{0,1/4,0}>:to=<{}>:pat=<els=[!e{0,1/4,0,1/4,1/4,0,1/2}]>" -0.19820245)
+            }
+        )
     })
     
 )

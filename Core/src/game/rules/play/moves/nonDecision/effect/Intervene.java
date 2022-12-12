@@ -170,8 +170,10 @@ public final class Intervene extends Effect
 					oppositeFound = true;
 				}
 				if (oppositeFound)
+				{
 					context.setTo(radial.steps()[1].id());
-				MoveUtilities.chainRuleCrossProduct(context, actions, targetEffect, null, false);
+					MoveUtilities.chainRuleCrossProduct(context, actions, targetEffect, null, false);
+				}
 			}
 
 		}
@@ -401,7 +403,9 @@ public final class Intervene extends Effect
 		if (then() != null)
 			thenString = " then " + then().toEnglish(game);
 		
-		return "apply " + targetEffect.toEnglish(game) + " to all sites flanking " + type.name() + StringRoutines.getPlural(type.name()) + " " + startLocationFn.toEnglish(game) + directionString + thenString;
+		final SiteType realType = (type != null) ? type : game.board().defaultSite();
+		
+		return "apply " + targetEffect.toEnglish(game) + " to all sites flanking " + realType.name() + StringRoutines.getPlural(realType.name()) + " " + startLocationFn.toEnglish(game) + directionString + thenString;
 	}
 	
 	//-------------------------------------------------------------------------

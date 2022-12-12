@@ -1,0 +1,302 @@
+(define "Sites2FirstDoubleEmptySiteFromToward"
+    (sites Direction
+        from:#1
+        (directions Vertex from:#1 to:#2)
+        stop:(and (is Empty (to)) (is Empty (ahead (to) (directions Vertex from:#1 to:#2))))
+        stopIncluded:True
+        distance:Infinity
+))
+
+(define "Sites2FirstEmptySiteToward"
+    (sites Direction
+        from:#1
+        (directions Vertex from:#1 to:#2)
+        included:True
+        stop:(is Empty (to))
+        stopIncluded:True
+        distance:Infinity
+))
+
+(define "AnchorSiteFromToward"
+    (regionSite
+        (forEach
+            ("Sites2FirstDoubleEmptySiteFromToward" #1 #2) 
+            if:(= (site) (ahead (site) (directions Vertex from:#1 to:#2)))
+        ) 
+        index:0
+))
+
+(define "ShockPushSitesFromTowards"
+    (difference
+        ("Sites2FirstDoubleEmptySiteFromToward" #1 #2)
+        (if
+            (or
+                {
+                (= -1 (var "AnchorSite")) 
+                (is Empty (var "AnchorSite")) 
+                (= #1 (var "AnchorSite"))
+                } 
+            )
+            (sites {#1})
+            ("Sites2FirstEmptySiteToward" (var "AnchorSite") #1)
+)))
+
+// The above "ShockPushSitesFromTowards" look for the first double space and captures all the sites before it.
+// If there is no double space, there must be an Anchor site at the edge of the board
+// and all sites consecutively adjacent to it are frozen, and not part of the push. 
+// Thus the clling routine sets the Anchor variable first. - see below.
+
+(define "PushFromTowards" 
+    (if
+        (and (!= #1 #2) (not (is Empty #2)))
+        (set Var "AnchorSite" ("AnchorSiteFromToward" #1 #2) 
+            (then
+                (forEach Site
+                    ("ShockPushSitesFromTowards" #1 #2)
+                    (if
+                        (is Empty (site))
+                        (remove (ahead (site) (directions Vertex from:#1 to:#2)))
+                        (add
+                            (piece (who at:(site)))
+                            (to
+                                (ahead (site) (directions Vertex from:#1 to:#2))
+                                (apply (remove (to)))
+                    )))
+                    (then (remove (#2)))
+)))))
+
+(define "ResolveShockWave"
+    (set Var "LF" (last To)
+        (then
+            (and
+                {
+                ("PushFromTowards" (var "LF") (ahead (var "LF") NNE))
+                ("PushFromTowards" (var "LF") (ahead (var "LF") E))
+                ("PushFromTowards" (var "LF") (ahead (var "LF") SSE))
+                ("PushFromTowards" (var "LF") (ahead (var "LF") SSW))
+                ("PushFromTowards" (var "LF") (ahead (var "LF") W))
+                ("PushFromTowards" (var "LF") (ahead (var "LF") NNW))
+                }
+))))
+
+(define "ReleaseFromPool"
+    (move (from (handSite Mover)) (to (sites Empty))
+        (then (moveAgain))
+))
+
+(define "Release" 
+    (if
+        (is Empty (handSite Mover))
+        (move Add (to (intersection (sites Board) (sites Empty))))
+        ("ReleaseFromPool")
+        (then
+            (and
+                {
+                (remember Value "Released" (mover) unique:True) 
+                ("ResolveShockWave")
+                }
+))))
+
+(define "BideMove"
+    (do
+        (add (to (handSite Mover)) stack:True)
+        next:(move Pass)
+))
+
+(define "BideMoveX"
+    (move Propose "Bide"
+        (then
+            (add (to (handSite Mover)) stack:True)
+)))
+
+//---------------------------------------------------
+
+(game "Bide" 
+    (players <Players:forThisTrial> )
+    (equipment
+        {
+        (board <BoardShape:gridType> use:Vertex)
+        (hand Each size:1)
+        (piece "Disc" Each) 
+        
+        (regions "R0x" (sites Outer))
+        (regions "R1x" (sites Around (sites "R0x") "Adj" includeSelf:True))
+        (regions "R2x" (sites Around (sites "R1x") "Adj" includeSelf:True))
+        (regions "R3x" (sites Around (sites "R2x") "Adj" includeSelf:True))
+        (regions "R4x" (sites Around (sites "R3x") "Adj" includeSelf:True))
+        (regions "R5x" (sites Around (sites "R4x") "Adj" includeSelf:True))
+        
+        // Note: Use in scoring:
+        // eg tie-breaker 1 is groups in:(difference (sites Board) "R0")
+        // pieces with value 1 are  Pieces in:(sites Around "R0")
+        
+        }
+    )
+    (rules
+        (meta (passEnd NoEnd))  // needed if Bide is implemented as a pass move.
+        (play
+            (if
+                (or
+                    (is Prev Mover)
+                    (and
+                        (< 0 (size Array (values Remembered "Released")))
+                        (> <Players:forThisTrial> (size Array (values Remembered "Released")))
+                ))
+                ("Release")
+                (or
+                    ("BideMove")
+                    (or
+                        ("ReleaseFromPool")
+                        (move Add (to (intersection (sites Board) (sites Empty))))
+                        (then "ResolveShockWave")
+                    )
+                    (then (forget Value "Released" All))
+                ) 
+                (then 
+                    ("CascadeScoring")
+        )))
+        (end 
+            (if
+                (= 0 (count Sites in:(intersection (sites Board) (sites Empty))))
+                (byScore)
+))))
+
+//-------------------------------------------------
+// Winning and Scoring
+
+(define "AssignValueOfNextTo"
+    (forEach Site
+        (sites Around (sites #2) "Adj" if:(= (player) (who at:(to))))
+        (set Value at:(site) #1)
+))
+
+(define "AssignPieceValues"
+    (and
+        {
+        ("AssignValueOfNextTo" 1 "R0x")
+        ("AssignValueOfNextTo" 2 "R1x")
+        ("AssignValueOfNextTo" 3 "R2x")
+        ("AssignValueOfNextTo" 4 "R3x")
+        ("AssignValueOfNextTo" 5 "R4x")
+        }
+))
+
+(define "ScoreSites" 
+    (intersection (difference (sites Board) #1) (sites Occupied by:(player (player))))
+)
+
+(define "ScoreLargestGroupsInsideRegionWithFactor"
+    (forEach Player
+        (do
+            ("AssignPieceValues") // here to filter by player to avoid buggy tallies
+            next:(if
+                (< 0 (count Sites in:("ScoreSites" #1))) // to avoid null groups causing neg scores
+                (do
+                    (forEach Group "Adj"
+                        if:(and
+                            {
+                            (is In (to) ("ScoreSites" #1))
+                            }
+                        )
+                        (remember Value "PlayerGroups" 
+                            (+
+                                (results
+                                    from:(sites)
+                                    to:(from)
+                                    (value Piece at:(from))
+                    ))))
+                    next:(addScore 
+                        (player (player))
+                        (* #2 (max (values Remembered "PlayerGroups")))
+                        (then (forget Value "PlayerGroups" All))
+))))))
+
+(define "CascadeScoring"
+    (and
+        {
+        (set Score All 0)
+        ("ScoreLargestGroupsInsideRegionWithFactor" (sites Empty) 10000000)
+        ("ScoreLargestGroupsInsideRegionWithFactor" (sites "R0x") 100000)
+        ("ScoreLargestGroupsInsideRegionWithFactor" (sites "R1x") 1000)
+        ("ScoreLargestGroupsInsideRegionWithFactor" (sites "R2x") 10)
+        ("ScoreLargestGroupsInsideRegionWithFactor" (sites "R3x") 1)
+        } 
+))
+
+//------------------------------------
+
+// Options
+
+(define "Adj" <BoardShape:directionsUsed>)
+
+(option "Players" <Players> args:{ <forThisTrial> }
+    {
+    (item "2" <2> "Two Players")
+    (item "3" <3> "Three Players")
+    (item "4" <4> "Four Players")
+    (item "5" <5> "Four Players")
+    (item "6" <6> "Six Players")
+    }
+)
+
+(option "Board" <BoardShape> args:{ <gridType> <directionsUsed> <dimHand> } 
+    {
+    (item "Hex 3" <(tri Hexagon 3)> <Orthogonal>  <.14> "Order 3, Hex Grid")
+    (item "Hex 3,4" <(tri Limping 3)> <Orthogonal> <.14> "Order 3-4, Hex Grid")
+    (item "Hex 4" <(tri Hexagon 4)> <Orthogonal> <.1183> "Order 4, Hex Grid")
+    (item "Hex 4,5" <(tri Limping 4)> <Orthogonal> <.103> "Order 4-5, Hex Grid")
+    (item "Hex 5" <(tri Hexagon 5)> <Orthogonal> <.094> "Order 5, Hex Grid")*
+    (item "Hex 5,6" <(tri Limping 5)> <Orthogonal> <.077> "Order 5-6, Hex Grid") 
+    (item "Hex 6" <(tri Hexagon 6)> <Orthogonal> <.074> "Order 6, Hex Grid")
+    }
+)
+
+(define "HS" <BoardShape:dimHand> )
+
+(metadata
+    (info
+        {
+        (description "A dynamic connection game on shifting, unstable ground.")
+        (rules "Bide is a strategy game for 2 to 6 players on a hexhex-5 board that is initially empty. Players take turns by placing stones of their color on the hexagonal cells. At the beginning of your turn you are given a new stone. You can either play it, or bide. If you bide, set the stone aside and your turn ends immediately. The stone remains in your hand. If you play the new stone while having at least one stone in your hand, you may release, meaning you would play every stone in your hand in succession. If a player releases, all players must release on their next turn, including playing their stone for that turn. Stones when placed create shock waves, pushing all adjacent stones one space radially outward from the placement. If there are multiple connected stones adjacent to the placed stone, positioned directly in line of the shock wave, they all move one space. If this movement causes a stone to bump into another stone directly in line of the shock wave, that stone also gets pushed one space. Becoming adjacent along a different grid line than the shockwave does not count. However stones cannot be pushed past the edge of the board. Lines that are full between the edges and the placed stone cannot move. Players eventually score points when all cells are filled up with stones. Each stone is worth points equal to its distance from the edge, starting at zero. Groups consist of connected adjacent like colored stones. The player with the highest scoring group wins. If tied, remove the outermost ring of stones and rescore, repeating this process until there is a winner. ")
+        (id "2656")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/309892/bide\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.8")
+        (classification "board/space/connection")
+        (author "Alek Erickson")
+        (credit "Dale W. Walton")
+        (date "18-06-2022")
+        }
+    )
+    (graphics 
+        {
+        (board Style Graph)
+        (board Background image:"Hex" fillColour:(colour Cream) edgeColour:(colour 186 163 255 40) scale:1.4 rotation:90)
+        (board StyleThickness InnerEdges .2)
+        (board StyleThickness OuterEdges .2)
+        (board StyleThickness InnerVertices .5)
+        (show Symbol "0" "R0x" edgeColour:(colour Grey) scale:.4)
+        (show Symbol "1" (sites Around (sites "R0x") "Adj") edgeColour:(colour Grey) scale:.4)
+        (show Symbol "2" (sites Around (sites "R1x") "Adj") edgeColour:(colour Grey) scale:.4)
+        (show Symbol "3" (sites Around (sites "R2x") "Adj") edgeColour:(colour Grey) scale:.4)
+        (show Symbol "4" (sites Around (sites "R3x") "Adj") edgeColour:(colour Grey) scale:.4)
+        (show Symbol "5" (sites Around (sites "R4x") "Adj") edgeColour:(colour Grey) scale:.4)
+        (hand Placement P1 scale:"HS" offsetX:.17 offsetY:.08 vertical:True)
+        (hand Placement P2 scale:"HS" offsetX:.07 offsetY:.28 vertical:True)
+        (hand Placement P3 scale:"HS" offsetX:.07 offsetY:.58 vertical:True)
+        (hand Placement P4 scale:"HS" offsetX:.17  offsetY:.78 vertical:True)
+        (hand Placement P5 scale:"HS" offsetX:.93 offsetY:.58 vertical:True)
+        (hand Placement P6 scale:"HS" offsetX:.83 offsetY:.78 vertical:True)
+        (stackType Cell Count)
+        }
+    )
+    (ai
+        (heuristics
+            {
+            (score weight:.3)
+            //    (influence weight:.4)
+            //    (influenceAdvanced weight:.4)
+            //    (mobilityAdvanced weight:.1)
+            //      (mobilitySimple weight:.1)
+            } 
+    ))
+)

@@ -1,7 +1,37 @@
 (define "Shatranj at-Tamma_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (material)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[e{0}]>" 0.25665304)
+            (pair "rel:from=<{}>:pat=<els=[I9{0}]>" 0.103966996)
+            (pair "rel:from=<{}>:pat=<els=[!-{0,1/4}]>" 0.07973241)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0}]>" -0.49432015)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4}]>" -0.5084034)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!I2{0}]>" -0.48768666)
+            (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[]>" -1.3592743)
+            (pair "rel:to=<{0}>:pat=<els=[e{0}]>" -5.0582004)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -0.017254263)
+            (pair "rel:from=<{}>:pat=<els=[I3{0,1/4}]>" -0.5259899)
+            (pair "rel:to=<{}>:pat=<els=[e{0,1/4}]>" 0.17883207)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[f{0,1/4}]>" -0.33532873)
+            (pair "rel:to=<{}>:pat=<els=[R1{0,0}]>" 0.022645218)
+            (pair "rel:from=<{}>:pat=<els=[!f{0}]>" 8.4943825E-4)
+            (pair "rel:to=<{}>:pat=<els=[I10{0,0}]>" -0.83202946)
+            (pair "rel:to=<{}>:pat=<els=[I14{0}, I10{1/4,0}]>" -1.3639096)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" 0.00494906)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R1{1/4,0}, I2{0,1/4,0,0}]>" -1.150427)
+            (pair "rel:from=<{}>:pat=<els=[I11{0,1/4}]>" -0.57549584)
+            (pair "rel:from=<{}>:pat=<els=[-{0,0}]>" -2.781206E-4)
+            }
+        )
     })
     
 )

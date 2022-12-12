@@ -1,4 +1,5 @@
 (define "Social Distance Chess_ai"
+    
     (bestAgent "Alpha-Beta")
     (heuristics {
         (material transformation:(divNumInitPlacement) pieceWeights:{
@@ -13,6 +14,30 @@
             (pair "Queen1" 9.0)
             (pair "Queen2" 9.0)
         })
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_from=<{0,0,0}>:to=<{}>:pat=<els=[]>" -0.3291579)
+            (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[e{0}, -{1/2,0,0}]>" -1.1562933)
+            (pair "rel:from=<{}>:pat=<els=[-{0,-1/4}, #{-1/4,0}, !-{0,1/4}]>" -0.08755218)
+            (pair "rel:to=<{0,-1/4}>:pat=<els=[I1{0,-1/4,0,1/4}]>" -4.2723117)
+            (pair "rel:from=<{}>:pat=<els=[!-{0,1/4}]>" 0.15722139)
+            (pair "rel:from=<{}>:pat=<els=[#{-1/4,0}, R1{0,1/4}, !-{0,1/4}]>" -0.62550586)
+            (pair "rel:to=<{0,-1/4}>:pat=<els=[e{0,-1/4}, I1{0,-1/4,0,1/4}]>" -4.2723117)
+            (pair "rel:from=<{}>:pat=<els=[e{0,-1/4}, I1{0,-1/4,0,1/4}]>" 0.26634622)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[I2{0,0,0}]>" -0.010328288)
+            (pair "rel:from=<{}>:pat=<els=[I10{0}]>" -0.07950197)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}]>" -0.019601554)
+            (pair "rel:to=<{}>:pat=<els=[I2{0,1/4}]>" -0.23689832)
+            (pair "rel:from=<{}>:pat=<els=[I10{0,0,0}]>" -0.14725254)
+            (pair "rel:from=<{0,0,0,0,0}>:to=<{}>:pat=<els=[]>" -1.032666)
+            (pair "rel:to=<{}>:pat=<els=[I1{0,0,0,0}]>" -0.17025188)
+            }
+        )
     })
     
 )

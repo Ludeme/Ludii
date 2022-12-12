@@ -176,15 +176,13 @@
     
     (info
         {
-        (description "Ikibuguzo is a four-row mancala-style board game from the Great Lakes Region of Africa. It is closely related to other games in the region, but with different opening positions and the possibility of winning by making a specific capture.
-            
-        ")
+        (description "Ikibuguzo is a four-row mancala-style board game from the Great Lakes Region of Africa. It is closely related to other games in the region, but with different opening positions and the possibility of winning by making a specific capture.")
         (aliases {"Uruheso" "Uruheisho"})
         (rules "4x8 board. Two counters in each hole. Opening play:  Players rearrange their counters so that there are four counters in each hole of their outer row. If they play with the second array, they take turns sowing from each of the holes with four  counters, beginning with the rightmost hole, placing two in the first hole and one in each of the following. Main phase: Play begins from any hole on the player's side of the board with counters in it. Singletons cannot move. Sowing happens in an anti-clockwise direction. If the last counter lands in an empty hole, the turn is over. For capturing: Holes are in 'opposition' when one player has the front row hole occupied and the opponent has both of the holes opposite it occupied. If the last hole in a sowing is in opposition, the player takes the counters in both of the opponent's holes and places them in the empty hole from which the player lifted the counters. The player then sows the captured counters from this hole. Further captures in the sowing can occur in the same way. However, each player has two hole from which clockwise plays can be made: the leftmost hole in the outer row and the second from the left in the inner row. Clockwise moves can only be made from these holes if they immediately lead to a capture. When the captured counters are sown, starting from the same hole, they can also be sown clockwise if they lead to a capture. If they cannot lead to a capture, they are sown anti-clockwise. Another alternative the player has is that, if the player plays clockwise from one of these holes and therefore makes a capture, the captured counters may be placed in the hole and left there, and the player may play instead from the other hole from which clockwise captures are allowed in a clockwise direction, if it leads to a capture. The player may continue playing from this hole as above until the possibilities to move are exhausted, and then may move from any hole in an anti-clockwise direction. Multiple captures can only be made in a clockwise direction from these holes if it is made on the first sowing of the turn. Otherwise, only one clockwise capture can be made and sowing must proceed in an anti-clockwise direction. If the last counter lands on a hole that is occupied but not in opposition, these counters are picked up and sowing continues. Play ends when one player captures all the opponent's counters or one player cannot play. The player who cannot play loses. A player may also win by capturing the counters from both of the opponent's end holes in the inner row in a single turn.
         ")
         (source "Murray 1951: 217.")
         (id "1663")
-        (version "1.3.7")
+        (version "1.3.8")
         (classification "board/sow/four rows")
         (origin "This game was played in African Great Lakes, around 1951.")
         }
@@ -194,5 +192,8 @@
         (board Style Mancala)
     })
     
+    (ai
+        "Ikibuguzo (Opening 2)_ai"
+    )
 )
 

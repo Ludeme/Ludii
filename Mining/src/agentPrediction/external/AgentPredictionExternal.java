@@ -170,6 +170,85 @@ public class AgentPredictionExternal
 	
 	//-------------------------------------------------------------------------
 	
+	public static Map<String, Map<String,Double>> predictPortfolioParameters(final Game game)
+	{
+		final Map<String, Map<String,Double>> portfolioParameterPredictions = new HashMap<>();
+		final String[] portfolioParameters = {"Heuristics", "Agents", "Selections", "Explorations", "Playouts", "Backpropagations"};
+		ComputePlayoutConcepts.updateGame(game, new Evaluation(), 0, -1, 1, "Random", true);	// Still need to run this with zero trials to get compilation concepts
+
+		for (final String param : portfolioParameters)
+		{
+			final Map<String,Double> paramPredictions = new HashMap<>();
+			
+			String sInput = null;
+			String sError = null;
+
+	        try 
+	        {
+	        	final String conceptNameString = "RulesetName," + conceptNameString(true);
+	        	final String conceptValueString = "UNUSED," + conceptValueString(game, true);
+	        	
+        		final String arg1 = "RandomForestClassifier-Classification-" + param + "-Portfolio";
+        		final String arg2 = "Classification";
+        		final String arg3 = conceptNameString;
+        		final String arg4 = conceptValueString;
+	            final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/External/GetBestPredictedAgent.py " + arg1 + " " + arg2 + " " + arg3 + " " + arg4);
+	
+	            // Read file output
+	            final BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+	            while ((sInput = stdInput.readLine()) != null) 
+	            {
+	            	System.out.println(sInput);
+	            	if (sInput.contains("PREDICTION"))
+	            	{
+	            		// Check if returning probabilities for each class.
+	            		try
+	            		{
+	            			final String[] classNamesAndProbas = sInput.split("=")[1].split("_:_");
+	            			final String[] classNames = classNamesAndProbas[0].split("_;_");
+	            			for (int i = 0; i < classNames.length; i++)
+	            				classNames[i] = classNames[i];
+	            			final String[] valueStrings = classNamesAndProbas[1].split("_;_");
+	            			final Double[] values = new Double[valueStrings.length];
+	            			for (int i = 0; i < valueStrings.length; i++)
+	            				values[i] = Double.valueOf(valueStrings[i]);
+	            			if (classNames.length != values.length)
+	            				System.out.println("ERROR! Class Names and Values should be the same length.");
+	            			
+	            			for (int i = 0; i < classNames.length; i++)
+	            			{
+	            				paramPredictions.put(classNames[i], values[i]);
+	            			}
+	            			continue;
+	            		}
+	            		catch (final Exception e)
+	            		{
+	            			e.printStackTrace();
+	            		}
+	            	}	
+	            }
+	            
+	            // Read any errors.
+	            final BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+	            while ((sError = stdError.readLine()) != null) 
+	            {
+	            	System.out.println("Python Error\n");
+	                System.out.println(sError);
+	            }
+	        }
+	        catch (final IOException e) 
+	        {
+	            e.printStackTrace();
+	        }
+	        
+	        portfolioParameterPredictions.put(param, paramPredictions);
+		}
+		
+		return portfolioParameterPredictions;
+	}
+	
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * @return The concepts as a string with comma between them.
 	 */

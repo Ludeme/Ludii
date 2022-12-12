@@ -1,0 +1,60 @@
+(define "Shono_ai"
+    (useFor { "Ruleset/Shono (Observed)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0,-1/4}, N2{5/12,1/6}]>" -0.07338851)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,-1/4}, N6{0,-1/3}]>" -0.15222074)
+                (pair "rel:last_to=<{1/12}>:to=<{}>:pat=<els=[-{1/4}, N6{0,1/3}]>" 0.115995094)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{-1/4,0,0}, -{0}]>" -0.20283295)
+                (pair "rel:to=<{}>:pat=<els=[-{0,-1/4}, -{0,1/3}]>" -0.3126752)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" -0.09168681)
+                (pair "rel:to=<{}>:pat=<els=[!R1{0,0,0,0}, N6{1/4,1/4}]>" 0.06137614)
+                (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[N6{0,1/3}]>" 0.15069471)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/4,-1/4}, -{-1/3}, N6{0,-1/3}]>" -0.19400433)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{5/12,-1/4}, -{1/6,-1/3}, -{0,0,0}]>" -0.014721469)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/3}, N6{0,1/4}]>" -0.06560836)
+                (pair "rel:to=<{}>:pat=<els=[-{1/3}, N6{0,0}]>" 0.08775309)
+                (pair "rel:to=<{}>:pat=<els=[!R0{0,1/3}]>" 0.09651263)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" 0.0053777667)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" -0.0071273223)
+                (pair "rel:to=<{}>:pat=<els=[-{1/2}, -{0,1/4}]>" 0.051827077)
+                (pair "rel:to=<{}>:pat=<els=[!R0{0,0,0,0}]>" 0.018143756)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Children (Observed)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{1/6,0,0,0}, -{0}]>" 0.026192728)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[N6{-1/4}, N6{0,-1/6}, N4{1/6,0,0}]>" 0.19448857)
+                (pair "rel:to=<{}>:pat=<els=[-{1/6}, -{0,1/3}]>" -0.102669775)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{-1/6,0,0,0}, -{0}, N6{1/6,1/6}]>" -0.003648602)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" 0.012108332)
+                (pair "rel:last_to=<{1/6,-1/4}>:to=<{}>:pat=<els=[N4{0,0,0,0}]>" 0.13711263)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[N6{0,-1/6}, N4{1/6,0,0}, -{-1/4}]>" 0.041854195)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{0,1/3}]>" 0.030055882)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{0}]>" 0.01677869)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{0,1/6}]>" 0.045668032)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -0.0012049028)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,0,0}, N6{0,1/3}]>" -9.84727E-5)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}, N6{-1/4,1/3}, -{0,-1/4}]>" 0.58167404)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/12,0,0}]>" -0.0387779)
+                (pair "rel:to=<{}>:pat=<els=[-{1/6}, N6{0}]>" 0.058273826)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{0}]>" -0.059953824)
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                }
+            )
+        })
+        
+    )
+)

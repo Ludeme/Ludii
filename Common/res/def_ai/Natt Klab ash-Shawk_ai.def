@@ -1,7 +1,33 @@
 (define "Natt Klab ash-Shawk_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (material)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{1/4,-1/4}]>" 2.8324764)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!e{0,0,0}]>" 2.9705706)
+            (pair "rel:from=<{}>:to=<{1/4,0}>:pat=<els=[-{0,0}]>" 2.7483668)
+            (pair "rel:to=<{}>:pat=<els=[!-{1/4,0}, !f{1/4}, !f{1/2}, !-{0,0}, !f{0}, !f{-1/4}]>" 2.4858956)
+            (pair "rel:last_to=<{0,0,1/2,0,1/2}>:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,1/2}]>" 2.7594042)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/4,0}]>" 2.7483668)
+            (pair "rel:to=<{}>:pat=<els=[!f{1/4}, !f{1/2}, !-{0,0}, !f{0}, !f{-1/4}]>" 2.5072746)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,0,1/4}]>" 2.753611)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,-1/2}, #{0,0,-1/2,0,0,1/4}]>" 2.753611)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{-1/4,0}, #{0,0,0,1/4}]>" 2.7399774)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{0}]>" 2.3268173)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/4,1/4}]>" 2.7311194)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,0,1/4,0}]>" 2.6356854)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{1/4,1/4}]>" 2.5920348)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0}, #{0,0,0,1/4}, #{0,0,0,0}]>" 2.6954093)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[]>" 2.3726313)
+            }
+        )
     })
     
 )

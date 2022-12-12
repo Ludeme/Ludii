@@ -1,5 +1,6 @@
 (define "Sig (Mzab)_ai"
-    (useFor { "Board Size/20" }
+    (useFor { "Ruleset/Sig (Mzab) (Observed)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (cornerProximity)
@@ -21,6 +22,28 @@
                 (pair "Stick1" -0.12713899)
                 (pair "Stick2" -0.012322779)
             })
+        })
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:from=<{}>:pat=<els=[f{0,1/4}]>" 0.0063321525)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{-1/2,1/4}, -{0,-1/4,1/4}]>" 0.01532857)
+                (pair "rel:last_to=<{0,-1/4,1/4}>:to=<{}>:pat=<els=[f{0}, !-{0,0,-1/4}]>" 0.0764861)
+                (pair "rel:from=<{0}>:pat=<els=[f{0}, !-{0,0,1/4}]>" -2.328025)
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:pat=<els=[f{1/2}, !-{1/4,-1/4}]>" 0.122971505)
+                (pair "rel:last_to=<{0,-1/4,1/4}>:from=<{0}>:to=<{}>:pat=<els=[!-{0,0,-1/4}]>" 0.124276966)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4,0}]>" 0.013893364)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[!-{0,0,-1/2,1/4}]>" 0.0)
+                (pair "rel:to=<{}>:pat=<els=[!-{0,0,0}, !-{0,0,1/4,1/4}]>" 0.0)
+                (pair "rel:to=<{}>:pat=<els=[!f{0}, !-{1/2,0,1/4,1/4}]>" 1.926803E-4)
+                (pair "rel:from=<{0,0}>:pat=<els=[e{0,1/4}, f{0,0,-1/4,0}]>" -2.0055008)
+                (pair "rel:to=<{0}>:pat=<els=[f{0,1/4,0}]>" -2.0055008)
+                }
+            )
         })
         
     )

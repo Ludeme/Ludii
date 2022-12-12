@@ -44,7 +44,7 @@ public class EvalMCTSDecisionTreesNormalGamesMulticlassSnellius
 	private static final int MEM_PER_NODE = 256;
 	
 	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
-	private static final int MAX_REQUEST_MEM = 234;
+	private static final int MAX_REQUEST_MEM = 224;
 	
 	/** Number of cores per node (this is for Thin nodes on Snellius) */
 	private static final int CORES_PER_NODE = 128;
@@ -220,7 +220,7 @@ public class EvalMCTSDecisionTreesNormalGamesMulticlassSnellius
 					writer.println("#SBATCH --cpus-per-task=" + CORES_PER_NODE);
 				else
 					writer.println("#SBATCH --cpus-per-task=" + CORES_PER_NODE);
-				writer.println("#SBATCH --mem=" + jobMemRequestGB + "G");		// 1 node, no MPI/OpenMP/etc
+				writer.println("#SBATCH --mem=" + jobMemRequestGB + "G");
 				
 				totalRequestedCoreHours += (CORES_PER_NODE * (MAX_WALL_TIME / 60));
 								
@@ -229,7 +229,7 @@ public class EvalMCTSDecisionTreesNormalGamesMulticlassSnellius
 				else
 					writer.println("#SBATCH --exclusive");	// Just making always exclusive for now because otherwise taskset doesn't work
 				
-				// load Java modules
+				// Load Java modules
 				writer.println("module load 2021");
 				writer.println("module load Java/11.0.2");
 				

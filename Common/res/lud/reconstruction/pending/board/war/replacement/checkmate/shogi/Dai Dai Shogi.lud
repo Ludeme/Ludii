@@ -1,0 +1,49 @@
+(game "Dai Dai Shogi"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment [#]) 
+        (rules
+            (start [#])
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Dai Dai Shogi is a large Shogi game known from at least the nineteenth century in Japan, but which may be older.")
+        (rules "Large Shogi game.")
+        (source "DLP evidence.")
+        (id "1337")
+        (version "1.3.8")
+        (classification "board/war/replacement/checkmate/shogi/reconstruction/pending")
+        (credit "Eric Piette")
+        }
+    )
+    
+)

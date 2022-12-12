@@ -81,7 +81,7 @@
             -- when all your pieces become connected, or
         -- when you cut-off your opponent from being able to connect theirs.")
         (id "1669")
-        (version "1.3.7")
+        (version "1.3.8")
         (classification "board/space/group")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")
@@ -92,21 +92,24 @@
         {
         (board Colour Phase0 (colour 232 229 212))
         (board Colour InnerEdges (colour 232 229 212))
-    (board Colour OuterEdges (colour 232 229 212)) //(colour 157 155 141))
-    (board StyleThickness OuterEdges 8)
-    (show Edges All Adjacent connection:true Thick (colour 157 155 141))
-    (show Symbol "square-alt1.svg" 
-        <Board:limit> 
-        fillColour:(colour 218 215 200 180) 
-        edgeColour:(colour 157 155 141) 
-        scale:0.80 
-        rotation:<Orient:amount>
+        (board Colour OuterEdges (colour 232 229 212))
+        (board StyleThickness OuterEdges 8)
+        (show Edges All Adjacent connection:true Thick (colour 157 155 141))
+        (show Symbol "square-alt1.svg" 
+            <Board:limit> 
+            fillColour:(colour 218 215 200 180) 
+            edgeColour:(colour 157 155 141) 
+            scale:0.80 
+            rotation:<Orient:amount>
+        )
+        (player Colour P1 (colour DarkBlue))
+        (player Colour P2 (colour LightRed))
+        (piece Colour P1 fillColour:(colour DarkBlue) strokeColour:(colour 39 38 35))
+        (piece Colour P2 fillColour:(colour LightRed) strokeColour:(colour 80 80 72))
+        (piece Scale "Disc" 0.97)
+        }
     )
-    (player Colour P1 (colour DarkBlue))
-    (player Colour P2 (colour LightRed))
-    (piece Colour P1 fillColour:(colour DarkBlue) strokeColour:(colour 39 38 35))
-    (piece Colour P2 fillColour:(colour LightRed) strokeColour:(colour 80 80 72))
-    (piece Scale "Disc" 0.97)
-    }
-)
+    (ai
+        "Make Muster_ai"
+    )
 )

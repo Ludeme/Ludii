@@ -1,0 +1,33 @@
+(define "Kassle_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[]>" -0.8839035)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!#{0,1/4,0}]>" -0.8839035)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{0,1/2,1/4,0}]>" -0.8898134)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!e{0,1/4}]>" -0.8966125)
+            (pair "rel:from=<{}>:pat=<els=[-{0}]>" -0.9902776)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{1/4,-1/4}, !f{0,-1/2,-1/4,0}]>" -1.055401)
+            (pair "rel:from=<{}>:pat=<els=[-{1/4,-1/4}, !f{0,-1/2,-1/4,0}]>" -0.98246557)
+            (pair "rel:from=<{}>:pat=<els=[-{0}, !-{0,-1/2,1/4}, !-{0,1/4}]>" -0.8832804)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0}, !-{0,-1/2,1/4}]>" -1.0246292)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,-1/2,1/4}, !-{0,1/4}]>" -0.69545525)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4,0,0}]>" -1.1081381)
+            (pair "rel:from=<{}>:pat=<els=[f{0,1/4,0}]>" -0.75970405)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[]>" -0.8468609)
+            (pair "rel:from=<{}>:pat=<els=[-{0}]>" -0.964206)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0}]>" -1.0591043)
+            (pair "rel:from=<{}>:pat=<els=[e{0,0,0}]>" -0.64355254)
+            (pair "rel:last_to=<{0,1/4,1/4}>:from=<{}>:to=<{0}>:pat=<els=[f{0,0}]>" -0.8869193)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{1/4}, -{0,0,0}]>" -0.80394036)
+            (pair "rel:last_to=<{1/2,0}>:to=<{}>:pat=<els=[e{0,0}, #{-1/4,-1/4}]>" 1.6789546)
+            (pair "rel:to=<{}>:pat=<els=[f{1/4,-1/4}, f{0,0}, f{0,1/4}, f{-1/2,0}]>" -0.003860129)
+            (pair "rel:to=<{}>:pat=<els=[e{1/2}, e{0,0}, e{0}, e{1/2,0}]>" 2.2799952)
+            }
+        )
+    })
+    
+)

@@ -8,6 +8,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -21,6 +22,7 @@ import app.move.animation.MoveAnimation;
 import app.utils.BufferedImageUtil;
 import app.utils.DrawnImageInfo;
 import app.utils.EnglishSwedishTranslations;
+import app.utils.SettingsExhibition;
 import app.views.View;
 import app.views.tools.ToolView;
 import game.equipment.container.Container;
@@ -73,21 +75,42 @@ public final class OverlayView extends View
 		
 		final Context context = app.contextSnapshot().getContext(app);
 			
-		if (!app.settingsPlayer().isPerformingTutorialVisualisation() && !app.settingsPlayer().usingExhibitionApp())
+		if (!app.settingsPlayer().isPerformingTutorialVisualisation() && !app.settingsPlayer().usingMYOGApp() && !SettingsExhibition.exhibitionVersion)
 			drawLoginDisc(app, g2d);
 
 		// Draw unique section text for exhibition app.
-		if (app.settingsPlayer().usingExhibitionApp())
+		if (app.settingsPlayer().usingMYOGApp())
 		{
 			final Font exhbitionTitleFont = new Font("Cantarell", Font.BOLD, 52);
 			g2d.setFont(exhbitionTitleFont);
-			g2d.setColor(Color.BLUE);
+			
+			try(InputStream in = getClass().getResourceAsStream("/National-Bold.ttf"))
+			{
+				g2d.setFont(Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(52f));
+			}
+			catch (final Exception e)
+			{
+				e.printStackTrace();
+			}
+			
+			g2d.setColor(new Color(29,136,188));
 			g2d.drawString(EnglishSwedishTranslations.MYOGTITLE.toString(), 40, 75);
 			
 			if (app.manager().ref().context().game().hasSharedPlayer())
 			{
+				g2d.setColor(new Color(227,62,41));
 				final Font exhbitionLabelFont = new Font("Cantarell", Font.PLAIN, 24);
 				g2d.setFont(exhbitionLabelFont);
+
+				try(InputStream in = getClass().getResourceAsStream("/National-Regular.ttf"))
+				{
+					g2d.setFont(Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(24f));
+				}
+				catch (final Exception e)
+				{
+					e.printStackTrace();
+				}
+				
 				g2d.drawString("1. " + EnglishSwedishTranslations.CHOOSEBOARD.toString(), 30, 150);
 				
 				if (app.manager().ref().context().board().numSites() > 1)
@@ -96,14 +119,23 @@ public final class OverlayView extends View
 			else
 			{
 				// If playing a game, show toEnglish of that game's description
-				final Font exhbitionDescriptionFont = new Font("Cantarell", Font.PLAIN, 20);
+				Font exhbitionDescriptionFont = new Font("Cantarell", Font.PLAIN, 22);
+				try(InputStream in = getClass().getResourceAsStream("/National-Regular.ttf"))
+				{
+					exhbitionDescriptionFont = Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(22f);
+				}
+				catch (final Exception e)
+				{
+					e.printStackTrace();
+				}
+				
 				englishDescriptionField.setFont(exhbitionDescriptionFont);
-				englishDescriptionField.setBounds(30, 100, 600, 800);
+				englishDescriptionField.setForeground(Color.white);
+				englishDescriptionField.setBounds(30, 100, 600, 500);
 				englishDescriptionField.setOpaque(false);
 				englishDescriptionField.setLineWrap(true);
 				englishDescriptionField.setWrapStyleWord(true);
-				//englishDescriptionField.setText(app.contextSnapshot().getContext(app).game().toEnglish(app.contextSnapshot().getContext(app).game()));
-				englishDescriptionField.setText(app.settingsPlayer().lastGeneratedGameEnglishRules());
+				englishDescriptionField.setText("\n" + app.settingsPlayer().lastGeneratedGameEnglishRules());
 				englishDescriptionField.setVisible(true);
 			}
 		}
@@ -247,19 +279,46 @@ public final class OverlayView extends View
 		}
 		
 		// Game over message for exhibition
-		if (app.settingsPlayer().usingExhibitionApp() && context.trial().over())	
+		if (app.settingsPlayer().usingMYOGApp() && context.trial().over())	
 		{
-			String message = "          Draw";
-			if (context.winners().size() > 0)
-				message = "Player " + context.winners().get(0) + " has won";
-
-			final Font font = new Font("Arial", Font.BOLD, 48);
+			final Font font = new Font("Arial", Font.BOLD, 40);
 			g2d.setFont(font);
 			g2d.setColor(Color.RED);
 			
-			final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
-			final int pixels = DesktopApp.view().getBoardPanel().placement().width;
-			g2d.drawString(message, pixels, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.5));
+			if (EnglishSwedishTranslations.inEnglish())
+			{
+				if (context.winners().size() > 0)
+				{
+					final String message = "Player " + context.winners().get(0) + " has won";
+					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+					g2d.drawString(message, pixels + 42, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+				}
+				else
+				{
+					final String message = "Draw";
+					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+					g2d.drawString(message, pixels + 170, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+				}
+			}
+			else
+			{
+				if (context.winners().size() > 0)
+				{
+					final String message = "Spelare " + context.winners().get(0) + " har vunnit";
+					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+					g2d.drawString(message, pixels, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+				}
+				else
+				{
+					final String message = "Dra";
+					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+					g2d.drawString(message, pixels + 190, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+				}
+			}
 		}
 	}
 	

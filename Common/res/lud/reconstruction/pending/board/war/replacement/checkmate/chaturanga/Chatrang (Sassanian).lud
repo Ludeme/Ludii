@@ -1,0 +1,69 @@
+(game "Chatrang (Sassanian)"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board (square 8)) 
+            (piece "King" Each [#]) // Shah
+            (piece "Queen" Each [#]) // Ferz
+            (piece "Rook" Each [#]) // Rukh
+            (piece "Elephant" Each [#])
+            (piece "Knight" Each [#]) // Asp
+            (piece "Pawn" Each [#]) // Piyadak
+        })
+        
+        (rules 
+            (start [#])
+            (play [(forEach Piece) | #])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Chatrang is a game with replacement captures that was played in Sassanian Persia. It was a direct descendant of the game Chaturanga, and a precursor to Shatranj. ")
+        (rules "8x8 board. Two players. Replacement capture. Shah (King), Farzin (Ferz), Rukh, Pil (Elephant), Asp (Knight), Piyadak (Pawn) pieces. ")
+        (source "DLP Evidence.")
+        (id "2036")
+        (version "1.3.8")
+        (classification "board/war/replacement/checkmate/chaturanga/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Persia, from around 610 to 651.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+    (recon {
+        (concept "ReplacementCapture" True)
+    })
+    
+)

@@ -1,7 +1,34 @@
 (define "Fivalath_ai"
+    
     (bestAgent "MC-GRAVE")
     trainedHeuristics:(heuristics {
         (lineCompletionHeuristic)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{1/2}, f{0,0,0}, f{0}, f{0,0}]>" 2.9420662)
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!-{1/4}, e{1/2}, e{0,0}]>" 3.7040489)
+            (pair "rel:to=<{}>:pat=<els=[f{1/2,0}, f{0}]>" -0.100090764)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{0,0}]>" -0.070403054)
+            (pair "rel:to=<{}>:pat=<els=[e{1/2,0}, e{0,0}]>" 0.3016706)
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[e{0}, e{1/2}, e{0,0}]>" 3.943672)
+            (pair "rel:to=<{}>:pat=<els=[e{1/2}, f{0,0,0}]>" 0.09200038)
+            (pair "rel:to=<{}>:pat=<els=[f{1/2}, f{0}]>" -0.16217206)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{1/2}, f{0}]>" -0.38771674)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0}, f{0,0,0}]>" -0.95445704)
+            (pair "rel:to=<{}>:pat=<els=[!-{1/4,0,0,0}, f{-1/2}, f{0}, f{0,0}]>" -2.0180352)
+            (pair "rel:to=<{}>:pat=<els=[f{1/2,0}, f{0}, f{0,0}]>" 1.4668127)
+            (pair "rel:to=<{}>:pat=<els=[!-{1/4,0}, f{1/2}, f{0}]>" -0.5054254)
+            (pair "rel:to=<{}>:pat=<els=[e{0,0}, f{0}, f{1/2,0}]>" -0.40212685)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, e{1/4,1/4}, f{1/2}, f{0,0}]>" -2.2084932)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0}]>" -0.24162804)
+            (pair "rel:to=<{}>:pat=<els=[e{0}, e{0,-1/4}, f{-1/4}, f{1/4,0}]>" -0.26538068)
+            }
+        )
     })
     
 )

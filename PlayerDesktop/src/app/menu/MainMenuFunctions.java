@@ -42,7 +42,6 @@ import app.display.dialogs.EvaluationDialog;
 import app.display.dialogs.GameLoaderDialog;
 import app.display.dialogs.ReconstructionDialog;
 import app.display.dialogs.SVGViewerDialog;
-import app.display.dialogs.SettingsDialog;
 import app.display.dialogs.TestLudemeDialog;
 import app.display.dialogs.MoveDialog.PossibleMovesDialog;
 import app.display.dialogs.editor.EditorDialog;
@@ -257,6 +256,50 @@ public class MainMenuFunctions extends JMenuBar
 	    	{
 		    	Thumbnails.generateThumbnails(app, true);
 	    	});
+		}
+		else if (source.getText().equals("Export Thumbnails (complete rulesets)"))
+		{
+			DesktopApp.frame().setSize(464, 464);
+			final ArrayList<List<String>> gameOptions = new ArrayList<>();
+			System.out.println("Getting rulesets from game:");
+			final List<Ruleset> rulesets = game.description().rulesets();
+			if (rulesets != null && !rulesets.isEmpty())
+				for (int rs = 0; rs < rulesets.size(); rs++)
+					if (!rulesets.get(rs).optionSettings().isEmpty() && !rulesets.get(rs).heading().contains("Incomplete"))
+						gameOptions.add(rulesets.get(rs).optionSettings());
+			
+			final Timer t = new Timer( );
+			t.scheduleAtFixedRate(new TimerTask()
+			{
+				int gameChoice = 0;
+			    @Override
+			    public void run()
+			    {
+			    	if (gameChoice >= gameOptions.size()) 
+			    	{
+			    		System.out.println("Thumbnails Done.");
+			            t.cancel();
+			            t.purge();
+			            return;
+			        }
+			    	
+			    	EventQueue.invokeLater(() -> 
+			    	{
+			    		GameLoading.loadGameFromName(app, game.name(), gameOptions.get(gameChoice), false);
+			    		gameChoice++;
+			    	});
+			    }
+			}, 1000,50000);
+
+			final Timer t2 = new Timer( );
+			t2.scheduleAtFixedRate(new TimerTask()
+			{
+			    @Override
+			    public void run()
+			    {
+			    	Thumbnails.generateThumbnails(app, true);
+			    }
+			}, 24000,50000);
 		}
 		else if (source.getText().equals("Export All Thumbnails"))
 		{			
@@ -1141,7 +1184,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().startsWith("Preferences"))
 		{
-			SettingsDialog.createAndShowGUI(app);
+			app.showSettingsDialog();
 		}
 		else if (source.getText().equals("Load SVG"))
 		{
@@ -1284,11 +1327,13 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			final Map<String, Double> rulesetSimilaritiesCultural = ContextualSimilarity.getRulesetSimilarities(game, false);
 	        final Map<String, Double> rulesetSimilaritiesConcept = ContextualSimilarity.getRulesetSimilarities(game, true);
+	        final Map<String, Double> rulesetSimilaritiesGeographical = ContextualSimilarity.getRulesetGeographicSimilarities(game);
+	        final Map<String, Double> rulesetSimilaritiesYears = ContextualSimilarity.getRulesetYearSimilarities(game);
 
 			final int NUM_TO_PRINT = 10;
 			
 			System.out.println("------------------");
-			System.out.println("closest cultural rulesets:");
+			System.out.println("Closest cultural rulesets:");
 			for(int i = 0; i < NUM_TO_PRINT; i++)
 			{
 				final double maxValueInMapCultural = (Collections.max(rulesetSimilaritiesCultural.values()).doubleValue());
@@ -1301,7 +1346,7 @@ public class MainMenuFunctions extends JMenuBar
 			}
 			
 			System.out.println();
-			System.out.println("closest concept rulesets:");
+			System.out.println("Closest concept rulesets:");
 			for(int i = 0; i < NUM_TO_PRINT; i++)
 			{
 				final double maxValueInMapConcept = (Collections.max(rulesetSimilaritiesConcept.values()).doubleValue());
@@ -1312,10 +1357,36 @@ public class MainMenuFunctions extends JMenuBar
 
 				rulesetSimilaritiesConcept.values().removeIf(value -> (value.doubleValue() == maxValueInMapConcept));
 			}
+			
+			System.out.println();
+			System.out.println("Closest geographical rulesets:");
+			for(int i = 0; i < NUM_TO_PRINT; i++)
+			{
+				final double maxValueInMapConcept = (Collections.max(rulesetSimilaritiesGeographical.values()).doubleValue());
+				if (maxValueInMapConcept > 0)
+			        for (final Entry<String, Double> entry : rulesetSimilaritiesGeographical.entrySet()) 
+			            if (entry.getValue().doubleValue() == maxValueInMapConcept) 
+			                System.out.println(entry.getKey() + " (" + maxValueInMapConcept + ")");     // Print the rulesets with max geographic similarity
+
+				rulesetSimilaritiesGeographical.values().removeIf(value -> (value.doubleValue() == maxValueInMapConcept));
+			}
+			
+			System.out.println();
+			System.out.println("Closest year rulesets:");
+			for(int i = 0; i < NUM_TO_PRINT; i++)
+			{
+				final double maxValueInMapConcept = (Collections.max(rulesetSimilaritiesYears.values()).doubleValue());
+				if (maxValueInMapConcept > 0)
+			        for (final Entry<String, Double> entry : rulesetSimilaritiesYears.entrySet()) 
+			            if (entry.getValue().doubleValue() == maxValueInMapConcept) 
+			                System.out.println(entry.getKey() + " (" + maxValueInMapConcept + ")");     // Print the rulesets with max year similarity
+
+				rulesetSimilaritiesYears.values().removeIf(value -> (value.doubleValue() == maxValueInMapConcept));
+			}
 		}
 		else if (source.getText().equals("Reconstruction Dialog"))
 		{
-			ReconstructionDialog.createAndShowGUI();
+			ReconstructionDialog.createAndShowGUI(app);
 		}
 		else if (((JMenu)((JPopupMenu) source.getParent()).getInvoker()).getText().equals("Load Recent"))
 		{
@@ -1330,6 +1401,25 @@ public class MainMenuFunctions extends JMenuBar
 			catch (final Exception E)
 			{
 				System.out.println("This game no longer exists");
+			}
+		}
+		else if (source.getText().equals("Portfolio Parameters (external)"))
+		{
+			final Map<String, Map<String, Double>> portfolioParameterPredictions = AgentPredictionExternal.predictPortfolioParameters(game);
+			System.out.println("\n" + portfolioParameterPredictions + "\n");
+			for (final String parameterName : portfolioParameterPredictions.keySet())
+			{
+				double highestPredictionProb = -1.0;
+				String bestPredictionLabel = "";
+				for (final String paramValue : portfolioParameterPredictions.get(parameterName).keySet())
+				{ 
+					if (portfolioParameterPredictions.get(parameterName).get(paramValue).doubleValue() > highestPredictionProb)
+					{
+						highestPredictionProb = portfolioParameterPredictions.get(parameterName).get(paramValue).doubleValue();
+						bestPredictionLabel = paramValue;
+					}
+				}
+				System.out.println(parameterName + ": " + bestPredictionLabel + " (" + highestPredictionProb + ")");
 			}
 		}
 		else if (getParentTitle(source, 2).equals("Predict Metrics (external)"))

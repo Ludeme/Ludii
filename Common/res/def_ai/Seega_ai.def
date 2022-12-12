@@ -1,22 +1,105 @@
 (define "Seega_ai"
-    (useFor { "Board Size/5x5" }
+    (useFor { "Ruleset/Khamsawee (Observed)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (material)
         })
         
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/4,-1/4}, f{0,1/4,0}]>" 0.75143635)
+                (pair "rel:from=<{}>:pat=<els=[e{1/4,-1/4}, f{0,1/4,0}]>" 0.4197747)
+                (pair "rel:from=<{}>:pat=<els=[e{0,1/4}]>" 0.31668183)
+                (pair "rel:last_to=<{0,1/4,1/4}>:to=<{0}>:pat=<els=[e{0,0}]>" -3.6296794)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/2}, #{0,1/4,0}]>" 0.5051204)
+                (pair "rel:from=<{0}>:pat=<els=[-{1/4}, f{0,0,0,0}, -{0,-1/2,-1/4,0,0}]>" -3.6296794)
+                (pair "rel:from=<{}>:pat=<els=[e{1/2}, f{0,-1/4,0}, e{0,1/4}, #{0,1/4,0}]>" 0.6124023)
+                (pair "rel:last_to=<{0,-1/4,-1/4}>:to=<{0}>:pat=<els=[e{0,0}, -{0,1/4}]>" -3.6296794)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4,0}, #{0,1/4,0}]>" 0.18220559)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/4}]>" 0.1821304)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[f{0,0}, e{0}]>" 0.82204896)
+                (pair "rel:to=<{}>:pat=<els=[f{0,0}, e{0}]>" 0.6093946)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}, e{1/4}, -{0,1/2,1/4}]>" 1.170133)
+                (pair "rel:to=<{}>:pat=<els=[f{0,0}, e{0}, -{-1/4,1/2,1/4}]>" 0.79179734)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0,0}, e{0,0}]>" 0.9284314)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0,0}, e{0,0}, f{0,-1/2,1/4,0}]>" 1.4184711)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}, -{0,1/2,1/4}]>" 0.21510905)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[!-{1/2,0}]>" 0.10168218)
+                (pair "rel:last_to=<{0,-1/2,1/4}>:from=<{0}>:to=<{}>:pat=<els=[e{1/4,0}, -{1/4}, !-{0,-1/2,-1/2,-1/2,0,0,0}]>" 0.49652904)
+                (pair "rel:last_from=<{1/2,-1/4}>:to=<{}>:pat=<els=[!-{0,1/4}]>" -0.069935076)
+                (pair "rel:from=<{}>:pat=<els=[f{0,0,0}, e{0,0}]>" 0.3475295)
+                (pair "rel:last_to=<{0,-1/2,1/4}>:from=<{0}>:to=<{}>:pat=<els=[e{1/4,0}, e{-1/4}, !#{0,0}]>" 0.2438902)
+                }
+            )
+        })
+        
     )
-    (useFor { "Board Size/7x7" }
+    (useFor { "Ruleset/Sebawee (Observed)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (material)
         })
         
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,-1/2,1/4}>:from=<{0}>:to=<{}>:pat=<els=[e{-1/4}, !f{0,1/4}]>" 0.16732603)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{-1/4}, !f{0,1/4}]>" 0.17420022)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,1/4,1/4}]>" 0.060450286)
+                (pair "rel:to=<{0}>:pat=<els=[e{1/4}, e{0,1/4,0,0,0}]>" -2.0765018)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,0,0,0}, e{1/4}]>" 0.26605663)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!f{0,0,1/4}]>" 0.085149415)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[e{0,1/4}]>" -0.07698916)
+                (pair "rel:to=<{}>:pat=<els=[e{1/4}, e{0,-1/2,1/4}, e{0,1/4,0,0,0}]>" -0.29799575)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4}, e{0,1/2,1/4}]>" -0.07839263)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4}, e{0,-1/2,1/4}]>" 0.09980121)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!#{0,1/4,0,0,0}]>" 0.090754785)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{-1/2}, e{0,-1/2,1/4}]>" 0.123964675)
+                (pair "rel:last_to=<{0,-1/2,1/4}>:to=<{}>:pat=<els=[e{0,-1/2,1/4}, -{0,-1/2,0}]>" 0.022983044)
+                (pair "rel:to=<{}>:pat=<els=[f{0,1/4}, e{1/4,1/4}]>" -0.08114701)
+                }
+            )
+        })
+        
     )
-    (useFor { "Board Size/9x9" }
+    (useFor { "Ruleset/Tisawee (Observed)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (material)
+        })
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,1/2,1/4}]>" 0.0937105)
+                (pair "rel:last_from=<{0,1/4}>:from=<{}>:pat=<els=[]>" -0.06170522)
+                (pair "rel:to=<{}>:pat=<els=[e{0}]>" 0.05529663)
+                (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, e{1/2}, e{1/4,-1/2,-1/4}]>" 0.16169415)
+                (pair "rel:from=<{}>:pat=<els=[e{0,1/4}]>" 0.09559734)
+                (pair "rel:from=<{}>:pat=<els=[#{0}]>" 0.041429475)
+                (pair "rel:from=<{0}>:pat=<els=[#{0,0,1/4}]>" -2.5575566)
+                (pair "rel:from=<{0}>:pat=<els=[!-{0,1/4}]>" -2.5575566)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{0,1/4}, !-{0,1/4}]>" 0.34295288)
+                (pair "rel:from=<{}>:pat=<els=[!f{0,1/4}, !-{0,1/4}]>" 0.29321125)
+                (pair "rel:from=<{}>:pat=<els=[e{0}]>" 0.5133006)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!#{1/4}]>" 0.11245576)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,0}]>" 0.20285498)
+                (pair "rel:to=<{0}>:pat=<els=[#{1/2,1/4}, e{0,1/4,1/4}]>" -2.6262589)
+                (pair "rel:last_to=<{-1/4,1/4}>:to=<{}>:pat=<els=[!-{0,0}]>" -0.011126666)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}]>" 0.11273283)
+                (pair "rel:from=<{}>:pat=<els=[#{0,1/2,0,0}]>" 0.20561762)
+                }
+            )
         })
         
     )

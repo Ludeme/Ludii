@@ -1,4 +1,5 @@
 (define "Half Chess_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (cornerProximity)
@@ -39,6 +40,34 @@
             (pair "Queen1" 0.68856287)
             (pair "Queen2" 1.4370142)
         })
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0,0,0,0}, -{0,0,0,0,0,0,1/4}]>" -0.01326163)
+            (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:from=<{}>:pat=<els=[-{0,0,0}]>" 0.009255773)
+            (pair "rel:to=<{}>:pat=<els=[I1{1/4,1/4}, -{0,0}]>" -0.0027957552)
+            (pair "rel:to=<{}>:pat=<els=[I1{0,1/4}]>" -0.0026630298)
+            (pair "rel:from=<{}>:pat=<els=[!I7{}, f{0,0,0,0,0,0,1/4,0,0}]>" 0.21425968)
+            (pair "rel:last_to=<{}>:from=<{0}>:to=<{}>:pat=<els=[!-{0,1/2}]>" 0.5401583)
+            (pair "rel:from=<{}>:to=<{0,1/4,0}>:pat=<els=[e{0,1/4,0,0}]>" -0.0759166)
+            (pair "rel:from=<{0,0,0,0,0,0}>:to=<{}>:pat=<els=[-{1/4,0}]>" 0.21632823)
+            (pair "rel:from=<{}>:to=<{1/4,1/4,0}>:pat=<els=[f{0}]>" -0.05857425)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!-{}]>" 0.39090037)
+            (pair "rel:from=<{}>:pat=<els=[-{0,0}, -{0,0,0}, -{-1/4}, #{1/2,-1/4}, !-{-1/2}]>" 0.008817597)
+            (pair "rel:from=<{}>:to=<{0,0,0,0,0,0,0}>:pat=<els=[]>" -0.2728838)
+            (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[]>" -0.1027818)
+            (pair "rel:from=<{}>:pat=<els=[!I4{}]>" 0.03377623)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[I6{1/4,0}, f{0,1/4,1/4}]>" -0.14862975)
+            (pair "rel:to=<{0,0,1/4}>:pat=<els=[I5{0,0,1/4,0,0,0,0}]>" -0.2728838)
+            (pair "rel:from=<{0,0,0,0,0}>:to=<{}>:pat=<els=[!f{-1/4,-1/4}, -{0,0,0,0,0,-1/4,0}, #{0,0,0,0,0,-1/4,1/4}]>" 0.3152359)
+            (pair "rel:from=<{}>:pat=<els=[-{0,0,0}, #{1/2,-1/4}, !-{-1/2}, -{0,0,0,0}]>" 0.3172616)
+            }
+        )
     })
     
 )

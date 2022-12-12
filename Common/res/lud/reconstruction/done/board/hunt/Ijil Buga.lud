@@ -1,0 +1,1993 @@
+(game "Ijil Buga"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Ijil Buga1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rotate 45 
+                        (shift 1.5 8.2 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift 0.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (rectangle 9 5 diagonals:Alternating)
+                    
+                    (rotate 45 
+                        (shift 4.2 5.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (rotate 45 
+                        (shift 4.2 1.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift -1.99 1.34 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift -1.98 5.35 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Deer" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (hand P2)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Deer1" 
+                    (sites { "E11" "G9" "C9" "C5" "G5" "E3"}
+                    )
+                )
+                
+                (place "Dog2" 
+                    (forEach 
+                        (sites Corners)
+                        if:
+                        (not 
+                            (is In 
+                                (site)
+                                
+                                (expand 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                steps:2)
+                            )
+                        )
+                    )
+                )
+                
+                (place "Dog2" 
+                    (handSite P2)
+                count:12)
+                }
+            )
+            
+            (play 
+                (or 
+                    (forEach Piece)
+                    
+                    (if 
+                        (is Mover P2)
+                        
+                        (move 
+                            (from 
+                                (handSite P2)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Ijil Buga1 ruleset.")
+    
+    (item "Ijil Buga2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rotate 45 
+                        (shift 1.5 8.2 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift 0.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (rectangle 9 5 diagonals:Alternating)
+                    
+                    (rotate 45 
+                        (shift 4.2 5.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (rotate 45 
+                        (shift 4.2 1.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift -1.99 1.34 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift -1.98 5.35 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Deer" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (hand P2)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Deer1" 
+                    (sites { "E11" "G9" "C9" "C5" "G5" "E3"}
+                    )
+                )
+                
+                (place "Dog2" 
+                    (forEach 
+                        (sites Empty)
+                        if:
+                        (not 
+                            (is In 
+                                (site)
+                                
+                                (expand 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                steps:2)
+                            )
+                        )
+                    )
+                )
+                
+                (place "Dog2" 
+                    (handSite P2)
+                count:68)
+                }
+            )
+            
+            (play 
+                (or 
+                    (forEach Piece)
+                    
+                    (if 
+                        (is Mover P2)
+                        
+                        (move 
+                            (from 
+                                (handSite P2)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Ijil Buga2 ruleset.")
+    
+    (item "Ijil Buga3" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rotate 45 
+                        (shift 1.5 8.2 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift 0.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (rectangle 9 5 diagonals:Alternating)
+                    
+                    (rotate 45 
+                        (shift 4.2 5.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (rotate 45 
+                        (shift 4.2 1.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift -1.99 1.34 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift -1.98 5.35 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Deer" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (hand P2)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Deer1" 
+                    (sites { "E11" "G9" "C9" "C5" "G5" "E3"}
+                    )
+                )
+                
+                (place "Dog2" 
+                    (forEach 
+                        (sites Phase 1)
+                        if:
+                        (not 
+                            (is In 
+                                (site)
+                                
+                                (expand 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                steps:2)
+                            )
+                        )
+                    )
+                )
+                
+                (place "Dog2" 
+                    (handSite P2)
+                count:36)
+                }
+            )
+            
+            (play 
+                (or 
+                    (forEach Piece)
+                    
+                    (if 
+                        (is Mover P2)
+                        
+                        (move 
+                            (from 
+                                (handSite P2)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Ijil Buga3 ruleset.")
+    
+    (item "Ijil Buga4" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rotate 45 
+                        (shift 1.5 8.2 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift 0.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (rectangle 9 5 diagonals:Alternating)
+                    
+                    (rotate 45 
+                        (shift 4.2 5.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (rotate 45 
+                        (shift 4.2 1.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift -1.99 1.34 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift -1.98 5.35 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Deer" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (hand P2)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Deer1" 
+                    (sites { "E11" "G9" "C9" "C5" "G5" "E3"}
+                    )
+                )
+                
+                (place "Dog2" 
+                    (forEach 
+                        (sites Board)
+                        if:
+                        (not 
+                            (is In 
+                                (site)
+                                
+                                (expand 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                steps:2)
+                            )
+                        )
+                    )
+                )
+                
+                (place "Dog2" 
+                    (handSite P2)
+                count:56)
+                }
+            )
+            
+            (play 
+                (or 
+                    (forEach Piece)
+                    
+                    (if 
+                        (is Mover P2)
+                        
+                        (move 
+                            (from 
+                                (handSite P2)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Ijil Buga4 ruleset.")
+    
+    (item "Ijil Buga5" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rotate 45 
+                        (shift 1.5 8.2 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift 0.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (rectangle 9 5 diagonals:Alternating)
+                    
+                    (rotate 45 
+                        (shift 4.2 5.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (rotate 45 
+                        (shift 4.2 1.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift -1.99 1.34 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift -1.98 5.35 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Deer" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (hand P2)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Deer1" 
+                    (sites { "E11" "G9" "C9" "C5" "G5" "E3"}
+                    )
+                )
+                
+                (place "Dog2" 
+                    (forEach 
+                        (sites Empty)
+                        if:
+                        (not 
+                            (is In 
+                                (site)
+                                
+                                (expand 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                steps:2)
+                            )
+                        )
+                    )
+                )
+                
+                (place "Dog2" 
+                    (handSite P2)
+                count:66)
+                }
+            )
+            
+            (play 
+                (or 
+                    (forEach Piece)
+                    
+                    (if 
+                        (is Mover P2)
+                        
+                        (move 
+                            (from 
+                                (handSite P2)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Ijil Buga5 ruleset.")
+    
+    (item "Ijil Buga6" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rotate 45 
+                        (shift 1.5 8.2 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift 0.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (rectangle 9 5 diagonals:Alternating)
+                    
+                    (rotate 45 
+                        (shift 4.2 5.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (rotate 45 
+                        (shift 4.2 1.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift -1.99 1.34 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift -1.98 5.35 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Deer" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (hand P2)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Deer1" 
+                    (sites { "E11" "G9" "C9" "C5" "G5" "E3"}
+                    )
+                )
+                
+                (place "Dog2" 
+                    (forEach 
+                        (sites { 2 3 4 8 9 10 14 15 16 20 21 22 26 27 28 32 33 34 38 39 40 }
+                        )
+                        if:
+                        (not 
+                            (is In 
+                                (site)
+                                
+                                (expand 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                steps:2)
+                            )
+                        )
+                    )
+                )
+                
+                (place "Dog2" 
+                    (handSite P2)
+                count:47)
+                }
+            )
+            
+            (play 
+                (or 
+                    (forEach Piece)
+                    
+                    (if 
+                        (is Mover P2)
+                        
+                        (move 
+                            (from 
+                                (handSite P2)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Ijil Buga6 ruleset.")
+    
+    (item "Ijil Buga7" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rotate 45 
+                        (shift 1.5 8.2 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift 0.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (rectangle 9 5 diagonals:Alternating)
+                    
+                    (rotate 45 
+                        (shift 4.2 5.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (rotate 45 
+                        (shift 4.2 1.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift -1.99 1.34 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift -1.98 5.35 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Deer" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (hand P2)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Deer1" 
+                    (sites { "E11" "G9" "C9" "C5" "G5" "E3"}
+                    )
+                )
+                
+                (place "Dog2" 
+                    (forEach 
+                        (sites Empty)
+                        if:
+                        (not 
+                            (is In 
+                                (site)
+                                
+                                (expand 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                steps:2)
+                            )
+                        )
+                    )
+                )
+                
+                (place "Dog2" 
+                    (handSite P2)
+                count:48)
+                }
+            )
+            
+            (play 
+                (or 
+                    (forEach Piece)
+                    
+                    (if 
+                        (is Mover P2)
+                        
+                        (move 
+                            (from 
+                                (handSite P2)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Ijil Buga7 ruleset.")
+    
+    (item "Ijil Buga8" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rotate 45 
+                        (shift 1.5 8.2 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift 0.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (rectangle 9 5 diagonals:Alternating)
+                    
+                    (rotate 45 
+                        (shift 4.2 5.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (rotate 45 
+                        (shift 4.2 1.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift -1.99 1.34 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift -1.98 5.35 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Deer" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (hand P2)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Deer1" 
+                    (sites { "E11" "G9" "C9" "C5" "G5" "E3"}
+                    )
+                )
+                
+                (place "Dog2" 
+                    (forEach 
+                        (sites Board)
+                        if:
+                        (not 
+                            (is In 
+                                (site)
+                                
+                                (expand 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                steps:2)
+                            )
+                        )
+                    )
+                )
+                
+                (place "Dog2" 
+                    (handSite P2)
+                count:60)
+                }
+            )
+            
+            (play 
+                (or 
+                    (forEach Piece)
+                    
+                    (if 
+                        (is Mover P2)
+                        
+                        (move 
+                            (from 
+                                (handSite P2)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Ijil Buga8 ruleset.")
+    
+    (item "Ijil Buga9" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rotate 45 
+                        (shift 1.5 8.2 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift 0.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (rectangle 9 5 diagonals:Alternating)
+                    
+                    (rotate 45 
+                        (shift 4.2 5.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (rotate 45 
+                        (shift 4.2 1.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift -1.99 1.34 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift -1.98 5.35 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Deer" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (hand P2)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Deer1" 
+                    (sites { "E11" "G9" "C9" "C5" "G5" "E3"}
+                    )
+                )
+                
+                (place "Dog2" 
+                    (forEach 
+                        (sites Board)
+                        if:
+                        (not 
+                            (is In 
+                                (site)
+                                
+                                (expand 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                steps:2)
+                            )
+                        )
+                    )
+                )
+                
+                (place "Dog2" 
+                    (handSite P2)
+                count:66)
+                }
+            )
+            
+            (play 
+                (or 
+                    (forEach Piece)
+                    
+                    (if 
+                        (is Mover P2)
+                        
+                        (move 
+                            (from 
+                                (handSite P2)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Ijil Buga9 ruleset.")
+    
+    (item "Ijil Buga10" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rotate 45 
+                        (shift 1.5 8.2 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift 0.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (rectangle 9 5 diagonals:Alternating)
+                    
+                    (rotate 45 
+                        (shift 4.2 5.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (rotate 45 
+                        (shift 4.2 1.5 
+                            (square 2 diagonals:Solid)
+                        )
+                    )
+                    
+                    (shift -1.99 1.34 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift -1.98 5.35 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Deer" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (hand P2)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Deer1" 
+                    (sites { "E11" "G9" "C9" "C5" "G5" "E3"}
+                    )
+                )
+                
+                (place "Dog2" 
+                    (forEach 
+                        (sites Board Vertex)
+                        if:
+                        (not 
+                            (is In 
+                                (site)
+                                
+                                (expand 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                steps:2)
+                            )
+                        )
+                    )
+                )
+                
+                (place "Dog2" 
+                    (handSite P2)
+                count:79)
+                }
+            )
+            
+            (play 
+                (or 
+                    (forEach Piece)
+                    
+                    (if 
+                        (is Mover P2)
+                        
+                        (move 
+                            (from 
+                                (handSite P2)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Ijil Buga10 ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board 
+                (merge {
+                    (rotate 45 (shift 1.5 8.2 (square 2 diagonals:Solid)))
+                    (shift 0.67 -1.32 (scale 0.66 (wedge 3)))
+                    (rectangle 9 5 diagonals:Alternating)
+                    (rotate 45 (shift 4.2 5.5 (square 2 diagonals:Solid)))
+                    (rotate 45 (shift 4.2 1.5 (square 2 diagonals:Solid)))
+                    (shift -1.99 1.34 (rotate -90 (scale 0.66 (wedge 3))))
+                    (shift -1.98 5.35 (rotate -90 (scale 0.66 (wedge 3))))
+                })
+                use:Vertex
+            )
+            (piece "Deer" P1 (and ("StepToEmpty") ("HopCapture")))
+            (piece "Dog" P2 ("StepToEmpty"))
+            (hand P2)
+        }) 
+        
+        (rules 
+            (start {
+                (place "Deer1" (sites {"E11" "G9" "C9" "C5" "G5" "E3"}))
+                (place "Dog2" (forEach (sites [#]) if:(not (is In (site) (expand (union (sites Top) (sites Bottom)) steps:2))))) // Some have to be on the board at the init.
+                (place "Dog2" (handSite P2) count:[12..80]) // Some can be introduced later.
+            })
+            (play
+                (or
+                    (forEach Piece)
+                    (if (is Mover P2)
+                        (move 
+                            (from (handSite P2)) 
+                            (to (sites Empty)) 
+                        )
+                    )
+                )
+            )
+            (end ("NoMovesP1NoPiecesP2"))
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Ijil Buga1 (Reconstructed)" {
+        "Variant/Ijil Buga1"
+    })
+    (ruleset "Ruleset/Ijil Buga2 (Reconstructed)" {
+        "Variant/Ijil Buga2"
+    })
+    (ruleset "Ruleset/Ijil Buga3 (Reconstructed)" {
+        "Variant/Ijil Buga3"
+    })
+    (ruleset "Ruleset/Ijil Buga4 (Reconstructed)" {
+        "Variant/Ijil Buga4"
+    })
+    (ruleset "Ruleset/Ijil Buga5 (Reconstructed)" {
+        "Variant/Ijil Buga5"
+    })
+    (ruleset "Ruleset/Ijil Buga6 (Reconstructed)" {
+        "Variant/Ijil Buga6"
+    })
+    (ruleset "Ruleset/Ijil Buga7 (Reconstructed)" {
+        "Variant/Ijil Buga7"
+    })
+    (ruleset "Ruleset/Ijil Buga8 (Reconstructed)" {
+        "Variant/Ijil Buga8"
+    })
+    (ruleset "Ruleset/Ijil Buga9 (Reconstructed)" {
+        "Variant/Ijil Buga9"
+    })
+    (ruleset "Ruleset/Ijil Buga10 (Reconstructed)" {
+        "Variant/Ijil Buga10"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Ijil Buga is a hunt game played in Mongolia. Said to be either a representation of deer hunting or a reflection of the sacred nature of deer, it is played only in the winter and spring months.")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "5x9 intersecting lines, with diagonals in each 3x3 square of the board. On one short side, a square with diagonals, with one corner as the midpoint of one of the sides of the main board. on the other short side, a triangle, with a line bisecting the base and another bisecting this line and intersecting with the other two sides of the triangle. The triangle's apex is the midpoint of the opposite side as the square. On the long sides, two identical squares which intersect with the third and seventh horizontal line of the main part of the board, on the right hand side of the square on the short side. Opposite these are two triangles, identical to the one on the short side. One player plays as six deer, which begin on the points where the small squares intersect with the main board. The other player plays with a number of dogs ( between 12 and 80), at least some of which begin in the main part of the board, but some may be introduced later. Pieces move to an adjacent empty spot along the lines of the board. The deer may capture an adjacent dog by hopping over it to an empty space immediately on the opposite side of it along the lines of the board. the goal of the deer is to capture all of the dogs, the goal of the dogs is to block the deer from being able to move.
+        "))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1005"))
+        (useFor "Ruleset/Ijil Buga1 (Reconstructed)" (rules "The game Ijil Buga is played by two players on a noshape board with nobasis tiling. 
+                Player one plays with Deers. Player two plays with Dogs.
+                Rules for Pieces:
+                Deers step adjacent and hop adjacent.
+                Dogs step adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Deer for player one at the vertexes with coordinates [E11, G9, C9, C5, G5, E3].
+                Place a Dog for player two at not current site is in the union of the top sites of the board and the bottom sites of the board expanded by 2 steps the corner sites of the board..
+                Rules: 
+                Move one of your pieces or if 2 is the mover, from vertex in Player 2's hand site 0 to vertex in the set of empty vertexs moveRule: true.
+                Aim: 
+                If player one cannot move, player two wins If there are no pieces owned by Player 2, player one wins.
+                
+        "))
+        (useFor "Ruleset/Ijil Buga1 (Reconstructed)" (id "2090"))
+        (useFor "Ruleset/Ijil Buga2 (Reconstructed)" (rules "The game Ijil Buga is played by two players on a noshape board with nobasis tiling. 
+                Player one plays with Deers. Player two plays with Dogs.
+                Rules for Pieces:
+                Deers step adjacent and hop adjacent.
+                Dogs step adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Deer for player one at the vertexes with coordinates [E11, G9, C9, C5, G5, E3].
+                Place a Dog for player two at not current site is in the union of the top sites of the board and the bottom sites of the board expanded by 2 steps the set of empty vertexs..
+                Rules: 
+                Move one of your pieces or if 2 is the mover, from vertex in Player 2's hand site 0 to vertex in the set of empty vertexs moveRule: true.
+                Aim: 
+                If player one cannot move, player two wins If there are no pieces owned by Player 2, player one wins.
+                
+        "))
+        (useFor "Ruleset/Ijil Buga2 (Reconstructed)" (id "2091"))
+        (useFor "Ruleset/Ijil Buga3 (Reconstructed)" (rules "The game Ijil Buga is played by two players on a noshape board with nobasis tiling. 
+                Player one plays with Deers. Player two plays with Dogs.
+                Rules for Pieces:
+                Deers step adjacent and hop adjacent.
+                Dogs step adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Deer for player one at the vertexes with coordinates [E11, G9, C9, C5, G5, E3].
+                Place a Dog for player two at not current site is in the union of the top sites of the board and the bottom sites of the board expanded by 2 steps all sites within [1,3,6,8,10,17,19,27,29,37,39,47,49,55,58,59,62,63,65,67,69,71,73]..
+                Rules: 
+                Move one of your pieces or if 2 is the mover, from vertex in Player 2's hand site 0 to vertex in the set of empty vertexs moveRule: true.
+                Aim: 
+                If player one cannot move, player two wins If there are no pieces owned by Player 2, player one wins.
+                
+        "))
+        (useFor "Ruleset/Ijil Buga3 (Reconstructed)" (id "2092"))
+        (useFor "Ruleset/Ijil Buga4 (Reconstructed)" (rules "The game Ijil Buga is played by two players on a noshape board with nobasis tiling. 
+                Player one plays with Deers. Player two plays with Dogs.
+                Rules for Pieces:
+                Deers step adjacent and hop adjacent.
+                Dogs step adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Deer for player one at the vertexes with coordinates [E11, G9, C9, C5, G5, E3].
+                Place a Dog for player two at not current site is in the union of the top sites of the board and the bottom sites of the board expanded by 2 steps the sites of the board..
+                Rules: 
+                Move one of your pieces or if 2 is the mover, from vertex in Player 2's hand site 0 to vertex in the set of empty vertexs moveRule: true.
+                Aim: 
+                If player one cannot move, player two wins If there are no pieces owned by Player 2, player one wins.
+                
+        "))
+        (useFor "Ruleset/Ijil Buga4 (Reconstructed)" (id "2093"))
+        (useFor "Ruleset/Ijil Buga5 (Reconstructed)" (rules "The game Ijil Buga is played by two players on a noshape board with nobasis tiling. 
+                Player one plays with Deers. Player two plays with Dogs.
+                Rules for Pieces:
+                Deers step adjacent and hop adjacent.
+                Dogs step adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Deer for player one at the vertexes with coordinates [E11, G9, C9, C5, G5, E3].
+                Place a Dog for player two at not current site is in the union of the top sites of the board and the bottom sites of the board expanded by 2 steps the set of empty vertexs..
+                Rules: 
+                Move one of your pieces or if 2 is the mover, from vertex in Player 2's hand site 0 to vertex in the set of empty vertexs moveRule: true.
+                Aim: 
+                If player one cannot move, player two wins If there are no pieces owned by Player 2, player one wins.
+                
+        "))
+        (useFor "Ruleset/Ijil Buga5 (Reconstructed)" (id "2094"))
+        (useFor "Ruleset/Ijil Buga6 (Reconstructed)" (rules "The game Ijil Buga is played by two players on a noshape board with nobasis tiling. 
+                Player one plays with Deers. Player two plays with Dogs.
+                Rules for Pieces:
+                Deers step adjacent and hop adjacent.
+                Dogs step adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Deer for player one at the vertexes with coordinates [E11, G9, C9, C5, G5, E3].
+                Place a Dog for player two at not current site is in the union of the top sites of the board and the bottom sites of the board expanded by 2 steps sites [2,3,4,8,9,10,14,15,16,20,21,22,26,27,28,32,33,34,38,39,40]..
+                Rules: 
+                Move one of your pieces or if 2 is the mover, from vertex in Player 2's hand site 0 to vertex in the set of empty vertexs moveRule: true.
+                Aim: 
+                If player one cannot move, player two wins If there are no pieces owned by Player 2, player one wins.
+                
+        "))
+        (useFor "Ruleset/Ijil Buga6 (Reconstructed)" (id "2095"))
+        (useFor "Ruleset/Ijil Buga7 (Reconstructed)" (rules "The game Ijil Buga is played by two players on a noshape board with nobasis tiling. 
+                Player one plays with Deers. Player two plays with Dogs.
+                Rules for Pieces:
+                Deers step adjacent and hop adjacent.
+                Dogs step adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Deer for player one at the vertexes with coordinates [E11, G9, C9, C5, G5, E3].
+                Place a Dog for player two at not current site is in the union of the top sites of the board and the bottom sites of the board expanded by 2 steps the set of empty vertexs..
+                Rules: 
+                Move one of your pieces or if 2 is the mover, from vertex in Player 2's hand site 0 to vertex in the set of empty vertexs moveRule: true.
+                Aim: 
+                If player one cannot move, player two wins If there are no pieces owned by Player 2, player one wins.
+                
+        "))
+        (useFor "Ruleset/Ijil Buga7 (Reconstructed)" (id "2096"))
+        (useFor "Ruleset/Ijil Buga8 (Reconstructed)" (rules "The game Ijil Buga is played by two players on a noshape board with nobasis tiling. 
+                Player one plays with Deers. Player two plays with Dogs.
+                Rules for Pieces:
+                Deers step adjacent and hop adjacent.
+                Dogs step adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Deer for player one at the vertexes with coordinates [E11, G9, C9, C5, G5, E3].
+                Place a Dog for player two at not current site is in the union of the top sites of the board and the bottom sites of the board expanded by 2 steps the sites of the board..
+                Rules: 
+                Move one of your pieces or if 2 is the mover, from vertex in Player 2's hand site 0 to vertex in the set of empty vertexs moveRule: true.
+                Aim: 
+                If player one cannot move, player two wins If there are no pieces owned by Player 2, player one wins.
+                
+        "))
+        (useFor "Ruleset/Ijil Buga8 (Reconstructed)" (id "2097"))
+        (useFor "Ruleset/Ijil Buga9 (Reconstructed)" (rules "The game Ijil Buga is played by two players on a noshape board with nobasis tiling. 
+                Player one plays with Deers. Player two plays with Dogs.
+                Rules for Pieces:
+                Deers step adjacent and hop adjacent.
+                Dogs step adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Deer for player one at the vertexes with coordinates [E11, G9, C9, C5, G5, E3].
+                Place a Dog for player two at not current site is in the union of the top sites of the board and the bottom sites of the board expanded by 2 steps the sites of the board..
+                Rules: 
+                Move one of your pieces or if 2 is the mover, from vertex in Player 2's hand site 0 to vertex in the set of empty vertexs moveRule: true.
+                Aim: 
+                If player one cannot move, player two wins If there are no pieces owned by Player 2, player one wins.
+                
+        "))
+        (useFor "Ruleset/Ijil Buga9 (Reconstructed)" (id "2098"))
+        (useFor "Ruleset/Ijil Buga10 (Reconstructed)" (rules "The game Ijil Buga is played by two players on a noshape board with nobasis tiling. 
+                Player one plays with Deers. Player two plays with Dogs.
+                Rules for Pieces:
+                Deers step adjacent and hop adjacent.
+                Dogs step adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Deer for player one at the vertexes with coordinates [E11, G9, C9, C5, G5, E3].
+                Place a Dog for player two at not current site is in the union of the top sites of the board and the bottom sites of the board expanded by 2 steps the sites of the board..
+                Rules: 
+                Move one of your pieces or if 2 is the mover, from vertex in Player 2's hand site 0 to vertex in the set of empty vertexs moveRule: true.
+                Aim: 
+                If player one cannot move, player two wins If there are no pieces owned by Player 2, player one wins.
+                
+        "))
+        (useFor "Ruleset/Ijil Buga10 (Reconstructed)" (id "2099"))
+        (version "1.3.8")
+        (classification "board/hunt/reconstruction/done")
+        (credit "Eric Piette")
+        (origin "This game was played in Mongolia, from around 1988 to 1991.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+    })
+    
+    (recon {
+        (concept "NumStartComponents" minValue:16 maxValue:86)
+    })
+)
+

@@ -101,7 +101,7 @@ public final class Var extends BaseIntFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return "state variable \"" + key + "\"";
+		return "state variable" + key;
 	}
 	
 	//-------------------------------------------------------------------------

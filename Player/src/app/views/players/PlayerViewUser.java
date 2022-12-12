@@ -10,6 +10,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
@@ -18,6 +19,7 @@ import org.jfree.graphics2d.svg.SVGGraphics2D;
 import app.PlayerApp;
 import app.utils.GUIUtil;
 import app.utils.SVGUtil;
+import app.utils.SettingsExhibition;
 import app.utils.Spinner;
 import app.views.View;
 import game.Game;
@@ -54,6 +56,9 @@ public class PlayerViewUser extends View
 	
 	/** Store a spinner for this player, to represent if an AI is thinking about a move for it. */
 	public Spinner spinner = null;
+	
+	protected static Color moverTextColour = new Color(50, 50, 50);
+	protected static Color nonMoverTextColour = new Color(215, 215, 215);
 
 	//-------------------------------------------------------------------------
 
@@ -67,6 +72,18 @@ public class PlayerViewUser extends View
 		playerId = pid;
 		determineHand(app.contextSnapshot().getContext(app).equipment());
 		placement = rect;
+		
+		if (SettingsExhibition.exhibitionVersion)
+		{
+			if (SettingsExhibition.exhibitionVersion)
+			{
+				placement.y += 30 * playerId;
+			}
+			
+			moverTextColour = new Color(220,220,220);
+			nonMoverTextColour = new Color(100,100,100);
+			this.playerView.playerNameFont = new Font("Arial", Font.PLAIN, 30);
+		}
 	}
 	
 	//-------------------------------------------------------------------------
@@ -80,7 +97,7 @@ public class PlayerViewUser extends View
 		
 		int componentPushBufferX = 0;
 		
-		if (!app.settingsPlayer().usingExhibitionApp())
+		if (!app.settingsPlayer().usingMYOGApp())
 		{
 			drawColourSwatch(g2d, mover, winnerNumbers, context);
 			drawPlayerName(g2d, mover, winnerNumbers, context);
@@ -129,7 +146,9 @@ public class PlayerViewUser extends View
 		final boolean fullColour =
 				app.contextSnapshot().getContext(app).trial().over() && winnerNumbers.contains(Integer.valueOf(playerId))
 				||
-				!app.contextSnapshot().getContext(app).trial().over() && playerId == mover;
+				!app.contextSnapshot().getContext(app).trial().over() && playerId == mover
+				||
+				SettingsExhibition.exhibitionVersion;
 
 		final int fcr = fillColour.getRed();
 		final int fcg = fillColour.getGreen();
@@ -187,9 +206,9 @@ public class PlayerViewUser extends View
 		else
 		{
 			if (playerId == mover || app.contextSnapshot().getContext(app).model() instanceof SimultaneousMove)
-				g2d.setColor(new Color(50, 50, 50));
+				g2d.setColor(moverTextColour);
 			else
-				g2d.setColor(new Color(215, 215, 215));
+				g2d.setColor(nonMoverTextColour);
 		}
 		
 		// Draw the player number
@@ -254,9 +273,9 @@ public class PlayerViewUser extends View
 			else
 			{
 				if (playerId == mover || app.contextSnapshot().getContext(app).model() instanceof SimultaneousMove)
-					g2d.setColor(new Color(50, 50, 50));
+					g2d.setColor(moverTextColour);
 				else
-					g2d.setColor(new Color(215, 215, 215));
+					g2d.setColor(nonMoverTextColour);
 			}
 		}
 		else
@@ -270,6 +289,18 @@ public class PlayerViewUser extends View
 		NameAndExtrasBounds.y = (int) (strNameY - bounds.getHeight());
 		
 		app.playerNameList()[playerId] = NameAndExtrasBounds;
+		
+		if (SettingsExhibition.exhibitionVersion)
+		{
+			try(InputStream in = getClass().getResourceAsStream("/National-Regular.ttf"))
+			{
+				g2d.setFont(Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(32f));
+			}
+			catch (final Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
 		
 		g2d.drawString(stringNameAndExtras, strNameX, strNameY);
 	}
@@ -328,7 +359,7 @@ public class PlayerViewUser extends View
 		if (app.manager().isWebApp())
 			return;
 		
-		if (app.settingsPlayer().usingExhibitionApp())
+		if (app.settingsPlayer().usingMYOGApp())
 		{
 			if (spinner == null)
 				spinner = new Spinner(new Rectangle2D.Double(850,290,200,200));
@@ -339,6 +370,9 @@ public class PlayerViewUser extends View
 			final Rectangle2D nameRect = app.playerNameList()[playerId];
 			final double r = playerView.playerNameFont.getSize();
 			final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + r + 15,  nameRect.getCenterY() - 3);
+			
+			if (SettingsExhibition.exhibitionVersion)
+				drawPosn.setLocation(drawPosn.getX() + 30, drawPosn.getY());
 			
 			if (spinner == null || drawPosn.getX() != spinner.originalRect().getX())
 				spinner = new Spinner(new Rectangle2D.Double(drawPosn.getX(),drawPosn.getY(), r, r));

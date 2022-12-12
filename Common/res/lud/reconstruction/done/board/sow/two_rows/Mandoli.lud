@@ -1,0 +1,357 @@
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
+
+//------------------------------------------------------------------------------
+
+(game "Mandoli"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Mandoli1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 6 store:None 
+                (track "Track" "5,W,N,E" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 6 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover)
+                        if:
+                        (< 0 
+                            (count at:
+                                (from)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (sow if:
+                            (and 
+                                (is In 
+                                    (to)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (is Even 
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            apply:
+                            (if 
+                                (> 
+                                    (count Turns)
+                                2)
+                                
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (handSite 
+                                            (mover)
+                                        )
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        backtracking:True)
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Mover)
+                    
+                    (byScore { 
+                        (score P1 
+                            (count Cell at:
+                                (handSite P1)
+                            )
+                        )
+                        
+                        (score P2 
+                            (count Cell at:
+                                (handSite P2)
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Mandoli1 ruleset.")
+    
+    (item "Mandoli2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 6 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 6 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover)
+                        if:
+                        (< 0 
+                            (count at:
+                                (from)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (sow if:
+                            (and 
+                                (is In 
+                                    (to)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (is Even 
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            apply:
+                            (if 
+                                (> 
+                                    (count Turns)
+                                2)
+                                
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (handSite 
+                                            (mover)
+                                        )
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        backtracking:True)
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Mover)
+                    
+                    (byScore { 
+                        (score P1 
+                            (count Cell at:
+                                (handSite P1)
+                            )
+                        )
+                        
+                        (score P2 
+                            (count Cell at:
+                                (handSite P2)
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Mandoli2 ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2) 
+        
+        (equipment { 
+            (mancalaBoard 2 6 store:None
+                [(track "Track" "0,E,N,W" loop:True) | (track "Track" "5,W,N,E" loop:True) ] // Unknown which direction the sowing occurs.
+            )
+            (regions P1 (sites Bottom))      // P1 home
+            (regions P2 (sites Top))      // P2 home
+            (piece "Seed" Shared)
+            (hand Each)
+        }) 
+        (rules 
+            (start (set Count 6 to:(sites Track)))
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover) 
+                        if:(< 0 (count at:(from)))
+                    )
+                    (then 
+                        (sow 
+                            if:(and 
+                                (is In (to) (sites Next)) 
+                                (is Even (count at:(to))) 
+                            ) 
+                            apply:(if (> (count Turns) 2)
+                                (fromTo 
+                                    (from (to)) 
+                                    (to (handSite (mover))) 
+                                    count:(count at:(to))
+                                )
+                            )
+                            backtracking:True
+                        )
+                    )
+                )		
+            ) 
+            
+            (end
+                (if (no Moves Mover)
+                    (byScore {
+                        (score P1 ("PiecesOwnedBy" P1)) 
+                        (score P2 ("PiecesOwnedBy" P2))
+                    })
+                )
+            )
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Mandoli1 (Reconstructed)" {
+        "Variant/Mandoli1"
+    })
+    (ruleset "Ruleset/Mandoli2 (Reconstructed)" {
+        "Variant/Mandoli2"
+    }) 
+    
+    (ruleset "Ruleset/Hydra (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Mandoli is a two-row mancala-style game board documented on the island of Hydra in Greece in the early nineteenth century.")
+        (useFor "Ruleset/Hydra (Incomplete)" (rules "2x6 board. Six counters in each hole. Unknown which direction the sowing occurs. Captures cannot be made on the first move. Captures are made when the final counter lands in a hole making it contain an even number. If the hole behind the captured hole also contains an even number, these are captured. Play continues until a player cannot move. The player who has captured the most counters wins."))
+        (useFor "Ruleset/Hydra (Incomplete)" (source "Galt 1813: 241-242."))
+        (useFor "Ruleset/Hydra (Incomplete)" (id "430"))
+        (useFor "Ruleset/Mandoli1 (Reconstructed)" (rules "The game Mandoli is played by two players on a 2 x 6 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 6.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: to is in RegionP1 or RegionP2 and the total number of vertex in to is even, backtracking: true, captureEffect: if the number of turns is greater than 2, from vertex in to to vertex Player current moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                Aim: 
+                If the moving player cannot move, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Mandoli1 (Reconstructed)" (id "2359"))
+        (useFor "Ruleset/Mandoli2 (Reconstructed)" (rules "The game Mandoli is played by two players on a 2 x 6 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 6.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: to is in RegionP1 or RegionP2 and the total number of vertex in to is even, backtracking: true, captureEffect: if the number of turns is greater than 2, from vertex in to to vertex Player current moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                Aim: 
+                If the moving player cannot move, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Mandoli2 (Reconstructed)" (id "2360"))
+        (source "Murray 1951: 166.")
+        (version "1.3.8")
+        (classification "board/sow/two rows/reconstruction/done")
+        (credit "Eric Piette")
+        (origin "This game was played in Greece, around 1810.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+    (recon {
+        (concept "Sow" True)
+    })
+)
+

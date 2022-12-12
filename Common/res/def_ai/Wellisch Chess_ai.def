@@ -1,16 +1,54 @@
 (define "Wellisch Chess_ai"
+    
     (bestAgent "Alpha-Beta")
     trainedHeuristics:(heuristics {
         (material transformation:(divNumInitPlacement) pieceWeights:{
-            // Estimates of relative value. Not supported by experimentation. 
-            (pair "Pawn1"   2.0)
-            (pair "Pawn2"   2.0)
-            (pair "Rook1"   7.5)
-            (pair "Rook2"   7.5)
+            (pair "Pawn1" 2.0)
+            (pair "Pawn2" 2.0)
+            (pair "Rook1" 7.5)
+            (pair "Rook2" 7.5)
             (pair "Knight1" 2.5)
             (pair "Knight2" 2.5)
             (pair "Queen1" 10.0)
             (pair "Queen2" 10.0)
         })
     })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_to=<{0,0,0,0}>:from=<{}>:pat=<els=[]>" 0.012048011)
+            (pair "rel:from=<{}>:pat=<els=[f{0,1/6,0}]>" 0.18532924)
+            (pair "rel:from=<{}>:pat=<els=[R2{0,0,0}]>" 0.10554982)
+            (pair "rel:from=<{1/6,1/6}>:pat=<els=[!e{0,1/6}]>" -7.1020546)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,1/6,0}]>" -0.22626077)
+            (pair "rel:to=<{}>:pat=<els=[I13{0,0,0}]>" 0.24135979)
+            (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[]>" -0.24263373)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[R2{1/6,0,0}]>" -0.2651365)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[]>" -0.91912)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,0,0}]>" 0.0024734423)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,0,0}]>" -0.48963103)
+            (pair "rel:from=<{0,0,0,0}>:to=<{}>:pat=<els=[R1{1/3,0,0,0}]>" 0.11244931)
+            (pair "rel:from=<{}>:pat=<els=[R3{0,0}, #{1/6,0,0}]>" -0.12109901)
+            (pair "rel:from=<{0,0,0,0}>:pat=<els=[R1{1/3,0,0,0}]>" -2.5181813)
+            (pair "rel:to=<{}>:pat=<els=[I14{0,0}, #{1/6,0}]>" -0.6999833)
+            (pair "rel:from=<{0,0,0,0}>:to=<{}>:pat=<els=[!I13{0,0,0,0,-1/6,1/3}]>" -0.015282968)
+            (pair "rel:from=<{0,0,0,0}>:to=<{}>:pat=<els=[]>" 0.15180996)
+            }
+        )
+        (featureSet P3 selectionFeatures:{
+            (pair "rel:to=<{0,1/6}>:pat=<els=[f{0,1/6,-1/6,-1/3}]>" -3.9773853)
+            (pair "rel:from=<{}>:pat=<els=[I15{1/3,0}, e{0,1/6,-1/3,1/6}]>" -0.2761996)
+            (pair "rel:from=<{}>:pat=<els=[I15{0,0}]>" -0.08571451)
+            (pair "rel:from=<{0}>:pat=<els=[I14{1/3}]>" -3.9773853)
+            (pair "rel:to=<{}>:pat=<els=[#{0,1/3,0,0}]>" 0.045108616)
+            (pair "rel:from=<{}>:pat=<els=[e{0,1/6,-1/3,1/6}]>" -0.109032765)
+            (pair "rel:from=<{}>:pat=<els=[I13{0,1/6,1/3,0,0,0}]>" -0.07107079)
+            }
+        )
+    })
+    
 )

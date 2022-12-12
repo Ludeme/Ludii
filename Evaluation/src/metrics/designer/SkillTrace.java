@@ -1,5 +1,9 @@
 package metrics.designer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -7,6 +11,7 @@ import java.util.stream.IntStream;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import main.UnixPrintWriter;
 import main.math.LinearRegression;
 import metrics.Evaluation;
 import metrics.Metric;
@@ -28,13 +33,15 @@ public class SkillTrace extends Metric
 {
 	
 	// Number of matches (iteration count doubles each time)
-	private final int numMatches = 8;
+	private int numMatches = 8;
 	
 	// Number of trials per match
-	private final int numTrialsPerMatch = 10;
+	private int numTrialsPerMatch = 10;
 	
 	// A hard time limit in seconds, after which any future trials are aborted
-	private final int hardTimeLimit = 300;
+	private int hardTimeLimit = 300;
+	
+	private String outputPath = "";
 
 	//-------------------------------------------------------------------------
 
@@ -64,6 +71,8 @@ public class SkillTrace extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
+		String outputString = "";
+		
 		final List<Double> strongAIResults = new ArrayList<>();
 		double areaEstimate = 0.0;
 		final long startTime = System.currentTimeMillis();
@@ -119,6 +128,7 @@ public class SkillTrace extends Metric
 			// If we didn't finish all trials in time, then ignore the match results
 			if (System.currentTimeMillis() > (startTime + hardTimeLimit*1000))
 			{
+				outputString += "Aborting after " + String.valueOf(matchCount) + " matches.\n";
 				System.out.println("Aborting after " + String.valueOf(matchCount) + " matches.");
 				break;
 			}
@@ -132,6 +142,9 @@ public class SkillTrace extends Metric
 			System.out.println("-----");
 			System.out.println("Match Index:" + (matchCount+1));
 			System.out.println("Strong AI result:" + strongAIAvgResult);
+			outputString += "-----\n";
+			outputString += "Match Index:" + (matchCount+1) + "\n";
+			outputString += "Strong AI result:" + strongAIAvgResult + "\n";
 		}
 		
 		// Predict next step y value.
@@ -147,7 +160,41 @@ public class SkillTrace extends Metric
 		
 		final double skillTrace = yValueNextStep + (1-yValueNextStep)*(areaEstimate/matchCount);
 		
+		// Store outputString in a text file if specified.
+		if (outputPath.length() > 1)
+		{
+			final String outputSkillTracePath = outputPath + game.name() + "_skillTrace.txt";
+			try (final PrintWriter writer = new UnixPrintWriter(new File(outputSkillTracePath), "UTF-8"))
+			{
+				writer.println(outputString);
+			}
+			catch (final FileNotFoundException | UnsupportedEncodingException e2)
+			{
+				e2.printStackTrace();
+			}
+		}
+		
 		return Double.valueOf(skillTrace);
+	}
+
+	public void setNumMatches(final int numMatches) 
+	{
+		this.numMatches = numMatches;
+	}
+
+	public void setNumTrialsPerMatch(final int numTrialsPerMatch) 
+	{
+		this.numTrialsPerMatch = numTrialsPerMatch;
+	}
+
+	public void setHardTimeLimit(final int hardTimeLimit) 
+	{
+		this.hardTimeLimit = hardTimeLimit;
+	}
+
+	public void setOutputPath(final String s) 
+	{
+		outputPath = s;
 	}
 
 	//-------------------------------------------------------------------------

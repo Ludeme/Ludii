@@ -1,0 +1,28 @@
+(define "Stratomic_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!I11{}]>" 0.0075149885)
+            (pair "rel:from=<{}>:pat=<els=[]>" -0.0026594729)
+            (pair "rel:from=<{0,1/4}>:pat=<els=[!I2{0,1/4,1/4,1/4}]>" -8.414995)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!-{}]>" 1.216124)
+            (pair "rel:from=<{}>:pat=<els=[-{0}, -{1/2}]>" 0.131084)
+            (pair "rel:to=<{}>:pat=<els=[!I6{}]>" 0.011935288)
+            (pair "rel:from=<{}>:pat=<els=[!-{0}, !-{1/4}]>" -0.28518626)
+            (pair "rel:from=<{0,1/4}>:pat=<els=[!-{}, !I2{0,1/4,1/4,1/4}]>" -8.414995)
+            (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[f{}]>" -2.3413236)
+            (pair "rel:to=<{}>:pat=<els=[I4{0}]>" -1.1139854)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{0,1/4}>:pat=<els=[R1{0,0}, I6{0,1/4,1/4}]>" -4.8660707)
+            (pair "rel:from=<{}>:pat=<els=[R1{0,0}]>" 0.019326763)
+            (pair "rel:from=<{}>:pat=<els=[R1{0,0}, #{1/4,0,0}]>" -0.0388899)
+            (pair "rel:to=<{}>:pat=<els=[I14{0,0,0,0}]>" 0.28488708)
+            (pair "rel:from=<{}>:pat=<els=[I12{0,1/4}]>" 0.21137719)
+            (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}]>" 4.2380294E-4)
+            }
+        )
+    })
+    
+)

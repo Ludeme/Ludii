@@ -1,7 +1,35 @@
 (define "Dots and Boxes_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (score)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[#{0,1/4}, -{0,0}, e{-1/4,1/4}]>" -0.8551982)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" -0.34711236)
+            (pair "rel:to=<{}>:pat=<els=[e{0,1/4}]>" -0.90750945)
+            (pair "rel:to=<{}>:pat=<els=[#{1/4,1/4}, f{0,0,0,0}, e{0,1/4}]>" -1.2064809)
+            (pair "rel:to=<{}>:pat=<els=[!e{0}]>" -0.36556396)
+            (pair "rel:to=<{}>:pat=<els=[#{-1/2,0}, #{0,1/4}, f{-1/4,0,0,0}, -{0,0}]>" -0.98833156)
+            (pair "rel:to=<{}>:pat=<els=[e{1/4}, -{0,0,0,0}]>" -0.8588364)
+            (pair "rel:to=<{}>:pat=<els=[#{-1/4,0}, f{0,0,0,0}, e{0,1/4}]>" -1.045246)
+            (pair "rel:to=<{}>:pat=<els=[!-{0}, e{1/4,-1/4}]>" -0.9522839)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[e{0,0}, f{0,1/4}]>" -0.953338)
+            (pair "rel:to=<{}>:pat=<els=[-{-1/4}, f{1/4,0,0}, !-{0,1/4}, e{0,0,0,0}]>" -1.5704113)
+            (pair "rel:to=<{}>:pat=<els=[#{1/2,-1/4}, #{1/4,0}, f{0,-1/4}]>" -0.88809794)
+            (pair "rel:to=<{}>:pat=<els=[e{0,0,0}, f{1/4,0,0}]>" -1.1446941)
+            (pair "rel:to=<{}>:pat=<els=[e{0,0}, e{0,0,0,0}, f{1/4,-1/4}]>" -1.1877534)
+            (pair "rel:to=<{}>:pat=<els=[!-{0}, f{0,1/4}, f{-1/4,-1/4}, -{-1/2,0,0,0}]>" -0.9385522)
+            (pair "rel:last_to=<{0,0,0,0}>:to=<{}>:pat=<els=[f{}]>" -1.3681439)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, !-{1/2}, #{-1/4,0}]>" -0.35665154)
+            (pair "rel:to=<{}>:pat=<els=[#{0,0}, f{1/4,1/4}, f{0,-1/4}]>" -1.1504489)
+            }
+        )
     })
     
 )

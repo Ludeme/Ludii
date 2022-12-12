@@ -15,7 +15,7 @@ import org.junit.Test;
 import completer.Completion;
 import main.FileHandling;
 import other.GameLoader;
-import utils.recons.CompleterWithPrepro;
+import reconstruction.completer.CompleterWithPrepro;
 
 /**
  * Unit Test to compile all the reconstruction games on the lud/reconstruction folder
@@ -37,13 +37,13 @@ public class ReconstructionTest
 
 		// Load from memory
 		final String[] choices = FileHandling.listGames();
-		CompleterWithPrepro completer = new CompleterWithPrepro();
+		CompleterWithPrepro completer = new CompleterWithPrepro(0.5, 0.5, 0.0);
 		final int idRulesetToRecons = -1;
 
 		for (final String fileName : choices)
 		{
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/eric/recons/"))
-			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
+			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/pending/"))
 			//if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/board/war/leaping/lines/Manipur Capturing Game"))
 				continue;
 			
@@ -74,10 +74,10 @@ public class ReconstructionTest
 			}
 
 			// Parse and reconstruct one instance of a game which is respected the expected concepts.
-			List<Completion> completions = null;
+			Completion completion = null;
 			try
 			{
-				completions = completer.completeSampled(desc, 1, idRulesetToRecons, null);
+				completion = completer.completeSampled(desc, idRulesetToRecons);
 			}
 			catch (final Exception e)
 			{
@@ -85,7 +85,7 @@ public class ReconstructionTest
 				e.printStackTrace();
 			}
 
-			if (completions != null)
+			if (completion != null)
 			{
 				System.out.println("Reconstruction(s) of " + fileName);
 				

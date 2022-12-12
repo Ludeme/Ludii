@@ -1,0 +1,102 @@
+(define "NextHole" (trackSite Move from:#1 "Track" steps:1))
+
+//------------------------------------------------------------------------------
+
+(game "Lamlameta" 
+    (players 2) 
+    
+    (equipment { 
+        (mancalaBoard 2 12 store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        (regions P1 (sites Bottom))      // P1 home
+        (regions P2 (sites Top))      // P2 home
+    }) 
+    (rules 
+        
+        (start (set Count 2 to:(sites Track)))
+        
+        phases:{
+        (phase "Opening" 
+            (play 
+                (if ("NewTurn")
+                    (move Select
+                        (from
+                            (sites {11 10})
+                        )
+                        (then
+                            (and {
+                                (sow)
+                                (moveAgain)
+                                (set Var "FirstSite" (last From))
+                            })
+                        )
+                    )
+                    (if (= (var "FirstSite") ("NextHole" (last To afterConsequence:True)))
+                        (move Select
+                            (from
+                                ("LastHoleSowed")
+                            )
+                            (then
+                                (sow)
+                            )
+                        )
+                        (move Select
+                            (from
+                                (sites {("NextHole" (last To afterConsequence:True))})
+                            )
+                            (then
+                                (and 
+                                    (sow)
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase ("NewTurn") "Sowing")
+        )
+        (phase "Sowing"
+            (play
+                (move Select
+                    (from 
+                        (sites Mover)
+                        if:(and (is Occupied (from)) (!= 2 (count at:(from))))
+                    )
+                    (then 
+                        (sow
+                            skipIf:(= 2 (count at:(to)))
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Lamlameta is a two-row mancala-style board game played by the Konso people of Ethiopia. It is played on a larger board than most other games played in Ethiopia, ")
+        (aliases {"Tagega"})
+        (rules "2x12 board. Two counters in each hole. Play starts with an opening move. The first player takes all of the counters out of the rightmost hole or the one to its left, sowing them anti-clockwise in the next two holes, then taking the counters in the next hole and sowing them in the same manner, all around the board, making a pattern of 3, 3, 0, 3, 3. When reaching the hole before the one in which the sowing began, the three counters now in this hole are taken and sown into the next three holes, ending the turn. In the main phase, sowing continues in an anti-clockwise direction from any hole in the player's row, except any that contain two counters. A player likewise cannot sow into any holes in the opponent's row containing two holes, skipping any such holes and continuing sowing in the next available hole. If the last counter of a sowing lands in an occupied hole, these counters are picked up and sowing continues. When the final counter lands in an empty hole in the player's row, if the opposite hole in the opponent's row contains two counters, these are captured as well as the counters from any other holes on the opponent's side which contain two counters. Play continues until one player cannot move because there are no counters in their row. A new round begins. The players attempt to fill their holes with two counters each. Any hole which a player cannot fill with two counters is eliminated from play, elimination starting from the rightmost hole. The player with the lowest number of holes begins. Play continues until one player has no remaining holes.")
+        (source "DLP Evidence.")
+        (id "361")
+        (version "1.3.2")
+        (classification "board/sow/two rows/reconstruction")
+        (credit "Eric Piette")
+        (origin "This game was played in Ethiopia, around 1971.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+

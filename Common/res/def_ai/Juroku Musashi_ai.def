@@ -1,15 +1,68 @@
 (define "Juroku Musashi_ai"
-    (useFor { "Variant/Described" }
+    (useFor { "Ruleset/Juroku Musashi (Described)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (lineCompletionHeuristic)
         })
         
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[e{3/8}, N8{0,-1/4}]>" 1.1802062)
+                (pair "rel:to=<{}>:pat=<els=[N2{0}, e{0}]>" 1.0592244)
+                (pair "rel:to=<{}>:pat=<els=[e{3/8}, N8{1/8,0}, N8{0,-1/4}]>" 1.1705616)
+                (pair "rel:to=<{}>:pat=<els=[e{1/4}, N8{0,0}]>" 0.97086525)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/8}]>" 1.0635626)
+                (pair "rel:from=<{3/8}>:to=<{}>:pat=<els=[-{0,0}, e{-3/8,3/8}, -{-1/8,1/8}]>" 0.70880353)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,-1/4,3/8}, N8{0,-1/2,-1/4}]>" 1.5977535)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/2,0,0,0}, N8{0,-3/8,0}]>" 0.020358864)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/2,0,0,0}, N8{0,-3/8,0}, N8{0,-1/2,-1/4}]>" 0.15724283)
+                (pair "rel:from=<{0}>:pat=<els=[-{-3/8,0}, -{0,1/2,0}, e{1/4,3/8}, -{0,-1/8}]>" -4.5050626)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[e{0,1/8}]>" 0.01414328)
+                (pair "rel:from=<{}>:pat=<els=[!e{0,0,0,0}]>" 8.492692E-4)
+                (pair "rel:to=<{}>:pat=<els=[N2{}]>" -0.19500001)
+                (pair "rel:last_from=<{1/2,-1/4}>:to=<{}>:pat=<els=[!-{3/8,0,0,0}, #{0,0,0,0}]>" 0.25553966)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{-1/2,1/4}, #{0,-1/4,1/4}]>" 0.0078863725)
+                (pair "rel:to=<{}>:pat=<els=[N4{-1/4,1/8}, !-{3/8,0,0,0}, #{0,0,0,0}]>" -0.035073403)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 0.06254391)
+                }
+            )
+        })
+        
     )
-    (useFor { "Variant/Tsuboi" }
+    (useFor { "Ruleset/Tsuboi (Described)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (material)
+        })
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,-1/4,3/8}>:to=<{0}>:pat=<els=[-{-1/4,1/4}, e{0,-1/4,1/3}, -{0,-1/2,1/4}]>" -0.5448205)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[e{0,-1/4,1/3}]>" -0.258505)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,1/2,0,0,0}]>" 0.09712806)
+                (pair "rel:last_to=<{1/4,3/8}>:to=<{}>:pat=<els=[N4{0,1/3}, -{0,0}, -{0,1/4}]>" -0.4035547)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N8{3/8,1/4}, -{0,-1/2,0,0,0}]>" 0.16678046)
+                (pair "rel:to=<{}>:pat=<els=[N8{0,1/4}]>" 0.08504836)
+                (pair "rel:to=<{0}>:pat=<els=[-{1/4,1/6}, N4{1/2,0}, #{0,1/4,-1/8}]>" -0.5448205)
+                (pair "rel:last_to=<{0,3/8}>:to=<{}>:pat=<els=[-{1/4,0}, e{0,1/3}, -{-1/4,1/4}]>" -0.42768848)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[#{0,0,-1/4,0,0}, !#{0,0}, #{-1/4,0,0}, -{-1/8}, -{1/4,-1/3}]>" 1.3742132)
+                (pair "rel:from=<{}>:pat=<els=[e{0,0}]>" 0.040594053)
+                (pair "rel:last_to=<{0,0,3/8,3/8}>:from=<{}>:pat=<els=[-{0,0,-3/8,0,0}, -{0,0,-1/4,-1/3}]>" 0.04292855)
+                (pair "rel:last_to=<{1/8,3/8}>:from=<{1/4,0}>:to=<{}>:pat=<els=[-{1/2,-1/3}, !e{0}]>" 1.7541827)
+                (pair "rel:last_to=<{0,0,1/8,3/8}>:from=<{}>:to=<{0,0}>:pat=<els=[]>" 0.85483664)
+                (pair "rel:last_to=<{1/8,3/8}>:to=<{}>:pat=<els=[!e{0,-1/4}, #{1/4,0,-1/4,0,0}, !#{1/4,0}, #{0,0,0}, -{1/8}]>" 0.15593141)
+                (pair "rel:last_to=<{-1/8,3/8}>:from=<{0,0}>:to=<{}>:pat=<els=[!e{-1/4,-1/4}, #{0,0,-1/4,0,0}, !#{0,0}, #{-1/4,0,0}, -{-1/8}, -{1/4,-1/3}]>" 1.7331282)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{-1/8,3/8}, -{0,0,-1/4,-1/3}]>" 1.1953793)
+                }
+            )
         })
         
     )

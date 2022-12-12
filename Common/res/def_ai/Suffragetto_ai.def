@@ -1,7 +1,31 @@
 (define "Suffragetto_ai"
+    
     (bestAgent "MAST")
     trainedHeuristics:(heuristics {
         (material)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{0,0,1/4,0}>:pat=<els=[I3{-1/4,0}, f{0,0,1/4,0,-1/2,-1/4}]>" 1.3889574)
+            (pair "rel:to=<{}>:pat=<els=[R2{0}]>" 0.12403327)
+            (pair "rel:to=<{}>:pat=<els=[I4{0,0,0,0}]>" -0.35564393)
+            (pair "rel:to=<{}>:pat=<els=[R6{0,0,0,0}]>" 0.039795678)
+            (pair "rel:from=<{0,0,1/4,0}>:pat=<els=[f{0,0,1/4,0,-1/2,-1/4}]>" 1.3889574)
+            (pair "rel:to=<{}>:pat=<els=[I4{0}, I4{1/2,0,0,0}]>" -0.45117614)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,1/4,0,-1/2,-1/4}]>" -0.048905607)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:last_to=<{}>:from=<{}>:pat=<els=[]>" 2.3916123)
+            (pair "rel:to=<{}>:pat=<els=[]>" -0.008685628)
+            (pair "rel:from=<{}>:pat=<els=[!R7{0,0,0,0}]>" -0.006669856)
+            (pair "rel:to=<{}>:pat=<els=[I1{0,0}]>" 0.35060644)
+            (pair "rel:to=<{}>:pat=<els=[R6{0,0,0}]>" 0.099179894)
+            (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}]>" -0.008382667)
+            (pair "rel:from=<{}>:pat=<els=[e{0,0,0}]>" -0.4381586)
+            }
+        )
     })
     
 )

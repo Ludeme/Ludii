@@ -40,7 +40,7 @@ public class Ai implements MetadataItem
 	private final Features features;
 	
 	/** Automatically trained features */
-	private final Features trainedFeatures;
+	private Features trainedFeatures;
 	
 	/** Automatically trained feature trees */
 	private final FeatureTrees trainedFeatureTrees;
@@ -138,6 +138,15 @@ public class Ai implements MetadataItem
 	public FeatureTrees trainedFeatureTrees()
 	{
 		return trainedFeatureTrees;
+	}
+	
+	/**
+	 * Set the trained features
+	 * @param trainedFeatures
+	 */
+	public void setTrainedFeatures(final Features trainedFeatures)
+	{
+		this.trainedFeatures = trainedFeatures;
 	}
 	
 	//-------------------------------------------------------------------------

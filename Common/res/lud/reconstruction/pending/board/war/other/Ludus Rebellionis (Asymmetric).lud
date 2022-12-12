@@ -1,0 +1,69 @@
+(game "Ludus Rebellionis (Asymmetric)"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board (square 8)) 	
+            (piece "Queen" P1 (move [#]))
+            (piece "King" P1 (move [#]))
+            (piece "Pawn" P2 (move [#]))
+        })
+        (rules 
+            (start {
+                (place "King1" coord:"H8")
+                (place "Queen1" coord:"B8")
+                (place "Pawn2" (difference (expand (sites Bottom) steps:3) (sites Phase 1) ))
+            })
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "The Ludus Rebellionis appears in a sixteenth century Italian manuscript, with three different diagrams. This version is of an asymmetric game, where a King and Queen play against sixteen Pawns.")
+        (rules "8x8 board. One player plays with a King and Queen, the other as sixteen Pawns. The King begins on the top right corner of the board, the queen on the space to the right of the top left corner of the board. The Pawns begin on alternating squares on the first four rows of the board, starting on the bottom left corner.")
+        (source "DLP evidence.")
+        (id "1205")
+        (version "1.3.8")
+        (classification "board/war/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Italy, from around 1500 to 1599.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+    (recon {
+        (concept "NumStartComponents" 18)
+    })
+    
+)

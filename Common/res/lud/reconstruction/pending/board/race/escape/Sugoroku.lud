@@ -1,0 +1,137 @@
+(game "Sugoroku"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2)
+        (equipment {
+            [
+            ("TableBoard"
+                {
+                (track "Track1" {0..11 23..12 End} P1 directed:True)
+                (track "Track2" {12..23 11..0 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 11..0 End} P1 directed:True)
+                (track "Track2" {0..11 23..12 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 11..0 End} P1 directed:True)
+                (track "Track2" {12..23 11..0 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {0..11 23..12 End} P1 directed:True)
+                (track "Track2" {0..11 23..12 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {11..0 12..23 End} P1 directed:True)
+                (track "Track2" {23..12 0..11 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 0..11 End} P1 directed:True)
+                (track "Track2" {11..0 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 0..11 End} P1 directed:True)
+                (track "Track2" {23..12 0..11 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {11..0 12..23 End} P1 directed:True)
+                (track "Track2" {11..0 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 0..11 End} P1 directed:True)
+                (track "Track2" {0..11 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 11..0 End} P1 directed:True)
+                (track "Track2" {11..0 23..12 End} P2 directed:True)
+                }
+            )
+            ]
+            (dice d:6 num:2)
+            (piece "Disc" Each [#])
+            (hand Each)
+        })
+        (rules
+            (start (place "Disc" "Hand" count:15))
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Sugoroku is a race game that was played in Japan from the eighth century CE. Early boards are similar to boards for Chinese Shuanglu, and the games are probably related. By the nineteenth century, the game had largely become unpopular, and the rules for it are largely unreported, except for being similar to Backgammon.")
+        (aliases {"Ban-Sugoroku"})
+        (rules "2x12 board, divided in the center. Two six-sided dice. Fifteen pieces per player.")
+        (source "DLP Evidence.")
+        (id "174")
+        (version "1.3.8")
+        (classification "board/race/escape/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Japan, from around 710 to 1599.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+        (board Style Table) // Temporary style until a more specific one exist for that game.
+        (stackType Backgammon)
+    })
+    
+    (recon {
+        (concept "NumStartComponents" 30)
+    })
+    
+)
+

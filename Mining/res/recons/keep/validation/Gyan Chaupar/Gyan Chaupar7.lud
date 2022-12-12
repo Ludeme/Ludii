@@ -1,0 +1,97 @@
+(game "Gyan Chaupar" 
+    (players 4)
+    
+    (equipment { 
+        (board 
+            (square 10)
+            
+            (track "Track" "0,E,N1,W,N1,E,N1,W,N1,E,N1,W,N1,E,N1,W,N1,E,N1,W" directed:True)
+        )
+        
+        (piece "Pawn" Each 
+            (move 
+                (from 
+                    (from)
+                    level:
+                    (level)
+                )
+                
+                (to 
+                    (mapEntry 
+                        (trackSite Move steps:
+                            (count Pips)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (dice num:1)
+        
+        (map { 
+            (pair "B1" "C4")
+            
+            (pair "D1" "G2")
+            
+            (pair "H1" "J4")
+            
+            (pair "A3" "B5")
+            
+            (pair "E4" "D5")
+            
+            (pair "H3" "D9")
+            
+            (pair "J8" "J10")
+            
+            (pair "A8" "A10")
+            
+            (pair "J6" "G7")
+            
+            (pair "B7" "C2")
+            
+            (pair "G5" "F3")
+            
+            (pair "E2" "F1")
+            
+            (pair "D7" "A6")
+            
+            (pair "C10" "C8")
+            
+            (pair "H10" "H8")
+            
+            (pair "E10" "E8")
+            
+            (pair "G9" "D3")
+            
+            (pair "H6" "E6")
+            
+            (pair "I5" "J2")
+            }
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place Stack items:{ "Pawn4" "Pawn3" "Pawn2" "Pawn1"}
+            coord:"A1")
+        )
+        
+        (play 
+            (do 
+                (roll)
+                next:
+                (forEach Piece)
+            )
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+

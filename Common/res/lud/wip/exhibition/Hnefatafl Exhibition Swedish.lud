@@ -1,0 +1,132 @@
+(define "Custodial" 
+    (custodial 
+        (from (last To)) 
+        Orthogonal
+        (between (max 1) if:("IsPieceAt" #1 Next (between)) (apply (remove (between))))
+        (to if:"FriendOrCentreOrFortress") 
+    )
+)
+
+(define "EmptyButNotCentreOrFortress"
+    (and (not (is In (between) (union (sites Centre) (sites "Fortresses")))) (is Empty (between)))
+)
+
+(define "FriendOrCentreOrFortress"
+    (or ("IsFriendAt" (to)) (is In (to) (union (sites Centre) (sites "Fortresses"))))
+)
+
+(define "JarlIsCaptured" (apply (trigger "Surrounded" P2)))
+
+(define "JarlWasCaptured" (is Triggered "Surrounded" P2))
+
+//------------------------------------------------------------------------------
+
+(game "Hnefatafl Exhibition" 
+    (players 2) 
+    (equipment { 
+        (board (square 11)) 
+        (regions "Fortresses" (sites Corners))
+        
+        (piece "Thrall" P1 
+            (move Slide
+                Orthogonal 
+                (between if:"EmptyButNotCentreOrFortress")
+                (then 
+                    (and {
+                        ("Custodial" "Thrall2")
+                        (<Capture:type>
+                            (between
+                                <Capture:distance>
+                                if:("IsPieceAt" "Jarl" P2 (between))
+                                "JarlIsCaptured"
+                            )
+                            (to if:"FriendOrCentreOrFortress")
+                        )
+                    })
+                )
+            )
+        )
+        (piece "Thrall" P2 
+            (move Slide
+                Orthogonal 
+                (between if:"EmptyButNotCentreOrFortress") 
+                (then ("Custodial" "Thrall1")) 
+            ) 
+        ) 
+        (piece "Jarl" P2 
+            (move Slide
+                Orthogonal 
+                (then ("Custodial" "Thrall1")) 
+            ) 
+        ) 
+    }) 
+    (rules 
+        (start { 
+            (place "Thrall1" {"D1" "E1" "F1" "G1" "H1" "F2" "A4" "A5" "A6" "A7" "A8" "B6" "K4" "K5" "K6" "K7" "K8" "J6" "F10" "D11" "E11" "F11" "G11" "H11" "F10"})
+            (place "Thrall2" {"F4" "E5" "F5" "G5" "D6" "E6" "G6" "H6" "E7" "F7" "G7" "F8"})
+            (place "Jarl2" (centrePoint))
+        })
+        
+        (play (forEach Piece)) 
+        
+        (end {
+            ("PieceTypeReachWin" "Jarl2" (sites "Fortresses") P2)
+            (if "JarlWasCaptured" (result P1 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Play Rules" <Capture> args:{ <type> <distance> }
+    {
+    (item "Fetlar Common" <surround (from (last To)) Orthogonal> <>  "The game is played with the common rules.") 
+    (item "Fetlar Latin" <custodial (from (last To)) Orthogonal> <(max 1)> "The game is played with the latin rules.") 
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Fetlar (Suggested)" 
+        {
+        "Play Rules/Fetlar Common"
+        }
+    )
+    
+    (ruleset "Ruleset/Copenhagen (Suggested)" 
+        {
+        
+        }
+    )
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        
+        (useFor "Ruleset/Fetlar (Suggested)" (rules "Dessa regler föreslogs av en skotsk panel 2007. Pjäser rör sig som ett schacktorn. Bitar fångas genom att omge dem på motsatta sidor. Spelaren med kungen vinner genom att få den till en hörnruta. Den andra spelaren vinner genom att omge kungen på fyra sidor."))
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (board Style Tafl)
+        (show Symbol "knotSquare" "Fortresses") 
+    })
+    
+    (ai 
+        "Hnefatafl_ai"
+    )
+    
+)
+

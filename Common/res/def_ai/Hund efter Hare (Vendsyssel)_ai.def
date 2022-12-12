@@ -1,7 +1,72 @@
 (define "Hund efter Hare (Vendsyssel)_ai"
-    (bestAgent "AlphaBeta")
-    trainedHeuristics:(heuristics {
-        (material)
-    })
-    
+    (useFor { "Ruleset/Hund efter Hare (Vendsyssel) (Observed)" }
+        
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+            (material)
+        })
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/2,1/4}]>" 0.004830397)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[N6{0,1/2,-1/6}, -{1/8,1/8}]>" 0.15673111)
+                (pair "rel:last_to=<{0,1/4,1/4}>:to=<{0}>:pat=<els=[N6{0,-1/4,-3/8}]>" -0.6827075)
+                (pair "rel:from=<{}>:pat=<els=[-{0,0}]>" 0.0021640148)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/2,-1/4}]>" 0.07197952)
+                (pair "rel:from=<{}>:pat=<els=[!-{0}]>" 0.0044685556)
+                (pair "rel:last_to=<{0,1/4,1/4}>:from=<{}>:to=<{0}>:pat=<els=[e{1/2,1/6}, N6{0,-1/4,-3/8}]>" -0.06122044)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/2,-1/2,-1/6,1/6}]>" 0.5338526)
+                (pair "rel:last_to=<{0,-1/4,3/8}>:from=<{}>:to=<{0}>:pat=<els=[N6{-1/2,1/3}, f{0,-1/2,-3/8}]>" 1.7299937)
+                (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[N6{-1/8,0}, -{0,-1/2,-1/2,-1/6,1/6}]>" 0.90796924)
+                (pair "rel:last_from=<{0,-1/2}>:to=<{}>:pat=<els=[N6{-1/8,0}, -{0,-1/2,-1/2,-1/6,1/6}]>" 0.5594205)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{-1/6,1/6}, N6{0,-1/2,1/6}, f{0,-1/6,-3/8}]>" 0.9038356)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N6{0,-1/2,1/6}, f{0,-1/6,-3/8}]>" 0.77255845)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{-1/6,1/6}, f{0,-1/6,-3/8}]>" 0.72169167)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[N4{0,0,1/4}]>" 0.887195)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N6{-1/8,0}, -{0,-1/2,-1/2,-1/6,1/6}]>" 0.52214634)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/6,3/8}]>" 0.30663225)
+                (pair "rel:last_to=<{0,-1/4,3/8}>:from=<{}>:to=<{0}>:pat=<els=[N6{-1/2,1/3}]>" 0.48696244)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N6{-1/8,0}, -{0,-1/6,0}, -{0,-1/2,-1/2,-1/6,1/6}]>" 0.46230894)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Hare Wins (Suggested)" }
+        
+        (bestAgent "AlphaBeta")
+        trainedHeuristics:(heuristics {
+            (material)
+        })
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{1/8}>:to=<{}>:pat=<els=[#{0,-3/8}]>" 0.109726444)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4}, N8{0,-1/2}]>" 0.19780464)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N8{1/8,1/8}]>" -0.03840574)
+                (pair "rel:to=<{}>:pat=<els=[#{0,-3/8}, -{1/8,-1/2,-1/2,0}]>" 0.11212219)
+                (pair "rel:to=<{}>:pat=<els=[-{0,3/8}]>" 0.0019941276)
+                (pair "rel:to=<{}>:pat=<els=[N6{0,-1/3}, -{1/8,0}]>" 0.032121625)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4}, N8{0,-1/2}]>" 0.20098048)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{-1/4}, !-{0,-3/8,1/3}, -{0,1/6,1/4}, N6{0,-1/2,-1/2,1/3}]>" 1.6323488)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{-1/4}, !-{0,-3/8,1/3}, -{0,1/6,1/4}]>" 1.343311)
+                (pair "rel:to=<{}>:pat=<els=[e{-1/4}, -{0,1/6,1/4}, N6{0,-1/2,-1/2,1/3}]>" 0.9061425)
+                (pair "rel:to=<{}>:pat=<els=[e{-1/4}, !-{0,-3/8,1/3}, -{0,1/6,1/4}]>" 1.0334632)
+                (pair "rel:last_to=<{0,-1/2,-1/6}>:to=<{}>:pat=<els=[N8{1/6,1/6}]>" 0.8032879)
+                (pair "rel:last_to=<{0,-1/2,-1/6}>:from=<{0}>:to=<{}>:pat=<els=[N8{1/6,1/6}]>" 1.465739)
+                (pair "rel:to=<{}>:pat=<els=[N4{0,1/3}, e{1/4}, !-{0,3/8,-1/3}]>" 1.4000534)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{0,1/3}, e{1/4}, !-{0,3/8,-1/3}]>" 1.8692758)
+                (pair "rel:to=<{}>:pat=<els=[e{1/4}, !-{0,3/8,-1/3}]>" 0.33262554)
+                (pair "rel:last_to=<{0,1/6}>:from=<{}>:to=<{0}>:pat=<els=[N8{-1/8,0}]>" 2.0013697)
+                }
+            )
+        })
+        
+    )
 )

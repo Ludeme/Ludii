@@ -1,0 +1,25 @@
+(define "First Attack_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!-{0,0}, #{1/4,0}]>" 0.055850584)
+            (pair "rel:to=<{}>:pat=<els=[#{0}, #{1/4,-1/4}]>" -0.24920495)
+            (pair "rel:to=<{}>:pat=<els=[#{0,-1/4}, #{1/2,-1/4}]>" -0.44143406)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}]>" -0.24920495)
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,0,0}]>" -0.10787517)
+            (pair "rel:to=<{}>:pat=<els=[#{0}]>" -0.24920495)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!-{0,0,0}]>" 0.030059984)
+            (pair "rel:to=<{}>:pat=<els=[!-{1/4,0}, !-{0,0,0}]>" 0.08838545)
+            (pair "rel:to=<{}>:pat=<els=[#{0}, !-{1/4,0}]>" -0.19855952)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}]>" -0.026878372)
+            (pair "rel:to=<{}>:pat=<els=[!-{1/2}, !-{0,1/4}]>" -0.2530486)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,0}, !-{1/4,0}]>" -0.1191317)
+            }
+        )
+    })
+    
+)

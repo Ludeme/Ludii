@@ -1,0 +1,157 @@
+(game "Oware" 
+    (players 2)
+    
+    (equipment { 
+        (mancalaBoard 2 6 
+            (track "Track" "1,E,N,W" loop:True)
+        )
+        
+        (regions P1 
+            (sites Bottom)
+        )
+        
+        (regions P2 
+            (sites Top)
+        )
+        
+        (map { 
+            (pair P1 FirstSite)
+            
+            (pair P2 LastSite)
+            }
+        )
+        
+        (piece "Seed" Shared)
+        }
+    )
+    
+    (rules 
+        (start 
+            (set Count 4 to:
+                (sites Track)
+            )
+        )
+        
+        (play 
+            (if 
+                (is Proposed "End")
+                
+                (or 
+                    (move Vote "End")
+                    
+                    (move Vote "No")
+                )
+                
+                (or 
+                    (if 
+                        (is Cycle)
+                        
+                        (move Propose "End")
+                    )
+                    
+                    (do 
+                        (move Select 
+                            (from 
+                                (sites Mover)
+                                if:
+                                (< 0 
+                                    (count at:
+                                        (from)
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (sow if:
+                                    (and 
+                                        (is In 
+                                            (to)
+                                            
+                                            (sites Next)
+                                        )
+                                        
+                                        (or 
+                                            (= 
+                                                (count at:
+                                                    (to)
+                                                )
+                                            2)
+                                            
+                                            (= 
+                                                (count at:
+                                                    (to)
+                                                )
+                                            3)
+                                        )
+                                    )
+                                    apply:
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (mapEntry 
+                                                (mover)
+                                            )
+                                        )
+                                        count:
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                includeSelf:False backtracking:True)
+                            )
+                        )
+                        ifAfterwards:
+                        (< 0 
+                            (count in:
+                                (sites Next)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (all Sites 
+                    (union 
+                        (sites Top)
+                        
+                        (sites Bottom)
+                    )
+                    if:
+                    (= 0 
+                        (count at:
+                            (site)
+                        )
+                    )
+                )
+                { 
+                (if 
+                    (> 6 
+                        (count at:
+                            (mapEntry P1)
+                        )
+                    )
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (> 6 
+                        (count at:
+                            (mapEntry P2)
+                        )
+                    )
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+    )
+)
+

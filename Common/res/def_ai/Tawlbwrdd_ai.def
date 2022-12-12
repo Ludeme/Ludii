@@ -1,5 +1,6 @@
 (define "Tawlbwrdd_ai"
-    (useFor { "Variant/Cyningstan" }
+    (useFor { "Ruleset/Cyningstan (Suggested)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (influence weight:1.0214853)
@@ -29,6 +30,31 @@
                 (pair "Thrall2" -0.12643225)
                 (pair "Jarl2" -0.069377415)
             })
+        })
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,0,0,1/4,0,0,0}>:from=<{0,0,0}>:pat=<els=[I1{0,0,0,-1/4,-1/4}]>" 0.05270499)
+                (pair "rel:from=<{0,0,0}>:to=<{}>:pat=<els=[e{0,0,0,-1/4}, I1{0,0,0,1/4,0,0,0}]>" -0.14752944)
+                (pair "rel:from=<{}>:pat=<els=[R0{1/2,-1/4}, -{1/4,-1/4}, -{0,0}]>" -0.10857373)
+                (pair "rel:last_to=<{0,0,0,0,0,1/4,0,0,0}>:to=<{}>:pat=<els=[!-{1/4,0}, I3{0,0,0,0,0,1/4,0,0,0}]>" 0.41913596)
+                (pair "rel:from=<{0,0,0}>:to=<{}>:pat=<els=[e{0,0,0,1/4}]>" -0.038882054)
+                (pair "rel:last_to=<{1/4,0,0,0}>:from=<{}>:pat=<els=[f{1/2,1/4}, #{0,0,0,0,0,0}]>" -0.22001846)
+                (pair "rel:from=<{0,0,0}>:to=<{}>:pat=<els=[I1{0,0,0,1/4,0,0,0}]>" -0.040032364)
+                (pair "rel:from=<{}>:pat=<els=[!R0{1/2,1/4}, I2{0,0,0}]>" -0.24037753)
+                (pair "rel:from=<{0,0,0,0,0}>:to=<{}>:pat=<els=[!-{1/4,0}, I3{0,0,0,0,0,1/4,0,0,0}]>" 0.45741913)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[I3{}, #{0,0,0}]>" 1.042931)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" -0.037865806)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[I3{}, #{0,1/4,-1/4}]>" 0.88562137)
+                (pair "rel:from=<{}>:pat=<els=[I3{}]>" 0.08655767)
+                (pair "rel:from=<{}>:to=<{0,0,0,0,0}>:pat=<els=[#{0,0,0,0,0,0}]>" 0.2329096)
+                (pair "rel:from=<{}>:pat=<els=[!I2{}, #{0,0,0,0}]>" 0.082084835)
+                (pair "rel:to=<{0}>:pat=<els=[#{0,1/4,-1/4}]>" -1.5855018)
+                }
+            )
         })
         
     )

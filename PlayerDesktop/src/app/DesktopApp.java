@@ -44,6 +44,7 @@ import app.util.SettingsDesktop;
 import app.util.Sound;
 import app.util.UserPreferences;
 import app.utils.GameSetup;
+import app.utils.SettingsExhibition;
 import app.views.View;
 import game.Game;
 import game.rules.phase.Phase;
@@ -206,7 +207,7 @@ public class DesktopApp extends PlayerApp
 		String frameTitle = AppName + " - " + game.name();
 		GameOptions gameOptions = game.description().gameOptions();
 		
-		if (manager().settingsManager().userSelections().ruleset() != Constants.UNDEFINED)
+		if (manager().settingsManager().userSelections().ruleset() != Constants.UNDEFINED && !SettingsExhibition.exhibitionVersion)
 		{
 			final String rulesetName = game.description().rulesets().get(manager().settingsManager().userSelections().ruleset()).heading();
 			frameTitle += " (" + rulesetName + ")";
@@ -324,6 +325,9 @@ public class DesktopApp extends PlayerApp
 	/** Tasks that are performed when the application is closed. */
 	public void appClosedTasks()
 	{
+		if (SettingsExhibition.exhibitionVersion)
+			return;
+		
 		manager().settingsNetwork().restoreAiPlayers(manager());
 		
 		// Close all AI objects
@@ -380,6 +384,13 @@ public class DesktopApp extends PlayerApp
 			frame.setContentPane(view);
 			frame.setSize(SettingsDesktop.defaultWidth, SettingsDesktop.defaultHeight);
 			
+			if (SettingsExhibition.exhibitionVersion)
+			{
+				frame.setUndecorated(true);
+				frame.setResizable(false);
+				frame.setSize(SettingsExhibition.exhibitionDisplayWidth, SettingsExhibition.exhibitionDisplayHeight);
+			}
+			
 			try
 			{
 				if (settingsPlayer().defaultX() == -1 || settingsPlayer().defaultY() == -1)
@@ -397,7 +408,7 @@ public class DesktopApp extends PlayerApp
 
 			frame.setVisible(true);
 			frame.setMinimumSize(new Dimension(minimumViewWidth, minimumViewHeight));
-			
+
 			FileLoading.createFileChoosers();
 			setCurrentGraphicsDevice(frame.getGraphicsConfiguration().getDevice());
 			
@@ -430,6 +441,25 @@ public class DesktopApp extends PlayerApp
 	{
 		try
 		{
+			if (SettingsExhibition.exhibitionVersion)
+			{
+				GameLoading.loadGameFromMemory(this, SettingsExhibition.exhibitionGamePath, false);
+				
+				if (SettingsExhibition.againstAI)
+				{
+					final JSONObject json = new JSONObject().put("AI",
+							new JSONObject()
+							.put("algorithm", "UCT")
+							);
+					AIUtil.updateSelectedAI(manager(), json, 2, "UCT");
+					manager().aiSelected()[2].setThinkTime(SettingsExhibition.thinkingTime);
+				}
+				
+				bridge().settingsVC().setShowPossibleMoves(true);
+				
+				return;
+			}
+			
 			if (firstTry)
 				TrialLoading.loadStartTrial(this);
 			
@@ -452,8 +482,7 @@ public class DesktopApp extends PlayerApp
 	
 			for (int i = 1; i <=  manager().ref().context().game().players().count(); i++)
 				if (aiSelected()[i] != null)
-					AIUtil.updateSelectedAI(manager(), manager().aiSelected()[i].object(), i,
-							manager().aiSelected()[i].menuItemName());
+					AIUtil.updateSelectedAI(manager(), manager().aiSelected()[i].object(), i, manager().aiSelected()[i].menuItemName());
 		}
 		catch (final Exception e)
 		{
@@ -938,7 +967,10 @@ public class DesktopApp extends PlayerApp
 	@Override
 	public void showSettingsDialog()
 	{
-		SettingsDialog.createAndShowGUI(this);
+		if (!SettingsExhibition.exhibitionVersion)
+		{
+			SettingsDialog.createAndShowGUI(this);
+		}
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package app.util;
+package app.util;//
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,10 @@ public final class CountRulesetsDone
 			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("subgame"))
 				continue;
 
-			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction"))
+			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction/pending/"))
+				continue;
+			
+			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction/validation/"))
 				continue;
 
 			final Game game = GameLoader.loadGameFromName(gameName);
@@ -84,12 +87,28 @@ public final class CountRulesetsDone
 				for (int rs = 0; rs < rulesetsInGame.size(); rs++)
 				{
 					final Ruleset ruleset = rulesetsInGame.get(rs);
-					if (!ruleset.optionSettings().isEmpty()) // We check if the ruleset is implemented.
+					if (!ruleset.optionSettings().isEmpty()&& !ruleset.heading().contains("Incomplete")) // We check if the ruleset is implemented.
+					{
+//						final Game rulesetGame = GameLoader.loadGameFromName(gameName, ruleset.optionSettings());
+//							if(rulesetGame.computeRequirementReport())
+//							{
+//								System.out.println("WILL CRASH OR MISSING REQUIREMENT");
+//								System.out.println(rulesetGame.name() + " RULESET + " + ruleset.heading());
+//							}
 						count++;
+					}
 				}
 			}
 			else
+			{
+				
+//			if(game.computeRequirementReport())
+//			{
+//				System.out.println("WILL CRASH OR MISSING REQUIREMENT");
+//				System.out.println(game.name());
+//			}
 				count++;
+			}
 		}
 		
 		System.out.println(count + " rulesets implemented");

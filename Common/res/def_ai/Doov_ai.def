@@ -1,7 +1,36 @@
 (define "Doov_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (material)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[!-{0,0,1/4,0,1/4,1/4}]>" 1.3225456)
+            (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[!I1{}]>" 2.670381)
+            (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[I4{0,0,1/4,0,-1/2,-1/4}]>" 2.2849514)
+            (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[R1{1/4,1/4}, I4{0,0,1/4,0,-1/2,-1/4}]>" 2.3844032)
+            (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[-{0,0,0,0}, I3{0,0,1/4,0}]>" 2.7912142)
+            (pair "rel:last_to=<{0,0,1/4,0,1/4,1/4}>:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[I3{0,0,1/4,0}]>" 2.832786)
+            (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[R1{1/4,1/4}]>" 1.4140353)
+            (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[!-{0,0,1/4,0,0,0}]>" 1.4414734)
+            (pair "rel:last_to=<{0,0,1/4,0,1/4,1/4}>:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[R1{1/4,1/4}]>" 1.839604)
+            (pair "rel:last_to=<{0,0,1/4,0,1/4,1/4}>:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[-{0,0,0,0}]>" 1.8555758)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[e{0,1/4}]>" 1.9389275)
+            (pair "rel:from=<{}>:to=<{1/2,0,1/4,0}>:pat=<els=[R0{0,-1/4}]>" 2.0337324)
+            (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[-{0,0,1/4,0,-1/2,1/4}]>" 1.8622316)
+            (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[!-{0,0,1/4,0,0,0,0}]>" 2.013661)
+            (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[#{0,0,1/4,0,0,0,0}]>" 1.9135072)
+            (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[-{0,0,1/4,0,-1/4,1/4}]>" 1.7567424)
+            (pair "rel:last_to=<{0,0,1/4,0,1/4,1/4}>:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[#{0,0,1/4,0,-1/4,0,0}]>" 2.5491104)
+            (pair "rel:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[]>" 2.0140774)
+            (pair "rel:from=<{}>:to=<{0,0,1/4,0}>:pat=<els=[I3{0,1/4}]>" 1.8706181)
+            }
+        )
     })
     
 )

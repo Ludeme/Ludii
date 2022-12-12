@@ -1,19 +1,76 @@
 (define "Renard et les Poules_ai"
-    (useFor { "Fox Moves/One Single Capture" }
+    (useFor { "Ruleset/Renard et les Poules (Described)" }
+        
         (bestAgent "MAST")
         trainedHeuristics:(heuristics {
             (material)
         })
         
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{}>:from=<{0,0}>:to=<{}>:pat=<els=[!#{1/8,0,0,0}, !#{0,0,0,0}, !-{0,-1/4}, !-{3/8,-1/4}]>" 1.2410007)
+                (pair "rel:last_from=<{}>:from=<{0,0}>:to=<{}>:pat=<els=[N8{0,0}, !#{0,0,0,0}, !-{3/8,-1/4}]>" 1.154931)
+                (pair "rel:last_from=<{}>:from=<{0,0}>:to=<{}>:pat=<els=[!#{0,0,0,0}, !-{0,-1/4}, !-{3/8,-1/4}]>" 1.0824363)
+                (pair "rel:last_from=<{}>:from=<{0,0}>:to=<{}>:pat=<els=[N8{0,0}, !#{1/8,0,0,0}, !#{0,0,0,0}, !-{0,-1/4}, !-{3/8,-1/4}]>" 1.2683797)
+                (pair "rel:last_from=<{}>:from=<{0,0}>:to=<{}>:pat=<els=[!#{1/8,0,0,0}, !#{0,0,0,0}, !-{3/8,-1/4}]>" 1.1150472)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[N8{0,0}, !#{1/8,0,0,0}, !#{0,0,0,0}, !-{0,-1/4}]>" 0.95921636)
+                (pair "rel:last_from=<{}>:from=<{0,0}>:to=<{}>:pat=<els=[N8{0,0}, !#{1/8,0,0,0}, !#{0,0,0,0}]>" 1.205675)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/2}, #{0,0}, !#{0,1/2,0,0,0}]>" -1.6251845)
+                (pair "rel:last_to=<{0,-1/2,0}>:from=<{0}>:to=<{}>:pat=<els=[!-{0,-1/2,-1/2,1/4,1/4}]>" -1.1953564)
+                (pair "rel:last_to=<{-1/2}>:from=<{0}>:to=<{}>:pat=<els=[#{0,-1/8,-3/8}, #{0,1/4,-3/8}, #{0,1/8,-3/8}]>" -1.539098)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/2}, #{0,0}]>" -1.423497)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/2}, #{0,0}, !f{0,-3/8,-1/4}]>" -1.469229)
+                (pair "rel:last_to=<{1/2}>:from=<{0}>:to=<{}>:pat=<els=[#{0,0}]>" -1.4397615)
+                (pair "rel:last_to=<{0,-1/2,0}>:from=<{0}>:to=<{}>:pat=<els=[#{0,0,3/8}, !-{0,-1/2,-1/2,1/4,1/4}]>" -1.4403821)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/2}, !f{0,-3/8,-1/4}, !#{0,1/2,0,0,0}]>" -1.1724917)
+                (pair "rel:last_to=<{-1/2}>:from=<{0}>:to=<{}>:pat=<els=[#{0,-1/8,-3/8}, #{0,1/8,-3/8}]>" -1.5496509)
+                (pair "rel:last_to=<{-1/2}>:from=<{0}>:to=<{}>:pat=<els=[#{0,1/8,3/8}]>" -1.3197826)
+                (pair "rel:last_to=<{0,-1/2,0}>:from=<{0}>:to=<{}>:pat=<els=[#{0,0,3/8}]>" -1.3568267)
+                }
+            )
+        })
+        
     )
-    (useFor { "Fox Moves/One Single Orthogonal Capture" }
+    (useFor { "Ruleset/Orthogonal Fox (Described)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (material)
         })
         
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,3/8}]>" 0.31999058)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!#{0,0,0,0,0,0}]>" 1.10889)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{1/2,1/8}, !#{0,0,0,0,0,0}]>" 1.10889)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[#{1/4,-1/8}, !-{0,0,1/4,3/8}]>" 0.4877427)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!e{-1/2,0}, !-{0,0,1/4,3/8}]>" 0.30458173)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,1/4,1/4}]>" 0.32197842)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[#{1/4,-1/8}, !e{-1/2,0}, !-{0,0,1/4,3/8}]>" 0.503878)
+                (pair "rel:from=<{1/2,0}>:to=<{}>:pat=<els=[#{-1/4,-1/8}, !e{0,0}]>" 0.503878)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[#{-1/8,1/8}, !e{-1/2,0}, !-{0,0,1/4,3/8}]>" 0.5257214)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[#{1/2}]>" 0.7413635)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/2,0,0,0}, e{1/2}, !-{0,-1/4,1/4}]>" -1.4453402)
+                (pair "rel:last_to=<{0}>:from=<{1/2}>:to=<{}>:pat=<els=[N8{-1/8,0,0}, e{0}]>" -0.73703694)
+                (pair "rel:last_to=<{0}>:from=<{1/2}>:to=<{}>:pat=<els=[f{0,0,0,0}]>" -1.5123941)
+                (pair "rel:last_to=<{0}>:from=<{1/2}>:to=<{}>:pat=<els=[f{0,0,0,0}, !-{1/2,1/4,0}]>" -1.5123941)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{-1/2}, !f{0,0,3/8}]>" -0.5513735)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[N4{0,0,0,0}, #{-1/2,-1/4,1/4}]>" -0.70614827)
+                (pair "rel:last_to=<{0}>:from=<{-1/2}>:to=<{}>:pat=<els=[-{0,1/4}, e{0}, !-{-1/2,-1/2,-3/8}]>" -0.5757646)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!-{1/2,1/4,0}]>" 0.017614666)
+                }
+            )
+        })
+        
     )
-    (useFor { "Fox Moves/One Single Diagonal Capture And Orthogonal Move" }
+    (useFor { "Ruleset/Orthogonal Fox Diagonal Capture (Described)" }
+        
         (bestAgent "MAST")
         trainedHeuristics:(heuristics {
             (lineCompletionHeuristic weight:2.8306131)
@@ -35,6 +92,30 @@
                 (pair "Fox1" -1.9018803)
                 (pair "Hen2" 0.5523772)
             })
+        })
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,1/8}]>" 1.2033702)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,3/8}]>" 1.2033702)
+                (pair "rel:from=<{1/8,0}>:to=<{}>:pat=<els=[-{0}]>" 1.2033702)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{-1/8}, !-{0,0,3/8,-3/8}]>" 1.2121795)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{3/8,1/4}]>" 0.76100034)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{3/8,1/4}, !e{0,0,1/4,1/4}]>" 0.7434286)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{1/8}, -{0,0,3/8}]>" 1.3116935)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[#{1/8}, !f{0,-3/8}, f{1/2,1/4,1/8}]>" 0.42498198)
+                (pair "rel:last_to=<{0,3/8}>:from=<{}>:pat=<els=[f{0,0,0}]>" -0.3798862)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/2,0}, #{0,1/8,0}, !f{0,0,-3/8}, f{0,-1/2,1/4,1/8}]>" 0.7424931)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/2,1/8}, N8{0,-1/2,0,0,0}]>" 0.16131161)
+                (pair "rel:to=<{}>:pat=<els=[f{0,0,0,0}]>" -0.048748534)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{-1/2,3/8}, -{0,-1/2,1/8}, N8{0,-1/2,0,0,0}]>" 1.2426748)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{-1/2,-3/8}, f{0,1/4,1/8}]>" 0.2820662)
+                (pair "rel:to=<{}>:pat=<els=[N4{0}]>" 0.058533844)
+                }
+            )
         })
         
     )

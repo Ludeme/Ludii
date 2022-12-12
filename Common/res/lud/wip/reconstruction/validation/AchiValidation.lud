@@ -1,0 +1,55 @@
+(game "AchiValidation"
+    (players 2) 
+    (equipment { 
+        (board (concentric Square rings:2) use:Vertex) 
+        (hand Each)
+        (piece "Marker" Each 
+            ("StepToEmpty" ~ 
+                (then ("ReplayIfLine3" Orthogonal exact:True))
+            )
+        ) 
+    }) 
+    (rules 
+        (start (place "Marker" "Hand" count:6))
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (if "SameTurn"
+                    ("RemoveAnyEnemyPiece")
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                        (then ("ReplayIfLine3" Orthogonal exact:True))
+                    ) 
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if "SameTurn"
+                    ("RemoveAnyEnemyPiece")
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end 
+            [#]
+        )
+    )	
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (id "563")
+        }
+    )   
+)

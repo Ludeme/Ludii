@@ -1,41 +1,67 @@
 (define "Breakthrough_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
-        (lineCompletionHeuristic weight:0.0)
-        (mobilitySimple weight:0.0)
-        (influence weight:0.0)
-        (ownRegionsCount weight:0.0)
-        (centreProximity weight:0.0 pieceWeights:{
+        (sidesProximity)
+        (centreProximity pieceWeights:{
+            (pair "Pawn1" 0.08369076)
+            (pair "Pawn2" 0.15986244)
         })
-        (cornerProximity weight:0.0 pieceWeights:{
+        (cornerProximity pieceWeights:{
+            (pair "Pawn1" 0.054390416)
+            (pair "Pawn2" 0.05467271)
         })
+        (lineCompletionHeuristic weight:0.4820981)
         (material pieceWeights:{
-            (pair "Pawn1" 1.0)
-            (pair "Pawn2" 1.0)
+            (pair "Pawn1" 0.20666432)
         })
-        (sidesProximity pieceWeights:{
-            (pair "Pawn1" 1.0)
-            (pair "Pawn2" 1.0)
+        (mobilitySimple weight:0.46489596)
+        (influence weight:0.25199297)
+        (ownRegionsCount weight:-2.2544231)
+        (playerRegionsProximity player:2 pieceWeights:{
+            (pair "Pawn1" 0.94359654)
         })
-        (playerRegionsProximity player:1 pieceWeights:{
-            (pair "Pawn1" 1.0)
-            (pair "Pawn2" 1.0)
-        })
-        (playerRegionsProximity weight:0.0 player:2 pieceWeights:{
-        })
-        (regionProximity weight:0.0 region:0 pieceWeights:{
+        (regionProximity region:0 pieceWeights:{
+            (pair "Pawn1" 0.11981888)
+            (pair "Pawn2" -0.06697424)
         })
         (regionProximity region:1 pieceWeights:{
-            (pair "Pawn1" 1.0)
-            (pair "Pawn2" 1.0)
-        })
-        (unthreatenedMaterial weight:0.0 pieceWeights:{
-        })
-        (threatenedMaterial weight:0.0 pieceWeights:{
-        })
-        (threatenedMaterialMultipleCount weight:0.0 pieceWeights:{
+            (pair "Pawn1" 0.2220754)
+            (pair "Pawn2" 0.21575865)
         })
     })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[R1{1/2,0,0,0}, !-{1/4,1/4}, #{0,0}]>" 1.920711)
+            (pair "rel:to=<{}>:pat=<els=[R1{0,0,0,0}, #{1/2,0}]>" 1.9207803)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!-{0,1/4}, !-{1/4,-1/4}]>" 1.5689992)
+            (pair "rel:to=<{}>:pat=<els=[R1{1/4,0,0,0}, !-{0,1/4}]>" 1.0321827)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!-{0,1/4}, #{1/4,-1/4,-1/4,0,0}]>" 1.9552575)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[#{0,1/4,1/4,0,0}, !-{1/4,-1/4}]>" 1.9552575)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!-{0,1/4}, #{0,1/4,1/4,0,0}]>" 1.9552575)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!-{0,1/4}, !-{1/4,-1/4}, #{1/4,-1/4,-1/4,0,0}]>" 1.9552575)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!-{0,1/4}, #{0,1/4,1/4,0,0}, !-{1/4,-1/4}]>" 1.9552575)
+            (pair "rel:last_from=<{0,-1/4}>:to=<{}>:pat=<els=[!-{1/2,1/4}, #{1/4,0}]>" 1.5096343)
+            (pair "rel:from=<{}>:pat=<els=[f{0}, -{1/2,0,0}]>" -0.25794148)
+            (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!-{}, #{0,-1/4,1/4,0}]>" 1.8732382)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!-{}]>" 1.7195196)
+            (pair "rel:to=<{}>:pat=<els=[R1{1/2,0,0,0}, !-{}, #{0,-1/4,1/4,0}]>" 2.8871548)
+            (pair "rel:from=<{0,-1/4}>:to=<{}>:pat=<els=[!-{}, #{0,-1/4,1/4,0}]>" 2.3976746)
+            (pair "rel:to=<{}>:pat=<els=[R1{0,0,0,0}, !-{}]>" 2.4533143)
+            (pair "rel:from=<{}>:pat=<els=[!f{0}, #{0,0}, R0{-1/2,1/4}]>" 1.3186775)
+            (pair "rel:to=<{}>:pat=<els=[R1{1/2,0,0,0}, #{0,-1/4,1/4,0}]>" -0.2800218)
+            (pair "rel:from=<{}>:pat=<els=[!f{1/2}, R0{0,1/4}]>" 0.39998314)
+            (pair "rel:to=<{}>:pat=<els=[R1{0}]>" -0.008974406)
+            (pair "rel:from=<{}>:pat=<els=[R0{0}]>" 0.39586142)
+            }
+        )
+    })
+    
     trainedFeatureTrees:(featureTrees 
         logitTrees:{
         (logitTree P1
@@ -223,4 +249,5 @@
         )
         }
     )
+    
 )

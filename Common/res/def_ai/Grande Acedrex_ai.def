@@ -1,15 +1,68 @@
 (define "Grande Acedrex_ai"
-    (useFor { "Play Rules/Without Dice" }
+    (useFor { "Ruleset/Alfonso X (Described)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (material)
         })
         
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0,0,-1/4}>:to=<{}>:pat=<els=[-{1/2,0}, !-{0,0,-1/4,1/4,0}]>" -1.7133436)
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:to=<{}>:pat=<els=[!-{1/4}, #{0,1/4,0,1/4,0}]>" -0.4274047)
+                (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:from=<{}>:pat=<els=[!f{0,0,0}]>" 9.312759E-4)
+                (pair "rel:to=<{}>:pat=<els=[I3{0}]>" -1.649058)
+                (pair "rel:from=<{0,0,-1/4}>:pat=<els=[!-{0,0,-1/4,1/4,0}]>" -6.0917206)
+                (pair "rel:from=<{}>:pat=<els=[I1{0,0,0}]>" -0.9361027)
+                (pair "rel:from=<{0,1/4,0}>:to=<{}>:pat=<els=[!-{1/4}]>" -2.571629)
+                (pair "rel:from=<{0,0,-1/4}>:to=<{}>:pat=<els=[!-{0,0,-1/4,1/4,0}]>" -1.6029428)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" -9.7576494E-4)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[I13{0,0,0}]>" -4.1877985)
+                (pair "rel:to=<{}>:pat=<els=[!e{0}]>" 5.1871414E-4)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" 0.004244438)
+                (pair "rel:from=<{}>:pat=<els=[!f{0,0}]>" 0.1459109)
+                (pair "rel:to=<{}>:pat=<els=[I7{0}]>" -1.4099412)
+                (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:to=<{}>:pat=<els=[I11{0,0,0}]>" -3.0415459)
+                }
+            )
+        })
+        
     )
-    (useFor { "Play Rules/With Dice" }
+    (useFor { "Ruleset/Dice (Described)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (regionProximity region:0)
+        })
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[]>" -0.83585316)
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:from=<{}>:pat=<els=[R1{0,0,0}, #{1/4,0,0,0}]>" 0.039010894)
+                (pair "rel:from=<{}>:pat=<els=[#{0,0,0,0}]>" -0.01951921)
+                (pair "rel:to=<{}>:pat=<els=[R1{0,0,0}]>" 0.0934503)
+                (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[]>" -1.1228709)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{0,0,0}>:pat=<els=[!-{1/2,1/4}]>" -3.920391)
+                (pair "rel:from=<{}>:pat=<els=[f{0,0,0,1/2,0,0,0}]>" 1.0177422)
+                (pair "rel:to=<{}>:pat=<els=[!I4{}]>" -6.216862E-4)
+                (pair "rel:to=<{0,0,0}>:pat=<els=[!-{1/2,1/4}, f{0,0,0,1/2,0,0,0}]>" -3.920391)
+                (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}]>" 0.35634357)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.90886486)
+                (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[f{0,0,0,1/2,0,0,0}]>" 1.7472731)
+                (pair "rel:to=<{}>:pat=<els=[I16{0,1/4}]>" 0.718988)
+                }
+            )
         })
         
     )

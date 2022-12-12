@@ -131,7 +131,7 @@ public class GenerateBiasedMCTSEvalScripts
 		final String userName = argParse.getValueString("--user-name");
 		
 		// Modify the ruleset filepaths for running on Snellius
-		RulesetConceptsUCT.FILEPATH = "/home/" + userName + "/RulesetConceptsUCT.csv";
+		RulesetConceptsUCT.FILEPATH = "/home/" + userName + "/rulesetConceptsUCT.csv";
 		RulesetNames.FILEPATH = "/home/" + userName + "/GameRulesets.csv";
 		
 		final String[] allGameNames = Arrays.stream(FileHandling.listGames()).filter(s -> (

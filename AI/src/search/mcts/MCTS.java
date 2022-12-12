@@ -829,7 +829,7 @@ public class MCTS extends ExpertPolicy
 	 * @param context
 	 * @return New node
 	 */
-	private BaseNode createNode
+	protected BaseNode createNode
 	(
 		final MCTS mcts, 
     	final BaseNode parent, 

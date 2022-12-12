@@ -1,3 +1,32 @@
 (define "Do Guti_ai"
+    
     (bestAgent "MAST")
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N8{0,0,0}, !e{0,0,0,0}, #{0,-1/2,0,3/8}]>" 2.3782613)
+            (pair "rel:last_from=<{0,1/4}>:from=<{0}>:to=<{}>:pat=<els=[]>" 2.0138535)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" 1.972121)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N8{0,0,0}, !e{0,0,0,0}, #{0,-1/2,0,3/8}, !e{0,-1/2,-1/2,0,0}]>" 2.4146137)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N8{0,0,0}, !e{0,0,0,0}, !e{0,1/2,1/2,0,0}]>" 2.4146137)
+            (pair "rel:from=<{}>:pat=<els=[!e{1/8,-3/8}, e{0}, f{0,-1/4}]>" -0.89377517)
+            (pair "rel:last_from=<{0,1/4}>:from=<{0}>:to=<{}>:pat=<els=[!e{0,1/2,1/4}]>" 2.2321835)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N8{0,0,0}, !-{0,-3/8,0}, #{0,-1/2,0,3/8}]>" 2.3782613)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N8{0,0,0}, !-{0,3/8,0}, !e{0,0,0,0}]>" 2.3782613)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N2{1/2,1/4}, e{0,3/8,-1/8}]>" 2.0138547)
+            (pair "rel:last_from=<{0}>:from=<{}>:pat=<els=[N2{1/2,1/4}, e{0,3/8,-1/8}]>" 2.0138547)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{0,-1/2,3/8,3/8}]>" 1.1852852)
+            (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[N4{0,-1/2,3/8,3/8}]>" 1.1852852)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,0,1/8}]>" 2.8156817)
+            (pair "rel:last_from=<{0}>:from=<{}>:pat=<els=[N4{0,-1/2,3/8,3/8}]>" 1.1852852)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{0,1/8,-1/8}, !f{0,-1/2,1/8}, !#{0,3/8,0}]>" -0.97277194)
+            (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[!f{0,-1/2,1/8}, !#{0,3/8,0}]>" -0.97277194)
+            (pair "rel:last_to=<{0,-1/8}>:from=<{0}>:to=<{}>:pat=<els=[f{0,0,1/8}]>" 2.5621634)
+            (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[f{0,3/8,1/4}, !-{0,-1/4,0,0,0}]>" 0.288387)
+            }
+        )
+    })
+    
 )

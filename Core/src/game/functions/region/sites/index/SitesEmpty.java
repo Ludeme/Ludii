@@ -167,7 +167,7 @@ public final class SitesEmpty extends BaseRegionFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return "empty " +type.name();
+		return "empty " + type.name();
 	}
 
 	//-------------------------------------------------------------------------
@@ -271,7 +271,8 @@ public final class SitesEmpty extends BaseRegionFunction
 		@Override
 		public String toEnglish(final Game game) 
 		{
-			return "the set of empty " + type.name().toLowerCase() + "s";
+			final SiteType realType = (type != null) ? type : game.board().defaultSite();
+			return "the set of empty " + realType.name().toLowerCase() + "s";
 		}
 	}
 }

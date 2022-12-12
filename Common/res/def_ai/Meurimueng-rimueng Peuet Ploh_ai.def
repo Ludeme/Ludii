@@ -1,7 +1,31 @@
 (define "Meurimueng-rimueng Peuet Ploh_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (material)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{1/4,-1/4}, -{0,0,3/8,0,0}]>" 0.45145613)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{3/8,1/4}]>" 0.46273097)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{1/4,-1/4}]>" 0.3238779)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{3/8,1/4}, #{0,0,-1/4,1/8}]>" 0.7377601)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,-1/4,1/8}]>" 0.37318072)
+            (pair "rel:from=<{}>:pat=<els=[#{0,0,1/8}]>" 0.05142203)
+            (pair "rel:to=<{0,1/4}>:pat=<els=[!-{0,1/4,0,0,0,0}]>" 0.6931251)
+            (pair "rel:from=<{}>:pat=<els=[#{1/2,1/4}, !-{0,1/4,0,0,0,0}]>" 0.045374863)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[#{0}]>" 0.14551315)
+            (pair "rel:to=<{0,1/4}>:pat=<els=[-{3/8,0}, -{0,1/4,1/4,0,0,0}]>" -1.1450067)
+            (pair "rel:last_from=<{0,1/8}>:from=<{}>:pat=<els=[]>" -0.38156533)
+            (pair "rel:from=<{}>:pat=<els=[-{0,3/8}]>" 0.11463529)
+            (pair "rel:to=<{}>:pat=<els=[!e{0,3/8}]>" 0.05627237)
+            (pair "rel:to=<{}>:pat=<els=[!e{0,1/8}]>" 0.0020092856)
+            }
+        )
     })
     
 )

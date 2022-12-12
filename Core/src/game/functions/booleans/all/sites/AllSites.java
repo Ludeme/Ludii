@@ -8,6 +8,7 @@ import game.Game;
 import game.functions.booleans.BaseBooleanFunction;
 import game.functions.booleans.BooleanFunction;
 import game.functions.region.RegionFunction;
+import other.concept.Concept;
 import other.context.Context;
 import other.context.EvalContextData;
 
@@ -85,6 +86,9 @@ public final class AllSites extends BaseBooleanFunction
 		final BitSet concepts = new BitSet();
 		concepts.or(condition.concepts(game));
 		concepts.or(region.concepts(game));
+		
+		if(region.getClass().toString().contains("Board") && condition.concepts(game).get(Concept.PieceCount.id()))
+			concepts.set(Concept.NoPiece.id(), true);
 		return concepts;
 	}
 

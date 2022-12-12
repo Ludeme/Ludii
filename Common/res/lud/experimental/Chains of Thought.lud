@@ -292,21 +292,7 @@
 (metadata
     (info
         {
-        (description "Chains of Thought is a 2 player combinatorial game. 
-            
-            Finite play is ensured by the limited available area for stone placement, and by the need, when removing stones from the board, to create a chain larger than the chain(s) from which stones were taken.
-            
-            The game ends when a player cannot move, but the goal is to have the largest chain at the end of play. The goal cascades for tied chains.
-            
-            Chains of similar size are capable of approaching and attacking each other, when supported by potential mergers from behind. The need for support causes such approaches to be cool. 
-            
-            Blocking is generally done by chains of disparate size, as they mutually repel the isolated stones needed for the larger chain to attack the smaller. This is what leads to the territorial race by placing outliers into yet open areas for expansion.
-            
-            The result is a tactical cool clouding of stones, followed by an obstructive race to extend the largest viable group. 
-            
-            Players must also be careful obstruct their own possibility of (re)connecting chains that have been formed separately, or been cut in an attack.    
-            
-        The leading player may seek to stalemate himself if the opponent has potential for future expansion.")
+        (description "Chains of Thought is a 2 player combinatorial game.          Finite play is ensured by the limited available area for stone placement, and by the need, when removing stones from the board, to create a chain larger than the chain(s) from which stones were taken.        The game ends when a player cannot move, but the goal is to have the largest chain at the end of play. The goal cascades for tied chains.        Chains of similar size are capable of approaching and attacking each other, when supported by potential mergers from behind. The need for support causes such approaches to be cool.         Blocking is generally done by chains of disparate size, as they mutually repel the isolated stones needed for the larger chain to attack the smaller. This is what leads to the territorial race by placing outliers into yet open areas for expansion.        The result is a tactical cool clouding of stones, followed by an obstructive race to extend the largest viable group.         Players must also be careful obstruct their own possibility of (re)connecting chains that have been formed separately, or been cut in an attack.            The leading player may seek to stalemate himself if the opponent has potential for future expansion.")
         (rules "Goal: End with the largest chain of stones, the goal cascades to the next largest in the case of ties.
             
             A 'chain' is any set of player's stones that comprised of a starting stone and every stone which can be reached from it by a series steps between adjacent stones.
@@ -342,7 +328,7 @@ Choose larger boards for a strategy game experience with other players.
 
 The other rule variants are only for experimentation.")
 (id "1965")
-(version "1.3.7")
+(version "1.3.8")
 (classification "experimental")
 (author "Dale W. Walton")
 (credit "Dale W. Walton")
@@ -360,5 +346,8 @@ The other rule variants are only for experimentation.")
     (show Edges Diagonal <BoardShape:DiagShow>)
     }
 )
-(ai (heuristics (score weight:2)))
+(ai
+    "Chains of Thought_ai"
+)
+
 )

@@ -1,0 +1,2961 @@
+(define "HopCounter" 
+    (move
+        Hop 
+        (from #1) 
+        Diagonal 
+        (between 
+            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
+            (apply (remove (between) at:EndOfTurn))
+        ) 
+        (to if:(is Empty (to))) 
+        #2
+    ) 
+)
+
+(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+
+(define "JumpToPromotionZone" (is In (last To) (sites Next)))
+
+//------------------------------------------------------------------------------
+
+(game "Damat"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Damat1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 12)
+            )
+            
+            (piece "Counter" P1 N)
+            
+            (piece "Counter" P2 S)
+            
+            (piece "DoubleCounter" Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                
+                (place "Counter2" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (or { 
+                    (forEach Piece "Counter" 
+                        (move Hop 
+                            (from 
+                                (from)
+                            )
+                            Diagonal 
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (move Hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    at:EndOfTurn)
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                    
+                                    (if 
+                                        (is In 
+                                            (last To)
+                                            
+                                            (sites Next)
+                                        )
+                                        
+                                        (move Promote 
+                                            (last To)
+                                            
+                                            (piece "DoubleCounter")
+                                        Mover)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Hop Diagonal 
+                            (between before:
+                                (count Rows)
+                                after:
+                                (count Rows)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between before:
+                                                (count Rows)
+                                                after:
+                                                (count Rows)
+                                                if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "Counter" 
+                        (move Step 
+                            (directions { FR FL}
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (is In 
+                                    (last To)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (promote 
+                                    (last To)
+                                    
+                                    (piece "DoubleCounter")
+                                Mover)
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Slide Diagonal)
+                    )
+                    }
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Damat1 ruleset.")
+    
+    (item "Damat2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 12)
+            )
+            
+            (piece "Counter" P1 N)
+            
+            (piece "Counter" P2 S)
+            
+            (piece "DoubleCounter" Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                
+                (place "Counter2" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (or { 
+                    (forEach Piece "Counter" 
+                        (move Hop 
+                            (from 
+                                (from)
+                            )
+                            Diagonal 
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (move Hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    at:EndOfTurn)
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                    
+                                    (if 
+                                        (is In 
+                                            (last To)
+                                            
+                                            (sites Next)
+                                        )
+                                        
+                                        (move Promote 
+                                            (last To)
+                                            
+                                            (piece "DoubleCounter")
+                                        Mover)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Hop Diagonal 
+                            (between before:
+                                (count Rows)
+                                after:
+                                (count Rows)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between before:
+                                                (count Rows)
+                                                after:
+                                                (count Rows)
+                                                if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "Counter" 
+                        (move Step 
+                            (directions { FR FL}
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (is In 
+                                    (last To)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (promote 
+                                    (last To)
+                                    
+                                    (piece "DoubleCounter")
+                                Mover)
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Slide Diagonal)
+                    )
+                    }
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Damat2 ruleset.")
+    
+    (item "Damat3" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 12)
+            )
+            
+            (piece "Counter" P1 N)
+            
+            (piece "Counter" P2 S)
+            
+            (piece "DoubleCounter" Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                
+                (place "Counter2" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (or { 
+                    (forEach Piece "Counter" 
+                        (move Hop 
+                            (from 
+                                (from)
+                            )
+                            Diagonal 
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (move Hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    at:EndOfTurn)
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                    
+                                    (if 
+                                        (is In 
+                                            (last To)
+                                            
+                                            (sites Next)
+                                        )
+                                        
+                                        (move Promote 
+                                            (last To)
+                                            
+                                            (piece "DoubleCounter")
+                                        Mover)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Hop Diagonal 
+                            (between before:
+                                (count Rows)
+                                after:
+                                (count Rows)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between before:
+                                                (count Rows)
+                                                after:
+                                                (count Rows)
+                                                if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "Counter" 
+                        (move Step 
+                            (directions { FR FL}
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (is In 
+                                    (last To)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (promote 
+                                    (last To)
+                                    
+                                    (piece "DoubleCounter")
+                                Mover)
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Slide Diagonal)
+                    )
+                    }
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Damat3 ruleset.")
+    
+    (item "Damat4" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 12)
+            )
+            
+            (piece "Counter" P1 N)
+            
+            (piece "Counter" P2 S)
+            
+            (piece "DoubleCounter" Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                
+                (place "Counter2" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (or { 
+                    (forEach Piece "Counter" 
+                        (move Hop 
+                            (from 
+                                (from)
+                            )
+                            Diagonal 
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (move Hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    at:EndOfTurn)
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                    
+                                    (if 
+                                        (is In 
+                                            (last To)
+                                            
+                                            (sites Next)
+                                        )
+                                        
+                                        (move Promote 
+                                            (last To)
+                                            
+                                            (piece "DoubleCounter")
+                                        Mover)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Hop Diagonal 
+                            (between before:
+                                (count Rows)
+                                after:
+                                (count Rows)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between before:
+                                                (count Rows)
+                                                after:
+                                                (count Rows)
+                                                if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "Counter" 
+                        (move Step 
+                            (directions { FR FL}
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (is In 
+                                    (last To)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (promote 
+                                    (last To)
+                                    
+                                    (piece "DoubleCounter")
+                                Mover)
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Slide Diagonal)
+                    )
+                    }
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Damat4 ruleset.")
+    
+    (item "Damat5" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 12)
+            )
+            
+            (piece "Counter" P1 N)
+            
+            (piece "Counter" P2 S)
+            
+            (piece "DoubleCounter" Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                
+                (place "Counter2" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (or { 
+                    (forEach Piece "Counter" 
+                        (move Hop 
+                            (from 
+                                (from)
+                            )
+                            Diagonal 
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (move Hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    at:EndOfTurn)
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                    
+                                    (if 
+                                        (is In 
+                                            (last To)
+                                            
+                                            (sites Next)
+                                        )
+                                        
+                                        (move Promote 
+                                            (last To)
+                                            
+                                            (piece "DoubleCounter")
+                                        Mover)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Hop Diagonal 
+                            (between before:
+                                (count Rows)
+                                after:
+                                (count Rows)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between before:
+                                                (count Rows)
+                                                after:
+                                                (count Rows)
+                                                if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "Counter" 
+                        (move Step 
+                            (directions { FR FL}
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (is In 
+                                    (last To)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (promote 
+                                    (last To)
+                                    
+                                    (piece "DoubleCounter")
+                                Mover)
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Slide Diagonal)
+                    )
+                    }
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Damat5 ruleset.")
+    
+    (item "Damat6" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 12)
+            )
+            
+            (piece "Counter" P1 N)
+            
+            (piece "Counter" P2 S)
+            
+            (piece "DoubleCounter" Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                
+                (place "Counter2" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (or { 
+                    (forEach Piece "Counter" 
+                        (move Hop 
+                            (from 
+                                (from)
+                            )
+                            Diagonal 
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (move Hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    at:EndOfTurn)
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                    
+                                    (if 
+                                        (is In 
+                                            (last To)
+                                            
+                                            (sites Next)
+                                        )
+                                        
+                                        (move Promote 
+                                            (last To)
+                                            
+                                            (piece "DoubleCounter")
+                                        Mover)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Hop Diagonal 
+                            (between before:
+                                (count Rows)
+                                after:
+                                (count Rows)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between before:
+                                                (count Rows)
+                                                after:
+                                                (count Rows)
+                                                if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "Counter" 
+                        (move Step 
+                            (directions { FR FL}
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (is In 
+                                    (last To)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (promote 
+                                    (last To)
+                                    
+                                    (piece "DoubleCounter")
+                                Mover)
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Slide Diagonal)
+                    )
+                    }
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Damat6 ruleset.")
+    
+    (item "Damat7" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 12)
+            )
+            
+            (piece "Counter" P1 N)
+            
+            (piece "Counter" P2 S)
+            
+            (piece "DoubleCounter" Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                
+                (place "Counter2" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (or { 
+                    (forEach Piece "Counter" 
+                        (move Hop 
+                            (from 
+                                (from)
+                            )
+                            Diagonal 
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (move Hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    at:EndOfTurn)
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                    
+                                    (if 
+                                        (is In 
+                                            (last To)
+                                            
+                                            (sites Next)
+                                        )
+                                        
+                                        (move Promote 
+                                            (last To)
+                                            
+                                            (piece "DoubleCounter")
+                                        Mover)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Hop Diagonal 
+                            (between before:
+                                (count Rows)
+                                after:
+                                (count Rows)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between before:
+                                                (count Rows)
+                                                after:
+                                                (count Rows)
+                                                if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "Counter" 
+                        (move Step 
+                            (directions { FR FL}
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (is In 
+                                    (last To)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (promote 
+                                    (last To)
+                                    
+                                    (piece "DoubleCounter")
+                                Mover)
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Slide Diagonal)
+                    )
+                    }
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Damat7 ruleset.")
+    
+    (item "Damat8" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 12)
+            )
+            
+            (piece "Counter" P1 N)
+            
+            (piece "Counter" P2 S)
+            
+            (piece "DoubleCounter" Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                
+                (place "Counter2" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (or { 
+                    (forEach Piece "Counter" 
+                        (move Hop 
+                            (from 
+                                (from)
+                            )
+                            Diagonal 
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (move Hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    at:EndOfTurn)
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                    
+                                    (if 
+                                        (is In 
+                                            (last To)
+                                            
+                                            (sites Next)
+                                        )
+                                        
+                                        (move Promote 
+                                            (last To)
+                                            
+                                            (piece "DoubleCounter")
+                                        Mover)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Hop Diagonal 
+                            (between before:
+                                (count Rows)
+                                after:
+                                (count Rows)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between before:
+                                                (count Rows)
+                                                after:
+                                                (count Rows)
+                                                if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "Counter" 
+                        (move Step 
+                            (directions { FR FL}
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (is In 
+                                    (last To)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (promote 
+                                    (last To)
+                                    
+                                    (piece "DoubleCounter")
+                                Mover)
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Slide Diagonal)
+                    )
+                    }
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (= 7 
+                        (value Player Mover)
+                    )
+                    
+                    (result Mover Draw)
+                )
+                }
+            )
+        )
+        
+    > "The Damat8 ruleset.")
+    
+    (item "Damat9" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 12)
+            )
+            
+            (piece "Counter" P1 N)
+            
+            (piece "Counter" P2 S)
+            
+            (piece "DoubleCounter" Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                
+                (place "Counter2" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (or { 
+                    (forEach Piece "Counter" 
+                        (move Hop 
+                            (from 
+                                (from)
+                            )
+                            Diagonal 
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (move Hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    at:EndOfTurn)
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                    
+                                    (if 
+                                        (is In 
+                                            (last To)
+                                            
+                                            (sites Next)
+                                        )
+                                        
+                                        (move Promote 
+                                            (last To)
+                                            
+                                            (piece "DoubleCounter")
+                                        Mover)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Hop Diagonal 
+                            (between before:
+                                (count Rows)
+                                after:
+                                (count Rows)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between before:
+                                                (count Rows)
+                                                after:
+                                                (count Rows)
+                                                if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "Counter" 
+                        (move Step 
+                            (directions { FR FL}
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (is In 
+                                    (last To)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (promote 
+                                    (last To)
+                                    
+                                    (piece "DoubleCounter")
+                                Mover)
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Slide Diagonal)
+                    )
+                    }
+                )
+            )
+            
+            (end 
+                (forEach Player if:
+                    (no Moves Player)
+                    
+                    (result Player Loss)
+                )
+            )
+        )
+        
+    > "The Damat9 ruleset.")
+    
+    (item "Damat10" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 12)
+            )
+            
+            (piece "Counter" P1 N)
+            
+            (piece "Counter" P2 S)
+            
+            (piece "DoubleCounter" Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                
+                (place "Counter2" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:4)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (or { 
+                    (forEach Piece "Counter" 
+                        (move Hop 
+                            (from 
+                                (from)
+                            )
+                            Diagonal 
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (move Hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    at:EndOfTurn)
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                    
+                                    (if 
+                                        (is In 
+                                            (last To)
+                                            
+                                            (sites Next)
+                                        )
+                                        
+                                        (move Promote 
+                                            (last To)
+                                            
+                                            (piece "DoubleCounter")
+                                        Mover)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Hop Diagonal 
+                            (between before:
+                                (count Rows)
+                                after:
+                                (count Rows)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    at:EndOfTurn)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between before:
+                                                (count Rows)
+                                                after:
+                                                (count Rows)
+                                                if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "Counter" 
+                        (move Step 
+                            (directions { FR FL}
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (is In 
+                                    (last To)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (promote 
+                                    (last To)
+                                    
+                                    (piece "DoubleCounter")
+                                Mover)
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece "DoubleCounter" 
+                        (move Slide Diagonal)
+                    )
+                    }
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Damat10 ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board (square 12))
+            (piece "Counter" P1 N)
+            (piece "Counter" P2 S) 
+            (piece "DoubleCounter" Each)
+            (regions P1 (sites Bottom))
+            (regions P2 (sites Top))
+        }) 
+        
+        (rules 
+            (start { 
+                (place "Counter1" (difference (expand (sites Bottom) steps:4) (sites Phase 1)))
+                (place "Counter2" (difference (expand (sites Top) steps:4) (sites Phase 1)))
+            })
+            (play 
+                (or { 
+                    (forEach Piece "Counter"
+                        ("HopCounter" (from) 
+                            (then 
+                                (if (can Move ("HopCounter" (last To))) 
+                                    (moveAgain) 
+                                    (if "JumpToPromotionZone" 
+                                        (move Promote (last To) (piece "DoubleCounter") Mover)
+                                    )
+                                ) 
+                            ) 
+                        ) 
+                    )
+                    (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
+                    (forEach Piece "Counter" 
+                        (move
+                            Step 
+                            (directions {FR FL}) 
+                            (to if:(is Empty (to)))
+                        )
+                        (then 
+                            (if "JumpToPromotionZone"
+                                (promote (last To) (piece "DoubleCounter") Mover)
+                            )
+                        )
+                    )
+                    (forEach Piece "DoubleCounter" (move Slide Diagonal))
+                })
+            )
+            
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Damat1 (Reconstructed)" {
+        "Variant/Damat1"
+    })
+    (ruleset "Ruleset/Damat2 (Reconstructed)" {
+        "Variant/Damat2"
+    })
+    (ruleset "Ruleset/Damat3 (Reconstructed)" {
+        "Variant/Damat3"
+    })
+    (ruleset "Ruleset/Damat4 (Reconstructed)" {
+        "Variant/Damat4"
+    })
+    (ruleset "Ruleset/Damat5 (Reconstructed)" {
+        "Variant/Damat5"
+    })
+    (ruleset "Ruleset/Damat6 (Reconstructed)" {
+        "Variant/Damat6"
+    })
+    (ruleset "Ruleset/Damat7 (Reconstructed)" {
+        "Variant/Damat7"
+    })
+    (ruleset "Ruleset/Damat8 (Reconstructed)" {
+        "Variant/Damat8"
+    })
+    (ruleset "Ruleset/Damat9 (Reconstructed)" {
+        "Variant/Damat9"
+    })
+    (ruleset "Ruleset/Damat10 (Reconstructed)" {
+        "Variant/Damat10"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Damat is a game with leaping captures played at Malacca, Malaysia by Portuguese people. ")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "12x12 checkered board. 30 pieces per player. Played on the black squares. Pieces move forward diagonally one space. Pieces capture an adjacent opponent's piece by hopping over it to an empty space immediately on the opposite side of it. When a piece reaches the opposite edge of the board from where it started, it is promoted. Promoted pieces may move any distance in a diagonal line as long as there is an empty space at the end of the jump."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1420"))
+        (useFor "Ruleset/Damat1 (Reconstructed)" (rules "The game Damat is played by two players on a 12x12 rectangle board with square tiling.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with Counters and DoubleCounters.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the difference between the bottom sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142].
+                Place a Counter for player two at the difference between the top sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142]..
+                Rules: 
+                Move one of your pieces or move one of your pieces or move one of your pieces or move one of your pieces.
+                Aim: 
+                If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Damat1 (Reconstructed)" (id "2470"))
+        (useFor "Ruleset/Damat2 (Reconstructed)" (rules "The game Damat is played by two players on a 12x12 rectangle board with square tiling.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with Counters and DoubleCounters.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the difference between the bottom sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142].
+                Place a Counter for player two at the difference between the top sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142]..
+                Rules: 
+                Move one of your pieces or move one of your pieces or move one of your pieces or move one of your pieces.
+                Aim: 
+                If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Damat2 (Reconstructed)" (id "2471"))
+        (useFor "Ruleset/Damat3 (Reconstructed)" (rules "The game Damat is played by two players on a 12x12 rectangle board with square tiling.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with Counters and DoubleCounters.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the difference between the bottom sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142].
+                Place a Counter for player two at the difference between the top sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142]..
+                Rules: 
+                Move one of your pieces or move one of your pieces or move one of your pieces or move one of your pieces.
+                Aim: 
+                If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Damat3 (Reconstructed)" (id "2472"))
+        (useFor "Ruleset/Damat4 (Reconstructed)" (rules "The game Damat is played by two players on a 12x12 rectangle board with square tiling.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with Counters and DoubleCounters.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the difference between the bottom sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142].
+                Place a Counter for player two at the difference between the top sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142]..
+                Rules: 
+                Move one of your pieces or move one of your pieces or move one of your pieces or move one of your pieces.
+                Aim: 
+                If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Damat4 (Reconstructed)" (id "2473"))
+        (useFor "Ruleset/Damat5 (Reconstructed)" (rules "The game Damat is played by two players on a 12x12 rectangle board with square tiling.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with Counters and DoubleCounters.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the difference between the bottom sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142].
+                Place a Counter for player two at the difference between the top sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142]..
+                Rules: 
+                Move one of your pieces or move one of your pieces or move one of your pieces or move one of your pieces.
+                Aim: 
+                If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Damat5 (Reconstructed)" (id "2474"))
+        (useFor "Ruleset/Damat6 (Reconstructed)" (rules "The game Damat is played by two players on a 12x12 rectangle board with square tiling.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with Counters and DoubleCounters.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the difference between the bottom sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142].
+                Place a Counter for player two at the difference between the top sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142]..
+                Rules: 
+                Move one of your pieces or move one of your pieces or move one of your pieces or move one of your pieces.
+                Aim: 
+                If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Damat6 (Reconstructed)" (id "2475"))
+        (useFor "Ruleset/Damat7 (Reconstructed)" (rules "The game Damat is played by two players on a 12x12 rectangle board with square tiling.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with Counters and DoubleCounters.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the difference between the bottom sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142].
+                Place a Counter for player two at the difference between the top sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142]..
+                Rules: 
+                Move one of your pieces or move one of your pieces or move one of your pieces or move one of your pieces.
+                Aim: 
+                If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Damat7 (Reconstructed)" (id "2476"))
+        (useFor "Ruleset/Damat8 (Reconstructed)" (rules "The game Damat is played by two players on a 12x12 rectangle board with square tiling.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with Counters and DoubleCounters.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the difference between the bottom sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142].
+                Place a Counter for player two at the difference between the top sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142]..
+                Rules: 
+                Move one of your pieces or move one of your pieces or move one of your pieces or move one of your pieces.
+                Aim: 
+                If the next player cannot move, the moving player wins If 7 is equal to the value of Player the moving player, it's a draw.
+                
+        "))
+        (useFor "Ruleset/Damat8 (Reconstructed)" (id "2477"))
+        (useFor "Ruleset/Damat9 (Reconstructed)" (rules "The game Damat is played by two players on a 12x12 rectangle board with square tiling.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with Counters and DoubleCounters.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the difference between the bottom sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142].
+                Place a Counter for player two at the difference between the top sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142]..
+                Rules: 
+                Move one of your pieces or move one of your pieces or move one of your pieces or move one of your pieces.
+                
+        "))
+        (useFor "Ruleset/Damat9 (Reconstructed)" (id "2478"))
+        (useFor "Ruleset/Damat10 (Reconstructed)" (rules "The game Damat is played by two players on a 12x12 rectangle board with square tiling.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with Counters and DoubleCounters.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the difference between the bottom sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142].
+                Place a Counter for player two at the difference between the top sites of the board expanded by 4 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142]..
+                Rules: 
+                Move one of your pieces or move one of your pieces or move one of your pieces or move one of your pieces.
+                Aim: 
+                If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Damat10 (Reconstructed)" (id "2479"))
+        (version "1.3.8")
+        (classification "board/war/leaping/diagonal/reconstruction/done")
+        (credit "Eric Piette")
+        (origin "This game was played in Malaysia, around 1959.")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+    (recon {
+        (concept "NumStartComponents" 60)
+        (concept "Hop" True)
+        (concept "Capture" True)
+    })
+    
+)
+

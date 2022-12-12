@@ -1,0 +1,65 @@
+(define "Bechi_ai"
+    (useFor { "Ruleset/Kunama (Observed)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!R0{0,0,0}]>" 0.460711)
+                (pair "rel:to=<{}>:pat=<els=[R5{0,0}, !R0{0,0,0}]>" 0.8927785)
+                (pair "rel:to=<{}>:pat=<els=[!R3{0}, !#{0,0,0}]>" 0.8927785)
+                (pair "rel:to=<{}>:pat=<els=[R2{0,0,0}]>" 0.8927785)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,-1/4}, !#{0,0,0}]>" -0.590858)
+                (pair "rel:to=<{}>:pat=<els=[R4{0}, -{0,1/4}]>" -1.7008373)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[R5{0}]>" 0.2915684)
+                (pair "rel:to=<{}>:pat=<els=[!-{}, !R3{0,0}]>" 1.2692401)
+                (pair "rel:to=<{}>:pat=<els=[R5{0,0,0}]>" 0.18389814)
+                (pair "rel:to=<{}>:pat=<els=[!R3{0,0}]>" 0.2915684)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4}, !R4{0}, -{0,0}]>" -3.8044724)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, !R4{1/4}, !R2{-1/4}, -{1/4,0}]>" -4.0002265)
+                (pair "rel:to=<{}>:pat=<els=[!-{}, -{0,0}]>" 0.15405485)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/4,0}]>" -3.5221112)
+                (pair "rel:to=<{}>:pat=<els=[!-{}, !R0{0,0,0}]>" 0.51169616)
+                (pair "rel:to=<{}>:pat=<els=[!R4{0}, -{0,0}]>" -2.1832979)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -1.8242215)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Three Holes (Observed)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{1/4}, R7{0,1/4}]>" -0.2707205)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, R7{1/4,-1/4}, R3{0,1/4}]>" -0.11484958)
+                (pair "rel:to=<{}>:pat=<els=[!R7{0}, -{1/2,1/4}]>" -0.34630352)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, R7{0,1/4}]>" -0.08626056)
+                (pair "rel:to=<{}>:pat=<els=[!-{}, -{0}]>" -0.17995328)
+                (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[R2{0}]>" 0.14455025)
+                (pair "rel:to=<{}>:pat=<els=[R7{1/4,-1/4}, R3{0,1/4}]>" -0.22394027)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/2}]>" -0.15121354)
+                (pair "rel:to=<{}>:pat=<els=[!-{}, !R5{0,0}]>" -0.2506312)
+                (pair "rel:to=<{}>:pat=<els=[-{0,-1/4}, !R7{0}, -{1/2,1/4}]>" -0.35979038)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,-1/4}, R3{0,1/4}]>" -0.18406881)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0}, !R2{0,1/4}]>" -0.5461841)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/2}]>" -0.3376177)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4}, R3{0}]>" -0.7367031)
+                (pair "rel:to=<{}>:pat=<els=[!R4{0,1/4}]>" 0.14201836)
+                (pair "rel:to=<{}>:pat=<els=[R5{0}]>" 0.14201836)
+                (pair "rel:to=<{}>:pat=<els=[!R6{1/2}, -{0}]>" 0.054767646)
+                (pair "rel:to=<{}>:pat=<els=[!R2{0,1/4}]>" 0.047980063)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -0.6950768)
+                (pair "rel:to=<{}>:pat=<els=[R7{1/4}, !R2{0,1/4}]>" -0.36522132)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, !R6{0}, -{1/2}]>" -0.3376177)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, R5{1/2}]>" -0.055561043)
+                }
+            )
+        })
+        
+    )
+)

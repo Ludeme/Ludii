@@ -1,0 +1,30 @@
+(define "Atomic Chess_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[I6{0}]>" 1.0723562)
+            (pair "rel:to=<{}>:pat=<els=[R1{0,-1/4}, !R0{0,1/4}, #{1/2,0}]>" 0.49392614)
+            (pair "rel:to=<{}>:pat=<els=[e{}, !R0{0,-1/4}, #{1/2,0}]>" 0.25627705)
+            (pair "rel:to=<{}>:pat=<els=[e{}, -{0,-1/4}, #{1/4,0}]>" 0.26449174)
+            (pair "rel:to=<{}>:pat=<els=[-{1/4,-1/4}, !R0{0,-1/4}, #{1/2,0}]>" 0.01809831)
+            (pair "rel:to=<{}>:pat=<els=[e{}, !R0{0,1/4}]>" 0.14641044)
+            (pair "rel:to=<{0}>:pat=<els=[I5{0,1/2,0}]>" -0.32790712)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[I5{0,1/4}]>" 1.5541623)
+            (pair "rel:to=<{}>:pat=<els=[e{}, #{1/2,0}, !R1{0,1/4}, !R1{0,-1/4}]>" 1.2398287)
+            (pair "rel:to=<{}>:pat=<els=[#{-1/4,0}, e{0,0,0}, !R1{1/4,-1/4}]>" 0.49057233)
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 0.37510777)
+            (pair "rel:to=<{}>:pat=<els=[#{1/2,0}, !R1{0,1/4}, !R1{0,-1/4}]>" 0.6009075)
+            (pair "rel:to=<{}>:pat=<els=[I5{0}]>" 0.6216785)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!R1{0,1/4}]>" 0.37356588)
+            (pair "rel:to=<{}>:pat=<els=[I4{0,0,0,0}]>" 0.18132143)
+            (pair "rel:to=<{}>:pat=<els=[e{}, !R1{1/4,1/4}, e{0,0,0}]>" 0.2595886)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!-{0}, !R1{0,1/4}]>" 0.38326114)
+            }
+        )
+    })
+    
+)

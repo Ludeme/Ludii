@@ -1,0 +1,698 @@
+(define "NonpriorityMoves" // arg: "NonMoverHops" see Chosen:nonMoverCaptures
+    (or {
+        (if
+            ("SameTurn")
+            (or
+                <Passing:afterMovement>  // ("TurnPass") vs ("PlaceDisc")
+                ("PlaceHex")
+            )
+            (or
+                {
+                <Passing:turn> // ("TurnPass") vs ("PlaceDisc")
+                ("PlaceHex")
+                ("PlaceDisc")
+                ("DiscStep")
+                }
+        ))
+        #1
+        #2
+    })
+)
+
+(define "PriorityHopsOnly" // No friendly hops 
+    (priority
+        ("NonMoverHops")
+        ("NonpriorityMoves" ~ ~)
+    )
+)
+
+(define "PriorityHops" // Friendly Hops allowed 
+    (priority
+        ("NonMoverHops")
+        ("NonpriorityMoves" ("MoverHops") ~)
+    )
+) 
+
+(define "MoverHops"
+    ("HopChange" <CapOption:friendHops> "MoverSites")
+)
+
+(define "NonMoverHops"
+    ("HopChange" <CapOption:enemyHops> "NonMoverSites")
+)
+
+(define "HopChange" // Options: eg. "Moversites" or "NonMoverSites"
+    (if 
+        ("SameTurn")
+        (if (is Pending)
+            (#1 (from (last To)) #2)
+        )
+        (do (forget Value All) 
+            next:(#1 (from) #2)
+        )
+    )
+)
+
+//-------------------------------------------
+//Player region defines
+
+(define "MoverSites"
+    (sites Occupied by:Mover)
+)
+
+(define "NonMoverSites"
+    (difference 
+        (sites Occupied by:All)
+        (sites Occupied by:Mover)
+))
+
+//-------------------------------------------
+//Integer constants defines
+
+(define "ValueDisc" <DiscPenalty:discVal>)
+(define "ValueHex" <TerritoryScore:hexVal>)
+
+//-------------------------------------------
+//Procedural functional defines
+
+(define "TurnPass"
+    (do 
+        (if
+            (= 0 (var "FirstNoPlace"))
+            (set Var "FirstNoPlace" (mover)) 
+            (if
+                (= (next) (var "FirstNoPlace"))
+                (propose "End")
+            )
+        )
+        next:(move Pass)
+    )
+)
+(define "Yield" // argument where from, who's pieces
+    (or
+        ("GeneralHop" #1 #2 <Board:piece> <Board:piece> "ValueHex" "ValueHex")
+        ("GeneralHop" #1 #2 "Disc" <Board:piece> "ValueDisc" "ValueHex")
+    )
+)
+
+(define "NoMorph" // argument where from, who's pieces
+    (or
+        ("GeneralHop" #1 #2 <Board:piece> <Board:piece> "ValueHex" "ValueHex")
+        ("GeneralHop" #1 #2 "Disc" "Disc" "ValueDisc" "ValueDisc")
+    )
+)
+
+(define "Morph" // argument where from, who's pieces
+    (or
+        ("GeneralHop" #1 #2 "Disc" <Board:piece> "ValueDisc" "ValueHex")
+        ("GeneralHop" #1 #2 <Board:piece> "Disc" "ValueHex" "ValueDisc")
+    )
+)
+
+(define "GeneralHop" // argument where from, who's sites, piece type hopped, piece typ replaced
+    (forEach Piece "Disc"
+        (move Hop #1 <Board:adj> 
+            (between 
+                if:(is 
+                    In 
+                    (between)
+                    (difference 
+                        (intersection
+                            #2
+                            (sites Occupied by:All component:#3) 
+                        )
+                        (sites (values Remembered))
+                    )
+                )
+                (apply 
+                    (and 
+                        (addScore (player (who at:(between))) (- #5))
+                        (set Pending (between))
+                    )
+                )
+            )
+            (to if:(is Empty (to)))
+        )
+        (then
+            (and {
+                (remember Value (value Pending))
+                (remove (value Pending))
+                (add (piece (id #4 Mover)) (to (value Pending)))
+                (addScore Mover #6)
+                }
+                (then
+                    (and
+                        (set Pending)
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+    )
+) 
+
+(define "DiscStep"
+    (forEach Piece "Disc"
+        (move 
+            (from (from)) 
+            (to (sites Around (from) <Board:adj> ) if:(is Empty (to))) 
+            (then (moveAgain))
+        )
+    )
+)
+
+(define "PlaceHex"
+    (move 
+        Add 
+        (piece (id <Board:piece> Mover))
+        (to (forEach (sites Empty) if:"HexSite")) 
+        (then 
+            (and
+                (addScore Mover "ValueHex")
+                (set Var "FirstNoPlace" 0)
+            )
+        )
+    )
+)
+
+(define "PlaceDisc" 
+    (move Add 
+        (piece (id "Disc" Mover))
+        (to (forEach <PlaceDisc:suicideOption> if:<PlaceDisc:location>))
+        (then 
+            (and
+                (addScore Mover "ValueDisc")
+                (set Var "FirstNoPlace" 0)
+            )
+        )
+    )
+)
+
+(define "NoSuicide" 
+    (difference 
+        (sites Empty) 
+        (sites To
+            (forEach 
+                Site 
+                (intersection
+                    "NonMoverSites"
+                    (sites Occupied by:All component:"Disc")
+                )
+                (select 
+                    (from 
+                        (sites Distance <Board:adj> from:(site) (exact 2))
+                        if:(is Empty (from))
+                    )
+                    (to
+                        (sites Between <Board:adj> from:(from) to:(site))
+                    )
+                )
+            )
+        )
+    )
+)
+
+//----------------------------------------------------------
+
+//Defines for Booleans:
+
+(define "HexSite" (= ("NearestPieces" "MoverSites") ("NearestPieces" "NonMoverSites")))
+(define "DiscSite" (!= ("NearestPieces" "MoverSites") ("NearestPieces" "NonMoverSites")))
+
+//--------------------------------------------------
+//Defines for Integers
+
+(define "NearestPieces" // arg: Site of player to consider
+    (count 
+        Sites
+        in:(intersection {
+            (#1)
+            (sites Direction from:(site) <Board:adj>  distance:1)
+            (sites LineOfSight Piece at:(site) <Board:adj>) 
+        })
+    )
+)
+
+(define "Dist2NearestLoSEnemy" 
+    (min
+        (results
+            from:(site)
+            to:(forEach 
+                (sites LineOfSight Piece at:(from) <Board:adj>) 
+                if:(or (is Mover (who at:(site))) (is In (site) "NonMoverSites"))
+            )
+            (count Steps <Board:adj> (from) (to))
+        )
+    )
+)
+
+(define "Dist2NearestLoS"
+    (min
+        (results
+            from:(site)
+            to:(sites LineOfSight Piece at:(from) <Board:adj>) 
+            (count Steps <Board:adj> (from) (to))
+        )
+    )
+)
+
+//---------------------------------------
+// Main routine
+//---------------------------------------
+
+(game "Equi Game System"
+    (players 2)
+    (equipment {
+        (board <Board:size> use:Vertex)
+        (piece "Disc" Each)
+        (piece <Board:piece> Each)
+    })
+    (rules 
+        (start (set Score Each 0)) 
+        (play
+            <ChosenHop:prioritySetting>
+        )
+        (end 
+            {
+            (if
+                (and 
+                    {
+                    <Passing:endImplication>
+                    (= 1 (var "FirstNoPlace")) 
+                    (= (score Mover) (score Next))
+                    }
+                )
+                (result P1 Win)
+            )
+            
+            (if
+                (and 
+                    {
+                    <Passing:endImplication>
+                    (= 2 (var "FirstNoPlace")) 
+                    (= (score Mover) (score Next))
+                    }
+                )
+                (result P2 Win)
+            )
+            
+            (if
+                (and
+                    <Passing:endImplication>
+                    (!= (score Mover) (score Next))
+                )
+                (byScore)
+            )
+            
+            }
+            
+        )
+    )
+)
+
+//---------------------------------------
+
+(option "Board Size" <Board> args:{ <size> <piece> <adj> <diag> }
+    {
+    (item "Hex 3-4"        <(tri {3 4 3 4 3})>  <"Hex">     <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 3 and 4")
+    (item "Hex 5-6"        <(tri {5 6 5 7 5})>  <"Hex">     <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 5 and 6") // standard strategy
+    (item "Hex 7-8"        <(tri {7 8 7 10 6})> <"Hex">     <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 7 and 8")
+    (item "Hex 4"          <(tri Hexagon 4)>    <"Hex">     <Orthogonal> <Hidden>  "Board & size: Hexhex 4") 
+    (item "Hex 5"          <(tri Hexagon 5)>    <"Hex">     <Orthogonal> <Hidden>  "Board & size: Hexhex 5") 
+    (item "Hex 6"          <(tri Hexagon 6)>    <"Hex">     <Orthogonal> <Hidden>  "Board & size: Hexhex 6") 
+    (item "Hex 7"          <(tri Hexagon 7)>    <"Hex">     <Orthogonal> <Hidden>  "Board & size: Hexhex 7") 
+    (item "Square 5 ortho" <(square 5)>         <"Square">  <Orthogonal> <Hidden>  "Board & size: Orthogonal 5") 
+    (item "Square 7 ortho" <(square 7)>         <"Square">  <Orthogonal> <Hidden>  "Board & size: Orthogonal 7") 
+    (item "Square 9 ortho" <(square 9)>         <"Square">  <Orthogonal> <Hidden>  "Board & size: Orthogonal 9") 
+    (item "Square 4 omni" 
+        <(add
+            (remove (square 7) vertices:{ 0 1 2 4 5 6 7 8 12 13 14 20 28 34 35 36 40 41 42 43 44 46 47 48})
+            edges:{{0 1} {0 3} {3 8} {1 4} {4 9} {8 15} {9 16} {15 20} {16 21} {20 23} {21 24} {23 24}}
+        )> 
+    <"Square"> <All> <Thin> "Board & size: Orthogonal 4")
+    
+    (item "Square 5 omni" 
+        <(add
+            (remove (square 9) vertices:{
+                0  1  2  3     5  6  7  8
+                9 10 11          15 16 17
+                18 19                25 26
+                27                      35
+                
+                45                      53
+                54 55                61 62 
+                63 64 65          69 70 71
+            72 73 74 75    77 78 79 80 })
+            
+        edges:{{0 1} {0 3} {3 8} {1 4} {4 9} {8 15} {9 16} {15 24} {16 25} {24 31} {25 32} {31 36} {32 37} {36 39} {37 40} {39 40}} )> 
+        
+    <"Square"> <All> <Thin> "Board & size: Orthogonal 5")
+    
+    (item "Square 6 omni" 
+        <(add 
+            (remove (square 11) vertices:{
+                0   1   2   3   4       6   7   8   9   10 
+                11  12  13  14              18  19  20  21 
+                22  23  24                      30  31  32  
+                33  34                              42  43  
+                44                                      54  
+                
+                66                                      76  
+                77  78                              86  87  
+                88  89  90                      96  97  98  
+                99 100 101 102             106 107 108 109 
+            110 111 112 113 114     116 117 118 119 120 }) 
+            
+        edges:{{0 1} {0 3} {3 8} {1 4} {4 9} {8 15} {9 16} {15 24} {16 25} {24 35} {25 36} {35 44} {36 45} {44 51} {45 52} {51 56} {52 57} {56 59} {57 60} {59 60}} )>
+        
+    <"Square"> <All> <Thin> "Board & size: Orthogonal 6") 
+    
+    (item "Square 7 omni" 
+        <(add
+            (remove (square 13) vertices:{
+                0   1   2   3   4   5       7   8   9  10  11  12  
+                13  14  15  16  17              21  22  23  24  25  
+                26  27  28  29                      35  36  37  38  
+                39  40  41                              49  50  51  
+                52  53                                      63  64  
+                65                                              77  
+                
+                91                                             103 
+                104 105                                     115 116 
+                117 118 119                             127 128 129 
+                130 131 132 133                     139 140 141 142 
+                143 144 145 146 147             151 152 153 154 155 
+            156 157 158 159 160 161     163 164 165 166 167 168 })
+            
+        edges:{{0 1} {0 3} {3 8} {1 4} {4 9} {8 15} {9 16} {15 24} {16 25} {24 35} {25 36} {35 48} {36 49} {48 59} {49 60} {59 68} {60 69} {68 75} {69 76} {75 80} {76 81} {80 83} {81 84} {83 84}} )>
+        
+    <"Square"> <All> <Thin> "Board & size: Orthogonal 7") 
+    }
+)
+
+(option "Capture" <CapOption> args:{ <enemyHops> <friendHops> }
+    {
+    (item "Morph All"   <"Morph">   <"Morph">   "All hopped pieces change type, Hopped enemies also change ownership")
+    (item "Morph Enemy" <"Morph">   <"NoMorph"> "Hopped enemies change type and ownership, Hopped friendly pieces are unaffected")
+    (item "Morph Own"   <"NoMorph"> <"Morph">   "Hopped enemies only change ownership, Hopped friendly pieces change type")
+    (item "No Morphs"   <"NoMorph"> <"NoMorph"> "Hopped enemies only change ownership, Hopped friendly pieces are unaffected")
+    (item "Yields Friendly Territory"   <"Yield"> <"Yield"> "All hopped pieces become friendly territory pieces.")*
+    }
+)
+
+(option "Hopping" <ChosenHop> args: { <prioritySetting> }
+    {
+    (item "Mandatory - Can hop own"    <("PriorityHops")>     "An adjacent Enemy must be hopped, a Friend may be.")*
+    (item "Mandatory - Cannot hop own" <("PriorityHopsOnly")> "An adjacent Enemy must be hopped, Friends cannot be")    
+    (item "Optional - Can hop own"     <("NonpriorityMoves" ("MoverHops") ("NonMoverHops"))> "Hopping is Optional")
+    (item "Optional - Cannot hop own"  <("NonpriorityMoves" ("NonMoverHops") ~)>             "Hopping is Optional")
+    }
+)
+
+(option "Passing" <Passing> args:{ <turn> <afterMovement> <endImplication> }
+    {
+    (item "Full Turn" <("TurnPass")> <("TurnPass")> <(or (no Moves Mover) (is Proposed "End"))>
+        "Disc placement is not allowed if Disc movement was taken. Part or all of a turn may be passed except when there are forced jumps. End when neither player places."
+    )
+    (item "Partial Turn" < > <("TurnPass")> <(or (no Moves Mover) (is Proposed "End"))>
+        "Disc placement is not allowed if Disc movement was taken. Placement may be passed if movement was made. End when neither player places."
+    )
+    (item "Always must place" < > <("PlaceDisc")> <(no Moves Mover)>
+        "Place on every turn. Discs may be placed after a Disc movement was made. No Passing, End when board is full."
+    )*
+    }
+)
+
+(option "Discs" <PlaceDisc> args:{ <location> <suicideOption> }
+    {
+    (item "Anywhere" <(= 1 1)> <(sites Empty)> "Place Discs at any Empty location")
+    (item "Non-Hex" <"DiscSite"> <(sites Empty)> "Place Discs at any Non-Hex location")*
+    (item "Safe"  <(= 1 1)> <"NoSuicide"> "Place Discs at any Empty location, except where it can be taken by the next player's first hop") 
+    (item "Safe - Non-Hex" <"DiscSite"> <"NoSuicide"> "Place Discs at any Non-Hex location, except where it can be taken by the next player's first hop")
+    }
+)
+
+(option "Territory Value" <TerritoryScore> args:{ <hexVal> }
+    {
+    (item "1" <1> "Territory score is 1")*
+    (item "3" <3> "Territory score is 3")
+    (item "5" <5> "Territory score is 5")
+    }
+)
+
+(option "Disc Value" <DiscPenalty> args:{ <discVal> }
+    {
+    (item "0" <0> "Discs penalty is 0")
+    (item "1" <-1> "Discs penalty is 1")
+    (item "3" <-3> "Discs penalty is 3")*
+    (item "5" <-5> "Discs penalty is 5")
+    }
+)
+
+//----------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Equi (Described)" {
+        "Capture/Yields Friendly Territory" 
+        "Hopping/Mandatory - Can hop own"
+        "Passing/Always must place"
+        "Discs/Non-Hex"
+        "Territory Value/1"
+        "Disc Value/3"
+    })*
+    
+    (ruleset "Ruleset/Equiversi (Described)" {
+        "Capture/No Morphs" 
+        "Hopping/Mandatory - Cannot hop own"
+        "Passing/Partial Turn"
+        "Discs/Safe - Non-Hex"
+        "Territory Value/1"
+        "Disc Value/1"
+    })
+    
+    (ruleset "Ruleset/Equiversi 2 (Described)" {
+        "Capture/No Morphs" 
+        "Hopping/Mandatory - Can hop own"
+        "Passing/Partial Turn"
+        "Discs/Anywhere"
+        "Territory Value/1"
+        "Disc Value/0"
+    })
+})
+
+//----------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Equi-based games are games that share the following properties:
+            - Scoring based on 2 kinds of pieces:
+            -- Mobile pieces (discs) that can move and jump, and that penalise one's score.
+            -- Territory pieces (cell shaped - hexes or squares) are stationary and give you points, but can only be placed at locations surrounded by equal numbers of one's own pieces and enemy pieces. 
+            - Turns based on the sequence of disc movement, followed by piece placement. 
+            (This allows the player to move to create an environment for placing a Territory piece.)
+            - Game ends when neither player has placed a piece, or when neither can take a turn. 
+            
+            This creates a lot of complexity in a small board, but retains simple to understand tactical elements and emergent strategies.
+            The game trials tend to fill the board, but some variants have traps that can end the game sooner.
+            
+            Mutators:
+            - how 'surrounding' is defined,
+            - where the Discs can be placed,
+            - the pieces' relative values,
+            - what pieces can be jumped and whether jumps are forced,
+            - what happens to each kind of piece when jumped, (including removal, transformation of type and/or ownership),
+            - whether placement is mandatory,
+            - what restrictions are placed on disc placement, 
+            - how the game ends, (no move available / no player has made a placement on their preceding turn)
+            - number of players.
+            
+            These yield Equi, Equiversi, and multiplayer Hops-a-Daisy which is different enough to be considered an entirely separate game.
+            
+            In the work-in-progress (WIP) version of Equi (Dec 2020), the influencing neighbor pieces were found along 'lines of sight', and included only those pieces that were at the same distance as the nearest of them. This had a high perceptual cost in play, and proved unnecessary because it only makes a difference in the opening stages of the game, which already has a high degree of chaos. Thus the current implementation is limited to using a comparison of directly adjacent piece counts.
+            
+            The WIP version also had otional placement with special limitations not discussed here, to reduce cycling. 
+            
+            Equiversi - an evolution of the WIP (Jan 2021) intended to be easier to play and have less cycling issues.
+            It has forced opponent hops, but no friendly hops, hopped enemies change ownership but not type, optional placement (game ends if neither player places, last to place loses in a tie), Hex placement based on 'adjacent neighbor' counts, Discs placed at non-Hex locations that don't force jumps, but only if there was no previous Disc movement in the same turn. Game ends when no preceding player has placed on their last turn.
+            
+            A second evolution, (Jan 2021) was to explore the concept of allowing a choice of Disc values. A value of 0 is the simplest, leading to Equiversi-2, which additionally allows freindly hops again, and relaxes Disc placements to made be anywhere, but only if there was no previous Disc movement in the same turn. This creates a territorial game, as narrow blocked-in areas will not be fillable, and playing a Disc into larger blocked in areas will usually be advantageous for the owner of the walls.
+            
+            Both these frequently feature tactical endings in which a player times a favorable score ocsillation with a depletion of placement oprtunities for the opponent after forcing him to jump.
+            
+            The latest Equi, (Nov 2022) implemented here, eliminates such suprise endings and focuses on the tactical trade-off of mobility vs score found in the original while avoiding the possibility of ties and playing with fewer moves on the same sized board. The capture-conversion applies to all pieces converting every type to freindly Territory. Forced placemnt can force adding Discs, and new scoring values incentivise sacrificing the Discs for points or trapping the opponent's Discs. In general it gives a spread of values to different capture combos, similar in effect to the (1, -1) piece value system without type change found in the WIP version. It has 'adjacent neighbor' based placement rules, forced hopping of enemy pieces and optional friendly hops, all hopped pieces become friendly Territory pieces, Territory value +1, Discs penalise (-3), No passing, Mandatory placement every turn, Hex placement based on neighbor counts, discs only where Hexes are not allowed, suicide placements are OK, Game ends when placement cannot be made. 
+            
+            Since this version ends with a full board and all pieces have odd values; on a board with odd cells there cannot be a tied score.
+            
+            The game can also be played with the same rules on orthogonal square grids and square+diagonal grids.
+            
+            Evolution to Hops-a-Daisy:            
+            Nothing in the game prohibits a multi-player implementation, except that king-making could be an issue, and the definition for the Hex placement must be refined as to whose pieces are being compared.  Since the Multiplayer game is a totally different experience aimed at casual, chaotic play, it is implemented separately as an entirely different game on the site. The defaults for that game involve more elaborate piece mutations as a result of the jumps, as well.
+            
+        These games also inspired Refugia, with different placement restrictions, single piece types, and ownership changes taking place in stages, which has been implemented separately on Ludii.")
+        (useFor "Ruleset/Equi (Described)" (rules "Equi is a 2-player strategy game in the Equi game system.
+                It may be played:
+                -- on a hex grid using hexagonal Territory pieces or
+                -- on a square grid using square Territory pieces or 
+                -- on a square plus diagonal grid using square Territory pieces.
+                
+                It also uses Discs or counters as mobile pieces. 
+                
+                The goal is to maximize your score when the board is full. 
+                
+                Black starts by placing a black hex anywhere on the empty board, except for a corner. Turns then alternate.
+                
+                A turn has two parts: first 'The Move', and then 'The Required Placement'.
+                
+                The Move:
+                Only Discs may move. 
+                
+                A Disc may either:
+            - A) move one step to an empty adjacent space, or 
+        - B) jump across a single piece belonging to either player onto the empty space directly behind it. 
+        -- As soon as any piece is jumped, the jumped piece is converted into a friendly Territory piece.
+        -- Multiple consecutive jumps using the same piece are allowed, but no piece can be jumped more than once on the same turn.
+        -- If the active Disc lands next to any enemy pieces which it can jump, it must immediately jump one of them.
+        
+        Forced Movement: 
+        If at the beginning of the turn, any enemy pieces can be jumped, the turn must start by jumping one.
+        Otherwise, choosing to move a Disc is optional.
+        
+        The Required Placement:
+        Placement is mandatory, may use either type, depending on location, (and is separate from the conversions due to jumping.)
+        
+        The placement must be made to an empty space on the board (possibly the place that Disc moved from.)
+        The type of piece that gets placed depends on the number of pieces on the adjacent locations at the time of placement:
+        -- If there are no adjacent pieces, or if the number of adjacent pieces is the same for each player, then a Territory piece is placed. 
+        -- Otherwise, a Disc must be placed there.
+        
+        The game ends when neither player has placed a piece on their previous turn.
+        You score 1 point for each of your Territory pieces and deduct 3 points for each Disc.
+        
+On a board with an odd number of cells there are no ties."))
+(useFor "Ruleset/Equi (Described)" (id "2878"))
+(useFor "Ruleset/Equiversi (Described)" (rules "Equi is a 2-player strategy game in the Equi game system.
+        It may be played:
+        -- on a hex grid using hexagonal Territory pieces or
+        -- on a square grid using square Territory pieces or 
+        -- on a square plus diagonal grid using square Territory pieces.
+        
+        It also uses Discs or counters as mobile pieces. 
+        
+        The goal is to maximize your score when the board is full. 
+        
+        Black starts by placing a black hex anywhere on the empty board, except for a corner. Turns then alternate.
+        
+        A turn has two parts: first 'The Move', and then 'The Required Placement'.
+        
+        Passing a turn is not allowed, but passing one part of a turn is allowed.
+        
+        The Move:
+        Only Discs may move. 
+        
+        A Disc may either:
+    - A) move one step to an empty adjacent space, or 
+- B) jump across a single piece belonging to either player onto the empty space directly behind it. 
+-- As soon as any piece is jumped, the jumped piece is converted into a friendly piece of the same type.
+-- Multiple consecutive jumps using the same piece are allowed, but no piece can be jumped more than once on the same turn.
+-- If the active Disc lands next to any enemy pieces which it can jump, it must immediately jump one of them.
+
+Forced Movement: 
+If at the beginning of the turn, any enemy pieces can be jumped, the turn must start by jumping one.
+Otherwise, choosing to move a Disc is optional.
+
+The Placement:
+Placement is separate from the conversions due to jumping.
+Disc placement is not allowed if Disc movement has occured.
+
+The placement must be made to an empty space on the board (possibly the place that Disc moved from.)
+The type of piece that gets placed depends on the number of pieces on the adjacent locations at the time of placement:
+-- If a Disc may be placed, it may be placed anywhere.
+-- On locations where there are no adjacent pieces, or where the number of adjacent pieces is the same for each player, a Territory piece may be placed, instead. 
+
+The game ends when neither player has placed a piece on their previous turn.
+You score 1 point for each of your Territory pieces and deduct 1 point for each Disc.
+
+Ties go to the last player to make a placement."))
+(useFor "Ruleset/Equiversi (Described)" (id "2879"))
+(useFor "Ruleset/Equiversi 2 (Described)" (rules "Equi is a 2-player strategy game in the Equi game system.
+        It may be played:
+        -- on a hex grid using hexagonal Territory pieces or
+        -- on a square grid using square Territory pieces or 
+        -- on a square plus diagonal grid using square Territory pieces.
+        
+        It also uses Discs or counters as mobile pieces. 
+        
+        The goal is to maximize your score when the board is full. 
+        
+        Black starts by placing a black hex anywhere on the empty board, except for a corner. Turns then alternate.
+        
+        A turn has two parts: first 'The Move', and then 'The Required Placement'.
+        
+        Passing a turn is not allowed, but passing one part of a turn is allowed.
+        
+        The Move:
+        Only Discs may move. 
+        
+        A Disc may either:
+    - A) move one step to an empty adjacent space, or 
+- B) jump across a single piece belonging to the opponent onto the empty space directly behind it. 
+-- As soon as any piece is jumped, the jumped piece is converted into a friendly piece of the same type.
+-- Multiple consecutive jumps using the same piece are allowed, but no piece can be jumped more than once on the same turn.
+-- If the active Disc lands next to any enemy pieces which it can jump, it must immediately jump one of them.
+
+Forced Movement: 
+If at the beginning of the turn, any enemy pieces can be jumped, the turn must start by jumping one.
+Otherwise, choosing to move a Disc is optional.
+
+The Placement:
+Placement is separate from the conversions due to jumping.
+Disc placement is not allowed if Disc movement has occured
+
+The placement must be made to an empty space on the board (possibly the place that Disc moved from.)
+The type of piece that gets placed depends on the number of pieces on the adjacent locations at the time of placement:
+-- If there are no adjacent pieces, or if the number of adjacent pieces is the same for each player, then a Territory piece is placed. 
+-- Otherwise, a Disc may be placed there - as long as the placed Disc cannot be immediately jumped.
+
+The game ends when the board is full.
+You score 1 point for each of your Territory pieces, Discs have no score value.
+
+Ties go to the last player to make a placement."))
+(useFor "Ruleset/Equiversi 2 (Described)" (id "2880"))
+(id "2878")
+(version "1.3.8")
+(classification "experimental")
+(author "Dale W. Walton")
+(credit "Dale W. Walton")
+(date "27-11-2022")
+}
+)
+
+(graphics 
+    {
+    (board Style Graph)
+    (board Colour InnerEdges (colour 62 72 55))
+    (board Colour OuterEdges (colour 62 72 55))
+    (board Background image:"square" fillColour:(colour 124 145 111) edgeColour:(colour 124 145 111) scale:1.5)
+    (board StyleThickness OuterEdges .25)
+    (board StyleThickness InnerEdges .25)
+    (show Edges Diagonal <Board:diag> (colour 62 72 55))
+    (piece Scale  "Square" 1.05)
+    (piece Scale  "Hex" scaleX:1.05 scaleY:1.1)
+    (piece Scale P1 "Disc" 0.65)
+    (piece Scale P2 "Disc" 0.65)
+    (piece Scale P3 "Disc" 0.65)
+    (piece Scale P4 "Disc" 0.65)
+    (piece Scale P5 "Disc" 0.65)
+    }
+)
+
+(ai
+    (heuristics
+        {
+        (score weight:.4)
+        } 
+))
+)
+

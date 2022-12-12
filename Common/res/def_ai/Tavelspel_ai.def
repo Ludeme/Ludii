@@ -1,0 +1,25 @@
+(define "Tavelspel_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{1/4}>:pat=<els=[f{0,1/4}]>" -0.30477083)
+            (pair "rel:from=<{}>:pat=<els=[f{0,1/4}]>" -0.33995426)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,1/2,0,0}]>" -0.22243452)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[#{0,0,0,0,0}]>" -0.14074756)
+            (pair "rel:to=<{0}>:pat=<els=[!-{0,-1/4,1/4}]>" 2.1872766)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,-1/4,1/4}]>" -0.30965996)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" 0.084304936)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[e{0}]>" 0.43900165)
+            (pair "rel:to=<{}>:pat=<els=[e{0,0}]>" 0.34797296)
+            (pair "rel:last_from=<{0,0,0,0}>:from=<{}>:pat=<els=[]>" 1.1268302)
+            (pair "rel:last_to=<{0,0,-1/4}>:from=<{}>:pat=<els=[-{1/2,1/4}, -{0,0,0,0}, -{0,-1/2,0,0,0}]>" 0.83326393)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,0}, f{0,1/4,0,0,0}]>" -0.51169443)
+            (pair "rel:to=<{0}>:pat=<els=[-{1/2,1/4}, -{0,0,0,0}, -{0,-1/4,0,0,0}, -{0,-1/2,0,0,0}]>" 1.6168944)
+            }
+        )
+    })
+    
+)

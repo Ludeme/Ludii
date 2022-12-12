@@ -1,7 +1,26 @@
 (define "Musinaykahwhanmetowaywin_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (lineCompletionHeuristic)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_to=<{0,0,1/4,3/8}>:to=<{}>:pat=<els=[-{0,0,3/8}]>" -0.19101103)
+            (pair "rel:last_to=<{1/8,-3/8}>:to=<{0,0}>:pat=<els=[!-{0}, -{0,0,1/2,-1/8}]>" -0.049203567)
+            (pair "rel:last_to=<{0,0,3/8,3/8}>:from=<{0,0}>:to=<{}>:pat=<els=[N8{0,0,0,0}, -{0,0,1/8}]>" -1.174042)
+            (pair "rel:from=<{0}>:pat=<els=[!#{0,1/4,0,0,0}]>" -0.049203567)
+            (pair "rel:from=<{}>:pat=<els=[]>" 2.2547312E-4)
+            (pair "rel:to=<{}>:pat=<els=[]>" 2.2547312E-4)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:last_from=<{0,0,1/8}>:from=<{0}>:pat=<els=[!f{0,-3/8}, f{0,0,-1/8}]>" -1.3192923)
+            (pair "rel:last_to=<{-1/4,-3/8}>:from=<{0}>:to=<{}>:pat=<els=[!-{0,-1/4,3/8}]>" -0.2689686)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!f{-1/2,1/4}, f{0,-3/8}, -{0,-1/2,-1/8,0,0}, -{0,-1/2,-3/8,0,0}]>" -0.052274384)
+            }
+        )
     })
     
 )

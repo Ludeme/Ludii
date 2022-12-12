@@ -1,7 +1,37 @@
 (define "Keryo-Pente_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (lineCompletionHeuristic)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{0,0}, f{0}]>" 3.2769475)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0}]>" 1.7922072)
+            (pair "rel:to=<{}>:pat=<els=[-{1/4,0}, f{0,0}, f{0}, !-{0,0,0}]>" 2.419279)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{0}]>" 2.550089)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{1/2}]>" 2.498696)
+            (pair "rel:to=<{}>:pat=<els=[-{1/4,1/4}, f{0,0}, f{0}, !-{0,0,0}]>" 2.3630996)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/2,0}]>" 1.6003423)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{0,0}, f{1/2}, f{0}]>" 4.197123)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{0,0}]>" 2.3725622)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{0,0}, f{1/2}]>" 2.814806)
+            (pair "rel:to=<{}>:pat=<els=[-{1/4,0}, f{0,0}, f{0}, f{0,0,0,0}]>" 2.1288564)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0}]>" 2.1473227)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{0,0}, f{0}]>" 3.6620657)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{0}]>" 3.004159)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{1/2}]>" 3.0225186)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{0}, f{1/2}]>" 3.568625)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, f{0,0}]>" 2.994216)
+            (pair "rel:to=<{}>:pat=<els=[f{1/2}, f{0}]>" 2.3729382)
+            (pair "rel:to=<{}>:pat=<els=[f{1/2}, f{0}, f{0,0}]>" 2.8211374)
+            (pair "rel:to=<{}>:pat=<els=[f{1/2}, f{0,0}]>" 1.8164319)
+            }
+        )
     })
     
 )

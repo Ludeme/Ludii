@@ -1,5 +1,17 @@
 (define "T'uk T'uk_ai"
-    (useFor { "Board Size/6" }
+    (useFor { "Ruleset/T'uk T'uk (Observed)" }
+        
         (bestAgent "AlphaBeta")
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[-{0,1/4}, #{1/4,1/4}]>" 0.085168906)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,0}, -{0,1/4,0,0,0}]>" 0.07917317)
+                }
+            )
+        })
+        
     )
 )

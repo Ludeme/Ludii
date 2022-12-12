@@ -1,0 +1,27 @@
+(define "Fart (7x7)_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,0,1/4}, !e{1/4,-1/4}, e{0,-1/2,1/4}]>" -0.78962725)
+            (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[#{0,1/4,0,0}]>" -0.82039917)
+            (pair "rel:to=<{0}>:pat=<els=[e{-1/4,0,0}, #{0,-1/2,-1/4,1/4}]>" -1.9248476)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4,0,0}]>" -0.54797405)
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[e{-1/4,0,1/4}, !e{0,-1/4}]>" -0.64589316)
+            (pair "rel:last_to=<{1/4}>:from=<{0}>:to=<{}>:pat=<els=[e{0,0,1/4}]>" -0.8267846)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[!e{1/4,-1/4}]>" 2.3958528)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/4,1/4}]>" 2.5694633)
+            (pair "rel:last_from=<{}>:last_to=<{0}>:from=<{-1/2}>:to=<{}>:pat=<els=[!e{0,1/4}]>" 2.3261824)
+            (pair "rel:from=<{}>:to=<{1/4}>:pat=<els=[!e{0,1/4}, #{-1/4,0,0}]>" 2.2950442)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,-1/2,0}, !e{0,-1/2,1/4,-1/4}]>" 2.0643392)
+            (pair "rel:last_to=<{0,-1/2,0}>:from=<{0}>:to=<{}>:pat=<els=[!e{0,-1/4,-1/4}, f{0,-1/2,1/4,-1/4}]>" 1.9001848)
+            (pair "rel:last_to=<{0,0}>:from=<{}>:pat=<els=[!e{1/4,-1/4}, !e{0,-1/4,-1/4}]>" 2.586781)
+            (pair "rel:last_to=<{0,0}>:from=<{}>:pat=<els=[f{0,1/4,-1/4}]>" 2.0129852)
+            (pair "rel:from=<{}>:pat=<els=[!e{1/4,1/4}, #{0,0,0}]>" 2.1522)
+            }
+        )
+    })
+    
+)

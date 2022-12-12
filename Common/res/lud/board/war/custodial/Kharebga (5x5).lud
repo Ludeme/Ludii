@@ -40,7 +40,7 @@
         (rules "5x5 board. Twelve pieces per player. Players alternate turns placing two pieces on an empty space on the board, except in the central space. Captures cannot be made during the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player is unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins.")
         (source "Bellin 1964: 53-54.")
         (id "1573")
-        (version "1.3.7")
+        (version "1.3.8")
         (classification "board/war/custodial")
         (credit "Eric Piette")
         (origin "This game was played in Algeria, around 1964.")
@@ -51,4 +51,7 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
+    (ai
+        "Kharebga (5x5)_ai"
+    )
 )

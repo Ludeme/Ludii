@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -28,6 +29,7 @@ import app.DesktopApp;
 import app.PlayerApp;
 import app.display.views.tabs.pages.InfoPage;
 import app.display.views.tabs.pages.RulesPage;
+import app.utils.SettingsExhibition;
 import app.views.View;
 import other.context.Context;
 
@@ -125,19 +127,38 @@ public abstract class TabPage extends View
 		fontColour = new Color(50, 50, 50);
 		textArea.setBackground(Color.white);
 		
+		if (SettingsExhibition.exhibitionVersion)
+		{
+			
+			try(InputStream in = getClass().getResourceAsStream("/National-Regular.ttf"))
+			{
+				textArea.setFont(Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(28f));
+			}
+			catch (final Exception e)
+			{
+				e.printStackTrace();
+			}
+			
+			textArea.setBackground(Color.black);
+			fontColour = Color.white;
+			textArea.setForeground(fontColour);
+			scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+			scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		}
+		
 		fadedFontColour = new Color(fontColour.getRed() + (int) ((255 - fontColour.getRed()) * 0.75),
 				fontColour.getGreen() + (int) ((255 - fontColour.getGreen()) * 0.75),
 				fontColour.getBlue() + (int) ((255 - fontColour.getBlue()) * 0.75));
 
 		StyleConstants.setForeground(textstyle, fontColour);
 
-		textArea.setVisible(false); // true);
+		textArea.setVisible(false);
 		textArea.setText(text);
 		
 		DesktopApp.view().setLayout(null);
 		DesktopApp.view().add(scrollPane());
 		
-		textArea.addHyperlinkListener(new HyperlinkListener() 
+		textArea.addHyperlinkListener(new HyperlinkListener()
 	    {
 	        @Override
 	        public void hyperlinkUpdate(final HyperlinkEvent e) 
@@ -217,6 +238,9 @@ public abstract class TabPage extends View
 	 */
 	public void addText(final String str)
 	{
+		if (SettingsExhibition.exhibitionVersion)
+			textArea.setText(textArea.getText() + str);
+		
 		StyleConstants.setForeground(textstyle, fontColour);
 		try
 		{
@@ -327,6 +351,9 @@ public abstract class TabPage extends View
 	 */
 	private void drawTabPageTitle(final Graphics2D g2d)
 	{
+		if (SettingsExhibition.exhibitionVersion)
+			return;
+		
 		final Font oldFont = g2d.getFont();
 		final Font font = new Font("Arial", Font.BOLD, TabView.fontSize);
 		g2d.setFont(font);

@@ -1,7 +1,38 @@
 (define "Pushing Me XO_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (material)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[I3{}]>" 0.7650392)
+            (pair "rel:to=<{}>:pat=<els=[I3{}, e{0}]>" 0.8731865)
+            (pair "rel:to=<{}>:pat=<els=[I3{}, e{0,0}]>" 0.82846665)
+            (pair "rel:to=<{}>:pat=<els=[I3{}, e{0,0,0,0}]>" 0.7873821)
+            (pair "rel:to=<{}>:pat=<els=[I3{}, I1{0,1/4}]>" 0.9199101)
+            (pair "rel:to=<{}>:pat=<els=[I3{}, e{1/4,0,0,0}, e{0}]>" 1.0387288)
+            (pair "rel:to=<{}>:pat=<els=[I3{}, I1{0,0,0,0}]>" 0.7650065)
+            (pair "rel:to=<{}>:pat=<els=[I3{}, e{0,0,0,0}, e{1/4,0}]>" 1.0000261)
+            (pair "rel:to=<{}>:pat=<els=[I3{}, I1{1/4,-1/4}, I1{0,0,0,0}]>" 1.3373504)
+            (pair "rel:to=<{}>:pat=<els=[f{}]>" -0.5334691)
+            (pair "rel:to=<{}>:pat=<els=[I1{0,1/4}]>" -0.1953383)
+            (pair "rel:to=<{}>:pat=<els=[I2{}, I2{0}]>" -0.45986035)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[I3{}]>" 0.70683676)
+            (pair "rel:to=<{}>:pat=<els=[I3{}, I2{0}]>" 0.97315246)
+            (pair "rel:to=<{}>:pat=<els=[I2{}]>" -0.51946765)
+            (pair "rel:to=<{}>:pat=<els=[I3{}, I2{1/2}, I2{0}]>" 1.7089262)
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" -0.2322906)
+            (pair "rel:to=<{}>:pat=<els=[I3{0,0,0,0}, I2{}]>" -0.5612083)
+            (pair "rel:to=<{}>:pat=<els=[e{1/4,0}, I2{0,0,0,0}, I2{0,0}]>" -0.23061712)
+            (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[f{1/4,0,0}]>" -0.17495625)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/4,0}, I3{0,-1/4}]>" 0.15999514)
+            }
+        )
     })
     
 )

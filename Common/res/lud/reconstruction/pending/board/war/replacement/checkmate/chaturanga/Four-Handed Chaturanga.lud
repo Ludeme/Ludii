@@ -1,0 +1,66 @@
+(game "Four-Handed Chaturanga"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 4) 
+        (equipment {
+            (board (square 8))
+            (piece "Chariot" Each (move [#])) 
+            (piece "Knight" Each (move [#]))
+            (piece "Elephant" Each (move [#]))
+            (piece "King" Each (move [#]))
+            (piece "Pawn" Each (move [#]))
+        })
+        (rules  
+            (start { 
+                (place "Pawn1" {"A2" "B2" "C2" "D2"} value:1)
+                (place "Pawn2" {"G1" "G2" "G3" "G4"} value:1)
+                (place "Pawn3" {"H7" "G7" "E7" "F7"} value:1)
+                (place "Pawn4" {"B5" "B6" "B7" "B8"} value:1)
+                (place "Chariot1" coord:"A1" value:2) (place "Chariot2" coord:"H1" value:2) (place "Chariot3" coord:"H8" value:2) (place "Chariot4" coord:"A8" value:2) 
+                (place "Knight1" coord:"B1" value:3) (place "Knight2" coord:"H2" value:3) (place "Knight3" coord:"G8" value:3) (place "Knight4" coord:"A7" value:3) 
+                (place "Elephant1" coord:"C1" value:4) (place "Elephant2" coord:"H3" value:4) (place "Elephant3" coord:"F8" value:4) (place "Elephant4" coord:"A6" value:4) 
+                (place "King_noCross1" coord:"D1" value:5) (place "King_noCross2" coord:"H4" value:6) (place "King_noCross3" coord:"E8" value:5) (place "King_noCross4" coord:"A5" value:6) 
+            })
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Four-Handed Chaturanga is a four player version of the game played in late medieval India, and documented in the Manasollasa. Its description does not include dice, in contrast to later four player Chaturanga games.")
+        (rules "Four players. Placement of pieces: Chariots on corners, horses to their right, elephants to the right of horses, kings to right of elephants. One row of four pawns in from of these. Winning consists of scoring the most points. Points are assigned to pieces: pawns= 1, chariots = 2, horses = 3, elephants = 4, king = 6.")
+        (source "DLP evidence.")
+        (id "1449")
+        (version "1.3.8")
+        (classification "board/war/replacement/checkmate/chaturanga/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in India, from around 1126 to 1138.")
+        }
+    )
+    
+)

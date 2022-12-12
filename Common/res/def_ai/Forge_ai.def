@@ -1,0 +1,35 @@
+(define "Forge_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[e{1/4}]>" 0.8008488)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[e{1/4}, #{0,1/4,-1/4,1/4}]>" 1.1178364)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!-{0,1/4,-1/2,1/4}]>" 0.42636654)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!-{0,1/4,0,1/4}]>" 0.42636654)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[]>" 0.43392313)
+            (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[!f{0,-1/4,-1/4,1/4}]>" 0.4326656)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!-{0,1/4,0,1/4}, !-{0,1/4,-1/2,1/4}]>" 0.5935008)
+            (pair "rel:last_from=<{1/4,1/4,1/4,1/4}>:to=<{}>:pat=<els=[e{0,1/4}]>" 0.8008155)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[#{0,1/4,-1/4,1/4}]>" 0.619427)
+            (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[]>" 0.9100782)
+            (pair "rel:from=<{1/4,1/4}>:to=<{}>:pat=<els=[e{0,1/4}]>" 0.6666273)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[e{0,1/4,-1/2,0,0}]>" 0.5953475)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[#{0,-1/4}]>" 0.979939)
+            (pair "rel:from=<{0,-1/4}>:to=<{}>:pat=<els=[#{0,-1/4,0,1/4}, #{0,-1/4,-1/4,1/4}]>" 0.979939)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[e{0,1/4,1/4}]>" 0.7171847)
+            (pair "rel:from=<{0,-1/4}>:to=<{}>:pat=<els=[#{0,-1/4,0,1/4}]>" 0.979939)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.36255807)
+            (pair "rel:from=<{0,-1/4}>:to=<{}>:pat=<els=[#{0,-1/4,-1/4,1/4}]>" 0.979939)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[-{0,1/4,-1/4,0,0,0}]>" 0.6900473)
+            (pair "rel:from=<{0,-1/4}>:to=<{}>:pat=<els=[f{1/2,0,0,0}]>" 0.9118819)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!f{0,-1/4,1/4}, #{0,0,0}, !f{0,1/4,-1/4}]>" 0.90899146)
+            (pair "rel:last_from=<{0,0,1/4,0}>:from=<{0,0}>:pat=<els=[-{0,1/4}]>" -2.772553)
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[#{0,-1/4,-1/4,1/4}]>" 0.51237094)
+            }
+        )
+    })
+    
+)

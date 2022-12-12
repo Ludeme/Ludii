@@ -1,4 +1,5 @@
 (define "Zurgaan Tal_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (lineCompletionHeuristic weight:22.962215)
@@ -20,6 +21,35 @@
             (pair "Marker1" -0.760663)
             (pair "Marker2" -2.1302607)
         })
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/6,0}, f{0,1/6}]>" 1.0004246)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/6,0}, f{0,1/6}, !-{0,1/2,1/3}]>" 1.1115376)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/6,0}, f{0,1/6}, !-{0,-1/2,1/3}]>" 1.1115376)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/6}, !-{0,1/2,1/3}]>" 0.78037137)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/6}, !-{0,-1/2,1/3}]>" 0.78037137)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/6,1/6}, f{0,1/6,0}, f{0,1/6}]>" 0.98311126)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N6{1/2}, f{0,1/6,0}]>" 0.71851456)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N6{1/2}, f{0,1/6,0}, !-{0,-1/2,1/3}]>" 0.73847044)
+            (pair "rel:from=<{}>:pat=<els=[f{0,1/6,0}, f{0,1/6}, !-{0,1/2,1/3}]>" 0.80509824)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N6{1/2}, f{0,1/6}]>" 0.6703016)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/6}, f{0,-1/2,1/6}]>" 1.1644206)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/3}, f{0,-1/2,1/2,-1/6}]>" 1.1644206)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/2,1/2,-1/6}]>" 0.6206359)
+            (pair "rel:to=<{}>:pat=<els=[f{1/6}, f{0,-1/2,1/6}]>" 0.44091156)
+            (pair "rel:to=<{}>:pat=<els=[N6{0,-1/4}, -{1/4,-1/2,1/4}]>" -0.19093302)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/6,0}]>" 0.555822)
+            (pair "rel:to=<{}>:pat=<els=[f{1/6}, N4{0,1/3}]>" 0.37191728)
+            (pair "rel:to=<{}>:pat=<els=[e{1/4,1/6}, N6{0,1/3}]>" -0.043644264)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,-1/2,1/6}]>" 0.6206359)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N6{-1/2,1/4}, f{0,1/3}, f{0,-1/2,1/2,-1/6}]>" 1.254892)
+            }
+        )
     })
     
 )

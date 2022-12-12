@@ -1,7 +1,34 @@
 (define "Dris at-Talata_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (lineCompletionHeuristic)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,1/4,0}>:pat=<els=[f{0,1/4}, f{0,1/4,0,1/2,0}]>" 2.323164)
+            (pair "rel:last_from=<{}>:from=<{0,1/4}>:to=<{}>:pat=<els=[e{0,1/4,-1/2}, e{0,1/4,-1/2,0}]>" -2.3468943)
+            (pair "rel:last_to=<{-1/4,1/4}>:to=<{}>:pat=<els=[f{0,0}]>" -0.021545336)
+            (pair "rel:last_from=<{1/4,-1/4}>:from=<{}>:pat=<els=[f{0,-1/4}, e{0,0}, f{-1/4,1/4}]>" -1.385595)
+            (pair "rel:last_to=<{0}>:from=<{}>:pat=<els=[e{0,0}]>" -2.4522102)
+            (pair "rel:to=<{}>:pat=<els=[e{0,0,1/4}, e{0,0,1/4,0}]>" -0.36614424)
+            (pair "rel:last_from=<{}>:from=<{0}>:pat=<els=[!f{0,1/4,0,0}]>" 0.6388018)
+            (pair "rel:last_from=<{}>:from=<{0}>:pat=<els=[e{0,1/4,0}]>" 0.6388018)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,0,1/4}>:pat=<els=[f{0,1/4}, f{0,0,1/4,1/4,0}]>" 2.536222)
+            (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[e{0,0,1/4}]>" -0.44421303)
+            (pair "rel:from=<{}>:to=<{0,0,1/4}>:pat=<els=[e{0}, e{0,0}, !-{0,0,1/4,-1/2,-1/4}, !-{0,0,1/4,-1/4,-1/4}, !-{0,0,1/4,1/4,1/4}]>" -2.1107693)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,1/4}, e{0,1/4,0}]>" -2.6254742)
+            (pair "rel:last_from=<{}>:from=<{0,1/4}>:pat=<els=[e{0,1/4,1/4,0}]>" 1.4663119)
+            (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[]>" -0.3218323)
+            (pair "rel:last_to=<{-1/4}>:from=<{}>:to=<{0,0,1/4}>:pat=<els=[e{0}, e{0,0}, !-{0,0,1/4,0,1/4}, !-{0,0,1/4,1/4,1/4}]>" -2.4099283)
+            (pair "rel:from=<{}>:to=<{0,0,1/4}>:pat=<els=[e{0}, e{0,0}, !-{0,0,1/4,0,1/4}, !-{0,0,1/4,-1/2,-1/4}, !-{0,0,1/4,-1/4,-1/4}, !-{0,0,1/4,1/4,1/4}]>" -1.9909744)
+            (pair "rel:last_to=<{-1/4}>:from=<{}>:to=<{0,0,1/4}>:pat=<els=[e{0}, e{0,0}, !-{0,0,1/4,-1/4,-1/4}, !-{0,0,1/4,1/4,1/4}]>" -2.4099283)
+            }
+        )
     })
     
 )

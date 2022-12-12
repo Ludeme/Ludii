@@ -1,0 +1,784 @@
+(game "Manipur Capturing Game"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Manipur Capturing Game1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 5)
+                    edges:{ { 0 6}
+                    { 6 12}
+                    { 12 18}
+                    { 18 24}
+                    { 20 16}
+                    { 16 12}
+                    { 8 4}
+                    { 12 8}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop Orthogonal 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union { 
+                        (sites Row 0)
+                        
+                        (sites Row 1)
+                        
+                        (sites { "A3" "B3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union { 
+                        (sites Row 3)
+                        
+                        (sites Row 4)
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Manipur Capturing Game1 ruleset.")
+    
+    (item "Manipur Capturing Game2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 5)
+                    edges:{ { 0 6}
+                    { 6 12}
+                    { 12 18}
+                    { 18 24}
+                    { 20 16}
+                    { 16 12}
+                    { 8 4}
+                    { 12 8}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop Orthogonal 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "A3"}
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (expand 
+                            (sites Top)
+                        )
+                        
+                        (sites { "E3"}
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Manipur Capturing Game2 ruleset.")
+    
+    (item "Manipur Capturing Game3" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 5)
+                    edges:{ { 0 6}
+                    { 6 12}
+                    { 12 18}
+                    { 18 24}
+                    { 20 16}
+                    { 16 12}
+                    { 8 4}
+                    { 12 8}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop Orthogonal 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union 
+                        (sites Bottom)
+                        
+                        (sites { "B2" "C2" "D2"}
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (sites Top)
+                        
+                        (sites { "B4" "C4" "D4"}
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Manipur Capturing Game3 ruleset.")
+    
+    (item "Manipur Capturing Game4" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 5)
+                    edges:{ { 0 6}
+                    { 6 12}
+                    { 12 18}
+                    { 18 24}
+                    { 20 16}
+                    { 16 12}
+                    { 8 4}
+                    { 12 8}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop Orthogonal 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (forEach 
+                        (sites Board)
+                        if:
+                        (< 
+                            (site)
+                            
+                            (centrePoint)
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (forEach 
+                        (sites Board)
+                        if:
+                        (> 
+                            (site)
+                            
+                            (centrePoint)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Manipur Capturing Game4 ruleset.")
+    
+    (item "Manipur Capturing Game5" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 5)
+                    edges:{ { 0 6}
+                    { 6 12}
+                    { 12 18}
+                    { 18 24}
+                    { 20 16}
+                    { 16 12}
+                    { 8 4}
+                    { 12 8}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop Orthogonal 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Manipur Capturing Game5 ruleset.")
+    
+    (item "Manipur Capturing Game6" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 5)
+                    edges:{ { 0 6}
+                    { 6 12}
+                    { 12 18}
+                    { 18 24}
+                    { 20 16}
+                    { 16 12}
+                    { 8 4}
+                    { 12 8}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Counter" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop Orthogonal 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Manipur Capturing Game6 ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add
+                    (square 5) 
+                    edges:{{0 6} {6 12} {12 18} {18 24} {20 16} {16 12} {8 4} {12 8}}
+                )
+                use:Vertex
+            ) 
+            (hand Each)
+            (piece ["Marker" | "Counter"] Each
+                (or
+                    ("StepToEmpty")
+                    ("HopOrthogonalCapture")
+                )
+            ) 
+        }) 
+        (rules 
+            (start [#])
+            (play (forEach Piece))
+            (end ("CaptureAll" Next))
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Manipur Capturing Game1 (Reconstructed)" {
+        "Variant/Manipur Capturing Game1"
+    })
+    (ruleset "Ruleset/Manipur Capturing Game2 (Reconstructed)" {
+        "Variant/Manipur Capturing Game2"
+    })
+    (ruleset "Ruleset/Manipur Capturing Game3 (Reconstructed)" {
+        "Variant/Manipur Capturing Game3"
+    })
+    (ruleset "Ruleset/Manipur Capturing Game4 (Reconstructed)" {
+        "Variant/Manipur Capturing Game4"
+    })
+    (ruleset "Ruleset/Manipur Capturing Game5 (Reconstructed)" {
+        "Variant/Manipur Capturing Game5"
+    })
+    (ruleset "Ruleset/Manipur Capturing Game6 (Reconstructed)" {
+        "Variant/Manipur Capturing Game6"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "This game was played by the Naga people of Manipur, India in the early twentieth century. ")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "5x5 intersecting lines, with the two diagonals of the full board. The player's pieces begin on opposite sides of the board. Players alternate turns moving a piece to an empty adjacent spot along the lines of the board. A piece may capture an opponent's piece by hopping over it to an empty adjacent spot immediately on the opposite side of the piece along the lines of the board. The player who captures all of the opponent's pieces wins. Pieces are not promoted when reaching the opposite side of the board from where they begin."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1097"))
+        (useFor "Ruleset/Manipur Capturing Game1 (Reconstructed)" (rules "The game Manipur Capturing Game is played by two players on a noshape board with nobasis tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent or hop orthogonal.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the union of each vertex of the 0 row, each vertex of the 1 row and the vertexes with coordinates [A3, B3].
+                Place a Marker for player two at the union of each vertex of the 3 row, each vertex of the 4 row and the vertexes with coordinates [D3, E3]..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Manipur Capturing Game1 (Reconstructed)" (id "2500"))
+        (useFor "Ruleset/Manipur Capturing Game2 (Reconstructed)" (rules "The game Manipur Capturing Game is played by two players on a noshape board with nobasis tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent or hop orthogonal.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [A3].
+                Place a Marker for player two at the union of the top sites of the board expanded by 1 steps and the vertexes with coordinates [E3]..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Manipur Capturing Game2 (Reconstructed)" (id "2501"))
+        (useFor "Ruleset/Manipur Capturing Game3 (Reconstructed)" (rules "The game Manipur Capturing Game is played by two players on a noshape board with nobasis tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent or hop orthogonal.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the union of the bottom sites of the board and the vertexes with coordinates [B2, C2, D2].
+                Place a Marker for player two at the union of the top sites of the board and the vertexes with coordinates [B4, C4, D4]..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Manipur Capturing Game3 (Reconstructed)" (id "2502"))
+        (useFor "Ruleset/Manipur Capturing Game4 (Reconstructed)" (rules "The game Manipur Capturing Game is played by two players on a noshape board with nobasis tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent or hop orthogonal.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at current site is less than the centre point of the board the sites of the board.
+                Place a Marker for player two at current site is greater than the centre point of the board the sites of the board..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Manipur Capturing Game4 (Reconstructed)" (id "2503"))
+        (useFor "Ruleset/Manipur Capturing Game5 (Reconstructed)" (rules "The game Manipur Capturing Game is played by two players on a noshape board with nobasis tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent or hop orthogonal.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+                Place a Marker for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Manipur Capturing Game5 (Reconstructed)" (id "2504"))
+        (useFor "Ruleset/Manipur Capturing Game6 (Reconstructed)" (rules "The game Manipur Capturing Game is played by two players on a noshape board with nobasis tiling. 
+                All players play with Counters.
+                Rules for Pieces:
+                Counters step adjacent or hop orthogonal.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+                Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Manipur Capturing Game6 (Reconstructed)" (id "2505"))
+        (source "Murray 1951: 66.")
+        (id "1097")
+        (version "1.3.8")
+        (classification "board/war/leaping/lines/reconstruction/done")
+        (credit "Eric Piette")
+        (origin "This game was played in India, around 1911.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal (colour Hidden))
+    })
+    
+    (recon {
+        (concept "NumStartComponentsPerPlayer" minValue:5 maxValue:12)
+    })
+)
+

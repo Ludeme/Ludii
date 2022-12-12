@@ -1,12 +1,12 @@
 (define "Shafran Chess_ai"
+    
     (bestAgent "Alpha-Beta")
     trainedHeuristics:(heuristics {
         (material transformation:(divNumInitPlacement) pieceWeights:{
-            // Estimates of relative value. Not supported by experimentation. 
-            (pair "Pawn1"   1.0)
-            (pair "Pawn2"   1.0)
-            (pair "Rook1"   7.5)
-            (pair "Rook2"   7.5)
+            (pair "Pawn1" 1.0)
+            (pair "Pawn2" 1.0)
+            (pair "Rook1" 7.5)
+            (pair "Rook2" 7.5)
             (pair "Bishop1" 4.5)
             (pair "Bishop2" 4.5)
             (pair "Knight1" 4.5)
@@ -15,4 +15,33 @@
             (pair "Queen2" 12.0)
         })
     })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,0,0,0,1/6,0,0,0}>:pat=<els=[R6{1/6}, e{0,0,0,0,1/6,0,0,0,0,1/3}]>" 0.4656116)
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/3}]>" -0.08578852)
+            (pair "rel:from=<{}>:to=<{0,1/6}>:pat=<els=[I7{-1/6}, I7{0,1/6,1/3,-1/6}]>" -1.1484591)
+            (pair "rel:to=<{}>:pat=<els=[I7{0}]>" -0.10048729)
+            (pair "rel:to=<{}>:pat=<els=[!R4{0,-1/3}, f{1/6,0,1/6,-1/3,-1/3}]>" -0.12760112)
+            (pair "rel:to=<{}>:pat=<els=[I10{0,1/3}]>" -0.11421773)
+            (pair "rel:from=<{1/6,0,1/6}>:to=<{}>:pat=<els=[!R4{0,-1/3}]>" -0.24673988)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I3{0,1/6,0,0}]>" -0.6214312)
+            (pair "rel:from=<{}>:pat=<els=[R7{0}]>" 0.013714481)
+            (pair "rel:from=<{}>:pat=<els=[R2{0,0}]>" -0.017091813)
+            (pair "rel:from=<{0,0,1/6}>:to=<{}>:pat=<els=[!R4{-1/6,-1/3}, f{0,0,1/6,-1/3,-1/3}]>" -1.0820622)
+            (pair "rel:from=<{}>:pat=<els=[e{0,0,0}]>" -0.01018216)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[R4{0,1/3}]>" -0.1479687)
+            (pair "rel:to=<{}>:pat=<els=[e{0,0,0,0}]>" -0.011604963)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0,0}]>" 0.08686264)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[R7{1/2}, I1{0,1/6}]>" -0.041986305)
+            (pair "rel:to=<{}>:pat=<els=[!R0{0,1/6}]>" -0.005783965)
+            (pair "rel:from=<{}>:pat=<els=[!R2{1/2}, !R0{0,0,0}, R6{1/3,0,0,0}, !R5{1/6,1/3}, !R3{0,0,0}]>" -1.0409203)
+            (pair "rel:to=<{0}>:pat=<els=[R7{1/2}]>" -0.62755865)
+            }
+        )
+    })
+    
 )

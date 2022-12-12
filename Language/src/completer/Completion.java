@@ -1,5 +1,7 @@
 package completer;
 
+import gnu.trove.list.array.TIntArrayList;
+
 /**
  * Record of a reconstruction completion, which will be a raw *.lud description.
  * @author cambolbro and Eric.Piette
@@ -8,7 +10,9 @@ public class Completion
 {
 	private String raw;  // completed game description
 	private double score = 0;  // confidence in enumeration (0..1)
-	private int numCompletionPoints = 0;  // number of completions points
+	private double similarityScore = 0;  // (0..1)
+	private double commonTrueConceptsScore = 0;  // (0..1)
+	private TIntArrayList idsUsed = new TIntArrayList(); // The ruleset ids used to make the completion.
 
 	//-------------------------------------------------------------------------
 
@@ -39,14 +43,39 @@ public class Completion
 		score = value;
 	}
 	
-	public int numCompletionPoints()
+	public double similarityScore()
 	{
-		return numCompletionPoints;
+		return similarityScore;
 	}
 	
-	public void addCompletionPoints()
+	public void setSimilarityScore(final double value)
 	{
-		numCompletionPoints++;
+		similarityScore = value;
+	}
+	
+	public double commonExpectedConceptsScore()
+	{
+		return commonTrueConceptsScore;
+	}
+	
+	public void setCommonTrueConceptsScore(final double value)
+	{
+		commonTrueConceptsScore = value;
+	}
+	
+	public TIntArrayList idsUsed()
+	{
+		return idsUsed;
+	}
+	
+	public void setIdsUsed(final TIntArrayList ids)
+	{
+		idsUsed = new TIntArrayList(ids);
+	}
+	
+	public void addId(final int id)
+	{
+		idsUsed.add(id);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -56,7 +85,4 @@ public class Completion
 	{
 		return raw;
 	}
-	
-	//-------------------------------------------------------------------------
-	
 }

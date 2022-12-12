@@ -99,16 +99,7 @@
 (metadata
     (info
         {
-        (description "EcoSys is a game from a comment by Michael Amundsen about my concurrently developed game 'Off-Shore', causing me to strip away all elements of that game except for the placement rule:
-            'A stone must not be placed next to a group that has the same or more stones than there are friendly groups.'
-            
-            It turns out that this rules is very similar to that found in Mark Steere's Bamboo 2021 - On a hexagon, the games differ only by whether merging is alowed to form groups larger than the number of groups or not.
-            
-            The game does not work on a square grid with orthogonal connectivity due to the ability to create large numbers of groups using crosscuts. It works best on grids with high connectivity.
-            
-            Given the opacity of the opening play, I have chosen to use a relatively small square grid with orthogonal plus diagonal connectivity for groups. It is of an odd order to discourage mirror play.
-            
-        In 3D, a cubic close packing grid would be appropriate in an order-3 rhombic dodecahedron (93-cell).")
+        (description "EcoSys is a game from a comment by Michael Amundsen about my concurrently developed game 'Off-Shore', causing me to strip away all elements of that game except for the placement rule:   'A stone must not be placed next to a group that has the same or more stones than there are friendly groups.'      It turns out that this rules is very similar to that found in Mark Steere's Bamboo 2021 - On a hexagon, the games differ only by whether merging is alowed to form groups larger than the number of groups or not.      The game does not work on a square grid with orthogonal connectivity due to the ability to create large numbers of groups using crosscuts. It works best on grids with high connectivity.      Given the opacity of the opening play, I have chosen to use a relatively small square grid with orthogonal plus diagonal connectivity for groups. It is of an odd order to discourage mirror play.      In 3D, a cubic close packing grid would be appropriate in an order-3 rhombic dodecahedron (93-cell).")
         (rules "With the board empty, Black starts.
             
             Players take turns in alternation, placing a stone on to an empty cell.
@@ -116,7 +107,7 @@
             
         The game is lost by the first player forced to place a stone next to a friendly group that has as many (or more) stones as there are friendly groups.")
         (id "1987")
-        (version "1.3.7")
+        (version "1.3.8")
         (classification "experimental")
         (author "Dale Walton")
         (credit "Dale Walton")
@@ -124,5 +115,8 @@
         }
     )
     (<Board:graphics>)
+    (ai
+        "Ecosys_ai"
+    )
 )
 

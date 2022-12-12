@@ -1,7 +1,33 @@
 (define "Chopsticks_ai"
+    
     (bestAgent "UCT")
     trainedHeuristics:(heuristics {
         (influence weight:-1.0)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[I3{1/4}]>" 0.7852611)
+            (pair "rel:to=<{0,1/4}>:pat=<els=[I4{0,1/4,1/2}]>" 14.979374)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[I2{0,-1/4}, I3{0,-1/2,1/4}]>" 0.7852611)
+            (pair "rel:from=<{}>:pat=<els=[I4{0,1/4,1/2}]>" 0.8251434)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I1{0,1/4}]>" -0.72073984)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{0}>:pat=<els=[I3{0,-1/2,1/4}]>" 18.601868)
+            (pair "rel:to=<{}>:pat=<els=[I1{0,1/4,1/4,1/4}]>" 1.1098998)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[I1{0,1/4,1/4}]>" -0.67870986)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" -0.6172553)
+            (pair "rel:to=<{0}>:pat=<els=[I4{1/4}, I3{0}]>" 18.601868)
+            (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[]>" -0.32190135)
+            (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[I4{1/4}, I3{0}]>" -3.0600522)
+            (pair "rel:to=<{}>:pat=<els=[I2{0}]>" -1.0740964)
+            (pair "rel:to=<{}>:pat=<els=[I3{0,-1/2,1/4}]>" 1.1098998)
+            (pair "rel:last_to=<{0,1/4}>:from=<{0,1/4}>:pat=<els=[]>" 18.601868)
+            (pair "rel:from=<{0,1/4}>:pat=<els=[I1{0,1/4,1/4}]>" 18.601868)
+            }
+        )
     })
     
 )

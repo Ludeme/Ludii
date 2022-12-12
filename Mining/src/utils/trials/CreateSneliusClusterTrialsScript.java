@@ -27,7 +27,7 @@ public class CreateSneliusClusterTrialsScript
 		final int maxMove = 5000; // Constants.DEFAULT_MOVES_LIMIT;
 		//final int allocatedMemoryJava = 4096;
 		final int thinkingTime = 1;
-		final String agentName = "Alpha-Beta"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
+		final String agentName = "Random"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
 		//final String clusterLogin = "piettee";
 		final String mainScriptName = "GenTrials.sh";
 		
@@ -54,7 +54,10 @@ public class CreateSneliusClusterTrialsScript
 				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("subgame"))
 					continue;
 
-				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction"))
+				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction/pending/"))
+					continue;
+				
+				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction/validation/"))
 					continue;
 
 				final Game game = GameLoader.loadGameFromName(gameName);
@@ -71,7 +74,7 @@ public class CreateSneliusClusterTrialsScript
 					for (int rs = 0; rs < rulesetsInGame.size(); rs++)
 					{
 						final Ruleset ruleset = rulesetsInGame.get(rs);
-						if (!ruleset.optionSettings().isEmpty()) // We check if the ruleset is implemented.
+						if (!ruleset.optionSettings().isEmpty() && !ruleset.heading().contains("Incomplete")) // We check if the ruleset is implemented.
 							gameRulesetNames.add(ruleset.heading());
 					}
 				}

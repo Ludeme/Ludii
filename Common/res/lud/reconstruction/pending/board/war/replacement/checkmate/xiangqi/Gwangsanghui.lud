@@ -1,0 +1,339 @@
+(define "MarshallMove" (move [#])) // no movement restrictions but must remain in the palace 
+
+(define "AmbushCaptureEffect" 
+    [?]		
+)
+
+(define "CaptureMove"
+    (apply 
+        if:("IsEnemyAt" (to))
+        (and
+            (remove (to))
+            (if (= (what at:(to)) (id "Ambush" Next))
+                ("AmbushCaptureEffect")
+            )	
+        )
+    )		
+)
+
+(define "CaptureMoveSlide"
+    (apply 
+        (and
+            (remove (to))
+            (if (= (what at:(to)) (id "Ambush" Next))
+                ("AmbushCaptureEffect")
+            )	
+        )
+    )		
+)
+
+(define "CaptureMoveCannon"
+    (apply
+        if:(and ("IsEnemyAt" (to)) (!= (id "Pao" Next) (what at:(between))))
+        (and
+            (remove (to))
+            (if (= (what at:(to)) (id "Ambush" Next))
+                ("AmbushCaptureEffect")
+            )	
+        )
+    )		
+)
+
+//------------------------------------------------------------------------------
+
+(game "Gwangsanghui"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        ("TwoPlayersNorthSouth") 
+        (equipment {
+            (board (rectangle 14 15) use:Vertex) 
+            (piece "Disc" Each)
+            (regions "PalaceP1" P1 { 15..17 30..32 45..47 21..23 36..38 51..53 27..29 42..44 57..59 150..152 165..167 180..182 156..158 171..173 186..188 162..164 177..179 192..194 })
+            (regions "PalaceP2" P2 { 66 70 71 74 76 77 78 })
+            (regions "BeforePalace" P1 (expand (sites Bottom) steps:9))
+            (regions "BeforePalace" P2 (expand (sites Top) steps:9))
+            (regions "BeforeBehindPalace" P1 (expand (sites Bottom) steps:12))
+            (regions "BeforeBehindPalace" P2 (expand (sites Top) steps:12))
+            (regions "RankPalace" P1 (difference (expand (sites Bottom) steps:3) (sites Bottom)))
+            (regions "RankPalace" P2 (difference (expand (sites Top) steps:3) (sites Top)))
+            
+            // Marshall
+            (piece "Jiang" Each ("MarshallMove")) 
+            
+            // Advisor
+            (piece "Shi" Each ("MarshallMove")) 
+            
+            // Elephant
+            (piece "Xiang" Each
+                (forEach Direction 
+                    Orthogonal 
+                    (to 
+                        if:(is Empty (to)) 
+                        (apply
+                            (forEach Direction 
+                                (from (to)) 
+                                (directions {FR FL} of:All) 
+                                (between (exact 2) if:(is Empty (between)))
+                                (if (not ("IsFriendAt" (to))) 
+                                    (move 
+                                        (from) 
+                                        (to 
+                                            ("CaptureMove")
+                                        )
+                                    )
+                                )
+                            ) 
+                        ) 		
+                    )
+                )
+            )
+            
+            // Chariot
+            (piece "Ju" Each
+                (move
+                    Slide
+                    Orthogonal 
+                    (to 
+                        if:("IsEnemyAt" (to)) 
+                        ("CaptureMoveSlide")
+                    )
+                )		
+            )
+            
+            // Canon
+            (piece "Pao" Each
+                (or 
+                    (move Slide Orthogonal) 
+                    (move
+                        Hop
+                        Orthogonal 
+                        (between 
+                            before:(count Rows) 
+                            after:(count Rows) 
+                            if:(and (is Occupied (between)) (!= (id "Pao" Mover) (what at:(between))))
+                        )
+                        (to 
+                            if:(is Empty (to)) 
+                            ("CaptureMoveCannon")
+                        ) 
+                    ) 
+                )		
+            )
+            
+            // Horse
+            (piece "Ma" Each
+                (forEach Direction 
+                    Orthogonal 
+                    (to 
+                        if:(is Empty (to)) 
+                        (apply 
+                            (forEach Direction 
+                                (from (to)) 
+                                (directions {FR FL} of:All) 
+                                (if (not ("IsFriendAt" (to))) 
+                                    (move 
+                                        (from) 
+                                        (to 
+                                            ("CaptureMove")
+                                        )
+                                    )
+                                )
+                            ) 
+                        )
+                    )
+                ) 		
+            )
+            
+            // Vanguard
+            (piece "Jian" Each
+                (move
+                    Slide
+                    All
+                    (between
+                        if:(and (is Empty (between)) (is In (between) (sites Mover "BeforePalace")))
+                    )
+                    (to 
+                        if:("IsEnemyAt" (to)) 
+                        ("CaptureMoveSlide")
+                    )
+                )			
+            )
+            
+            // Rearguard
+            (piece "Gong" Each
+                (move
+                    Slide
+                    All
+                    (between
+                        if:(and (is Empty (between)) (is In (between) (sites Mover "BeforeBehindPalace")))
+                    )
+                    (to 
+                        if:("IsEnemyAt" (to)) 
+                        ("CaptureMoveSlide")
+                    )
+                )			
+            )
+            
+            // Elite Officer
+            (piece "Bai" Each
+                (move
+                    Slide
+                    Orthogonal
+                    (between
+                        if:(and (is Empty (between)) (is In (between) (sites Mover "RankPalace")))
+                    )
+                    (to 
+                        if:("IsEnemyAt" (to)) 
+                        ("CaptureMoveSlide")
+                    )
+                )		
+            )
+            
+            // Traveler
+            (piece "Hai" Each
+                (move
+                    Slide
+                    Diagonal 
+                    (between (exact 2) if:(is Empty (between)))
+                    (to 
+                        if:("IsEnemyAt" (to)) 
+                        ("CaptureMoveSlide")
+                    )
+                )			
+            )
+            
+            // Ambush
+            (piece "Pian" Neutral)
+            (piece "Pian" Each
+                (move
+                    (from)
+                    (to
+                        (sites Around
+                            (sites To
+                                (forEach Direction 
+                                    Orthogonal 
+                                    (to 
+                                        if:(is Empty (to)) 
+                                        (apply 
+                                            (forEach Direction 
+                                                (from (to)) 
+                                                (directions {FR FL} of:All) 
+                                                (if (is Empty (to))
+                                                    (move 
+                                                        (from) 
+                                                        (to)
+                                                    )
+                                                )
+                                            ) 
+                                        )
+                                    )
+                                ) 
+                            )
+                            All
+                            if:(is Empty (to))
+                        )
+                    )
+                )
+            )
+            
+            // Infantry
+            (piece "Zu" Each
+                (move
+                    Step
+                    (directions {Forward Rightward Leftward})
+                    (to 
+                        if:(not ("IsFriendAt" (to))) 
+                        ("CaptureMove")
+                    )
+                )		
+            )
+            
+            // Cavalry
+            (piece "Qi" Each
+                (move
+                    Step
+                    (directions {Forward FR FL Rightward Leftward} of:All)
+                    (to 
+                        if:(not ("IsFriendAt" (to))) 
+                        ("CaptureMove")
+                    )
+                )			
+            )
+            
+            // General
+            (piece "Zhou" Each ("MarshallMove"))
+            
+        })
+        (rules
+            (start {
+                (place "Jiang1" coord:"H3") (place "Jiang2" coord:"H12")
+                (place "Shi1" {"N2" "B2" "G2" "I2"}) (place "Shi2" {"N13" "B13" "G13" "I13"})
+                (place "Xiang1" {"F2" "J2" "C2" "M2"}) (place "Xiang2" {"F13" "J13" "M13" "C13"})
+                (place "Ju1" {"E2" "K2" "A2" "O2"}) (place "Ju2" {"E13" "K13" "O13" "A13"})
+                (place "Pao1" {"G4" "I4" "M4" "C4"}) (place "Pao2" {"G11" "I11" "C11" "M11"})
+                (place "Ma1" {"F4" "J4" "O4" "A4"}) (place "Ma2" {"F11" "J11" "A11" "O11"})
+                (place "Jian1" coord:"H5") (place "Jian2" coord:"H10")
+                (place "Gong1" coord:"H1") (place "Gong2" coord:"H14")
+                (place "Bai1" {"D3" "L3"}) (place "Bai2" {"D12" "L12"})
+                (place "Hai1" {"D5" "L5"}) (place "Hai2" {"D10" "L10"})
+                (place "Pian1" {"D1" "L1"}) (place "Pian2" {"D14" "L14"})
+                (place "Zu1" {"E6" "F6" "G6" "I6" "J6" "K6"}) (place "Zu2" {"E9" "F9" "G9" "I9" "J9" "K9"})
+                (place "Qi1" {"A6" "B6" "C6" "M6" "N6" "O6"}) (place "Qi2" {"A9" "B9" "C9" "M9" "N9" "O9"})
+                (place "Zhou1" {"B3" "N3"}) (place "Zhou2" {"B12" "N12"})
+            })
+            (play (forEach Piece))
+            (end (if ("IsOffBoard" (where "Jiang" Next)) (result Mover Win)))
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Gwangsanghui is a large version of Janggi played from the eighteenth century in Korea.")
+        (rules "15x14 intersecting lines. There are diagonal lines connecting the corners of the square formed by the nine points in the central, the far left, and the far right of the second to fourth ranks, on each player's side. These are palaces. The pieces are as follows: Marshal (x1): placed in the center of the central palace, no movement restrictions but must remain in the palace; Advisors (x2): placed on the back corners of the central palace, move like the Marshall; Elephant (x2): placed to the right and left of the Advisors, moves one step orthogonally and then two spaces diagonally, but all intervening spaces must be empty; Chariot (x2): placed to left and right of the Elephants, moves orthogonally any distance; Cannons (x2): placed on the front two corners of the central palace, move with the help of another piece, except the other Cannon, cannot capture another Cannon; Horse (x2)\" placed two spots in front of the Elephants, moves orthogonally one space and diagonally another, jumping over an intervening space; Vanguard (x1): placed in front of the central palace, moves any distance orthogonally or diagonally, but cannot move to a rank at or behind the front of the palace; Rearguard (x1): placed behind the central palace, moves any distance orthogonally or diagonally, cannot move beyond the back of the palace; Elite officers (x2): placed to the left and right, of the palace, moves orthogonally any distance, can enter the palaces but cannot move beyond the three ranks on which the palaces are located; Travelers (x2): placed at the front left and right, moves diagonally two spaces, but the intervening space must be empty; Ambush (x2): placed bottom left and right, moves one move of the Horse and then another diagonally or orthogonally, cannot capture; after being captured it remains on the board; Infantry (x6): placed in two groups of three flanking the space in front of the Vanguard, move one step orthogonally forward or sideways; Cavalry (x6): placed in two groups of three flanking the Infantry, move one space orthogonally or diagonally forward or sideways; General (x2): each placed at the center of the left and right palaces, no movement restrictions but must remain in their palace; two more Advisors behind each General, and a Chariot and Elephant to each side of each Advisor; on the front corners of the left and right palaces are a Horse and a Cannon, the Chariot being on the right on the right palace and the left of the left palace. The player who captures the opponent's Marshal wins. Draws are not possible. Captured pieces are placed in the capturing player's camp, can be \"held as hostages.\" ")
+        (source "DLP evidence.")
+        (id "1376")
+        (version "1.3.8")
+        (classification "board/war/replacement/checkmate/xiangqi/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Korea, around 1783.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        (no Sunken)
+        (show Line {{15 47} {45 17} {21 53} {51 23} {57 29} {27 59} {180 152} {150 182} {162 194} {192 164} {158 186} {156 188}} (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterVertices (colour Hidden))
+        (board Colour InnerVertices (colour Hidden))
+        (board Background image:"square.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:1.25)
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Red))
+        (piece Style ExtendedXiangqi)
+    })
+)

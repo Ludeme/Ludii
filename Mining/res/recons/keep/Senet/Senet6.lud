@@ -1,0 +1,96 @@
+(game "Senet" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 3 10)
+            { 
+            (track "Track1" "20,E,S1,W,S1,E,End" P1 directed:True)
+            
+            (track "Track2" "20,E,S1,W,S1,E,End" P2 directed:True)
+            }
+        )
+        
+        (piece "SenetPiece" Each 
+            (move Step Forward 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        
+        (dice d:2 from:0 num:4)
+        
+        (hand Each)
+        
+        (map "FirstSite" { 
+            (pair 7 1)
+            
+            (pair 6 13)
+            
+            (pair 5 37)
+            
+            (pair 4 73)
+            
+            (pair 3 121)
+            
+            (pair 2 181)
+            
+            (pair 1 253)
+            }
+        )
+        
+        (regions "AllSites" 
+            (sites Board)
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "SenetPiece1" 
+                (sites { "B3" "D3" "F3" "H3" "J3" "I2" "G2"}
+                )
+            )
+            
+            (place "SenetPiece2" 
+                (sites { "A3" "C3" "E3" "G3" "I3" "J2" "H2"}
+                )
+            )
+            }
+        )
+        
+        (play 
+            (move 
+                (from 
+                    (handSite Mover)
+                )
+                
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        
+        (end { 
+            (if 
+                (no Moves Next)
+                
+                (result Next Loss)
+            )
+            
+            (if 
+                (<= 
+                    (count Pieces P1)
+                9)
+                
+                (result P1 Loss)
+            )
+            }
+        )
+    )
+)
+
+

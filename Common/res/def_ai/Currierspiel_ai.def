@@ -1,4 +1,5 @@
 (define "Currierspiel_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (material)
@@ -103,6 +104,34 @@
             (pair "Pawn1" -0.13472211)
             (pair "Pawn2" -0.1726868)
         })
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!-{0}]>" -0.068411335)
+            (pair "rel:from=<{}>:pat=<els=[I7{0,1/4}]>" -0.58060664)
+            (pair "rel:to=<{}>:pat=<els=[I12{}]>" -1.1340666)
+            (pair "rel:from=<{}>:pat=<els=[I7{0,0,0,0}]>" -2.3296468)
+            (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:from=<{}>:pat=<els=[I9{0,1/4}]>" -2.3793738)
+            (pair "rel:to=<{}>:pat=<els=[!I8{}]>" 0.0034827522)
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[#{1/2,1/4}, !-{0,1/4,0,0}, !-{0,1/4,-1/4,0}]>" -0.865765)
+            (pair "rel:to=<{0,1/4}>:pat=<els=[!-{0,1/4,0,0}, !-{0,1/4,-1/4,0}]>" -6.491755)
+            (pair "rel:from=<{}>:pat=<els=[-{0}]>" 0.009230995)
+            (pair "rel:to=<{}>:pat=<els=[!f{0,0,0}]>" 0.001059913)
+            (pair "rel:to=<{}>:pat=<els=[!f{0,0}]>" 1.5616206E-4)
+            (pair "rel:to=<{}>:pat=<els=[I15{0,0}]>" -1.6271354)
+            (pair "rel:to=<{}>:pat=<els=[I10{0}]>" -0.3539526)
+            (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:to=<{0,1/4}>:pat=<els=[#{1/2,1/4}, !-{0,1/4,-1/4,0}]>" -6.491755)
+            (pair "rel:to=<{0,1/4}>:pat=<els=[#{1/2,1/4}, !-{0,1/4,0,0}]>" -6.491755)
+            (pair "rel:from=<{}>:pat=<els=[#{1/2,1/4}, !-{0,1/4,0,0}, !-{0,1/4,-1/4,0}]>" -0.6473866)
+            }
+        )
     })
     
 )

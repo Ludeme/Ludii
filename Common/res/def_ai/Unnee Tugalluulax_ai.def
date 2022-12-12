@@ -1,15 +1,70 @@
 (define "Unnee Tugalluulax_ai"
-    (useFor { "Ending Rules/No Moves" }
+    (useFor { "Ruleset/Popova (Scholarly)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (ownRegionsCount)
         })
         
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[-{0,0,0}]>" 0.26695976)
+                (pair "rel:to=<{}>:pat=<els=[-{1/2}, -{0,0,0}]>" 0.085846156)
+                (pair "rel:last_to=<{-1/4,-1/4}>:to=<{}>:pat=<els=[-{1/2,1/4}, -{0,0,0}, !R1{0,0,0,0}]>" 0.27577454)
+                (pair "rel:to=<{}>:pat=<els=[-{1/2,1/4}, -{0,0,0}, !R1{0,0,0,0}]>" 0.105894454)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0,-1/4}, -{-1/4}, -{0,1/4}]>" 0.57213616)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, -{0,0,0,0}]>" 0.44316858)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,1/4}, !#{0,0,0,0}]>" 0.42508063)
+                (pair "rel:to=<{}>:pat=<els=[-{-1/4,1/4}, !R1{0,0,0,0}, -{0,0}]>" 0.26178107)
+                (pair "rel:to=<{}>:pat=<els=[-{0,-1/4}, !#{1/4,0,0,0}]>" 0.42508063)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}, !R1{0,0,0,0}, -{0}]>" 0.23237023)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/4,0,0}, -{0,-1/4}]>" 0.95531845)
+                (pair "rel:to=<{}>:pat=<els=[!#{0,0,0,0}]>" 0.01887158)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/2}]>" 0.37045717)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, -{1/2}, -{1/4,-1/4}]>" 0.68678313)
+                (pair "rel:to=<{}>:pat=<els=[-{0,-1/4}, -{1/4,0,0,0}]>" 0.8401969)
+                }
+            )
+        })
+        
     )
-    (useFor { "Ending Rules/No Moves Or Repeating positions" }
+    (useFor { "Ruleset/Mancala World (Suggested)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (ownRegionsCount)
+        })
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{0}, -{0,0,0}]>" 0.3362844)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{1/4,0}, -{0}]>" 0.45287248)
+                (pair "rel:to=<{}>:pat=<els=[-{0}]>" 0.015647708)
+                (pair "rel:to=<{}>:pat=<els=[-{1/2,0}, -{0}]>" 0.06586756)
+                (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[-{0,0,0}]>" 0.45919943)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" 0.09214012)
+                (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[-{1/2,0}, -{0,1/4}]>" 0.35855013)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/4,-1/4}]>" 0.017788272)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{1/4,0,0}]>" 0.1841275)
+                (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[-{0}]>" 0.07872069)
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}, -{1/2,1/4}, -{0,0,0}]>" 0.47962117)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,1/4}, -{0,0}, -{1/2}]>" 0.35586113)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}, -{1/2,1/4}]>" 0.18153054)
+                (pair "rel:to=<{}>:pat=<els=[-{0,-1/4}, -{1/4,0}]>" 0.34558243)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{1/4,1/4}, !R0{0,0,0,0}]>" 0.16915603)
+                (pair "rel:to=<{}>:pat=<els=[-{1/2}, -{0,1/4}, -{1/4}, -{0,0}]>" 0.2274689)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{0}]>" 0.18805286)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" 0.14047629)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,1/4}, !R0{0,0,0,0}]>" 0.15735853)
+                }
+            )
         })
         
     )

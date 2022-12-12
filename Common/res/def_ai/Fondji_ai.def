@@ -1,0 +1,27 @@
+(define "Fondji_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" 0.058751963)
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[N6{1/4,0,0}]>" -0.08798222)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[N6{0,-1/3}]>" 0.24907029)
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[N6{1/6,0}, -{0}]>" 0.1738978)
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{0}]>" 0.016599)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{1/4}]>" 0.3077642)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[N6{1/6}, N6{0,-1/4}]>" 0.2913008)
+            (pair "rel:to=<{}>:pat=<els=[N4{1/3,0,0}, N6{0,0}]>" 0.2913008)
+            (pair "rel:to=<{}>:pat=<els=[-{1/3}, N6{0,-1/3}]>" -0.10438723)
+            (pair "rel:to=<{}>:pat=<els=[-{0}, N4{1/3,0,0}, -{1/4}, N6{0,0}]>" 0.5136169)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, N6{0,-1/4}]>" 0.026611067)
+            (pair "rel:to=<{}>:pat=<els=[-{0}, N6{1/3,1/4}, -{0,0,0}]>" -0.12995861)
+            (pair "rel:to=<{}>:pat=<els=[-{0}]>" -0.037470404)
+            (pair "rel:to=<{}>:pat=<els=[N6{1/6}, -{0,0,0}]>" 0.15817419)
+            (pair "rel:to=<{}>:pat=<els=[-{0}, N6{1/6}, -{0,0,0}]>" 0.25509083)
+            }
+        )
+    })
+    
+)

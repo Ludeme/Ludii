@@ -1,0 +1,193 @@
+(game "Senet" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 3 10)
+            { 
+            (track "Track1" "20,E,S1,W,S1,E,End" P1 directed:True)
+            
+            (track "Track2" "20,E,S1,W,S1,E,End" P2 directed:True)
+            }
+        )
+        
+        (piece "SenetPiece" Each 
+            (move Step 
+                (to if:
+                    (or 
+                        (is Empty 
+                            (to)
+                        )
+                        
+                        (= 
+                            (if 
+                                (is Mover P1)
+                                
+                                (if 
+                                    (is Active P2)
+                                    2 
+                                    (if 
+                                        (is Active P3)
+                                    3 4)
+                                )
+                                
+                                (if 
+                                    (is Mover P2)
+                                    
+                                    (if 
+                                        (is Active P3)
+                                        3 
+                                        (if 
+                                            (is Active P4)
+                                        4 1)
+                                    )
+                                    
+                                    (if 
+                                        (is Mover P3)
+                                        
+                                        (if 
+                                            (is Active P4)
+                                            4 
+                                            (if 
+                                                (is Active P1)
+                                            1 2)
+                                        )
+                                        
+                                        (if 
+                                            (is Active P1)
+                                            1 
+                                            (if 
+                                                (is Active P2)
+                                            2 3)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (who at:
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (apply 
+                        (if 
+                            (= 
+                                (if 
+                                    (is Mover P1)
+                                    
+                                    (if 
+                                        (is Active P2)
+                                        2 
+                                        (if 
+                                            (is Active P3)
+                                        3 4)
+                                    )
+                                    
+                                    (if 
+                                        (is Mover P2)
+                                        
+                                        (if 
+                                            (is Active P3)
+                                            3 
+                                            (if 
+                                                (is Active P4)
+                                            4 1)
+                                        )
+                                        
+                                        (if 
+                                            (is Mover P3)
+                                            
+                                            (if 
+                                                (is Active P4)
+                                                4 
+                                                (if 
+                                                    (is Active P1)
+                                                1 2)
+                                            )
+                                            
+                                            (if 
+                                                (is Active P1)
+                                                1 
+                                                (if 
+                                                    (is Active P2)
+                                                2 3)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (and 
+                                (remove 
+                                    (to)
+                                )
+                                
+                                (and 
+                                    (note player:Next "Pays into the pot" to:Next )
+                                    
+                                    (set Pot 
+                                        (+ 
+                                            (pot)
+                                            
+                                            (amount Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (dice d:2 from:0 num:4)
+        
+        (hand Each)
+        
+        (map "StartTrack" { 
+            (pair P1 0)
+            
+            (pair P2 12)
+            }
+        )
+        
+        (regions "Promotion" P1 
+            (sites Top)
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "SenetPiece1" 
+                (sites { "B3" "D3" "F3" "H3" "J3"}
+                )
+            )
+            
+            (place "SenetPiece2" 
+                (sites { "A3" "C3" "E3" "G3" "I3"}
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Mover)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+

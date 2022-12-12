@@ -1,7 +1,35 @@
 (define "Kyoto Shogi_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (cornerProximity)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[e{0,0}]>" -0.040827308)
+            (pair "rel:last_to=<{0,-1/4,1/4,0,0}>:from=<{}>:pat=<els=[-{0,-1/4,-1/2,0,0,0}]>" -0.16024272)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.21870416)
+            (pair "rel:to=<{}>:pat=<els=[e{0,1/4}, e{0,-1/4}, -{-1/2,0,0}]>" 0.37402135)
+            (pair "rel:to=<{0}>:pat=<els=[!I4{1/4,0,0,0}, -{0,1/4,0,0,0}]>" -2.048531)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{1/4,0,0,0}, -{0,1/4}, #{0,-1/4,0}]>" 0.111474864)
+            (pair "rel:to=<{}>:pat=<els=[e{0,1/4}, f{1/2,1/4}, -{1/4,0}, e{0,-1/4}, -{-1/2,0,0}]>" 1.2348694)
+            (pair "rel:to=<{}>:pat=<els=[f{1/2,1/4}, -{1/4,0}, e{0,-1/4}]>" 0.2925094)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, f{-1/4,0,0}, -{0}]>" 0.057921417)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, -{1/4}]>" 0.04509642)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{0,1/4}>:pat=<els=[-{1/2}]>" -1.2697314)
+            (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{1/2,1/4}, !#{0,0,0}]>" 0.06795388)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" 0.013123503)
+            (pair "rel:to=<{}>:pat=<els=[#{0,0}]>" -0.005043488)
+            (pair "rel:to=<{}>:pat=<els=[I5{0,0}]>" 0.059762068)
+            (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[I11{0,0}]>" 0.04311581)
+            (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/4,1/4}]>" 0.038370594)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, !#{0,0,0}, -{0,1/4}]>" -0.007611139)
+            }
+        )
     })
     
 )

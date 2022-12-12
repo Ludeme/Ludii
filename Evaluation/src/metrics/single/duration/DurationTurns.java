@@ -27,7 +27,7 @@ public class DurationTurns extends Metric
 		super
 		(
 			"Duration Turns", 
-			"Number or turns in a game.", 
+			"Number of turns in a game.", 
 			0.0, 
 			Constants.INFINITY,
 			Concept.DurationTurns

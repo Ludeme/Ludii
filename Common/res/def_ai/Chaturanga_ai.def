@@ -1,22 +1,103 @@
 (define "Chaturanga_ai"
-    (useFor { "Play Rules/Elephant Move is Orthogonal Jump" }
+    (useFor { "Ruleset/Manasollasa (Described)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (material)
         })
         
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[e{0,1/4,1/4,1/4}]>" 0.2706813)
+                (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[e{0,1/4,1/4,1/4}]>" 0.3793102)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 0.33296734)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0}]>" 0.42903465)
+                (pair "rel:to=<{}>:pat=<els=[I5{0,1/4}, e{0,1/4,1/4,1/4}]>" 0.57026523)
+                (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[I5{0,1/4}, e{0,1/4,1/4,1/4}]>" 0.628441)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!I7{0,1/4,0,0}]>" 0.33296734)
+                (pair "rel:to=<{}>:pat=<els=[I7{0,0}, R1{0,0,0}]>" -0.24899364)
+                (pair "rel:from=<{0}>:pat=<els=[f{0,0,1/4}, -{0,1/2,0,0,0}]>" -6.01762)
+                (pair "rel:from=<{}>:pat=<els=[e{1/4,1/4}, #{0,-1/4}, !I11{}, #{0,0,0}, -{-1/2,0,0}]>" 0.011555943)
+                (pair "rel:last_from=<{0,0,0,0}>:from=<{}>:to=<{0,0}>:pat=<els=[#{1/2,0,0}]>" -0.32651436)
+                (pair "rel:from=<{}>:pat=<els=[#{0,-1/4}, -{1/4}, #{0,0,0}, -{-1/2,0,0}, !-{-1/4,0,0}]>" -0.048883706)
+                (pair "rel:to=<{1/4}>:pat=<els=[I1{0}]>" -6.01762)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[e{0,1/4,-1/2,-1/4,1/2,1/4}]>" 0.45977962)
+                (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[e{0,1/4}]>" 0.45977962)
+                (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!-{0,1/4}]>" 0.45977962)
+                (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[-{1/2,1/4}, e{0,1/4,-1/2,-1/4,1/2,1/4}]>" 0.5028637)
+                (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[R0{0,1/4}, !-{0,1/4}]>" 0.57901055)
+                (pair "rel:last_from=<{0,0,0,0,0}>:from=<{}>:pat=<els=[I2{1/4}, -{0,0,1/4}]>" -0.08755928)
+                (pair "rel:from=<{}>:pat=<els=[-{0,0}, !I9{-1/4,-1/4}, -{1/2,0}]>" -0.041989814)
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0,1/4}>:pat=<els=[e{0,1/4,-1/2,-1/4,1/2,1/4}]>" 0.57287586)
+                (pair "rel:to=<{0}>:pat=<els=[-{1/2,0}]>" -4.425977)
+                }
+            )
+        })
+        
     )
-    (useFor { "Play Rules/Elephant Move is Diagonal Jump" }
+    (useFor { "Ruleset/Elephant Diagonal Move (Scholarly)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (material)
         })
         
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[#{0,0,0,0,1/4,1/4}]>" 0.0)
+                (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!-{0,1/4,1/4,1/4}]>" 0.1603759)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R1{1/4,0,0}, -{0,1/4,-1/4}, -{0,0,-1/4}, #{0,-1/2,0}, -{0,0,1/4}, -{0,1/4,1/4}]>" 0.27051085)
+                (pair "rel:from=<{}>:pat=<els=[-{1/4,-1/4}, -{0,-1/4}, #{1/2,0}, !-{1/2,0,0}, -{0,1/4}, -{1/4,1/4}]>" -0.0352758)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4,-1/4}, -{0,0,-1/4}, -{0,-1/4,-1/4}, #{0,-1/2,0}, !-{0,-1/2,0,0}, -{0,0,1/4}, -{0,1/4,1/4}]>" -0.05847144)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!-{}, -{0,0,0,0}]>" 0.4029774)
+                (pair "rel:to=<{}>:pat=<els=[!-{}]>" 0.3962242)
+                (pair "rel:to=<{}>:pat=<els=[e{0,0,1/2,0}]>" 0.3962242)
+                (pair "rel:to=<{}>:pat=<els=[!I7{}, e{0,0,1/2,0}]>" 0.41450468)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{-1/4}, -{1/4,-1/4,-1/4}, -{0,1/4,1/4}]>" 0.58138245)
+                (pair "rel:last_to=<{}>:from=<{0,-1/4}>:to=<{}>:pat=<els=[-{0,-1/4,-1/4}, -{1/4}]>" 0.574686)
+                (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 0.5155787)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{0,0,1/4}]>" -0.0283384)
+                }
+            )
+        })
+        
     )
-    (useFor { "Play Rules/Elephant Move is like a Silver in Shogi" }
+    (useFor { "Ruleset/Elephant Diagonal Jump (Scholarly)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (material)
+        })
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[-{0,0,0}, !R0{1/2,1/4}, -{0,-1/4}, -{1/2,0,0,0}]>" -0.06171614)
+                (pair "rel:to=<{}>:pat=<els=[I2{0,0,0}, -{1/4,-1/2,0}]>" 0.0011341139)
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[I12{0,1/2,0,0,0}]>" 0.25586897)
+                (pair "rel:from=<{}>:to=<{-1/4}>:pat=<els=[R1{0}, -{1/4,0,0}, -{0,0,0}]>" 0.08769403)
+                (pair "rel:to=<{}>:pat=<els=[-{0,-1/2,0}, -{0,1/4,0}]>" -0.007342912)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4,0}]>" 0.17995964)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[f{0,0,1/4}]>" 0.009928369)
+                (pair "rel:last_to=<{1/4,0,0,0}>:from=<{}>:pat=<els=[-{0,0,0}, !-{1/2,0,0}]>" 0.05134857)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[]>" 0.029217696)
+                (pair "rel:to=<{0,0}>:pat=<els=[e{0,0,0}]>" -4.5039554)
+                (pair "rel:to=<{}>:pat=<els=[I11{0,0}]>" -0.029887568)
+                (pair "rel:to=<{0,0}>:pat=<els=[R1{1/2,0,0,0}]>" -4.5039554)
+                (pair "rel:from=<{}>:pat=<els=[I9{0,1/4}, !-{1/2,0,0}]>" 0.023324857)
+                (pair "rel:from=<{}>:pat=<els=[e{0,0,0}]>" 0.004267548)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[R1{1/2,0,0,0}]>" 0.047052473)
+                }
+            )
         })
         
     )

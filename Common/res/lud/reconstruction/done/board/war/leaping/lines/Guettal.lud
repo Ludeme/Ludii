@@ -1,0 +1,1585 @@
+(game "Guettal"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Guettal1" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (rectangle 5 5 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Counter" Each 
+                (or { 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { Rightward Leftward Forwards}
+                        of:All)
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    }
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (and 
+                        (all Sites 
+                            (expand 
+                                (sites Top)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            2)
+                        )
+                        
+                        (all Sites 
+                            (expand 
+                                (sites Bottom)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            1)
+                        )
+                    )
+                    
+                    (byScore { 
+                        (score P1 
+                            (count Pieces P1)
+                        )
+                        
+                        (score P2 
+                            (count Pieces P2)
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Guettal1 ruleset.")
+    
+    (item "Guettal2" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (rectangle 5 5 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Counter" Each 
+                (or { 
+                    (move Slide 
+                        (between 
+                            (max 2)
+                        )
+                        
+                        (to if:
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { Rightward Leftward Forwards}
+                        of:All)
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    }
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (and 
+                        (all Sites 
+                            (expand 
+                                (sites Top)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            2)
+                        )
+                        
+                        (all Sites 
+                            (expand 
+                                (sites Bottom)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            1)
+                        )
+                    )
+                    
+                    (byScore { 
+                        (score P1 
+                            (count Pieces P1)
+                        )
+                        
+                        (score P2 
+                            (count Pieces P2)
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Guettal2 ruleset.")
+    
+    (item "Guettal3" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (rectangle 5 5 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Counter" Each 
+                (or { 
+                    (move Step 
+                        (to if:
+                            (not 
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (not 
+                                    (= 1 
+                                        (state at:
+                                            (last To)
+                                        )
+                                    )
+                                )
+                                
+                                (set State at:
+                                    (last To)
+                                1)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { Rightward Leftward Forwards}
+                        of:All)
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    }
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (and 
+                        (all Sites 
+                            (expand 
+                                (sites Top)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            2)
+                        )
+                        
+                        (all Sites 
+                            (expand 
+                                (sites Bottom)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            1)
+                        )
+                    )
+                    
+                    (byScore { 
+                        (score P1 
+                            (count Pieces P1)
+                        )
+                        
+                        (score P2 
+                            (count Pieces P2)
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Guettal3 ruleset.")
+    
+    (item "Guettal4" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (rectangle 5 5 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Counter" Each 
+                (or { 
+                    (move Step 
+                        (to if:
+                            (not 
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (if 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (remove 
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { Rightward Leftward Forwards}
+                        of:All)
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    }
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (and 
+                        (all Sites 
+                            (expand 
+                                (sites Top)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            2)
+                        )
+                        
+                        (all Sites 
+                            (expand 
+                                (sites Bottom)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            1)
+                        )
+                    )
+                    
+                    (byScore { 
+                        (score P1 
+                            (count Pieces P1)
+                        )
+                        
+                        (score P2 
+                            (count Pieces P2)
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Guettal4 ruleset.")
+    
+    (item "Guettal5" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (rectangle 5 5 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Counter" Each 
+                (or { 
+                    (move Step 
+                        (to if:
+                            (not 
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { Rightward Leftward Forwards}
+                        of:All)
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    }
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (and 
+                        (all Sites 
+                            (expand 
+                                (sites Top)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            2)
+                        )
+                        
+                        (all Sites 
+                            (expand 
+                                (sites Bottom)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            1)
+                        )
+                    )
+                    
+                    (byScore { 
+                        (score P1 
+                            (count Pieces P1)
+                        )
+                        
+                        (score P2 
+                            (count Pieces P2)
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Guettal5 ruleset.")
+    
+    (item "Guettal6" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (rectangle 5 5 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Counter" Each 
+                (or { 
+                    (move Step 
+                        (from 
+                            (from)
+                            level:
+                            (level)
+                        )
+                        
+                        (to if:
+                            (not 
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (if 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (forEach Level 
+                                        (to)
+                                        
+                                        (remove 
+                                            (to)
+                                            level:
+                                            (level)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { Rightward Leftward Forwards}
+                        of:All)
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    }
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (and 
+                        (all Sites 
+                            (expand 
+                                (sites Top)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            2)
+                        )
+                        
+                        (all Sites 
+                            (expand 
+                                (sites Bottom)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            1)
+                        )
+                    )
+                    
+                    (byScore { 
+                        (score P1 
+                            (count Pieces P1)
+                        )
+                        
+                        (score P2 
+                            (count Pieces P2)
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Guettal6 ruleset.")
+    
+    (item "Guettal7" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (rectangle 5 5 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Counter" Each 
+                (or { 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { Rightward Leftward Forwards}
+                        of:All)
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    }
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (and 
+                        (all Sites 
+                            (expand 
+                                (sites Top)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            2)
+                        )
+                        
+                        (all Sites 
+                            (expand 
+                                (sites Bottom)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            1)
+                        )
+                    )
+                    
+                    (byScore { 
+                        (score P1 
+                            (count Pieces P1)
+                        )
+                        
+                        (score P2 
+                            (count Pieces P2)
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Guettal7 ruleset.")
+    
+    (item "Guettal8" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (rectangle 5 5 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Counter" Each 
+                (or { 
+                    (move Step 
+                        (to if:
+                            (not 
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (if 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (remove 
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { Rightward Leftward Forwards}
+                        of:All)
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    }
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (and 
+                        (all Sites 
+                            (expand 
+                                (sites Top)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            2)
+                        )
+                        
+                        (all Sites 
+                            (expand 
+                                (sites Bottom)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            1)
+                        )
+                    )
+                    
+                    (byScore { 
+                        (score P1 
+                            (count Pieces P1)
+                        )
+                        
+                        (score P2 
+                            (count Pieces P2)
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Guettal8 ruleset.")
+    
+    (item "Guettal9" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (rectangle 5 5 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Counter" Each 
+                (or { 
+                    (move Slide Orthogonal 
+                        (to if:
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { Rightward Leftward Forwards}
+                        of:All)
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    }
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (and 
+                        (all Sites 
+                            (expand 
+                                (sites Top)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            2)
+                        )
+                        
+                        (all Sites 
+                            (expand 
+                                (sites Bottom)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            1)
+                        )
+                    )
+                    
+                    (byScore { 
+                        (score P1 
+                            (count Pieces P1)
+                        )
+                        
+                        (score P2 
+                            (count Pieces P2)
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Guettal9 ruleset.")
+    
+    (item "Guettal10" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (rectangle 5 5 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Counter" Each 
+                (or { 
+                    (move Step 
+                        (to if:
+                            (not 
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (if 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (remove 
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { Rightward Leftward Forwards}
+                        of:All)
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    }
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (and 
+                        (all Sites 
+                            (expand 
+                                (sites Top)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            2)
+                        )
+                        
+                        (all Sites 
+                            (expand 
+                                (sites Bottom)
+                            steps:2)
+                            if:
+                            (!= 
+                                (who at:
+                                    (site)
+                                )
+                            1)
+                        )
+                    )
+                    
+                    (byScore { 
+                        (score P1 
+                            (count Pieces P1)
+                        )
+                        
+                        (score P2 
+                            (count Pieces P2)
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Guettal10 ruleset.")
+    
+    (item "Incomplete"
+        <
+        ("TwoPlayersNorthSouth") 
+        (equipment {
+            ("AlquerqueBoard" 5 5)
+            (piece "Counter" Each
+                (or {
+                    (move [#]) // This movement must be a capture move (I would suggest a hop...) 
+                    ("StepToEmpty" 
+                        (directions {Rightward Leftward Forwards} of:All) 
+                    )
+                })		
+            )
+        })
+        (rules  
+            (start { 
+                (place "Counter1" (union {(expand (sites Bottom)) (sites {"D3" "E3"}) }))
+                (place "Counter2" (union {(sites {"A3" "B3"}) (expand (sites Top)) }))
+            })
+            (play (forEach Piece))
+            (end 
+                (if (and (all Sites (expand (sites Top) steps:2) if:(!= (who at:(site)) 2)) (all Sites (expand (sites Bottom) steps:2) if:(!= (who at:(site)) 1)))
+                    (byScore {
+                        (score P1 (count Pieces P1)) 
+                        (score P2 (count Pieces P2))
+                    })
+                )
+            )
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Guettal1 (Reconstructed)" {
+        "Variant/Guettal1"
+    })
+    (ruleset "Ruleset/Guettal2 (Reconstructed)" {
+        "Variant/Guettal2"
+    })
+    (ruleset "Ruleset/Guettal3 (Reconstructed)" {
+        "Variant/Guettal3"
+    })
+    (ruleset "Ruleset/Guettal4 (Reconstructed)" {
+        "Variant/Guettal4"
+    })
+    (ruleset "Ruleset/Guettal5 (Reconstructed)" {
+        "Variant/Guettal5"
+    })
+    (ruleset "Ruleset/Guettal6 (Reconstructed)" {
+        "Variant/Guettal6"
+    })
+    (ruleset "Ruleset/Guettal7 (Reconstructed)" {
+        "Variant/Guettal7"
+    })
+    (ruleset "Ruleset/Guettal8 (Reconstructed)" {
+        "Variant/Guettal8"
+    })
+    (ruleset "Ruleset/Guettal9 (Reconstructed)" {
+        "Variant/Guettal9"
+    })
+    (ruleset "Ruleset/Guettal10 (Reconstructed)" {
+        "Variant/Guettal10"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Guettal is a capturing game played in the Bordj Bou Arreridj region of Algeria in the early twentieth century.")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Square board divided into 36 divisions (probably like the Alquerque board). Twelve pieces per player, which begin on the side of the board closest to the player. Players alternate turns moving their pieces toward the opponent's side of the board. Players capture their opponent's pieces. The player who has more pieces at the end of the game wins."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1949"))
+        (useFor "Ruleset/Guettal1 (Reconstructed)" (rules "The game Guettal is played by two players on a 5x5 rectangle board with square tiling. 
+                All players play with Counters.
+                Rules for Pieces:
+                Counters hop adjacent or step rightward, leftward or forwards.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+                Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If all sites in the top sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 2 and all sites in the bottom sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 1, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Guettal1 (Reconstructed)" (id "2490"))
+        (useFor "Ruleset/Guettal2 (Reconstructed)" (rules "The game Guettal is played by two players on a 5x5 rectangle board with square tiling. 
+                All players play with Counters.
+                Rules for Pieces:
+                Counters slide from the location of the piece in the adjacent direction through [between] is in the set of empty vertexs or step rightward, leftward or forwards.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+                Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If all sites in the top sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 2 and all sites in the bottom sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 1, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Guettal2 (Reconstructed)" (id "2491"))
+        (useFor "Ruleset/Guettal3 (Reconstructed)" (rules "The game Guettal is played by two players on a 5x5 rectangle board with square tiling. 
+                All players play with Counters.
+                Rules for Pieces:
+                Counters remove pieces at to then step adjacent then if not 1 is equal to State at the to location of the last move, set the state of the Vertex the to location of the last move to 1 or step rightward, leftward or forwards.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+                Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If all sites in the top sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 2 and all sites in the bottom sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 1, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Guettal3 (Reconstructed)" (id "2492"))
+        (useFor "Ruleset/Guettal4 (Reconstructed)" (rules "The game Guettal is played by two players on a 5x5 rectangle board with square tiling. 
+                All players play with Counters.
+                Rules for Pieces:
+                Counters if there is an enemy Player at to, remove pieces at to then step adjacent or step rightward, leftward or forwards.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+                Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If all sites in the top sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 2 and all sites in the bottom sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 1, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Guettal4 (Reconstructed)" (id "2493"))
+        (useFor "Ruleset/Guettal5 (Reconstructed)" (rules "The game Guettal is played by two players on a 5x5 rectangle board with square tiling. 
+                All players play with Counters.
+                Rules for Pieces:
+                Counters remove pieces at to then step adjacent or step rightward, leftward or forwards.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+                Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If all sites in the top sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 2 and all sites in the bottom sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 1, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Guettal5 (Reconstructed)" (id "2494"))
+        (useFor "Ruleset/Guettal6 (Reconstructed)" (rules "The game Guettal is played by two players on a 5x5 rectangle board with square tiling. 
+                All players play with Counters.
+                Rules for Pieces:
+                Counters if there is an enemy Player at to, for each level at Vertex to (FromTop) remove pieces at to then step adjacent or step rightward, leftward or forwards.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+                Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If all sites in the top sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 2 and all sites in the bottom sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 1, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Guettal6 (Reconstructed)" (id "2495"))
+        (useFor "Ruleset/Guettal7 (Reconstructed)" (rules "The game Guettal is played by two players on a 5x5 rectangle board with square tiling. 
+                All players play with Counters.
+                Rules for Pieces:
+                Counters hop adjacent or step rightward, leftward or forwards.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+                Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If all sites in the top sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 2 and all sites in the bottom sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 1, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Guettal7 (Reconstructed)" (id "2496"))
+        (useFor "Ruleset/Guettal8 (Reconstructed)" (rules "The game Guettal is played by two players on a 5x5 rectangle board with square tiling. 
+                All players play with Counters.
+                Rules for Pieces:
+                Counters if there is an enemy Player at to, remove pieces at to then step adjacent or step rightward, leftward or forwards.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+                Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If all sites in the top sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 2 and all sites in the bottom sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 1, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Guettal8 (Reconstructed)" (id "2497"))
+        (useFor "Ruleset/Guettal9 (Reconstructed)" (rules "The game Guettal is played by two players on a 5x5 rectangle board with square tiling. 
+                All players play with Counters.
+                Rules for Pieces:
+                Counters slide from the location of the piece in the orthogonal direction through [between] is in the set of empty vertexs or step rightward, leftward or forwards.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+                Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If all sites in the top sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 2 and all sites in the bottom sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 1, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Guettal9 (Reconstructed)" (id "2498"))
+        (useFor "Ruleset/Guettal10 (Reconstructed)" (rules "The game Guettal is played by two players on a 5x5 rectangle board with square tiling. 
+                All players play with Counters.
+                Rules for Pieces:
+                Counters if there is an enemy Player at to, remove pieces at to then step adjacent or step rightward, leftward or forwards.
+                Players take turns moving.
+                Setup:
+                Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+                Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If all sites in the top sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 2 and all sites in the bottom sites of the board expanded by 2 steps satisfy the condition Player at current site is not equal to 1, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Guettal10 (Reconstructed)" (id "2499"))
+        (version "1.3.8")
+        (classification "board/war/leaping/lines/reconstruction/done")
+        (credit "Eric Piette")
+        (origin "This game was played in Algeria, around 1921.")
+        }
+    )
+    
+    (recon {
+        (concept "Capture" True)
+    })
+    
+)
+

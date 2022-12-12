@@ -6,6 +6,7 @@ import java.util.List;
 import app.PlayerApp;
 import app.display.views.tabs.TabPage;
 import app.display.views.tabs.TabView;
+import app.utils.SettingsExhibition;
 import game.Game;
 import main.Constants;
 import main.options.Option;
@@ -50,11 +51,22 @@ public class RulesPage extends TabPage
 				// rules tab
 				if (metadata.info().getRules().size() > 0)
 				{
-					addText("Rules:\n");
+					if (!SettingsExhibition.exhibitionVersion)
+						addText("Rules:\n");
 					for (final String s : metadata.info().getRules())
 					{
-						addText(s.trim());
-						addText("\n\n");
+						if (SettingsExhibition.exhibitionVersion)
+						{
+							for (final String line : s.split("\\."))
+							{
+								addText(line.trim() + "." + "\n\n");
+							}
+						}
+						else
+						{
+							addText(s.trim());
+							addText("\n\n");
+						}
 					}
 				}
 				if (metadata.info().getSource().size() > 0)

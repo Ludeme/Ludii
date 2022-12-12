@@ -23,6 +23,7 @@ import game.rules.play.moves.nonDecision.effect.Then;
 import game.rules.play.moves.nonDecision.operator.Operator;
 import game.types.board.SiteType;
 import game.types.play.RoleType;
+import game.types.state.GameType;
 import gnu.trove.list.array.TIntArrayList;
 import other.ContainerId;
 import other.concept.Concept;
@@ -70,6 +71,9 @@ public final class ForEachPiece extends Operator
 	
 	/** If true only the piece in the top of the stack. */
 	protected final BooleanFunction topFn;
+	
+	/** The value set by the description before the null check. */
+	protected final BooleanFunction topValueSet;
 
 	/** Cell/Edge/Vertex. */
 	protected SiteType type;
@@ -121,6 +125,7 @@ public final class ForEachPiece extends Operator
 		this.specificMoves = specificMoves;
 		this.player = (player == null) ? ((role == null) ? new Mover() : RoleType.toIntFunction(role)) : player.index();
 		containerId = new ContainerId(container, containerName, null, null, null);
+		topValueSet= top;
 		topFn = (top == null) ? new BooleanConstant(false) : top;
 		type = on;
 		this.role = role;
@@ -141,8 +146,8 @@ public final class ForEachPiece extends Operator
 			private final int cont = containerId.eval(context);
 			private final ContainerState cs = context.containerState(cont);
 			private final SiteType realType = (type != null) ? type : context.game().board().defaultSite();
-			private final int minIndex = context.game().equipment().sitesFrom()[cont];
-			private final int maxIndex = minIndex + ((cont != 0) ? context.containers()[cont].numSites()
+			private final int minIndex = cs == null ? 0 : context.game().equipment().sitesFrom()[cont];
+			private final int maxIndex = cs == null ? 0 : minIndex + ((cont != 0) ? context.containers()[cont].numSites()
 					: context.topology().getGraphElements(realType).size());
 			private final boolean top = topFn.eval(context);
 			private final int[] moverCompIndices = compIndicesPerPlayer[specificPlayer];
@@ -183,6 +188,9 @@ public final class ForEachPiece extends Operator
 			 */
 			private Move computeNextMove()
 			{
+				if(cs == null)
+					return null;
+				
 				while (true)
 				{
 					if (pieceMoves != null)
@@ -416,6 +424,9 @@ public final class ForEachPiece extends Operator
 		long gameFlags = player.gameFlags(game) | super.gameFlags(game);
 		gameFlags |= topFn.gameFlags(game);
 
+		if(topValueSet != null)
+			gameFlags |= GameType.Stacking;
+		
 		if (type != null)
 			gameFlags |= SiteType.gameFlags(type);
 

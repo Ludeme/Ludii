@@ -38,6 +38,7 @@ import app.DesktopApp;
 import app.PlayerApp;
 import app.loading.MiscLoading;
 import app.utils.PuzzleSelectionType;
+import app.utils.SettingsExhibition;
 import game.equipment.container.board.Track;
 import game.types.play.RepetitionType;
 import main.Constants;
@@ -73,7 +74,7 @@ public class MainMenu extends JMenuBar
 	public MainMenu(final PlayerApp app)
 	{
 		// No menu for exhibition app.
-		if (app.settingsPlayer().usingExhibitionApp())
+		if (app.settingsPlayer().usingMYOGApp() || SettingsExhibition.exhibitionVersion)
 			return;
 		
 		final ActionListener al = app;
@@ -511,7 +512,7 @@ public class MainMenu extends JMenuBar
 									menuItem.addActionListener(al);
 									submenuAgentClaComp.add(menuItem);
 								}
-								else
+								else if (s.contains("False"))
 								{
 									menuItem = new JMenuItem(s.split("-")[0]);
 									menuItem.addActionListener(al);
@@ -526,7 +527,7 @@ public class MainMenu extends JMenuBar
 									menuItem.addActionListener(al);
 									submenuAgentRegComp.add(menuItem);
 								}
-								else
+								else if (s.contains("False"))
 								{
 									menuItem = new JMenuItem(s.split("-")[0]);
 									menuItem.addActionListener(al);
@@ -574,7 +575,7 @@ public class MainMenu extends JMenuBar
 									menuItem.addActionListener(al);
 									submenuHeuristicClaComp.add(menuItem);
 								}
-								else
+								else if (s.contains("False"))
 								{
 									menuItem = new JMenuItem(s.split("-")[0]);
 									menuItem.addActionListener(al);
@@ -589,7 +590,7 @@ public class MainMenu extends JMenuBar
 									menuItem.addActionListener(al);
 									submenuHeuristicRegComp.add(menuItem);
 								}
-								else
+								else if (s.contains("False"))
 								{
 									menuItem = new JMenuItem(s.split("-")[0]);
 									menuItem.addActionListener(al);
@@ -622,7 +623,7 @@ public class MainMenu extends JMenuBar
 								menuItem.addActionListener(al);
 								submenuComp.add(menuItem);
 							}
-							else
+							else if (s.contains("False"))
 							{
 								menuItem = new JMenuItem(s.split("-")[0]);
 								menuItem.addActionListener(al);
@@ -634,8 +635,15 @@ public class MainMenu extends JMenuBar
 				
 				submenu.add(submenuComp);
 				submenu.add(submenuAll);
-				
 				menu.add(submenu);
+				
+				//---------------------------------------------------------------------
+				// Portfolio parameter prediction
+				
+				menuItem = new JMenuItem("Portfolio Parameters (external)");
+				menuItem.addActionListener(al);
+				menu.add(menuItem);
+				
 			}
 		}
 		
@@ -871,6 +879,10 @@ public class MainMenu extends JMenuBar
 				menuItem.addActionListener(al);
 				menu.add(menuItem);
 				
+				menuItem = new JMenuItem("Export Thumbnails (complete rulesets)");
+				menuItem.addActionListener(al);
+				menu.add(menuItem);
+				
 				menuItem = new JMenuItem("Export All Thumbnails (rulesets)");
 				menuItem.addActionListener(al);
 				menu.add(menuItem);
@@ -882,7 +894,7 @@ public class MainMenu extends JMenuBar
 				menuItem = new JMenuItem("Export All Board Thumbnails");
 				menuItem.addActionListener(al);
 				menu.add(menuItem);
-				
+
 				menu.addSeparator();
 			}
 			
@@ -1017,14 +1029,11 @@ public class MainMenu extends JMenuBar
 				menu.add(menuItem);
 			}
 
-			if (app.contextSnapshot().getContext(app).game().description().isReconstruction())	// Repalce this with the real check when completed
-			{
-				menu.addSeparator();
-				
-				menuItem = new JMenuItem("Reconstruction Dialog");
-				menuItem.addActionListener(al);
-				menu.add(menuItem);
-			}
+			menu.addSeparator();
+			
+			menuItem = new JMenuItem("Reconstruction Dialog");
+			menuItem.addActionListener(al);
+			menu.add(menuItem);
 			
 			menu.addSeparator();
 			
@@ -1246,18 +1255,21 @@ public class MainMenu extends JMenuBar
 				for (int i = 0; i < options.size(); i++)
 				{
 					final Option option = options.get(i);
-
+					
 					if (option.menuHeadings().size() < 2)
 					{
 						System.out.println("** Not enough headings for menu option: " + option.menuHeadings());
 						return;
 					}
-
-					final JRadioButtonMenuItem rbMenuItem = new JRadioButtonMenuItem(option.menuHeadings().get(1));
-					rbMenuItem.setSelected(currentOptions.contains(StringRoutines.join("/", option.menuHeadings())));
-					rbMenuItem.addItemListener(app);
-					group.add(rbMenuItem);
-					submenu.add(rbMenuItem);
+					
+					if (!option.menuHeadings().contains("Incomplete"))	// Eric wants to hide incomplete options
+					{
+						final JRadioButtonMenuItem rbMenuItem = new JRadioButtonMenuItem(option.menuHeadings().get(1));
+						rbMenuItem.setSelected(currentOptions.contains(StringRoutines.join("/", option.menuHeadings())));
+						rbMenuItem.addItemListener(app);
+						group.add(rbMenuItem);
+						submenu.add(rbMenuItem);
+					}
 				}
 				
 				MenuScroller.setScrollerFor(submenu, 20, 50, 0, 0);
@@ -1279,7 +1291,7 @@ public class MainMenu extends JMenuBar
 				{
 					final Ruleset ruleset = rulesets.get(rs);
 								
-					if (!ruleset.optionSettings().isEmpty())	// Eric wants to hide unimplemented rulesets
+					if (!ruleset.optionSettings().isEmpty() && !ruleset.heading().contains("Incomplete"))	// Eric wants to hide unimplemented and incomplete rulesets
 					{
 						if (ruleset.variations().isEmpty())
 						{

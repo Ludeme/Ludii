@@ -1,8 +1,30 @@
 (define "Msuwa_ai"
-    (useFor { "Board Size/10" }
+    (useFor { "Ruleset/Msuwa (Observed)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (mobilitySimple)
+        })
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{-1/4,-1/4}, !-{1/2,-1/4}, -{1/4,-1/4}, -{0}]>" -0.81493545)
+                (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[-{1/2,0}, !-{0}]>" -0.41034722)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" -0.019597359)
+                (pair "rel:to=<{}>:pat=<els=[!-{1/4,-1/4}, -{0,0}]>" -0.032280423)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!-{1/2,-1/4}, -{1/4,0}, -{1/4,-1/4}, -{0}]>" -0.39436173)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[#{0}]>" 0.006197204)
+                (pair "rel:to=<{}>:pat=<els=[-{1/2,1/4}, !-{0,1/4}]>" 0.1133615)
+                (pair "rel:last_to=<{-1/4}>:to=<{}>:pat=<els=[-{1/4}, !-{0,1/4}, -{0}]>" -1.5189922)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[#{1/2}, -{1/4}]>" -1.4756373)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!-{-1/4,-1/4}, -{1/4}, -{1/2,-1/4}, !-{0,-1/4}]>" -1.1228899)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4}, !-{0,1/4}]>" 0.011097094)
+                (pair "rel:last_to=<{-1/4}>:to=<{}>:pat=<els=[-{0,-1/4}, !-{1/2,-1/4}, -{0}, -{1/4,0,0}]>" -1.3029852)
+                }
+            )
         })
         
     )

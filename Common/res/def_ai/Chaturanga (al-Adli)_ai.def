@@ -1,0 +1,34 @@
+(define "Chaturanga (al-Adli)_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}]>" -2.5146973E-4)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, !I4{}, R1{0,1/4}]>" 0.024793025)
+            (pair "rel:from=<{}>:pat=<els=[I1{}, I2{0,0,0,0}]>" -0.23496938)
+            (pair "rel:to=<{}>:pat=<els=[!I4{}, R1{0,1/4}]>" -0.038965844)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[I1{}, I2{0,0,0,0}]>" -0.01907447)
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I1{0}]>" -0.084293984)
+            (pair "rel:last_to=<{1/2,-1/4}>:to=<{}>:pat=<els=[f{0,0,0}]>" -0.14541043)
+            (pair "rel:from=<{}>:pat=<els=[!-{0,1/4}]>" 0.088063784)
+            (pair "rel:from=<{}>:pat=<els=[e{0,0}]>" -0.1756685)
+            (pair "rel:last_to=<{1/2,-1/4}>:to=<{}>:pat=<els=[!I4{}, R1{0,-1/4}]>" 0.005641621)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[I3{}]>" -1.1179416)
+            (pair "rel:to=<{}>:pat=<els=[I5{}]>" -1.0792403)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" -0.9382012)
+            (pair "rel:to=<{}>:pat=<els=[I11{}]>" -1.2777524)
+            (pair "rel:from=<{}>:to=<{1/4}>:pat=<els=[-{0}, !R0{1/2,-1/4}]>" 0.298621)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!R0{1/4,-1/4}]>" 0.14763778)
+            (pair "rel:to=<{}>:pat=<els=[-{0}]>" 0.012702503)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[#{0,1/4,0,0}]>" -0.11332906)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!R0{1/4,-1/4}, #{0,0,1/4}]>" 0.261827)
+            (pair "rel:to=<{}>:pat=<els=[!f{0}]>" 1.8778873E-4)
+            (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+            }
+        )
+    })
+    
+)

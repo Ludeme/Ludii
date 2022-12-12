@@ -237,7 +237,7 @@ public final class Equals extends BaseBooleanFunction
 			{
 				if(countPieces.roleType().equals(RoleType.Mover))
 					concepts.set(Concept.CountPiecesMoverComparison.id(), true);
-				else if(countPieces.roleType().equals(RoleType.Next))
+				else if(countPieces.roleType().equals(RoleType.Next) || countPieces.roleType().equals(RoleType.Player))
 					concepts.set(Concept.CountPiecesNextComparison.id(), true);
 			}
 		}
@@ -249,7 +249,7 @@ public final class Equals extends BaseBooleanFunction
 			{
 				if(countPieces.roleType().equals(RoleType.Mover))
 					concepts.set(Concept.CountPiecesMoverComparison.id(), true);
-				else if(countPieces.roleType().equals(RoleType.Next))
+				else if(countPieces.roleType().equals(RoleType.Next) || countPieces.roleType().equals(RoleType.Player))
 				concepts.set(Concept.CountPiecesNextComparison.id(), true);
 			}
 		}
@@ -267,6 +267,14 @@ public final class Equals extends BaseBooleanFunction
 			else if (valueB.getClass().toString().contains("Where") && valueA instanceof IntConstant
 					&& Constants.OFF == valueA.eval(new Context(game, trial)))
 				concepts.set(Concept.NoTargetPiece.id(), true);
+			else if (valueA.getClass().toString().contains("Where") && valueB.getClass().toString().contains("MapEntry"))
+				concepts.set(Concept.Contains.id(), true);
+			else if (valueB.getClass().toString().contains("Where") && valueA.getClass().toString().contains("MapEntry"))
+				concepts.set(Concept.Contains.id(), true);
+			else if (valueB.getClass().toString().contains("What") && valueA.getClass().toString().contains("Id"))
+					concepts.set(Concept.IsPieceAt.id(), true);
+			else if (valueA.getClass().toString().contains("What") && valueB.getClass().toString().contains("Id"))
+				concepts.set(Concept.IsPieceAt.id(), true);
 		}
 
 		if (regionA != null && regionB != null)

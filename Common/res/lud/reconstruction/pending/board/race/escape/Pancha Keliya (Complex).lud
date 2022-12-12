@@ -1,0 +1,97 @@
+(game "Pancha Keliya (Complex)"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board 
+                (add
+                    (merge {
+                        (rectangle 1 11)
+                        (rectangle 11 1)
+                        (shift 0 10 (rectangle 1 11))
+                        (shift 10 0 (rectangle 11 1))
+                        (shift 0 15 (rectangle 1 11))
+                        (shift 5 5 (rectangle 11 1))
+                        (shift 1.5 5 (scale 0.7 1 (rectangle 1 5)))
+                        (shift 6 5 (scale 0.7 1 (rectangle 1 5)))
+                        (shift 6 2.7 (rotate 45 (scale 1.1 0.7 (rectangle 1 3))))
+                        (shift 1.6 2.7 (rotate -45 (scale 1.1 0.7 (rectangle 1 3))))
+                    })
+                    edges:{
+                    {121 152} {120 148} {147 133} {143 134} {155 144} {151 140}
+                    }
+                    cells:{
+                    {120 121 152 148}
+                    {155 144 140 151}
+                    {133 134 143 147}
+                    }
+                )
+            )
+            (piece "Disc" Each (move [#]))
+        })
+        (rules
+            (start [#])
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Pancha Keliya is a race game played in Sri Lanka during the early twentieth century. This version is played on a more complex board.")
+        (rules "Eleven squares are in the bottom line. From the central square, a line of an additional ten extend up. From the central hole of this vertical line (counting the central hole of the bottom line), a square with eleven holes per side. Extending to the left and right of this, five more squares on each side. Five squares extend upwards diagonally from the end of each of these lines, joining at an apex. Intersecting with the fifth square in the initial vertical line, a square with eleven spaces per side. Every fifth square is marked with an X. Players enter from opposite ends of the bottom horizontal track. ")
+        (source "DLP Evidence.")
+        (id "1051")
+        (version "1.3.8")
+        (classification "board/race/escape/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Sri Lanka, around 1942.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (show Line {
+            {92 81} {93 80} {97 86} {85 98} {103 90} {91 102}
+            {57 48} {58 47} {42 41} {43 40} {63 52} {62 53}
+            {0 13} {12 1} {22 11} {10 23} {72 71} {73 70}
+            {32 31} {33 30} {106 105} {107 104} {125 121}
+            {126 120} {138 134} {139 133} {144 151} {155 140}
+            {17 6} {18 5}
+            }
+            scale:2
+        )
+        
+        (show Symbol "disc" Cell 51 edgeColour:(colour Black) scale:3 offsetX:-0.5 offsetY:3.5)
+        (show Symbol "disc" Cell 44 edgeColour:(colour Black) scale:3 offsetX:0.5 offsetY:3.5)
+        (show Symbol "disc" Cell 54 edgeColour:(colour Black) scale:3 offsetY:2.5)
+    })
+    
+)
+

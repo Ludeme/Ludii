@@ -1,7 +1,36 @@
 (define "Hat Diviyan Keliya_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (sidesProximity)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,1/4}, !#{0,-1/2,1/2,0}]>" -1.2232808)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0}, !e{0,-1/4,1/3}]>" -1.1661364)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0}]>" -1.1567998)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{0,1/2,0,0,0}, !e{0,1/4,0,0,0}]>" -1.2228742)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{1/4}, !e{0,1/4,0,0,0}]>" -1.1562022)
+            (pair "rel:to=<{}>:pat=<els=[f{0}]>" -1.1567998)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{-1/4}, -{0,5/12,-1/3}, !e{0,-1/4,0,0,0}]>" -1.1391551)
+            (pair "rel:to=<{}>:pat=<els=[N3{}]>" 2.2408848)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!e{0,-1/4,1/3}]>" -1.1661364)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{1/4}, N4{0,1/2,0,0,0}, !e{0,1/4,0,0,0}]>" -1.2228742)
+            (pair "rel:to=<{}>:pat=<els=[!e{-5/12,0,0,0}, -{0,-1/3}, !e{1/3,0,0,0}]>" 0.14032225)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:last_from=<{0,1/2}>:from=<{0}>:to=<{}>:pat=<els=[e{0,1/2,1/3}, !f{0,1/2,1/2,1/2,1/3}]>" 1.8192085)
+            (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[!-{0,1/4}, e{0,-1/2,-1/3}]>" 1.8312249)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{0,1/4}, !-{1/3,1/4}, e{0,-1/2,-1/3}, !f{0,-1/2,-1/2,-1/2,-1/3}]>" 1.9509497)
+            (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[!-{0,1/4}, e{0,-1/2,-1/3}, !f{0,-1/2,-1/2,-1/2,-1/3}]>" 1.8312249)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/4,-1/3}, !f{0,-1/2,-1/4,0,0,0}]>" 1.9038805)
+            (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[!-{0,1/4}, !-{1/3,1/4}, e{0,-1/2,-1/3}]>" 1.8711677)
+            (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[!-{1/3,1/4}, e{0,-1/2,-1/3}]>" 1.8447758)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/4,-1/3}, !-{0,0,1/3}, !f{0,-1/2,-1/4,0,0,0}]>" 1.9243813)
+            }
+        )
     })
     
 )

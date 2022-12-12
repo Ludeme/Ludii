@@ -1,4 +1,5 @@
 (define "Nao Guti_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (sidesProximity)
@@ -17,6 +18,34 @@
         })
         (mobilitySimple weight:0.28588977)
         (influence weight:0.6405632)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 1.7922932)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,1/2,1/4}, f{0,1/2,1/4,0}]>" 1.7922932)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, f{0,1/2,1/4}]>" 1.8730572)
+            (pair "rel:to=<{}>:pat=<els=[f{0,-1/2,1/4}, f{0,-1/2,1/4,0}]>" 1.01967)
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/2,1/4}, f{0,1/2,1/4,0}]>" 1.01967)
+            (pair "rel:from=<{}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 0.8007683)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}]>" 0.55593944)
+            (pair "rel:from=<{}>:pat=<els=[!-{-1/4}, f{0,1/4}, f{0,1/4,0}]>" 0.98812443)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{-1/2,1/4}, f{0,1/4,0}]>" 0.9671201)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,1/2,1/4}, f{0,1/2,1/4,0}]>" 2.283287)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{-1/4,0}, f{0,-1/2,1/4}]>" 2.283287)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}, f{0,1/2,-1/4}]>" 2.283287)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, #{0,0,-1/4}, f{0,-1/2,-1/4,0}]>" 2.283287)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, f{0,-1/2,-1/4,0}]>" 2.283287)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,-1/2,1/4}, f{0,-1/2,1/4,0}]>" 2.283287)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{-1/4,0}, -{0,-1/4}, f{0,-1/2,1/4}]>" 2.4489508)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4,1/4}, f{0,-1/2,-1/4}, f{0,-1/2,-1/4,0}]>" 2.1117415)
+            (pair "rel:to=<{}>:pat=<els=[f{-1/4,0}, !-{0}, f{1/2,1/2,-1/4}]>" 0.9017375)
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/2,1/4}, f{0,1/2,1/4,0}]>" 0.85508585)
+            }
+        )
     })
     
 )

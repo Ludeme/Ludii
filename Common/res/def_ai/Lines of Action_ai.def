@@ -1,8 +1,36 @@
 (define "Lines of Action_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (centreProximity)
     })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!-{}]>" -0.31166556)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0}, !-{}]>" -0.34160602)
+            (pair "rel:from=<{}>:pat=<els=[-{0,0,0,0}, !-{-1/4,0,0}, !f{1/2,-1/4}, !f{0,-1/4}]>" 0.015719153)
+            (pair "rel:from=<{}>:pat=<els=[-{1/4,0}, f{0,0,1/4,0,0,0}]>" -0.0012070248)
+            (pair "rel:from=<{0,0,0}>:pat=<els=[e{0,0,0,0,0}]>" -4.533544)
+            (pair "rel:from=<{}>:pat=<els=[f{0,-1/4}, -{0,0,0}, -{-1/4,0}, -{1/4,0,0}]>" -0.13116217)
+            (pair "rel:from=<{}>:pat=<els=[f{0,0,-1/4,0,0,0}, f{0,0,-1/4,0,1/4,-1/4}]>" -0.013980548)
+            (pair "rel:from=<{}>:pat=<els=[-{0,0,0}, !f{0,1/4}, -{-1/4,0,0}, !f{0,-1/4}, !f{-1/4,-1/4}, !f{-1/2,-1/4}]>" 0.014043433)
+            (pair "rel:from=<{}>:pat=<els=[-{1/4,0,0}, !f{0,1/4}, !f{1/4,1/4}, -{0,0,0}, !f{1/4,-1/4}, !f{0,-1/4}]>" -0.0014203028)
+            (pair "rel:from=<{}>:pat=<els=[!-{0,0,0}, !f{-1/4,-1/4}, !f{1/2,-1/4}, !f{1/4,-1/4}]>" 0.019170681)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:last_from=<{-1/2,-1/4}>:from=<{0,0,1/4,0}>:to=<{}>:pat=<els=[e{0,0,1/4,0,1/4,-1/4}]>" 0.44834018)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0,0,0}]>" -0.3250374)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[f{0,0,0,1/2,1/4}]>" -0.33392864)
+            (pair "rel:last_to=<{0,1/2,1/4}>:to=<{0}>:pat=<els=[#{1/4}]>" -2.4097316)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4,-1/4}]>" 0.06896065)
+            (pair "rel:from=<{}>:pat=<els=[e{1/4,-1/4}, -{0,-1/4}]>" 0.19241293)
+            (pair "rel:from=<{0,1/4}>:pat=<els=[e{-1/4,0,0}, e{0,1/4,-1/4,-1/4}]>" -2.4097316)
+            }
+        )
+    })
+    
     trainedFeatureTrees:(featureTrees 
         logitTrees:{
         (logitTree P1
@@ -103,4 +131,5 @@
         )
         }
     )
+    
 )

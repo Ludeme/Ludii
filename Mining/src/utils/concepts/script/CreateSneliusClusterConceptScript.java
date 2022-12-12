@@ -27,7 +27,7 @@ public class CreateSneliusClusterConceptScript
 		final int maxTime = 175000;
 		final int maxMove = 5000; //250; //5000; // Constants.DEFAULT_MOVES_LIMIT;
 		final int thinkingTime = 1;
-		final String agentName = "Alpha-Beta"; //"Alpha-Beta"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", "ABONEPLY", "UCTONEPLY", or "Random"
+		final String agentName = "UCT"; //"Alpha-Beta"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", "ABONEPLY", "UCTONEPLY", or "Random"
 		final String folder = "/../Trials/Trials"+agentName; //""; //"/../Trials/TrialsAll";
 		final String mainScriptName = "Concepts.sh";
 		final String folderName = "Concepts"+agentName;
@@ -56,7 +56,10 @@ public class CreateSneliusClusterConceptScript
 				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("subgame"))
 					continue;
 
-				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction"))
+				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction/pending/"))
+					continue;
+				
+				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction/validation/"))
 					continue;
 
 				// For the museum game.
@@ -77,7 +80,7 @@ public class CreateSneliusClusterConceptScript
 					for (int rs = 0; rs < rulesetsInGame.size(); rs++)
 					{
 						final Ruleset ruleset = rulesetsInGame.get(rs);
-						if (!ruleset.optionSettings().isEmpty()) // We check if the ruleset is implemented.
+						if (!ruleset.optionSettings().isEmpty() && !ruleset.heading().contains("Incomplete")) // We check if the ruleset is implemented.
 							gameRulesetNames.add(ruleset.heading());
 					}
 				}

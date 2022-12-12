@@ -1,7 +1,20 @@
 (define "Demala Diviyan Keliya_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (material)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_from=<{}>:from=<{0,0}>:pat=<els=[]>" 0.6553255)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!f{0,1/8}]>" -7.312483E-5)
+            (pair "rel:from=<{}>:pat=<els=[N8{0,0,0}]>" 0.15901111)
+            }
+        )
     })
     
 )

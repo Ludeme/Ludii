@@ -1,0 +1,958 @@
+(game "Qirq"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Qirq1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move 
+                    (from)
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Qirq1 ruleset.")
+    
+    (item "Qirq2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move 
+                    (from)
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Qirq2 ruleset.")
+    
+    (item "Qirq3" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move 
+                    (from)
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Qirq3 ruleset.")
+    
+    (item "Qirq4" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move 
+                    (from)
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Qirq4 ruleset.")
+    
+    (item "Qirq5" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move 
+                    (from)
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Qirq5 ruleset.")
+    
+    (item "Qirq6" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Qirq6 ruleset.")
+    
+    (item "Qirq7" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Qirq7 ruleset.")
+    
+    (item "Qirq8" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Qirq8 ruleset.")
+    
+    (item "Qirq9" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Qirq9 ruleset.")
+    
+    (item "Qirq10" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step All 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Qirq10 ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2)
+        
+        (equipment 
+            { 
+            (board (square 3) use:Vertex) 
+            (hand Each)
+            (piece [#])
+        })
+        (rules [#])
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Qirq1 (Reconstructed)" {
+        "Variant/Qirq1"
+    })
+    (ruleset "Ruleset/Qirq2 (Reconstructed)" {
+        "Variant/Qirq2"
+    })
+    (ruleset "Ruleset/Qirq3 (Reconstructed)" {
+        "Variant/Qirq3"
+    })
+    (ruleset "Ruleset/Qirq4 (Reconstructed)" {
+        "Variant/Qirq4"
+    })
+    (ruleset "Ruleset/Qirq5 (Reconstructed)" {
+        "Variant/Qirq5"
+    })
+    (ruleset "Ruleset/Qirq6 (Reconstructed)" {
+        "Variant/Qirq6"
+    })
+    (ruleset "Ruleset/Qirq7 (Reconstructed)" {
+        "Variant/Qirq7"
+    })
+    (ruleset "Ruleset/Qirq8 (Reconstructed)" {
+        "Variant/Qirq8"
+    })
+    (ruleset "Ruleset/Qirq9 (Reconstructed)" {
+        "Variant/Qirq9"
+    })
+    (ruleset "Ruleset/Qirq10 (Reconstructed)" {
+        "Variant/Qirq10"
+    })
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Qirq is a simple game of alignment played in Southwest Asia. Though the game is of a type worldwide, and is likely older, This version is the earliest known name for the game.")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Name of game. 3x3 intersecting lines. Pieces are placed on the lines."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1066"))
+        (useFor "Ruleset/Qirq1 (Reconstructed)" (rules "The game Qirq is played by two players on a 3x3 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Qirq1 (Reconstructed)" (id "2778"))
+        (useFor "Ruleset/Qirq2 (Reconstructed)" (rules "The game Qirq is played by two players on a 3x3 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Qirq2 (Reconstructed)" (id "2779"))
+        (useFor "Ruleset/Qirq3 (Reconstructed)" (rules "The game Qirq is played by two players on a 3x3 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Qirq3 (Reconstructed)" (id "2780"))
+        (useFor "Ruleset/Qirq4 (Reconstructed)" (rules "The game Qirq is played by two players on a 3x3 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Qirq4 (Reconstructed)" (id "2781"))
+        (useFor "Ruleset/Qirq5 (Reconstructed)" (rules "The game Qirq is played by two players on a 3x3 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Qirq5 (Reconstructed)" (id "2782"))
+        (useFor "Ruleset/Qirq6 (Reconstructed)" (rules "The game Qirq is played by two players on a 3x3 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Qirq6 (Reconstructed)" (id "2783"))
+        (useFor "Ruleset/Qirq7 (Reconstructed)" (rules "The game Qirq is played by two players on a 3x3 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an adjacent direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Qirq7 (Reconstructed)" (id "2784"))
+        (useFor "Ruleset/Qirq8 (Reconstructed)" (rules "The game Qirq is played by two players on a 3x3 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers hop adjacent or step adjacent.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an adjacent direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Qirq8 (Reconstructed)" (id "2785"))
+        (useFor "Ruleset/Qirq9 (Reconstructed)" (rules "The game Qirq is played by two players on a 3x3 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Qirq9 (Reconstructed)" (id "2786"))
+        (useFor "Ruleset/Qirq10 (Reconstructed)" (rules "The game Qirq is played by two players on a 3x3 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step all.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Qirq10 (Reconstructed)" (id "2787"))
+        (source "Murray 1951: 35.")
+        (version "1.3.8")
+        (classification "board/space/line/reconstruction/done")
+        (credit "Eric Piette")
+        (origin "This game was played in Southwest Asia, from around 1503 to 1566.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+    })
+    
+    (recon {
+        (concept "NumStartComponents" minValue:0 maxValue:10)
+    })
+    
+)
+

@@ -1,0 +1,1262 @@
+(define "SiteToEnter" (coord "A3"))
+
+(define "Throw" (mapEntry (count Pips)))
+
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" "Throw" #1 #2))
+
+(define "PieceMovement" <Ruleset:piece>)
+
+(define "SevenPiecesOnBoard"
+    (start { 	
+        (place "SenetPiece1" (sites {"B3" "D3" "F3" "H3" "J3" "I2" "G2"}))
+        (place "SenetPiece2" (sites {"A3" "C3" "E3" "G3" "I3" "J2" "H2"}))
+    })
+)
+
+(define "FivePiecesOnBoard"
+    (start { 	
+        (place "SenetPiece1" (sites {"B3" "D3" "F3" "H3" "J3"}))
+        (place "SenetPiece2" (sites {"A3" "C3" "E3" "G3" "I3"}))
+    })
+)
+
+(define "Ankh Waset Site" (coord "F2"))
+
+//---------------------------Define specifically for Kendall------------------------------------------
+
+(define "MoveInFront7Pieces" (fromTo (from (coord "G2")) (to (coord "F2"))))
+
+(define "MoveInFront5Pieces" (fromTo (from (coord "J3")) (to (coord "J2"))))
+
+(define "TwoConsecutiveSpaces" 
+    (if (= ("SiteToMoveOnTrack" #1 #2) 19)
+        (or (is Line 2 W through:("SiteToMoveOnTrack" #1 #2)) (is Line 2 N through:("SiteToMoveOnTrack" #1 #2)))
+        (if (= ("SiteToMoveOnTrack" #1 #2) 29)
+            (or (is Line 2 W through:("SiteToMoveOnTrack" #1 #2)) (is Line 2 S through:("SiteToMoveOnTrack" #1 #2)))
+            (if (= ("SiteToMoveOnTrack" #1 #2) 10)
+                (or (is Line 2 E through:("SiteToMoveOnTrack" #1 #2)) (is Line 2 S through:("SiteToMoveOnTrack" #1 #2)))
+                (if (= ("SiteToMoveOnTrack" #1 #2) 0)
+                    (or (is Line 2 E through:("SiteToMoveOnTrack" #1 #2)) (is Line 2 N through:("SiteToMoveOnTrack" #1 #2)))
+                    (or (is Line 2 W through:("SiteToMoveOnTrack" #1 #2)) (is Line 2 E through:("SiteToMoveOnTrack" #1 #2)))
+                )
+            )
+        )
+    )
+)
+
+(define "NextSiteFrom" ("NextSiteOnTrack" 1 from:(last From)))
+
+(define "BearOffPiece" (move Remove (from)))
+
+(define "BearOffPieceIfNoPieceInHomeRow" 
+    (if (all Sites (sites Occupied by:Mover) if:(not (is In (site) (sites "TopRow"))))
+        (move Remove (from))
+    )
+)
+
+(define "BearOffPieceOnWater" (move Remove (sites "Water")))
+
+(define "BearOffPieceOnWaterIfNoPieceInHomeRow" 
+    (if (all Sites (sites Occupied by:Mover) if:(not (is In (site) (sites "TopRow"))))
+        (move Remove (sites "Water"))
+    )
+)
+
+(define "TrapRule"
+    (if (and (or {
+                ("IsEndTrack" ("SiteToMoveOnTrack")) 
+                ("IsOffBoard" ("SiteToMoveOnTrack"))
+                (is In ("SiteToMoveOnTrack") (union {(sites "Water") (sites "Baw") (sites "Two Men") (sites "Horus")}))
+            })
+            (= 1 (count Sites in:(intersection (sites Empty) (sites "Water"))))
+        )
+        (move (from) (to (sites "Water")))
+    )
+)
+
+(define "ThrowOfOne" (or (is Mover P1) (and (is Mover P2) (= (value Player Mover) 1))))
+
+(define "NoStartingThrow" True)
+
+(define "StartingThrow" #1)
+
+(define "SetStartingThrow" (then (if (and (!= (value Player Mover) 1) (= 1 ("Throw"))) (set Value Mover 1))))
+
+(define "MovePieceForward"
+    (or {
+        // Square 26
+        (if (is In (from) (sites "Neferu"))
+            (if ("IsNotOffBoard" ("SiteToMoveOnTrack"))
+                (if ("IsEndTrack" ("SiteToMoveOnTrack"))
+                    #1 // Bear off rule
+                    (if 
+                        (is Empty ("SiteToMoveOnTrack"))
+                        (move 
+                            (from) 
+                            (to ("SiteToMoveOnTrack"))
+                        )
+                        (if (and (not ("TwoConsecutiveSpaces")) ("IsEnemyAt" ("SiteToMoveOnTrack")))
+                            (if (and 
+                                    (= 1 (count in:(intersection (sites Empty) (sites "Water")))) 
+                                    (is In ("SiteToMoveOnTrack") (union {(sites "Baw") (sites "Two Men") (sites "Horus")}))
+                                )
+                                (move Swap Pieces
+                                    (from) 	
+                                    ("SiteToMoveOnTrack") 
+                                    (then (fromTo 
+                                            (from (last From)) 
+                                            (to ("NextSiteFrom"))
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        // Squares 28-29
+        (if (is In (from) (union {(sites "Two Men") (sites "Baw")}))
+            (if ("IsNotOffBoard" ("SiteToMoveOnTrack"))
+                (if ("IsEndTrack" ("SiteToMoveOnTrack")) 
+                    #1 // Bear off rule
+                )
+            )
+        )
+        // Square 30
+        (if (is In (from) (sites "Horus"))
+            (if (or 
+                    ("IsEndTrack" ("SiteToMoveOnTrack")) 
+                    ("IsOffBoard" ("SiteToMoveOnTrack"))
+                )
+                #1 // Bear off rule
+            )
+        )
+        (if (not (is In (from) (union {(sites "Neferu") (sites "Water") (sites "Baw") (sites "Two Men") (sites "Horus")})))
+            (or {
+                #2 // Trap rule
+                // Squares 1 to 25
+                (if (not 
+                        (or {
+                            ("IsEndTrack" ("SiteToMoveOnTrack")) 
+                            ("IsOffBoard" ("SiteToMoveOnTrack"))
+                            (is In ("SiteToMoveOnTrack") (union {(sites "Water") (sites "Baw") (sites "Two Men") (sites "Horus")}))
+                        })
+                    )
+                    (if 
+                        (is Empty ("SiteToMoveOnTrack"))
+                        (move 
+                            (from) 
+                            (to ("SiteToMoveOnTrack"))
+                        )
+                        (if (and (not ("TwoConsecutiveSpaces")) ("IsEnemyAt" ("SiteToMoveOnTrack")))
+                            (move Swap Pieces
+                                (from) 	
+                                ("SiteToMoveOnTrack") 
+                            )
+                        )
+                    )
+                )
+            })
+        )
+    })
+)
+
+(define "MovePieceBackward"
+    (or {
+        // Square 26
+        (if (is In (from) (sites "Neferu"))
+            (if ("IsNotOffBoard" ("SiteToMoveOnTrack" "TrackOpposite"))
+                (if 
+                    (is Empty ("SiteToMoveOnTrack" "TrackOpposite"))
+                    (move 
+                        (from) 
+                        (to ("SiteToMoveOnTrack" "TrackOpposite"))
+                    )
+                    (if (and (not ("TwoConsecutiveSpaces" "TrackOpposite")) ("IsEnemyAt" ("SiteToMoveOnTrack" "TrackOpposite")))
+                        (move Swap Pieces
+                            (from) 	
+                            ("SiteToMoveOnTrack" "TrackOpposite") 
+                        )
+                    )
+                )
+            )
+        )
+        (if (not (is In (from) (union {(sites "Neferu") (sites "Water") (sites "Baw") (sites "Two Men") (sites "Horus")})))
+            // Squares 1 to 25
+            (if ("IsNotOffBoard" ("SiteToMoveOnTrack" "TrackOpposite"))
+                (if 
+                    (is Empty ("SiteToMoveOnTrack" "TrackOpposite"))
+                    (move 
+                        (from) 
+                        (to ("SiteToMoveOnTrack" "TrackOpposite"))
+                    )
+                    (if (and (not ("TwoConsecutiveSpaces" "TrackOpposite")) ("IsEnemyAt" ("SiteToMoveOnTrack" "TrackOpposite")))
+                        (move Swap Pieces
+                            (from) 	
+                            ("SiteToMoveOnTrack" "TrackOpposite") 
+                        )
+                    )
+                )
+            )
+        )
+    })
+)
+
+(define "PieceOnAnkhWasetFromWaterHasToMove" 
+    (and 
+        (= (state at:("Ankh Waset Site")) 1) 
+        (= 1 (count Sites in:(intersection (sites Occupied by:Mover) (sites "Ankh Waset"))))
+    )	
+)
+
+(define "PieceOnAnkhWasetHasMoved" (then (set State at:(last To) 0)))
+
+(define "PieceOnAnkhWasetHasToMove" (then (set State at:(last To) 1)))
+
+(define "PieceOnWater" (= 1 (count Sites in:(intersection (sites Occupied by:Mover) (sites "Water")))))
+
+(define "NoPieceOnAnkhWaset" (= 1 (count Sites in:(intersection (sites Empty) (sites "Ankh Waset")))))
+
+(define "KendallMoves" 
+    (if ("PieceOnAnkhWasetFromWaterHasToMove") 
+        (priority {
+            (if 
+                (is Empty ("SiteToMoveOnTrack" from:("Ankh Waset Site")))
+                (move 
+                    (from ("Ankh Waset Site")) 
+                    (to ("SiteToMoveOnTrack" from:("Ankh Waset Site")))
+                )
+                (if (and 
+                        (not ("TwoConsecutiveSpaces" from:("Ankh Waset Site"))) 
+                        ("IsEnemyAt" ("SiteToMoveOnTrack" from:("Ankh Waset Site")))
+                    )
+                    (move Swap Pieces
+                        ("Ankh Waset Site") 
+                        ("SiteToMoveOnTrack" from:("Ankh Waset Site")) 
+                    )
+                )
+                ("PieceOnAnkhWasetHasMoved")
+            )
+            (if 
+                (is Empty ("SiteToMoveOnTrack" from:("Ankh Waset Site") "TrackOpposite"))
+                (move 
+                    (from ("Ankh Waset Site")) 
+                    (to ("SiteToMoveOnTrack" from:("Ankh Waset Site") "TrackOpposite"))
+                )
+                (if (and 
+                        (not ("TwoConsecutiveSpaces" from:("Ankh Waset Site") "TrackOpposite")) 
+                        ("IsEnemyAt" ("SiteToMoveOnTrack" from:("Ankh Waset Site") "TrackOpposite"))
+                    )
+                    (move Swap Pieces
+                        ("Ankh Waset Site") 
+                        ("SiteToMoveOnTrack" from:("Ankh Waset Site") "TrackOpposite") 
+                    )
+                )
+                ("PieceOnAnkhWasetHasMoved")
+            )
+        })
+        (if ("PieceOnWater")
+            (if (= ("Throw") 4)
+                #3 // Bear off rule on water
+                (or
+                    (if ("NoPieceOnAnkhWaset")
+                        (move (from (sites "Water")) (to (sites "Ankh Waset")) ("PieceOnAnkhWasetHasToMove"))
+                    )
+                    (move Pass)
+                )
+            )
+            
+            (if ("StartingThrow" #1)
+                (priority {
+                    (forEach Piece ("MovePieceForward" #2 #4))
+                    (forEach Piece ("MovePieceBackward"))
+                    }
+                    (then (if (is In ("Throw") (sites {1 4 5})) (moveAgain)))
+                )
+            )
+        )
+    )
+)
+
+(define "KendallRules" 
+    (rules 
+        #1 // Starting rules
+        (play 
+            (do 
+                (roll #5)
+                next:(if (can Move ("KendallMoves" #2 #3 #4 #6))
+                    ("KendallMoves" #2 #3 #4 #6)
+                    (move Pass (then (if (is In ("Throw") (sites {1 4 5})) (moveAgain))))
+                )
+            )
+        )
+        
+        (end ("EscapeWin"))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Senet Exhibition"
+    (players 2) 
+    (equipment { 
+        (board (rectangle 3 10) 
+            { 
+            <Track>
+            }
+        )
+        <Dice>
+        <Throw>
+        (regions "Symbols" (sites {"F2" "F1" "G1" "H1" "I1"}))
+        (regions "Ankh Waset" (sites {"F2"}))
+        (regions "Neferu" (sites {"F1"}))
+        (regions "Water" (sites {"G1"}))
+        (regions "Baw" (sites {"H1"}))
+        (regions "Two Men" (sites {"I1"}))
+        (regions "Horus" (sites {"J1"}))
+        (regions "TopRow" (sites Top))
+        (regions "MiddleRow" (difference (expand (sites Top)) (sites Top)))
+        (regions "BottomRow" (sites Bottom))
+        (piece "SenetPiece" Each ("PieceMovement")) 
+        (hand Each)
+    }) 
+    <Ruleset:rules>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Track" <Track> args:{<track>}
+    {
+    (item "Boustrophedon" 
+        <
+        (track "Track1" "20,E,S1,W,S1,E,End" P1 directed:True)
+        (track "Track2" "20,E,S1,W,S1,E,End" P2 directed:True)
+        > 
+    "The track is a boustrophedon track.")
+    
+    (item "Boustrophedon + Backward Except Three Last Spaces" 
+        <
+        (track "Track1" "20,E,S1,W,S1,E,End" P1 directed:True)
+        (track "Track2" "20,E,S1,W,S1,E,End" P2 directed:True)
+        (track "TrackOpposite1" "6,W,N1,E,N1,W" P1 directed:True)
+        (track "TrackOpposite2" "6,W,N1,E,N1,W" P2 directed:True)
+        > 
+    "The track is a boustrophedon track with backward track.")
+    
+    (item "Boustrophedon + Backward" 
+        <
+        (track "Track1" "20,E,S1,W,S1,E,End" P1 directed:True)
+        (track "Track2" "20,E,S1,W,S1,E,End" P2 directed:True)
+        (track "TrackOpposite1" "9,W,N1,E,N1,W" P1 directed:True)
+        (track "TrackOpposite2" "9,W,N1,E,N1,W" P2 directed:True)
+        > 
+    "The track is a boustrophedon track with backward track.")**
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(option "Dice" <Dice> args:{<dice>}
+    {
+    (item "1xD4" <(dice d:4 num:1)> "One D4.")
+    (item "4xD2" <("StickDice" 4)> "Four D2.")**
+    }
+)
+
+//----------------------------------------------------
+
+(option "Throw" <Throw> args:{<throw>}
+    {
+    (item "Sum" <(map {(pair 0 0) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})> "The throw is equal to the sum of the dice.")
+    (item "Piccione-Kendall" <(map {(pair 0 5) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})> "The value of the throw is equal to the sum except when the sum is 0 the throw = 5.")**
+    (item "Jequier" <(map {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})> "The value of the throw is equal to the sum except when the sum is 0 the throw = 6.")
+    }
+)
+
+//----------------------------------------------------
+
+(option "Play Rules" <Ruleset> args:{<piece> <rules>}
+    {
+    (item "Kendall" 
+        <>
+        <
+        ("KendallRules" ("SevenPiecesOnBoard") ("NoStartingThrow") ("BearOffPiece") ("BearOffPieceOnWater"))
+        > 
+    "The rules of Kendall.")**
+    
+    //-----------------------------------
+    
+    (item "Kendall 5 pieces" 
+        <>
+        <
+        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("NoStartingThrow") ("BearOffPiece") ("BearOffPieceOnWater"))
+        > 
+    "The rules of Kendall with 5 pieces.")
+    
+    //-----------------------------------
+    
+    (item "Kendall with trap" 
+        <>
+        <
+        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("NoStartingThrow") ("BearOffPiece") ("BearOffPieceOnWater") ~ ("TrapRule"))
+        > 
+    "The rules of Kendall. A roll greater than that required to land exactly on the Neferu site causes the player to fall into the water.")
+    
+    //-----------------------------------
+    
+    (item "Kendall special bear off" 
+        <>
+        <
+        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("NoStartingThrow") ("BearOffPieceIfNoPieceInHomeRow") ("BearOffPieceOnWaterIfNoPieceInHomeRow"))
+        > 
+    "The rules of Kendall. Cannot bear off until all pieces are beyond the home row.")
+    
+    //-----------------------------------
+    
+    (item "Kendall starting throw" 
+        <>
+        <
+        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("ThrowOfOne") ("BearOffPiece") ("BearOffPieceOnWater") ("SetStartingThrow"))
+        > 
+    "The rules of Kendall. A throw of 1 is required to begin.")
+    
+    //-----------------------------------
+    
+    (item "Kendall 5 pieces and with trap" 
+        <>
+        <
+        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("NoStartingThrow") ("BearOffPiece") ("BearOffPieceOnWater") ~ ("TrapRule"))
+        > 
+    "The rules of Kendall with 5 pieces. A roll greater than that required to land exactly on the Neferu site causes the player to fall into the water.")
+    
+    //-----------------------------------
+    
+    (item "Kendall 5 pieces special bear off" 
+        <>
+        <
+        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("NoStartingThrow") ("BearOffPieceIfNoPieceInHomeRow") ("BearOffPieceOnWaterIfNoPieceInHomeRow") ~ ~)
+        > 
+    "The rules of Kendall with 5 pieces. A roll greater than that required to land exactly on the Neferu site causes the player to fall into the water.")
+    
+    //-----------------------------------
+    
+    (item "Kendall with trap and starting throw" 
+        <>
+        <
+        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("ThrowOfOne") ("BearOffPiece") ("BearOffPieceOnWater") ("SetStartingThrow") ("TrapRule"))
+        > 
+    "The rules of Kendall. A roll greater than that required to land exactly on the Neferu site causes the player to fall into the water. A throw of 1 is required to begin.")
+    
+    //-----------------------------------
+    
+    (item "Kendall 5 pieces and starting throw" 
+        <>
+        <
+        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("ThrowOfOne") ("BearOffPiece") ("BearOffPieceOnWater") ("SetStartingThrow") ~)
+        > 
+    "The rules of Kendall with 5 pieces. A throw of 1 is required to begin.")
+    
+    //-----------------------------------
+    
+    (item "Kendall starting throw special bear off" 
+        <>
+        <
+        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("ThrowOfOne") ("BearOffPieceIfNoPieceInHomeRow") ("BearOffPieceOnWaterIfNoPieceInHomeRow") ("SetStartingThrow") ~)
+        > 
+    "The rules of Kendall. Cannot bear off until all pieces are beyond the home row. A throw of 1 is required to begin.")
+    
+    //-----------------------------------
+    
+    (item "Kendall with trap and special bear off" 
+        <>
+        <
+        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("NoStartingThrow") ("BearOffPieceIfNoPieceInHomeRow") ("BearOffPieceOnWaterIfNoPieceInHomeRow") ~ ("TrapRule"))
+        > 
+    "The rules of Kendall. A roll greater than that required to land exactly on the Neferu site causes the player to fall into the water. Cannot bear off until all pieces are beyond the home row.")
+    
+    //-----------------------------------
+    
+    (item "Kendall 5 pieces special bear off and starting throw" 
+        <>
+        <
+        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("ThrowOfOne") ("BearOffPieceIfNoPieceInHomeRow") ("BearOffPieceOnWaterIfNoPieceInHomeRow") ("SetStartingThrow"))
+        > 
+    "The rules of Kendall with 5 pieces. Cannot bear off until all pieces are beyond the home row. A throw of 1 is required to begin.")
+    
+    //-----------------------------------
+    
+    (item "Kendall 5 pieces trap and special bear off" 
+        <>
+        <
+        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("NoStartingThrow") ("BearOffPieceIfNoPieceInHomeRow") ("BearOffPieceOnWaterIfNoPieceInHomeRow") ~ ("TrapRule"))
+        > 
+    "The rules of Kendall with 5 pieces. Cannot bear off until all pieces are beyond the home row. A roll greater than that required to land exactly on the Neferu site causes the player to fall into the water.")
+    
+    //-----------------------------------
+    
+    (item "Kendall starting throw trap and special bear off" 
+        <>
+        <
+        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("ThrowOfOne") ("BearOffPieceIfNoPieceInHomeRow") ("BearOffPieceOnWaterIfNoPieceInHomeRow") ("SetStartingThrow") ("TrapRule"))
+        > 
+    "The rules of Kendall. A roll greater than that required to land exactly on the Neferu site causes the player to fall into the water. Cannot bear off until all pieces are beyond the home row. A throw of 1 is required to begin.")
+    
+    //-----------------------------------
+    
+    (item "Kendall 5 pieces trap and starting throw" 
+        <>
+        <
+        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("ThrowOfOne") ("BearOffPiece") ("BearOffPieceOnWater") ("SetStartingThrow") ("TrapRule"))
+        > 
+    "The rules of Kendall with 5 pieces. A roll greater than that required to land exactly on the Neferu site causes the player to fall into the water. A throw of 1 is required to begin.")
+    
+    //-----------------------------------
+    
+    (item "Kendall all options" 
+        <>
+        <
+        ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("ThrowOfOne") ("BearOffPieceIfNoPieceInHomeRow") ("BearOffPieceOnWaterIfNoPieceInHomeRow") ("SetStartingThrow") ("TrapRule"))
+        > 
+    "The rules of Kendall with 5 pieces. A roll greater than that required to land exactly on the Neferu site causes the player to fall into the water. Cannot bear off until all pieces are beyond the home row. A throw of 1 is required to begin.")
+    
+    //-----------------------------------
+    
+    (item "Bell" 
+        <
+        (define "NotAFriendOrNotOnSymbols" 
+            (if (is In ("SiteToMoveOnTrack" #1) (sites "Symbols"))
+                (is Empty ("SiteToMoveOnTrack" #1))
+                (not ("IsFriendAt" ("SiteToMoveOnTrack" #1)))
+            )
+        )
+        
+        //-----------------------------------
+        
+        (if ("IsEndTrack" ("SiteToMoveOnTrack" #1))
+            (move
+                Remove
+                (from) 
+                (then 
+                    (addScore Mover 1) 
+                )
+            )
+            (if ("IsNotOffBoard" ("SiteToMoveOnTrack" #1)) 			
+                (if 
+                    ("NotAFriendOrNotOnSymbols" #1)
+                    (move 
+                        (from) 
+                        (to 
+                            ("SiteToMoveOnTrack" #1) 
+                            if:True 
+                            (apply 
+                                if:("IsEnemyAt" (to)) 
+                                (remove (to))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        >
+        <
+        (rules 
+            (start { 	
+                (place "SenetPiece1" (sites {"A3" "C3" "E3" "G3" "I3" "J2" "H2" "F2" "D2" "B2"}))
+                (place "SenetPiece2" (sites {"B3" "D3" "F3" "H3" "J3" "I2" "G2" "E2" "C2" "A2"}))
+            })	
+            
+            phases:{
+            (phase "Opening"
+                (play 
+                    ("RollMove"
+                        (move Pass 
+                            (then 
+                                (if (is Mover P1) 
+                                    (set Var (count Pips))
+                                    (if (< (var) (count Pips))
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                (nextPhase (= 2 (count Moves)) "Playing")
+            )
+            (phase "Playing"
+                (play 
+                    ("RollMove"
+                        (priority
+                            (forEach Site 
+                                (sites "Symbols")
+                                (if (= (who at:(to)) (mover))
+                                    ("PieceMovement" from:(to))
+                                )
+                            )
+                            (forEach Piece)
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (and (no Pieces P1) (no Pieces P2)) 
+                    (byScore)
+                )
+            )
+        )
+        > 
+    "The rules of Bell.") 
+    
+    //-----------------------------------
+    
+    (item "Piccione" 
+        <
+        (define "CurrentThrow" (value Player Mover))
+        
+        (define "IteratedThrow" (value))
+        
+        (define "SiteToMoveOnTrackPiccione" ("NextSiteOnTrack" "IteratedThrow" #1))
+        
+        (define "RestOfThrow" 
+            (if (= (last To) (last From))
+                (- (value Player Mover) (+ 1 (count StepsOnTrack (last From) 9)))
+                (- (value Player Mover) (count StepsOnTrack (last From) (last To)))
+            )
+        )
+        
+        //-----------------------------------
+        
+        (if (or (not ("HasEnteredAPiece")) (and ("HasEnteredAPiece") (= (from) ("SiteToEnter"))))
+            (priority {
+                (forEach Value min:1 max:("CurrentThrow")
+                    (if ("IsEndTrack" ("SiteToMoveOnTrackPiccione"))
+                        (move Remove
+                            (from) 
+                            (then 
+                                (if ("HasAnAdditionalThrow") ("ResetAdditionalThrow")) 
+                            )
+                        )
+                        (if ("IsNotOffBoard" ("SiteToMoveOnTrackPiccione")) 			
+                            (if 
+                                (is Empty ("SiteToMoveOnTrackPiccione"))
+                                (move 
+                                    (from) 
+                                    (to 
+                                        ("SiteToMoveOnTrackPiccione") 
+                                    )
+                                    (then (if ("HasAnAdditionalThrow") ("ResetAdditionalThrow")))
+                                )
+                            )
+                        )
+                        (then 
+                            (and
+                                (if (is In (last To) (sites "Water"))
+                                    ("AutoCaptureLastPiece") 
+                                )
+                                (if 
+                                    (< 0 ("RestOfThrow"))
+                                    (and {
+                                        (set Value Mover ("RestOfThrow")) 
+                                        (if (is In (last To) (union (sites "Ankh Waset") (sites "Neferu")))
+                                            ("SaveAdditionalThrow") 
+                                        )
+                                        (moveAgain)
+                                    })
+                                    (if (or ("HasASaveAdditionalThrow") (is In (last To) (union (sites "Ankh Waset") (sites "Neferu"))))
+                                        (and ("GetAdditionalThrow") (moveAgain))
+                                        ("ResetAdditionalThrow")
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                (forEach Value min:1 max:("CurrentThrow")
+                    (if ("IsNotOffBoard" ("SiteToMoveOnTrackPiccione" "TrackOpposite")) 			
+                        (if 
+                            (is Empty ("SiteToMoveOnTrackPiccione" "TrackOpposite"))
+                            (move 
+                                (from) 
+                                (to 
+                                    ("SiteToMoveOnTrackPiccione" "TrackOpposite") 
+                                )
+                                (then (if ("HasAnAdditionalThrow") ("ResetAdditionalThrow")))
+                            )
+                        )
+                    )
+                    (then 
+                        (and
+                            (if (is In (last To) (sites "Water"))
+                                ("AutoCaptureLastPiece") 
+                            )
+                            (if 
+                                (< 0 ("RestOfThrow"))
+                                (and {
+                                    (set Value Mover ("RestOfThrow")) 
+                                    (if (is In (last To) (union (sites "Ankh Waset") (sites "Neferu")))
+                                        ("SaveAdditionalThrow") 
+                                    )
+                                    (moveAgain)
+                                })
+                                (if (or ("HasASaveAdditionalThrow") (is In (last To) (union (sites "Ankh Waset") (sites "Neferu"))))
+                                    (and ("GetAdditionalThrow") (moveAgain))
+                                    ("ResetAdditionalThrow")
+                                )
+                            )
+                        )
+                    )
+                )
+            })
+        )
+        >
+        <
+        (define "HasASaveAdditionalThrow" (= (var) 1))
+        
+        (define "HasAnAdditionalThrow" (= (var) 2))
+        
+        (define "SaveAdditionalThrow" (set Var 1))
+        
+        (define "ResetAdditionalThrow" (set Var 0))
+        
+        (define "GetAdditionalThrow" (set Var 2))
+        
+        (define "HasEnteredAPiece" (= (last From) (handSite Mover)))
+        
+        (define "HasEnteredAPieceOrNewTurn" (or ("HasEnteredAPiece") (and (!= (last From) (handSite Mover)) (or ("HasAnAdditionalThrow") ("NewTurn")))))
+        
+        (define "CanEnterAPiece" (and {(or ("HasAnAdditionalThrow") ("NewTurn")) ("HandOccupied" Mover) (= ("Throw") 1) }))
+        
+        (define "AutoCaptureLastPiece" 
+            (move (from (last To)) (to (handSite Mover)) 
+                (then (if ("HasAnAdditionalThrow") ("ResetAdditionalThrow")))
+            )
+        )
+        
+        (define "MoveApieceAfterThrowing" 
+            (do (set Value Mover ("Throw"))
+                next:(forEach Piece)
+            )
+        )
+        
+        (define "CanMoveEnteredPiece" 
+            (if (= ("Throw") 1)
+                (is Empty 21)
+                (if (= ("Throw") 2)
+                    (or (is Empty 21) (is Empty 22))
+                    (if (= ("Throw") 3)
+                        (or {(is Empty 21) (is Empty 22) (is Empty 23) })
+                        (if (= ("Throw") 4)
+                            (or {(is Empty 21) (is Empty 22) (is Empty 23) (is Empty 24)})
+                            (or {(is Empty 21) (is Empty 22) (is Empty 23) (is Empty 24) (is Empty 25)})
+                        )
+                    )
+                )
+            )
+        )
+        
+        //-----------------------------------
+        
+        (rules 
+            (start (place "SenetPiece" "Hand" count:5))	
+            
+            (play 
+                (do 
+                    (if (or {(= (last From) (handSite Mover)) ("NewTurn") ("HasAnAdditionalThrow") })
+                        (roll) 
+                    )
+                    next:(or 
+                        (if ("CanEnterAPiece") 
+                            (move 
+                                (from (handSite Mover)) 
+                                (to ("SiteToEnter")) 
+                                (then 
+                                    (and 
+                                        (if ("HasAnAdditionalThrow") ("ResetAdditionalThrow")) 
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                        )
+                        (if ("HasEnteredAPieceOrNewTurn")
+                            (if ("HasEnteredAPiece")
+                                (if ("CanMoveEnteredPiece")
+                                    ("MoveApieceAfterThrowing")
+                                    ("AutoCaptureLastPiece")
+                                )
+                                ("MoveApieceAfterThrowing")
+                            )
+                            (forEach Piece)
+                        )
+                    )
+                )
+            )
+            
+            (end ("EscapeWin"))
+        )
+        > 
+    "The rules of Piccione.") 
+    
+    //-----------------------------------
+    
+    (item "Jequier" 
+        <
+        (define "EmptyOrEnemyNotOnSafePlacesAndNotTwoInARow" 
+            (or 
+                (is Empty ("SiteToMoveOnTrack" #1))
+                (and {
+                    ("IsEnemyAt" ("SiteToMoveOnTrack" #1))
+                    (not (is In ("SiteToMoveOnTrack" #1) (union {(sites "Ankh Waset") (sites "Neferu") (sites "Baw") (sites "Two Men") }))) 
+                    (and (not (is Line 2 W through:("SiteToMoveOnTrack" #1))) (not (is Line 2 E through:("SiteToMoveOnTrack" #1))))
+                })
+            )
+        )
+        
+        (define "NextSite" (trackSite Move steps:1))
+        
+        (define "FurthestEmptySite"
+            (if (is Empty 20)
+                20
+                (if (is Empty 21)
+                    21
+                    (if (is Empty 22)
+                        22
+                        (if (is Empty 23)
+                            23
+                            (if (is Empty 24)
+                                24
+                                (if (is Empty 25)
+                                    25
+                                    (if (is Empty 26)
+                                        26
+                                        (if (is Empty 27)
+                                            27
+                                            (if (is Empty 28)
+                                                28
+                                                29
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (define "NotGroupOfThree" 
+            (and
+                (not (is Line 3 W through:(trackSite Move #1 steps:(/ ("Throw") 2)) whats:{(id "SenetPiece1") (id "SenetPiece2")})) 
+                (not (is Line 3 E through:(trackSite Move #1 steps:(/ ("Throw") 2)) whats:{(id "SenetPiece1") (id "SenetPiece2")}))
+            )
+        )
+        
+        (define "AllPieceInBottomRow" 
+            (all Sites (sites Occupied by:Mover) if:(is In (site) (sites "BottomRow")))
+        )
+        
+        (define "NumEnemyPiecesOnTopRow" 
+            (count Sites in:(intersection (sites Occupied by:Next) (sites "TopRow")))
+        )
+        (define "NumEnemyPiecesOnMiddleRow" 
+            (count Sites in:(intersection (sites Occupied by:Next) (sites "MiddleRow")))
+        )
+        (define "NumEnemyPiecesOnBottomRow" 
+            (count Sites in:(intersection (sites Occupied by:Next) (sites "BottomRow")))
+        )
+        
+        //-----------------------------------
+        
+        (priority {
+            (if (and 
+                    (or 
+                        (not (is In (from) (sites "TopRow"))) 
+                        (and 
+                            (is In (from) (sites "TopRow")) 
+                            (is Empty ("NextSite"))
+                        )
+                    )
+                    (or (< "Throw" 4) (and (>= "Throw" 4) ("NotGroupOfThree")))
+                )
+                (if (or 
+                        ("IsEndTrack" ("SiteToMoveOnTrack" #1)) 
+                        ("IsOffBoard" ("SiteToMoveOnTrack" #1))
+                    )
+                    (if ("AllPieceInBottomRow")
+                        (move Remove (from))
+                    )
+                    (if 
+                        ("EmptyOrEnemyNotOnSafePlacesAndNotTwoInARow" #1)
+                        (move 
+                            (from) 
+                            (to 
+                                ("SiteToMoveOnTrack" #1) 
+                                if:True 
+                                (apply 
+                                    if:("IsEnemyAt" (to)) 
+                                    (fromTo (from (to)) (to "FurthestEmptySite"))
+                                )
+                            )
+                        )
+                    )
+                )
+                (then 
+                    (if (is In (last To) (sites "Water"))
+                        (fromTo (from (last To)) (to "FurthestEmptySite"))
+                    )
+                )
+            )
+            (if (and 
+                    (or 
+                        (not (is In (from) (sites "TopRow"))) 
+                        (and 
+                            (is In (from) (sites "TopRow")) 
+                            (is Empty ("NextSite"))
+                        )
+                    )
+                    (or (< "Throw" 4) (and (>= "Throw" 4) ("NotGroupOfThree" "TrackOpposite")))
+                )
+                (if ("IsNotOffBoard" ("SiteToMoveOnTrack" "TrackOpposite")) 			
+                    (if 
+                        ("EmptyOrEnemyNotOnSafePlacesAndNotTwoInARow" "TrackOpposite")
+                        (move 
+                            (from) 
+                            (to 
+                                ("SiteToMoveOnTrack" "TrackOpposite") 
+                                if:True 
+                                (apply 
+                                    if:("IsEnemyAt" (to)) 
+                                    (fromTo (from (to)) (to "FurthestEmptySite"))
+                                )
+                            )
+                        )
+                    )
+                )
+                (then 
+                    (if (is In (last To) (sites "Water"))
+                        (fromTo (from (last To)) (to "FurthestEmptySite"))
+                    )
+                )
+            )
+        })
+        >
+        <
+        (rules 
+            (start { 	
+                (place "SenetPiece1" (sites {"A3" "C3" "E3" "G3" "I3" }))
+                (place "SenetPiece2" (sites {"B3" "D3" "F3" "H3" "J3"}))
+            })	
+            
+            phases:{
+            (phase "Opening"
+                (play 
+                    ("RollMove"
+                        (move Pass 
+                            (then 
+                                (if (= 1 ("Throw"))
+                                    (and {
+                                        (fromTo (from (coord "J3")) (to (coord "J2")))
+                                        (if (is Mover P1) 
+                                            (swap Players P1 P2)
+                                        )
+                                        (set NextPlayer (player 2))
+                                    })
+                                )
+                            )
+                        )
+                    )
+                )
+                (nextPhase (= 1 (count Pips)) "Playing")
+            )
+            (phase "Playing"
+                (play 
+                    ("RollMove"
+                        (if (can Move (forEach Piece))
+                            (forEach Piece (then (if (is In ("Throw") (sites {1 4 6})) (moveAgain))))
+                            (move Pass (then (if (is In ("Throw") (sites {1 4 6})) (moveAgain))))
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Mover) 
+                    (byScore {
+                        (score Mover
+                            (+ {
+                                (* 3 ("NumEnemyPiecesOnTopRow")) 
+                                (* 2 ("NumEnemyPiecesOnMiddleRow")) 
+                                ("NumEnemyPiecesOnBottomRow")
+                            })
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        > 
+    "The rules of Jequier.") 
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
+    (ruleset "Ruleset/Cypriot Senet (Incomplete)" {
+        
+    })
+    
+    (ruleset "Ruleset/Double Senet (Incomplete)" {
+        
+    })
+    
+    (ruleset "Ruleset/Vertical Senet (Incomplete)" {
+        
+    })
+    
+    (ruleset "Ruleset/Late New Kingdom Senet (Incomplete)" {
+        
+    })
+    
+    (ruleset "Ruleset/Early New Kingdom Senet (Incomplete)" {
+        
+    })
+    
+    (ruleset "Ruleset/Middle Kingdom Senet (Incomplete)" {
+        
+    })
+    
+    (ruleset "Ruleset/Simple Marked Senet (Incomplete)" {
+        
+    })
+    
+    (ruleset "Ruleset/Simple Senet (Incomplete)" {
+        
+    })
+    
+    (ruleset "Ruleset/Kendall (Scholarly)" {
+        "Play Rules/Kendall" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward"
+    })
+    
+    (ruleset "Ruleset/Kendall Five Pieces (Scholarly)" {
+        "Play Rules/Kendall 5 pieces" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward"
+    })
+    
+    (ruleset "Ruleset/Kendall Trap (Scholarly)" {
+        "Play Rules/Kendall with trap" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward"
+    })
+    
+    (ruleset "Ruleset/Kendall Home Row (Scholarly)" {
+        "Play Rules/Kendall special bear off" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward"
+    })
+    
+    (ruleset "Ruleset/Kendall Starting Throw (Scholarly)" {
+        "Play Rules/Kendall starting throw" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward"
+    })
+    
+    (ruleset "Ruleset/Kendall Trap Home Row (Scholarly)" {
+        "Play Rules/Kendall with trap and special bear off" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward"
+    })
+    
+    (ruleset "Ruleset/Kendall Five Pieces Starting Throw (Scholarly)" {
+        "Play Rules/Kendall 5 pieces and starting throw" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward"
+    })
+    
+    (ruleset "Ruleset/Kendall Starting Throw Trap (Scholarly)" {
+        "Play Rules/Kendall with trap and starting throw" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward"
+    })
+    
+    (ruleset "Ruleset/Kendall Starting Throw Home Row (Scholarly)" {
+        "Play Rules/Kendall starting throw special bear off" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward"
+    })
+    
+    (ruleset "Ruleset/Kendall Five Pieces Trap (Scholarly)" {
+        "Play Rules/Kendall 5 pieces and with trap" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward"
+    })
+    
+    (ruleset "Ruleset/Kendall Five Pieces Home Row (Scholarly)" {
+        "Play Rules/Kendall 5 pieces special bear off" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward"
+    })
+    
+    (ruleset "Ruleset/Kendall Five Pieces Starting Throw Home Row (Scholarly)" {
+        "Play Rules/Kendall 5 pieces special bear off and starting throw" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward"
+    })
+    
+    (ruleset "Ruleset/Kendall Five Pieces Trap Home Row (Scholarly)" {
+        "Play Rules/Kendall 5 pieces trap and special bear off" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward"
+    })
+    
+    (ruleset "Ruleset/Kendall Five Pieces Starting Throw Trap (Scholarly)" {
+        "Play Rules/Kendall 5 pieces trap and starting throw" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward"
+    })
+    
+    (ruleset "Ruleset/Kendall Starting Throw Trap Home Row (Scholarly)" {
+        "Play Rules/Kendall starting throw trap and special bear off" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward"
+    })
+    
+    (ruleset "Ruleset/Kendall All Options (Scholarly)" {
+        "Play Rules/Kendall all options" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward"
+    })
+    
+    (ruleset "Ruleset/Bell (Suggested)" {
+        "Play Rules/Bell" "Dice/1xD4" "Throw/Sum" "Track/Boustrophedon"
+    })
+    
+    (ruleset "Ruleset/Piccione (Scholarly)" {
+        "Play Rules/Piccione" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward Except Three Last Spaces"
+    })
+    
+    (ruleset "Ruleset/Jequier (Scholarly)" {
+        "Play Rules/Jequier" "Dice/4xD2" "Throw/Jequier" "Track/Boustrophedon + Backward"
+    })
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (useFor "Ruleset/Kendall (Scholarly)" (rules "Dessa regler föreslogs av egyptologen Timothy Kendall. Pjäser rör sig enligt tärningarnas kast längs brädet. Målet är att flytta alla pjäser från brädet med ett exakt kast. Om en spelare landar på sin motståndares pjäs, skickas den tillbaka till utrymmet där den erövrande pjäsen började sin tur. Att ha två pjäser i på varandra följande utrymmen hindrar din motståndare från att kunna göra detta. Markerade utrymmen på tavlan indikerar antingen säkra utrymmen eller farliga utrymmen som bör undvikas"))
+        }
+    )
+    
+    (graphics {
+        
+        // Kendall symbols
+        (useFor "Ruleset/Kendall (Scholarly)" (show Symbol "3nefer" Cell 5 scale:0.75))
+        (useFor "Ruleset/Kendall (Scholarly)" (show Symbol "water" Cell 6 scale:0.75))
+        (useFor "Ruleset/Kendall (Scholarly)" (show Symbol "3flags" Cell 7 scale:0.75))
+        (useFor "Ruleset/Kendall (Scholarly)" (show Symbol "2flags" Cell 8 scale:0.75))
+        (useFor "Ruleset/Kendall (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
+        
+        (useFor "Ruleset/Kendall Five Pieces (Scholarly)" (show Symbol "3nefer" Cell 5 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces (Scholarly)" (show Symbol "water" Cell 6 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces (Scholarly)" (show Symbol "3flags" Cell 7 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces (Scholarly)" (show Symbol "2flags" Cell 8 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
+        
+        (useFor "Ruleset/Kendall Starting Throw (Scholarly)" (show Symbol "3nefer" Cell 5 scale:0.75))
+        (useFor "Ruleset/Kendall Starting Throw (Scholarly)" (show Symbol "water" Cell 6 scale:0.75))
+        (useFor "Ruleset/Kendall Starting Throw (Scholarly)" (show Symbol "3flags" Cell 7 scale:0.75))
+        (useFor "Ruleset/Kendall Starting Throw (Scholarly)" (show Symbol "2flags" Cell 8 scale:0.75))
+        (useFor "Ruleset/Kendall Starting Throw (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
+        
+        (useFor "Ruleset/Kendall Trap (Scholarly)" (show Symbol "3nefer" Cell 5 scale:0.75))
+        (useFor "Ruleset/Kendall Trap (Scholarly)" (show Symbol "water" Cell 6 scale:0.75))
+        (useFor "Ruleset/Kendall Trap (Scholarly)" (show Symbol "3flags" Cell 7 scale:0.75))
+        (useFor "Ruleset/Kendall Trap (Scholarly)" (show Symbol "2flags" Cell 8 scale:0.75))
+        (useFor "Ruleset/Kendall Trap (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
+        
+        (useFor "Ruleset/Kendall Home Row (Scholarly)" (show Symbol "3nefer" Cell 5 scale:0.75))
+        (useFor "Ruleset/Kendall Home Row (Scholarly)" (show Symbol "water" Cell 6 scale:0.75))
+        (useFor "Ruleset/Kendall Home Row (Scholarly)" (show Symbol "3flags" Cell 7 scale:0.75))
+        (useFor "Ruleset/Kendall Home Row (Scholarly)" (show Symbol "2flags" Cell 8 scale:0.75))
+        (useFor "Ruleset/Kendall Home Row (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
+        
+        (useFor "Ruleset/Kendall Five Pieces Starting Throw (Scholarly)" (show Symbol "3nefer" Cell 5 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Starting Throw (Scholarly)" (show Symbol "water" Cell 6 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Starting Throw (Scholarly)" (show Symbol "3flags" Cell 7 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Starting Throw (Scholarly)" (show Symbol "2flags" Cell 8 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Starting Throw (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
+        
+        (useFor "Ruleset/Kendall Five Pieces Trap (Scholarly)" (show Symbol "3nefer" Cell 5 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Trap (Scholarly)" (show Symbol "water" Cell 6 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Trap (Scholarly)" (show Symbol "3flags" Cell 7 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Trap (Scholarly)" (show Symbol "2flags" Cell 8 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Trap (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
+        
+        (useFor "Ruleset/Kendall Five Pieces Home Row (Scholarly)" (show Symbol "3nefer" Cell 5 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Home Row (Scholarly)" (show Symbol "water" Cell 6 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Home Row (Scholarly)" (show Symbol "3flags" Cell 7 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Home Row (Scholarly)" (show Symbol "2flags" Cell 8 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Home Row (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
+        
+        (useFor "Ruleset/Kendall Starting Throw Trap (Scholarly)" (show Symbol "3nefer" Cell 5 scale:0.75))
+        (useFor "Ruleset/Kendall Starting Throw Trap (Scholarly)" (show Symbol "water" Cell 6 scale:0.75))
+        (useFor "Ruleset/Kendall Starting Throw Trap (Scholarly)" (show Symbol "3flags" Cell 7 scale:0.75))
+        (useFor "Ruleset/Kendall Starting Throw Trap (Scholarly)" (show Symbol "2flags" Cell 8 scale:0.75))
+        (useFor "Ruleset/Kendall Starting Throw Trap (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
+        
+        (useFor "Ruleset/Kendall Starting Throw Home Row (Scholarly)" (show Symbol "3nefer" Cell 5 scale:0.75))
+        (useFor "Ruleset/Kendall Starting Throw Home Row (Scholarly)" (show Symbol "water" Cell 6 scale:0.75))
+        (useFor "Ruleset/Kendall Starting Throw Home Row (Scholarly)" (show Symbol "3flags" Cell 7 scale:0.75))
+        (useFor "Ruleset/Kendall Starting Throw Home Row (Scholarly)" (show Symbol "2flags" Cell 8 scale:0.75))
+        (useFor "Ruleset/Kendall Starting Throw Home Row (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
+        
+        (useFor "Ruleset/Kendall Trap Home Row (Scholarly)" (show Symbol "3nefer" Cell 5 scale:0.75))
+        (useFor "Ruleset/Kendall Trap Home Row (Scholarly)" (show Symbol "water" Cell 6 scale:0.75))
+        (useFor "Ruleset/Kendall Trap Home Row (Scholarly)" (show Symbol "3flags" Cell 7 scale:0.75))
+        (useFor "Ruleset/Kendall Trap Home Row (Scholarly)" (show Symbol "2flags" Cell 8 scale:0.75))
+        (useFor "Ruleset/Kendall Trap Home Row (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
+        
+        (useFor "Ruleset/Kendall Five Pieces Starting Throw Trap (Scholarly)" (show Symbol "3nefer" Cell 5 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Starting Throw Trap (Scholarly)" (show Symbol "water" Cell 6 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Starting Throw Trap (Scholarly)" (show Symbol "3flags" Cell 7 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Starting Throw Trap (Scholarly)" (show Symbol "2flags" Cell 8 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Starting Throw Trap (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
+        
+        (useFor "Ruleset/Kendall Starting Throw Trap Home Row (Scholarly)" (show Symbol "3nefer" Cell 5 scale:0.75))
+        (useFor "Ruleset/Kendall Starting Throw Trap Home Row (Scholarly)" (show Symbol "water" Cell 6 scale:0.75))
+        (useFor "Ruleset/Kendall Starting Throw Trap Home Row (Scholarly)" (show Symbol "3flags" Cell 7 scale:0.75))
+        (useFor "Ruleset/Kendall Starting Throw Trap Home Row (Scholarly)" (show Symbol "2flags" Cell 8 scale:0.75))
+        (useFor "Ruleset/Kendall Starting Throw Trap Home Row (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
+        
+        (useFor "Ruleset/Kendall Five Pieces Trap Home Row (Scholarly)" (show Symbol "3nefer" Cell 5 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Trap Home Row (Scholarly)" (show Symbol "water" Cell 6 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Trap Home Row (Scholarly)" (show Symbol "3flags" Cell 7 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Trap Home Row (Scholarly)" (show Symbol "2flags" Cell 8 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Trap Home Row (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
+        
+        (useFor "Ruleset/Kendall Five Pieces Starting Throw Home Row (Scholarly)" (show Symbol "3nefer" Cell 5 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Starting Throw Home Row (Scholarly)" (show Symbol "water" Cell 6 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Starting Throw Home Row (Scholarly)" (show Symbol "3flags" Cell 7 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Starting Throw Home Row (Scholarly)" (show Symbol "2flags" Cell 8 scale:0.75))
+        (useFor "Ruleset/Kendall Five Pieces Starting Throw Home Row (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
+        
+        (useFor "Ruleset/Kendall All Options (Scholarly)" (show Symbol "3nefer" Cell 5 scale:0.75))
+        (useFor "Ruleset/Kendall All Options (Scholarly)" (show Symbol "water" Cell 6 scale:0.75))
+        (useFor "Ruleset/Kendall All Options (Scholarly)" (show Symbol "3flags" Cell 7 scale:0.75))
+        (useFor "Ruleset/Kendall All Options (Scholarly)" (show Symbol "2flags" Cell 8 scale:0.75))
+        (useFor "Ruleset/Kendall All Options (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
+        
+        // Jequier symbols
+        (useFor "Ruleset/Jequier (Scholarly)" (show Symbol "3nefer" Cell 5 scale:0.75))
+        (useFor "Ruleset/Jequier (Scholarly)" (show Symbol "water" Cell 6 scale:0.75))
+        (useFor "Ruleset/Jequier (Scholarly)" (show Symbol "3flags" Cell 7 scale:0.75))
+        (useFor "Ruleset/Jequier (Scholarly)" (show Symbol "2flags" Cell 8 scale:0.75))
+        (useFor "Ruleset/Jequier (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
+        
+        // Bell symbols
+        (useFor "Ruleset/Bell (Suggested)" (show Symbol "senetcross" Cell 5 scale:0.85))
+        (useFor "Ruleset/Bell (Suggested)" (show Symbol "thinCross" Cell 6))
+        (useFor "Ruleset/Bell (Suggested)" (show Symbol "3lines" Cell 7 scale:0.6))
+        (useFor "Ruleset/Bell (Suggested)" (show Symbol "2lines" Cell 8 scale:0.6))
+        
+        // Piccione symbols
+        (useFor "Ruleset/Piccione (Scholarly)" (show Symbol "ankh_waset" Cell 15 scale:0.85))
+        (useFor "Ruleset/Piccione (Scholarly)" (show Symbol "3nefer" Cell 5 scale:0.8))
+        (useFor "Ruleset/Piccione (Scholarly)" (show Symbol "water" Cell 6 scale:0.75))
+        (useFor "Ruleset/Piccione (Scholarly)" (show Symbol "3bird" Cell 7 scale:0.9))
+        (useFor "Ruleset/Piccione (Scholarly)" (show Symbol "2human_knee" Cell 8 scale:0.9))
+        (useFor "Ruleset/Piccione (Scholarly)" (show Symbol "2human_knee" Cell 8 scale:0.9))
+        (useFor "Ruleset/Piccione (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
+        
+        (board Colour Symbols (colour DarkBrown))
+        (piece ExtendName P2 "2")  
+        (useFor "Ruleset/Jequier (Scholarly)" (piece Colour "Die" state:0 fillColour:(colour Red)))
+    })
+    (ai
+        "Senet_ai"
+    )
+)

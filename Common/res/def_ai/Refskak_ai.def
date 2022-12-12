@@ -1,7 +1,28 @@
 (define "Refskak_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (centreProximity)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_from=<{-1/4,1/8}>:from=<{0}>:pat=<els=[f{0,0}]>" -0.7165963)
+            (pair "rel:last_to=<{0,3/8}>:from=<{3/8}>:to=<{}>:pat=<els=[]>" -0.029224567)
+            (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[N8{0,-1/4,1/4}]>" -0.30458403)
+            (pair "rel:last_from=<{}>:last_to=<{0,3/8}>:to=<{}>:pat=<els=[e{1/8}, -{0}, -{-3/8}]>" -0.054136474)
+            (pair "rel:last_to=<{1/2}>:from=<{0}>:pat=<els=[#{1/8,1/4}]>" -0.7165963)
+            (pair "rel:last_to=<{0,0}>:from=<{}>:pat=<els=[f{1/4}, N8{0,-1/4,1/4}]>" -0.092352286)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[#{-1/2,-3/8}, e{0,0,-1/8,1/8}, e{0,0,1/8,1/8}]>" 0.09507726)
+            (pair "rel:last_to=<{0,0,-3/8,-1/4}>:to=<{0,0}>:pat=<els=[-{0,-3/8}, N8{0,0,-1/4,1/4}]>" 0.288233)
+            (pair "rel:from=<{0,0}>:pat=<els=[-{0,1/4}, !-{0,0,-1/2}]>" 0.288233)
+            (pair "rel:last_to=<{0,0,-3/8,-1/4}>:from=<{}>:pat=<els=[N8{1/8,0}]>" -0.26672262)
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+            }
+        )
     })
     
 )

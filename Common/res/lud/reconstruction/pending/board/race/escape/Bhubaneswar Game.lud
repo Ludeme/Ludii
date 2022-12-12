@@ -1,0 +1,63 @@
+(game "Bhubaneswar Game"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board 
+                (merge {
+                    (rectangle 6 3)
+                    (shift 1 0 (rectangle 12 1))
+                })
+            )
+            (piece "Disc" Each [#])
+        })
+        (rules
+            (start [#])
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "This game board was found at the Kedaresvara temple at Bhubaneswar in Orissa, India. The game is similar, but not identical, to other games from India which themselves resemble the ancient game 20 Squares. The temple dates to the eleventh century CE, but the board could have been made at any time after that.")
+        (rules "3x6 grid, with the second space from the left in the central row marked. Extending from the central row are six further spaces.")
+        (source "DLP evidence.")
+        (id "888")
+        (version "1.3.8")
+        (classification "board/race/escape/reconstruction/pending")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (show Line {{9 6} {5 10}})
+    })
+)

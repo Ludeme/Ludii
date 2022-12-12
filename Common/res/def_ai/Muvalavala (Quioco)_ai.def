@@ -1,5 +1,33 @@
 (define "Muvalavala (Quioco)_ai"
-    (useFor { "Board Size/6" }
+    (useFor { "Ruleset/Quiocos (Described)" }
+        
         (bestAgent "ProgressiveHistory")
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{1/4,0}]>" 0.09883558)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" 0.034500904)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, !-{0,-1/4}, -{-1/4}, #{1/2}]>" -0.117007375)
+                (pair "rel:to=<{}>:pat=<els=[#{1/4}, -{0,-1/4}]>" 0.015014374)
+                (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}]>" -7.990053E-4)
+                (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[-{0,1/4}]>" 0.5737515)
+                (pair "rel:to=<{}>:pat=<els=[#{1/4,1/4}, -{0}]>" -0.02070543)
+                (pair "rel:to=<{}>:pat=<els=[R4{1/2,-1/4}, -{0,-1/4}]>" 0.10555476)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{0}]>" 0.10415149)
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[R5{-1/4}, !R4{0,-1/4}]>" -0.015418759)
+                (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[-{0,0,0}, !-{1/4,-1/4}, !R4{0,1/4}]>" -0.10088433)
+                (pair "rel:to=<{}>:pat=<els=[R5{1/4}, -{1/2,-1/4}, #{0}]>" 0.41765508)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" -0.11136913)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" 0.18126407)
+                (pair "rel:to=<{}>:pat=<els=[!-{0,-1/4}, R5{0}, !R4{1/4,-1/4}]>" 0.076227754)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4}, R5{0,-1/4}]>" 0.19512258)
+                (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[!-{1/4,-1/4}, -{0,-1/4}, !R4{0,1/4}]>" -0.089440845)
+                }
+            )
+        })
+        
     )
 )

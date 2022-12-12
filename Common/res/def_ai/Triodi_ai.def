@@ -1,7 +1,32 @@
 (define "Triodi_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (material)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{-1/2}, f{0,1/4}, f{0,1/4,0}]>" 3.274411)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 3.1181767)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0}]>" 1.5943717)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{-1/2}, f{0,1/4}]>" 1.214505)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{1/2}, f{0,1/4}, f{0,1/4,0}]>" 3.4063873)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}]>" 1.2214432)
+            (pair "rel:from=<{}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 1.5528713)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0}, f{0,1/4}, f{0,1/4,0}]>" 3.4404023)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}, f{0,-1/2,1/2,1/4}]>" 2.5864816)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,0}, f{0,1/4,0}, f{0,-1/2,1/2,1/4}]>" 2.6345513)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!#{-1/2}, !-{0,0}, f{0,1/4,0}, f{0,-1/2,1/2,1/4}]>" 2.6379707)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{-1/2,1/4}, f{0,-1/4,0}]>" 1.1199253)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0}]>" 0.61128026)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,0}, f{0,1/4,0}]>" 1.0126363)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!#{-1/2}, f{0,1/4,0}]>" 0.9491709)
+            }
+        )
     })
     
 )

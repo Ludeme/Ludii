@@ -1,8 +1,38 @@
 (define "Owela (Benguela)_ai"
-    (useFor { "Board Size/12" }
+    (useFor { "Ruleset/Benguela (Described)" }
+        
         (bestAgent "UCT")
         trainedHeuristics:(heuristics {
             (influence)
+        })
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!-{0}, !R7{1/2,0,0,0}, !-{1/4}, !-{-1/4}, !R6{0,0,0}]>" -0.16503817)
+                (pair "rel:to=<{}>:pat=<els=[-{-1/4,1/4}, !R7{1/2,0,0,0}, #{1/4,-1/4}, -{0,0,0}]>" 0.73562753)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, !R7{-1/4,0,0,0}, -{1/4,0,0}]>" 0.38265237)
+                (pair "rel:to=<{}>:pat=<els=[!R7{0,0,0,0}, !-{1/4}, !R6{1/2,0,0}]>" 0.22891998)
+                (pair "rel:to=<{}>:pat=<els=[R4{0,-1/4}, -{1/4,0}]>" -0.090088665)
+                (pair "rel:to=<{}>:pat=<els=[!R7{1/2,0}, #{1/4,-1/4}, R6{0,-1/4}]>" 0.11146444)
+                (pair "rel:to=<{}>:pat=<els=[!-{0}, !-{1/2}, -{0,-1/4}]>" -0.060903773)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0}, !-{1/2}, !R7{0,0,0,0}]>" 0.033237033)
+                (pair "rel:to=<{}>:pat=<els=[R7{0,0,0}]>" -0.008265175)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}, -{1/4}]>" 0.016562924)
+                (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}, -{0,-1/4}, -{1/4}, !R7{-1/4,0,0}]>" 0.1538265)
+                (pair "rel:to=<{}>:pat=<els=[!-{1/4,1/4}, -{0,0}, -{-1/2}, !R7{0,0,0}]>" -0.002244996)
+                (pair "rel:to=<{}>:pat=<els=[-{0}]>" 0.04208355)
+                (pair "rel:to=<{}>:pat=<els=[!-{0,1/4}]>" 0.0045882827)
+                (pair "rel:to=<{}>:pat=<els=[!-{1/4,1/4}, -{0,0}, !-{0}, -{-1/2}]>" 0.015796926)
+                (pair "rel:to=<{}>:pat=<els=[#{-1/4,1/4}, -{0,1/4}, #{1/2}, -{0,0}]>" 0.41231146)
+                (pair "rel:to=<{}>:pat=<els=[#{1/4}, -{0,-1/4}, #{1/2,1/4}]>" 0.45499834)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" -0.055505138)
+                (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[-{0,-1/4}, -{1/4}, -{-1/2,-1/4}]>" 1.1491842)
+                (pair "rel:to=<{}>:pat=<els=[#{1/4,1/4}, !-{-1/4}, #{0}]>" 0.31646383)
+                }
+            )
         })
         
     )

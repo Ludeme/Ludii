@@ -1,0 +1,366 @@
+(game "Senet" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 3 10)
+            { 
+            (track "Track1" "20,E,S1,W,S1,E,End" P1 directed:True)
+            
+            (track "Track2" "20,E,S1,W,S1,E,End" P2 directed:True)
+            }
+        )
+        
+        (piece "SenetPiece" Each 
+            (move Slide All 
+                (between if:
+                    (and { 
+                        (is Empty 
+                            (between)
+                        )
+                        
+                        (= 
+                            (who at:
+                                (between)
+                            )
+                        Shared)
+                        
+                        (not 
+                            (= 
+                                (what at:
+                                    (between)
+                                )
+                                
+                                (id "Diplomat" P1)
+                            )
+                        )
+                        
+                        (not 
+                            (= 
+                                (what at:
+                                    (between)
+                                )
+                                
+                                (id "Diplomat" P2)
+                            )
+                        )
+                        
+                        (not 
+                            (= 
+                                (what at:
+                                    (between)
+                                )
+                                
+                                (id "Diplomat" P3)
+                            )
+                        )
+                        
+                        (not 
+                            (= 
+                                (what at:
+                                    (between)
+                                )
+                                
+                                (id "Diplomat" P4)
+                            )
+                        )
+                        
+                        (not 
+                            (= 
+                                (what at:
+                                    (between)
+                                )
+                                
+                                (id "Diplomat" P5)
+                            )
+                        )
+                        
+                        (not 
+                            (= 
+                                (what at:
+                                    (between)
+                                )
+                                
+                                (id "Diplomat" P6)
+                            )
+                        )
+                        
+                        (not 
+                            (= 
+                                (what at:
+                                    (between)
+                                )
+                                
+                                (id "Diplomat" P7)
+                            )
+                        )
+                        }
+                    )
+                )
+                
+                (to if:
+                    (and { 
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (= 
+                            (who at:
+                                (to)
+                            )
+                        Shared)
+                        
+                        (not 
+                            (= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "Diplomat" P1)
+                            )
+                        )
+                        
+                        (not 
+                            (= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "Diplomat" P2)
+                            )
+                        )
+                        
+                        (not 
+                            (= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "Diplomat" P3)
+                            )
+                        )
+                        
+                        (not 
+                            (= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "Diplomat" P4)
+                            )
+                        )
+                        
+                        (not 
+                            (= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "Diplomat" P5)
+                            )
+                        )
+                        
+                        (not 
+                            (= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "Diplomat" P6)
+                            )
+                        )
+                        
+                        (not 
+                            (= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "Diplomat" P7)
+                            )
+                        )
+                        }
+                    )
+                    
+                    (apply 
+                        (if 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (do 
+                                (if 
+                                    (or { 
+                                        (= 
+                                            (what at:
+                                                (to)
+                                            )
+                                            
+                                            (id "General" P1)
+                                        )
+                                        
+                                        (= 
+                                            (what at:
+                                                (to)
+                                            )
+                                            
+                                            (id "General" P2)
+                                        )
+                                        
+                                        (= 
+                                            (what at:
+                                                (to)
+                                            )
+                                            
+                                            (id "General" P3)
+                                        )
+                                        
+                                        (= 
+                                            (what at:
+                                                (to)
+                                            )
+                                            
+                                            (id "General" P4)
+                                        )
+                                        
+                                        (= 
+                                            (what at:
+                                                (to)
+                                            )
+                                            
+                                            (id "General" P5)
+                                        )
+                                        
+                                        (= 
+                                            (what at:
+                                                (to)
+                                            )
+                                            
+                                            (id "General" P6)
+                                        )
+                                        
+                                        (= 
+                                            (what at:
+                                                (to)
+                                            )
+                                            
+                                            (id "General" P7)
+                                        )
+                                        }
+                                    )
+                                    
+                                    (add 
+                                        (piece 
+                                            (id "General" Mover)
+                                        )
+                                        
+                                        (to 
+                                            (handSite Mover)
+                                        )
+                                    )
+                                )
+                                next:
+                                (remove 
+                                    (to)
+                                    
+                                    (then 
+                                        (addScore Mover 1)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (dice d:2 from:0 num:4)
+        
+        (hand Each)
+        
+        (map "FirstSite" { 
+            (pair 7 1)
+            
+            (pair 6 13)
+            
+            (pair 5 37)
+            
+            (pair 4 73)
+            
+            (pair 3 121)
+            
+            (pair 2 181)
+            
+            (pair 1 253)
+            }
+        )
+        
+        (regions "Promotion" P1 
+            (sites Top)
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "SenetPiece1" 
+                (sites { "B3" "D3" "F3" "H3" "J3"}
+                )
+            )
+            
+            (place "SenetPiece2" 
+                (sites { "A3" "C3" "E3" "G3" "I3"}
+                )
+            )
+            }
+        )
+        
+        (play 
+            (or 
+                (move Add 
+                    (to 
+                        (sites Empty)
+                    )
+                    
+                    (then 
+                        (enclose 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (move Pass)
+            )
+        )
+        
+        (end 
+            (if 
+                (is Decided "End")
+                
+                (byScore)
+            )
+        )
+    )
+)
+
+

@@ -1,4 +1,5 @@
 (define "Sujjua_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (cornerProximity)
@@ -17,6 +18,33 @@
             (pair "Marker1" 0.11832702)
             (pair "Marker2" 0.5405174)
         })
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{0,1/4}, !-{0,1/4}, f{0,1/4,0}]>" 2.2430444)
+            (pair "rel:to=<{}>:pat=<els=[e{0}, e{0,0}]>" 2.677338)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{0,1/4}, f{0,1/4,0}]>" 0.6252502)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, -{0,1/4}]>" 0.7326333)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,1/4}]>" 0.06672672)
+            (pair "rel:to=<{}>:pat=<els=[e{0}, e{0,0}, #{1/2}]>" 2.677338)
+            (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[e{0}]>" 2.6423745)
+            (pair "rel:to=<{}>:pat=<els=[e{0}, e{0,0}, -{1/4,1/4}]>" 2.9562902)
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/2,1/4}]>" 0.6939195)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[e{0}, e{0,0}]>" 2.1621227)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 1.9064343)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, e{0}, -{-1/4,0}, e{0,0}]>" 3.2453544)
+            (pair "rel:last_to=<{0,-1/4}>:from=<{0}>:to=<{}>:pat=<els=[e{0,-1/4}, !e{0,1/2,1/4}]>" -0.22754645)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{1/4}, !-{0,-1/2}]>" -0.3394106)
+            (pair "rel:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" -0.6639225)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" -0.4050158)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[e{0}]>" -0.5958055)
+            (pair "rel:to=<{}>:pat=<els=[#{0,1/4,1/4}]>" 0.0)
+            }
+        )
     })
     
 )

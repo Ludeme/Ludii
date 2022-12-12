@@ -89,8 +89,7 @@
     
     (info
         {
-        (description "Archimedes can be played with a standard checkers set. The board is an 8x8 grid,
-        and each player has 12 \"ships\" represented by checkers of one color.")
+        (description "Archimedes can be played with a standard checkers set. The board is an 8x8 grid,and each player has 12 \"ships\" represented by checkers of one color.")
         (rules "MOVING
             Each player moves one ship each turn. A ship moves any number of empty squares in a straight line, either vertically, horizontally, or diagonally (that is, like a chess queen). However, a ship may never end its turn in its home port.
             
@@ -108,7 +107,7 @@
         destroy it, the game continues.)")
         (id "1797")
         (source "<a href=\"https://boardgamegeek.com/boardgame/18698/archimedes\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.7")
+        (version "1.3.8")
         (classification "board/race/reach")
         (author "Scott Marley and Philip Cohen")
         (credit "Eric Piette")
@@ -120,4 +119,7 @@
         (board Style Chess)
     })
     
+    (ai
+        "Archimedes_ai"
+    )
 )

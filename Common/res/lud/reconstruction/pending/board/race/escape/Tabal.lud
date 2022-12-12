@@ -1,0 +1,132 @@
+(game "Tabal"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2)
+        (equipment {
+            [
+            ("TableBoard"
+                {
+                (track "Track1" {0..11 23..12 End} P1 directed:True)
+                (track "Track2" {12..23 11..0 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 11..0 End} P1 directed:True)
+                (track "Track2" {0..11 23..12 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 11..0 End} P1 directed:True)
+                (track "Track2" {12..23 11..0 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {0..11 23..12 End} P1 directed:True)
+                (track "Track2" {0..11 23..12 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {11..0 12..23 End} P1 directed:True)
+                (track "Track2" {23..12 0..11 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 0..11 End} P1 directed:True)
+                (track "Track2" {11..0 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 0..11 End} P1 directed:True)
+                (track "Track2" {23..12 0..11 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {11..0 12..23 End} P1 directed:True)
+                (track "Track2" {11..0 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {12..23 0..11 End} P1 directed:True)
+                (track "Track2" {0..11 12..23 End} P2 directed:True)
+                }
+            )
+            |
+            ("TableBoard"
+                {
+                (track "Track1" {23..12 11..0 End} P1 directed:True)
+                (track "Track2" {11..0 23..12 End} P2 directed:True)
+                }
+            )
+            ]
+            (dice d:6 num:2)
+            (piece "Disc" Each [#])
+        })
+        (rules
+            (start [#])
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tabal is a game played in Malaysia in the nineteenth century. The board is the same as many race games played throughout Europe and Asia, though the specific rules were not documented.")
+        (aliases {"Main Tabal"})
+        (rules "2x12 board, divided in half, where the spaces are rendered as points. Two six-sided dice.")
+        (source "DLP evidence.")
+        (id "1091")
+        (version "1.3.8")
+        (classification "board/race/escape/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Malaysia, from around 1886 to 1895.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+        (board Style Table)
+        (stackType Backgammon)
+    })
+    
+)
+

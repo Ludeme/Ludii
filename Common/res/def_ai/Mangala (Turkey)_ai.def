@@ -1,15 +1,72 @@
 (define "Mangala (Turkey)_ai"
-    (useFor { "Board Size/7" }
+    (useFor { "Ruleset/Seven Holes (Observed)" }
+        
         (bestAgent "MAST")
         trainedHeuristics:(heuristics {
             (influence)
         })
         
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!R1{1/2,0,0,0}, -{0,0}]>" 0.13008286)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, !R1{1/2,0,0,0}]>" 0.340113)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{0}, -{1/2}]>" 0.45308682)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/2}, !#{0,0,0,0}]>" 0.4782254)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{0,0,0}]>" -0.15426855)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,1/4}, !R0{0,0,0,0}]>" 0.19051659)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{0,1/4}]>" 0.108176626)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{0}, -{1/2}, !#{0,0,0,0}]>" 0.5711334)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,-1/4}, -{0}, !#{1/2,0,0,0}]>" 0.4125844)
+                (pair "rel:to=<{}>:pat=<els=[-{-1/2}, !R1{0,0,0,0}, -{0,1/4}]>" 0.3087323)
+                (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[-{1/4}]>" 0.18860382)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{1/4,0,0,0}]>" 0.04812869)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}, !R0{0,0,0,0}]>" 0.019920003)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{0,0}]>" 0.056839567)
+                (pair "rel:to=<{}>:pat=<els=[!R0{-1/4,0,0,0}, -{0}, -{0,1/4}]>" 0.13648015)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}, -{1/2}, !R0{0,0,0,0}]>" 0.23099725)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{0,0}, !R0{1/2,0,0,0}]>" 0.07199255)
+                (pair "rel:to=<{}>:pat=<els=[!R0{0,0,0,0}, -{1/4}]>" 0.08664206)
+                }
+            )
+        })
+        
     )
-    (useFor { "Board Size/6" }
+    (useFor { "Ruleset/Six Holes (Observed)" }
+        
         (bestAgent "MAST")
         trainedHeuristics:(heuristics {
             (influence)
+        })
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!R0{0,0,0,0}]>" 0.03421243)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,0,0,0}, -{0,1/4}]>" 0.28946903)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{0}]>" 0.23482719)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{1/4}]>" 0.14631139)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, -{0}]>" 0.32353067)
+                (pair "rel:to=<{}>:pat=<els=[-{-1/2}, -{0,1/4}, -{0,0}]>" 0.2526462)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{0,0}]>" 0.14686073)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{0,1/4}]>" 0.19696331)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" 0.102227874)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" 0.19507517)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/2}]>" 0.1778149)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{-1/2,-1/4}, -{0,0}, -{0,1/4}]>" 0.16444126)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{-1/2,1/4}, -{0,0}, -{0,0,0}]>" -0.009803586)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,1/4}, -{0}]>" 0.18000394)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" -0.009039505)
+                (pair "rel:to=<{}>:pat=<els=[-{-1/2,1/4}, -{0,0}, -{-1/4,-1/4}, -{0,0,0}]>" 0.1132834)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/4,0,0}]>" 0.041182894)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/4}, -{0,0}, -{1/4,1/4}, -{0,0,0}]>" -0.13721031)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/4}, -{0,0}, -{1/4,1/4}]>" 0.242622)
+                }
+            )
         })
         
     )

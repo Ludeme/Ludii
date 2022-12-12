@@ -121,9 +121,7 @@
     
     (info
         {
-        (description "Diamond is a two-player abstract strategy board game invented by Larry Back. The invention was inspired by the game Kensington, which uses a similar board pattern and game objective. Rules for Diamond were conceived in 1985 and finalized in 1994. Diamond introduces a new board geometry and neutral pieces, with the aim of enhancing the game dynamic and lowering the potential for draws.
-            
-        Diamond was featured in the February 2013 issue of Games magazine.")
+        (description "Diamond is a two-player abstract strategy board game invented by Larry Back. The invention was inspired by the game Kensington, which uses a similar board pattern and game objective. Rules for Diamond were conceived in 1985 and finalized in 1994. Diamond introduces a new board geometry and neutral pieces, with the aim of enhancing the game dynamic and lowering the potential for draws.Diamond was featured in the February 2013 issue of Games magazine.")
         (rules "The game begins with an empty Diamond board. Black moves first, then turns alternate. (To offset any advantage Black has in moving first, the pie rule is used: White can choose to switch sides after Black's first move, playing from then on as Black. White has this option only after Black's first move.) 
             
             The game is executed in two phases:
@@ -145,7 +143,7 @@
 - In the last 50 moves (25 moves per player) no capture has been made, nor neutral piece removed.")
 (id "1771")
 (source "<a href=\"https://en.wikipedia.org/wiki/Diamond_(game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-(version "1.3.7")
+(version "1.3.8")
 (classification "board/space/pattern")
 (author "Larry Back")
 (credit "Eric Piette")
@@ -164,4 +162,7 @@
     (board Colour OuterVertices (colour Hidden)) 
     (show Edges Diagonal (colour Hidden))
 })
+(ai
+    "Diamond_ai"
+)
 )

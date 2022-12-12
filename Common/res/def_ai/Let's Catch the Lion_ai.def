@@ -1,4 +1,5 @@
 (define "Let's Catch the Lion_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (centreProximity pieceWeights:{
@@ -81,6 +82,32 @@
             (pair "Lion1" -0.32705328)
             (pair "Lion2" 0.13087922)
         })
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[I10{}]>" 1.4086467)
+            (pair "rel:from=<{0,1/4}>:pat=<els=[I9{0,1/4}]>" 0.3463058)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[I3{0,1/4,1/4}]>" -1.2994998)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 0.19445665)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[I3{1/4,1/4,1/4}]>" -0.90515935)
+            (pair "rel:last_from=<{}>:from=<{0,1/4}>:pat=<els=[]>" 0.3463058)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[I9{0,1/4}]>" -0.90303415)
+            (pair "rel:last_to=<{0,0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[I9{1/2}, !-{0,-1/2,0,-1/4}]>" 0.6534675)
+            (pair "rel:to=<{}>:pat=<els=[I3{0,1/4,1/4}]>" -0.411202)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!R1{1/2,0}, I10{0,1/2}]>" 1.3588731)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!R1{0,0,0}, I10{0,1/4}]>" 1.3241086)
+            (pair "rel:from=<{0,1/4}>:pat=<els=[!R1{0,0,0}]>" 0.10937012)
+            (pair "rel:to=<{}>:pat=<els=[!R1{0,0,0}]>" 0.047751874)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R1{1/4,0,0}, I5{0,1/4}]>" 1.4666309)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" 0.031319365)
+            (pair "rel:to=<{}>:pat=<els=[I10{0,1/4}]>" -0.19061965)
+            (pair "rel:from=<{0}>:pat=<els=[R1{1/4,0,0}, I5{0,1/4}]>" 0.10937012)
+            }
+        )
     })
     
 )

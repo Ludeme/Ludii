@@ -1,3 +1,32 @@
 (define "3D Tic-Tac-Toe_ai"
+    
     (bestAgent "MC-GRAVE")
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{0}, f{0,0}]>" 2.749037)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/2}]>" 2.7542908)
+            (pair "rel:to=<{}>:pat=<els=[f{0}]>" 0.972713)
+            (pair "rel:to=<{}>:pat=<els=[I1{0}]>" 0.972713)
+            (pair "rel:to=<{}>:pat=<els=[I1{0,1/4}]>" 1.3654906)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, !-{1/4,-1/4}]>" 0.900608)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0}]>" 1.4821013)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, I3{1/4,0,0}]>" 0.97707963)
+            (pair "rel:to=<{}>:pat=<els=[!-{1/2,1/4}, I3{0,0,0}]>" 0.20995067)
+            (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[f{1/4}, I3{0,0,0}]>" 1.29205)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[I2{0}, f{1/2}]>" 2.5874398)
+            (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[e{0}, !-{1/4}]>" 3.424647)
+            (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[e{0}, -{1/4,-1/4}]>" 3.8252516)
+            (pair "rel:to=<{}>:pat=<els=[#{0,1/4}]>" -0.034652)
+            (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[e{0}, !-{1/2,1/4}]>" 3.5460658)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}, -{1/4,1/4}, I2{-1/2,0}, -{0,0,0}]>" 0.27513653)
+            (pair "rel:last_to=<{1/4,0}>:to=<{}>:pat=<els=[e{1/4}, -{0,0,0}, !-{0}, !-{-1/4,-1/4}]>" 3.315005)
+            (pair "rel:to=<{}>:pat=<els=[I2{1/2,0}, -{0,0,0}]>" 0.8805745)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}, I2{1/2,0}]>" 0.7974714)
+            }
+        )
+    })
+    
 )

@@ -458,22 +458,7 @@
 (metadata
     (info
         {
-        (description "Polypods was created as an exploration of a new capture concept in which a group lives as long as it has more terminal ends than core pieces. Group capture naturally became determinened in two stages: removing terminals, which then in turn cause the group to exceed its core limit. 
-            This works best on the hex grid. 
-            Since terminals are added in play, they can also be removed without destroying the group.
-            All groups fall in the range of with 0 to 3 free terminals. Additions can either help stabilize the group, or destabilize it. 
-            Efficiency in scoring encourages growing groups to near the critical size. As does attacking another player's terminals, and being attacked.
-            
-            Critical size groups are most vulnerable to being killed by terminal attacks instead of merely suffering a terminal loss.
-            This is not difficult to use as a tactic, and if the result were to clear too much of the board the game would be too unstable an cycle. Removing only the core, ensures that the resultant groups will be singletons and pairs which are all legal formations, and keep the board from clearing too much. 
-            
-            However, tit-for-tat captures still can cause major resets. Therefore the capture rule specifies that the ownership of the terminals of the captured groups also changes to the capturing player. 
-            
-            This final solution allows tactical instability, but strategic stability.
-            
-            On small boards ties may be more frequent than some players would like. Thus a tie-breaker based on empty territory control has also been added. This value is is intuitive, and not frequently correlated to the core score, so it functions well in this role.
-            
-        Group count is not used for scoring, because the terminals provide a benefit in allowing for stability and future growth, and thus function best as investments rather than outcomes.")
+        (description "Polypods was created as an exploration of a new capture concept in which a group lives as long as it has more terminal ends than core pieces. Group capture naturally became determinened in two stages: removing terminals, which then in turn cause the group to exceed its core limit.     This works best on the hex grid.     Since terminals are added in play, they can also be removed without destroying the group.    All groups fall in the range of with 0 to 3 free terminals. Additions can either help stabilize the group, or destabilize it.     Efficiency in scoring encourages growing groups to near the critical size. As does attacking another player's terminals, and being attacked.        Critical size groups are most vulnerable to being killed by terminal attacks instead of merely suffering a terminal loss.    This is not difficult to use as a tactic, and if the result were to clear too much of the board the game would be too unstable an cycle. Removing only the core, ensures that the resultant groups will be singletons and pairs which are all legal formations, and keep the board from clearing too much.         However, tit-for-tat captures still can cause major resets. Therefore the capture rule specifies that the ownership of the terminals of the captured groups also changes to the capturing player.         This final solution allows tactical instability, but strategic stability.        On small boards ties may be more frequent than some players would like. Thus a tie-breaker based on empty territory control has also been added. This value is is intuitive, and not frequently correlated to the core score, so it functions well in this role.        Group count is not used for scoring, because the terminals provide a benefit in allowing for stability and future growth, and thus function best as investments rather than outcomes.")
         (rules "Polypods is a game about groups of connected stones called Polypods.
             
             Understanding the mythical life of a polypod should help you to easily remember the rules.
@@ -520,7 +505,7 @@
             If tied, score all the empty spaces adjacent to the players' own polypods.
         If this count is also equal, the game is considered a draw.")
         (id "1994")
-        (version "1.3.7")
+        (version "1.3.8")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")
@@ -529,5 +514,8 @@
     )
     
     <BoardShape:graphsOption>
-    (ai (heuristics (score weight:2)))
+    (ai
+        "Polypods_ai"
+    )
+    
 )

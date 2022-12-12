@@ -1,7 +1,32 @@
 (define "Abak_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (material)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}]>" -0.1713301)
+            (pair "rel:to=<{}>:pat=<els=[!e{0,0,0,0}]>" 0.01435287)
+            (pair "rel:to=<{}>:pat=<els=[!e{0,0}]>" 0.0047706533)
+            (pair "rel:to=<{}>:pat=<els=[R1{0}]>" 0.45657343)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0,0}]>" 2.1018457)
+            (pair "rel:to=<{}>:pat=<els=[e{0,0}]>" -0.35061422)
+            (pair "rel:to=<{}>:pat=<els=[e{0}]>" 0.25801295)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,0,0,0}]>" 0.058045734)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -0.3001086)
+            (pair "rel:to=<{}>:pat=<els=[!R2{0,1/4}, #{1/4,0,0,0}]>" 0.2640488)
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:to=<{}>:pat=<els=[e{0}, e{1/4,0,0}]>" 0.62816113)
+            (pair "rel:to=<{}>:pat=<els=[!f{0}]>" 3.9654793E-4)
+            (pair "rel:to=<{}>:pat=<els=[R1{0}]>" 0.4353132)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}]>" -0.5340267)
+            }
+        )
     })
     
 )

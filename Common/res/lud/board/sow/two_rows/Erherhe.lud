@@ -164,7 +164,7 @@
         (rules "2x6 board, with stores on either end. The store to a player's left belongs to them. Four counters in each hole. Players sow in an anti-clockwise direction from any hole in their row. When the final counter lands in a hole in the opponent's row, causing it to contain two or four counters, these are captured and put in the store. The player also captures the contents of any adjacent holes in the opponent's row if they also contain two or four counters. Play continues until one player has no counters in their row, their opponent capturing the remaining counters. A new round begins. Players fill up their holes with four counters, beginning from the left. Any excess counters are placed in that player's store; the final hole of the player with fewer counters may contain fewer than four counters. Any empty holes are out of play. Play continues as before. The game repeats in this fashion until one player has no counters remaining, their opponent is the winner.")
         (source "Avelot 1906: 270.")
         (id "1262")
-        (version "1.3.7")
+        (version "1.3.8")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin "This game was played in Gabon, around 1906.")
@@ -175,5 +175,8 @@
         (board Style Mancala)
     })
     
+    (ai
+        "Erherhe_ai"
+    )
 )
 

@@ -1,0 +1,399 @@
+(define "Ratio_ai"
+    (useFor { "Ruleset/Game I Simple Blocking Game (Described)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,-1/2,-3/8}>:from=<{}>:to=<{0}>:pat=<els=[e{0,0,0}, #{0,-1/2,1/2,0,0,0}]>" -0.4245601)
+                (pair "rel:last_to=<{0,1/4,3/8}>:from=<{}>:to=<{0}>:pat=<els=[!R1{1/6,1/3}, N8{1/8,1/3}, #{0,1/2,1/4,0}]>" 0.057229333)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!R1{1/6,1/3}, f{0,1/4,3/8}, N8{1/8,1/3}, #{0,1/2,1/4,0}]>" 0.12302141)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!R1{1/6,1/3}, f{0,1/4,3/8}, N8{1/8,1/3}]>" 0.4862301)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[R1{1/3,1/3}, !-{0,0,1/3}]>" 3.574294)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!R1{1/6,1/3}, f{0,1/4,3/8}, #{0,1/2,1/4,0}]>" 0.12302141)
+                (pair "rel:last_to=<{0,1/4,3/8}>:from=<{}>:to=<{0}>:pat=<els=[!R1{1/6,1/3}, f{0,1/4,3/8}]>" 0.7870572)
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:from=<{}>:pat=<els=[!R1{1/6,1/3}, f{0,1/4,3/8}, N8{1/8,1/3}, #{0,1/2,1/4,0}]>" 0.6252267)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{1/8,-1/8}>:from=<{}>:to=<{0}>:pat=<els=[-{0,-5/17}]>" 2.9979024)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/8}, -{1/8,-1/6,-3/8}]>" -0.3497644)
+                (pair "rel:last_to=<{0,-1/6}>:to=<{0}>:pat=<els=[f{0,-1/2,3/8}, f{0,-1/2,1/4,-3/8}]>" 3.6379328)
+                (pair "rel:last_from=<{1/8,-1/8}>:from=<{}>:pat=<els=[-{0,1/3}]>" 0.34431127)
+                (pair "rel:last_to=<{0,-1/6}>:from=<{}>:pat=<els=[f{0,-1/2,3/8}, f{0,-1/2,1/4,-3/8}]>" 0.23031424)
+                (pair "rel:last_from=<{1/8,-1/8}>:from=<{}>:to=<{0}>:pat=<els=[]>" 1.0012019)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,1/6,3/8}]>" 0.2734953)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Game II Second Blocking Game (Described)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[R1{-3/8,-1/6}, !R0{1/2,1/6}, !-{0,1/3}]>" 2.116472)
+                (pair "rel:to=<{}>:pat=<els=[R1{0,-1/6}, !R0{-1/8,1/6}]>" 2.060292)
+                (pair "rel:last_to=<{1/8}>:to=<{}>:pat=<els=[R1{0,1/6}]>" 3.469998)
+                (pair "rel:last_to=<{1/2}>:to=<{}>:pat=<els=[R1{-3/8,-1/6}, !-{0,1/3}]>" 3.56972)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[R1{1/8,-1/6}]>" 3.4863768)
+                (pair "rel:to=<{}>:pat=<els=[R0{0,1/6}]>" -0.631499)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,1/3}, #{0,1/4,1/3}]>" -2.091082)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[N4{-1/8,1/6}]>" 3.2808666)
+                (pair "rel:from=<{}>:to=<{-1/6}>:pat=<els=[-{0,1/6}, R1{0,0}]>" 0.595398)
+                (pair "rel:from=<{}>:pat=<els=[e{0,1/8}]>" 0.74399996)
+                (pair "rel:last_from=<{0,1/3,1/8}>:from=<{0}>:to=<{}>:pat=<els=[]>" 1.1272398)
+                (pair "rel:to=<{}>:pat=<els=[-{0,3/8}, f{0,-1/6}]>" -0.06980348)
+                (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[R1{-1/2,1/6}]>" 1.0339751)
+                (pair "rel:to=<{}>:pat=<els=[N4{0,1/6}]>" 0.21900126)
+                (pair "rel:from=<{0}>:pat=<els=[R0{0,0}]>" 1.1272398)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Game III Blocking Game with all sites except the bottom centre (Described)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R1{-1/4,3/8}, !-{0,-1/4}]>" 3.2795305)
+                (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[R1{0,3/8}]>" 2.7842786)
+                (pair "rel:to=<{}>:pat=<els=[R1{0,3/8}]>" 0.6056676)
+                (pair "rel:to=<{}>:pat=<els=[!R0{1/8}, !-{0,3/8}]>" 0.33130813)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/2,3/8}, -{0,-1/4,3/8}]>" 1.0982896)
+                (pair "rel:last_from=<{0,-3/8}>:to=<{}>:pat=<els=[R1{-1/4,3/8}, #{1/2,-1/4,3/8}]>" 0.8610069)
+                (pair "rel:last_to=<{0,-1/2,3/8}>:from=<{0}>:to=<{}>:pat=<els=[N8{0,-1/2,3/8,1/4}]>" -0.7141481)
+                (pair "rel:last_from=<{0,-3/8}>:from=<{1/2}>:to=<{}>:pat=<els=[R1{-1/4,3/8}]>" 1.1295376)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Game IV Blocking Game except the centre top site (Described)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[R0{0}]>" 2.4545388)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[R0{0}, N8{0}]>" 2.7328691)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[R1{1/8,0}]>" 4.238923)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0}>:from=<{}>:pat=<els=[R1{1/8,-1/4}, R1{0,-1/4}, #{1/4}]>" 0.60292053)
+                (pair "rel:last_from=<{1/4}>:from=<{}>:pat=<els=[!R1{1/8,1/8}, R1{0,1/4}]>" -0.17816496)
+                (pair "rel:to=<{0}>:pat=<els=[R1{1/8,-3/8}]>" 0.64194405)
+                (pair "rel:last_to=<{1/2}>:from=<{0}>:to=<{}>:pat=<els=[f{0,1/2,3/8}]>" 1.058083)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Game V Blocking Game with all sites (Described)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{1/2}, R1{0,1/4}]>" 2.558363)
+                (pair "rel:to=<{}>:pat=<els=[R1{0,3/8}, -{1/2}, R1{0,1/4}]>" 2.7017264)
+                (pair "rel:last_to=<{0,1/4,1/4}>:to=<{}>:pat=<els=[R0{-1/4,3/8}, -{0,-1/2,-1/4,-1/4}]>" 3.5554526)
+                (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[R1{0,3/8}]>" 3.918759)
+                (pair "rel:last_to=<{0,1/4,1/4}>:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/2,-1/4,-1/4}, -{0,-1/2,1/2,1/4}]>" 2.743785)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[R1{0,3/8}]>" 0.0015527953)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{-1/2}, f{0,3/8}]>" 1.0723622)
+                (pair "rel:to=<{}>:pat=<els=[R0{1/4}, e{0,-3/8}, R0{0}]>" -0.17635828)
+                (pair "rel:last_to=<{1/2}>:from=<{0}>:to=<{}>:pat=<els=[N4{0,1/2}]>" 0.9478179)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Game VI Modified Blocking Game with all sites (Described)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!R1{-1/8,3/8}, N4{0,3/8}]>" 1.5278682)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!R0{1/4,1/8}]>" 1.159901)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[R0{1/8,-1/8}]>" 1.3297222)
+                (pair "rel:last_from=<{0,-3/8}>:to=<{}>:pat=<els=[!R0{0,1/8}, !R0{1/8,0}, !-{1/8,-1/2,3/8}]>" 3.0562277)
+                (pair "rel:from=<{}>:to=<{1/8}>:pat=<els=[!R1{0,1/4}, !R1{0,3/8}]>" 1.4712827)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!R0{0,0}, !-{0,-1/2,3/8}]>" 2.6723294)
+                (pair "rel:last_from=<{-1/8,-3/8}>:from=<{0}>:to=<{}>:pat=<els=[!R0{0,0}, !-{0,-1/2,3/8}]>" 2.9641604)
+                (pair "rel:from=<{}>:pat=<els=[R0{1/8,-1/8}, e{0,-1/2,3/8}]>" 1.0334544)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{1/8,1/4}]>" 0.89941376)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0,0,0,0}>:from=<{}>:pat=<els=[]>" -1.6221346)
+                (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{1/8,1/8}, #{0,-1/4,3/8}]>" -0.015949782)
+                (pair "rel:last_from=<{0,1/8,-3/8}>:from=<{}>:pat=<els=[!R0{1/8,0,0}]>" 0.09025134)
+                (pair "rel:last_from=<{0,1/8,-3/8}>:from=<{}>:to=<{0}>:pat=<els=[f{1/8,1/8}, #{0,-1/4,3/8}]>" 0.71207374)
+                (pair "rel:from=<{0}>:pat=<els=[R1{0,1/8}]>" 1.0392245)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{-1/2,0}, e{0,3/8,1/4}]>" 0.16893864)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Game VII Easy Capturing Game (Described)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[R0{1/3}, e{1/6}, e{0,1/3}, e{-1/3,1/3}]>" -4.9496126)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/2}, !-{0,0,0,0,0}, !#{0,-1/2,-1/2,3/8,1/8}]>" -4.4750404)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0}]>" -4.4750404)
+                (pair "rel:last_to=<{0,-1/2,-1/6,3/8}>:to=<{}>:pat=<els=[e{-1/3}, !-{0,0,0,0,0}, !#{0,-1/2,-1/2,3/8,1/8}]>" -3.7248404)
+                (pair "rel:last_to=<{1/3,3/8}>:to=<{}>:pat=<els=[!#{0,3/8,1/8}]>" -3.7248404)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/2}, e{-1/3}, !-{0,0,0,0,0}]>" -4.5371475)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[#{1/4}, !-{0,0,1/4,3/8}]>" 4.3212385)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[#{1/4}]>" 4.3212385)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,1/4,3/8}]>" 4.3212385)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" -1.0338726)
+                (pair "rel:to=<{}>:pat=<els=[#{0}]>" 0.5396639)
+                (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[-{0,3/8}]>" 1.0119222)
+                (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:from=<{0}>:pat=<els=[-{-1/8}, !-{0,-3/8,1/3}]>" -2.973635)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{-1/4,3/8}, !-{0,-3/8,1/3}]>" 1.0990746)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" -2.973635)
+                (pair "rel:to=<{0}>:pat=<els=[-{1/4}]>" -2.973635)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Game VIII Second Capturing Game (Described)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{3/8}>:to=<{}>:pat=<els=[#{1/8}, #{0,1/3}]>" 0.66888815)
+                (pair "rel:from=<{-1/3}>:to=<{}>:pat=<els=[!R1{1/6,-1/3}, !R1{0,-1/3}, R0{0,3/8}]>" -1.1319551)
+                (pair "rel:from=<{-1/2}>:to=<{}>:pat=<els=[!R1{0,1/4}, !R1{0,-1/3}, !R1{-1/6,-1/3}]>" -0.9613386)
+                (pair "rel:from=<{1/2}>:to=<{}>:pat=<els=[!R1{0,1/4}, !R1{0,-1/3}, !R1{-1/6,-1/3}]>" -0.9613386)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R0{1/2}]>" -1.2540406)
+                (pair "rel:last_to=<{3/8}>:to=<{}>:pat=<els=[#{1/8}, #{0,1/3}]>" 0.8395401)
+                (pair "rel:last_to=<{1/2}>:from=<{1/2}>:to=<{}>:pat=<els=[!R1{0,1/4}, !R1{0,-1/3}, !R1{-1/6,-1/3}, R0{-1/6,3/8}]>" -1.9342183)
+                (pair "rel:last_to=<{-1/6,-3/8}>:to=<{}>:pat=<els=[!R0{1/2,1/3}, !e{0,0,0}, !-{0,0}, -{0,1/2,-1/4,1/3}, e{-1/3,3/8}]>" -1.203765)
+                (pair "rel:from=<{-1/2}>:to=<{}>:pat=<els=[!R1{0,1/4}, !R1{0,-1/3}, R0{-1/6,3/8}]>" -1.037922)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{-5/12}, !R0{1/4,-1/3}, -{1/12,1/4}, !-{0,1/3,1/4}]>" -1.3623654)
+                (pair "rel:last_to=<{-1/2}>:to=<{}>:pat=<els=[!R1{0,1/4}, !R1{0,-1/3}, !R1{-1/6,-1/3}]>" -0.42830384)
+                (pair "rel:from=<{}>:pat=<els=[R1{0,1/4}]>" 0.23391831)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!R1{0,0}]>" 1.7923758)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/8}, -{1/2,3/8,1/8}]>" -0.5454525)
+                (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[-{0,1/3}]>" -0.39247566)
+                (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:last_from=<{0}>:to=<{}>:pat=<els=[-{0,1/8}]>" 0.36318243)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Game IX Third Capturing Game (Described)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!R1{-1/2,-3/8}, !R1{0,3/8}]>" -1.3192356)
+                (pair "rel:to=<{}>:pat=<els=[-{-1/2,-1/3}, -{0,1/3}, !-{0,-1/2,1/6}, !-{0,-1/2,-6/13}]>" -2.358772)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!R1{0,-3/8}, !R1{-1/2,3/8}]>" -1.4083276)
+                (pair "rel:to=<{}>:pat=<els=[!R1{-1/2,-3/8}, !R1{0,3/8}, e{0,-1/2,-1/3}]>" -1.8006984)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!R1{1/2,-3/8}, !R1{0,3/8}]>" -1.3192356)
+                (pair "rel:last_to=<{-1/3}>:to=<{}>:pat=<els=[!R1{0,1/3}, !-{1/6,-1/3}, !-{1/2,1/3}]>" -2.1127632)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{-1/2,-1/3}, !-{0,-1/2,1/6}, !-{0,-1/2,-6/13}]>" -1.3680656)
+                (pair "rel:last_to=<{-1/6}>:to=<{}>:pat=<els=[!R1{1/6,1/3}, R1{0,-3/8}, !-{-1/3,1/3}]>" -1.1760504)
+                (pair "rel:last_to=<{1/6}>:to=<{}>:pat=<els=[R1{0,3/8}, !-{1/3,-1/3}]>" -1.15342)
+                (pair "rel:to=<{}>:pat=<els=[!-{-1/20}, !-{0}, !-{7/19}, !R1{-7/20,1/3}, !R1{3/19,-1/4}]>" -2.0559382)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[-{1/8,1/3}]>" 1.1570386)
+                (pair "rel:to=<{}>:pat=<els=[N4{0,1/4,-1/2,-1/3}]>" -0.2854689)
+                (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[-{1/8,1/3}, N4{0,1/4,-1/2,-3/8}]>" 0.22651808)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[!R1{3/8,-1/4}]>" -1.0665317)
+                (pair "rel:last_from=<{0}>:to=<{0}>:pat=<els=[e{0,1/8}, -{0,-1/2,-1/4}]>" 6.0165043)
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[e{0,-1/6}]>" 1.3217983)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[!R1{3/8,-1/4}, e{0,1/8}]>" 1.0759637)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Game X Fourth Capturing Game (Described)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[e{0}, R1{1/2,-1/3}]>" -1.8945472)
+                (pair "rel:last_to=<{0,3/8}>:to=<{}>:pat=<els=[N4{0,0}, !-{3/8}, !-{1/2}]>" -3.7260017)
+                (pair "rel:from=<{1/2}>:to=<{}>:pat=<els=[!R1{0,1/4}]>" -1.7317284)
+                (pair "rel:to=<{}>:pat=<els=[e{1/8}, R0{0}]>" -1.6220036)
+                (pair "rel:last_to=<{0,3/8}>:to=<{}>:pat=<els=[N4{0,0}, !-{1/2}]>" -3.7260017)
+                (pair "rel:to=<{}>:pat=<els=[R1{0,-3/8}, e{1/3}]>" -1.9184052)
+                (pair "rel:last_to=<{0,3/8}>:to=<{}>:pat=<els=[N4{0,0}]>" -2.6028733)
+                (pair "rel:to=<{}>:pat=<els=[N4{0,0}, !-{3/8}]>" -1.7128383)
+                (pair "rel:last_to=<{0,3/8}>:to=<{}>:pat=<els=[N4{0,0}, !-{3/8}]>" -3.0863898)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[R0{0,3/8}, !-{1/8}, !-{1/2}]>" -2.3177485)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R1{1/2,-3/8}, !e{0,-1/4,-1/6}]>" -1.5075208)
+                (pair "rel:to=<{}>:pat=<els=[N4{0,0}, !-{3/8}, !-{1/2}]>" -1.7062123)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!R1{1/2,1/4}, !e{0,-1/8,0}]>" -1.7317284)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" -0.35702527)
+                (pair "rel:last_from=<{0,3/8,3/8}>:from=<{}>:to=<{0}>:pat=<els=[f{1/4,1/8}]>" -0.79962003)
+                (pair "rel:from=<{0}>:pat=<els=[f{-1/2,-1/4}, f{0,1/4}]>" -1.1924537)
+                (pair "rel:to=<{0}>:pat=<els=[e{0,3/8,1/8}]>" -1.1924537)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[R1{0,3/8}]>" -0.122452535)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!R0{0,1/6}]>" 0.3100596)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Game XI Fifth Capturing Game (Described)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[R1{0,1/3}, -{1/2}, !-{1/3}]>" -1.0816091)
+                (pair "rel:to=<{}>:pat=<els=[e{5/12}, !R1{-1/12,1/4}, -{0}]>" -1.6998564)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{1/4,0}, N6{0}, -{0,1/3}]>" -1.6479458)
+                (pair "rel:to=<{}>:pat=<els=[-{1/2,-1/4}, -{0,1/4}]>" -1.2641342)
+                (pair "rel:to=<{}>:pat=<els=[N4{1/6,-1/3}, -{1/3}, -{0}]>" -1.9550284)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{1/4,0}, N6{0}, !-{0,1/6}]>" -1.5138094)
+                (pair "rel:to=<{}>:pat=<els=[-{-1/6}, R1{0,1/3}, -{1/2}, !-{1/3}]>" -1.0594494)
+                (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[N4{1/6,-1/3}, -{1/3}]>" -3.576074)
+                (pair "rel:to=<{}>:pat=<els=[-{1/3,-1/4}, -{0,1/4}, R1{0,3/8}, -{-1/2,1/4}]>" -1.4724088)
+                (pair "rel:last_to=<{-6/13,-1/4}>:to=<{}>:pat=<els=[-{0,-1/8}, !-{1/6,3/8}]>" -2.9453537)
+                (pair "rel:last_to=<{3/8,-1/4}>:to=<{}>:pat=<els=[!-{0,3/8,0,0}, -{-1/6,-1/8}, !-{0,3/8}]>" -2.9453537)
+                (pair "rel:to=<{}>:pat=<els=[-{1/3}, -{0}]>" -0.7382861)
+                (pair "rel:from=<{0}>:pat=<els=[!-{0,-3/8,0,0}, -{1/4}, !-{5/12}]>" -4.0951324)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[!R1{1/3,1/4}, !-{1/4}]>" -2.4322898)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{1/8,-1/3}]>" 1.9209764)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{1/8,-1/3}, #{0,0,-1/8,-1/3}]>" 1.9209764)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,1/8,1/3}]>" 1.9209764)
+                (pair "rel:from=<{}>:to=<{1/8}>:pat=<els=[!R1{0,0}]>" -0.6952557)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[R1{0,1/4}]>" 0.7725214)
+                (pair "rel:to=<{}>:pat=<els=[#{0,3/8}]>" 0.24847443)
+                (pair "rel:from=<{}>:pat=<els=[f{0,-3/8,1/3}]>" 0.020346634)
+                (pair "rel:to=<{}>:pat=<els=[R1{0,1/4}]>" 0.514947)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[R1{0,-1/4}, e{1/2,-3/8}]>" -0.33559507)
+                (pair "rel:from=<{}>:pat=<els=[#{0,0,1/8,1/3}]>" 0.0)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Game XII Capturing Game with all sites except the top centre (Described)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,1/4,-3/8}]>" 1.7453884)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!R1{0,3/8}]>" 1.4045286)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!R1{0,-3/8}, #{0,0,1/4,-3/8}]>" 1.8090245)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[N4{0,0,1/2,1/8}]>" 2.6617203)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N8{0,1/8,-1/4}]>" -0.3256064)
+                (pair "rel:to=<{}>:pat=<els=[e{3/8}, -{0}, !R1{-3/8,-1/4}, !#{1/4,1/4,3/8}]>" -0.44554734)
+                (pair "rel:last_to=<{}>:from=<{}>:to=<{0}>:pat=<els=[N8{0,1/8,-1/4}]>" -0.42259422)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/8}, -{-1/4}, !R1{3/8,-1/4}, !#{0,1/4,3/8}]>" -0.3184185)
+                (pair "rel:last_to=<{0,3/8}>:from=<{1/8,0}>:to=<{}>:pat=<els=[]>" 2.1734397)
+                (pair "rel:last_to=<{0,-3/8}>:to=<{}>:pat=<els=[-{0}, !R1{-3/8,-1/4}, !#{1/4,1/4,3/8}]>" -0.19195838)
+                (pair "rel:from=<{-3/8}>:to=<{}>:pat=<els=[e{-1/4}, -{3/8}, !R1{0,-1/4}]>" -0.37558147)
+                (pair "rel:last_to=<{}>:to=<{0}>:pat=<els=[]>" -2.5154934)
+                (pair "rel:to=<{}>:pat=<els=[N4{0,0,1/2,1/8}]>" 0.14957604)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!R0{0,1/4}]>" 1.6165105)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/4,-1/8}]>" 0.028313367)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/2}]>" -0.42096153)
+                (pair "rel:to=<{}>:pat=<els=[f{0,0}]>" 0.105783544)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!R0{-1/2,-1/4}, -{0,-1/2,1/8}]>" -0.5753141)
+                (pair "rel:to=<{}>:pat=<els=[e{0,0,0}]>" -0.45733666)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Game XIII Capturing Game with all sites except the bottom centre (Described)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{1/2,0}, -{1/4,1/4}, e{0,3/8}]>" -1.5543288)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/2,3/8}, -{0,0,3/8}]>" -1.3140745)
+                (pair "rel:to=<{}>:pat=<els=[e{1/4}, !R1{0,1/4}, -{1/2}]>" -1.6624115)
+                (pair "rel:to=<{}>:pat=<els=[!R0{0}, -{1/2,-3/8}]>" -0.7639423)
+                (pair "rel:to=<{}>:pat=<els=[!R0{0}, -{-3/8,1/4}, -{1/8,-3/8}]>" -0.77400315)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{1/2,-3/8}]>" -0.62803507)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,-1/4,3/8}]>" -0.91543543)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/2,1/4}]>" -0.7757167)
+                (pair "rel:to=<{}>:pat=<els=[!R0{0}, -{1/2,-3/8}, -{-3/8,1/4}]>" -0.99563456)
+                (pair "rel:last_to=<{0,0,3/8}>:from=<{}>:to=<{0}>:pat=<els=[#{1/4,3/8}]>" -1.4081365)
+                (pair "rel:to=<{}>:pat=<els=[e{0,0}, !-{3/8,-3/8}, !-{1/2,-3/8}, !-{1/4,-3/8}]>" 0.642628)
+                (pair "rel:to=<{}>:pat=<els=[-{3/8,3/8}, e{-1/4}, R1{0,3/8}]>" -1.045754)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/2,3/8}]>" 1.6612616)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!R0{0,0}]>" 1.6612616)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[]>" 2.261691)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!R0{0,0}, -{0,0,1/2,3/8}]>" 1.6612616)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,3/8,1/8}]>" -0.4855187)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/8,3/8}]>" -0.92105967)
+                (pair "rel:last_to=<{0,-1/8,0}>:from=<{}>:to=<{0}>:pat=<els=[-{-1/8,-3/8}, -{0,-1/2,1/4,1/4}]>" 3.1546292)
+                (pair "rel:from=<{}>:pat=<els=[f{0,1/8}]>" 0.43344715)
+                (pair "rel:last_to=<{-1/4,3/8}>:from=<{}>:to=<{0}>:pat=<els=[-{0,-3/8,1/8}]>" -0.052430745)
+                (pair "rel:to=<{0}>:pat=<els=[f{-1/8,-1/4}, -{0,-3/8,1/8}]>" 2.5289593)
+                (pair "rel:last_to=<{-1/4,3/8}>:to=<{0}>:pat=<els=[f{-1/8,-1/4}, -{0,-3/8,1/8}]>" 2.5289593)
+                (pair "rel:last_to=<{0,3/8}>:from=<{}>:pat=<els=[-{1/4,-3/8,1/8}]>" 0.99334794)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Game XIV Capturing Game with all sites (Described)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4,3/8}]>" -1.4861945)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!R1{0,0}]>" -1.1862003)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!-{3/8,-3/8}, !-{1/4,-3/8}, e{0,3/8}, e{1/2,-3/8}]>" -2.1879735)
+                (pair "rel:to=<{}>:pat=<els=[!-{3/8,-3/8}, !-{1/4,-3/8}, e{0,3/8}, e{1/2,-3/8}]>" -1.7158959)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[e{0,3/8}, -{0,-3/8}, -{1/2,3/8}]>" -2.5927088)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!R1{0,0}, -{0,1/2,3/8}]>" -1.2040794)
+                (pair "rel:to=<{}>:pat=<els=[-{1/2,3/8}, -{0,-3/8}]>" -0.85460526)
+                (pair "rel:to=<{}>:pat=<els=[!-{3/8,-3/8}, e{0,3/8}, !-{1/8,3/8}, e{1/2,-3/8}]>" -1.8163192)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4,3/8}, !f{0,1/4,1/4}]>" -1.4861945)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/2,3/8}]>" 1.7360848)
+                (pair "rel:last_to=<{0}>:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/2,3/8}]>" 1.7360848)
+                (pair "rel:last_to=<{0}>:from=<{}>:to=<{0,0}>:pat=<els=[]>" 2.0477602)
+                (pair "rel:from=<{}>:pat=<els=[!R1{0,-1/4}, N4{0,1/4}]>" 0.4922257)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!R0{0,1/8}, e{0,-1/4,3/8}]>" 2.7264009)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{-1/2,-1/4}, -{0,3/8,-1/4}]>" 0.2506097)
+                (pair "rel:from=<{0}>:pat=<els=[R0{0,3/8}, e{0,1/8}]>" -0.34159064)
+                (pair "rel:last_to=<{0}>:to=<{0,0}>:pat=<els=[]>" -0.34159064)
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[N4{0,1/4}]>" 0.3169318)
+                (pair "rel:from=<{}>:pat=<els=[-{0,0,1/2,3/8}]>" -0.024422694)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" -0.34159064)
+                }
+            )
+        })
+        
+    )
+)

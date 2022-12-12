@@ -1,7 +1,35 @@
 (define "Ho-Bag Gonu_ai"
+    
     (bestAgent "UCT")
     trainedHeuristics:(heuristics {
         (playerRegionsProximity weight:-1.0 player:1)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!R0{1/4}, N2{0,-1/2,3/8}]>" -1.4622899)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!#{1/4,-1/4}, N4{0,1/4,3/8}]>" 0.7799275)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!R0{1/4}, R0{1/8}, #{0,-1/4}]>" -0.9096293)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!R0{1/4}, R0{1/8}, N2{0,-1/2,3/8}]>" -1.5711375)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R1{0}, !#{1/4,-1/4}]>" 0.8210085)
+            (pair "rel:from=<{}>:pat=<els=[-{0,0}]>" -0.09770337)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" -0.3764455)
+            (pair "rel:to=<{}>:pat=<els=[R1{0,3/8}]>" 0.5839827)
+            (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[-{0}]>" 0.36392105)
+            (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[!#{0,1/4}]>" 0.64404446)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!R0{0,1/8}, f{0,-1/2,-1/8}]>" -3.5228722)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,0,1/8}]>" -1.4567013)
+            (pair "rel:to=<{0}>:pat=<els=[R1{1/4,-1/8}, -{0,-1/2,1/8}]>" -11.0428)
+            (pair "rel:last_from=<{0,0,1/8}>:from=<{0}>:to=<{}>:pat=<els=[R1{0,0,0}]>" -4.422972)
+            (pair "rel:last_to=<{0,0,0}>:from=<{0}>:to=<{}>:pat=<els=[!R0{0}]>" -1.5210857)
+            (pair "rel:from=<{0}>:pat=<els=[!R0{0}, #{0,3/8,-3/8}]>" -11.0428)
+            (pair "rel:last_from=<{0,0}>:from=<{0}>:pat=<els=[]>" -11.0428)
+            (pair "rel:to=<{}>:pat=<els=[!R0{0,1/8}, f{0,-1/2,-1/8}]>" -0.20871155)
+            }
+        )
     })
     
 )

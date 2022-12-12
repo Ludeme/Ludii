@@ -408,15 +408,7 @@
 (metadata
     (info
         {
-        (description "After starting from the centers of the rings there are three important rules:
-            
-            # STEP-Lenght: Sum of the pips of your color on occupied sites on the track of colored ring-sites. Each step moves orthogonal forward, left or right.
-            # STARTER-Generation: Reach same color of friendly piece in opposite ring to get an additional Starter to your base.
-            # CAPTURE-Move: Reach same color of enemy piece in opposite ring to capture it directly. Captured pieces form a stack and have to be brought to the center between the rings to send them to jail.
-            
-            WIN = Get 3 Prisoners or Extinction of opponent.
-            
-        See details in rules section.")
+        (description "After starting from the centers of the rings there are three important rules:    # STEP-Length: Sum of the pips of your color on occupied sites on the track of colored ring-sites. Each step moves orthogonal forward, left or right.    # STARTER-Generation: Reach same color of friendly piece in opposite ring to get an additional Starter to your base.    # CAPTURE-Move: Reach same color of enemy piece in opposite ring to capture it directly. Captured pieces form a stack and have to be brought to the center between the rings to send them to jail.    WIN = Get 3 Prisoners or Extinction of opponent.    See details in rules section.")
         (rules "Pieces start from the centers of the rings to the colored positions and later move orthogonal forward, left or right. The total STEP-length is equal to the sum of the pips of a players color on all the positions occupied by their pieces.
             If you can move you have to do so, even if it is a bad move.
             If you stalemate yourself, the other player can move until you can move again.
@@ -455,7 +447,7 @@
             But be aware: almost all moves change the steplength and attack & defence-patterns, ie. the whole situation.
         This makes it complicated to calculate, but entertaining to play.")
         (id "2002")
-        (version "1.3.7")
+        (version "1.3.8")
         (classification "board/war/replacement/eliminate/all")
         (author "Andreas Pichler")
         (credit "Franz Pichler")

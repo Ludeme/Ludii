@@ -3,6 +3,7 @@ package metrics.single.outcome;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import main.Status.EndType;
 import metrics.Evaluation;
 import metrics.Metric;
 import other.concept.Concept;
@@ -51,7 +52,7 @@ public class Timeouts extends Metric
 			final Trial trial = trials[i];
 			
 			// Trial ended by timeout.
-			final boolean trialTimedOut = trial.numTurns() > game.getMaxTurnLimit() || trial.numberRealMoves() > game.getMaxMoveLimit();
+			final boolean trialTimedOut = trial.status().endType() == EndType.MoveLimit || trial.status().endType() == EndType.TurnLimit;
 			
 			if (trialTimedOut)
 				timeouts++;

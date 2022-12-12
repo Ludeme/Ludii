@@ -67,8 +67,7 @@
     
     (info
         {
-        (description "Jostle is a two player game. The 10x10 board is initially set up with 16 red and 16 blue checkers. Red and
-        Blue, take turns moving checkers of their own color, one move per turn, starting with Red.")
+        (description "Jostle is a two player game. The 10x10 board is initially set up with 16 red and 16 blue checkers. Red andBlue, take turns moving checkers of their own color, one move per turn, starting with Red.")
         (rules "OBJECT OF THE GAME The last player to make a move wins.
             
             FRIENDLY AND ENEMY CONNECTIONS A connection, i.e. an orthogonal
@@ -83,7 +82,7 @@
         There is no capturing in Jostle, only jostling.")
         (id "1766")
         (source "<a href=\"http://www.marksteeregames.com/Jostle_Go_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.marksteeregames.com</a>")
-        (version "1.3.7")
+        (version "1.3.8")
         (classification "board/space/blocking")
         (author "Mark Steere")
         (publisher "<a href=\"http://www.marksteeregames.com/Jostle_Go_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.marksteeregames.com</a>")
@@ -97,4 +96,7 @@
         (player Colour P2 (colour Blue))
     })
     
+    (ai
+        "Jostle_ai"
+    )
 )

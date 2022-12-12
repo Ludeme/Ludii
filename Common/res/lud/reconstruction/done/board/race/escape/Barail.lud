@@ -1,0 +1,2613 @@
+(game "Barail"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Barail1" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track" { 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 End}
+                directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:3)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 15 count:1)
+                
+                (place Stack "Disc1" 14 count:14)
+                
+                (place Stack "Disc2" 13 count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (or 
+                        (forEach Piece)
+                        
+                        (forEach Piece container:
+                            (mover)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Barail1 ruleset.")
+    
+    (item "Barail2" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track" { 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 End}
+                directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:3)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 15 count:1)
+                
+                (place Stack "Disc1" 14 count:14)
+                
+                (place Stack "Disc2" 13 count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (or 
+                        (forEach Piece)
+                        
+                        (forEach Piece container:
+                            (mover)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Barail2 ruleset.")
+    
+    (item "Barail3" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track" { 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 End}
+                directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:3)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 15 count:1)
+                
+                (place Stack "Disc1" 14 count:14)
+                
+                (place Stack "Disc2" 13 count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (or 
+                            (is Pending)
+                            
+                            (not 
+                                (is Prev Mover)
+                            )
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (if 
+                        (= 1 
+                            (var "PlayOpposite")
+                        )
+                        
+                        (or { 
+                            (forEach Piece 
+                                (forEach Value 
+                                    (values Remembered "Opposite")
+                                    
+                                    (if 
+                                        (= 
+                                            (trackSite Move from:
+                                                (from)
+                                                steps:
+                                                (value)
+                                            )
+                                        Off )
+                                        
+                                        (move Remove 
+                                            (from)
+                                        )
+                                        
+                                        (move 
+                                            (from 
+                                                (from)
+                                            )
+                                            
+                                            (to 
+                                                (trackSite Move from:
+                                                    (from)
+                                                    steps:
+                                                    (value)
+                                                )
+                                                if:
+                                                (or 
+                                                    (not 
+                                                        (is Enemy 
+                                                            (who at:
+                                                                (to)
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (= 1 
+                                                        (size Stack at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (and 
+                                                        (if 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (to)
+                                                                )
+                                                            )
+                                                            
+                                                            (fromTo 
+                                                                (from 
+                                                                    (to)
+                                                                )
+                                                                
+                                                                (to 
+                                                                    (handSite Next )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (forget Value "Opposite" 
+                                                            (value)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (then 
+                                            (if 
+                                                (!= 0 
+                                                    (size Array 
+                                                        (values Remembered "Opposite" )
+                                                    )
+                                                )
+                                                
+                                                (moveAgain)
+                                                
+                                                (and { 
+                                                    (set Var "PlayOpposite" 0 )
+                                                    
+                                                    (set Pending)
+                                                    
+                                                    (moveAgain)
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            top:True )
+                            
+                            (forEach Piece container:
+                                (mover)
+                                
+                                (forEach Value 
+                                    (values Remembered "Opposite")
+                                    
+                                    (if 
+                                        (= 
+                                            (trackSite Move from:
+                                                (from)
+                                                steps:
+                                                (value)
+                                            )
+                                        Off )
+                                        
+                                        (move Remove 
+                                            (from)
+                                        )
+                                        
+                                        (move 
+                                            (from 
+                                                (from)
+                                            )
+                                            
+                                            (to 
+                                                (trackSite Move from:
+                                                    (from)
+                                                    steps:
+                                                    (value)
+                                                )
+                                                if:
+                                                (or 
+                                                    (not 
+                                                        (is Enemy 
+                                                            (who at:
+                                                                (to)
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (= 1 
+                                                        (size Stack at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (and 
+                                                        (if 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (to)
+                                                                )
+                                                            )
+                                                            
+                                                            (fromTo 
+                                                                (from 
+                                                                    (to)
+                                                                )
+                                                                
+                                                                (to 
+                                                                    (handSite Next )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (forget Value "Opposite" 
+                                                            (value)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (then 
+                                            (if 
+                                                (!= 0 
+                                                    (size Array 
+                                                        (values Remembered "Opposite" )
+                                                    )
+                                                )
+                                                
+                                                (moveAgain)
+                                                
+                                                (and { 
+                                                    (set Var "PlayOpposite" 0 )
+                                                    
+                                                    (set Pending)
+                                                    
+                                                    (moveAgain)
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            top:True )
+                            
+                            (move Pass 
+                                (then 
+                                    (and { 
+                                        (forget Value "Opposite" All)
+                                        
+                                        (set Var "PlayOpposite" 0)
+                                        
+                                        (set Pending)
+                                        
+                                        (moveAgain)
+                                        }
+                                    )
+                                )
+                            )
+                            }
+                        )
+                        
+                        (do 
+                            (if 
+                                (and { 
+                                    (= 0 
+                                        (count MovesThisTurn)
+                                    )
+                                    
+                                    (all DiceEqual)
+                                    
+                                    (= 1 
+                                        (value Player Mover)
+                                    )
+                                    }
+                                )
+                                
+                                (and 
+                                    (remember Value "Opposite" 
+                                        (- 7 
+                                            (face 28)
+                                        )
+                                    )
+                                    
+                                    (remember Value "Opposite" 
+                                        (- 7 
+                                            (face 28)
+                                        )
+                                    )
+                                )
+                            )
+                            next:
+                            (or 
+                                (forEach Piece top:True)
+                                
+                                (forEach Piece container:
+                                    (mover)
+                                top:True)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Barail3 ruleset.")
+    
+    (item "Barail4" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track" { 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 End}
+                directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:3)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 15 count:1)
+                
+                (place Stack "Disc1" 14 count:14)
+                
+                (place Stack "Disc2" 13 count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (or 
+                            (is Pending)
+                            
+                            (not 
+                                (is Prev Mover)
+                            )
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (if 
+                        (= 1 
+                            (var "PlayOpposite")
+                        )
+                        
+                        (or { 
+                            (forEach Piece 
+                                (forEach Value 
+                                    (values Remembered "Opposite")
+                                    
+                                    (if 
+                                        (= 
+                                            (trackSite Move from:
+                                                (from)
+                                                steps:
+                                                (value)
+                                            )
+                                        Off )
+                                        
+                                        (move Remove 
+                                            (from)
+                                        )
+                                        
+                                        (move 
+                                            (from 
+                                                (from)
+                                            )
+                                            
+                                            (to 
+                                                (trackSite Move from:
+                                                    (from)
+                                                    steps:
+                                                    (value)
+                                                )
+                                                if:
+                                                (or 
+                                                    (not 
+                                                        (is Enemy 
+                                                            (who at:
+                                                                (to)
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (= 1 
+                                                        (size Stack at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (and 
+                                                        (if 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (to)
+                                                                )
+                                                            )
+                                                            
+                                                            (fromTo 
+                                                                (from 
+                                                                    (to)
+                                                                )
+                                                                
+                                                                (to 
+                                                                    (handSite Next )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (forget Value "Opposite" 
+                                                            (value)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (then 
+                                            (if 
+                                                (!= 0 
+                                                    (size Array 
+                                                        (values Remembered "Opposite" )
+                                                    )
+                                                )
+                                                
+                                                (moveAgain)
+                                                
+                                                (and { 
+                                                    (set Var "PlayOpposite" 0 )
+                                                    
+                                                    (set Pending)
+                                                    
+                                                    (moveAgain)
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            top:True )
+                            
+                            (forEach Piece container:
+                                (mover)
+                                
+                                (forEach Value 
+                                    (values Remembered "Opposite")
+                                    
+                                    (if 
+                                        (= 
+                                            (trackSite Move from:
+                                                (from)
+                                                steps:
+                                                (value)
+                                            )
+                                        Off )
+                                        
+                                        (move Remove 
+                                            (from)
+                                        )
+                                        
+                                        (move 
+                                            (from 
+                                                (from)
+                                            )
+                                            
+                                            (to 
+                                                (trackSite Move from:
+                                                    (from)
+                                                    steps:
+                                                    (value)
+                                                )
+                                                if:
+                                                (or 
+                                                    (not 
+                                                        (is Enemy 
+                                                            (who at:
+                                                                (to)
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (= 1 
+                                                        (size Stack at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (and 
+                                                        (if 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (to)
+                                                                )
+                                                            )
+                                                            
+                                                            (fromTo 
+                                                                (from 
+                                                                    (to)
+                                                                )
+                                                                
+                                                                (to 
+                                                                    (handSite Next )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (forget Value "Opposite" 
+                                                            (value)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (then 
+                                            (if 
+                                                (!= 0 
+                                                    (size Array 
+                                                        (values Remembered "Opposite" )
+                                                    )
+                                                )
+                                                
+                                                (moveAgain)
+                                                
+                                                (and { 
+                                                    (set Var "PlayOpposite" 0 )
+                                                    
+                                                    (set Pending)
+                                                    
+                                                    (moveAgain)
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            top:True )
+                            
+                            (move Pass 
+                                (then 
+                                    (and { 
+                                        (forget Value "Opposite" All)
+                                        
+                                        (set Var "PlayOpposite" 0)
+                                        
+                                        (set Pending)
+                                        
+                                        (moveAgain)
+                                        }
+                                    )
+                                )
+                            )
+                            }
+                        )
+                        
+                        (do 
+                            (if 
+                                (and { 
+                                    (= 0 
+                                        (count MovesThisTurn)
+                                    )
+                                    
+                                    (all DiceEqual)
+                                    
+                                    (= 1 
+                                        (value Player Mover)
+                                    )
+                                    }
+                                )
+                                
+                                (and 
+                                    (remember Value "Opposite" 
+                                        (- 7 
+                                            (face 28)
+                                        )
+                                    )
+                                    
+                                    (remember Value "Opposite" 
+                                        (- 7 
+                                            (face 28)
+                                        )
+                                    )
+                                )
+                            )
+                            next:
+                            (or 
+                                (forEach Piece top:True)
+                                
+                                (forEach Piece container:
+                                    (mover)
+                                top:True)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Barail4 ruleset.")
+    
+    (item "Barail5" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track" { 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 End}
+                directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:3)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 15 count:1)
+                
+                (place Stack "Disc1" 14 count:14)
+                
+                (place Stack "Disc2" 13 count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (or 
+                            (is Pending)
+                            
+                            (not 
+                                (is Prev Mover)
+                            )
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (if 
+                        (= 1 
+                            (var "PlayOpposite")
+                        )
+                        
+                        (or { 
+                            (forEach Piece 
+                                (forEach Value 
+                                    (values Remembered "Opposite")
+                                    
+                                    (if 
+                                        (= 
+                                            (trackSite Move from:
+                                                (from)
+                                                steps:
+                                                (value)
+                                            )
+                                        Off )
+                                        
+                                        (move Remove 
+                                            (from)
+                                        )
+                                        
+                                        (move 
+                                            (from 
+                                                (from)
+                                            )
+                                            
+                                            (to 
+                                                (trackSite Move from:
+                                                    (from)
+                                                    steps:
+                                                    (value)
+                                                )
+                                                if:
+                                                (or 
+                                                    (not 
+                                                        (is Enemy 
+                                                            (who at:
+                                                                (to)
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (= 1 
+                                                        (size Stack at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (and 
+                                                        (if 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (to)
+                                                                )
+                                                            )
+                                                            
+                                                            (fromTo 
+                                                                (from 
+                                                                    (to)
+                                                                )
+                                                                
+                                                                (to 
+                                                                    (handSite Next )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (forget Value "Opposite" 
+                                                            (value)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (then 
+                                            (if 
+                                                (!= 0 
+                                                    (size Array 
+                                                        (values Remembered "Opposite" )
+                                                    )
+                                                )
+                                                
+                                                (moveAgain)
+                                                
+                                                (and { 
+                                                    (set Var "PlayOpposite" 0 )
+                                                    
+                                                    (set Pending)
+                                                    
+                                                    (moveAgain)
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            top:True )
+                            
+                            (forEach Piece container:
+                                (mover)
+                                
+                                (forEach Value 
+                                    (values Remembered "Opposite")
+                                    
+                                    (if 
+                                        (= 
+                                            (trackSite Move from:
+                                                (from)
+                                                steps:
+                                                (value)
+                                            )
+                                        Off )
+                                        
+                                        (move Remove 
+                                            (from)
+                                        )
+                                        
+                                        (move 
+                                            (from 
+                                                (from)
+                                            )
+                                            
+                                            (to 
+                                                (trackSite Move from:
+                                                    (from)
+                                                    steps:
+                                                    (value)
+                                                )
+                                                if:
+                                                (or 
+                                                    (not 
+                                                        (is Enemy 
+                                                            (who at:
+                                                                (to)
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (= 1 
+                                                        (size Stack at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (and 
+                                                        (if 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (to)
+                                                                )
+                                                            )
+                                                            
+                                                            (fromTo 
+                                                                (from 
+                                                                    (to)
+                                                                )
+                                                                
+                                                                (to 
+                                                                    (handSite Next )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (forget Value "Opposite" 
+                                                            (value)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (then 
+                                            (if 
+                                                (!= 0 
+                                                    (size Array 
+                                                        (values Remembered "Opposite" )
+                                                    )
+                                                )
+                                                
+                                                (moveAgain)
+                                                
+                                                (and { 
+                                                    (set Var "PlayOpposite" 0 )
+                                                    
+                                                    (set Pending)
+                                                    
+                                                    (moveAgain)
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            top:True )
+                            
+                            (move Pass 
+                                (then 
+                                    (and { 
+                                        (forget Value "Opposite" All)
+                                        
+                                        (set Var "PlayOpposite" 0)
+                                        
+                                        (set Pending)
+                                        
+                                        (moveAgain)
+                                        }
+                                    )
+                                )
+                            )
+                            }
+                        )
+                        
+                        (do 
+                            (if 
+                                (and { 
+                                    (= 0 
+                                        (count MovesThisTurn)
+                                    )
+                                    
+                                    (all DiceEqual)
+                                    
+                                    (= 1 
+                                        (value Player Mover)
+                                    )
+                                    }
+                                )
+                                
+                                (and 
+                                    (remember Value "Opposite" 
+                                        (- 7 
+                                            (face 28)
+                                        )
+                                    )
+                                    
+                                    (remember Value "Opposite" 
+                                        (- 7 
+                                            (face 28)
+                                        )
+                                    )
+                                )
+                            )
+                            next:
+                            (or 
+                                (forEach Piece top:True)
+                                
+                                (forEach Piece container:
+                                    (mover)
+                                top:True)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Barail5 ruleset.")
+    
+    (item "Barail6" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track" { 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 End}
+                directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:3)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 15 count:1)
+                
+                (place Stack "Disc1" 14 count:14)
+                
+                (place Stack "Disc2" 13 count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (forEach Piece top:True)
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Barail6 ruleset.")
+    
+    (item "Barail7" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track" { 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 End}
+                directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:3)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 15 count:1)
+                
+                (place Stack "Disc1" 14 count:14)
+                
+                (place Stack "Disc2" 13 count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (forEach Piece top:True)
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Barail7 ruleset.")
+    
+    (item "Barail8" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track" { 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 End}
+                directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:3)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 15 count:1)
+                
+                (place Stack "Disc1" 14 count:14)
+                
+                (place Stack "Disc2" 13 count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (forEach Piece top:True)
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Barail8 ruleset.")
+    
+    (item "Barail9" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track" { 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 End}
+                directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:3)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 15 count:1)
+                
+                (place Stack "Disc1" 14 count:14)
+                
+                (place Stack "Disc2" 13 count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (forEach Piece top:True)
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Barail9 ruleset.")
+    
+    (item "Barail10" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track" { 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 End}
+                directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:3)
+            
+            (piece "Disc" Each 
+                (forEach Die if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from)
+                            
+                            (to 
+                                (trackSite Move steps:
+                                    (pips)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 15 count:1)
+                
+                (place Stack "Disc1" 14 count:14)
+                
+                (place Stack "Disc2" 13 count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (forEach Piece top:True)
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Barail10 ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2)
+        (equipment {
+            ("BackgammonBoard"
+                {
+                (track "Track" {25..20 18..13 0..5 7..12 End} directed:True)
+                } 
+            ) 
+            (dice d:6 num:3)
+            (piece "Disc" Each [#])
+        })
+        (rules 
+            (start {
+                (place Stack "Disc1" 15 count:1)
+                (place Stack "Disc1" 14 count:14)
+                (place Stack "Disc2" 13 count:15)
+            })
+            (play [#])
+            (end ("EscapeWin"))
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Barail1 (Reconstructed)" {
+        "Variant/Barail1"
+    })
+    (ruleset "Ruleset/Barail2 (Reconstructed)" {
+        "Variant/Barail2"
+    })
+    (ruleset "Ruleset/Barail3 (Reconstructed)" {
+        "Variant/Barail3"
+    })
+    (ruleset "Ruleset/Barail4 (Reconstructed)" {
+        "Variant/Barail4"
+    })
+    (ruleset "Ruleset/Barail5 (Reconstructed)" {
+        "Variant/Barail5"
+    })
+    (ruleset "Ruleset/Barail6 (Reconstructed)" {
+        "Variant/Barail6"
+    })
+    (ruleset "Ruleset/Barail7 (Reconstructed)" {
+        "Variant/Barail7"
+    })
+    (ruleset "Ruleset/Barail8 (Reconstructed)" {
+        "Variant/Barail8"
+    })
+    (ruleset "Ruleset/Barail9 (Reconstructed)" {
+        "Variant/Barail9"
+    })
+    (ruleset "Ruleset/Barail10 (Reconstructed)" {
+        "Variant/Barail10"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Barail is a European Tables game played in sixteenth century Italy.")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Backgammon board. Fifteen pieces per player. Three six-sided dice. Both players proceed in the same track, which goes from one left-hand point in the corner of the board in an anti-clockwise direction, ending at the point opposite it. One player has one piece on the tenth point and fourteen on the eleventh; the other has fifteen on the twelfth point. Players bear off from the end of the track.
+        "))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1301"))
+        (useFor "Ruleset/Barail1 (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player the next player's hand site 0 moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 15
+                Place stack of [Disc1] at vertex 14
+                Place stack of [Disc2] at vertex 13.
+                Rules: 
+                If not in the same turn, roll the dice and afterwards move one of your pieces or move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the moving player, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Barail1 (Reconstructed)" (id "2149"))
+        (useFor "Ruleset/Barail2 (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player Player at to's hand site 0 moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 15
+                Place stack of [Disc1] at vertex 14
+                Place stack of [Disc2] at vertex 13.
+                Rules: 
+                If not in the same turn, roll the dice and afterwards move one of your pieces or move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the moving player, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Barail2 (Reconstructed)" (id "2150"))
+        (useFor "Ruleset/Barail3 (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player Player at to's hand site 0 moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 15
+                Place stack of [Disc1] at vertex 14
+                Place stack of [Disc2] at vertex 13.
+                Rules: 
+                If a state is pending or not in the same turn, roll the dice and afterwards if 1 is equal to state variablePlayOpposite, move one of your pieces or move one of your pieces or pass then forget all previously rememberd values and set the variable PlayOpposite to 0 and set pending and move again, else if 0 is equal to the number of moves during this turn, all dice show equal values and 1 is equal to the value of Player the moving player, remember the value 7 minus the face of the die at site 28 and remember the value 7 minus the face of the die at site 28 and afterwards move one of your pieces or move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the moving player, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Barail3 (Reconstructed)" (id "2151"))
+        (useFor "Ruleset/Barail4 (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player the next player's hand site 0 moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 15
+                Place stack of [Disc1] at vertex 14
+                Place stack of [Disc2] at vertex 13.
+                Rules: 
+                If a state is pending or not in the same turn, roll the dice and afterwards if 1 is equal to state variablePlayOpposite, move one of your pieces or move one of your pieces or pass then forget all previously rememberd values and set the variable PlayOpposite to 0 and set pending and move again, else if 0 is equal to the number of moves during this turn, all dice show equal values and 1 is equal to the value of Player the moving player, remember the value 7 minus the face of the die at site 28 and remember the value 7 minus the face of the die at site 28 and afterwards move one of your pieces or move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the moving player, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Barail4 (Reconstructed)" (id "2152"))
+        (useFor "Ruleset/Barail5 (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player the next player's hand site 0 moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 15
+                Place stack of [Disc1] at vertex 14
+                Place stack of [Disc2] at vertex 13.
+                Rules: 
+                If a state is pending or not in the same turn, roll the dice and afterwards if 1 is equal to state variablePlayOpposite, move one of your pieces or move one of your pieces or pass then forget all previously rememberd values and set the variable PlayOpposite to 0 and set pending and move again, else if 0 is equal to the number of moves during this turn, all dice show equal values and 1 is equal to the value of Player the moving player, remember the value 7 minus the face of the die at site 28 and remember the value 7 minus the face of the die at site 28 and afterwards move one of your pieces or move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the moving player, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Barail5 (Reconstructed)" (id "2153"))
+        (useFor "Ruleset/Barail6 (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player Player at to's hand site 0 moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 15
+                Place stack of [Disc1] at vertex 14
+                Place stack of [Disc2] at vertex 13.
+                Rules: 
+                If not in the same turn, roll the dice and afterwards move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the moving player, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Barail6 (Reconstructed)" (id "2154"))
+        (useFor "Ruleset/Barail7 (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player the next player's hand site 0 moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 15
+                Place stack of [Disc1] at vertex 14
+                Place stack of [Disc2] at vertex 13.
+                Rules: 
+                If not in the same turn, roll the dice and afterwards move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the moving player, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Barail7 (Reconstructed)" (id "2155"))
+        (useFor "Ruleset/Barail8 (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player Player at to's hand site 0 moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 15
+                Place stack of [Disc1] at vertex 14
+                Place stack of [Disc2] at vertex 13.
+                Rules: 
+                If not in the same turn, roll the dice and afterwards move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the moving player, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Barail8 (Reconstructed)" (id "2156"))
+        (useFor "Ruleset/Barail9 (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player the next player's hand site 0 moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 15
+                Place stack of [Disc1] at vertex 14
+                Place stack of [Disc2] at vertex 13.
+                Rules: 
+                If not in the same turn, roll the dice and afterwards move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the moving player, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Barail9 (Reconstructed)" (id "2157"))
+        (useFor "Ruleset/Barail10 (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 15
+                Place stack of [Disc1] at vertex 14
+                Place stack of [Disc2] at vertex 13.
+                Rules: 
+                If not in the same turn, roll the dice and afterwards move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the moving player, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Barail10 (Reconstructed)" (id "2158"))
+        (source "Parlett 1999: 79.")
+        (version "1.3.8")
+        (classification "board/race/escape/reconstruction/done")
+        (credit "Eric Piette")
+        (origin "This game was played in Italy, from around 1275 to 1299.")
+        }
+    )
+    
+    (graphics {
+        (board Style backgammon)
+        (stackType Backgammon)
+    })
+    
+)
+

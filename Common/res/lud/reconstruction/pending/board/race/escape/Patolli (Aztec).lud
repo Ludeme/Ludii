@@ -1,0 +1,67 @@
+(game "Patolli (Aztec)"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players [2 | 4])
+        (equipment { 
+            (board 
+                (merge 
+                    (shift 0 9 (rectangle 2 18)) 
+                    (shift 8 0 (rectangle 20 2))
+                )
+            )
+            (dice d:2 from:0 num:[4 | 5 | 10])
+            (piece "Pawn" Each) // 6 pieces per players
+        }) 
+        (rules 
+            (play [#]) // doubled when all of the beans have the marked side face-up
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Patolli is a game played by the Aztecs, forms of which survive today. It is a race game, though we do not know many of the details of its early forms.")
+        (rules "Cross-shaped board, marked with squares 2x9-10 in each arm. Two or four players. Four, five, or ten beans used as dice, marked on one side. The number of marked sides that land face-up indicate the score of the throw, doubled when all of the beans have the marked side face-up. Six pieces per player. ")
+        (source "DLP evidence.")
+        (id "139")
+        (version "1.3.8")
+        (classification "board/race/escape/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Mexico, from around 600 to 1614.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (show Symbol "thinCross" {46 47 64 65 16 34 3 23} scale:0.9)
+    })
+    
+    (recon {
+        (concept "NumStartComponents" 12)
+    })
+)

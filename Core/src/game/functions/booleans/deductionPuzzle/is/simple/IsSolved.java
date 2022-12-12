@@ -107,6 +107,7 @@ public final class IsSolved extends BaseBooleanFunction
 		final BitSet concepts = new BitSet();
 		concepts.set(Concept.DeductionPuzzle.id(), true);
 		concepts.set(Concept.CopyContext.id(), true);
+		concepts.set(Concept.SolvedEnd.id(), true);
 		return concepts;
 	}
 

@@ -1,0 +1,27 @@
+(define "Troll_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[#{0,1/4}]>" 0.61346287)
+            (pair "rel:to=<{}>:pat=<els=[-{1/2,0,0}, -{0,0,0}, #{1/4}]>" 0.9507657)
+            (pair "rel:to=<{}>:pat=<els=[f{1/4,0}, f{0,-1/4}, !-{0}, f{-1/4,0,0,0}]>" 1.0494249)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, R0{0,0,0}]>" 0.24595086)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0}, f{0}, f{1/2,0,0,0}]>" 1.50546)
+            (pair "rel:to=<{}>:pat=<els=[e{0}, -{-1/4,0,0}, #{1/2,0}]>" 0.57796085)
+            (pair "rel:to=<{}>:pat=<els=[e{-1/4,1/4}, f{0}, R0{0,0,0}]>" 0.34638092)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[f{0,0}, f{1/2,0,0}, !-{0}, R1{0}]>" 1.5017952)
+            (pair "rel:to=<{}>:pat=<els=[f{1/2,0,0}, !-{0}, R1{0}]>" 0.86772966)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" -0.003581514)
+            (pair "rel:to=<{}>:pat=<els=[R0{0,0,0,0}]>" 0.08397891)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[R1{0,-1/4}, R1{1/4,0}, f{1/4}]>" 1.1694789)
+            (pair "rel:to=<{}>:pat=<els=[-{-1/4,0,0}, f{0,0,0}, !-{1/2}]>" 0.3938172)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[R1{0,-1/4}, R1{1/2,1/4}, f{1/4}, R0{1/2,0}]>" 0.8422251)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[R1{0,-1/4}, R1{1/2,1/4}, R0{1/2,0}]>" 0.18839364)
+            }
+        )
+    })
+    
+)

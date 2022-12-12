@@ -1,7 +1,31 @@
 (define "Vai Lung Thlan_ai"
+    
     (bestAgent "UCT")
     trainedHeuristics:(heuristics {
         (ownRegionsCount weight:-1.0)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{1/4,1/4}, !R1{0,0,0,0}]>" 0.13466105)
+            (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[-{0,-1/4}, -{1/4,0}]>" 0.3755522)
+            (pair "rel:to=<{}>:pat=<els=[-{1/2}, !#{0,0,0,0}]>" 0.05129459)
+            (pair "rel:to=<{}>:pat=<els=[!#{0,0,0,0}, !R0{0,0,0,0}]>" -0.0150502)
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{0}, -{1/4}]>" 0.08438072)
+            (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[-{0,0,0}, -{0,0}]>" 0.6793078)
+            (pair "rel:to=<{}>:pat=<els=[!#{0,0,0,0}]>" -0.0150502)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, -{0,0}]>" 0.1810084)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" 0.018153902)
+            (pair "rel:to=<{}>:pat=<els=[!#{0,0,0,0}, -{0}]>" 0.19485521)
+            (pair "rel:to=<{}>:pat=<els=[!R0{1/4,0,0,0}, -{0,1/4}]>" -0.014638466)
+            (pair "rel:to=<{}>:pat=<els=[!#{0,0,0,0}, !R1{0,0,0,0}]>" 0.012281602)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" 0.08417108)
+            (pair "rel:to=<{}>:pat=<els=[!R1{0,0,0,0}]>" 0.012281602)
+            }
+        )
     })
     
 )

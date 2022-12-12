@@ -1,7 +1,34 @@
 (define "Shi Liu Kan Tsiang Kun_ai"
+    
     (bestAgent "ProgressiveHistory")
     trainedHeuristics:(heuristics {
         (influence)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_to=<{1/8,3/8}>:to=<{}>:pat=<els=[!#{3/8,0,0,0}, e{0,-1/8}, N8{-1/4,0}]>" -0.12281476)
+            (pair "rel:to=<{0}>:pat=<els=[#{-1/2,1/8}, N8{0,3/8,-1/4}, e{0,-1/2,-1/8}, N8{0,1/4,0}]>" -0.24294212)
+            (pair "rel:from=<{-3/8}>:to=<{}>:pat=<els=[-{0,3/8}, e{3/8,-1/4}, !-{1/4,0}, e{1/8,1/4}]>" 0.018634336)
+            (pair "rel:from=<{-1/8}>:to=<{}>:pat=<els=[e{-3/8,-1/4}, -{0,-3/8}, !-{1/2,0}, e{3/8,1/4}]>" 0.029811464)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:last_from=<{-3/8,1/4}>:from=<{3/8}>:pat=<els=[e{0,-1/8}]>" -0.43045643)
+            (pair "rel:last_from=<{-1/4,-1/8}>:from=<{0}>:to=<{}>:pat=<els=[N4{3/8,-1/8}, N8{}, !f{1/8,0}, f{0,1/2,-3/8}]>" 1.5405858)
+            (pair "rel:to=<{}>:pat=<els=[e{-1/2,3/8}, N4{0,-1/2,1/8}, !-{0,-1/2,-1/8,1/4}]>" 0.23214088)
+            (pair "rel:last_to=<{1/2}>:from=<{0}>:to=<{}>:pat=<els=[f{0,-1/2,3/8}]>" 0.15912847)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{-1/2,3/8}, !-{0,-1/2,-1/8,1/4}]>" -0.2005049)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{0,-1/2,-1/8,1/4}]>" 0.00354395)
+            (pair "rel:last_to=<{-1/2}>:from=<{0}>:pat=<els=[N4{3/8,-1/8}, N8{}, !f{1/8,0}, f{0,1/2,-3/8}]>" -0.43045643)
+            (pair "rel:last_from=<{1/4,-1/8}>:last_to=<{0}>:from=<{1/2}>:to=<{}>:pat=<els=[N4{-1/8,-1/8}, N8{}]>" 2.9128652)
+            (pair "rel:last_to=<{-1/2}>:from=<{0}>:to=<{}>:pat=<els=[N4{3/8,-1/8}, !f{1/8,0}, f{0,1/2,-3/8}]>" 1.5024076)
+            (pair "rel:last_to=<{-1/4}>:to=<{}>:pat=<els=[!f{0}, f{1/4,-1/2,3/8}]>" 0.02125868)
+            (pair "rel:last_to=<{1/2}>:from=<{0}>:pat=<els=[!f{-1/4}, f{0,-1/2,3/8}]>" -0.43045643)
+            (pair "rel:last_to=<{-1/2}>:from=<{0}>:to=<{}>:pat=<els=[N8{}, !f{1/8,0}, f{0,1/2,-3/8}]>" 0.42594463)
+            (pair "rel:last_from=<{-3/8,1/8}>:from=<{0}>:to=<{}>:pat=<els=[#{1/2,-1/4}, e{0,1/2,0}]>" 1.0011828)
+            }
+        )
     })
     
 )

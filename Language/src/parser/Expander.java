@@ -325,7 +325,7 @@ public class Expander
 	 * Realise options.
 	 * @return Game description with defines expanded in-place.
 	 */
-	private static String realiseOptions
+	public static String realiseOptions
 	(
 		final String          strIn, 
 		final Description     description,
@@ -532,7 +532,7 @@ public class Expander
 	/**
 	 * Realise rulesets.
 	 */
-	private static String realiseRulesets
+	public static String realiseRulesets
 	(
 		final String      strIn,
 		final Description description,
@@ -1175,6 +1175,7 @@ public class Expander
 		Define knownAIDefine = null;
 		
 		final String gameName = StringRoutines.gameName(strIn);
+		String aiName = gameName;
 		
 		// Check that the ai file name, if any, matches the game name
 		final int c = strIn.indexOf("_ai\"");
@@ -1184,15 +1185,15 @@ public class Expander
 			while (cc >= 0 && strIn.charAt(cc) != '"')
 				cc--;
 			
-			final String aiName = strIn.substring(cc + 1, c);
-			if (!aiName.equals(gameName))
-			{
-				report.addWarning("Define '" + aiName + "_ai' found in AI metadata; use '" + gameName + "_ai' or remove it.");
-				return Expander.interpretDefine("(define \"" + aiName + "_ai\")", null, report, true);
-			}
+			aiName = strIn.substring(cc + 1, c);
+//			if (!aiName.equals(gameName))
+//			{
+//				report.addWarning("Define '" + aiName + "_ai' found in AI metadata; use '" + gameName + "_ai' or remove it.");
+//				return Expander.interpretDefine("(define \"" + aiName + "_ai\")", null, report, true);
+//			}
 		}
 	
-		final String[] defs = FileHandling.getResourceListingSingle(Expander.class, "def_ai/", gameName + "_ai.def");
+		final String[] defs = FileHandling.getResourceListingSingle(Expander.class, "def_ai/", aiName + "_ai.def");
  		if (defs == null)
         {
         	// Not a JAR
@@ -1218,7 +1219,7 @@ public class Expander
 		    	       && 
 		    	       file.getName() != null 
 		    	       && 
-		    	       file.getName().equals(gameName + "_ai.def")
+		    	       file.getName().equals(aiName + "_ai.def")
 		    	   )
 		    	   {
 		    		   // Found the file
@@ -1246,7 +1247,7 @@ public class Expander
         		final String[] defSplit = def.split(Pattern.quote("/"));
         		final String filename = defSplit[defSplit.length - 1];
         		
-        		if (filename.equals(gameName + "_ai.def"))
+        		if (filename.equals(aiName + "_ai.def"))
         		{
         			knownAIDefine = KnownDefines.processDefFile(def, "/def_ai/", report);
         			if (report.isError())
@@ -1257,7 +1258,7 @@ public class Expander
 		
  		if (knownAIDefine == null)
  		{
- 			knownAIDefine = Expander.interpretDefine("(define \"" + gameName + "_ai\")", null, report, false);
+ 			knownAIDefine = Expander.interpretDefine("(define \"" + aiName + "_ai\")", null, report, false);
  			report.addWarning("Failed to load AI define specified in metadata; reverting to default AI.");
  		}
  		

@@ -30,7 +30,7 @@ public class CountReconstruction
 		
 		for (String game : allGames)
 		{
-			if(!game.contains("reconstruction"))
+			if(!game.contains("pending"))
 				continue;
 			
 			game = game.replaceAll(Pattern.quote("\\"), "/");

@@ -1,7 +1,29 @@
 (define "Djara-Badakh_ai"
+    
     (bestAgent "UCT")
     trainedHeuristics:(heuristics {
         (lineCompletionHeuristic)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[#{0,-1/2,0}, !#{0,1/4}]>" -0.9411051)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,0}, !e{0,1/2,1/4}]>" -1.1386033)
+            (pair "rel:last_to=<{1/4,-1/4}>:from=<{0}>:to=<{}>:pat=<els=[!#{0,1/4}, e{0,-1/4}]>" -4.3505983)
+            (pair "rel:to=<{}>:pat=<els=[e{1/4,0}, !e{0,1/2}, !e{0,0}]>" -0.60562557)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{-1/4,-1/4}, e{0,-1/4}, !-{0,-1/4,-1/4}, !-{0,1/4,-1/4}, !-{0,-1/4,1/4}, !-{0,1/4,1/4}]>" 0.9370144)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}, f{1/4}, !f{0,1/4,0}]>" 4.504011)
+            (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[f{1/2}, f{0}]>" 4.637831)
+            (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[f{0,0}, f{0}]>" 4.504011)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, !-{0,0}, f{-1/4}]>" 4.637831)
+            (pair "rel:to=<{}>:pat=<els=[f{1/2}, f{0}]>" 1.4451991)
+            (pair "rel:to=<{0}>:pat=<els=[!-{1/4}, -{1/2}, e{0,1/2,1/4}, !f{0,1/2,1/4,1/4}]>" 1.6922773)
+            (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[-{1/2}, e{0,1/2,1/4}]>" -0.41633275)
+            }
+        )
     })
     
 )

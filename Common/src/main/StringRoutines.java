@@ -848,6 +848,7 @@ public final class StringRoutines
 	{
 		final StringBuffer formattedDesc = new StringBuffer("");
 		
+		// Remove the spaces at the beginning of the description.
 		String desc = originalDesc;
 		for(int i = 0; i < originalDesc.length(); i++)
 		{
@@ -866,7 +867,8 @@ public final class StringRoutines
 					|| c == '}' || c == '"' || c == '.' || c == ',' || c == ':'
 					|| c == '=' || c == '<' || c == '>' || c == '+' || c == '-'
 					|| c == '/' || c == '^' || c == '%' || c == '*' || c == '['
-					|| c == ']' || c == '#' || c == '?' || Character.isSpaceChar(c)
+					|| c == ']' || c == '#' || c == '?' || c == '|' || c == '!'
+					|| Character.isSpaceChar(c)
 			)
 			{
 				if(i != 0 && Character.isSpaceChar(c))
@@ -896,14 +898,23 @@ public final class StringRoutines
 	{
 		final StringBuffer formattedDesc = new StringBuffer("");
 		formattedDesc.append('(');
+		boolean insideQuote = false;
 		for(int i = 1; i < desc.length(); i++) // Start at 1 to not break line at the first parenthesis.
 		{
 			final char c = desc.charAt(i);
-			if(c == '(' && desc.charAt(desc.length()-1) != ':')
-				formattedDesc.append("\n");
-			formattedDesc.append(c);
-			if(c == ')' || c == '}')
-				formattedDesc.append("\n");
+			if(c == '"')
+				insideQuote = !insideQuote;
+			
+			if(!insideQuote)
+			{
+				if(c == '(' && desc.charAt(desc.length()-1) != ':')
+					formattedDesc.append("\n");
+				formattedDesc.append(c);
+				if(c == ')' || c == '}')
+					formattedDesc.append("\n");
+			}
+			else
+				formattedDesc.append(c);
 		}
 		return formattedDesc.toString();
 	}

@@ -1,15 +1,41 @@
 (define "Rimoe_ai"
-    (useFor { "Play Rules/One Rimoe" }
+    (useFor { "Ruleset/Rimoe (Observed)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (centreProximity)
         })
         
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[e{0,1/4}]>" 1.8494682E-4)
+                (pair "rel:last_to=<{0,0,1/2}>:from=<{}>:to=<{0,0}>:pat=<els=[N8{1/4}, !-{0,0,1/2,0,0,0,0}, !-{1/2,3/8}, !-{1/4,-3/8}]>" -0.044365037)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{1/4,-1/8}>:from=<{0}>:to=<{}>:pat=<els=[N8{-1/2,-1/4}, #{-1/4,0}, N4{1/8,-1/8}, N8{0,-1/2,0,0}]>" -0.97368693)
+                (pair "rel:last_from=<{-1/4,-1/8}>:to=<{}>:pat=<els=[N8{0,-1/4}, #{1/4,0}, N4{-3/8,-1/8}, N8{1/2,-1/2,0,0}]>" -0.44578058)
+                }
+            )
+        })
+        
     )
-    (useFor { "Play Rules/Two Rimoes" }
+    (useFor { "Ruleset/Two Rimoe (Observed)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (material)
+        })
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,0,-3/8,-1/8}>:from=<{0,0}>:pat=<els=[N8{1/8,3/8}, -{0,0,-1/2,0}]>" -0.7221878)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!-{0,-1/8}, !f{-1/8,-3/8}, !f{1/8,-3/8}, N8{3/8}, !f{0}]>" 0.008536612)
+                }
+            )
         })
         
     )

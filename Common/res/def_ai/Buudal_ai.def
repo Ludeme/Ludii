@@ -1,7 +1,36 @@
 (define "Buudal_ai"
+    
     (bestAgent "ProgressiveHistory")
     trainedHeuristics:(heuristics {
         (material)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_to=<{1/4,3/8}>:to=<{}>:pat=<els=[#{0,3/8}]>" 1.2293584)
+            (pair "rel:last_to=<{1/4,3/8}>:to=<{}>:pat=<els=[#{0,3/8}, !-{1/2,-3/8}]>" 1.3637041)
+            (pair "rel:to=<{}>:pat=<els=[#{1/2,3/8}, !-{0,-3/8}]>" 0.39765498)
+            (pair "rel:last_to=<{3/8,3/8}>:to=<{}>:pat=<els=[!e{0,3/8}, !-{-3/8,-3/8}]>" 0.90222687)
+            (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/2,1/8}]>" -0.58387715)
+            (pair "rel:to=<{}>:pat=<els=[#{1/8,3/8}, !e{0,3/8}, !-{-3/8,-3/8}]>" 0.39765498)
+            (pair "rel:to=<{}>:pat=<els=[#{1/8,3/8}, !e{0,3/8}]>" 0.39765498)
+            (pair "rel:to=<{}>:pat=<els=[#{0,-1/4}, -{1/4,-3/8}, -{0,-3/8}]>" -1.418163)
+            (pair "rel:to=<{}>:pat=<els=[#{0,1/4}, -{0,3/8}]>" -1.1500924)
+            (pair "rel:to=<{}>:pat=<els=[N8{}]>" 0.53620034)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/8}]>" -7.165861E-5)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N8{}, e{0,0,3/8,1/4}]>" 5.491841)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{0,0,3/8,1/4}]>" 5.491841)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{1/4,0}, #{0,0,-1/4,-1/4}]>" 3.227511)
+            (pair "rel:to=<{0,0}>:pat=<els=[N8{}, e{0,0,3/8,1/4}]>" -6.3512564)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{1/4,0}]>" 3.227511)
+            (pair "rel:to=<{}>:pat=<els=[-{0,3/8}]>" 0.08900686)
+            (pair "rel:from=<{0,-1/4}>:pat=<els=[-{0,1/4}]>" -6.3512564)
+            (pair "rel:from=<{0,1/4}>:pat=<els=[-{-1/8,0}, !-{0,1/4,3/8,1/4}]>" -6.3512564)
+            }
+        )
     })
     
 )

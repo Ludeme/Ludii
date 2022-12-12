@@ -121,7 +121,7 @@
         In a case where the second player has created a blockade of their pieces containing one or more of only their own pieces which can move infinitely without possibility of being taken, the second player player may declare H'ajeb in order to regain the possibility of winning. The second player declares H'ajeb on their turn, and then the first player gains the ability to move any distance orthogonally or diagonally. The first player may also make multiple captures not just with the same piece, but with more than one. The second player may rescind the H'ajeb declaration at any time and the captures must stop. If the second player allows the first player to continue until the first player cannot capture, the second player captures any two of the first player's pieces, and the first player captures one of the second player's pieces that is able to move infinitely. ")
         (source "Quemeneur 1944: 463-468.")
         (id "1939")
-        (version "1.3.7")
+        (version "1.3.8")
         (classification "board/war/custodial")
         (credit "Eric Piette")
         (origin "This game was played in Tunisia, around 1944.")
@@ -133,4 +133,7 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
+    (ai
+        "Khamousiyya_ai"
+    )
 )

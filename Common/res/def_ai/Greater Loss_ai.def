@@ -1,7 +1,31 @@
 (define "Greater Loss_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (mobilitySimple)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{0}, f{1/2}]>" 1.5985382)
+            (pair "rel:to=<{}>:pat=<els=[-{1/2}, f{0,0}]>" 1.6773744)
+            (pair "rel:to=<{}>:pat=<els=[-{1/4}, f{0,1/4}, f{-1/4,0}]>" 1.9665859)
+            (pair "rel:last_to=<{1/2,0}>:to=<{}>:pat=<els=[f{0}, f{1/4,0}]>" -3.166032)
+            (pair "rel:to=<{}>:pat=<els=[f{1/4,1/4}, f{0,0}]>" 0.4033661)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, #{1/4,-1/4}]>" 0.28373674)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[e{0}]>" -1.5534583)
+            (pair "rel:to=<{}>:pat=<els=[f{1/2,0}, e{1/4,0}, !-{0,-1/4}, #{0}, f{1/2,-1/4}]>" 3.0077393)
+            (pair "rel:to=<{}>:pat=<els=[e{1/4,0}, !-{0,-1/4}, #{0}, f{1/2,-1/4}]>" 2.866905)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, f{1/4,0}, e{0,0}]>" 4.1758533)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0}, -{1/4,0,0}, !-{1/2,1/4}, f{0,1/4}]>" 4.1573925)
+            (pair "rel:to=<{}>:pat=<els=[#{0,-1/4}, #{0}, -{1/2,0,0}, f{-1/4}, !-{0,1/4}]>" 2.90162)
+            (pair "rel:to=<{}>:pat=<els=[f{1/4,0}, -{0,0,0}, e{0,0}, !-{-1/4,-1/4}, f{1/4,-1/4}]>" 4.1758533)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, f{1/4,0}]>" 4.1573925)
+            }
+        )
     })
     
 )

@@ -1,4 +1,5 @@
 (define "Bolotudu_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (centreProximity)
@@ -17,6 +18,36 @@
             (pair "Marker1" 0.792496)
             (pair "Marker2" 0.4157057)
         })
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{1/4,-1/4}]>" 2.296344)
+            (pair "rel:to=<{}>:pat=<els=[#{0,1/4}]>" -0.26037252)
+            (pair "rel:from=<{}>:pat=<els=[f{0,1/4}]>" 1.8993174)
+            (pair "rel:to=<{}>:pat=<els=[#{0,-1/4}, -{1/4,-1/4}]>" -0.32678124)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 1.5061517)
+            (pair "rel:to=<{}>:pat=<els=[e{}]>" -0.8172767)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0,0}]>" -0.348656)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/2,1/4}]>" 1.6072142)
+            (pair "rel:last_from=<{1/2,-1/4}>:to=<{}>:pat=<els=[#{0,-1/4}, -{1/4,-1/4}]>" -0.053384867)
+            (pair "rel:to=<{0}>:pat=<els=[f{0,-1/2,1/4}]>" -1.5795295)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.022059144)
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,1/2,0}]>" 5.1392374)
+            (pair "rel:to=<{}>:pat=<els=[e{0,1/4}, f{1/4,-1/2,0}]>" 2.9387548)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{-1/4,1/4}, f{0,-1/2,0}]>" 5.1810446)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 3.7868054)
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/2,0}]>" 2.9328632)
+            (pair "rel:to=<{}>:pat=<els=[e{0,1/4}]>" 1.4224285)
+            (pair "rel:from=<{}>:pat=<els=[f{0,1/4}]>" 4.1130285)
+            (pair "rel:to=<{}>:pat=<els=[!-{1/2,-1/4}, f{0,1/4}, f{1/4}]>" 2.6536875)
+            (pair "rel:to=<{}>:pat=<els=[e{1/4,1/4}, f{0,1/4}]>" 1.1560806)
+            }
+        )
     })
     
 )

@@ -1,7 +1,35 @@
 (define "Challis Ghutia_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (material)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_to=<{0}>:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/2,0,0}]>" 0.43833762)
+            (pair "rel:last_to=<{0}>:from=<{}>:pat=<els=[-{0,0,1/2,0,0}]>" 0.177349)
+            (pair "rel:from=<{0,0}>:pat=<els=[!f{1/4,0}, -{0,0,-1/2,0,0}]>" -0.15593393)
+            (pair "rel:to=<{}>:pat=<els=[#{0,1/4}, -{1/2,0,0,0,0}]>" 0.005589806)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[]>" -0.06382242)
+            (pair "rel:last_to=<{1/2,1/4}>:from=<{0}>:to=<{}>:pat=<els=[!-{0,1/2,0,0,0}]>" 0.20910625)
+            (pair "rel:last_to=<{0}>:from=<{}>:to=<{0,0}>:pat=<els=[]>" 0.08592582)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{1/2}>:to=<{}>:pat=<els=[#{0,-1/4}, #{0,0}, -{1/2,1/4,0,0,0}]>" 0.09575179)
+            (pair "rel:to=<{}>:pat=<els=[#{0,1/4}, #{0,0}]>" 0.039951462)
+            (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[-{0,0,0}]>" -0.36777148)
+            (pair "rel:last_to=<{0,0,0}>:from=<{}>:pat=<els=[]>" -0.34673116)
+            (pair "rel:last_from=<{0,0,1/4}>:from=<{}>:pat=<els=[#{0,0,0,0,0}]>" -0.09000353)
+            (pair "rel:to=<{0,0}>:pat=<els=[!-{0}, #{0,0,1/4,0,0,0}]>" -0.05068282)
+            (pair "rel:from=<{1/2}>:to=<{}>:pat=<els=[#{0,-1/4}, #{0,0}]>" 0.07014029)
+            (pair "rel:to=<{}>:pat=<els=[#{0,-1/4}, #{0,0}, -{1/2,1/4,0,0,0}]>" 0.063910104)
+            (pair "rel:last_from=<{0,0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[#{0,0,0,0,0}]>" -0.18387598)
+            (pair "rel:to=<{0}>:pat=<els=[!f{1/2,0,0}, #{0,0,0,0,0}]>" -0.05068282)
+            (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[!-{1/4,0}]>" -0.047502954)
+            }
+        )
     })
     
 )

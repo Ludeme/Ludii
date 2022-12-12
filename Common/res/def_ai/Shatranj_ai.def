@@ -1,7 +1,36 @@
 (define "Shatranj_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (material)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[-{0,1/4}]>" 0.25533268)
+            (pair "rel:to=<{0,0}>:pat=<els=[R1{1/4,0}]>" -5.0727334)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 0.2514146)
+            (pair "rel:from=<{}>:to=<{0,0,-1/4}>:pat=<els=[e{0,0,-1/4,1/4,0,0,0}]>" 0.46661037)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[I1{0,0,0}]>" -0.075285375)
+            (pair "rel:to=<{}>:pat=<els=[I2{0,1/4,1/4,1/4}]>" 0.21673144)
+            (pair "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[I5{0,1/4}, I2{0,1/4,1/4,1/4}]>" 0.7592814)
+            (pair "rel:to=<{}>:pat=<els=[e{0,1/4}]>" 0.037856787)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[I7{0,1/4,0,1/4}]>" -0.17327927)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" 5.7376956E-4)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[e{}, -{0,1/4,-1/4}, -{0,0,0,0,0}]>" 0.19827895)
+            (pair "rel:to=<{}>:pat=<els=[e{}, -{0,0,0,0,0}]>" 0.19767153)
+            (pair "rel:last_from=<{0,-1/4,0,0}>:from=<{}>:pat=<els=[#{1/4,1/4}]>" 0.05597436)
+            (pair "rel:to=<{}>:pat=<els=[e{}, -{0,1/4,-1/4}]>" 0.19258595)
+            (pair "rel:to=<{}>:pat=<els=[I1{}]>" 0.26306736)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{}, -{0,1/4,-1/4}, -{0,0,0,0,0}]>" 0.4549754)
+            (pair "rel:last_from=<{0,-1/4,0,0}>:from=<{}>:to=<{0}>:pat=<els=[#{1/4,1/4}]>" 0.28403637)
+            (pair "rel:from=<{}>:pat=<els=[R1{0,0,0,0}, I2{0,1/2}]>" -0.016011637)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/4}, -{0,-1/4}, -{-1/2,0,0}, e{0}]>" 0.22933406)
+            }
+        )
     })
     
 )

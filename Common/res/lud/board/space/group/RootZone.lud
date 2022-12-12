@@ -120,9 +120,7 @@
 (metadata
     (info
         {
-        (description "RootZone is an experimental territorial placement meta-game of the Mycilleum family (i.e. group growth), but based on growth from edges inward, with a goal of largest group, and prohibition on touching enemy positions. The game is played on a triangular grid in the shape of a hexagon that has alternating edges of 2N and 2N+2. This shape is chosen to avoid play points at the center of the board or of its edges.
-            
-        The implementation provides a selection of restrictions on the neighborhood of the piece being placed. Non-looping option has not been implemented. The standard is placement next to any number of friendly pieces, but not next to pieces with more than 3 neighbors. Please comment to author about which variants you prefer and why.")
+        (description "RootZone is an experimental territorial placement meta-game of the Mycilleum family (i.e. group growth), but based on growth from edges inward, with a goal of largest group, and prohibition on touching enemy positions. The game is played on a triangular grid in the shape of a hexagon that has alternating edges of 2N and 2N+2. This shape is chosen to avoid play points at the center of the board or of its edges.                    The implementation provides a selection of restrictions on the neighborhood of the piece being placed. Non-looping option has not been implemented. The standard is placement next to any number of friendly pieces, but not next to pieces with more than 3 neighbors. Please comment to author about which variants you prefer and why.")
         (rules "Goal: Scoring is based on your largest group (x2), with an extra point given to the first player to create a given size. 
             The player with the largest group at the end of the game thus wins, and ties go to the first player to achieve this goal.
             
@@ -146,7 +144,7 @@
 Play continues until both players pass consecutively, and then the final scores are compared.")
 (id "889")
 (source "Dale W. Walton (<a href=\"https://boardgamegeek.com/thread/2499500/rootzone-variant-ant-trails-and-similar\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>)")
-(version "1.3.7")
+(version "1.3.8")
 (classification "board/space/group")
 (author "Dale W. Walton")
 (credit "Dale W. Walton")

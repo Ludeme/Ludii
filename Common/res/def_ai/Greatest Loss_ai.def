@@ -1,3 +1,25 @@
 (define "Greatest Loss_ai"
+    
     (bestAgent "ProgressiveHistory")
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[e{0}, !#{1/4,0,0}]>" -2.3386817)
+            (pair "rel:to=<{}>:pat=<els=[e{1/4}, #{0}, !#{1/2,0,0}]>" -2.3386817)
+            (pair "rel:to=<{}>:pat=<els=[f{1/4,0,0}, e{0}, #{1/2,1/4}]>" -1.0939463)
+            (pair "rel:to=<{}>:pat=<els=[f{-1/4,0,0}, !-{0,1/4}, e{0}, #{-1/2,-1/4}]>" -1.0939463)
+            (pair "rel:to=<{}>:pat=<els=[f{-1/4,0,0}, !-{0,1/4}, e{0}]>" -1.0939463)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[e{0}, #{1/4,-1/4}]>" -1.6798714)
+            (pair "rel:to=<{}>:pat=<els=[e{0}, #{1/4}]>" -1.6798714)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, e{1/4}, #{1/2}]>" -3.2291665)
+            (pair "rel:to=<{}>:pat=<els=[e{1/4}, -{0,-1/4}, #{1/2,-1/4}]>" -4.055411)
+            (pair "rel:to=<{}>:pat=<els=[!-{0}, -{0,1/4}, #{1/2,1/4}]>" -1.1354152)
+            (pair "rel:to=<{}>:pat=<els=[f{0,1/4}, f{-1/2}, f{1/4}, f{0,0}]>" 1.0202284)
+            (pair "rel:to=<{}>:pat=<els=[f{-1/4,1/4}, f{1/4}, f{0}]>" 0.83520323)
+            }
+        )
+    })
+    
 )

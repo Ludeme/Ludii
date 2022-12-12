@@ -113,7 +113,7 @@ public enum RoleType
 	Enemy(Constants.NOBODY),	
 
 	/** Friend players (Mover + Allies). */
-	Friend(Constants.NOBODY),
+	Friend(Constants.NOBODY), 
 	
 	/** Ally players. */
 	Ally(Constants.NOBODY),

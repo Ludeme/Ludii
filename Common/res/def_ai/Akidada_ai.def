@@ -1,7 +1,34 @@
 (define "Akidada_ai"
+    
     (bestAgent "ProgressiveHistory")
     trainedHeuristics:(heuristics {
         (mobilitySimple weight:-1.0)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[f{1/4}, f{0,1/4,1/4,0}]>" 2.3026576)
+            (pair "rel:to=<{}>:pat=<els=[e{0,0,1/4}, e{0,0,1/4,0}]>" -0.52986294)
+            (pair "rel:to=<{}>:pat=<els=[e{0,0}, -{0}, #{1/2}, -{1/4,0}, -{0,1/4}]>" 0.25217903)
+            (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[-{0,0}, !e{0,-1/4}, !e{0,1/4,0}, !e{0,-1/2,0}]>" -0.34373143)
+            (pair "rel:from=<{}>:pat=<els=[f{1/4}, f{0,1/4,1/4,0}]>" 0.81977046)
+            (pair "rel:last_to=<{0,0}>:to=<{0}>:pat=<els=[#{1/4,-1/4}, e{-1/4,0}, e{-1/4}, #{-1/2,-1/4}, #{0,-1/2,-1/4}]>" -1.3312048)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{-1/4,1/4}]>" -0.82056534)
+            (pair "rel:last_from=<{0}>:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[#{1/4,-1/4}, e{-1/4,0}, e{-1/4}, #{0,-1/2,-1/4}]>" -3.3313003)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{0}, #{1/2,-1/4}]>" -0.08047482)
+            (pair "rel:last_to=<{0,1/4,-1/2}>:from=<{}>:to=<{0,1/4}>:pat=<els=[-{-1/4,1/4}]>" -0.65701663)
+            (pair "rel:last_to=<{1/2,1/4}>:to=<{}>:pat=<els=[-{0}]>" -0.49458236)
+            (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{0,0}]>" 0.009735708)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!e{0}, !e{-1/4}, !e{1/4,0}, -{0,1/4,1/4,0}, -{0,1/4,0,1/4}]>" 0.3469011)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!e{-1/2,0}, !e{-1/4}, !e{1/4,0}, -{0,1/4,1/4,0}]>" 0.29737508)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!e{0}, !e{1/4,0}, -{0,1/4,1/4,0}, -{0,1/4,0,1/4}]>" 0.3469011)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{0}]>" 0.015756523)
+            (pair "rel:last_to=<{0,0}>:to=<{0,0,1/4,0}>:pat=<els=[]>" -3.9515734)
+            }
+        )
     })
     
 )

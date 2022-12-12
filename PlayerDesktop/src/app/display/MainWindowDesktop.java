@@ -20,7 +20,6 @@ import javax.swing.Timer;
 
 import app.DesktopApp;
 import app.PlayerApp;
-import app.display.dialogs.SettingsDialog;
 import app.display.dialogs.MoveDialog.SandboxDialog;
 import app.display.util.DevTooltip;
 import app.display.util.ZoomBox;
@@ -30,6 +29,7 @@ import app.loading.FileLoading;
 import app.move.MouseHandler;
 import app.utils.GUIUtil;
 import app.utils.MVCSetup;
+import app.utils.SettingsExhibition;
 import app.utils.sandbox.SandboxValueType;
 import app.views.BoardView;
 import app.views.View;
@@ -181,8 +181,10 @@ public class MainWindowDesktop extends JPanel implements MouseListener, MouseMot
 			app.updateTabs(app.contextSnapshot().getContext(app));
 
 			// Set application background colour.
-			if (app.settingsPlayer().usingExhibitionApp())
-				g2d.setColor(new Color(146,223,243));
+			if (app.settingsPlayer().usingMYOGApp())
+				g2d.setColor(Color.black);
+			else if (SettingsExhibition.exhibitionVersion)
+				g2d.setColor(Color.black);
 			else
 				g2d.setColor(Color.white);
 			
@@ -261,13 +263,13 @@ public class MainWindowDesktop extends JPanel implements MouseListener, MouseMot
 		if (GUIUtil.pointOverlapsRectangles(e.getPoint(), playerSwatchList))
 		{
 			if (pressButton)
-				SettingsDialog.createAndShowGUI(app);
+				app.showSettingsDialog();
 			return true;
 		}
 		else if (GUIUtil.pointOverlapsRectangles(e.getPoint(), playerNameList))
 		{
 			if (pressButton)
-				SettingsDialog.createAndShowGUI(app);
+				app.showSettingsDialog();
 			return true;
 		}
 		else if (tabPanel.placement().contains(e.getPoint()))

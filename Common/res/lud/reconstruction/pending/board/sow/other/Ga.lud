@@ -1,0 +1,122 @@
+(define "NumPlayers" [2..16])
+(define "NumHolesCircle" (* [1..16] ("NumPlayers")))
+(define "LeftMost" 
+    (trackSite FirstSite 
+        from:(trackSite FirstSite if:(not (is Mover (who at:(to)))))
+        if:(is Mover (who at:(to)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Ga"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players ("NumPlayers")) 
+        (equipment { 
+            (board 
+                (concentric {"NumHolesCircle"}) 
+                { 
+                (track [#] loop:True)
+                }
+                use:Vertex
+            )
+            (piece "Seed" Each)
+        }) 
+        
+        (rules
+            
+            (start [#])
+            
+            (play 
+                (if (!= 1 (count Pieces Mover))
+                    (move
+                        Select 
+                        (from 
+                            ("LeftMost") 
+                        )
+                        (then
+                            (sow
+                                sowEffect:(if (and (!= (mover) (what at:(to))) (is Occupied (to)))
+                                    (and
+                                        (remove (to) count:(count at:(to)))
+                                        (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
+                                    )
+                                )		
+                            )
+                        )
+                    )
+                    (move
+                        (from ("LeftMost"))
+                        (to 
+                            (trackSite FirstSite from:(from) if:("IsEnemyAt" (to)))
+                            (apply
+                                (and
+                                    (remove (to) count:(count at:(to)))
+                                    (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
+                                )	
+                            )	
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (forEach NonMover 
+                    if:(no Pieces Player) 
+                    (result Player Loss)
+                )
+            )
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Ga is a children's game played in the Republic of Congo.")
+        (rules "Pits are created in a circle or rectangle. Two or more players. A player takes counters from their first hole and sows them toward the right (anticlockwise). When counters are placed in an opponent's hole, the hole is captured. When one player can circuit the entire board, thus capturing all of the holes, they win.")
+        (source "DLP evidence.")
+        (id "1350")
+        (version "1.3.8")
+        (classification "board/sow/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Republic of Congo, around 1971.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Black))
+        (player Colour P3 (colour Red))
+        (player Colour P4 (colour Blue))
+    })
+    
+    (recon {
+        (concept "Sow" True)
+    })
+    
+)

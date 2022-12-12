@@ -1,0 +1,30 @@
+(define "Shatranj (14x14)_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!-{1/4}, !-{0,0,0,0,-1/2,0,0,0}]>" -1.2953416)
+            (pair "rel:to=<{}>:pat=<els=[I20{0,1/4}]>" -2.4819663)
+            (pair "rel:from=<{}>:pat=<els=[!I11{}]>" 0.057156045)
+            (pair "rel:to=<{}>:pat=<els=[I7{0,0,0,0}]>" -1.3385807)
+            (pair "rel:from=<{}>:pat=<els=[!I17{}]>" 0.0038366113)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0,0}]>" 0.0059715267)
+            (pair "rel:from=<{0,0,0,0}>:pat=<els=[!-{1/4}, !-{0,0,0,0,-1/2,0,0,0}]>" 0.6059816)
+            (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:to=<{}>:pat=<els=[!-{0}]>" -0.7744518)
+            (pair "rel:from=<{0,0,0,0}>:pat=<els=[!-{0,0,0,0,1/2,0,0,0}]>" 0.6059816)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[#{0,0,0}]>" -0.12000441)
+            (pair "rel:from=<{}>:pat=<els=[-{0}, -{1/2}, -{0,0,0}]>" -0.10535399)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,0,0}]>" -0.053421125)
+            (pair "rel:to=<{}>:pat=<els=[I9{0}]>" -4.4863257)
+            (pair "rel:from=<{}>:pat=<els=[I17{0,1/4}]>" -1.966784)
+            (pair "rel:to=<{}>:pat=<els=[e{0,1/4}]>" -1.7434201)
+            (pair "rel:from=<{}>:pat=<els=[-{-1/2}, -{0,0,0}, -{0}, -{1/2,0,0}]>" -0.21502315)
+            (pair "rel:from=<{}>:pat=<els=[!I20{}]>" -0.008490341)
+            }
+        )
+    })
+    
+)

@@ -1,0 +1,457 @@
+(game "Manzhouqi" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (rectangle 10 9)
+        use:Vertex)
+        
+        (piece "Jiang" Each 
+            (move Step Orthogonal 
+                (to if:
+                    (and 
+                        (is In 
+                            (to)
+                            
+                            (sites Mover "Palace")
+                        )
+                        
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Shi" Each 
+            (move Step Diagonal 
+                (to if:
+                    (and 
+                        (is In 
+                            (to)
+                            
+                            (sites Mover "Palace")
+                        )
+                        
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Xiang" Each 
+            (move Slide Diagonal 
+                (between 
+                    (exact 2)
+                    if:
+                    (and { 
+                        (is In 
+                            (between)
+                            
+                            (sites Mover "Home")
+                        )
+                        
+                        (is Empty 
+                            (between)
+                        )
+                        }
+                    )
+                )
+                
+                (to if:
+                    (is Enemy 
+                        (who at:
+                            (to)
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Ma" Each 
+            (forEach Direction Orthogonal 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                    
+                    (apply 
+                        (forEach Direction 
+                            (from 
+                                (to)
+                            )
+                            
+                            (directions { FR FL}
+                            of:All)
+                            
+                            (if 
+                                (not 
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (remove 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Ju" Each 
+            (if 
+                (is Mover P2)
+                
+                (move Slide Orthogonal 
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                
+                (or { 
+                    (move Slide Orthogonal 
+                        (to if:
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Direction Orthogonal 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                            
+                            (apply 
+                                (forEach Direction 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (directions { FR FL}
+                                    of:All)
+                                    
+                                    (if 
+                                        (not 
+                                            (is Friend 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (move 
+                                            (from)
+                                            
+                                            (to 
+                                                (apply if:
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                    
+                                                    (remove 
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (or 
+                        (move Slide Orthogonal)
+                        
+                        (move Hop Orthogonal 
+                            (between before:
+                                (count Rows)
+                                after:
+                                (count Rows)
+                                if:
+                                (is Occupied 
+                                    (between)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (remove 
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    }
+                )
+            )
+        )
+        
+        (piece "Pao" Each 
+            (or 
+                (move Slide Orthogonal)
+                
+                (move Hop Orthogonal 
+                    (between before:
+                        (count Rows)
+                        after:
+                        (count Rows)
+                        if:
+                        (is Occupied 
+                            (between)
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                        
+                        (apply if:
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Zu" Each 
+            (move Step 
+                (if 
+                    (is In 
+                        (from)
+                        
+                        (sites Mover "Home")
+                    )
+                    Forward 
+                    (directions { Forward Rightward Leftward}
+                    )
+                )
+                
+                (to if:
+                    (not 
+                        (is Friend 
+                            (who at:
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (regions "PalaceP1" P1 { 3 4 5 12 13 14 21 22 23}
+        )
+        
+        (regions "PalaceP2" P2 { 66 67 68 75 76 77 84 85 86}
+        )
+        
+        (regions "Home" P1 
+            (expand 
+                (sites Bottom)
+            steps:4)
+        )
+        
+        (regions "Home" P2 
+            (expand 
+                (sites Top)
+            steps:4)
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Jiang1" coord:"E1")
+            
+            (place "Shi1" { "D1" "F1"}
+            )
+            
+            (place "Xiang1" { "C1" "G1"}
+            )
+            
+            (place "Ju1" coord:"A1")
+            
+            (place "Zu1" { "A4" "C4" "E4" "G4" "I4"}
+            )
+            
+            (place "Jiang2" coord:"E10")
+            
+            (place "Shi2" { "D10" "F10"}
+            )
+            
+            (place "Xiang2" { "C10" "G10"}
+            )
+            
+            (place "Ma2" { "B10" "H10"}
+            )
+            
+            (place "Ju2" { "A10" "I10"}
+            )
+            
+            (place "Pao2" { "B8" "H8"}
+            )
+            
+            (place "Zu2" { "A7" "C7" "E7" "G7" "I7"}
+            )
+            }
+        )
+        
+        (play 
+            (do 
+                (forEach Piece)
+                ifAfterwards:
+                (and 
+                    (if 
+                        (= 
+                            (column of:
+                                (where "Jiang" P1)
+                            )
+                            
+                            (column of:
+                                (where "Jiang" P2)
+                            )
+                        )
+                        
+                        (not 
+                            (= 
+                                (count Sites in:
+                                    (forEach 
+                                        (sites Direction from:
+                                            (where "Jiang" P1)
+                                            N stop:
+                                            (= 
+                                                (to)
+                                                
+                                                (where "Jiang" P2)
+                                            )
+                                        )
+                                        if:
+                                        (is Occupied 
+                                            (site)
+                                        )
+                                    )
+                                )
+                            0)
+                        )
+                    True)
+                    
+                    (not 
+                        (is Threatened 
+                            (id "Jiang" Mover)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+

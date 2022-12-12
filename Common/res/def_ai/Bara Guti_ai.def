@@ -1,7 +1,38 @@
 (define "Bara Guti_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (material)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,0,1/4}, #{0,0,1/8,0}]>" 2.4031034)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,1/8,0}]>" 2.379401)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/8,3/8}]>" 2.4227202)
+            (pair "rel:from=<{}>:to=<{1/4,0}>:pat=<els=[!-{0,1/4}]>" 2.2641578)
+            (pair "rel:last_to=<{0,0,3/8,3/8}>:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,-1/8,0}]>" 2.7708635)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/4,0}, #{0,0,0,-1/4}, #{0,0,-1/8,0}]>" 2.5220425)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!#{0,0,0}, #{0,0,1/8,0}]>" 2.3782127)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N8{3/8,0}]>" 2.4430268)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N8{3/8,0}, #{0,0,-1/8,0}]>" 2.4430268)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N8{0,0,1/4,0,0}]>" 2.5748384)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/2,1/8}]>" 2.4889605)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[#{0,0,1/4,0}]>" 2.3963108)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,1/8}]>" 2.4889605)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/8,1/8}]>" 2.374198)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,1/8}, #{0,0,-1/4,0}]>" 2.5086827)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N4{0,0,3/8}]>" 2.6265652)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/8,0,0}]>" 2.1492872)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[e{1/8,-1/8}]>" 2.5189538)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,-1/4,1/8}]>" 2.0503006)
+            (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/8,0,0}, -{0,0,1/2,1/8}]>" 2.4549098)
+            (pair "rel:last_to=<{0,0,3/8,1/4}>:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/2,1/8}]>" 2.8934433)
+            }
+        )
     })
     
 )

@@ -258,9 +258,8 @@
             
         The game ends, when a player has no moves at its turn. The player with the most pieces on the starting positions of the opponent is winning.")
         (id "2032")
-        (source "<a href=\"https://regle.escaleajeux.fr/gadis_rg.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />escaleajeux.fr</a>
-        ")
-        (version "1.3.7")
+        (source "<a href=\"https://regle.escaleajeux.fr/gadis_rg.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />escaleajeux.fr</a>")
+        (version "1.3.8")
         (classification "board/race/fill")
         (author "Gérald Saiveau")
         (credit "Eric Piette")
@@ -275,4 +274,7 @@
         (board Colour InnerEdges (colour Black))
         (show Line {{81 69} {67 4} {65 3} {63 2} {61 1} {83 12} {79 10} {77 9} {75 8} {73 7} {71 6}} (colour Black) scale:2.0)
     })
+    (ai
+        "Gadis_ai"
+    )
 )

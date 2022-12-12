@@ -1,0 +1,33 @@
+(define "The Pawn Game_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,0,0}, !-{0,0,0,0}]>" 2.6980083)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[#{0,1/2,0,0}]>" 2.6980083)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R0{1/2,0,0,0}, !e{0,1/2}]>" -0.35160565)
+            (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0,1/4}>:pat=<els=[e{1/4,0,0}]>" 2.6828568)
+            (pair "rel:from=<{0}>:pat=<els=[-{1/4}]>" -1.1935734)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R0{1/2,0,0,0}]>" -0.35160565)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" -0.14364682)
+            (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0,1/4}>:pat=<els=[e{1/4,0,0}, -{0,1/4,-1/2,0}]>" 2.8618784)
+            (pair "rel:last_to=<{0,1/4}>:from=<{}>:pat=<els=[e{1/4,0,0}, -{0,1/4,-1/2,0}]>" 1.7508582)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[#{0,1/2,0,0}]>" 2.3928509)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,0,0}, !-{0,0,0,0}]>" 2.3928509)
+            (pair "rel:to=<{}>:pat=<els=[R1{0}, !-{0,1/4}]>" -0.22185358)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}]>" -0.43890873)
+            (pair "rel:to=<{}>:pat=<els=[R1{1/4,1/4}, f{0,0,-1/4,0,0}]>" 0.4342381)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,0}]>" 0.06771081)
+            (pair "rel:last_to=<{0,-1/4}>:from=<{0,0}>:pat=<els=[R1{1/4,1/4}]>" -3.137975)
+            (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,0,1/4,0,0,0}]>" 0.078238405)
+            (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[f{1/4,0,-1/4,0,0}]>" -0.15014328)
+            (pair "rel:to=<{}>:pat=<els=[f{0}, -{1/4,0,1/4,0,0,0}]>" -0.43345955)
+            (pair "rel:last_to=<{0,-1/4}>:from=<{1/2,0}>:to=<{}>:pat=<els=[!R0{0,-1/4}, !-{1/4}]>" -0.5915127)
+            (pair "rel:to=<{}>:pat=<els=[#{0,1/2,0,0}]>" 0.04303818)
+            }
+        )
+    })
+    
+)

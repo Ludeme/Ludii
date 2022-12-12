@@ -1,8 +1,33 @@
 (define "Hnefatafl_ai"
-    (useFor { "Play Rules/Fetlar Common" }
+    (useFor { "Ruleset/Fetlar (Suggested)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (influence)
+        })
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[]>" -0.47661915)
+                (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[]>" 0.08360157)
+                (pair "rel:from=<{}>:pat=<els=[R0{0,-1/4}, !f{0,-1/4}, !f{1/4,-1/4}, !f{-1/2,-1/4}, !f{-1/4,-1/4}]>" 0.71903116)
+                (pair "rel:from=<{}>:pat=<els=[!-{1/2}, !-{0,0,0,0}]>" 0.3933646)
+                (pair "rel:from=<{}>:pat=<els=[!-{1/4,0}, !-{0,0,0,0}]>" 0.040277097)
+                (pair "rel:from=<{}>:pat=<els=[R0{0,0}, I1{1/2,1/4}]>" -1.0459234)
+                (pair "rel:from=<{}>:pat=<els=[f{0,1/4}, I1{0,-1/4}]>" -2.3158584)
+                (pair "rel:from=<{}>:pat=<els=[R0{-1/2,-1/4}, !-{0,0,0}, !-{1/4,0,0,0}, !f{1/2,-1/4}, !f{0,-1/4}]>" 0.5856896)
+                (pair "rel:from=<{}>:pat=<els=[!f{0,1/4}]>" 0.02814087)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[#{1/2,-1/4}, #{0,-1/4}]>" 3.9386666)
+                (pair "rel:from=<{}>:pat=<els=[I2{0,0,0}]>" 0.8994318)
+                (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}]>" 0.0024311354)
+                (pair "rel:from=<{}>:pat=<els=[!e{0,0,0}]>" 0.00105293)
+                (pair "rel:from=<{}>:pat=<els=[!f{0,0}]>" 3.4664784E-4)
+                (pair "rel:to=<{}>:pat=<els=[!e{0,0}]>" 2.9318215E-4)
+                }
+            )
         })
         
     )

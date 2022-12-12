@@ -8,6 +8,7 @@ import java.util.List;
 
 import app.PlayerApp;
 import app.utils.GameUtil;
+import app.utils.SettingsExhibition;
 import app.views.View;
 import app.views.tools.buttons.ButtonBack;
 import app.views.tools.buttons.ButtonEnd;
@@ -16,6 +17,7 @@ import app.views.tools.buttons.ButtonInfo;
 import app.views.tools.buttons.ButtonOther;
 import app.views.tools.buttons.ButtonPass;
 import app.views.tools.buttons.ButtonPlayPause;
+import app.views.tools.buttons.ButtonQuit;
 import app.views.tools.buttons.ButtonSettings;
 import app.views.tools.buttons.ButtonShow;
 import app.views.tools.buttons.ButtonStart;
@@ -49,6 +51,7 @@ public class ToolView extends View
 	
 	public static final int SETTINGS_BUTTON_INDEX 		= 8;
 	public static final int INFO_BUTTON_INDEX     		= 9;
+	public static final int QUIT_BUTTON_INDEX     		= 10;
 	
 	// WebApp only
 	// public static final int CYCLE_AI_INDEX	 			= 8;
@@ -71,6 +74,12 @@ public class ToolView extends View
 		int startX = boardSize;
 		int startY = app.height() - toolHeight;
 		int width = app.width() - boardSize - toolHeight;
+		
+		if (SettingsExhibition.exhibitionVersion)
+		{
+			startX -= 40;
+			startY -= 70;
+		}
 		
 		if (portraitMode)
 		{
@@ -100,16 +109,25 @@ public class ToolView extends View
 		buttons.add(new ButtonForward(app, cx, cy, sx, sy, FORWARD_BUTTON_INDEX));
 		buttons.add(new ButtonEnd(app, cx, cy, sx, sy, END_BUTTON_INDEX));
 		buttons.add(new ButtonPass(app, cx, cy, sx, sy, PASS_BUTTON_INDEX));
-		if (otherButtonShown(app.manager().ref().context()))
-			buttons.add(new ButtonOther(app, cx, cy, sx, sy, OTHER_BUTTON_INDEX));
-		else
-			buttons.add(null);  
-		buttons.add(new ButtonShow(app, cx, cy, sx, sy, SHOW_BUTTON_INDEX));
 		
-		if (!app.manager().isWebApp())
+		if (!SettingsExhibition.exhibitionVersion)
 		{
-			buttons.add(new ButtonSettings(app, cx, cy, sx, sy, SETTINGS_BUTTON_INDEX));
-			buttons.add(new ButtonInfo(app, cx, cy, sx, sy, INFO_BUTTON_INDEX));
+			if (otherButtonShown(app.manager().ref().context()))
+				buttons.add(new ButtonOther(app, cx, cy, sx, sy, OTHER_BUTTON_INDEX));
+			else
+				buttons.add(null);
+			
+			buttons.add(new ButtonShow(app, cx, cy, sx, sy, SHOW_BUTTON_INDEX));
+			
+			if (!app.manager().isWebApp())
+			{
+				buttons.add(new ButtonSettings(app, cx, cy, sx, sy, SETTINGS_BUTTON_INDEX));
+				buttons.add(new ButtonInfo(app, cx, cy, sx, sy, INFO_BUTTON_INDEX));
+			}
+		}
+		else
+		{
+			buttons.add(new ButtonQuit(app, cx, cy, sx, sy, QUIT_BUTTON_INDEX));
 		}
 	
 		final double spacing = placement.width / (double) buttons.size();

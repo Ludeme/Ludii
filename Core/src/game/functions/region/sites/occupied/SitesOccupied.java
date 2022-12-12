@@ -363,6 +363,15 @@ public final class SitesOccupied extends BaseRegionFunction
 								+ role + ".");
 				missingRequirement = true;
 			}
+			
+			final int numPlayers = game.players().count();
+			if(!RoleType.manyIds(role) &&  numPlayers < role.owner())
+			{
+				game.addRequirementToReport(
+						"(sites Occupied ...): A roletype corresponding to a player not existed is used: "
+								+ role + ".");
+				missingRequirement = true;
+			}
 		}
 
 		return missingRequirement;

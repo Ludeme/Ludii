@@ -254,29 +254,7 @@
 (metadata
     (info
         {
-        (description "This game was designed to meet a challenge of making a territorial game without placement or capture. 
-            It also is a loop-forming game, as territory is defined as the area contained within loops - but the goal is not first to make a loop, but rather territory scoring.
-            
-            The scoring is unique as far as I know. The score is the product of two factors: 
-            The first factor is the count of all the empty spaces fully surrounded by the player's pieces (edges don't count as an enclosure)
-            The second factor is the number of distinct regions that a player's pieces enclose. A region includes both empty sites and sites occupied by the opponent.
-            
-            As a player fills a space to sub-divide it, one factor is traded off for the other.
-            The board is scaled to be half full with each player having roughly the square of the number of pieces needed to enclose an area equal to the pieces used to enclose it.
-            
-            Movement is designed to progressively increase density. This moves pieces into contact to form loops, subdived them, and in the extreme, to fill them. 
-            Players determine when their score is optimized and pass successively to end the game. 
-            
-            For flexibility, of movement, pieces can also move to sites of equal friendly density, which makes the game a race with the potential for cooperative cycles. 
-            
-            To prevent cold positions that would cause forced cycling, there is a secondary restriction for this case: pieces most move to have fewer adjacent enemies. 
-            
-            This makes filling an opponent's territory difficult, or impossible if one doesn't already have a presence there.
-            It also means pieces within or associated with enemy territory have high mobility, and may be used to create or expand territories in the end game (but often at the cost of significantly increasing the other player's score.)
-            
-            Tie breaker is the last to play loses, in keeping with the nature of a race for the highest score. 
-            
-        This game was designed in consultation with Alexander Brady.")
+        (description "This game was designed to meet a challenge of making a territorial game without placement or capture.     It also is a loop-forming game, as territory is defined as the area contained within loops - but the goal is not first to make a loop, but rather territory scoring.        The scoring is unique as far as I know. The score is the product of two factors:     The first factor is the count of all the empty spaces fully surrounded by the player's pieces (edges don't count as an enclosure)    The second factor is the number of distinct regions that a player's pieces enclose. A region includes both empty sites and sites occupied by the opponent.        As a player fills a space to sub-divide it, one factor is traded off for the other.    The board is scaled to be half full with each player having roughly the square of the number of pieces needed to enclose an area equal to the pieces used to enclose it.        Movement is designed to progressively increase density. This moves pieces into contact to form loops, subdived them, and in the extreme, to fill them.     Players determine when their score is optimized and pass successively to end the game.         For flexibility, of movement, pieces can also move to sites of equal friendly density, which makes the game a race with the potential for cooperative cycles.         To prevent cold positions that would cause forced cycling, there is a secondary restriction for this case: pieces most move to have fewer adjacent enemies.         This makes filling an opponent's territory difficult, or impossible if one doesn't already have a presence there.    It also means pieces within or associated with enemy territory have high mobility, and may be used to create or expand territories in the end game (but often at the cost of significantly increasing the other player's score.)        Tie breaker is the last to play loses, in keeping with the nature of a race for the highest score.         This game was designed in consultation with Alexander Brady.")
         (rules "Goal: Player with the largest, most complex 'warren' wins.
             
             A warren is the entire networks of friendly stones, that separate areas of the board (enclosures) from each other and from external areas in contact with the board edges.
@@ -303,7 +281,7 @@
             
         If the scores are the same, the last player to move, loses.")
         (id "1761")
-        (version "1.3.7")
+        (version "1.3.8")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

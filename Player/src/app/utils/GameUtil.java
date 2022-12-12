@@ -169,7 +169,7 @@ public class GameUtil
 			
 			if (app.manager().isWebApp())
 				app.setTemporaryMessage(UpdateTabMessages.gameOverMessage(app.manager().ref().context(), app.manager().ref().context().trial()));
-			else if (!app.settingsPlayer().usingExhibitionApp())
+			else if (!app.settingsPlayer().usingMYOGApp())
 				app.setTemporaryMessage("Choose Game > Restart to play again.");
 		}
 		else if (context.isAMatch() && moveNumber < context.currentInstanceContext().trial().numInitialPlacementMoves())

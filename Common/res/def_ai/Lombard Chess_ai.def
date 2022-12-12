@@ -1,0 +1,25 @@
+(define "Lombard Chess_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[I5{0,0,0}]>" -0.3744564)
+            (pair "rel:from=<{}>:pat=<els=[!f{0}]>" 5.6148716E-4)
+            (pair "rel:from=<{}>:pat=<els=[I9{0}]>" 0.37503415)
+            (pair "rel:to=<{}>:pat=<els=[#{0,0}]>" 0.11336723)
+            (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:from=<{}>:pat=<els=[!e{0,1/4}]>" 8.698919E-5)
+            (pair "rel:to=<{}>:pat=<els=[I11{0,0}]>" 0.30216178)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[-{0}]>" -6.397924E-4)
+            (pair "rel:to=<{}>:pat=<els=[I6{0,1/4}]>" -0.45994645)
+            (pair "rel:from=<{0,0,0}>:to=<{}>:pat=<els=[R0{1/4,-1/4}]>" -0.12877105)
+            (pair "rel:to=<{}>:pat=<els=[!f{0,1/4}]>" 4.313111E-4)
+            (pair "rel:to=<{}>:pat=<els=[#{0}, -{1/2,0,0,1/4}]>" 0.15590335)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[R0{1/4,0,0}]>" 0.058611702)
+            }
+        )
+    })
+    
+)

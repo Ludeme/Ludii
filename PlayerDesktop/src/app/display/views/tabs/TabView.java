@@ -16,6 +16,7 @@ import app.display.views.tabs.pages.MovesPage;
 import app.display.views.tabs.pages.RulesPage;
 import app.display.views.tabs.pages.StatusPage;
 import app.display.views.tabs.pages.TurnsPage;
+import app.utils.SettingsExhibition;
 import app.views.View;
 import other.context.Context;
 
@@ -70,6 +71,13 @@ public class TabView extends View
 		int width  = DesktopApp.view().getWidth() - boardSize;
 		int height = DesktopApp.view().getHeight() - DesktopApp.view().getPlayerPanel().placement().height - toolHeight;
 		
+		if (SettingsExhibition.exhibitionVersion)
+		{
+			height -= 200;
+			width -= 50;
+			startY += 120;
+		}
+		
 		if (portraitMode)
 		{
 			boardSize = app.width();
@@ -102,6 +110,9 @@ public class TabView extends View
 		
 		select(app.settingsPlayer().tabSelected());
 		
+		if (SettingsExhibition.exhibitionVersion)
+			select(5);
+		
 		for (final View view : pages)
 			DesktopApp.view().getPanels().add(view);
 	}
@@ -118,6 +129,9 @@ public class TabView extends View
 	@Override
 	public void paint(final Graphics2D g2d)
 	{
+		if (SettingsExhibition.exhibitionVersion)
+			return;
+		
 		final int x0 = placement.x;
 		final int y0 = placement.y;
 		final int sx = placement.width;

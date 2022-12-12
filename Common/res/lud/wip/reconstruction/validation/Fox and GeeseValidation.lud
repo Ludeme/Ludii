@@ -1,0 +1,49 @@
+(game "Fox and GeeseValidation" 
+    (players 2) 
+    (equipment { 
+        ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
+        (hand P1)
+        (piece "Fox" P1 (or ("HopCapture") "StepToEmpty"))
+        (piece "Goose" P2 "StepToEmpty") 
+    }) 
+    (rules 
+        (start { 
+            (place "Goose2" (union (expand (sites Bottom)) (sites Row 2)))
+            (place "Fox1" (handSite P1))
+        })
+        
+        phases:{ 
+        (phase "Placement" P1 
+            (play 
+                (move 
+                    (from (handSite P1)) 
+                    (to (sites Empty))
+                )
+            ) 
+            (nextPhase ("HandEmpty" P1) "Movement")
+        )
+        (phase "Movement" (play (forEach Piece)))
+        }
+        
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (id "411")
+        }
+    )
+    
+    (graphics {
+        (board Style Graph)
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (piece Families {"Abstract" "Themed"})
+    })
+    
+)

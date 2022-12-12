@@ -1,8 +1,36 @@
 (define "I_ai"
-    (useFor { "Board Size/3" }
+    (useFor { "Ruleset/I (Observed)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (influence)
+        })
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[-{1/4}, !R0{0,0}, !R1{0,0}]>" 0.83829874)
+                (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[-{0,1/4}]>" -0.33044797)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, !R1{1/4,0}]>" 0.64702755)
+                (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[!R0{0,0}, !R1{0,0}]>" -0.60048366)
+                (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[-{1/4}, !R0{0,0}, !R1{0,0}]>" -0.19555487)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4}, !R0{0,0}, !R1{0,0}]>" 0.64702755)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[!R0{1/4,0}]>" -0.60048366)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[!R0{1/4,0}]>" 0.43144202)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{0,-1/4}, -{1/4,-1/4}]>" -0.62029094)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -0.5786648)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/4,-1/4}]>" -0.46209583)
+                (pair "rel:to=<{}>:pat=<els=[-{-1/4,1/4}, -{0}, -{0,-1/4}]>" -0.46209583)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, !#{0,0}]>" -0.5024313)
+                (pair "rel:to=<{}>:pat=<els=[-{1/2}, -{0,1/4}]>" -0.16226088)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{0,1/4}, -{1/4,-1/4}]>" -0.46209583)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{0,1/4}]>" -0.46209583)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{1/4,1/4}]>" -0.61124486)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, !R0{0,0}]>" 1.4414607)
+                }
+            )
         })
         
     )

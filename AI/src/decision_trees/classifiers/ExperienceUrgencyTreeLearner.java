@@ -48,7 +48,7 @@ public class ExperienceUrgencyTreeLearner
 		final ExItExperience[] samples = buffer.allExperience();
 		final List<FeatureVector> allFeatureVectors = new ArrayList<FeatureVector>();
 		final TFloatArrayList allTargetLabels = new TFloatArrayList();
-		
+				
 		for (final ExItExperience sample : samples)
 		{
 			if (sample != null && sample.moves().size() > 1)
@@ -67,7 +67,7 @@ public class ExperienceUrgencyTreeLearner
 				
 				if (maxLogit == minLogit)
 					continue;		// Nothing to learn from this, just skip it
-				
+								
 				for (int i = 0; i < featureVectors.length; ++i)
 				{
 					final FeatureVector featureVector = featureVectors[i];
@@ -102,7 +102,7 @@ public class ExperienceUrgencyTreeLearner
 				}
 			}
 		}
-		
+				
 		return buildNode
 				(
 					featureSet,

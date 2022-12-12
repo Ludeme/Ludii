@@ -1,7 +1,34 @@
 (define "Epelle_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (influence)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/8,3/8}]>" -0.6140834)
+            (pair "rel:from=<{}>:to=<{1/4}>:pat=<els=[R0{0,1/8}]>" -1.0080643)
+            (pair "rel:last_from=<{0}>:to=<{0}>:pat=<els=[f{-1/2,-1/8}, #{0,-1/4,3/8}]>" 0.7882666)
+            (pair "rel:last_from=<{0,-1/2,-3/8}>:from=<{}>:pat=<els=[e{0,3/8,-3/8}]>" -7.723698E-5)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" -0.9649086)
+            (pair "rel:last_to=<{0,3/8}>:from=<{0}>:to=<{}>:pat=<els=[!R0{-1/4,-1/4}]>" 0.18430468)
+            (pair "rel:to=<{}>:pat=<els=[e{0,1/2,0}, !R0{1/4,1/4}, !R0{0,1/4}]>" 0.14775166)
+            (pair "rel:to=<{}>:pat=<els=[-{0,3/8}, f{0,-3/8,1/4}]>" 1.0155711)
+            (pair "rel:to=<{0}>:pat=<els=[f{-1/2,-1/8}, -{0,-1/2,-3/8}, #{0,-1/4,3/8}]>" 0.7882666)
+            (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[e{0,3/8}, e{0,1/8}]>" 1.1358453)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{0}>:pat=<els=[R0{0,-3/8}, f{0,0,-1/8}, e{0,0,3/8}]>" 1.8482251)
+            (pair "rel:last_from=<{0,3/8}>:to=<{}>:pat=<els=[]>" 0.33178353)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0,-1/8}, e{0,0,3/8}]>" 2.157478)
+            (pair "rel:to=<{}>:pat=<els=[e{1/4}, -{0,3/8}]>" 0.5255571)
+            (pair "rel:to=<{}>:pat=<els=[e{0,-3/8,0}, !#{0,-1/2,1/4,0}]>" -0.5706968)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/8,3/8}]>" 0.88432616)
+            (pair "rel:to=<{}>:pat=<els=[R0{0,-1/4}, e{0,-1/8}, -{0,-3/8}, #{1/2,3/8}]>" -2.3298693)
+            }
+        )
     })
     
 )

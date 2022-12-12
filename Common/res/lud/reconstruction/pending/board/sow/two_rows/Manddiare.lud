@@ -1,0 +1,68 @@
+(game "Manddiare"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        
+        (equipment { 
+            (mancalaBoard 2 [3..10]
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            (piece "Seed" Shared)
+            }
+        ) 
+        (rules 
+            
+            (start [#])
+            
+            (play [#]) // When the final counter of the sowing lands in a hole, making it contain an even number of counters, these are captured.
+            
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Manddiare (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Manddiaré is a two-row mancala-style board game played in Mauritania but women amd young girls. Sometimes boys would play it to get to know girls, but this would not occur in public spaces.")
+        (aliases {"Manddiaré"})
+        (rules "2x3-10 board. Sowing occurs in an anti-clockwise direction. When the final counter of the sowing lands in a hole, making it contain an even number of counters, these are captured. ")
+        (source "Béart 1955: 512.")
+        (id "424")
+        (version "1.3.8")
+        (classification "board/sow/two rows/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Mauritania, around 1955.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+    (recon {
+        (concept "Sow" True)
+    })
+)
+

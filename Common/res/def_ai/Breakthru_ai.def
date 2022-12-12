@@ -1,7 +1,37 @@
 (define "Breakthru_ai"
+    
     (bestAgent "MAST")
     trainedHeuristics:(heuristics {
         (influence)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0,0,0,0,0}>:pat=<els=[!I1{}, #{0,0,0,0,0,-1/4,1/4}]>" 2.0746493)
+            (pair "rel:from=<{}>:pat=<els=[!I1{}]>" 0.7513274)
+            (pair "rel:from=<{}>:pat=<els=[!I1{}, #{0,0,0,0,0,-1/4,1/4}]>" 0.7513274)
+            (pair "rel:from=<{}>:pat=<els=[!I1{}, #{0,0,0,0}]>" 1.3136289)
+            (pair "rel:from=<{}>:to=<{0,0,0,0,0}>:pat=<els=[!I1{}]>" 1.8402176)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[I3{0}, #{0,1/2,0}]>" 2.6027532)
+            (pair "rel:from=<{}>:to=<{0,0,0}>:pat=<els=[!I1{}, #{0,0,0,0}]>" 1.9338794)
+            (pair "rel:to=<{}>:pat=<els=[#{0,1/2,0}]>" 0.92806655)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[I3{0,1/4,1/4,1/4}]>" 2.383674)
+            (pair "rel:from=<{}>:pat=<els=[I3{0,1/4,1/4,1/4}]>" 0.7513274)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[R0{1/2,1/4}, I3{0,1/4,1/4,1/4}]>" 3.2386181)
+            (pair "rel:from=<{}>:to=<{0,0,0,0,0}>:pat=<els=[#{0,0,0,0,0,-1/4,1/4}]>" 1.0307511)
+            (pair "rel:to=<{0,1/4}>:pat=<els=[R0{1/2,1/4}]>" -8.577604)
+            (pair "rel:to=<{}>:pat=<els=[I3{0}, #{0,1/2,0}]>" 1.966047)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[I3{}]>" 2.2407956)
+            (pair "rel:last_to=<{0,0,1/2,0,1/2,1/4}>:from=<{}>:pat=<els=[!R0{1/2,1/4}, !R0{1/4,1/4}, #{0,0,1/4,0,0,0}, #{0,0,1/2,0,0,0,0,0}]>" -0.03508628)
+            (pair "rel:from=<{}>:pat=<els=[I3{0,1/4}]>" 0.5632731)
+            (pair "rel:last_to=<{0,1/4}>:from=<{}>:pat=<els=[f{1/4,1/4}]>" 0.054342635)
+            (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!#{1/2,0,0}, f{0,1/4,-1/2,0,0,0}]>" 0.096630655)
+            (pair "rel:from=<{1/4,1/4}>:pat=<els=[I2{0,-1/4}]>" -1.5312258)
+            }
+        )
     })
     
 )

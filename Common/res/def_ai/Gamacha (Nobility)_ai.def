@@ -1,0 +1,30 @@
+(define "Gamacha (Nobility)_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" 2.8904908)
+            (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[-{0,1/4}]>" 0.6872403)
+            (pair "rel:to=<{}>:pat=<els=[-{0}, -{0,0}]>" 5.0144897)
+            (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[!R0{1/4,1/4}, -{0,1/4}]>" 0.68349874)
+            (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[-{0,1/4}]>" 2.3498893)
+            (pair "rel:to=<{}>:pat=<els=[-{0}, !R0{1/2,1/4}]>" 2.2423265)
+            (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[-{0,1/4}, !R0{1/2,0,0,0}]>" -0.04593037)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!R1{0,0,0,0}, R0{1/4}, -{0,0,0}]>" 2.1308491)
+            (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, !R0{0,0,0,0}]>" 2.1308491)
+            (pair "rel:to=<{}>:pat=<els=[!R1{0,0,0,0}, -{0,0,0}]>" 2.1308491)
+            (pair "rel:to=<{}>:pat=<els=[R0{1/4}, -{0,0,0}, !R0{0,0,0,0}]>" 2.1308491)
+            (pair "rel:to=<{}>:pat=<els=[-{-1/4,1/4}, !R1{1/4,0,0,0}, R0{0}]>" -1.4231485)
+            (pair "rel:to=<{}>:pat=<els=[R0{0}, -{1/4,0,0}]>" 1.2331342)
+            (pair "rel:to=<{}>:pat=<els=[R0{0}, !R1{0,1/4}, -{1/4,0,0}]>" 1.2331342)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, -{0,0,0}]>" -0.47016495)
+            (pair "rel:to=<{}>:pat=<els=[-{0,-1/4}, R0{1/4,-1/4}]>" -1.8058525)
+            (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -1.4926745)
+            (pair "rel:to=<{}>:pat=<els=[-{-1/4,1/4}, R0{0}, -{1/4,0,0}]>" -0.027378298)
+            }
+        )
+    })
+    
+)

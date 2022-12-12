@@ -25,8 +25,8 @@ public class IdentifyTopFeaturesSnelliusScripts
 	/** Don't submit more than this number of jobs at a single time */
 	private static final int MAX_JOBS_PER_BATCH = 800;
 
-	/** Memory to assign to JVM, in MB (2 GB per core --> we take 4 cores per job, 8GB per job, use 7.5GB for JVM) */
-	private static final String JVM_MEM = "7680";
+	/** Memory to assign to JVM, in MB (7GB per process --> give 6GB for heap) */
+	private static final String JVM_MEM = "6144";
 	
 	/** Memory to assign per process (in GB) */
 	private static final int MEM_PER_PROCESS = 8;
@@ -35,7 +35,7 @@ public class IdentifyTopFeaturesSnelliusScripts
 	private static final int MEM_PER_NODE = 256;
 	
 	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
-	private static final int MAX_REQUEST_MEM = 234;
+	private static final int MAX_REQUEST_MEM = 224;
 	
 	/** Max wall time (in minutes) */
 	private static final int MAX_WALL_TIME = 360;
@@ -305,7 +305,7 @@ public class IdentifyTopFeaturesSnelliusScripts
 				new CommandLineArgParse
 				(
 					true,
-					"Creating eval job scripts."
+					"Creating urgency-based feature selection job scripts."
 				);
 		
 		argParse.addOption(new ArgOption()

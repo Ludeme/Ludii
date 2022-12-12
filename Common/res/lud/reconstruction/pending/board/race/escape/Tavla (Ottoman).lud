@@ -1,0 +1,58 @@
+(game "Tavla (Ottoman)"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2)
+        (equipment {
+            ("BackgammonBoard" [#])
+            (dice d:6 num:2)
+            (piece "Disc" Each [#])
+        })
+        (rules
+            (start [#])
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tavla is a race game of the Tables type which is played in Turkey. This version is documented from the Ottoman Empire, since at least the early modern period.")
+        (rules "Backgammon board. Six-sided dice. ")
+        (source "DLP evidence.")
+        (id "1958")
+        (version "1.3.8")
+        (classification "board/race/escape/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Turkey, from around 1503 to 1599.")
+        }
+    )
+    
+    (graphics {
+        (board Style backgammon)
+        (stackType Backgammon)
+    })
+)

@@ -206,7 +206,7 @@ public final class SetVar extends Effect
 		if (then() != null)
 			thenString = " then " + then().toEnglish(game);
 		
-		return "set the variable \"" + name + "\" to " + value.toEnglish(game) + thenString;
+		return "set the variable " + name + " to " + value.toEnglish(game) + thenString;
 	}
 	
 	//-------------------------------------------------------------------------

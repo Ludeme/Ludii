@@ -26,7 +26,7 @@ public class ImportConceptDataset implements Dataset
 		final Map<String, Double> featureMap = new HashMap<>();
 		
 		// Load files from a specific directory instead.
-		final String filePath = "../../LudiiPrivate/DataMiningScripts/Sklearn/res/Input/RulesetConceptsUCT.csv";
+		final String filePath = "../../LudiiPrivate/DataMiningScripts/Sklearn/res/Input/rulesetConceptsUCT.csv";
 		
 		List<String> topRow = new ArrayList<>();
 		final List<List<String>> records = new ArrayList<>();

@@ -197,8 +197,9 @@ public class CompilationTest
 //			fail();
 //	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public static void testCompilingLudFromMemory()
+	public void testCompilingLudFromMemory()
 	{
 		System.out.println("\n=========================================\nTest: Compile all .lud from memory:\n");
 

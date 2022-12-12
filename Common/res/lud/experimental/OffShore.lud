@@ -227,21 +227,7 @@
 (metadata
     (info
         {
-        (description "Off-shore is a territorial game where territory is based on 3 pillars:
-            -- Territory defined by the convex hulls of groups,
-            -- Group expansion limited to those groups that are not larger in size than the count of the current number of friendly groups.
-            -- The capture of enemy groups by expanding one's territory to encompass them.
-            
-            A further minor point is that placement into enemy territory is restricted, thus preventing suicide placements, and indeed for standard play, preventing any expansion into the territory at all.
-            
-            Some of the implications are:
-            -- groups can be captured from two sides, no need to surround.
-            -- to expand or merge groups, one must first have played enough isolated stones during the game. This rule prevents the game from being a simple race to cut off large corners.
-            -- capturing a group therefore also reduces the captured player's expansion potential due to loss of a group, in addition to the reduction in playble space.
-            -- merging groups is a powerful key type of move that creates strategic focus, but also reduces future growth potential by reducing the group count.
-            -- cells adjacent to stones along the edges of opponent's territory are likely to remain open for play, but care is needed to ensure that, when placing stones there, they are (or can be) connected to regions where the opponent is less able to expand his territory.
-            
-        The game was inspired by investigating possible new ways of defining territory and capture.")
+        (description "Off-shore is a territorial game where territory is based on 3 pillars:   -- Territory defined by the convex hulls of groups,   -- Group expansion limited to those groups that are not larger in size than the count of the current number of friendly groups.   -- The capture of enemy groups by expanding one's territory to encompass them.      A further minor point is that placement into enemy territory is restricted, thus preventing suicide placements, and indeed for standard play, preventing any expansion into the territory at all.      Some of the implications are:   -- groups can be captured from two sides, no need to surround.   -- to expand or merge groups, one must first have played enough isolated stones during the game. This rule prevents the game from being a simple race to cut off large corners.   -- capturing a group therefore also reduces the captured player's expansion potential due to loss of a group, in addition to the reduction in playble space.   -- merging groups is a powerful key type of move that creates strategic focus, but also reduces future growth potential by reducing the group count.   -- cells adjacent to stones along the edges of opponent's territory are likely to remain open for play, but care is needed to ensure that, when placing stones there, they are (or can be) connected to regions where the opponent is less able to expand his territory.      The game was inspired by investigating possible new ways of defining territory and capture.")
         (rules "Definitions:
             -- Each of a player's stones belongs to exactly one group. 
             -- The group it belongs to contains all the stones that connect to it by virtue of being next to one another (across an edge).
@@ -266,7 +252,7 @@
     Various boards are optional. 
 Weak Territory, allowing placement next to a friendly group in enemy territory is optional.")
 (id "1988")
-(version "1.3.7")
+(version "1.3.8")
 (classification "experimental")
 (author "Dale Walton")
 (credit "Dale Walton")
@@ -293,5 +279,8 @@ Weak Territory, allowing placement next to a friendly group in enemy territory i
     (hand Placement P1 scale:.1 offsetX:0.05 offsetY:0.75 vertical:True)
     (hand Placement P2 scale:.1 offsetX:0.95 offsetY:0.75 vertical:True)
     }
+)
+(ai
+    "OffShore_ai"
 )
 )

@@ -1,15 +1,80 @@
 (define "Terhuchu (Small)_ai"
-    (useFor { "Start Rules/10 pieces" }
+    (useFor { "Ruleset/Terhuchu (Small) (Observed)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (material)
         })
         
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{-1/4}, -{0,0,-1/2,0,1/2,-1/8}]>" 0.36828604)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/2,1/4}]>" 0.2853723)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,-1/2,0,1/2,-1/8}]>" 0.2776145)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/4}, -{0,0,1/4,0}]>" 0.36990318)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,-1/4,0}, -{0,0,-1/2,0,1/2,-1/8}]>" 0.37154356)
+                (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!-{-3/8,3/8}, e{0,1/4,1/4,3/8}]>" 0.5261332)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!#{1/4,0,0}]>" -0.08290301)
+                (pair "rel:from=<{}>:pat=<els=[!-{0,3/8}, -{3/8,1/4,-1/8,-3/8}]>" -0.0048895045)
+                (pair "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[e{0,1/4,1/4,3/8}]>" 0.5261332)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{-1/4}, -{0,0,-1/4,0}, -{0,0,-1/2,0,1/2,-1/8}]>" 0.46375835)
+                (pair "rel:last_to=<{3/8,3/8}>:from=<{}>:pat=<els=[-{0,-1/8,-3/8}, -{0,-1/2,0,0}]>" 0.23055585)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N4{1/2,0}, -{0,0,-1/2,-1/4}]>" 0.66368693)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,0,1/4}]>" -0.13895832)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{0,0,1/4,1/4}]>" 1.2547868)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/2,1/4}]>" 1.2514901)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[e{0}, e{0,0,1/2}]>" 1.1160525)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,0,-1/4}, !-{0,0,-1/2,0,1/2,0,-1/2}]>" 1.1178185)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{1/4,1/8}]>" 1.123402)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[-{1/4,0}]>" 1.0993048)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[!-{1/8,-1/4}, e{0,0,1/2}]>" 1.0569432)
+                (pair "rel:last_to=<{0,0,-1/2,0,1/2}>:from=<{0,0}>:to=<{}>:pat=<els=[!-{0,0,0,-1/4}]>" 1.2937928)
+                }
+            )
+        })
+        
     )
-    (useFor { "Start Rules/8 pieces" }
+    (useFor { "Ruleset/Eight pieces (Observed)" }
+        
         (bestAgent "AlphaBeta")
         trainedHeuristics:(heuristics {
             (material)
+        })
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{0,0,1/8,1/8}]>" 2.0124283)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,1/8,0}]>" 2.1732295)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[!-{0,0,0,1/4}]>" 2.0511565)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,1/8,1/8}]>" 2.1732295)
+                (pair "rel:last_to=<{0,0,3/8,3/8}>:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,1/8,0}]>" 2.7008305)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N8{-3/8,0}, #{0,0,1/8,0}]>" 3.004854)
+                (pair "rel:from=<{}>:to=<{3/8,0}>:pat=<els=[N8{0,0}]>" 3.004854)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N8{1/2,0}]>" 2.9956505)
+                (pair "rel:last_to=<{0,0,3/8,3/8}>:from=<{}>:to=<{0,0}>:pat=<els=[N8{-3/8,0}, #{0,0,1/8,0}]>" 3.677934)
+                (pair "rel:last_to=<{0,0,1/4,3/8}>:from=<{}>:to=<{0,0}>:pat=<els=[#{0,0,0,0}]>" 2.4558148)
+                (pair "rel:last_to=<{1/8,-1/8}>:from=<{}>:to=<{0,0}>:pat=<els=[!-{0,0,-1/8,-1/8}]>" 2.5436313)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/4,0}]>" 2.8116999)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N8{1/8,0}]>" 2.8639789)
+                (pair "rel:from=<{3/8,0}>:to=<{}>:pat=<els=[#{0,1/4}]>" 2.9959683)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,1/4,0,0}]>" 2.6231055)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[e{0,0,3/8,1/8}]>" 2.7647464)
+                (pair "rel:last_to=<{0,0,3/8,3/8}>:from=<{}>:to=<{0,0}>:pat=<els=[-{1/4,0}]>" 2.7697573)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N4{1/8,0,0}]>" 2.6390975)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[#{-3/8,1/4}, e{0,0,-3/8,-1/8}]>" 3.325444)
+                (pair "rel:from=<{0,0}>:to=<{}>:pat=<els=[]>" 2.6319048)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[-{1/4,0}, -{0,0,0,-3/8}]>" 2.5054083)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N8{1/8,0}, -{0,0,1/4,0,0}]>" 2.896162)
+                (pair "rel:last_to=<{0,0,3/8,3/8}>:from=<{}>:to=<{0,0}>:pat=<els=[-{0,0,0,-3/8}]>" 2.4588718)
+                (pair "rel:from=<{}>:to=<{0,0}>:pat=<els=[N4{1/8,0,0}, -{0,0,3/8,0,0,0}]>" 3.211496)
+                }
+            )
         })
         
     )

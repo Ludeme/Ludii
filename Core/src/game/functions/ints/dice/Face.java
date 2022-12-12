@@ -5,11 +5,13 @@ import java.util.BitSet;
 import game.Game;
 import game.equipment.component.Component;
 import game.functions.ints.BaseIntFunction;
+import game.functions.ints.IntConstant;
 import game.functions.ints.IntFunction;
 import main.Constants;
 import other.concept.Concept;
 import other.context.Context;
 import other.state.container.ContainerState;
+import other.trial.Trial;
 
 /**
  * Returns the face of the die according to the current state of the position of
@@ -46,7 +48,7 @@ public final class Face extends BaseIntFunction
 	public int eval(final Context context)
 	{
 		final int loc = locn.eval(context);
-		if (loc == Constants.OFF)
+		if (loc == Constants.OFF || context.containerId().length <= loc)
 			return Constants.OFF;
 
 		final int containerId = context.containerId()[loc];
@@ -120,6 +122,24 @@ public final class Face extends BaseIntFunction
 	public boolean missingRequirement(final Game game)
 	{
 		boolean missingRequirement = false;
+		
+		if(locn instanceof IntConstant)
+		{
+			int numCells = 0;
+			
+			numCells += game.equipment().containers()[0].topology().getGraphElements(game.board().defaultSite()).size();
+			for(int i = 1; i < game.numContainers(); i++)
+				numCells += game.equipment().containers()[i].topology().cells().size();
+			
+			final int loc = locn.eval(new Context(game, new Trial(game)));
+			
+			if (loc == Constants.OFF || numCells <= loc)
+			{
+				game.addRequirementToReport("The ludeme (face ...) is used on a non existing cell.");
+				missingRequirement = true;
+			}
+		}
+		
 		if (!game.hasHandDice())
 		{
 			game.addRequirementToReport("The ludeme (face ...) is used but the equipment has no dice.");

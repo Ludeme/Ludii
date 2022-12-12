@@ -378,7 +378,7 @@
         Play continues until one player cannot sow at the beginning of a round.")
         (source "Parker 1909: 594.")
         (id "216")
-        (version "1.3.7")
+        (version "1.3.8")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin "This game was played in Sri Lanka, around 1909.")
@@ -388,5 +388,8 @@
     (graphics {
         (board Style Mancala)
     })
+    (ai
+        "Puhulmutu_ai"
+    )
 )
 

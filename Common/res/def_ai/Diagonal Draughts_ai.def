@@ -1,7 +1,34 @@
 (define "Diagonal Draughts_ai"
+    
     (bestAgent "ProgressiveHistory")
     trainedHeuristics:(heuristics {
         (material)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[I2{0,1/4}]>" -0.29771894)
+            (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[#{1/4,0}, e{0,-1/4,0,1/4}]>" -0.59051955)
+            (pair "rel:to=<{}>:pat=<els=[e{0,1/4}]>" -0.31969944)
+            (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[e{0,-1/4,0,1/4}]>" -0.42109233)
+            (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[-{0,-1/4,-1/4,0}, e{0,-1/4,0,1/4}]>" -0.49101895)
+            (pair "rel:to=<{}>:pat=<els=[#{0}]>" 0.18015695)
+            (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[!e{0,1/4}]>" -0.32721445)
+            (pair "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[#{1/4,0}, -{0,-1/4,-1/4,0}, e{0,-1/4,0,1/4}]>" -0.7477831)
+            (pair "rel:last_to=<{-1/4,-1/4}>:from=<{0,1/4}>:to=<{}>:pat=<els=[!e{0,-1/4}, -{0,1/4,1/4,1/4}, -{0,1/4,0,1/4}]>" -0.86963314)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[#{0,1/4}, I1{-1/4,-1/4}]>" 1.7171011)
+            (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[#{1/2,1/4}, #{-1/4,0,0}, e{0,1/4}]>" 1.7597332)
+            (pair "rel:to=<{}>:pat=<els=[#{-1/4,1/4}, I1{1/2,-1/4}, #{0,0,0,0}]>" 1.7171011)
+            (pair "rel:last_to=<{0,0,1/4,0,1/4,1/4}>:from=<{}>:to=<{1/4,0,-1/4,0}>:pat=<els=[!e{0,0,1/4,0,-1/2,1/4}, -{0,0,1/4,0,0,1/4}]>" 1.9961175)
+            (pair "rel:from=<{}>:pat=<els=[I2{0,0,0,0}]>" -0.26858073)
+            (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[-{0,1/4}, #{1/2,0,0}, e{-1/4,1/4}, -{1/4,-1/4}]>" 0.5466007)
+            (pair "rel:from=<{1/2,1/4}>:to=<{}>:pat=<els=[!-{0,0,0}, !-{0,0}]>" 0.012341979)
+            (pair "rel:to=<{}>:pat=<els=[!-{0,0,0}, !-{0,0}, R1{1/4,-1/4}, f{1/4,1/4,-1/2,0}]>" -0.15138592)
+            }
+        )
     })
     
 )

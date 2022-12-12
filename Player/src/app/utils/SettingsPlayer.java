@@ -83,7 +83,7 @@ public class SettingsPlayer
 										  false,false,false,false,false,false,false,false,false,false};
 	
 	//-------------------------------------------------------------------------
-	// Exhibiton player settings
+	// MYOG player settings
 	
 	// If the exhibition app if being used
 	private boolean usingExhibitionApp = false;
@@ -790,7 +790,7 @@ public class SettingsPlayer
 		this.webGameResultValid = webGameResultValid;
 	}
 
-	public boolean usingExhibitionApp()
+	public boolean usingMYOGApp()
 	{
 		return usingExhibitionApp;
 	}
@@ -825,7 +825,7 @@ public class SettingsPlayer
 		return lastGeneratedGameEnglishRules;
 	}
 
-	public void setLastGeneratedGameEnglishRules(String lastGeneratedGameEnglishRules) 
+	public void setLastGeneratedGameEnglishRules(final String lastGeneratedGameEnglishRules) 
 	{
 		this.lastGeneratedGameEnglishRules = lastGeneratedGameEnglishRules;
 	}

@@ -177,9 +177,9 @@ public class Die extends Component implements Serializable
 	@Override
 	public String toEnglish(final Game game)
 	{
-		String string = nameWithoutNumber;
-		
-		String plural = StringRoutines.getPlural(nameWithoutNumber);
+		String string = nameWithoutNumber == null ? "Die" : nameWithoutNumber;
+
+		String plural = StringRoutines.getPlural(string);
 		string += plural;
 		
 		string += " with " + numFaces + " faces valued " + Arrays.toString(faces);

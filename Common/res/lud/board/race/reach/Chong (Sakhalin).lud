@@ -161,7 +161,7 @@
     
     (info
         {
-        (description "Chong is a game played by the Nivkh people in Northern Asia. This version was played in the late nineteenth and early twentieth century among the Nivkh people living on Sakhalin Island.")
+        (description "Chong is a game played by the Nivkh people in Northern Asia. This version was played in the late nineteenth and early twentieth century on Sakhalin Island.")
         (rules "3x12-28 board. Players begin with soldiers, equal in number to the number of spaces in one row for each player, which begin in the spaces in the row closes to the player. Each player has one king piece, which begins in the rightmost space in the central row with respect to the player. Four six-sided dice with values from 1-6. A throw of 1 is called Chong. Pieces move in a boustrophedon path along the board, from left to right in their home row, right to left in the center row, and then left to right in their opponent's row. 
             
             A player must first throw a Chong to play. On this turn, when a player throws one Chong, the King exchanges places with the soldier behind it. If more than one Chong is thrown, the King exchanges places with the soldier that many spaces behind it. Any remaining values in the throw are moved by the soldier which took the king's space. Once this move has taken place, pieces move according to the throws of the dice, which can be subdivided between the pieces as the player sees fit. The King only moves with a Chong, and it exchanges the place of a piece that number of occupied squares away, i.e., only spaces occupied by the player's pieces are counted when moving the King. When the player has only one soldier and the King, the King may move normally (like a soldier does), but on throws of Chong. When only the King is left, the first Chong in a throw is ignored and only the second, third, or fourth Chongs are moved.  
@@ -173,7 +173,7 @@
         When a player reaches the end of the opponent's home line, the player wins.")
         (source "Sternberg 1933: 340-342.")
         (id "1972")
-        (version "1.3.7")
+        (version "1.3.8")
         (classification "board/race/reach")
         (credit "Eric Piette")
         (origin "This game was played in North Asia, from around 1890 to 1933.")
@@ -186,4 +186,7 @@
         (board Colour OuterEdges (colour Black))
     })
     
+    (ai
+        "Chong (Sakhalin)_ai"
+    )
 )

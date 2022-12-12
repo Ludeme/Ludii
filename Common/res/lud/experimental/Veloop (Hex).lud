@@ -147,20 +147,7 @@
 (metadata
     (info
         {
-        (description "Veloop is an original game with a loop forming goal. 
-            
-            There are two versions: this shorter Hexagonal grid game, and a longer game played on a square grid.
-            While the game in theory can cycle cooperatively, in practice it is decisive.
-            
-            The concept to form a loop by means of placements that also involve forced stone swapping. This swapping allows for either the surrounding of an opponent's stone with a loop, or enveloping it into a loop, possibly forming the loop with the swap at the same time.
-            
-            The game, when played by competitive players, typically needs only a limited space. This is enforced with a minimal board. The board, in turn, affects play by providing greater security for pieces along the edges, and by forcing the board to reach densities that limit move choices.
-            
-            This area restriction is offset by a soft phase change that allows placement over existing opponent's pieces when no placement to an empty site would allow swapping. This phase greatly increases the opportunity for game-ending moves by opening up many move choices, but it also allows cycles. To ensure the game is finite, any given site may only be stacked to level 2, and only the visible pieces are swapped.  (On a physical board this would be tracked by stacking)
-            
-            If there are no moves left for either player, the game is a draw. However, on all but the smallest board sizes offered here, games typically end with a winner, even before the piece replacement phase is reached. 
-            
-        The larger size boards additionally minimize the edge effects and the transition to the replacement phase.  Playing on even larger boards, does not affect play very much, other thanto minimize stacking.")
+        (description "Veloop is an original game with a loop forming goal.                         There are two versions: this shorter Hexagonal grid game, and a longer game played on a square grid.            While the game in theory can cycle cooperatively, in practice it is decisive.                        The concept to form a loop by means of placements that also involve forced stone swapping. This swapping allows for either the surrounding of an opponent's stone with a loop, or enveloping it into a loop, possibly forming the loop with the swap at the same time.                        The game, when played by competitive players, typically needs only a limited space. This is enforced with a minimal board. The board, in turn, affects play by providing greater security for pieces along the edges, and by forcing the board to reach densities that limit move choices.                        This area restriction is offset by a soft phase change that allows placement over existing opponent's pieces when no placement to an empty site would allow swapping. This phase greatly increases the opportunity for game-ending moves by opening up many move choices, but it also allows cycles. To ensure the game is finite, any given site may only be stacked to level 2, and only the visible pieces are swapped.  (On a physical board this would be tracked by stacking)                        If there are no moves left for either player, the game is a draw. However, on all but the smallest board sizes offered here, games typically end with a winner, even before the piece replacement phase is reached.                     The larger size boards additionally minimize the edge effects and the transition to the replacement phase.  Playing on even larger boards, does not affect play very much, other thanto minimize stacking.")
         (rules "Goal: Form an orthogonally connected path of friendly stones that surrounds at least one non-friendly stone.
             
             Set-up:
@@ -185,7 +172,7 @@
             -- Larger Board to reduce the strategic effect of the edge cells. / Smaller board to focus on stacked play as a significant part of the game.
         -- Double move protocol for a shorter, more tactical game, that maintains a balance of material on every turn.")
         (id "1984")
-        (version "1.3.7")
+        (version "1.3.8")
         (classification "experimental")
         (author "Dale Walton")
         (credit "Dale Walton")

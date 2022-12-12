@@ -1,7 +1,37 @@
 (define "Symbol S.2_ai"
+    
     (bestAgent "ProgressiveHistory")
     trainedHeuristics:(heuristics {
         (lineCompletionHeuristic)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[N2{0,0}]>" 0.709954)
+            (pair "rel:to=<{}>:pat=<els=[N2{1/4,0}, !f{0}]>" 0.716159)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{0,1/4}, -{0,0,-1/4}, f{0,-1/2}]>" -1.1597583)
+            (pair "rel:to=<{}>:pat=<els=[-{-1/2}, !e{0,0}, f{1/2,1/4}, !-{0,0}]>" 1.6053013)
+            (pair "rel:from=<{}>:pat=<els=[!f{0,1/4}, -{0,0,-1/4}, f{0,-1/2}]>" -1.0187792)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0,1/4}, f{0,1/2}]>" -1.1072747)
+            (pair "rel:to=<{}>:pat=<els=[e{1/2,0,0,0}, !e{0,0}, f{1/2,1/4}, !-{0,0}]>" 0.47007754)
+            (pair "rel:last_to=<{0,1/2,0,0}>:from=<{}>:pat=<els=[-{0,0,1/4}, f{0,1/2}]>" -1.2220988)
+            (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[f{0,0,0,0}, !e{1/2,0,0,0}]>" 0.43475118)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[N2{1/2,0,0,0}, f{0,-1/2,0,0,0}]>" 1.4053363)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N2{1/2,0,0,0}]>" 1.3187922)
+            (pair "rel:to=<{}>:pat=<els=[e{0,0}, !e{1/2,0,0,0}, e{-1/2,0}, !e{0,0,0,0}]>" 0.95959395)
+            (pair "rel:to=<{}>:pat=<els=[e{-1/4,0}, e{0,-1/4}, e{1/4,0}, e{0,1/4}]>" 1.6604443)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N2{1/2,0,0,0}, f{0,-1/2,0,0,0}]>" 1.4215499)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}, e{1/2,1/4}]>" 0.439727)
+            (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[]>" 0.7667365)
+            (pair "rel:last_to=<{0,-1/2,1/4}>:from=<{}>:to=<{0}>:pat=<els=[N2{1/2,0,0,0}]>" 2.5923126)
+            (pair "rel:to=<{}>:pat=<els=[!e{0,0,0,0}, !f{0}]>" -0.060466576)
+            (pair "rel:to=<{}>:pat=<els=[e{1/2,0}, !e{0,0,0,0}, e{0,0}, e{-1/4,1/4}]>" 0.96416426)
+            (pair "rel:to=<{}>:pat=<els=[e{1/4,1/4}, !e{0,0,0,0}, e{0,0}, !e{1/2,0,0,0}]>" 0.18232566)
+            }
+        )
     })
     
 )

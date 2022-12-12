@@ -1896,6 +1896,8 @@ public class Game extends BaseLudeme implements API, Serializable
 			if (rules.end() != null)
 				concept.or(rules.end().concepts(this));
 
+			concept.set(Concept.End.id(), true);
+			
 			// Look if the game uses a stack state.
 			if (isStacking())
 			{
@@ -2401,6 +2403,10 @@ public class Game extends BaseLudeme implements API, Serializable
 		mapStarting.put(Concept.NumStartComponents.name(), Double.valueOf(numStartComponents));
 		mapStarting.put(Concept.NumStartComponentsHand.name(), Double.valueOf(numStartComponentsHands));
 		mapStarting.put(Concept.NumStartComponentsBoard.name(), Double.valueOf(numStartComponentsBoard));
+
+		mapStarting.put(Concept.NumStartComponentsPerPlayer.name(), Double.valueOf(numStartComponents / (players().count() == 0 ? 1 : players().count())));
+		mapStarting.put(Concept.NumStartComponentsHandPerPlayer.name(), Double.valueOf(numStartComponentsHands / (players().count() == 0 ? 1 : players().count())));
+		mapStarting.put(Concept.NumStartComponentsBoardPerPlayer.name(), Double.valueOf(numStartComponentsBoard / (players().count() == 0 ? 1 : players().count())));
 		
 		return mapStarting;
 	}

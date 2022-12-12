@@ -1,0 +1,26 @@
+(define "Khamousiyya_ai"
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:to=<{}>:pat=<els=[!-{0,0}, !-{1/4,0}]>" 0.012589582)
+            (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,0,1/4}]>" 0.054614037)
+            (pair "rel:last_to=<{0,-1/2,0,0}>:to=<{0}>:pat=<els=[f{1/4,-1/4}, !f{0,-1/2,1/2}]>" -1.0478263)
+            (pair "rel:to=<{}>:pat=<els=[e{0,0,0,0}]>" -0.013399059)
+            (pair "rel:from=<{}>:pat=<els=[]>" 0.053900894)
+            (pair "rel:from=<{}>:pat=<els=[-{0,1/4}]>" 0.057277665)
+            (pair "rel:to=<{}>:pat=<els=[]>" 6.429324E-4)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}, e{0,-1/2,-1/2,1/4}]>" 0.20804724)
+            (pair "rel:from=<{}>:pat=<els=[e{0,-1/4}, e{0,1/4,1/4}]>" 0.13229695)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{1/4,0}, !f{0,1/4}]>" 0.08837881)
+            (pair "rel:from=<{0}>:pat=<els=[-{1/4}]>" -1.2645547)
+            (pair "rel:from=<{}>:pat=<els=[f{0,1/4,0}, e{0,-1/2,-1/2,1/4}]>" 0.11241862)
+            (pair "rel:from=<{0}>:pat=<els=[-{1/4}, #{0,0,0}]>" -1.2645547)
+            (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,-1/2,-1/2,1/4}]>" 0.097040646)
+            }
+        )
+    })
+    
+)

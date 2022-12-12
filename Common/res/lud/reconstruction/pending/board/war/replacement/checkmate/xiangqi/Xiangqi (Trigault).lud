@@ -1,0 +1,95 @@
+(game "Xiangqi (Trigault)"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board (scale 2 1 (rectangle 8 5)))
+            (piece "King" Each (move [#])) // The king cannot be in check.
+            (piece "Pawn" Each (move [#]))
+            (piece "Knight" Each (move [#]))
+            (piece "Queen" Each (move [#])) // Need to check with WALTER: The scholars move as queens (either one space diagonally or any number of spaces diagonally or orthogonally).
+            (piece "Rook" Each 
+                (move
+                    Slide 
+                    Orthogonal 
+                    (to 
+                        if:("IsEnemyAt" (to)) 
+                        (apply 
+                            (if ("IsEnemyAt" (to))
+                                (remove 
+                                    (to) 
+                                )
+                            )
+                        ) 
+                    ) 
+                )		
+            )
+        })
+        
+        (rules 
+            (start {
+                (place "King1" coord:"C1")
+                (place "King2" coord:"C8")
+                (place "Queen1" {"B1" "D1"})
+                (place "Queen2" {"B8" "D8"})
+                (place "Knight1" {"A1" "E1"})
+                (place "Knight2" {"A8" "E8"})
+                (place "Rook1" {"A2" "E2"})
+                (place "Rook2" {"A7" "E7"})
+                (place "Pawn1" {"A3" "B2" "C2" "D2" "E3"})
+                (place "Pawn2" {"A6" "B7" "C7" "D7" "E6"})
+            })
+            (play (forEach Piece))
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "This game, a version of Xiangqi played in China in the early seventeenth century, was described by the Jesuit missionary Nicholas Trigault.")
+        (rules "5x8 board. Five pawns, one king, two scholars, two horses, two cauldrons. The king begins on the central spot of one of the short rows of the board, flanked by two scholars, which are flanked by two horses. The cauldrons are in front of the horses, and the pawns are one square in front of all the pieces. The cauldron moves any number of spaces orthogonally. The scholars move as queens (either one space diagonally or any number of spaces diagonally or orthogonally).  The king cannot be in check. ")
+        (source "DLP evidence.")
+        (id "1395")
+        (version "1.3.8")
+        (classification "board/war/replacement/checkmate/xiangqi/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in China, from around 1611 to 1628.")
+        }
+    )
+    
+    (graphics {
+        (piece Scale 0.6)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+    (recon {
+        (concept "Checkmate" True)
+    })
+    
+)

@@ -1,4 +1,5 @@
 (define "Maharajah Chess_ai"
+    
     (bestAgent "Alpha-Beta")
     trainedHeuristics:(heuristics {
         (material transformation:(divNumInitPlacement) pieceWeights:{
@@ -8,6 +9,29 @@
             (pair "Knight2" 3.0)
             (pair "Queen2" 9.0)
         })
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[!e{1/4}, -{-1/4,0,0}, -{1/4,-1/4}, -{1/2,-1/4}, -{0,1/4}]>" 0.581742)
+            (pair "rel:last_to=<{-1/4,0}>:to=<{}>:pat=<els=[-{1/4,0,0}, !e{0}, -{-1/2,0,0}, -{0,-1/4}, -{1/4,-1/4}]>" 0.7189179)
+            (pair "rel:last_to=<{-1/4,0}>:to=<{}>:pat=<els=[-{1/4,0,0}, !e{0}, -{-1/2,0,0}, -{0,-1/4}, -{1/4,-1/4}, #{0,0,0}, -{-1/4,1/4}]>" 0.86693174)
+            (pair "rel:to=<{}>:pat=<els=[e{0,0}, e{1/4}, #{0,0,0}]>" 0.7616833)
+            (pair "rel:from=<{}>:pat=<els=[!-{0,1/4}]>" -0.032422937)
+            (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[-{1/2,0,0}, -{1/4,-1/4}, -{1/2,-1/4}, #{1/4,0,0}, -{0,1/4}]>" 0.80804884)
+            (pair "rel:from=<{}>:pat=<els=[-{0,0,1/4,-1/4,-1/4}]>" -4.4604528E-4)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+            (pair "rel:from=<{}>:pat=<els=[I3{0,0}, #{0,1/4}, !-{1/4,1/4}, -{1/2,0,0}]>" 0.10366665)
+            (pair "rel:last_from=<{0,0,-1/4,1/4}>:from=<{}>:pat=<els=[-{0,0,-1/2,0,0}]>" -0.019207379)
+            (pair "rel:to=<{}>:pat=<els=[I4{0}]>" 0.05321132)
+            (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[!-{0,0}]>" -0.033736944)
+            (pair "rel:from=<{0,1/4,0}>:pat=<els=[I1{0,1/4,0,0,0,0}]>" -0.893256)
+            (pair "rel:last_from=<{1/2,1/4}>:to=<{}>:pat=<els=[!f{0}, !-{0,0}]>" -0.06605986)
+            }
+        )
     })
     
 )

@@ -1,7 +1,36 @@
 (define "Sittuyin_ai"
+    
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
         (material)
+    })
+    
+    trainedFeatures:(features {
+        (featureSet P1 selectionFeatures:{
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" 0.5847817)
+            (pair "rel:to=<{}>:pat=<els=[R2{0}]>" -0.021820286)
+            (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[!R3{0,0,0}]>" 0.56911284)
+            (pair "rel:from=<{}>:pat=<els=[I9{0,0}]>" 0.042000823)
+            (pair "rel:from=<{}>:pat=<els=[R2{1/2,1/4}, f{0,0,1/4,0,0,0}]>" -0.40425253)
+            (pair "rel:from=<{}>:pat=<els=[I7{0,1/4}]>" 0.24654916)
+            (pair "rel:from=<{}>:pat=<els=[f{0,0,1/4,0,0,0}]>" -0.20155965)
+            (pair "rel:from=<{}>:pat=<els=[R2{0,1/4}]>" 0.19531843)
+            (pair "rel:to=<{}>:pat=<els=[f{0,0,0}]>" -0.53892547)
+            (pair "rel:from=<{}>:pat=<els=[!R2{0}]>" 0.20614654)
+            }
+        )
+        (featureSet P2 selectionFeatures:{
+            (pair "rel:to=<{0}>:pat=<els=[I10{1/4}]>" -5.8699794)
+            (pair "rel:to=<{0}>:pat=<els=[I10{1/4}, I2{0,1/2}]>" -5.8699794)
+            (pair "rel:from=<{0,0,0,0,0}>:pat=<els=[R4{1/4,0,0,0}, R4{0,0,0,0}]>" -5.8699794)
+            (pair "rel:to=<{}>:pat=<els=[!I10{}]>" 0.08216236)
+            (pair "rel:last_to=<{0,1/4,0}>:from=<{}>:pat=<els=[]>" 0.065283306)
+            (pair "rel:to=<{0,1/4,0}>:pat=<els=[R3{1/4,1/4}]>" -5.8699794)
+            (pair "rel:from=<{0,0,0,0,0}>:to=<{}>:pat=<els=[f{0,0,0,0,0,0,1/4}]>" 0.9368962)
+            (pair "rel:last_to=<{0,1/4,0}>:from=<{}>:to=<{0,1/4,0}>:pat=<els=[]>" 0.28374892)
+            (pair "rel:from=<{}>:pat=<els=[I10{1/4}, I2{0,1/2}]>" -0.16787219)
+            }
+        )
     })
     
 )
