@@ -243,7 +243,7 @@ public class UpdateAIMetadataTopFeatures
 					final String ludFileContents = FileHandling.loadTextContentsFromFile(ludFile.getAbsolutePath());
 					final String defStr = StringRoutines.quote((thisGameName.replaceAll(Pattern.quote(".lud"), "") + "_ai").substring(1));
 					
-					if (gameNoRuleset.metadata().ai().agent() == null)
+					if (gameNoRuleset.metadata().ai() == null)
 					{
 						if (!StringRoutines.cleanWhitespace(ludFileContents.replaceAll(Pattern.quote("\n"), "")).contains(defStr))
 						{
@@ -274,7 +274,7 @@ public class UpdateAIMetadataTopFeatures
 						final int endAiMetadataIdx = StringRoutines.matchingBracketAt(ludFileContents, startAiMetadataIdx);
 						
 						sb.replace(startAiMetadataIdx, endAiMetadataIdx + 1, "    (ai\n        " + defStr + "\n    )\n");
-
+						
 						try (final PrintWriter writer = new PrintWriter(ludFile, "UTF-8"))
 						{
 							System.out.println("Updating .lud file: " + ludFile.getAbsolutePath());
