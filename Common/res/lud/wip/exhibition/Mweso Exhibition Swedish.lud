@@ -27,6 +27,7 @@
     (rules 
 
             (start (set Count 2 to:(sites Board)))
+    		
             (play
                 (or {
                     (if (!= 2 (var "Direction"))
@@ -156,7 +157,7 @@
     
     (info
         {
-        (rules "Dessa regler följdes i Uganda 1912. Spelarna arrangerar räknarna i sina två rader som de vill. Spelare släpper räknare en efter en i moturs riktning i sina två rader. När den sista räknaren faller i ett hål mitt emot två hål som tillhör motståndaren med räknare i, fångas motståndarens räknare. Spelaren som inte längre kan röra sig förlorar.")
+        (rules "Dessa regler följdes i Uganda 1912. Spelet börjar med att plocka upp alla räknare i en av spelarens två rader. Spelare släpper räknare en efter en i moturs riktning i sina rader. När den sista räknaren faller i ett hål mitt emot två hål som tillhör motståndaren med räknare i, fångas motståndarens räknare. Spelaren som inte längre kan röra sig förlorar")
         }
     )
     

@@ -59,7 +59,8 @@ public class RulesPage extends TabPage
 						{
 							for (final String line : s.split("\\."))
 							{
-								addText(line.trim() + "." + "\n\n");
+								if (line.trim().length() > 1)
+									addText(line.trim() + "." + "\n\n");
 							}
 						}
 						else
