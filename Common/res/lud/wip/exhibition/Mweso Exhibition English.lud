@@ -25,25 +25,9 @@
         (hand Each)
     }) 
     (rules 
-        
-        (start {
-            (set Count 32 at:(handSite P1)) 
-            (set Count 32 at:(handSite P2))
-        })
-        
-        phases:{
-        (phase "Placing"
-            (play
-                (move
-                    (from (handSite Mover))
-                    (to (sites Mover "Home"))
-                    count:1
-                )
-            )
-            (nextPhase Mover (is Empty (handSite Mover)) "Sowing")
-        )
-        
-        (phase "Sowing"
+
+            (start (set Count 2 to:(sites Board)))
+    		
             (play
                 (or {
                     (if (!= 2 (var "Direction"))
@@ -164,8 +148,6 @@
             )
             
             (end (if (and (not (is Next Mover)) (no Moves Next)) (result Mover Win)))
-        )
-        }
     )
 )
 
