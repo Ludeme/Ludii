@@ -7,7 +7,8 @@ package app.utils;
  */
 public class SettingsExhibition
 {
-	/** If the app should be loaded in the exhibition display format. */
+	/** If the app should be loaded in the exhibition display 
+	 * format. */
 	public static final boolean exhibitionVersion = false;
 	
 	/** The resolution of the app (some aspects may be hard-coded to this size). */
@@ -15,7 +16,7 @@ public class SettingsExhibition
 	public static final int exhibitionDisplayHeight = 1080;
 	
 	/** The game to load (there exists both an English and Swedish version of each game). */
-	public static final String exhibitionGamePath = "/lud/wip/exhibition/Mweso Exhibition Swedish.lud";
+	public static final String exhibitionGamePath = "/lud/wip/exhibition/Sahkku Exhibition English.lud";
 	
 	/** If Player 2 should be controlled by an AI agent. */
 	public static final boolean againstAI = true;
