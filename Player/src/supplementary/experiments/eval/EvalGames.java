@@ -388,6 +388,9 @@ public class EvalGames
 		// Specific Metric results
 		for (int m = 0; m < metricsToEvaluate.size(); m++)
 		{
+			if (weights.get(m).doubleValue() == 0)
+				continue;
+			
 			final Metric metric = metricsToEvaluate.get(m);
 			
 			try
@@ -400,7 +403,7 @@ public class EvalGames
 				System.out.print(metric.name() + "\n");
 			}
 			
-			final Double score = metric.apply(game, evaluation, trials, randomProviderStates);
+			final Double score = metric.apply(game, evaluation, trials, randomProviderStates);			
 			if (score == null)
 			{
 				csvOutputString += "NULL,";
