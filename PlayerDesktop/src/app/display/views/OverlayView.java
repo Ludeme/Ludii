@@ -131,7 +131,7 @@ public final class OverlayView extends View
 				
 				englishDescriptionField.setFont(exhbitionDescriptionFont);
 				englishDescriptionField.setForeground(Color.white);
-				englishDescriptionField.setBounds(30, 100, 600, 500);
+				englishDescriptionField.setBounds(50, 100, 580, 500);
 				englishDescriptionField.setOpaque(false);
 				englishDescriptionField.setLineWrap(true);
 				englishDescriptionField.setWrapStyleWord(true);
