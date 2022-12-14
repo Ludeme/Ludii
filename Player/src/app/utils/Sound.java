@@ -22,8 +22,9 @@ public class Sound
 	 */
 	public static synchronized void playSound(final String soundName) 
 	{
-		//final String soundPath = "/" + soundName + ".wav";
+		// TODO need to update this to work on the .jar build.
 		final String soundPath = "../Common/res/audio/" + soundName + ".wav";
+		
 		new Thread(new Runnable() 
 		{
 			// Audio playing doesn't work with standard try-with-resource approach.
