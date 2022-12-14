@@ -77,8 +77,8 @@ public class ToolView extends View
 		
 		if (SettingsExhibition.exhibitionVersion)
 		{
-			startX -= 40;
-			startY -= 70;
+			startX = -20;
+			startY = 950;
 		}
 		
 		if (portraitMode)
@@ -139,6 +139,10 @@ public class ToolView extends View
 			
 			cx = placement.x + (int) ((b + 0.25) * spacing) + 10;
 			buttons.get(b).setPosition(cx, cy);
+			
+			// Don't show any buttons except the pass button
+			if (SettingsExhibition.exhibitionVersion && buttons.get(b).buttonIndex != PASS_BUTTON_INDEX)
+				buttons.get(b).setPosition(-1000, -1000);
 		}
 	}
 

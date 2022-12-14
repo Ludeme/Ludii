@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 
 import app.PlayerApp;
 import app.move.MoveVisuals;
+import app.utils.SettingsExhibition;
 import other.context.Context;
 import util.PlaneType;
 
@@ -27,28 +28,24 @@ public final class BoardView extends View
 	private final int boardSize;
 	
 	//-------------------------------------------------------------------------
-
-	/**
-	 * Constructor.
-	 */
-	public BoardView(final PlayerApp app)
-	{
-		super(app);
-		boardSize = Math.min(app.height(), (int) (app.width() * boardToSizeRatio));
-		placement = new Rectangle(0, 0, boardSize, boardSize);
-	}
 	
 	public BoardView(final PlayerApp app, final boolean exhibitionMode)
 	{
 		super(app);
-		boardSize = Math.min(app.height(), (int) (app.width() * boardToSizeRatio));
 		if (exhibitionMode)
 		{
+			boardSize = Math.min(app.height(), (int) (app.width() * boardToSizeRatio));
 			placement = new Rectangle(app.width()-boardSize + 30, 30, boardSize, boardSize);
 			app.bridge().getContainerStyle(0).setDefaultBoardScale(0.7);
 		}
+		else if (SettingsExhibition.exhibitionVersion)
+		{
+			boardSize = (int) (app.width() * 0.65);
+			placement = new Rectangle(0, 0, boardSize, boardSize);
+		}
 		else
 		{
+			boardSize = Math.min(app.height(), (int) (app.width() * boardToSizeRatio));
 			placement = new Rectangle(0, 0, boardSize, boardSize);
 		}
 	}
