@@ -128,7 +128,7 @@ public class MainWindowDesktop extends JPanel implements MouseListener, MouseMot
 		final boolean portraitMode = width < height;
 		
 		// Create board panel
-		boardPanel = new BoardView(app);
+		boardPanel = new BoardView(app, false);
 		panels.add(boardPanel);
 		
 		// create the player panel

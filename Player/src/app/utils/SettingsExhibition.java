@@ -9,21 +9,22 @@ public class SettingsExhibition
 {
 	/** If the app should be loaded in the exhibition display 
 	 * format. */
-	public static final boolean exhibitionVersion = false;
+	public static final boolean exhibitionVersion = true;
 	
 	/** The resolution of the app (some aspects may be hard-coded to this size). */
 	public static final int exhibitionDisplayWidth = 1920;
 	public static final int exhibitionDisplayHeight = 1080;
 	
 	/** The game to load (there exists both an English and Swedish version of each game). */
-	public static final String exhibitionGamePath = "/lud/wip/exhibition/Baghchal Exhibition English.lud";
+//	public static final String exhibitionGamePath = "/lud/wip/exhibition/Tic-Tac-Toe.lud";
+//	public static final String exhibitionGamePath = "/lud/wip/exhibition/Baghchal Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Hnefatafl Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Mu Torere Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Mweso Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Nard Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Papan Dakon Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Sahkku Exhibition English.lud";
-//	public static final String exhibitionGamePath = "/lud/wip/exhibition/Senet Exhibition English.lud";
+	public static final String exhibitionGamePath = "/lud/wip/exhibition/Senet Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Shatranj Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Shodra Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Toguz Kumalak Exhibition English.lud";
