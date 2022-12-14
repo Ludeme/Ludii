@@ -9,7 +9,7 @@ public class SettingsExhibition
 {
 	/** If the app should be loaded in the exhibition display 
 	 * format. */
-	public static final boolean exhibitionVersion = true;
+	public static final boolean exhibitionVersion = false;
 	
 	/** The resolution of the app (some aspects may be hard-coded to this size). */
 	public static final int exhibitionDisplayWidth = 1920;
@@ -30,6 +30,8 @@ public class SettingsExhibition
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Wari Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Weiqi Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Xiangqi Exhibition English.lud";
+	
+//	public static final String exhibitionGamePath = "/lud/wip/exhibition/Baghchal Exhibition Swedish.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Hnefatafl Exhibition Swedish.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Mu Torere Exhibition Swedish.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Mweso Exhibition Swedish.lud";
