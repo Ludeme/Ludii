@@ -1,0 +1,69 @@
+(game "Guettal"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        ("TwoPlayersNorthSouth") 
+        (equipment {
+            ("AlquerqueBoard" 5 5)
+            (piece "Counter" Each
+                (or {
+                    (move [#]) // This movement must be a capture move (I would suggest a hop...) 
+                    ("StepToEmpty" 
+                        (directions {Rightward Leftward Forwards} of:All) 
+                    )
+                })		
+            )
+        })
+        (rules  
+            (start { 
+                (place "Counter1" (union {(expand (sites Bottom)) (sites {"D3" "E3"}) }))
+                (place "Counter2" (union {(sites {"A3" "B3"}) (expand (sites Top)) }))
+            })
+            (play (forEach Piece))
+            (end 
+                (if (and (all Sites (expand (sites Top) steps:2) if:(!= (who at:(site)) 2)) (all Sites (expand (sites Bottom) steps:2) if:(!= (who at:(site)) 1)))
+                    (byScore {
+                        (score P1 (count Pieces P1)) 
+                        (score P2 (count Pieces P2))
+                    })
+                )
+            )
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (id "1949")
+        }
+    )
+    
+    (recon {
+        (concept "Capture" True)
+    })
+    
+)
+
