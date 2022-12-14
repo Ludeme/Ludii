@@ -11,34 +11,27 @@
         ("TwoPlayersNorthSouth") 
         (equipment {
             ("AlquerqueBoard" 5 5)
-            (piece "Counter" Each
-                (or {
-                    (move [#]) // This movement must be a capture move (I would suggest a hop...) 
-                    ("StepToEmpty" 
-                        (directions {Rightward Leftward Forwards} of:All) 
-                    )
-                })		
-            )
+            (piece "Counter" Each [#])
         })
         (rules  
             (start { 
                 (place "Counter1" (union {(expand (sites Bottom)) (sites {"D3" "E3"}) }))
                 (place "Counter2" (union {(sites {"A3" "B3"}) (expand (sites Top)) }))
             })
-            (play (forEach Piece))
+            (play [#])
             (end 
-                (if (and (all Sites (expand (sites Top) steps:2) if:(!= (who at:(site)) 2)) (all Sites (expand (sites Bottom) steps:2) if:(!= (who at:(site)) 1)))
-                    (byScore {
-                        (score P1 (count Pieces P1)) 
-                        (score P2 (count Pieces P2))
-                    })
-                )
+            	(if (and (no Moves P1) (no Moves P2))
+            	{
+            		(if (< (count Pieces P1) (count Pieces P2)) (result P2 Win))
+            		(if (< (count Pieces P2) (count Pieces P1)) (result P1 Win))
+            		(if (= (count Pieces P2) (count Pieces P1)) (result Mover Draw))
+            	}
+            	)
             )
         )
         >
         "The incomplete ruleset."
     )
-    
 })
 
 //------------------------------------------------------------------------------
