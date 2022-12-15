@@ -351,6 +351,10 @@ public class EvaluationDialog extends JDialog
 			}
 		}
 		
+		final List<JSlider> allMetricSliders = new ArrayList<>();
+		final List<JTextField> allMetricTextFields = new ArrayList<>();
+		JTextField textField_1 = new JTextField();
+		
 		// Ok button for starting the evaluation.
 		okButton.addActionListener(new ActionListener()
 		{
@@ -455,13 +459,16 @@ public class EvaluationDialog extends JDialog
 				
 				final Report report = new Report();
 				report.setReportMessageFunctions(new ReportMessengerGUI(app));
-
-				AIPlayer.AIEvalution(app, report, numberIterations, maxTurns, thinkTime, AIName, metrics, weights, useDatabaseTrialsCheckBox.isSelected());
+				
+				// Make a deepcopy of the weights to be used.
+				final ArrayList<Double> weightsCopy = new ArrayList<>();
+				for (final Double d : weights)
+					weightsCopy.add(new Double(d.doubleValue()));
+				
+				AIPlayer.AIEvalution(app, report, numberIterations, maxTurns, thinkTime, AIName, metrics, weightsCopy, useDatabaseTrialsCheckBox.isSelected());
 				DesktopApp.view().tabPanel().select(TabView.PanelAnalysis);
 			}
 		});
-		
-		final List<JSlider> allMetricSliders = new ArrayList<>();
 		
 		// Skill trace only button for starting the evaluation.
 		skillTraceButton.addActionListener(new ActionListener()
@@ -484,17 +491,11 @@ public class EvaluationDialog extends JDialog
 				    });
 				}
 				
-				for (int i = 0; i < weights.size(); i++)
-				{
-					allMetricSliders.get(i).setValue(allMetricSliders.get(i).getValue());
-				}
+				// Reset weights back afterwards
+				for (int i = 0; i < allMetricSliders.size(); i++)
+					weights.set(i, Double.valueOf(allMetricTextFields.get(i).getText()));
 			}
 		});
-
-		JTextField textField_1 = new JTextField();
-
-		final List<JTextField> allMetricTextFields = new ArrayList<>();
-		
 		
 		// Set the branching factor (quickly) when the dialog is loaded.
 		final double brachingFactor = estimateBranchingFactor(app, 1);
