@@ -63,7 +63,7 @@ public class CreateSneliusClusterConceptScript
 					continue;
 
 				// For the museum game.
-//				if(!gameName.contains("Thermenmuseum"))
+//				if(!gameName.contains("Ludus Coriovalli"))
 //					continue;
 				
 				final Game game = GameLoader.loadGameFromName(gameName);

@@ -1,0 +1,3056 @@
+(define "Ludus Coriovalli_ai"
+    (useFor { "Ruleset/Haretavl - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{0}>:pat=<els=[!f{1/4}, -{0,1/8,1/4}]>" -0.51609135)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{0}>:pat=<els=[N8{0,0,1/8}]>" -0.19677523)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4,1/8}]>" 0.0071600103)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[N4{0,3/8}]>" 0.08158593)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{0,1/4}>:to=<{0}>:pat=<els=[-{1/2}, !-{1/2,0}, !e{0,-1/2,1/4,0,0}]>" -0.19338037)
+                (pair "rel:from=<{}>:pat=<els=[-{0,0,0}]>" 0.007956528)
+                (pair "rel:from=<{}>:pat=<els=[N2{1/4,3/8}, !-{0,1/4}]>" -0.006505995)
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:pat=<els=[-{1/2}, !-{1/2,0}, !e{0,-1/2,1/4,0,0}]>" -0.007931071)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl - Both Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,0}>:to=<{0}>:pat=<els=[!f{1/4,1/8}, -{0,-1/4,-1/8}]>" -0.6850773)
+                (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[-{0,-1/8}, !f{0,-1/4,-1/4}, -{0,-1/2,1/2,1/4}]>" 0.21366857)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{0,-1/4,1/8}]>" 0.018534923)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{0,0,3/8}]>" 0.009715985)
+                (pair "rel:last_to=<{0,1/4}>:from=<{0}>:to=<{}>:pat=<els=[]>" -0.007843105)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[#{0,1/2,0,0}]>" 1.1930423)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[-{1/2,1/4}, #{0,1/2,0,0}]>" 1.2351333)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{0,1/2,-1/4}>:to=<{0}>:pat=<els=[!f{-1/4,0,0}, !-{1/2,0}, !-{0,1/2,1/4,1/4}, !f{1/2,-1/4}, !-{0,1/2,0,-1/4}]>" -0.02738425)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[-{0,0,1/4}]>" 0.59293664)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[-{0,1/2,0,1/4}]>" 0.5933833)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[]>" 0.59512144)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0,1/4,1/4}>:from=<{0}>:to=<{}>:pat=<els=[-{-1/2,-1/4}, !-{0,-1/2,1/2}]>" 0.114784166)
+                (pair "rel:last_to=<{1/4}>:from=<{0}>:to=<{}>:pat=<els=[#{0,1/2,0,0}]>" 0.067942806)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl - Both Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[e{0}, N2{0}]>" 1.4007331)
+                (pair "rel:to=<{}>:pat=<els=[e{0}]>" 0.2659016)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0}, !f{1/2}, !-{0,1/4}]>" 0.21593185)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{0}>:pat=<els=[!e{-1/2}, -{0,-1/4,1/4}, e{0,-1/4,-1/4}, -{0,-1/2,1/4}]>" -0.6989851)
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Players - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,0,0}, !e{0,1/2,1/4}]>" 0.013342219)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0}, -{1/2,-1/4,-1/4}]>" 0.008199359)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Players - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{-1/4}>:to=<{0}>:pat=<els=[!#{1/8,-1/4}, f{0,-1/2}, e{0,-1/4,-1/4}]>" -0.21587697)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4}]>" 0.096430965)
+                (pair "rel:to=<{}>:pat=<els=[!e{0,0,1/8}]>" 0.0)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" 0.08259749)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Players - Both Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,1/8,3/8}>:from=<{}>:to=<{0}>:pat=<els=[f{1/4,-3/8}, -{0,3/8,-1/4}, N4{0,-3/8}]>" 0.18128254)
+                (pair "rel:to=<{0}>:pat=<els=[!f{1/2}]>" -0.07965191)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{1/4,-3/8}, N4{0,-1/8}, -{0,3/8,-1/4}]>" 0.121604376)
+                (pair "rel:last_from=<{0,0,-3/8}>:to=<{0}>:pat=<els=[-{0,0,0}, -{0,1/4}]>" -0.07965191)
+                (pair "rel:to=<{0}>:pat=<els=[-{1/4,1/8}, -{0,-1/2,-1/8}]>" -0.07965191)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{0,0,0}>:from=<{0}>:to=<{}>:pat=<els=[f{0,-1/2,-1/8}, !#{0,0,3/8}, -{0,-1/2,-1/4,-1/4}]>" 0.060639277)
+                (pair "rel:last_to=<{0,0,3/8}>:to=<{}>:pat=<els=[-{0,0,0}, #{0,-1/2,0}]>" -0.04429883)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[-{1/4,3/8}, -{0,1/2,-1/4}, !#{1/2,3/8}]>" 0.40810105)
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Players - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!#{1/4,0,0}]>" -0.16685387)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[f{0,0,1/4}]>" 2.6452563)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Players - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{-1/2,1/4}>:from=<{}>:to=<{0}>:pat=<els=[-{0,-1/4}, N4{0,-1/2,0}]>" 0.11967941)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/2,-1/4}, e{-1/2}, #{0,0,-1/4}]>" 2.4566267)
+                (pair "rel:to=<{}>:pat=<els=[e{0}, N2{0}]>" 1.9657779)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Players - Both Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{1/2,0}, -{0,1/4,0,0,0}]>" 0.04957446)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,0,0}, e{0,0}, -{0,1/4,1/4}]>" 1.509901)
+                (pair "rel:to=<{}>:pat=<els=[f{0,1/4}, e{0}, -{1/4,1/4}]>" 1.2800664)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Two Dogs - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{1/2}>:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, #{0,1/2,1/4}]>" 1.0200825)
+                (pair "rel:last_to=<{1/2}>:from=<{0}>:to=<{}>:pat=<els=[e{-1/2}, !f{0,-1/2,-1/8}]>" 0.66174763)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:pat=<els=[-{0,1/2,1/8}]>" -0.23874937)
+                (pair "rel:last_to=<{0,3/8}>:from=<{}>:pat=<els=[!-{1/4,0,0,0}, N4{0,1/8,1/4}]>" 0.10412587)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, !e{1/4,-1/2,3/8}]>" 0.01064338)
+                (pair "rel:last_from=<{-1/4,-3/8}>:from=<{0}>:to=<{}>:pat=<els=[f{1/8,-1/8}, !f{0,-1/2,0}]>" 0.3119286)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Two Dogs - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/2}, !f{0,0,1/8}]>" 0.71740377)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/2}, N4{0,-1/2,-1/2}]>" 0.7442552)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0,1/4,3/8}>:to=<{}>:pat=<els=[-{0,-1/2,-1/2,-1/4}]>" -0.069578886)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Two Dogs - Both Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4}, N4{0,0,0}]>" 0.7596092)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[N4{0,0,0}]>" 1.1324054)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/2,0}]>" -0.01945566)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Two Dogs - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{1/4,-1/4}, f{0,1/4}]>" 2.5683076)
+                (pair "rel:last_to=<{0}>:from=<{1/2}>:to=<{}>:pat=<els=[-{1/4,1/4}]>" 1.6976972)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{-1/4,1/4}>:to=<{}>:pat=<els=[-{0,-1/4}, -{0}]>" 0.95239425)
+                (pair "rel:from=<{}>:pat=<els=[]>" 0.05885009)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Two Dogs - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[N2{1/2}, -{1/4,1/4}]>" 4.854742)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[N2{1/2}]>" 4.854742)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0}, f{0,0,1/4}]>" 2.6615076)
+                (pair "rel:last_to=<{0,1/4}>:from=<{1/4}>:to=<{}>:pat=<els=[-{0}]>" 0.51296425)
+                (pair "rel:to=<{0}>:pat=<els=[-{0,-1/4}, -{0,-1/2,1/4}]>" -0.40849096)
+                (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[-{0}, !-{1/4}, -{-1/4,1/4}]>" -0.013769811)
+                (pair "rel:last_to=<{0,1/4,1/4}>:from=<{}>:pat=<els=[-{0,-1/4}, -{0,-1/2,1/4}]>" 0.267793)
+                (pair "rel:last_to=<{0,1/4,1/4}>:from=<{}>:to=<{0}>:pat=<els=[-{0,-1/2,1/4}]>" 0.8227159)
+                (pair "rel:to=<{0}>:pat=<els=[e{0,0}]>" -0.40849096)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/2}, #{0,-1/4,0,0}]>" 0.5416136)
+                (pair "rel:to=<{}>:pat=<els=[-{1/2,1/4}, -{0,0}]>" 0.4183544)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0}, -{0,1/4}]>" 0.55808806)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/2}]>" 0.5416136)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0}]>" 0.5416136)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/2}, -{0,0}, !-{0,-1/2,-1/2}, -{0,-1/2,1/4,1/4}]>" 0.7111418)
+                (pair "rel:last_to=<{1/4}>:from=<{0}>:to=<{}>:pat=<els=[N4{1/4,0,0}, N4{0,1/4,0}]>" -0.855286)
+                (pair "rel:last_to=<{1/4}>:from=<{0}>:to=<{}>:pat=<els=[N4{0,1/4,0}]>" -0.36522704)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Two Dogs - Both Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[!-{0,1/2,0,0}]>" 0.40460366)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,-1/4,1/4}]>" 1.0397419)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[!-{0,1/2,0,0}]>" 0.55843407)
+                (pair "rel:last_to=<{0,-1/4,1/4}>:from=<{}>:to=<{0}>:pat=<els=[!f{-1/4,-1/4}]>" 0.96153533)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[e{1/4,1/4}, !-{0,1/2,0,0}]>" 0.92827415)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4,1/4}, !-{0,1/2,0,0}]>" 0.76847917)
+                (pair "rel:last_from=<{0,0,-1/4}>:to=<{}>:pat=<els=[!-{1/4}, !#{0,1/4,1/4}, -{0,-1/2,1/2,-1/4}]>" -0.13772973)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!#{0,0,0,0}, -{1/4,0}]>" 0.59962374)
+                (pair "rel:to=<{}>:pat=<els=[!#{0,0,0,0}, -{1/4,-1/2,1/2,0,0}]>" 0.59702677)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{1/4}, -{0,-1/4,1/4}]>" -0.420644)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}, f{0,1/4}]>" 0.60126734)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/2,1/2,0,0}]>" 0.54541725)
+                (pair "rel:to=<{}>:pat=<els=[e{0,0,0,0}]>" 0.5507076)
+                (pair "rel:from=<{0}>:pat=<els=[!#{1/4,0,0,0}, -{0,0}]>" -0.14793333)
+                (pair "rel:to=<{}>:pat=<els=[!#{0,0,0}]>" 0.2527344)
+                (pair "rel:from=<{}>:pat=<els=[f{0,1/4,1/4}]>" -0.064470395)
+                (pair "rel:to=<{}>:pat=<els=[e{0}, !#{1/4,-1/4,1/4}]>" -0.2897591)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Players Two Dogs - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" -0.09885371)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/2}]>" 0.02731223)
+                (pair "rel:last_from=<{0,1/8,-1/4}>:to=<{0}>:pat=<els=[!-{-1/2,-1/8}, -{0,-1/4}]>" -0.51105326)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0,-3/8}>:from=<{0}>:to=<{}>:pat=<els=[e{-1/2}, !-{0,1/2,1/4}]>" 0.9361104)
+                (pair "rel:last_to=<{1/2}>:from=<{0}>:to=<{}>:pat=<els=[!-{0,-1/4,-1/4}]>" 0.5561134)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Players Two Dogs - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{0}>:pat=<els=[-{0,-1/2,1/4}, N4{0,-1/4,-3/8}]>" -0.35049984)
+                (pair "rel:from=<{0}>:pat=<els=[e{-1/4,1/4}, !#{0,-1/2,0}]>" -0.35049984)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[!#{0,1/2,1/2,3/8}]>" 0.6243219)
+                (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{1/4}, !#{0,-1/2,-1/2,-1/2,-3/8}]>" 0.7311367)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Players Two Dogs - Both Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:last_from=<{0,-1/4,1/4}>:from=<{}>:to=<{0}>:pat=<els=[#{0,-3/8}]>" 0.026147142)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{1/4,3/8}>:to=<{}>:pat=<els=[-{0,-1/4}]>" 0.5091413)
+                (pair "rel:last_from=<{0,3/8,-3/8}>:from=<{}>:to=<{0}>:pat=<els=[-{0,-3/8,1/4}]>" 0.5373106)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Players Two Dogs - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{1/4,1/4}>:from=<{0}>:pat=<els=[!-{0,0,0}, -{1/2,0}]>" 0.9320778)
+                (pair "rel:last_from=<{0,0,1/4}>:to=<{0}>:pat=<els=[-{0,1/4,-1/4}, -{0,1/4}]>" 0.9320778)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[#{1/4,-1/4}, -{0,-1/4,-1/4}]>" 2.5106869)
+                (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[#{1/4,-1/4}]>" 2.3001938)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Players Two Dogs - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[N2{0}]>" -0.37526786)
+                (pair "rel:last_to=<{0,0,-1/4}>:to=<{0}>:pat=<els=[!-{1/2}]>" -0.5567124)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[-{0,1/4}, e{-1/4}]>" 2.316921)
+                (pair "rel:from=<{1/2}>:to=<{}>:pat=<els=[e{0}]>" 1.8150005)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Players Two Dogs - Both Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{-1/4,-1/4}, !e{0,1/2,0,0,0}, -{1/4,-1/4}]>" -0.17040339)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}]>" 0.8933243)
+                (pair "rel:last_to=<{0,-1/4}>:from=<{}>:to=<{0}>:pat=<els=[-{0,1/2,0}]>" 1.2070243)
+                (pair "rel:last_from=<{0,-1/4,-1/4}>:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}, -{0,1/4,-1/4}]>" 2.0280108)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Three Dogs Two Hares - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[f{1/4,-1/8}, N8{0,-3/8,-3/8}]>" 1.1241329)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[f{0,3/8,3/8}]>" 0.39319974)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[f{-1/4,3/8}, !f{0,3/8,-1/8}, f{1/4,-1/8}, N8{0,-3/8,-3/8}]>" 2.0515141)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[f{-1/4,3/8}, !f{0,3/8,-1/8}, N8{0,-3/8,-3/8}]>" 0.4956394)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[f{-1/4,3/8}, f{1/4,-1/8}, N8{0,-3/8,-3/8}]>" 2.0515141)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[f{-1/4,3/8}, !f{0,3/8,-1/8}]>" 0.5910924)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[!f{0,3/8,-1/8}, f{1/4,-1/8}]>" 0.85623693)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[!f{0,3/8,-1/8}, f{1/4,-1/8}, N8{0,-3/8,-3/8}]>" 0.40397486)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[]>" -0.0053725936)
+                (pair "rel:last_from=<{0,-1/2,-3/8}>:from=<{}>:to=<{0}>:pat=<els=[N8{1/2,-1/8}, !-{1/8,1/4}, !f{0,-1/2,1/4,0,0}]>" 0.047982696)
+                (pair "rel:to=<{0}>:pat=<els=[!f{-1/2}, -{0,1/4,0}]>" -0.0720832)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/2,1/4}]>" 0.0151812965)
+                (pair "rel:last_from=<{0,3/8,3/8}>:from=<{}>:pat=<els=[e{0,1/8}, -{0,3/8}]>" 0.034877565)
+                (pair "rel:last_from=<{0,-1/2,-3/8}>:from=<{}>:to=<{0}>:pat=<els=[!-{1/4,1/4}, !-{1/8,1/4}]>" 0.039180096)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Three Dogs Two Hares - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!#{0,0,0}]>" -0.22543421)
+                (pair "rel:last_from=<{0,1/4,-3/8}>:from=<{}>:to=<{0}>:pat=<els=[!f{0,-1/2,-1/8}]>" 0.42396337)
+                (pair "rel:from=<{}>:pat=<els=[e{0}]>" -0.25461337)
+                (pair "rel:last_from=<{0,1/4,-3/8}>:from=<{}>:to=<{0}>:pat=<els=[-{1/8,1/4}]>" 0.43630558)
+                (pair "rel:from=<{0}>:pat=<els=[N2{0,1/2,3/8}]>" 0.51409817)
+                (pair "rel:from=<{0}>:pat=<els=[!-{0,0,3/8}]>" 0.51409817)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/4}]>" -0.24647196)
+                (pair "rel:to=<{0}>:pat=<els=[-{1/8,1/4}, !f{0,-1/2,-1/8}]>" 0.51409817)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" -0.16189495)
+                (pair "rel:to=<{1/4}>:pat=<els=[-{0}]>" -1.5583591)
+                (pair "rel:from=<{}>:pat=<els=[N8{1/2,1/4}, f{0,-1/4}]>" 0.27107129)
+                (pair "rel:to=<{}>:pat=<els=[N4{0,0,0}, e{0}]>" -0.121665396)
+                (pair "rel:last_from=<{0,3/8}>:from=<{}>:pat=<els=[!#{1/4,1/4,0,0}]>" 0.42327127)
+                (pair "rel:last_to=<{0,1/4}>:to=<{0}>:pat=<els=[e{1/4,3/8}]>" -1.5583591)
+                (pair "rel:to=<{}>:pat=<els=[f{0,1/8}]>" -0.0151073495)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Three Dogs Two Hares - Both Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,3/8}, N8{0,-1/2,0}]>" 1.6505747)
+                (pair "rel:to=<{}>:pat=<els=[e{3/8}, !#{0,-1/2,3/8}]>" 0.20941721)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{3/8}, !#{0,-1/2,3/8}]>" 0.34485865)
+                (pair "rel:to=<{}>:pat=<els=[N2{1/2}, e{0,-1/2,3/8}]>" 0.3327293)
+                (pair "rel:last_from=<{1/4,0}>:from=<{}>:pat=<els=[-{0,-1/4,-1/4}, #{0,-1/2,1/4,1/4}]>" -0.11575282)
+                (pair "rel:to=<{0}>:pat=<els=[-{0,-1/4,-1/4}, #{0,-1/2,1/4,1/4}]>" 1.467319)
+                (pair "rel:last_to=<{0,1/4,3/8}>:from=<{}>:pat=<els=[-{1/4,1/8}, !e{0,1/2,3/8}]>" 0.041841473)
+                (pair "rel:last_from=<{0}>:to=<{0}>:pat=<els=[e{-1/8,3/8}]>" 1.467319)
+                (pair "rel:from=<{}>:pat=<els=[-{0,-1/4,-1/4}, #{0,-1/2,1/4,1/4}]>" 0.0017182392)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[N2{}]>" 0.77152693)
+                (pair "rel:from=<{0}>:pat=<els=[f{0,1/2,1/8}]>" 0.19314612)
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:last_to=<{1/4,-1/8}>:to=<{0}>:pat=<els=[N8{0,-1/4,-1/4}]>" 0.19314612)
+                (pair "rel:last_to=<{1/4,-1/8}>:from=<{}>:pat=<els=[N8{0,-1/4,-1/4}]>" -0.0036099658)
+                (pair "rel:to=<{}>:pat=<els=[e{0,0,1/4}]>" -0.019097157)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}, !e{1/2,1/4,-1/4}]>" -0.01980902)
+                (pair "rel:from=<{}>:pat=<els=[e{0}]>" -0.090654194)
+                (pair "rel:to=<{}>:pat=<els=[e{1/4,-1/8}, !-{0,-1/4}, N4{0,-1/2,1/8}]>" -0.22354622)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Three Dogs Two Hares - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{0,1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/2,1/2,1/4}, !e{0,1/2,1/2,1/2,1/4}]>" 1.0759077)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4}, !e{0,1/2,1/4}, #{0,-1/4,0}]>" 1.052203)
+                (pair "rel:last_from=<{0,1/2}>:from=<{0}>:to=<{}>:pat=<els=[e{1/4}, -{0,1/2,1/2,1/4}, !e{0,1/2,1/2,1/2,1/4}]>" 1.2853944)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4}, !e{0,1/2,1/4}, -{0,0}, -{0,1/4,-1/4}, #{0,-1/4,0}]>" 1.4576839)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4}, !e{0,1/2,1/4}, -{0,1/4,-1/4}, #{0,-1/4,0}]>" 1.4504796)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4}, -{0,1/2,1/2,1/4}, !e{0,1/2,1/2,1/2,1/4}]>" 0.8249449)
+                (pair "rel:last_from=<{0,1/2}>:to=<{}>:pat=<els=[e{0,1/2,0}, -{0,1/2,1/2,1/4}, !e{0,1/2,1/2,1/2,1/4}]>" 0.8223539)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4}, !e{0,1/2,1/4}, -{0,1/4,-1/4}]>" 1.4504796)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[e{1/2}, -{0,-1/2,0,-1/4}]>" -0.018087747)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/2,0,0}]>" 0.07424952)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[]>" -0.26396275)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{-1/2}, -{0,1/4,0,0,0}]>" -0.29778937)
+                (pair "rel:last_to=<{1/4,0}>:from=<{}>:pat=<els=[-{0,0,0,0}]>" -0.88290274)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Three Dogs Two Hares - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[!f{1/2}, e{0,1/2,-1/2,1/4}]>" 0.59894556)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[#{-1/2,0}, e{0,-1/2,1/2,-1/4}]>" 0.56517977)
+                (pair "rel:last_to=<{0,-1/2,1/4}>:from=<{0}>:to=<{}>:pat=<els=[#{-1/2}]>" 0.8179949)
+                (pair "rel:last_to=<{0,-1/2,1/4}>:to=<{}>:pat=<els=[#{-1/2}, #{0,-1/2,-1/2,0,1/4}]>" 0.51952296)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{-1/2,0}, !f{1/2}, e{0,-1/2,1/2,-1/4}]>" 0.34257498)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[]>" 0.35780787)
+                (pair "rel:last_to=<{0,-1/2,1/4}>:to=<{}>:pat=<els=[#{-1/2}, !-{0,0}]>" 0.4669198)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[!-{1/4,1/4}, !e{1/4}]>" 0.34502456)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[#{-1/2,0}, !f{1/2}]>" 0.34776747)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[!-{1/4,1/4}, !f{1/2}]>" 0.3816073)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[N4{0,0,0}, N4{0,1/4,0}]>" 0.058694206)
+                (pair "rel:last_from=<{0,1/4}>:from=<{0}>:to=<{}>:pat=<els=[N4{0,0,0}, N4{0,1/4,0}]>" 0.62314916)
+                (pair "rel:last_from=<{0,1/4}>:from=<{0}>:pat=<els=[]>" 0.46451592)
+                (pair "rel:to=<{}>:pat=<els=[N2{0,0,1/4}]>" 0.23963913)
+                (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[N2{0,0,1/4}]>" 0.11893738)
+                (pair "rel:to=<{0}>:pat=<els=[-{0,1/4,1/4}]>" 0.46451592)
+                (pair "rel:last_from=<{0}>:from=<{}>:pat=<els=[]>" 0.13184328)
+                (pair "rel:to=<{}>:pat=<els=[e{0,0,0}]>" -0.35649878)
+                (pair "rel:last_to=<{0,-1/2,1/4}>:to=<{0}>:pat=<els=[-{1/4,0}, e{0,-1/4}, -{0,-1/4,-1/4}]>" 0.46451592)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Three Dogs Two Hares - Both Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{0}>:pat=<els=[e{1/2,1/4}, e{0,1/2,1/4}]>" -1.2821218)
+                (pair "rel:last_to=<{0,1/4,-1/4}>:from=<{}>:to=<{0}>:pat=<els=[!-{0,1/4}, e{0,0}]>" 1.0697044)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0}]>" 0.018433047)
+                (pair "rel:from=<{}>:pat=<els=[#{0,0}]>" 0.014958538)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!#{1/2,0,0}, -{0,-1/4,0,0}]>" -0.08277831)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!#{-1/2,0,0}, -{0,1/4,0,0}]>" -0.610533)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{-1/2,-1/4}, -{0,1/4}]>" -0.017915038)
+                (pair "rel:to=<{0}>:pat=<els=[e{1/2,1/4}]>" -1.2821218)
+                (pair "rel:last_to=<{0,-1/2,1/4}>:to=<{0}>:pat=<els=[-{0,0}]>" -1.2821218)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/2,1/4}, -{0,0,0}]>" 0.4362603)
+                (pair "rel:from=<{}>:pat=<els=[N4{1/4,-1/4}, #{0,-1/2,1/2,1/4}]>" 0.24489199)
+                (pair "rel:to=<{0}>:pat=<els=[-{0,1/4,0,0,0}]>" -0.15139422)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{1/4,-1/4}]>" -3.7580827E-4)
+                (pair "rel:last_to=<{1/2,-1/4}>:to=<{}>:pat=<els=[N2{0,1/4}, -{0,1/4}]>" 0.30366454)
+                (pair "rel:last_to=<{1/2,-1/4}>:to=<{}>:pat=<els=[-{0,1/4}]>" 0.04765253)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{0,1/2,0,0}]>" 0.013513039)
+                (pair "rel:from=<{1/2}>:to=<{}>:pat=<els=[N4{0,0}]>" 0.103195764)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{0,0}, !f{1/2,-1/4,-1/4}]>" 0.015895318)
+                (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[]>" -0.07376166)
+                (pair "rel:last_from=<{1/4,-3/8}>:from=<{0}>:to=<{}>:pat=<els=[e{-1/8,-1/4}, !f{0,1/4,-1/4}]>" 0.2769567)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!e{0,0}]>" 0.027500235)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[-{1/4,3/8}, !f{0,-1/8}]>" 0.011223448)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0,0}, e{0,1/4}]>" -0.065901846)
+                (pair "rel:last_to=<{0,1/4,3/8}>:from=<{}>:pat=<els=[N8{-1/4,1/4}, !e{0,-1/2,1/4,1/8}]>" 0.049878035)
+                (pair "rel:last_to=<{0,-1/2,1/4}>:from=<{}>:to=<{0}>:pat=<els=[!e{-1/4,3/8}]>" 0.01770281)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[e{0}]>" 0.20881116)
+                (pair "rel:from=<{1/2}>:to=<{}>:pat=<els=[e{0}]>" 0.5815912)
+                (pair "rel:last_from=<{0,0,3/8}>:from=<{}>:to=<{0}>:pat=<els=[!e{1/4}]>" 0.4058356)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,1/2,1/8}, e{1/2}, -{0,-1/4}]>" 0.76373047)
+                (pair "rel:last_from=<{0,-3/8}>:to=<{}>:pat=<els=[!f{0,-1/2,1/8}, N4{0,-1/2,0,-3/8}]>" 0.3814235)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[N2{}]>" -0.09384633)
+                (pair "rel:from=<{0}>:pat=<els=[N4{1/4,1/8}, f{0,1/4,1/4}]>" -0.45518208)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares - Both Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{0,3/8}>:to=<{}>:pat=<els=[N4{1/2,3/8}]>" 0.861379)
+                (pair "rel:last_from=<{0,3/8}>:to=<{}>:pat=<els=[N4{1/2,3/8}, #{0,1/2,0,0}]>" 1.125056)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[e{0,0}]>" 1.480678)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" 0.013482779)
+                (pair "rel:to=<{}>:pat=<els=[N8{1/4,-3/8}, e{0}]>" 0.05391247)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,0}]>" 1.3098575)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,0}, e{0,-1/2,-1/4,1/4}]>" 2.202336)
+                (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[-{1/2}]>" 1.2250661)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{-1/2}, e{0,-1/4,1/4}]>" 1.0632452)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,0}, e{0,-1/2,-1/4,1/4}]>" 1.0632452)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[-{0,0}]>" 0.57339823)
+                (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[-{-1/2}, e{0,-1/4,1/4}]>" 1.52916)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[-{0,0}, e{0,-1/2,-1/4,1/4}]>" 1.2160778)
+                (pair "rel:last_to=<{0,-1/4,1/4}>:from=<{}>:to=<{0}>:pat=<els=[!-{0,-1/2,1/4,0,0}]>" 0.75429386)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0,-1/2}>:to=<{}>:pat=<els=[!#{-1/4,0,0,0}, #{0,-1/2,1/2,1/2,-1/4}]>" 0.35366666)
+                (pair "rel:last_to=<{0,-1/4}>:from=<{}>:pat=<els=[!-{-1/4,1/4}, !#{0,-1/2,0,1/4}]>" 0.069088474)
+                (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:pat=<els=[-{0,1/4}, !f{0,0,0,0,0}, #{0,-1/2,-1/2,-1/2,1/4}]>" 0.036113296)
+                (pair "rel:last_to=<{0,0,1/4}>:to=<{0}>:pat=<els=[-{0,0}]>" 0.036113296)
+                (pair "rel:to=<{}>:pat=<els=[!#{1/4,0,0,0}, !e{0,0}, -{0,1/2,1/2,0,0}]>" 0.36380252)
+                (pair "rel:from=<{0}>:pat=<els=[e{0,1/4}, -{0,-1/4}, !e{0,-1/2,1/4}]>" 0.036113296)
+                (pair "rel:last_from=<{0,-1/2}>:to=<{}>:pat=<els=[-{0,1/4}, !f{0,0,0,0,0}]>" -6.548237E-4)
+                (pair "rel:last_to=<{0,0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[]>" -0.44722304)
+                (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4}]>" 0.14655885)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{0}]>" -0.18954752)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[f{0,0,0,0}]>" -0.23210771)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" 0.34821934)
+                (pair "rel:from=<{}>:pat=<els=[f{1/4,1/4}, -{0,-1/2,1/4}]>" 0.026900683)
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[#{0,0,0,0}]>" -0.062401578)
+                (pair "rel:last_from=<{0}>:from=<{}>:pat=<els=[]>" -0.1581945)
+                (pair "rel:from=<{}>:pat=<els=[N4{0,1/4,0,0,0}]>" 0.0046038926)
+                (pair "rel:last_to=<{1/4}>:from=<{0}>:pat=<els=[!-{0,-1/4,-1/4}]>" -2.37202)
+                (pair "rel:last_from=<{1/4,0}>:from=<{}>:to=<{0}>:pat=<els=[]>" 0.24608469)
+                (pair "rel:last_from=<{1/4,0}>:from=<{}>:pat=<els=[f{0,-1/4,-1/4}]>" -0.022134557)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{0,0}>:to=<{0}>:pat=<els=[!-{1/2}]>" -0.6288771)
+                (pair "rel:to=<{0}>:pat=<els=[-{1/4,-1/4}, -{0,-1/4,0,0}]>" -0.6288771)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{1/2}]>" 0.068581015)
+                (pair "rel:to=<{}>:pat=<els=[e{0,0,0}]>" -0.25351465)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{1/2}, N4{0,0,0}]>" 0.15585804)
+                (pair "rel:to=<{0}>:pat=<els=[#{-1/2,0}, e{0,1/4,1/4}]>" -0.6288771)
+                (pair "rel:last_from=<{1/2,0}>:from=<{}>:pat=<els=[!-{0,1/2,1/2,1/4}]>" -0.07043575)
+                (pair "rel:to=<{0}>:pat=<els=[f{0,-1/2,1/4}]>" -0.6288771)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares - Both Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{1/4,0}]>" -0.016788738)
+                (pair "rel:last_to=<{0,-1/2,-1/4}>:from=<{}>:pat=<els=[f{0,1/4,1/4}]>" -0.62271696)
+                (pair "rel:last_from=<{1/4,-1/4,-1/4}>:from=<{}>:pat=<els=[-{0,0}]>" 0.31483936)
+                (pair "rel:to=<{}>:pat=<els=[e{0}, -{1/4,0}]>" 0.06775294)
+                (pair "rel:to=<{}>:pat=<els=[f{1/2,0}, e{0,-1/2,-1/4}]>" 0.5492799)
+                (pair "rel:last_from=<{0,1/4,1/4}>:from=<{}>:to=<{0}>:pat=<els=[]>" 0.42099935)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" -7.62686E-4)
+                (pair "rel:from=<{0}>:pat=<els=[-{1/2,1/4}]>" -1.2086955)
+                (pair "rel:last_from=<{0,1/4,1/4}>:from=<{}>:to=<{0}>:pat=<els=[-{1/4,0}]>" 0.41364577)
+                (pair "rel:last_from=<{1/2,1/4}>:to=<{}>:pat=<els=[#{0,0,0}]>" 0.08366736)
+                (pair "rel:from=<{}>:pat=<els=[-{0,0}, -{1/4,1/4}]>" 0.24846597)
+                (pair "rel:to=<{}>:pat=<els=[f{0,0}, f{1/2,0}]>" 1.0382975)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{-1/4,1/4}, !-{-1/2}, !-{0,1/4}]>" -0.14372945)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/4,0,0}, -{0,-1/2,-1/4}]>" 0.091195546)
+                (pair "rel:to=<{0}>:pat=<els=[!f{1/2}]>" -0.6221093)
+                (pair "rel:from=<{0}>:pat=<els=[!-{-1/2}, !-{0,1/4}]>" -0.6221093)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0}]>" 0.096939124)
+                (pair "rel:last_from=<{0}>:from=<{}>:pat=<els=[!#{0,0,0}, -{0,1/2,-1/4}]>" 0.012184794)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, !-{1/4,1/4}]>" -0.026068002)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Blocking Game Four pieces - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{-1/4}, !#{0,3/8,-1/4}]>" -1.8164893)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[f{-1/4}, !#{0,3/8,-1/4}]>" -2.0262043)
+                (pair "rel:from=<{}>:pat=<els=[e{0,-3/8}, N4{0,-1/2,3/8,1/4}]>" -0.5363171)
+                (pair "rel:to=<{}>:pat=<els=[-{0}, f{0,1/8}, !f{-1/4,-1/2,1/4}]>" 1.1632395)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N8{-1/8,-3/8}, N4{0,-1/2,3/8,1/4}]>" -0.74529815)
+                (pair "rel:from=<{}>:pat=<els=[N4{1/8,1/4}, #{0,3/8}, !f{3/8,1/2,3/8}]>" -0.6741337)
+                (pair "rel:from=<{}>:pat=<els=[N8{0,-3/8}, e{1/8,-3/8}]>" -0.530055)
+                (pair "rel:from=<{}>:pat=<els=[N8{0,-3/8}, N4{1/8,-1/2,3/8,1/4}]>" -0.6626533)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{-1/4,1/4}, #{-3/8,3/8}, !f{0,1/2,3/8}]>" -1.5410709)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N8{1/8,3/8}, e{0,3/8}]>" -0.19923328)
+                (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[f{0}]>" -0.75935966)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4}, e{0,1/4,1/4}]>" -0.98289526)
+                (pair "rel:from=<{}>:pat=<els=[e{0,-1/2,1/4}, !f{0,-1/2,1/8,3/8}]>" -0.3308182)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!f{0,1/8}, f{0,-1/2,-1/4}]>" -0.6064106)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,1/2,1/4}]>" -0.5910269)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,-1/2,1/4}, !f{0,-1/2,1/8,3/8}]>" -0.25229996)
+                (pair "rel:last_from=<{0}>:from=<{}>:pat=<els=[e{-1/2,3/8}, !#{0,-1/2,-3/8,1/8}]>" 1.2721281)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,-1/4}, !f{0,1/8}, f{0,-1/2,-1/4}]>" -0.39032942)
+                (pair "rel:last_from=<{0}>:to=<{0}>:pat=<els=[!#{0,-1/2,-3/8,1/8}]>" 3.8002138)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N8{0,0,3/8}]>" -0.10350058)
+                (pair "rel:to=<{0}>:pat=<els=[e{0,-1/2,1/4}, !f{0,-1/2,1/8,3/8}]>" 3.8002138)
+                (pair "rel:from=<{}>:pat=<els=[-{0,1/4}]>" -0.3576567)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Blocking Game Four pieces - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N8{0,1/4}, N4{0,1/2,1/4}]>" 0.46093318)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{1/4,3/8}, e{0,3/8,-3/8}]>" -0.036155265)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" -0.20097953)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,1/4}]>" -0.022534167)
+                (pair "rel:from=<{0}>:pat=<els=[e{-1/4,3/8}, N4{0,-1/4,-3/8}]>" -0.109967984)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{-1/4,1/4}, !e{0,-1/2,0,0}]>" 0.05904738)
+                (pair "rel:last_from=<{0}>:to=<{0}>:pat=<els=[e{0,1/8}, -{0,-1/2,1/4}, N4{0,-1/2,-1/2,-1/4,3/8}]>" -0.109967984)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[N2{}]>" 0.7464698)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/8}]>" 0.11060459)
+                (pair "rel:to=<{}>:pat=<els=[e{0,0,0}]>" 0.068216644)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N8{1/4,3/8}, N8{0,3/8}, f{0,-1/2,-1/4}]>" -0.16724098)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{0,1/4}, N2{0,-1/4,3/8}]>" -0.55164385)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Blocking Game Four pieces - Both Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[N2{}]>" 0.7698792)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[N2{0,-1/2,1/8}]>" 0.9922468)
+                (pair "rel:last_from=<{0,-1/2}>:to=<{}>:pat=<els=[N2{1/4}, !e{0,-1/4}, e{0,-1/2,1/2,1/2,-1/8}]>" 1.1547768)
+                (pair "rel:from=<{0}>:pat=<els=[f{1/4,1/8}]>" -0.21493258)
+                (pair "rel:last_from=<{0,-1/2}>:to=<{}>:pat=<els=[N2{1/4}, !e{0,-1/4}]>" 0.9963425)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N2{1/4}, !e{0,-1/4}, e{0,-1/2,1/2,1/2,-1/8}]>" 0.9202182)
+                (pair "rel:last_from=<{0}>:to=<{0}>:pat=<els=[N8{-1/4}, N4{0,-1/2}, e{0,-1/2,-1/2,1/8}]>" -0.21493258)
+                (pair "rel:from=<{0}>:pat=<els=[f{1/4,1/8}, N2{0,-1/2,-3/8}]>" -0.21493258)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N2{0,1/2,3/8}]>" 0.74599147)
+                (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/2,1/2,-1/4}]>" 0.12665936)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{-1/4,-1/4}, N4{0,-1/4,3/8}]>" 0.028408535)
+                (pair "rel:last_from=<{0}>:to=<{0}>:pat=<els=[!e{-1/4}, e{0,-1/2,-1/2,1/8}]>" -0.21493258)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[N2{}]>" 0.6948602)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, !-{0,1/8,0}]>" -0.14119211)
+                (pair "rel:to=<{0}>:pat=<els=[N4{0,1/8}, f{0,1/8}]>" 0.44226635)
+                (pair "rel:last_to=<{0,1/4}>:from=<{0}>:pat=<els=[f{1/4}, !-{0,1/8,0}, N8{-1/4,-3/8}]>" 0.44226635)
+                (pair "rel:last_to=<{0,-1/2,-1/8}>:from=<{0}>:to=<{}>:pat=<els=[e{0,1/4}, N4{1/4,3/8}]>" -0.53792155)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/8}]>" -0.0894556)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Blocking Game Four pieces - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,0,0}>:from=<{}>:pat=<els=[]>" 0.19479787)
+                (pair "rel:last_from=<{0,1/2}>:to=<{}>:pat=<els=[e{1/4}, f{0,1/2,-1/2}]>" 0.13814104)
+                (pair "rel:last_from=<{0,1/2}>:from=<{0}>:to=<{}>:pat=<els=[e{1/4}, e{1/4,-1/4}, f{0,1/2,-1/2}]>" 0.39552435)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[-{-1/4,1/4}, !#{0,1/2,1/4,-1/4}]>" 0.16366799)
+                (pair "rel:to=<{0}>:pat=<els=[!-{1/4,0}, !e{0,1/2,1/2,0}]>" -1.4626364)
+                (pair "rel:to=<{1/4}>:pat=<els=[-{0}, -{0,1/4}, -{-1/4}, !#{1/4,1/2,1/4,-1/4}]>" -1.4626364)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4}, -{0,1/4,-1/4}]>" 0.045441367)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[-{-1/4,1/4}, -{1/2}]>" 0.2659037)
+                (pair "rel:last_from=<{1/4}>:to=<{1/4}>:pat=<els=[-{0}, -{0,1/4}, -{-1/4}]>" -1.4626364)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[!#{0,0,0}]>" 0.56050783)
+                (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[!#{0,0,0}, #{0,-1/2,1/4,0,0}]>" 0.57425237)
+                (pair "rel:last_from=<{0,-1/2}>:last_to=<{0,-1/2,0}>:from=<{0}>:to=<{}>:pat=<els=[#{0,-1/2,-1/2,1/4,0,0}]>" 0.7002122)
+                (pair "rel:last_from=<{0,-1/2}>:last_to=<{0,-1/2,0}>:from=<{0}>:to=<{}>:pat=<els=[!#{0,-1/2,0,0}, #{0,-1/2,-1/2,1/4,0,0}]>" 1.0116093)
+                (pair "rel:last_from=<{0}>:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[!#{0,0,0}]>" 1.0116093)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[!#{0,1/2,0}]>" 0.42356664)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[#{0,1/4}]>" 0.25254595)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[f{0,1/2,1/4}, #{0,1/4}]>" 1.043272)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[-{0,0,-1/4}, !#{0,1/2,0}]>" 0.41796622)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[f{0,1/2,1/4}]>" 0.7067245)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Blocking Game Four pieces - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[-{0,1/2,1/2,1/2,1/4}]>" 0.4161845)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[-{0,1/2,0}, -{0,1/2,1/2,1/2,1/4}]>" 0.64488393)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[#{1/4}, -{0,1/2,1/2,1/2,1/4}]>" 0.5311014)
+                (pair "rel:last_to=<{0,1/4}>:from=<{0}>:pat=<els=[!-{0,-1/2,-1/4}]>" -0.8494228)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{-1/4,0}, -{0,0,1/4}]>" 0.31894016)
+                (pair "rel:last_from=<{0,0,-1/4}>:from=<{0}>:pat=<els=[!f{0,-1/4,1/4}]>" -0.8494228)
+                (pair "rel:last_from=<{0,-1/2,-1/2}>:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/2,-1/2,1/2}]>" 0.2730825)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0}>:to=<{0}>:pat=<els=[N4{1/4}]>" -1.9389303)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0}]>" 0.041046645)
+                (pair "rel:last_from=<{0}>:last_to=<{0,0}>:from=<{}>:pat=<els=[!f{-1/4,1/4}, #{1/4,-1/4}, #{1/2,-1/4}]>" 0.03533722)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[#{0,1/4,-1/4}, #{0,-1/2,-1/4}]>" 0.032131445)
+                (pair "rel:from=<{}>:pat=<els=[-{0,0,1/4}]>" 0.01042679)
+                (pair "rel:to=<{}>:pat=<els=[f{1/2,0}, #{0,1/4,-1/4}]>" 0.03075754)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,0}, -{0,0,-1/4}, #{0,1/4,1/4}]>" -0.012282527)
+                (pair "rel:last_to=<{0,0}>:from=<{}>:pat=<els=[#{1/4,-1/4}]>" 0.03182196)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[-{0,0,1/4}]>" -0.015551334)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Blocking Game Four pieces - Both Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[f{0}]>" 0.012598805)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{-1/4}, #{0,1/4,0}]>" -0.024057612)
+                (pair "rel:to=<{0}>:pat=<els=[N4{1/2,0,0}, #{0,0}, e{0,-1/2,-1/4}]>" -1.8309724)
+                (pair "rel:from=<{1/4}>:pat=<els=[f{0}]>" -1.8309724)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -0.001961964)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0}]>" 0.025991052)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,0,0}, -{0,-1/2,1/4,1/4}]>" 0.08267103)
+                (pair "rel:last_to=<{0,-1/2,1/4}>:to=<{0}>:pat=<els=[-{0,0}]>" -1.8001658)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[e{0,1/2,0}, -{0,-1/2,1/4,1/4}]>" 0.123148285)
+                (pair "rel:from=<{}>:pat=<els=[e{0}]>" -0.003668355)
+                (pair "rel:from=<{1/2}>:to=<{}>:pat=<els=[-{0,1/4}]>" 0.024425808)
+                (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.026054274)
+                (pair "rel:from=<{}>:pat=<els=[-{0,0}]>" 0.028246965)
+                (pair "rel:from=<{}>:pat=<els=[f{0,0}]>" -0.024295203)
+                (pair "rel:last_to=<{0,-1/2,1/4}>:from=<{}>:to=<{0}>:pat=<els=[f{-1/4,0}, -{0,0}]>" 0.046402924)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Line Game Three pieces - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[f{1/2}, f{0}]>" 1.4910764)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{1/2,-3/8}, e{0,1/2,1/2,-1/8}]>" -0.12377979)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{-1/4,0}, !-{0,0,3/8}, !e{0,3/8}, !e{0,3/8,-1/8}, !e{0,-3/8,-3/8}]>" -0.57845664)
+                (pair "rel:to=<{}>:pat=<els=[f{1/4}, f{0,3/8,3/8}]>" 0.009978573)
+                (pair "rel:last_from=<{0}>:to=<{0}>:pat=<els=[f{0,1/4,1/4}, !f{0,-1/2,-1/4,3/8}, -{0,-1/2,-1/2}, !e{0,-1/2,1/8,-1/4}]>" -0.35609612)
+                (pair "rel:to=<{0}>:pat=<els=[-{0}, !e{1/4,-1/8}, !e{-1/2,-3/8}, -{0,0}, !f{0,-1/2,-1/2,1/8}]>" -0.35609612)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0}, !e{1/4,-1/8}, !e{-1/2,-3/8}, !f{0,-1/2,-1/2,1/8}]>" -0.116036125)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4}, f{0,1/4}]>" 2.251867)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{-1/2,-3/8}, f{0,-1/4}, f{0,1/4}]>" 2.251867)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4,1/4}, f{0,1/4}, N4{-1/4,1/4}]>" 1.9330611)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{3/8}, e{0,1/4,1/4}, f{0,1/4}, N4{-1/4,1/4}]>" 1.9330611)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{-1/2,-3/8}, f{0,1/4}]>" 0.7180402)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, N4{-1/4,1/4}]>" 0.9301031)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, !f{0,-3/8,-1/4}, !e{0,-1/8,0,0}, #{0,1/4,-1/8}]>" 0.7175569)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{3/8}, e{0,1/4,1/4}, f{0,1/4}]>" 0.9217495)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Line Game Three pieces - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[!#{0,1/4,0,0}]>" 0.53503513)
+                (pair "rel:to=<{}>:pat=<els=[N2{}]>" -1.2931515)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{0,3/8,-1/4}, !f{0,-1/2,-1/2}]>" 0.49740064)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!#{-1/4,3/8}, N8{0,-1/2,-3/8}]>" 1.0159645)
+                (pair "rel:to=<{}>:pat=<els=[f{0,0}]>" 0.41685435)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[!#{0,1/4,0,0}]>" 1.390586)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[!#{0,1/4,0,0}]>" 1.1065978)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!-{0,1/8,-1/4}, f{-1/4,-3/8}]>" 0.62454593)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{-1/4,0,0}, !f{0,-1/2,1/2}]>" 0.9819312)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[!-{0,-3/8,1/8}, -{0,1/4}, -{0,1/2,-3/8,1/4}, #{0,1/4,-1/8}]>" 1.0551004)
+                (pair "rel:last_from=<{1/8,3/8}>:to=<{}>:pat=<els=[!f{0,1/2}]>" 0.5200348)
+                (pair "rel:last_from=<{1/8,3/8}>:from=<{0}>:pat=<els=[f{1/4}]>" -0.93488634)
+                (pair "rel:last_from=<{0}>:to=<{0}>:pat=<els=[!#{-1/4,3/8}, e{0,-1/4}, N8{0,-1/2,-3/8}]>" -0.93488634)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[f{0,0}, f{0}]>" 1.8498204)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{3/8,1/4}, !f{0,-1/4,0}]>" 1.029746)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}, f{1/4}, !f{0,1/8,1/4}]>" 1.8498204)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{3/8,1/4}]>" 1.0090882)
+                (pair "rel:from=<{}>:pat=<els=[!e{-1/4,-1/4}, N4{0,0}, e{0,0}, #{0,-1/2,-1/4}, !-{0,-1/2,1/4,-1/4}]>" 0.56155217)
+                (pair "rel:to=<{}>:pat=<els=[f{1/4}, N4{0,-1/2,-1/8}, !-{0,1/4,1/4}, #{0,0,-1/4}]>" 0.27839175)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!f{0,-1/2,1/8}, !-{0,1/4,1/4}, #{0,0,-1/4}]>" 0.2340207)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, !f{0,-1/2,1/8}, N4{0,-1/2,-1/8}]>" 0.38864747)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Line Game Three pieces - Both Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{0,3/8}, -{0,-1/8,1/4}]>" 1.0680045)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,-1/8,1/4}]>" 0.990689)
+                (pair "rel:to=<{}>:pat=<els=[N2{}]>" -1.088379)
+                (pair "rel:to=<{}>:pat=<els=[e{1/4}, !#{0,1/4,1/8}]>" 0.7539103)
+                (pair "rel:to=<{}>:pat=<els=[e{0}]>" 0.62572175)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, e{0}]>" 0.60356534)
+                (pair "rel:from=<{}>:pat=<els=[!-{0,3/8}, -{0,-1/8,1/4}]>" 0.813872)
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[-{0,0}]>" 1.1644635)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0}]>" 0.9600145)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{-1/2,3/8}, #{-1/2,-1/8}, N4{0,-3/8}, N4{0,-1/4,-3/8}]>" 1.171534)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 0.95584804)
+                (pair "rel:to=<{}>:pat=<els=[e{1/2}, -{0,1/4}, e{0}, -{1/2,-1/4}]>" 2.622239)
+                (pair "rel:last_to=<{1/2,1/4}>:from=<{0}>:to=<{}>:pat=<els=[-{-1/4,0}, !-{0,-1/2,-3/8}, !f{0,1/4,3/8}, !-{0,-1/4}]>" 1.4411249)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{-1/4,0}, !f{0,1/8}, f{0,-1/2,1/4}]>" 1.5750092)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, !f{0,1/8}, f{0,-1/2,1/4}]>" 1.5082234)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, f{0,-1/2,1/4}]>" 1.5082234)
+                (pair "rel:to=<{}>:pat=<els=[N2{}]>" -0.79245186)
+                (pair "rel:last_from=<{0,3/8}>:to=<{}>:pat=<els=[]>" 0.36220816)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N8{0,-1/4,-1/4}, f{0,3/8}]>" -0.29520655)
+                (pair "rel:from=<{}>:pat=<els=[N2{}]>" 0.72209215)
+                (pair "rel:to=<{}>:pat=<els=[N2{0,-1/8}, -{3/8,1/4}, e{1/2}, -{1/4,1/4}]>" 1.7025386)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 0.23682368)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Line Game Three pieces - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 2.1749094)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}]>" 1.0389416)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}]>" 1.298753)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" 1.0299438)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}]>" 1.0389416)
+                (pair "rel:to=<{}>:pat=<els=[f{0}]>" 0.77781487)
+                (pair "rel:to=<{}>:pat=<els=[f{1/4,-1/4}, f{0}]>" 0.90945625)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 0.8390614)
+                (pair "rel:last_to=<{1/4,0}>:to=<{}>:pat=<els=[f{0}, f{0,0}, !#{1/4,0,0}]>" 1.2246723)
+                (pair "rel:last_to=<{1/4,0}>:to=<{}>:pat=<els=[f{0}, -{0,1/4}, !#{1/4,0,0}]>" 0.84652126)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, f{0,-1/2,1/4}]>" 2.0208468)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, f{0,1/4,0}]>" 2.1091669)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, !#{0,1/4,0}]>" 1.4040304)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}]>" 0.84982836)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,-1/2,1/4}]>" 0.84982836)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}]>" 0.84982836)
+                (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[f{0,1/4}]>" 0.54199153)
+                (pair "rel:last_from=<{1/4,1/4}>:from=<{}>:pat=<els=[f{1/2,-1/4}, #{0}, !-{0}, -{-1/4,-1/4}]>" 0.25621855)
+                (pair "rel:to=<{0}>:pat=<els=[f{0,1/4}]>" -1.3105907)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Line Game Three pieces - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!#{0,1/2,0,0}, !-{1/4}]>" 1.1943326)
+                (pair "rel:to=<{}>:pat=<els=[f{1/4}, f{0,1/2,1/4}]>" 1.1078124)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" 1.073068)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{0,0}, -{0,0,0}]>" 1.2183233)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0,0}]>" 1.1885685)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, f{0,1/2,1/4}]>" 2.301237)
+                (pair "rel:last_to=<{1/4}>:from=<{0}>:to=<{}>:pat=<els=[!#{0,1/2,0,0}]>" 1.8350257)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0,0,0}, N4{0,-1/2,1/2}]>" 1.377605)
+                (pair "rel:from=<{}>:pat=<els=[!f{1/4,1/4}, -{1/2,-1/4}, !-{0,-1/4}, !f{-1/4,-1/4}, !-{0,1/4}]>" 0.9886912)
+                (pair "rel:last_to=<{1/4}>:from=<{0}>:to=<{}>:pat=<els=[!#{0,1/2,0,0}, !-{1/4}]>" 1.8350257)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{0,0}, #{0,1/4}, -{0,0,0}]>" 1.2547295)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{-1/4,0}, !f{0,0}, f{0,-1/2,1/4}]>" 2.4698508)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!f{-1/4,0,0,0}, !e{0,1/4}, f{0,1/4,0}]>" 1.372135)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}, !f{0,0}]>" 1.087584)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{0,-1/4}, !e{0,1/4}, f{0,1/4,0}]>" 1.4041575)
+                (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[f{0,0}]>" 1.032898)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}]>" 1.032898)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{0,-1/4}, !f{-1/4,0,0,0}, !e{0,1/4}, f{0,1/4,0}]>" 1.4041575)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}, !-{0,-1/2,-1/4}, !f{0,-1/2,-1/2,1/4,0,0,0}]>" 0.9558956)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!#{1/4,-1/4}, f{0,-1/4}, !#{-1/4,0}, !e{0,1/4}, !f{1/4,0,0,0}]>" 1.4915161)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!#{1/4,-1/4}, f{0,-1/4}, !#{-1/4,0}, !e{0,1/4}, #{0,-1/2,1/2,0,0}]>" 1.4915161)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Line Game Three pieces - Both Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}, #{0,1/2,0,0,0}]>" 1.6031858)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}]>" 1.5395741)
+                (pair "rel:to=<{}>:pat=<els=[f{-1/4}, !f{0,1/4,0}, f{1/4}, !f{0,-1/4,0}]>" 1.550862)
+                (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/2}, !f{1/4,-1/4,0}]>" 1.550862)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{-1/4}, !f{0,1/4,0}, f{1/4}]>" 3.3011496)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,-1/4}, f{0,-1/2,1/4}]>" 1.1790981)
+                (pair "rel:to=<{}>:pat=<els=[e{1/4}, -{1/2,-1/4}, -{0,1/4}]>" 1.8730376)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0}]>" 1.8208863)
+                (pair "rel:from=<{}>:pat=<els=[f{0,1/4,0}, #{0,1/2,0,0,0}]>" 1.1655011)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0}, #{0,1/2,0,0,0}]>" 1.8208863)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}]>" 1.8892916)
+                (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/2}, !e{1/4,1/2,1/4}]>" 1.7113299)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{0,1/4}, !#{0,1/4,0,0}, !-{0,1/4}]>" 2.182665)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{0,1/4}, f{0,1/4,0}, !#{0,1/4,0,0}, !-{0,1/4}]>" 3.2167804)
+                (pair "rel:to=<{}>:pat=<els=[f{0}, f{1/2}]>" 1.7113299)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,0}, !-{0,1/4}]>" 1.9951588)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{0,1/4}, f{0,1/4,0}, !-{0,1/4}]>" 2.9372427)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{0,1/4}, f{0,1/4,0}, !#{0,1/4,0,0}]>" 2.029229)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Jeu Militaire - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!R0{1/4}, -{0,1/4}]>" 1.1517763)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!R0{0,1/8}, -{1/4}, e{0,1/2,1/2,1/4}]>" 0.972167)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!R0{0,1/8}, -{1/4}]>" 0.95826566)
+                (pair "rel:last_to=<{0,1/4}>:from=<{0}>:to=<{}>:pat=<els=[-{1/4}]>" 0.55068576)
+                (pair "rel:last_to=<{0,1/4}>:from=<{0}>:to=<{}>:pat=<els=[!R0{0,1/8}, -{1/4}]>" 0.9727178)
+                (pair "rel:to=<{}>:pat=<els=[!R0{0,1/8}, -{1/4}, e{0,1/2,1/2,1/4}]>" 0.90096855)
+                (pair "rel:last_to=<{0,3/8}>:from=<{1/2}>:to=<{}>:pat=<els=[]>" -0.30229047)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0,1/4}]>" 2.8172107)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[R1{-1/4,3/8}, f{0,0,-1/4}]>" 3.0528376)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[f{0,0,1/4}]>" 4.1836686)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[!R0{1/8}, -{0,-1/2,-1/2,1/4}]>" 1.4980478)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[!R0{1/8}, N8{-1/4,-3/8}, -{0,-1/2,-1/2,1/4}]>" 2.3297126)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[R1{-1/4,3/8}]>" 1.8128322)
+                (pair "rel:last_from=<{0}>:from=<{}>:pat=<els=[f{0,0,1/4}]>" 2.5707638)
+                (pair "rel:last_from=<{0}>:from=<{}>:pat=<els=[R1{-1/4,3/8}, f{0,0,-1/4}]>" 2.5910254)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Jeu Militaire - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,1/4}>:from=<{1/2}>:to=<{}>:pat=<els=[e{0,1/4}, -{1/4,1/4}, e{1/2,-1/2,0}]>" -6.652001E-4)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 0.20752643)
+                (pair "rel:last_to=<{0,1/4}>:to=<{1/4}>:pat=<els=[R1{0}]>" 0.53039956)
+                (pair "rel:last_to=<{1/4,-1/4}>:from=<{}>:pat=<els=[-{0,-1/2,-1/4}]>" 0.053301208)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[e{0,1/4}, R1{-1/2,-1/4}, -{1/4,1/4}]>" 0.15971859)
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:pat=<els=[-{1/4,1/2,1/4}]>" 0.053301208)
+                (pair "rel:to=<{1/4}>:pat=<els=[e{0,1/4}]>" 0.53039956)
+                (pair "rel:from=<{}>:pat=<els=[R1{0}, -{1/4,1/2,1/4}]>" -0.013013354)
+                (pair "rel:last_to=<{0,1/4}>:from=<{1/2}>:to=<{}>:pat=<els=[e{0,1/4}, -{1/4,1/4}]>" 0.13815825)
+                (pair "rel:from=<{}>:pat=<els=[-{0,1/4}]>" 0.0)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[R0{0,0}]>" 0.20654702)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[e{0,0}]>" 2.617484)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[R0{1/4}, e{0,0}]>" 2.4655502)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[R0{1/4}, R0{1/4,-1/4}, e{0,0}]>" 3.2588167)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[R0{1/4,-1/4}, e{0,0}]>" 3.1176727)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[R0{1/4}]>" 0.97593117)
+                (pair "rel:to=<{}>:pat=<els=[e{0,1/4}, -{1/4,-1/4}]>" 0.69854414)
+                (pair "rel:from=<{}>:to=<{1/4}>:pat=<els=[R1{0,1/4}]>" -0.026042657)
+                (pair "rel:last_from=<{0}>:from=<{}>:pat=<els=[R0{1/4}, e{0,0}]>" 1.2780114)
+                (pair "rel:last_from=<{1/4}>:from=<{}>:pat=<els=[R0{0}, R0{0,1/4}]>" 0.12774153)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Jeu Militaire Switch Players - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[f{0,0,1/4}]>" 2.8044767)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!R0{0,1/4}, f{0,0,1/4}]>" 2.009864)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,0}, !R1{-1/4,1/4}, e{0,-1/4}]>" -3.0652363)
+                (pair "rel:last_to=<{0,-1/4}>:from=<{0}>:to=<{}>:pat=<els=[-{-1/4,1/8}, !R1{-1/4,1/4}, e{0,-1/4}]>" -3.0407324)
+                (pair "rel:last_from=<{0}>:from=<{}>:pat=<els=[f{0,0,1/4}]>" 1.5435766)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0,1/4}]>" 1.7416945)
+                (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[R1{1/8}, !R1{0,1/4}, -{0,1/4}, e{1/4,-1/4}]>" -3.166204)
+                (pair "rel:last_to=<{1/4,-1/4}>:from=<{1/4}>:to=<{}>:pat=<els=[R1{1/8}, -{0,1/8}, !R1{0,1/4}]>" -3.6885722)
+                (pair "rel:last_to=<{0,-1/4}>:from=<{0}>:to=<{}>:pat=<els=[R1{-1/8}, -{-1/4,1/4}, e{0,-1/4}]>" -3.0786996)
+                (pair "rel:last_to=<{}>:from=<{}>:to=<{0}>:pat=<els=[N4{0}]>" 1.2426351)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" -1.7222773)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/8,1/4}]>" -0.56912625)
+                (pair "rel:last_to=<{0,3/8}>:from=<{}>:to=<{0}>:pat=<els=[]>" 1.4737742)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 0.53141445)
+                (pair "rel:from=<{0}>:pat=<els=[N4{0,-1/8,-1/4}, -{0,-1/2,1/4}, -{0,-1/2,-1/2,-1/8}]>" 1.8928388)
+                (pair "rel:last_to=<{1/4,-3/8}>:to=<{}>:pat=<els=[N4{3/8,1/4}, -{0}]>" 0.61200917)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{0,-1/8,-1/4}, -{0,-1/2,1/4}]>" 1.0176275)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{0,1/8,1/4}]>" 0.107615665)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{0,-1/8,-1/4}, -{0,-1/2,1/4}, -{0,-1/2,-1/2,-1/8}]>" 1.2976699)
+                (pair "rel:last_to=<{0,3/8}>:to=<{0}>:pat=<els=[-{0,1/8,1/4}]>" 1.8928388)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!R1{0,0}]>" 0.3304437)
+                (pair "rel:last_from=<{0,-1/4,3/8}>:from=<{}>:to=<{0}>:pat=<els=[]>" 0.5221538)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Jeu Militaire Switch Players - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[f{0,0,-1/4}, -{0,1/2,1/4}]>" 2.4016602)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[R0{-1/4,1/4}, -{0,1/2,1/4}]>" -0.3653959)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/2,1/4}]>" 1.0022936)
+                (pair "rel:from=<{}>:to=<{1/4}>:pat=<els=[R0{0}, R0{0,1/4}, f{1/4,0,-1/4}]>" 1.3521998)
+                (pair "rel:to=<{}>:pat=<els=[R1{0,0,0,0}]>" -2.201048)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[R0{-1/4}, f{0,0,-1/4}, -{0,1/2,1/4}]>" 2.1596894)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[R1{0}, e{0,1/4}]>" -1.0760332)
+                (pair "rel:to=<{}>:pat=<els=[R1{0,0}]>" 0.50347185)
+                (pair "rel:to=<{}>:pat=<els=[R0{0}]>" -0.0144989975)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/2,-1/4}, -{1/4,-1/4}, -{0,-1/2,0}]>" 0.9562647)
+                (pair "rel:to=<{0}>:pat=<els=[R1{0}, e{0,1/4}]>" -0.0016816275)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4,-1/4}, -{0,-1/2,0}]>" 0.57702)
+                (pair "rel:to=<{0}>:pat=<els=[R0{0,1/4}, -{0,1/4}, -{0,1/4,1/4}, -{0,1/2,1/4}]>" -0.0016816275)
+                (pair "rel:to=<{0}>:pat=<els=[-{0,0}, -{0,1/2,0}]>" -0.0016816275)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4,-1/4}, R0{-1/2,-1/4}, -{0,-1/2,0}]>" 0.695417)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/4}, -{0,1/4,1/4}, -{0,1/2,1/4}]>" 0.14890748)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4,0}]>" -0.12180675)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Janes Soppi - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{0}>:pat=<els=[e{0,-1/2,1/8}, N8{0,-1/2,-1/4,-3/8}]>" 0.3209203)
+                (pair "rel:from=<{}>:pat=<els=[e{0,1/4}]>" -0.07355874)
+                (pair "rel:last_from=<{0,0,3/8}>:to=<{0}>:pat=<els=[!e{0,1/2,1/4,1/4}]>" 0.3209203)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,-1/2,1/8}]>" -0.08073484)
+                (pair "rel:last_from=<{1/2,1/8}>:from=<{}>:to=<{0}>:pat=<els=[]>" 0.3096916)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!#{0,1/8}, !-{1/2}, e{0,1/4,1/8}]>" 0.32281774)
+                (pair "rel:last_from=<{1/2,1/8}>:from=<{}>:to=<{0}>:pat=<els=[N8{0,1/2,1/4,3/8}]>" 0.82219756)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[f{1/4}, !-{0,1/4,1/4}, !#{0,1/2,0}, -{0,1/4,3/8}]>" 0.53090554)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,1/4}]>" -0.24478948)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{-1/4,0}, N8{-1/4,3/8}, !e{0,0,-3/8}, !-{0,1/2,1/2,1/4,1/4}]>" 0.6305067)
+                (pair "rel:last_from=<{0,1/2}>:to=<{}>:pat=<els=[-{-1/4,0}, N8{-1/4,3/8}, !f{0,-1/4,0}, !e{0,0,-3/8}, !-{0,1/2,1/2,1/4,1/4}]>" -0.15373726)
+                (pair "rel:last_from=<{0,1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{-1/4,0}, N8{-1/4,3/8}, !f{0,-1/4,0}, !e{0,0,-3/8}, !-{0,1/2,1/2,1/4,1/4}]>" 0.8125083)
+                (pair "rel:to=<{0}>:pat=<els=[N4{0,1/4,0,0}]>" 0.23349005)
+                (pair "rel:last_from=<{0,1/2}>:to=<{}>:pat=<els=[-{-1/4,0}, N8{-1/4,3/8}, !e{0,0,-3/8}, !-{0,1/2,1/2,1/4,1/4}]>" -0.15373726)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Janes Soppi - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[N2{0,3/8}]>" 0.1843979)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!f{0,1/8,3/8}, !f{0,1/4}, f{0,-1/2,-1/4}]>" -0.04811685)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{0,0,3/8}]>" -0.10231317)
+                (pair "rel:from=<{0}>:pat=<els=[-{0,0,3/8}]>" 0.015837107)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4,-3/8}]>" -0.116262354)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[-{3/8,3/8}]>" 0.10798525)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[N8{0,1/4}, f{0,-1/2,-1/4}]>" -0.9846151)
+                (pair "rel:to=<{}>:pat=<els=[e{1/4,-1/4}, !f{0,0,0}, !f{0,-1/2,1/2,1/8,3/8}]>" 0.0710931)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N8{-1/2,-1/8}, -{0,1/8,3/8}, -{0,1/4,-3/8}]>" -0.9897039)
+                (pair "rel:from=<{0}>:pat=<els=[-{0,1/4}, N4{0,0,-3/8}]>" 0.015837107)
+                (pair "rel:to=<{}>:pat=<els=[N8{0,-1/8}, -{1/2,1/8,3/8}]>" -0.20407088)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[N2{}]>" 0.75006527)
+                (pair "rel:to=<{}>:pat=<els=[e{-1/2}, N4{0,-3/8}, !e{0,-1/2,3/8}]>" 0.28852278)
+                (pair "rel:to=<{}>:pat=<els=[e{1/4}, !f{0,3/8,1/4}]>" 0.09420626)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4,1/8}]>" 0.15341584)
+                (pair "rel:from=<{0}>:pat=<els=[-{0,1/4}, !#{0,1/2,0}, e{0,0}]>" -0.3802329)
+                (pair "rel:last_from=<{1/4,-1/4}>:from=<{0}>:to=<{}>:pat=<els=[!f{0,-1/2,-1/8}]>" -0.031179259)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0}]>" 0.16993365)
+                (pair "rel:to=<{0}>:pat=<els=[N2{0,3/8}]>" -0.3802329)
+                (pair "rel:last_to=<{1/4,-1/8}>:from=<{}>:pat=<els=[N8{0,3/8}]>" -0.38189104)
+                (pair "rel:from=<{}>:pat=<els=[f{0}, e{1/8,-1/4}]>" 0.08149156)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Janes Soppi - Both Extensions Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{1/2,0}, -{0,-1/2,1/8}]>" -0.48828703)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!e{1/4}, !e{-1/4}, !f{0,1/4}, !-{0,-1/8}, !e{0,-1/2,1/4,-1/4}]>" 0.035482004)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{1/2,0}, -{0,1/2,1/4}]>" -0.45647886)
+                (pair "rel:to=<{}>:pat=<els=[f{0,-3/8}, N4{0,-1/2,1/4,1/4}]>" 0.117243595)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/8,-1/4}, f{0,-1/2,-1/8}]>" 0.36284003)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{-1/2,-3/8}, f{0,-1/2,1/2,-3/8}, -{0,-1/2,1/8}, N4{0,-1/2,-1/8,1/4}]>" -0.08833989)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{1/4,3/8}, -{0,1/8}]>" -0.60262436)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{1/4,3/8}, -{0,1/8}, !-{0,0,0,0,0}]>" -0.60262436)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{1/4,3/8}, f{0,0,1/4}]>" -1.3868732)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[e{3/8,1/4}, -{0,1/2,0,3/8}]>" -1.3715374)
+                (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[N4{-1/4,1/4}]>" -0.04063881)
+                (pair "rel:last_to=<{1/2}>:to=<{}>:pat=<els=[N4{1/4,3/8}, -{0,1/8}, !-{0,0,0,0,0}]>" -0.5544161)
+                (pair "rel:to=<{0}>:pat=<els=[e{0,1/4,1/8}]>" 1.0631546)
+                (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:pat=<els=[-{0,-1/2,1/2,-1/8}]>" 1.0631546)
+                (pair "rel:last_to=<{0,0}>:from=<{}>:pat=<els=[N8{0,-1/4,-3/8}, N4{0,-1/4,3/8}]>" 0.48808238)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Janes Soppi - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{0,1/4}>:from=<{0}>:pat=<els=[-{0,-1/2}, -{0,1/4}]>" -1.6108712)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4,0}]>" 0.08297683)
+                (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[-{0,-1/2}, -{0,1/4}]>" 0.014322743)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" 0.029951073)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[f{0,1/4,1/4}]>" 0.08197786)
+                (pair "rel:last_from=<{0,1/4}>:from=<{0}>:pat=<els=[-{1/4,1/4}, -{0,-1/2}, -{0,1/4}]>" -1.6108712)
+                (pair "rel:from=<{0}>:pat=<els=[e{1/4}]>" -1.6108712)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[]>" 0.09139844)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{}>:last_to=<{1/4}>:to=<{}>:pat=<els=[-{0,1/4}]>" 0.45056376)
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:from=<{}>:pat=<els=[-{0,0,0,0}]>" 1.1071484)
+                (pair "rel:last_from=<{0,0}>:to=<{}>:pat=<els=[]>" 0.030897602)
+                (pair "rel:to=<{}>:pat=<els=[f{-1/4,1/4}, f{0,-1/4}]>" -0.2817931)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/2}, f{0,0}]>" -0.14311643)
+                (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[-{0,1/4}]>" 0.27272424)
+                (pair "rel:last_to=<{0,-1/4,-1/4}>:from=<{}>:pat=<els=[f{0,0}, -{0,-1/2,1/4}]>" -0.005066086)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" 0.016194006)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/4}, f{0,0,1/4}]>" 0.020168789)
+                (pair "rel:to=<{0}>:pat=<els=[f{0,0,1/4}]>" -1.6043615)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Janes Soppi - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,-1/2,-1/4}>:from=<{0}>:to=<{}>:pat=<els=[!-{0,-1/2,1/2}]>" 0.2502158)
+                (pair "rel:last_to=<{0,-1/2,1/4}>:to=<{}>:pat=<els=[N4{0,-1/4,0}]>" 0.1539396)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{}]>" 0.011297593)
+                (pair "rel:last_to=<{1/4,1/4}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4}, !-{1/4}]>" 0.58404046)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[]>" 0.28094968)
+                (pair "rel:to=<{}>:pat=<els=[N4{1/4,0,0}, !-{0,-1/2,1/2}]>" -0.0032475179)
+                (pair "rel:last_to=<{0,-1/2,-1/4}>:from=<{0}>:pat=<els=[N4{1/4,0,0}]>" -1.5270889)
+                (pair "rel:from=<{}>:pat=<els=[f{0}, -{0,1/4}, N4{1/2,-1/4,0,0}]>" -0.02519361)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{-1/2,-1/4}, N4{0,1/4,1/4}]>" 0.019549424)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,-1/4}, N4{0,-1/2,1/4,-1/4}]>" 0.05512958)
+                (pair "rel:last_to=<{1/4,1/4}>:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, N4{0,0}]>" 0.32194766)
+                (pair "rel:last_from=<{0,1/4}>:from=<{}>:to=<{1/2}>:pat=<els=[]>" 0.026074039)
+                (pair "rel:from=<{}>:pat=<els=[N2{0,1/4}]>" 0.027908519)
+                (pair "rel:last_to=<{1/4,1/4}>:from=<{0}>:to=<{}>:pat=<els=[f{1/4}, N4{0,0}, !-{0}]>" 0.32194766)
+                (pair "rel:last_to=<{0,-1/4,1/4}>:to=<{}>:pat=<els=[e{0,0,0}]>" 0.043675408)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N2{1/4,1/4}]>" 0.06306404)
+                (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[f{1/4}, N4{0,0}, !-{0}]>" 0.13750693)
+                (pair "rel:to=<{}>:pat=<els=[-{0}]>" -0.0055986247)
+                (pair "rel:last_to=<{1/4,1/4}>:from=<{0}>:pat=<els=[N4{0,0}, !-{0}]>" -1.3928035)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/2,0}]>" 0.036759567)
+                (pair "rel:last_to=<{0,1/4}>:from=<{-1/4}>:to=<{}>:pat=<els=[f{0}]>" 0.110584)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Janes Soppi - Both Extensions No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[N2{0,1/4}]>" 1.0653446)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[N2{0}, #{1/4}]>" 0.9726869)
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:pat=<els=[N2{0,1/4}]>" 0.4367543)
+                (pair "rel:from=<{}>:pat=<els=[-{0,-1/4}, !-{1/4,0}]>" 0.006795341)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[N2{0}]>" 0.9726869)
+                (pair "rel:from=<{}>:pat=<els=[!-{0,0}, -{0,-1/2,1/4}]>" -0.0035362677)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{1/2,0}]>" -0.057839494)
+                (pair "rel:to=<{}>:pat=<els=[N2{0}, #{1/4}]>" 0.077680156)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{-1/2,1/4}, N4{0,-1/4,0}, -{0,1/4,-1/4}]>" 0.38180923)
+                (pair "rel:last_from=<{0}>:from=<{}>:pat=<els=[]>" 0.07457678)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{0,-1/2,-1/4,1/4}]>" 0.00711555)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/2}, e{0,1/2,1/4}]>" 0.2441446)
+                (pair "rel:last_from=<{0}>:to=<{0}>:pat=<els=[e{0,1/4}]>" -1.5311792)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{-1/2,1/4}, N4{0,-1/4,0}]>" 0.30582306)
+                (pair "rel:to=<{}>:pat=<els=[e{1/2,-1/4}, -{0,1/4,1/4}, -{-1/2}, e{0,-1/2,-1/4}]>" 0.35433865)
+                (pair "rel:from=<{0}>:pat=<els=[-{0,1/4}]>" -1.5311792)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Starting Position 1 - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,1/2,-1/4}]>" 0.017933307)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[e{1/8,-1/4}, -{0,-1/2,-3/8,1/4}]>" 0.2589954)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4}, e{0,1/4,-1/4}]>" 0.0061078216)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,1/8}]>" 0.013658717)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4}, e{0,-1/2,-3/8}]>" 0.04043844)
+                (pair "rel:last_from=<{0,0,-3/8}>:from=<{}>:to=<{0}>:pat=<els=[-{1/4,-1/8}, e{0,-1/2,-1/8}, N4{0,1/4,-1/4}]>" 0.1643118)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{0,3/8,-1/4}]>" 0.018468862)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Starting Position 1 - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[e{0}]>" 0.31452084)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[e{1/4}]>" 0.4185761)
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[N8{0,-1/2,-3/8}]>" 0.5224301)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[e{1/4}, -{0,0,-1/4}]>" 0.416034)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4}]>" 0.26533005)
+                (pair "rel:last_from=<{0,-3/8}>:to=<{}>:pat=<els=[-{1/8}, f{1/4,3/8}]>" 0.44419128)
+                (pair "rel:last_from=<{}>:from=<{0}>:pat=<els=[e{1/4}]>" -0.018185837)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{-1/4,3/8}, -{0,-1/2,1/4,1/8}]>" 0.034586944)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,3/8}, -{0,-1/2,-1/4}]>" 0.029222162)
+                (pair "rel:from=<{}>:pat=<els=[!#{0,1/2,0}]>" -0.018338794)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Starting Position 1 - Both Extensions Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[e{0}]>" 0.21968816)
+                (pair "rel:last_from=<{0,-1/2}>:to=<{}>:pat=<els=[N4{0,-1/2,-1/2,1/8}]>" 0.24705674)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[N4{1/4,3/8}]>" 0.27483532)
+                (pair "rel:last_from=<{0,-1/2}>:to=<{}>:pat=<els=[N8{0,-1/2,1/2}]>" 0.24705674)
+                (pair "rel:from=<{}>:pat=<els=[e{0}]>" -0.24856187)
+                (pair "rel:last_from=<{0,1/2}>:from=<{0}>:to=<{}>:pat=<els=[e{0,1/8}]>" -0.6363301)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[]>" 0.37531897)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{0,1/2,1/8}]>" -0.04890016)
+                (pair "rel:from=<{0}>:pat=<els=[e{0,-1/8}, N8{0,-1/2,1/2}]>" -0.07886072)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0,0,-1/4}>:from=<{}>:pat=<els=[-{0,1/8}, f{0,-1/4,-3/8}]>" 0.16331987)
+                (pair "rel:to=<{}>:pat=<els=[e{0,3/8}]>" 0.0047408254)
+                (pair "rel:to=<{}>:pat=<els=[e{0,0}, N4{1/4,-1/4}]>" 0.07425934)
+                (pair "rel:last_from=<{0,0,3/8}>:to=<{0}>:pat=<els=[N4{0,1/8}]>" -0.2222418)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Starting Position 1 - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{1/4,0,0}, -{0,0,0,0}]>" -0.1845569)
+                (pair "rel:from=<{0}>:pat=<els=[-{0,1/4,0,0,0}]>" -0.49464706)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0,1/4}]>" 0.18251666)
+                (pair "rel:last_to=<{0,1/4,1/4}>:from=<{0}>:pat=<els=[-{0,-1/2,-1/4}]>" -0.49464706)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4,1/4}]>" 0.18191)
+                (pair "rel:to=<{}>:pat=<els=[-{1/2}, f{0,0,0}]>" 0.20802876)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/2,0,0}]>" 0.038778476)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" -0.05204957)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[!#{0,0,0,0}]>" 0.22200726)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!#{0,0,0,0}]>" 0.24803968)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,0}]>" 0.035710838)
+                (pair "rel:from=<{}>:pat=<els=[-{0,1/4,0}]>" -0.042326074)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{-1/4,1/4}, e{0,-1/2,1/4}]>" -0.16987212)
+                (pair "rel:last_from=<{0,1/4,1/4}>:from=<{0}>:to=<{}>:pat=<els=[]>" -0.21130882)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{1/4}, e{0,1/4,0,0}]>" -0.21455516)
+                (pair "rel:last_to=<{0,-1/2,1/4}>:from=<{0}>:to=<{}>:pat=<els=[e{0,-1/2,1/4}]>" -0.13010499)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/4,0}]>" 0.025794128)
+                (pair "rel:from=<{}>:pat=<els=[e{1/2,0}, !#{0,-1/4,0,0,0}]>" -0.03175223)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Starting Position 1 - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{0,0}, e{-1/2}, -{0,-1/4,-1/4}]>" 1.0778444)
+                (pair "rel:last_to=<{1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{0,0}, -{0,-1/4,-1/4}]>" 1.0778444)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,0}, e{1/2}, -{0,1/4,1/4}]>" 0.728199)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,0}, e{1/2}]>" 0.53282815)
+                (pair "rel:last_to=<{1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{0,0}]>" 0.7737552)
+                (pair "rel:last_to=<{1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{0,0}, e{-1/2}]>" 0.7737552)
+                (pair "rel:last_to=<{1/2}>:to=<{}>:pat=<els=[-{0,0}, e{-1/2}, -{0,-1/4,-1/4}]>" 0.31885028)
+                (pair "rel:last_to=<{1/2}>:to=<{}>:pat=<els=[-{0,0}, -{0,-1/4,-1/4}]>" 0.31885028)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[-{1/2,0}, e{0}]>" 0.13937187)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}, e{1/2}, -{0,1/4,1/4}]>" 0.19700252)
+                (pair "rel:to=<{0}>:pat=<els=[e{-1/4,-1/4}, -{0,-1/2,1/4,1/4}]>" -1.0806756)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[f{1/4,1/4}, N4{0,1/2,0}]>" -0.3232251)
+                (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[-{0,-1/4}, -{1/4,1/2,1/4}, -{0,1/4}]>" 0.28569752)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{1/4,0}]>" -0.16269241)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{-1/4,1/4}, -{0,0,-1/4}]>" 0.28186142)
+                (pair "rel:from=<{-1/4}>:pat=<els=[f{0,1/4}, e{1/4,-1/4}]>" -0.55627966)
+                (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[-{1/4,0}]>" 0.047990095)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{-1/2,-1/4}, N4{0,1/2,0}]>" -0.19939831)
+                (pair "rel:last_from=<{0,1/4,1/4}>:from=<{0}>:pat=<els=[N4{0,1/2}]>" -0.55627966)
+                (pair "rel:from=<{0}>:pat=<els=[e{-1/2,-1/4}, N4{0,1/2,0}]>" -0.55627966)
+                (pair "rel:to=<{}>:pat=<els=[f{0,0}]>" -0.019000351)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Starting Position 1 - Both Extensions No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/4,1/4}]>" 1.4586234)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[]>" 1.0168506)
+                (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/2,1/2,0}]>" 1.4328803)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[#{0}, e{1/2,1/2,-1/4}]>" 1.2598457)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{0,1/4,-1/4}>:from=<{0}>:to=<{}>:pat=<els=[#{0,-1/4}]>" 0.049887147)
+                (pair "rel:to=<{}>:pat=<els=[e{0,-1/4,1/4}]>" 0.014197463)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{1/2}, -{0,1/2,1/4}]>" 0.07921525)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Starting Position 2 - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{-1/4,1/8}, e{0,-1/4,-1/4}]>" -0.00924216)
+                (pair "rel:last_from=<{0,1/4,3/8}>:from=<{}>:pat=<els=[N8{}, -{0,1/4}]>" 0.11883716)
+                (pair "rel:from=<{0}>:pat=<els=[-{0,-1/2,3/8}]>" -0.5716029)
+                (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[e{1/2}, -{0,-1/2,1/2,-1/8}]>" 0.19274275)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{1/2}>:from=<{0}>:to=<{}>:pat=<els=[N4{0}]>" 0.021632314)
+                (pair "rel:from=<{}>:pat=<els=[e{1/4,1/4}, e{0,1/2,1/2,1/8}]>" -0.00541226)
+                (pair "rel:from=<{0}>:pat=<els=[f{1/4,-1/4}, N8{0,-3/8,-3/8}]>" -0.5555025)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/8}]>" 0.013523198)
+                (pair "rel:last_to=<{0,1/2,3/8}>:from=<{0}>:to=<{}>:pat=<els=[e{0,1/2,3/8}]>" -0.020242602)
+                (pair "rel:to=<{0}>:pat=<els=[e{1/4,1/4}, e{0,1/2,1/2,1/8}]>" -0.5555025)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Starting Position 2 - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0}, f{0,0,1/4}]>" 0.55063426)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[N2{0,1/2,1/8}]>" 0.9533087)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,1/8}]>" -0.1876278)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[f{0,3/8}]>" 0.17004208)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,3/8}]>" -0.037451494)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N2{0,1/2,1/8}]>" 0.1116263)
+                (pair "rel:from=<{0}>:pat=<els=[f{-1/2,-1/4}, -{0,1/4,1/4}]>" 0.18263578)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{1/2,3/8}, -{0,0,-1/8}]>" 0.50260603)
+                (pair "rel:last_from=<{0,-1/2,1/4}>:from=<{}>:pat=<els=[N4{0,-1/2,-3/8}, -{0,-1/2,1/4}]>" 0.08599138)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,3/8}, !#{1/4,0}, -{0,3/8,-1/4}]>" 0.052225538)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{0,-1/2,-3/8}, -{0,-1/2,1/4}]>" 0.04227879)
+                (pair "rel:from=<{}>:pat=<els=[-{0,0,1/8}]>" 0.055608813)
+                (pair "rel:last_from=<{0,1/4,-1/4}>:from=<{}>:to=<{0}>:pat=<els=[-{0,1/4,-1/4}]>" 0.12403132)
+                (pair "rel:last_to=<{0,-1/2,-1/4}>:from=<{}>:to=<{0}>:pat=<els=[-{0,3/8}, f{0,1/4,1/4}]>" 0.13753065)
+                (pair "rel:last_from=<{0,3/8,-1/4}>:to=<{0}>:pat=<els=[e{0,3/8}, !#{1/4,0}]>" -0.29696468)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Starting Position 2 - Both Extensions Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{0,-1/2}>:to=<{}>:pat=<els=[-{0,-1/2,1/2,-1/4}]>" 0.5804241)
+                (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/2,-1/2,1/4}]>" 0.7221059)
+                (pair "rel:last_from=<{0,-1/2}>:to=<{}>:pat=<els=[N2{-1/4}, -{0,-1/2,1/2,-1/4}]>" 1.5935578)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[N4{0,-1/4,1/8}]>" 0.7002904)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{0}>:pat=<els=[e{0,1/4}, N8{0,-1/4,-1/4}]>" -0.41216752)
+                (pair "rel:to=<{1/4}>:pat=<els=[-{0,1/8}]>" -0.41216752)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N2{1/2}]>" 0.21652374)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Starting Position 2 - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{0}>:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[-{0,1/2,1/4}]>" 1.4143598)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[-{0,1/2,1/4}]>" 0.8033889)
+                (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[-{0,1/2,1/4}]>" 1.1392778)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/4,1/4}]>" 0.9207314)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[e{1/2,1/4}]>" 0.8289843)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,1/4}, -{0,0,0}]>" -0.38985068)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/2,1/4}]>" -0.23953012)
+                (pair "rel:from=<{}>:pat=<els=[-{0,1/4,0}]>" 0.052761964)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!#{1/4,0,0,0}]>" 0.3327438)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,0,0}]>" 0.36214235)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" -0.0053034034)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Starting Position 2 - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" 0.5384672)
+                (pair "rel:to=<{}>:pat=<els=[f{0,1/4}, -{1/2,-1/4,0,0}]>" -0.21242167)
+                (pair "rel:to=<{}>:pat=<els=[!-{0,0}]>" 0.0)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{0}>:pat=<els=[-{0,1/2,0}]>" -0.8151366)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0}]>" -0.04546388)
+                (pair "rel:from=<{0}>:pat=<els=[-{-1/2,-1/4}, -{0,-1/2,0,0}, -{-1/2,1/4}, -{0,1/4,1/4}]>" -0.8151366)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{-1/2,-1/4}, -{0,-1/2,0,0}, -{-1/2,1/4}, -{0,1/4,1/4}]>" -0.36014843)
+                (pair "rel:last_to=<{0,1/4,1/4}>:from=<{}>:to=<{0}>:pat=<els=[-{1/4,-1/4}, -{0,-1/2,-1/4}]>" 0.04274469)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{-1/2,1/4}, -{0,1/4,1/4}]>" -0.19639832)
+                (pair "rel:to=<{}>:pat=<els=[-{0,-1/2,0,0}, -{-1/2,1/4}, -{0,1/4,1/4}]>" -0.24298653)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Starting Position 2 - Both Extensions No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4,-1/4}]>" 2.0205457)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/4,1/4}]>" 2.0205457)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4}]>" 1.4125327)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0,1/2,1/4,1/4}>:from=<{0}>:pat=<els=[N4{0}, -{0,1/2,1/2,1/4}]>" -0.41850287)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 1 - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4,1/8}]>" 0.031322163)
+                (pair "rel:from=<{}>:pat=<els=[e{0}]>" 0.003281714)
+                (pair "rel:last_to=<{1/4,-1/4}>:to=<{}>:pat=<els=[e{0,-3/8}]>" -0.005885719)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[e{0,1/2,-1/8}]>" -0.023774853)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[-{1/4,3/8}]>" 0.30783066)
+                (pair "rel:last_to=<{0,1/8,3/8}>:from=<{0}>:pat=<els=[N4{0,1/4}, -{0,3/8,-3/8}]>" -0.5159171)
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:from=<{}>:pat=<els=[f{0}]>" 0.0076862485)
+                (pair "rel:to=<{0}>:pat=<els=[-{0,-1/2,1/8}]>" -0.5159171)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 1 - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/2,1/4}]>" 0.014413305)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,-1/8}]>" 0.14905106)
+                (pair "rel:from=<{0}>:pat=<els=[-{3/8}, -{0,-1/2,1/4}]>" -0.5636335)
+                (pair "rel:from=<{0}>:pat=<els=[f{1/4,-1/8}, N4{0,-1/4}, N4{0,1/4,3/8}]>" -0.5636335)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{3/8}, N4{0,1/4,0}]>" 0.18000051)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[e{0}, N4{1/2,-1/2,-3/8}]>" 0.4674243)
+                (pair "rel:last_from=<{}>:from=<{1/2}>:to=<{}>:pat=<els=[e{0}]>" 0.9393956)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[f{0,1/4,1/8}, N4{0,-1/2,-3/8}]>" 0.3796907)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[-{1/4,3/8}]>" 0.908049)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 1 - Both Extensions Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[N4{0,1/2,1/8}]>" 0.03171083)
+                (pair "rel:from=<{}>:pat=<els=[f{0}]>" 0.021612164)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[-{1/4,-1/4}, N8{0,-1/2,-1/4}]>" 0.6131658)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[N4{0,-1/2,-1/8,3/8}]>" 0.9960728)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{1/4,-1/4}]>" 0.6598746)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[N4{1/2,3/8}]>" 1.0923867)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 1 - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,-1/4,1/4}>:from=<{}>:to=<{0}>:pat=<els=[!#{-1/4,0,0}]>" 0.6544242)
+                (pair "rel:last_to=<{0,1/2,1/4}>:from=<{}>:to=<{0}>:pat=<els=[]>" 0.15736502)
+                (pair "rel:last_to=<{0,-1/2,1/2,-1/4}>:from=<{0}>:pat=<els=[e{0,-1/4}, e{0,1/2,1/4}]>" -0.72971)
+                (pair "rel:from=<{0}>:pat=<els=[e{0,-1/4}, e{0,1/2,1/4}, !#{0,-1/2,1/2,0,0}]>" -0.72971)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[-{0,-1/2,1/4}]>" 1.7519199)
+                (pair "rel:last_to=<{1/2}>:to=<{}>:pat=<els=[-{0,-1/4}]>" 1.5841339)
+                (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[-{-1/4,-1/4}, -{0,-1/2,1/4}]>" 2.3653862)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[e{0}]>" 0.8127209)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 1 - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{0,-1/2,1/4}>:from=<{0}>:pat=<els=[-{0,-1/4,-1/4}, !-{0,1/4}]>" -0.8725725)
+                (pair "rel:to=<{0}>:pat=<els=[N4{}, e{0,0,0}]>" -0.8725725)
+                (pair "rel:to=<{1/4}>:pat=<els=[f{1/2,1/4}, !-{0}]>" -0.8725725)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/4,-1/4}, !-{0,1/4}]>" 7.1774697E-4)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,0}]>" 0.09039627)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" 0.00788239)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{0,0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}]>" 1.302179)
+                (pair "rel:last_to=<{0,0,-1/4}>:from=<{}>:to=<{0}>:pat=<els=[e{0,-1/4}, #{0,1/4}]>" 1.3363518)
+                (pair "rel:last_from=<{1/4,1/4}>:from=<{0}>:to=<{}>:pat=<els=[-{0,0}]>" 1.3116503)
+                (pair "rel:last_from=<{1/4,1/4}>:to=<{}>:pat=<els=[-{0,0}, N4{0}]>" 0.6406164)
+                (pair "rel:last_to=<{0,0,-1/4}>:from=<{}>:to=<{0}>:pat=<els=[#{0,1/4}]>" 0.65536493)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,-1/4}, #{0,1/4}]>" 0.3300321)
+                (pair "rel:last_from=<{1/4,1/4}>:to=<{}>:pat=<els=[-{0,0}]>" 0.6406164)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,0}, N4{0}]>" 0.13395783)
+                (pair "rel:from=<{0}>:pat=<els=[-{0,0}, N4{0}]>" -0.6200746)
+                (pair "rel:to=<{}>:pat=<els=[f{0,0,0}]>" 0.123048075)
+                (pair "rel:last_to=<{1/2}>:to=<{}>:pat=<els=[!-{0,1/4}, -{1/4,1/4}]>" 0.025536586)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 1 - Both Extensions No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/4,1/4}, -{0,-1/2,1/4}, #{1/2}, -{0,1/4}]>" 0.6139925)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4}, #{0,0}, -{0,1/2,1/4}]>" 0.26420966)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[]>" -0.023003358)
+                (pair "rel:to=<{}>:pat=<els=[#{0,1/4}, -{0,-1/4,-1/4}]>" -0.0026642052)
+                (pair "rel:from=<{0}>:pat=<els=[-{1/4}, -{0,1/4,0}, #{0,0}, -{0,1/2,1/4}]>" -0.400792)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{1/4,0}, -{0,-1/4}]>" 0.25339022)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{}, N4{0,1/4,0}, -{0,0,0}]>" -0.26874235)
+                (pair "rel:to=<{}>:pat=<els=[N4{}, f{0,1/4,1/4}]>" 0.058066152)
+                (pair "rel:to=<{}>:pat=<els=[#{0}, -{1/4,1/4,1/4}]>" 0.027684722)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,1/4}, -{0,-1/4,-1/4}]>" -0.0093690315)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4}, -{0,0,-1/4}]>" 0.9210955)
+                (pair "rel:last_from=<{0,-1/2}>:to=<{}>:pat=<els=[-{0,-1/2,1/2,1/4}]>" 0.3648464)
+                (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/2,1/2,1/4}]>" 0.3817894)
+                (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[N2{1/4}]>" 0.92665637)
+                (pair "rel:to=<{}>:pat=<els=[e{1/4}, -{0,0,1/4}]>" 0.4215857)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4}, -{0,0,1/4}, -{0,0,-1/4}]>" 0.9821634)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4}]>" 0.25597766)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{0,0,0}, -{0,1/2,1/4}]>" -0.19636963)
+                (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:pat=<els=[N2{1/4}, -{0,-1/2,1/2,1/4}]>" -0.36411375)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/2,0,0}]>" -0.105070755)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[f{0,-1/2,1/4}]>" 0.0)
+                (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[f{0,1/4}]>" 0.016293643)
+                (pair "rel:last_from=<{0,1/4,3/8}>:from=<{}>:to=<{0}>:pat=<els=[e{1/4,-1/4}, e{0,-1/2,1/2,1/4}]>" -0.021158177)
+                (pair "rel:from=<{0}>:pat=<els=[e{0,3/8}]>" -0.41406637)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4,1/4}]>" -0.0058420105)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[f{0,1/4}]>" 0.077634916)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/8,-1/4}, e{0,-1/2,1/4}]>" 0.16617493)
+                (pair "rel:from=<{0}>:pat=<els=[f{0,0}]>" -0.4910061)
+                (pair "rel:last_to=<{0,3/8}>:from=<{}>:to=<{0}>:pat=<els=[e{1/4,-1/4}]>" 0.059849683)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{1/4,-3/8}, N8{0,1/8,3/8}, -{0,1/4}]>" 0.16328476)
+                (pair "rel:last_from=<{0,0,1/4}>:from=<{}>:pat=<els=[-{1/4,-3/8}, -{0,1/4}]>" 0.12646207)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{-1/8,1/4}]>" 0.75460637)
+                (pair "rel:last_from=<{0,1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4}]>" 0.59909886)
+                (pair "rel:last_from=<{0,-1/2}>:to=<{}>:pat=<els=[-{0,-1/2,-1/2,1/4}]>" 0.4718413)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - Both Extensions Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{1/8,1/4}>:last_to=<{0,3/8}>:to=<{}>:pat=<els=[-{1/2}]>" 0.23372488)
+                (pair "rel:to=<{}>:pat=<els=[N4{1/2}, N4{0,1/2,3/8}]>" 0.07547294)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{1/2,-1/4}]>" -0.11234171)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/2,1/8}, -{1/2,-1/4}, N4{0,1/2,1/8}]>" -0.34626058)
+                (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[e{1/4}, N8{}]>" 0.24418133)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{1/4,3/8}>:to=<{}>:pat=<els=[-{0,1/8}, -{0,-1/8,1/4}]>" 1.2618028)
+                (pair "rel:last_from=<{1/4,3/8}>:to=<{}>:pat=<els=[-{0,1/8}]>" 0.6976806)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[N4{1/4,1/4}, -{0,-1/2,1/2,-1/4}]>" 1.8242121)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[N8{0,0}]>" 1.6460687)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[N8{0,1/8,3/8}]>" 0.97600234)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" -0.015516971)
+                (pair "rel:last_to=<{0,1/4}>:to=<{0}>:pat=<els=[-{-1/2,-1/4}]>" -0.8447545)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0}]>" -0.0749744)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4}, f{0,-1/2,-1/4,-1/4}]>" 1.1438922)
+                (pair "rel:last_from=<{0,-1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4}]>" 0.68486005)
+                (pair "rel:last_from=<{0,-1/2}>:to=<{}>:pat=<els=[-{0,1/4}, f{0,-1/2,-1/4,-1/4}]>" 0.7248403)
+                (pair "rel:last_from=<{1/4,-1/2}>:to=<{}>:pat=<els=[f{0,1/4}]>" 0.51808983)
+                (pair "rel:last_from=<{0,1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{0,0,1/4}]>" 0.73337084)
+                (pair "rel:last_from=<{0,1/2}>:from=<{0}>:to=<{}>:pat=<els=[f{0,1/2,1/4,1/4}]>" 0.598647)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,0,1/4}>:to=<{0}>:pat=<els=[N4{0,1/2}]>" -0.20049445)
+                (pair "rel:from=<{}>:pat=<els=[-{0,-1/4}, -{1/4,-1/4}, N4{}, -{0,1/2,-1/4}]>" 0.11803062)
+                (pair "rel:from=<{}>:pat=<els=[f{0,1/4}]>" -0.027415132)
+                (pair "rel:from=<{}>:pat=<els=[-{0,1/2,0}]>" 0.067524455)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/4}, #{0,0}, -{0,1/2,1/4}]>" -0.1403056)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4}]>" -0.035896234)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,-1/4}, -{1/4,-1/4}, -{0,1/2,-1/4}]>" -0.06947377)
+                (pair "rel:to=<{0}>:pat=<els=[-{0,-1/4}, -{1/4,-1/4}, N4{}, -{0,1/2,-1/4}]>" -0.20049445)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{-1/2,-1/4}, -{0,0,1/4}]>" 0.861475)
+                (pair "rel:to=<{}>:pat=<els=[e{0}]>" 0.17456672)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[#{1/4}, -{0,-1/2,1/4}]>" 0.48443863)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[-{0,-1/2,1/4}]>" 0.37513292)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0,1/4}]>" 0.41862056)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{-1/4}, e{0,0,1/4}]>" 0.48544356)
+                (pair "rel:from=<{1/2}>:to=<{}>:pat=<els=[e{0,-1/4}]>" 0.41862056)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{-1/4,0,0}, -{0,-1/4,1/4}]>" -0.6125956)
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[e{0,0,1/4}]>" 0.90478534)
+                (pair "rel:last_to=<{0,1/4}>:to=<{0}>:pat=<els=[!-{-1/4}, e{0,0,1/4}]>" -0.5644625)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - Both Extensions No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{0,1/2,0}, -{0,1/2,1/2,1/4}]>" 0.029140398)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,0,1/4}]>" -0.11927037)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/2,0,0,0}]>" 0.11351912)
+                (pair "rel:from=<{0}>:pat=<els=[-{1/4}, N4{0,-1/2,0}]>" -0.6936709)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0}, -{0,0,0,0}]>" 0.45018345)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" -0.029985493)
+                (pair "rel:last_to=<{0,-1/4}>:to=<{}>:pat=<els=[-{1/4}]>" -0.22313295)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4}, -{-1/2,1/4}, N4{0,-1/2,0}]>" -0.09235879)
+                (pair "rel:to=<{}>:pat=<els=[f{0,-1/4}, -{1/2,-1/4}]>" 0.04194192)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[N2{0,1/4}, -{0,-1/2,1/4,-1/4}]>" 1.1266533)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[e{-1/4,-1/4}, f{0,1/2,1/4}]>" 1.4833174)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[e{-1/4,-1/4}, -{0,-1/4,1/4}, f{0,1/2,1/4}]>" 1.8965709)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4}, N4{0,0,0}, -{0,-1/2,-1/4,-1/4}]>" -0.413606)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[e{-1/4,-1/4}, -{0,-1/4,1/4}]>" 0.79002714)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[N2{0,1/4}]>" 0.93627936)
+                (pair "rel:last_from=<{0,-1/4}>:from=<{0}>:pat=<els=[-{0,1/4,-1/4}]>" -1.1393734)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,0,0}]>" -0.249628)
+                (pair "rel:last_to=<{0,1/4}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/2,1/4,1/4}]>" -0.53679174)
+                (pair "rel:to=<{0}>:pat=<els=[e{1/2,1/4}, -{0,1/2,0,0}]>" -1.1393734)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Starting Position - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,3/8}>:from=<{}>:pat=<els=[f{0,1/4}, -{-1/8,-1/2,-1/4}]>" 0.012599894)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0}, -{0,1/4}, -{0,-1/2,-1/4,-1/4}]>" -0.05239338)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[]>" -0.030572694)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Starting Position - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{1/2}, N4{0,3/8,1/8}]>" 0.14475885)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[f{0,1/4,0}]>" 0.23083551)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[e{0,1/4}, N4{1/4,0,0}]>" 0.051289737)
+                (pair "rel:to=<{0}>:pat=<els=[-{0,0}, N4{0,1/4,3/8}]>" -0.34623933)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Starting Position - Both Extensions Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{0}>:to=<{0}>:pat=<els=[-{0,1/4}, -{0,-1/2,-1/4,1/4}]>" -0.81334865)
+                (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[]>" -0.025201144)
+                (pair "rel:last_from=<{0,-3/8}>:from=<{0}>:to=<{}>:pat=<els=[N4{0,1/8}, N4{0,-1/4,1/8}]>" 0.004735726)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/4}]>" -0.0020349782)
+                (pair "rel:from=<{}>:pat=<els=[-{0,1/8}]>" 3.8804562E-4)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0,-3/8}>:to=<{}>:pat=<els=[-{0}, -{0,1/8}, N4{1/4}]>" 0.22295642)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" 0.0028499544)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N8{0,-1/4,-1/4}, N4{0,1/4,-3/8}]>" -0.044191368)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{-1/4}, -{0,-1/4,-3/8}, -{-1/4,1/8}, N4{0}]>" 0.06975699)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[f{0,3/8}, N4{1/4}]>" -0.111018084)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Starting Position - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0}, f{0,0,1/4}]>" 3.9193437)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:pat=<els=[-{-1/4}, -{0,1/2,0}]>" 0.1579874)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Starting Position - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[f{1/2,1/4}, e{0,1/2,0}]>" 2.2205675)
+                (pair "rel:last_to=<{0,1/2,1/4}>:from=<{0}>:to=<{}>:pat=<els=[!-{0,0}]>" 1.3961443)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/2,1/4}]>" 0.48940408)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[e{0,1/2,-1/4}, -{1/2}]>" 0.2019485)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Starting Position - Both Extensions No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{1/2}>:to=<{}>:pat=<els=[-{0,1/4}]>" 0.58371615)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/2,1/4}, e{0,1/2,0}]>" 2.9954917)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,-1/4}, -{0,0,1/4}]>" 0.19739234)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Three Dogs Two Hares Starting Position - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[f{1/4,-1/4}, e{0,1/2,-1/4}]>" 0.32470533)
+                (pair "rel:last_from=<{0,1/4,-3/8}>:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}, f{0,1/4,1/4}]>" 1.0360253)
+                (pair "rel:last_from=<{0,1/4,-3/8}>:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4,1/4}]>" 0.7727547)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[f{1/4,-1/4}, e{0,1/2,-1/4}]>" 0.6412156)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[f{0,1/4}]>" 0.10659398)
+                (pair "rel:last_from=<{0,1/4,-3/8}>:from=<{}>:to=<{0}>:pat=<els=[N4{0,1/2,1/4}, f{0,1/4,1/4}]>" 0.9867301)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}, f{0,1/4,1/4}]>" 0.36582717)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[f{1/4,-1/4}]>" 0.38036522)
+                (pair "rel:last_from=<{0,1/4,-3/8}>:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}, N4{0,1/2,1/4}]>" 0.89532757)
+                (pair "rel:to=<{}>:pat=<els=[e{0}]>" 0.06630563)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{1/4}>:from=<{}>:pat=<els=[-{0,1/8,1/8}]>" -0.06698038)
+                (pair "rel:to=<{0}>:pat=<els=[-{0,-1/2,1/4}]>" -0.94986755)
+                (pair "rel:last_to=<{1/4}>:from=<{0}>:to=<{}>:pat=<els=[-{0,3/8,1/4}]>" -0.33619377)
+                (pair "rel:to=<{0}>:pat=<els=[N4{1/2,1/4}, -{0,-1/2,3/8,1/4}]>" -0.94986755)
+                (pair "rel:from=<{0}>:pat=<els=[-{1/4,1/8}, e{0,1/4,1/4}]>" -0.94986755)
+                (pair "rel:last_to=<{1/8}>:from=<{0}>:pat=<els=[-{3/8,-1/8}]>" -0.94986755)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Three Dogs Two Hares Starting Position 1 - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[e{0}, e{0,1/4}]>" 0.9911532)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{-1/4,1/4}, e{0,-1/4,-1/4}]>" 0.85200614)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{-1/4,1/4}, -{0,-1/2,1/4}]>" 0.3838316)
+                (pair "rel:last_to=<{0}>:from=<{}>:to=<{1/4}>:pat=<els=[-{0,0,0}]>" -0.3338631)
+                (pair "rel:last_to=<{0,-1/4}>:from=<{}>:to=<{0}>:pat=<els=[f{-1/4,1/4}, -{0,-1/2,1/4}]>" 0.56441504)
+                (pair "rel:last_to=<{0,-1/4}>:to=<{0}>:pat=<els=[-{0,-1/2,1/4}]>" -1.6594703)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,-1/2,1/4}]>" -0.1866563)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{1/4,0}, -{0,0,1/4}, -{0,1/2,1/2,0}]>" -0.6201113)
+                (pair "rel:from=<{}>:to=<{1/4}>:pat=<els=[-{0,0,0}]>" 0.009833041)
+                (pair "rel:last_to=<{0,0}>:to=<{}>:pat=<els=[]>" 0.10836054)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{0}>:pat=<els=[e{1/2}]>" -2.1191325)
+                (pair "rel:last_from=<{-1/4,1/4}>:from=<{}>:to=<{0}>:pat=<els=[!#{0,-1/2,0,0}]>" 0.27827966)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" 0.030666728)
+                (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[-{1/4}]>" 0.49374586)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/2,0}, -{0,-1/2,1/4}]>" 0.0082947565)
+                (pair "rel:from=<{}>:pat=<els=[-{1/2,0}, -{1/4,1/4}, -{0,-1/2,0}]>" 0.032281928)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!#{0,1/2,0,0}]>" -0.038662955)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Three Dogs Two Hares Starting Position 2 - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4,0}, !#{0,1/4,0,0}]>" 0.4590913)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,0,0}, !#{0,0,0}]>" -0.14664386)
+                (pair "rel:last_to=<{0,-1/4}>:to=<{1/2}>:pat=<els=[]>" -1.3898878)
+                (pair "rel:from=<{0}>:pat=<els=[-{-1/4,1/4}, !#{0,-1/4,0,0}]>" -1.3898878)
+                (pair "rel:from=<{}>:pat=<els=[e{1/2,0}, f{0,1/4,0,0}]>" 0.41307932)
+                (pair "rel:to=<{}>:pat=<els=[f{0,0,0,0}]>" -0.19339098)
+                (pair "rel:last_to=<{0,-1/2,-1/4}>:from=<{}>:pat=<els=[-{0,1/4}]>" 0.07794835)
+                (pair "rel:from=<{}>:pat=<els=[-{0,0}, -{0,1/4}]>" -0.08167594)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[]>" 0.13135874)
+                (pair "rel:from=<{}>:to=<{1/2}>:pat=<els=[-{0,1/4}]>" 0.005514928)
+                (pair "rel:from=<{0}>:pat=<els=[f{0,1/2,0}]>" -1.7994204)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[-{0,1/4}]>" 0.0027532873)
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:pat=<els=[!#{0,0,0,0}]>" 0.3465309)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{1/4,0}, -{0,1/4,0}]>" 0.42080635)
+                (pair "rel:from=<{}>:pat=<els=[!#{0,0,0,0}, e{0,1/4}]>" 0.47076336)
+                (pair "rel:from=<{}>:pat=<els=[e{0,0,0}, -{0,1/2,1/4}, -{0,0,-1/4}]>" -0.09200131)
+                (pair "rel:last_from=<{1/2,1/4}>:from=<{0}>:to=<{}>:pat=<els=[]>" -0.15662548)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Three Dogs Two Hares Starting Position - Both Extensions Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[N4{0}]>" 4.565684)
+                (pair "rel:last_from=<{1/2,-1/4}>:to=<{}>:pat=<els=[N4{-1/2}, N4{0,1/4}, -{0,-1/4}]>" 3.7825844)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{1/2,1/4}, N2{0,1/2,0}]>" 0.57894146)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{-1/2,-1/4}, N2{0,-1/2,0}, N4{0,-1/2,1/2,3/8}]>" 0.57894146)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Three Dogs Two Hares Starting Position - Both Extensions No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[-{0,0,1/4}]>" 3.8791628)
+                (pair "rel:last_from=<{0,0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[-{1/4,0}]>" 3.5088148)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{-1/4,-1/4}, N2{-1/2}, f{0,1/2,0}]>" 0.1411019)
+                (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:to=<{}>:pat=<els=[-{-1/4,-1/4}, e{0,0}, -{0,-1/4}, f{1/4,1/2,0}]>" 0.1100819)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Three Dogs Two Hares Starting Position 1 - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0,-1/2,1/4}]>" -0.07596381)
+                (pair "rel:from=<{}>:pat=<els=[f{0,1/2,0}]>" 0.23269121)
+                (pair "rel:from=<{0}>:pat=<els=[N4{1/2,0}, -{0,1/4,0}]>" -0.39293906)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/8}]>" -0.019416131)
+                (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[e{0,-1/8}, -{1/4,1/4}]>" 0.14644448)
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:to=<{0}>:pat=<els=[N4{0,-3/8}, e{0,3/8,-3/8}]>" -0.5984832)
+                (pair "rel:last_from=<{0,-1/2,3/8}>:to=<{0}>:pat=<els=[-{0,1/4}]>" -0.5984832)
+                (pair "rel:last_to=<{1/8,0}>:to=<{0}>:pat=<els=[N8{0,-1/4,-1/8}]>" -0.5984832)
+                (pair "rel:to=<{}>:pat=<els=[-{0,-1/8}, -{-1/4,1/4}, -{0,1/8}]>" 0.12520635)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/8}, -{-1/4,1/4}, -{0,-1/4,-1/4}]>" -0.12823473)
+                (pair "rel:to=<{}>:pat=<els=[f{0,0,0}]>" 0.2674259)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Three Dogs Two Hares Starting Position 1 - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{-1/2,-1/4}, e{0,0,1/4}]>" 0.8125041)
+                (pair "rel:last_to=<{-1/2,1/4}>:from=<{0}>:to=<{}>:pat=<els=[-{0,0,0}]>" 1.650137)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{-1/2,-1/4}, e{0,0,1/4}, N4{0,-1/2,-1/2,0}]>" 0.8125041)
+                (pair "rel:last_to=<{0,0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[N4{1/2,0}]>" 1.4769776)
+                (pair "rel:to=<{}>:pat=<els=[#{0}]>" -0.012324942)
+                (pair "rel:to=<{0}>:pat=<els=[-{1/4,-1/4}, e{0,0,0,0}]>" -1.3854188)
+                (pair "rel:last_to=<{0,-1/4,-1/4}>:to=<{0}>:pat=<els=[#{0,1/4}]>" -1.3854188)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{}, #{0,1/4}]>" -0.10437995)
+                (pair "rel:to=<{}>:pat=<els=[e{0,0}]>" 0.076158635)
+                (pair "rel:last_to=<{-1/2,1/4}>:from=<{0}>:pat=<els=[-{0,0,0}]>" -1.3854188)
+                (pair "rel:from=<{}>:to=<{1/2}>:pat=<els=[-{0,-1/4}]>" 0.27045643)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{1/4,1/4}]>" 0.19958806)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,1/4}]>" -0.16180354)
+                (pair "rel:from=<{0}>:pat=<els=[e{1/2}]>" -1.3206204)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{0,0}, -{0,1/4,1/4}]>" 0.08611459)
+                (pair "rel:from=<{0}>:pat=<els=[-{0,1/4,1/4}]>" -1.3206204)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,1/4}, -{0,0,1/4}]>" -0.13704205)
+                (pair "rel:from=<{0}>:pat=<els=[f{-1/2,1/4}, N4{0,0,0}]>" -1.3206204)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Three Dogs Two Hares Starting Position 2 - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}]>" -0.007358386)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}, -{1/4,1/4}]>" 0.16205227)
+                (pair "rel:last_from=<{0,0,0}>:from=<{0}>:to=<{}>:pat=<els=[e{0,0}]>" 0.04841223)
+                (pair "rel:last_from=<{0,0,0}>:from=<{0}>:pat=<els=[f{-1/4,1/4}, e{0,0}]>" -1.1141717)
+                (pair "rel:last_to=<{1/4,1/4}>:to=<{}>:pat=<els=[-{0,0}]>" 0.34594548)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{-1/2,1/4}, -{0,0,-1/4}]>" 0.273391)
+                (pair "rel:to=<{}>:pat=<els=[e{0,0,0}]>" -0.12949443)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{1/2}, -{0,1/4,-1/4}, -{0,-1/2,1/4,-1/4}]>" 0.5732998)
+                (pair "rel:from=<{}>:pat=<els=[N4{0,0,0}]>" -0.17690033)
+                (pair "rel:last_from=<{0,0}>:from=<{}>:pat=<els=[]>" -0.10665389)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{1/4,0}>:from=<{}>:to=<{0}>:pat=<els=[]>" -0.044837225)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0,1/4}]>" -0.02936419)
+                (pair "rel:last_to=<{1/4}>:to=<{}>:pat=<els=[!#{0,1/2,0,0}, -{1/2}, e{0,1/4}]>" -0.66646916)
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:to=<{0}>:pat=<els=[N4{0,1/2,0,0}]>" -1.2034677)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[]>" -0.020748915)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Three Dogs Two Hares Starting Position 3 - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}]>" 2.7762275)
+                (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[]>" 5.935926)
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[]>" 4.8429804)
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[e{0,-1/4}]>" 5.443057)
+                (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[N2{0,0,1/4}]>" 6.092797)
+                (pair "rel:last_to=<{0,0}>:from=<{}>:pat=<els=[]>" 2.3325233)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[]>" 0.97052467)
+                (pair "rel:last_to=<{0,0}>:from=<{}>:pat=<els=[N2{0,0,1/4}]>" 2.4091396)
+                (pair "rel:last_from=<{0,1/4}>:from=<{}>:pat=<els=[]>" -2.5149689)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{0,-1/2,0}, -{0,1/4,0,0}]>" 1.6991813)
+                (pair "rel:from=<{0}>:pat=<els=[f{1/2,0,0}, f{0,1/2,0}]>" 0.8291549)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{-1/2,0,0}, f{0,-1/2,0}, -{0,1/4,0,0}]>" 2.7144866)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,-1/4}, N4{0,-1/4,0}, f{0,-1/2,1/2,0}]>" 0.3755071)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{1/4,0}]>" 0.12891582)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{0,1/4,0}]>" 0.12891582)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/4}, f{0,1/2,0}, N4{0,1/2,1/4,0}]>" 0.2986844)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Three Dogs Two Hares Starting Position 2 - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,1/2,0}>:from=<{0}>:to=<{}>:pat=<els=[N4{0,3/8,-1/4}]>" 3.6698468)
+                (pair "rel:last_to=<{0,1/2,0}>:to=<{}>:pat=<els=[f{0,3/8}, N4{0,3/8,-1/4}]>" 3.1086752)
+                (pair "rel:last_to=<{0,1/2,0}>:from=<{0}>:to=<{}>:pat=<els=[f{0,3/8}]>" 4.204787)
+                (pair "rel:last_to=<{1/8,0}>:to=<{}>:pat=<els=[f{3/8,-1/2,1/4}, f{0,-1/8}]>" 0.15955752)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{-3/8,-1/4}, f{0,1/2,1/4}, -{0,-1/2,1/2,1/2,3/8}]>" 0.947441)
+                (pair "rel:from=<{3/8}>:to=<{}>:pat=<els=[f{0,-1/8}]>" 0.35980883)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{0}>:pat=<els=[N2{-1/4,-1/8}, -{0,1/2,-1/4}]>" 0.021617297)
+                (pair "rel:to=<{}>:pat=<els=[N4{0,0}]>" 0.12517281)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/4,0}]>" 0.05700072)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{1/2}, !#{0,-1/2,0}]>" 0.16217834)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[N4{1/2}, !#{0,-1/2,0}]>" 0.7213897)
+                (pair "rel:last_from=<{1/4,3/8}>:from=<{0}>:to=<{}>:pat=<els=[!#{0,1/4,0}]>" -0.005500977)
+                (pair "rel:last_from=<{}>:from=<{0}>:pat=<els=[-{0,-1/4,-1/8}, e{0,1/2,3/8}]>" 0.021617297)
+                (pair "rel:to=<{0}>:pat=<els=[N4{1/2}, !#{0,-1/2,0}]>" 0.021617297)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Two Dogs Starting Position - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0}, f{0,0,1/4}]>" 1.4455161)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[-{3/8,1/4}, -{0,1/4,1/4}]>" 0.15826462)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, e{0}]>" -0.42368394)
+                (pair "rel:from=<{}>:pat=<els=[e{0}]>" 0.0018295738)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{1/4,3/8}, N4{0,1/4,1/4}]>" 0.38956782)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Two Dogs Starting Position 1 - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0}, f{0,0,1/4}]>" 3.6995306)
+                (pair "rel:from=<{}>:pat=<els=[e{0,0}, f{0,0,1/4}]>" 1.8697758)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0}]>" 0.46125665)
+                (pair "rel:from=<{}>:pat=<els=[f{0,0,1/4}]>" 0.36043087)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0,1/4}]>" 0.19753923)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,0,1/4}]>" -0.71302336)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{1/4}>:to=<{}>:pat=<els=[!#{0,0,0,0}]>" 0.38386953)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0,0}, -{1/4,-1/4,0}]>" 0.028166212)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4,1/4}, -{1/4,-1/4}, e{0,-1/2,-1/4}]>" -0.06234398)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Two Dogs Starting Position 2 - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0}, f{0,0,1/4}]>" 3.113213)
+                (pair "rel:from=<{}>:pat=<els=[e{0,0}, f{0,0,1/4}]>" 1.848473)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[-{0}, -{1/2,-1/4}]>" 0.584249)
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[f{1/4,0}]>" 1.5646062)
+                (pair "rel:last_to=<{1/4,1/4}>:from=<{}>:to=<{0}>:pat=<els=[]>" -0.9066888)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4,0}, -{-1/4,1/4}, -{0,-1/4,0}]>" -0.15595128)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/4}, -{0,1/4,0}]>" -0.20834783)
+                (pair "rel:from=<{0}>:pat=<els=[-{0,1/4,0}]>" 1.2494334)
+                (pair "rel:last_to=<{0,1/4}>:to=<{0}>:pat=<els=[-{0,-1/4,0}]>" 1.2494334)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Two Dogs Starting Position - Both Extensions Joined Diagonals (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 0.029682314)
+                (pair "rel:to=<{0}>:pat=<els=[N4{0,1/4,1/8}]>" -0.65262383)
+                (pair "rel:last_from=<{0,1/4,3/8}>:from=<{}>:to=<{0}>:pat=<els=[N4{-1/4,-1/4}]>" 0.5148386)
+                (pair "rel:to=<{0}>:pat=<els=[e{1/4,-1/8}]>" -0.65262383)
+                (pair "rel:last_to=<{0,1/8}>:from=<{0}>:to=<{}>:pat=<els=[N4{0,0}]>" -0.1067729)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{0,1/4}]>" 0.023037478)
+                (pair "rel:last_from=<{0,1/4,3/8}>:from=<{}>:to=<{0}>:pat=<els=[N4{0,-1/2,-1/4}]>" 0.30211273)
+                (pair "rel:from=<{0}>:pat=<els=[N4{1/4,0}, -{0,1/2,0}]>" -0.65262383)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{0,1/8}>:from=<{}>:to=<{0}>:pat=<els=[N8{-1/4}, N4{0,-1/8,-1/8}]>" 0.042330734)
+                (pair "rel:to=<{}>:pat=<els=[N8{3/8,-1/8}, N4{1/8,3/8}, -{0}]>" 0.010723287)
+                (pair "rel:to=<{}>:pat=<els=[N4{1/8,-1/8}, -{0}]>" -0.017718317)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Two Dogs Starting Position - Both Extensions No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,0}, -{0,-1/4}, e{-1/2}, -{0,0}]>" 3.1912842)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4}, e{0}, -{1/2,0}]>" 0.5030404)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0,1/4}]>" 0.28063142)
+                (pair "rel:from=<{}>:to=<{1/4}>:pat=<els=[#{0}]>" 0.06352989)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Two Dogs Starting Position 1 - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[e{0}, N8{1/4,0}]>" 3.3172755)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[N4{0,1/8}]>" 6.625213E-4)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!#{0,1/2,0}, N4{0,-1/4,-1/4}]>" -0.04067446)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Two Dogs Starting Position 2 - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[e{0,1/2,-1/8}, N4{0,-3/8}]>" 0.60160005)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[e{0,1/2,-1/8}]>" 0.6083602)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0}]>" 0.002050184)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{-1/2}, N8{0,1/2}]>" -0.08375475)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Two Dogs Starting Position 1 - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" 0.7830049)
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:pat=<els=[]>" -0.046677127)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[#{0,1/4}]>" 0.07900492)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/2,0}]>" 0.6861939)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/4}, -{0,1/4,0}]>" -0.25091782)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/4,0}]>" -0.07673239)
+                (pair "rel:from=<{0}>:pat=<els=[f{1/4,-1/4}, -{0,-1/4,-1/4}]>" -0.74496007)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[N2{0}]>" -1.2693845)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/4,-1/4}, -{0,-1/2,1/4}]>" 0.3351313)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{1/4,0,0}]>" 0.6611479)
+                (pair "rel:last_from=<{-1/2,-1/4}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4,0}]>" 0.4267734)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{1/4,0,0}, #{0,0}]>" 0.5268594)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{1/4}]>" 0.054966062)
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:from=<{0}>:pat=<els=[f{1/4,-1/4}, -{0,-1/2,1/4}]>" 1.1213909)
+                (pair "rel:last_from=<{0,1/4,1/4}>:from=<{}>:pat=<els=[!-{1/4}]>" 0.14541706)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Two Dogs Starting Position 2 - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[f{0,0,1/4}]>" 2.608653)
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[!-{1/4}, -{0,1/4,1/4}]>" 2.3127334)
+                (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[]>" 2.039068)
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[N4{0,0,0}, -{0,1/4,1/4}]>" 1.7596097)
+                (pair "rel:last_from=<{0,-1/2,0,-1/4}>:from=<{0}>:to=<{}>:pat=<els=[-{1/2,1/4}, -{0,-1/2,-1/2,-1/2,-1/4}]>" 3.1222758)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{0,0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[N4{0}]>" 0.15001144)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,1/4}, !-{0,0}]>" -0.040345706)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4,1/4}, !-{0,0}]>" 0.17198026)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,0}]>" -0.07150276)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Two Dogs Starting Position 3 - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,-1/2,0}>:from=<{0}>:to=<{}>:pat=<els=[e{1/4,1/4}]>" 1.617812)
+                (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[-{0}, #{1/4}]>" 2.8252618)
+                (pair "rel:last_to=<{0,-1/2,0}>:from=<{0}>:to=<{}>:pat=<els=[e{1/4,1/4}, -{0,0}]>" 1.635927)
+                (pair "rel:last_to=<{0,-1/2,0}>:from=<{0}>:to=<{}>:pat=<els=[e{1/4,1/4}, #{0,-1/2,1/4}]>" 1.617812)
+                (pair "rel:last_to=<{0,-1/2,0}>:from=<{0}>:to=<{}>:pat=<els=[-{0,0}, #{0,-1/2,1/4}]>" 0.9192295)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4,1/4}, -{0,0}, #{0,-1/2,1/4}]>" 1.144568)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[N2{0}]>" -0.6673944)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/4,1/4}, -{0,1/2,0}]>" -0.34077257)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,0}, -{0,-1/4,-1/4}]>" -0.035485234)
+                (pair "rel:to=<{0}>:pat=<els=[-{0,-1/4,1/4}]>" 0.30082712)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/2,1/4}, N4{0,1/2,0}]>" -0.20590271)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Starting Position - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{1/8}>:pat=<els=[e{-1/8}, N4{0,-1/4}, -{0,3/8}]>" -0.37616974)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0,1/4,3/8}>:from=<{0}>:to=<{}>:pat=<els=[!#{1/4,0,0}, -{0,-1/2,-1/4}]>" 0.08234862)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N8{0,1/2,1/4}]>" 0.030916836)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Starting Position - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,-1/2,-3/8}>:from=<{}>:pat=<els=[N4{0,3/8}, N4{0,1/4,-3/8}]>" 0.03610677)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,-1/2,1/2,1/4}]>" -0.0011717689)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/8,1/4}]>" -0.011074216)
+                (pair "rel:last_from=<{0,1/4,3/8}>:from=<{}>:pat=<els=[-{0,1/8,1/4}]>" -0.023369748)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{0,1/4,1/8}, -{0,3/8,1/4}]>" -0.0019021189)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0}>:to=<{0}>:pat=<els=[N4{-1/2,-3/8}, N4{0,-1/2,-1/8,3/8}]>" -0.651158)
+                (pair "rel:last_to=<{0,-1/4}>:from=<{}>:to=<{0}>:pat=<els=[-{0,-1/2,1/4}]>" 0.11426365)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Starting Position - Both Extensions Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[e{1/8}, N4{3/8,1/4}, N4{0,3/8}]>" -0.07705861)
+                (pair "rel:to=<{}>:pat=<els=[e{0,0}, -{0,1/4,0}]>" 0.10352838)
+                (pair "rel:last_to=<{-1/4,0}>:from=<{0}>:pat=<els=[N4{0,-1/4}, N4{-1/8,1/4}]>" -0.51673627)
+                (pair "rel:last_to=<{1/4,0}>:to=<{}>:pat=<els=[N4{3/8,1/4}, N4{0,3/8}]>" -0.033114858)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{1/4}, N4{0,-1/4,3/8}]>" -0.026754143)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/8}, -{0,1/4,1/4}, -{0,-1/2,-1/4,-1/8}]>" 0.03638504)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Starting Position - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:pat=<els=[e{0,1/4,1/4}]>" 0.3880542)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0}, f{0,0,1/4}]>" 2.924674)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Starting Position - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:pat=<els=[-{0,1/2,1/4}]>" 0.10609504)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,0}, -{1/4,-1/4}, -{1/2,-1/4}, -{0,1/4}, -{0,1/2,0}]>" 0.49762672)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/2,1/4}, e{0,1/2,0}]>" 2.3233705)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0}]>" 1.112067)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Starting Position - Both Extensions No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!#{0,-1/2,0,0}, -{-1/4,1/4}]>" -0.10838311)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[]>" 0.98405546)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/4,1/4}]>" 1.546957)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Three Dogs Two Hares Starting Position - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[e{0,3/8}]>" -0.03471246)
+                (pair "rel:to=<{}>:pat=<els=[e{0,1/8}]>" -3.7472098E-4)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/4}]>" -0.022875417)
+                (pair "rel:last_from=<{0,1/4,-3/8}>:from=<{}>:pat=<els=[-{1/4,-1/4}]>" 0.077691406)
+                (pair "rel:last_from=<{1/4,-1/4}>:to=<{}>:pat=<els=[-{0,1/4}, N4{0,0}]>" -0.0697208)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0}, e{0,1/4,1/8}]>" 1.7462946)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4,1/8}]>" 0.27087125)
+                (pair "rel:last_from=<{0,1/4}>:from=<{}>:pat=<els=[]>" 0.2847131)
+                (pair "rel:last_from=<{0,-3/8,-3/8}>:from=<{}>:pat=<els=[N4{-1/4,0,0}, -{0,-1/2,1/4}]>" 0.34755024)
+                (pair "rel:last_from=<{0,-3/8,-3/8}>:from=<{}>:to=<{0}>:pat=<els=[-{1/4,0}]>" 0.36748013)
+                (pair "rel:from=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{1/4,1/4}]>" 0.10968782)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[-{0,1/2,3/8,3/8}]>" 0.34572285)
+                (pair "rel:last_from=<{0,3/8,3/8}>:from=<{}>:pat=<els=[N4{1/4,0,0}]>" 0.08556987)
+                (pair "rel:last_from=<{0,3/8}>:to=<{}>:pat=<els=[]>" 0.09005225)
+                (pair "rel:to=<{}>:pat=<els=[N8{0,3/8}]>" -0.021663804)
+                (pair "rel:from=<{}>:pat=<els=[f{0,1/4,1/4}]>" 0.06199704)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Three Dogs Two Hares Starting Position 1 - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{1/4,0}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4}]>" 0.14692603)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4}, -{0,-1/2,-1/4}]>" 0.031353552)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,-1/4}, -{0,-1/2,0}]>" 0.12530068)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[f{0,0,0}, e{0,1/4}]>" -0.24478254)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4,-1/4}, -{0,-1/2,-1/4}]>" 0.23818979)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4,1/4}, -{0,1/2,0}]>" 0.17678148)
+                (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[-{0,1/4}]>" 0.028040277)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4,-1/4}, -{0,-1/2,-1/4}, -{0,-1/2,0}]>" 0.34415945)
+                (pair "rel:from=<{0}>:pat=<els=[-{1/4,-1/4}, -{0,-1/2,-1/4}, -{0,-1/2,0}]>" -0.9967824)
+                (pair "rel:to=<{}>:pat=<els=[e{0}, -{1/4,1/4}]>" 0.14169803)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[e{-1/2}, -{0,-1/2,-1/4}, -{0,0,1/4}]>" -0.465398)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/2}, -{0,1/2,1/4}]>" -0.55342436)
+                (pair "rel:last_to=<{0,1/4,-1/4}>:from=<{}>:pat=<els=[e{1/4,1/4}, -{0,0,1/4}]>" -0.55359054)
+                (pair "rel:last_to=<{0,1/4,-1/4}>:from=<{}>:pat=<els=[e{0,1/4,-1/4}, -{0,0,1/4}]>" -0.23842657)
+                (pair "rel:last_to=<{0,1/4,-1/4}>:from=<{}>:to=<{0}>:pat=<els=[e{1/4,1/4}, e{0,1/4,-1/4}, -{0,0,1/4}]>" -0.9116857)
+                (pair "rel:last_from=<{0,1/4,-1/4}>:from=<{}>:to=<{0}>:pat=<els=[e{-1/2}, -{0,0,1/4}]>" -1.0679141)
+                (pair "rel:to=<{0}>:pat=<els=[-{0,0,0}, -{0,0,1/4}]>" -1.2308118)
+                (pair "rel:to=<{}>:pat=<els=[f{0,1/4}]>" 0.05279929)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Three Dogs Two Hares Starting Position 2 - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/4,1/4}]>" -0.21137598)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,1/4}, -{0,-1/2,1/4}]>" 0.3217456)
+                (pair "rel:from=<{}>:pat=<els=[-{-1/4,1/4}, !#{0,0,0}]>" -0.009657152)
+                (pair "rel:to=<{0}>:pat=<els=[-{1/2,0}, -{0,-1/2,0}]>" -1.4940407)
+                (pair "rel:to=<{}>:pat=<els=[f{-1/4,0}, e{0,-1/4,-1/4}, -{0,1/4,1/4}]>" 0.15259744)
+                (pair "rel:to=<{}>:pat=<els=[-{1/2,-1/4}, -{0}, -{1/4,-1/2,1/4}]>" 0.057359617)
+                (pair "rel:last_to=<{0,1/4}>:to=<{}>:pat=<els=[f{1/2,-1/4}, -{1/4,-1/4}]>" -0.03242883)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{1/2}>:pat=<els=[e{0}]>" -0.24597234)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!#{0,1/4,0,0}]>" -0.31892693)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{0,0}]>" -0.24597234)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,-1/2,1/4}, e{0,-1/4,-1/4}]>" 0.29906702)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}, -{0,-1/2,-1/4}]>" 0.1073478)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,-1/2,1/4}, !#{0,-1/4,0,0}]>" -0.41030663)
+                (pair "rel:from=<{0}>:pat=<els=[-{-1/4,1/4}, -{0,1/4}, -{0,-1/4,0}]>" -1.4832993)
+                (pair "rel:to=<{}>:pat=<els=[f{0,0,0}]>" -0.24854168)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Three Dogs Two Hares Starting Position - Both Extensions Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/4,-1/8}]>" 0.12310341)
+                (pair "rel:last_to=<{0,0}>:to=<{0}>:pat=<els=[N4{0,1/4}, N4{0,-1/2,-1/8,-1/4}]>" 0.21883172)
+                (pair "rel:last_from=<{1/4,-3/8}>:from=<{0}>:to=<{}>:pat=<els=[N4{0,-1/2,-3/8}, N4{0,-1/4,-1/8}]>" -0.4844108)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{1/4,0}, -{0,1/4,-1/8}]>" 0.027313087)
+                (pair "rel:last_to=<{0,1/8}>:to=<{}>:pat=<els=[]>" -0.030815657)
+                (pair "rel:to=<{}>:pat=<els=[-{0,1/2,3/8}]>" -0.07227695)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N8{0,1/8}]>" 0.06483151)
+                (pair "rel:to=<{}>:pat=<els=[N8{0,1/8}]>" 0.10024592)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/8,1/4}, f{0,0,0}]>" 2.2386975)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[f{0,0,0}]>" 1.9792633)
+                (pair "rel:last_from=<{1/4,-3/8}>:to=<{}>:pat=<els=[-{0,-1/4}]>" 0.15661436)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4}, N4{0,1/8,1/4}]>" -0.38015634)
+                (pair "rel:last_from=<{1/4,-1/4}>:from=<{0}>:to=<{}>:pat=<els=[N4{0,-1/8,-1/4}]>" 0.47209036)
+                (pair "rel:last_from=<{1/4,-1/4}>:to=<{}>:pat=<els=[N4{0,-1/8,-1/4}, -{0,1/8}]>" 0.32992694)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{1/4,-1/4}, -{0,1/8,1/4}]>" 0.40375438)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N8{0}, f{0,1/2,0}]>" 1.29399)
+                (pair "rel:last_from=<{1/4,-1/4}>:from=<{0}>:to=<{}>:pat=<els=[N4{0,-1/8,-1/4}, -{0,1/8}]>" 0.5960743)
+                (pair "rel:to=<{}>:pat=<els=[e{1/4}, N4{0,-3/8}]>" 0.19271022)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Three Dogs Two Hares Starting Position - Both Extensions No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,0,1/4}, -{0,-1/2,1/4}]>" 0.17818798)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/4}, -{0,0,1/4}, -{0,0}, -{0,-1/2,1/4}]>" 0.43372488)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/4}, -{0,0}, -{0,-1/2,1/4}]>" 0.32099125)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[!-{1/2}, -{0,-1/4,0}, -{0,0,-1/4}]>" 0.19413127)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,-1/4,0}, -{0,1/2,-1/4}, -{0,0,-1/4}]>" 0.27679932)
+                (pair "rel:last_from=<{1/4,-1/4}>:from=<{0}>:to=<{}>:pat=<els=[-{1/4}, -{0,-1/2,-1/4}]>" 0.2775027)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4}, -{0,0,0}]>" -0.53630805)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4}, -{0,0,0}]>" -0.30911022)
+                (pair "rel:last_to=<{0,-1/2,1/4}>:from=<{0}>:pat=<els=[-{0,-1/2,-1/2,-1/4}]>" -1.2587174)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,1/2,0}]>" -0.027517276)
+                (pair "rel:to=<{}>:pat=<els=[!#{0,0,0,0}]>" -0.2762162)
+                (pair "rel:to=<{}>:pat=<els=[]>" 0.0)
+                (pair "rel:from=<{}>:pat=<els=[-{0,1/4}]>" -0.006608329)
+                (pair "rel:to=<{0}>:pat=<els=[N4{0,1/4,0}]>" -1.2587174)
+                (pair "rel:from=<{0}>:pat=<els=[-{0,0,0}]>" -1.2587174)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Three Dogs Two Hares Starting Position 1 - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{0}]>" 0.019339183)
+                (pair "rel:from=<{0}>:pat=<els=[-{1/4,1/4}]>" -0.67244047)
+                (pair "rel:from=<{}>:pat=<els=[-{1/4,3/8}, e{0,-1/2,-1/2,-1/4}]>" 0.08397316)
+                (pair "rel:last_to=<{0,0}>:from=<{1/4}>:to=<{}>:pat=<els=[]>" 0.17029212)
+                (pair "rel:from=<{}>:pat=<els=[N4{0}]>" -0.0051435763)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N8{1/4,-3/8}]>" -0.062317096)
+                (pair "rel:last_to=<{0,-1/4}>:from=<{}>:pat=<els=[e{1/4,3/8}, e{0,-1/2,-1/2,-1/4}]>" -0.005742214)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[]>" 0.38546827)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[-{0,-1/2,1/4,1/4}]>" 0.38154832)
+                (pair "rel:last_from=<{0,-3/8}>:to=<{}>:pat=<els=[-{3/8,-1/8}]>" 0.37209705)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[-{0,1/4,-1/8}]>" 0.4358809)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[]>" 0.50066614)
+                (pair "rel:last_from=<{0,3/8}>:to=<{}>:pat=<els=[N4{1/4,1/4}]>" 0.24992292)
+                (pair "rel:last_from=<{0,-1/2,-1/2,-3/8}>:to=<{}>:pat=<els=[N4{0,0}, N4{0,1/8}, N4{0,-1/2,1/4,-3/8}]>" 0.5050396)
+                (pair "rel:last_from=<{0,-1/2,-1/2,-3/8}>:to=<{}>:pat=<els=[N4{0,0}, N4{0,-1/2,1/4,-3/8}]>" 0.23573993)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}, -{0,-1/2,1/4,1/4}]>" 0.48631686)
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}]>" 0.3053838)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Three Dogs Two Hares Starting Position 1 - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,-1/2,-1/4,-1/4}>:from=<{0}>:to=<{}>:pat=<els=[f{-1/4,1/4}, !-{0,0}, #{0,0}, -{0,-1/2,1/2,1/4}]>" 0.45619747)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4,0}, !-{0,0}, #{0,0}]>" 0.27598938)
+                (pair "rel:from=<{}>:pat=<els=[!-{0}]>" -0.010839415)
+                (pair "rel:to=<{0}>:pat=<els=[-{-1/2,1/4}, N4{0,-1/4,0}, -{0,-1/2,-1/4}]>" -0.39942688)
+                (pair "rel:last_to=<{1/4,1/4}>:from=<{0}>:to=<{}>:pat=<els=[-{0,0,1/4}]>" 0.12189198)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,0}, !-{0,0}, #{0,0}]>" 0.0180158)
+                (pair "rel:last_from=<{1/4}>:to=<{0}>:pat=<els=[#{0,1/4}]>" -0.39942688)
+                (pair "rel:last_to=<{0,1/4}>:from=<{}>:pat=<els=[-{0,0,1/4}]>" -0.303916)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,-1/4}, -{-1/2,1/4}, N4{0,-1/4,0}, -{0,-1/2,-1/4}]>" 0.3820372)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4}]>" 0.56655747)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/4}, e{0,-1/2,1/4}]>" 0.9985612)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[-{0,-1/4}, e{0,1/2,-1/4}]>" 0.60504824)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[e{0,1/2,-1/4}]>" 0.49918696)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/4}, e{0,1/2,-1/4}]>" 0.86198235)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[]>" 0.3665989)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{1/4,-1/4}]>" 0.5609019)
+                (pair "rel:to=<{}>:pat=<els=[-{0,-1/4}, e{0,1/2,-1/4}]>" 0.35777307)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[e{0,-1/2,1/4}]>" 0.3665989)
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[N2{0,1/4}]>" 0.8454066)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/4}, e{0,-1/2,1/4}]>" 0.4502634)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Three Dogs Two Hares Starting Position 2 - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4,0}, -{0,-1/2,-1/4}]>" 0.1320036)
+                (pair "rel:to=<{}>:pat=<els=[N4{0,0}, -{0,1/4,1/4}]>" -0.006050606)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{0,0,0,0}, !-{0,0}, -{0,-1/4,-1/4}, !-{0,1/4}]>" 0.27376226)
+                (pair "rel:from=<{}>:to=<{1/2}>:pat=<els=[e{0,-1/4}]>" -0.04680882)
+                (pair "rel:last_to=<{0}>:from=<{}>:pat=<els=[!-{0}]>" -0.23339775)
+                (pair "rel:to=<{}>:pat=<els=[-{1/4,0}, N4{0,0,0}]>" 0.22563294)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N4{0,0}]>" 0.01576497)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[N4{0,1/4,0}]>" 0.025228743)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4,0}, N4{0,0,0}]>" 0.27505732)
+                (pair "rel:last_to=<{0,1/4}>:to=<{0}>:pat=<els=[N4{1/4,0,0}]>" -0.62428904)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_to=<{0,-1/2,-1/4}>:from=<{}>:to=<{0}>:pat=<els=[N4{}, N4{0,1/4,0}, -{0,-1/2,-1/4,0}]>" -0.31917226)
+                (pair "rel:from=<{}>:pat=<els=[N4{}, !-{1/4}, -{0,1/4,0}]>" -0.15823032)
+                (pair "rel:from=<{}>:pat=<els=[!-{1/4}, !-{0}]>" -0.14060183)
+                (pair "rel:last_to=<{1/2}>:from=<{0}>:to=<{}>:pat=<els=[N4{0,0,0}]>" 0.7561246)
+                (pair "rel:last_to=<{0,-1/2,-1/4}>:from=<{}>:pat=<els=[N4{}, N4{0,1/4,0}, e{0,-1/2,-1/4}, -{0,-1/2,-1/4,0}]>" -0.14481856)
+                (pair "rel:from=<{}>:pat=<els=[!-{-1/4}, f{0,1/4}, -{0,-1/4,0}]>" -0.3702613)
+                (pair "rel:from=<{}>:pat=<els=[N4{}, -{0,1/4,0}]>" 0.051743597)
+                (pair "rel:from=<{}>:pat=<els=[e{0}]>" -0.1075183)
+                (pair "rel:last_to=<{0}>:from=<{}>:pat=<els=[#{1/4}, -{0,0}]>" -0.3345879)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Three Dogs Two Hares Starting Position 3 - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{0}>:pat=<els=[#{1/4}]>" 0.009243027)
+                (pair "rel:to=<{}>:pat=<els=[-{0,0}]>" 0.007560563)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0,1/2}>:to=<{}>:pat=<els=[#{0,1/2,0}]>" 2.8883076)
+                (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" 3.5387359)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}]>" 1.5872186)
+                (pair "rel:last_to=<{0,-1/2,0}>:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/2,1/4}]>" 3.3962655)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Three Dogs Two Hares Starting Position 2 - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{1/2,3/8}>:from=<{0}>:to=<{}>:pat=<els=[N8{-1/4}, N4{0,-3/8}]>" 0.2311557)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[!#{0,1/4,0}]>" 0.054031696)
+                (pair "rel:last_to=<{-1/4,3/8}>:from=<{1/4}>:to=<{}>:pat=<els=[N8{0}]>" 0.23841222)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0,-3/8}>:to=<{}>:pat=<els=[N4{1/4,1/4}]>" 1.9183526)
+                (pair "rel:last_from=<{0,-3/8}>:to=<{}>:pat=<els=[N4{1/4,1/4}, -{3/8,1/4}]>" 2.410925)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Two Dogs Starting Position - No Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[N8{1/4,-3/8}, -{0,1/2,-1/8}]>" 0.0030426166)
+                (pair "rel:last_to=<{1/8}>:from=<{}>:to=<{0}>:pat=<els=[-{0,1/4,1/8}]>" 0.008621343)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{}>:pat=<els=[f{0,-1/2,1/8}]>" -0.002859912)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Two Dogs Starting Position 1 - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,-1/2,1/4}>:to=<{0}>:pat=<els=[-{0,-1/4}]>" 0.3557742)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[f{0,1/4}, e{0,1/4,-1/4}]>" 4.225641)
+                (pair "rel:last_to=<{0,0,1/4}>:from=<{}>:to=<{0}>:pat=<els=[-{0,0}, -{0,1/4,1/4}, -{0,1/4,-1/4}]>" 2.7159603)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Two Dogs Starting Position 2 - No Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[e{0}]>" -0.70991683)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,1/4}, -{0,1/4,1/4}]>" -0.75983375)
+                (pair "rel:to=<{0}>:pat=<els=[e{1/2,1/4}, -{0,-1/4,0,0}]>" -0.4166076)
+                (pair "rel:from=<{}>:pat=<els=[e{0,-1/4}, -{0,-1/2,1/4}, -{0,0,-1/4}]>" -0.10206093)
+                (pair "rel:to=<{0}>:pat=<els=[-{0,-1/2,1/4}, -{0,0,-1/4}, -{0,-1/4,-1/4}]>" -0.4166076)
+                (pair "rel:to=<{}>:pat=<els=[e{0}, f{1/2,1/4}]>" -0.49601838)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,-1/4}, -{0,-1/2,1/4}]>" -0.7492763)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{1/2,1/4}]>" 0.20651369)
+                (pair "rel:from=<{}>:pat=<els=[e{1/2}, -{0,1/4,0}]>" 0.29643914)
+                (pair "rel:to=<{0}>:pat=<els=[e{1/2}, -{0,1/4,0}]>" -0.4166076)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0,1/4}>:last_to=<{0,0}>:to=<{}>:pat=<els=[]>" -1.0033273)
+                (pair "rel:last_to=<{1/2}>:from=<{}>:pat=<els=[-{0,0,0}]>" -1.2054026)
+                (pair "rel:last_to=<{1/2}>:from=<{}>:to=<{0}>:pat=<els=[-{0,0,0}]>" -1.7312384)
+                (pair "rel:from=<{0}>:pat=<els=[-{0,0,0,0}, -{0,0,0}]>" -0.84752244)
+                (pair "rel:from=<{0}>:pat=<els=[-{0,0,0,0}, -{0,0,0}, -{0,1/2,1/4,0}]>" -0.84752244)
+                (pair "rel:to=<{0}>:pat=<els=[f{1/4,1/4}, -{0,0,0}]>" -0.84752244)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Two Dogs Starting Position - Both Extensions Joined Diagonals (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[-{0,1/8,1/8}]>" -0.06555599)
+                (pair "rel:to=<{}>:pat=<els=[N4{}, e{0}, -{1/4,1/4}]>" 0.016623352)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[-{0,0,0}]>" 0.5492177)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,1/4,-1/8}, e{0,1/2,-1/8}]>" 0.9389246)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,0,0}, N4{0,1/2}]>" 0.93205416)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Two Dogs Starting Position - Both Extensions No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{0,1/4}>:from=<{0}>:to=<{}>:pat=<els=[#{-1/4}, -{0,0}]>" 0.23495542)
+                (pair "rel:to=<{}>:pat=<els=[N4{0,0}, -{1/4,-1/2,-1/4}]>" 0.0029262411)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/4,-1/4}]>" 0.18628614)
+                (pair "rel:to=<{}>:pat=<els=[e{1/4,-1/4}, #{0,1/4}, -{0,-1/4,-1/4}, -{0,-1/2,1/2,-1/4}]>" 0.15819193)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/2}]>" 1.2978561)
+                (pair "rel:last_to=<{0,0}>:from=<{}>:to=<{0}>:pat=<els=[!-{1/4}]>" 1.6118886)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[e{1/2}, #{0,1/4}]>" 1.975378)
+                (pair "rel:from=<{-1/4}>:to=<{}>:pat=<els=[N4{1/4,0}, -{0,-1/4}]>" 1.5125505)
+                (pair "rel:last_to=<{0,0}>:from=<{}>:pat=<els=[-{0,1/4,-1/4}]>" 0.575202)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Two Dogs Starting Position 1 - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[e{0}, -{-1/4}, N4{1/4,1/4}]>" -0.10940793)
+                (pair "rel:last_from=<{0,1/4}>:to=<{}>:pat=<els=[f{0,3/8}]>" 0.059231315)
+                (pair "rel:from=<{0}>:pat=<els=[N4{0,0,1/8}]>" -0.41907614)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{0,-1/4,1/4}]>" 0.40732077)
+                (pair "rel:to=<{}>:pat=<els=[e{1/4}, N8{0,0}]>" 1.3054667)
+                (pair "rel:last_from=<{}>:from=<{0}>:to=<{}>:pat=<els=[-{-1/4}, -{0,-1/4,1/4}]>" 0.44599715)
+                (pair "rel:from=<{0}>:pat=<els=[N8{0,0,1/8}]>" -0.6007951)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Two Dogs Starting Position 2 - Top Extension Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[-{1/4,-1/4}, N4{0,-1/2,-1/4,-3/8}]>" 0.010494609)
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[]>" 0.04041553)
+                (pair "rel:to=<{}>:pat=<els=[e{0,1/8}]>" 0.023118693)
+                (pair "rel:last_to=<{0,3/8}>:from=<{}>:pat=<els=[]>" -0.01462589)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[N8{0,0}, e{1/4}]>" 1.6260583)
+                (pair "rel:last_from=<{0,-1/2}>:to=<{}>:pat=<els=[-{0,0,-1/4}, N4{0,-1/2,1/4,-3/8}]>" 0.60672915)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Two Dogs Starting Position 1 - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[-{1/2}, -{0,1/4}]>" -0.07437783)
+                (pair "rel:last_from=<{1/4}>:to=<{0}>:pat=<els=[-{0,-1/4}]>" -0.16121423)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0}>:from=<{}>:to=<{0}>:pat=<els=[-{0,1/2,1/4}]>" 1.2106215)
+                (pair "rel:to=<{}>:pat=<els=[e{0}]>" 0.8582451)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Two Dogs Starting Position 2 - Top Extension No Joined Diagonal (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:to=<{}>:pat=<els=[N2{0}]>" -0.30641595)
+                (pair "rel:to=<{}>:pat=<els=[f{0,-1/4}, #{1/2}]>" 0.21288456)
+                (pair "rel:last_to=<{-1/4,0}>:from=<{0}>:to=<{}>:pat=<els=[!-{0,0}, N4{0,1/2,1/4,0}]>" 0.24557735)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:from=<{0}>:to=<{}>:pat=<els=[f{1/2,1/4}, e{0,1/2,0}]>" 3.6524184)
+                (pair "rel:to=<{}>:pat=<els=[f{1/2,1/4}, e{0,1/2,0}]>" 1.7427021)
+                (pair "rel:to=<{}>:pat=<els=[e{0,1/2,0}]>" 0.24340892)
+                }
+            )
+        })
+        
+    )
+    (useFor { "Ruleset/Haretavl Switch Two Dogs - Top Extension No Joined Diagonal - Starting Position 3 (Suggested)" }
+        
+        trainedFeatures:(features {
+            (featureSet P1 selectionFeatures:{
+                (pair "rel:last_to=<{}>:from=<{}>:pat=<els=[-{0,-1/2,1/4,0}]>" 0.25681886)
+                }
+            )
+            (featureSet P2 selectionFeatures:{
+                (pair "rel:last_from=<{0,1/2}>:from=<{0}>:to=<{}>:pat=<els=[-{1/4,1/4}, -{0,1/2,1/4,1/4}]>" 4.095783)
+                (pair "rel:last_from=<{0,1/2}>:to=<{}>:pat=<els=[-{0,1/2,1/4,1/4}]>" 1.0046178)
+                (pair "rel:from=<{}>:to=<{0}>:pat=<els=[e{0,0}]>" 1.3517891)
+                }
+            )
+        })
+        
+    )
+)
