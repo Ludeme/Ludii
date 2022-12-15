@@ -275,7 +275,7 @@ public class ReconstructionGenerator
 										if(allGood)
 										{
 											correctCompletions.add(completion);
-											System.out.println("Score = " + completion.score() + " Cultural Score = " + completion.similarityScore() + " conceptual Score = " + completion.commonExpectedConceptsScore()) ; 
+											System.out.println("Score = " + completion.score() + " Cultural Score = " + completion.similarityScore() + " Conceptual Score = " + completion.commonExpectedConceptsScore() + " Geographical Score = " + completion.geographicalScore()) ; 
 											System.out.println("ids used = " + completion.idsUsed());
 											System.out.println(completion.raw());
 											System.out.println(correctCompletions.size() + " COMPLETIONS GENERATED.");
@@ -312,6 +312,7 @@ public class ReconstructionGenerator
 					lineToWrite.add(correctCompletions.get(n-1).score() +"");
 					lineToWrite.add(correctCompletions.get(n-1).similarityScore() +"");
 					lineToWrite.add(correctCompletions.get(n-1).commonExpectedConceptsScore() +"");
+					lineToWrite.add(correctCompletions.get(n-1).geographicalScore() +"");
 					lineToWrite.add(correctCompletions.get(n-1).idsUsed() +"");
 					writer.println(StringRoutines.join(",", lineToWrite));
 				}
