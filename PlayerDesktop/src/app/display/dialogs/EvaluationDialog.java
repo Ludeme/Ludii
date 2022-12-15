@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -194,7 +195,7 @@ public class EvaluationDialog extends JDialog
 		lblSkillTrace.setBounds(26, 435, 175, 15);
 		LeftPanel.add(lblSkillTrace);
 		
-		final JLabel lblDirectory = new JLabel("Directory");
+		final JLabel lblDirectory = new JLabel("Output Folder");
 		lblDirectory.setBounds(26, 461, 175, 15);
 		LeftPanel.add(lblDirectory);
 		
@@ -206,7 +207,7 @@ public class EvaluationDialog extends JDialog
 		lblTrailsPerMatch.setBounds(26, 513, 175, 15);
 		LeftPanel.add(lblTrailsPerMatch);
 		
-		final JLabel lblHardTimeLimit = new JLabel("Maximium Time (s)");
+		final JLabel lblHardTimeLimit = new JLabel("Maximium Time(s)");
 		lblHardTimeLimit.setBounds(26, 539, 175, 15);
 		LeftPanel.add(lblHardTimeLimit);
 		
@@ -243,7 +244,8 @@ public class EvaluationDialog extends JDialog
 		LeftPanel.add(txtcommonresoutput);
 		txtcommonresoutput.setColumns(10);
 		
-		final JButton buttonSelectDir = new JButton("Folder");
+		final JButton buttonSelectDir = new JButton("Select");
+		buttonSelectDir.setFont(new Font("Arial", Font.PLAIN, 7));
 		buttonSelectDir.setBounds(324, 460, 55, 18);
 		final ActionListener buttonListener = new ActionListener()
 		{
