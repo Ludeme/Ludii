@@ -282,15 +282,39 @@
 (define "KendallRules" 
     (rules 
         #1 // Starting rules
-        (play 
-            (do 
-                (roll #5)
-                next:(if (can Move ("KendallMoves" #2 #3 #4 #6))
-                    ("KendallMoves" #2 #3 #4 #6)
-                    (move Pass (then (if (is In ("Throw") (sites {1 4 5})) (moveAgain))))
+        phases:{
+        (phase "Opening"
+            (play 
+                ("RollMove"
+                    (move Pass 
+                        (then 
+                            (if (= 1 ("Throw"))
+                                (and {
+                                    #2
+                                    (if (is Mover P2) 
+                                        (swap Players P1 P2)
+                                    )
+                                    (set NextPlayer (player 1))
+                                })
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase (= 1 (count Pips)) "Playing")
+        )
+        (phase "Playing"
+            (play 
+                (do 
+                    (roll #6)
+                    next:(if (can Move ("KendallMoves" #3 #4 #5 #7))
+                        ("KendallMoves" #3 #4 #5 #7)
+                        (move Pass (then (if (is In ("Throw") (sites {1 4 5})) (moveAgain))))
+                    )
                 )
             )
         )
+        }
         
         (end ("EscapeWin"))
     )
@@ -298,7 +322,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Senet Exhibition"
+(game "Senet"
     (players 2) 
     (equipment { 
         (board (rectangle 3 10) 
@@ -381,9 +405,9 @@
     (item "Kendall" 
         <>
         <
-        ("KendallRules" ("SevenPiecesOnBoard") ("NoStartingThrow") ("BearOffPiece") ("BearOffPieceOnWater"))
+        ("KendallRules" ("SevenPiecesOnBoard") ("MoveInFront7Pieces") ("NoStartingThrow") ("BearOffPiece") ("BearOffPieceOnWater"))
         > 
-    "The rules of Kendall.")**
+    "The rules of Kendall.")
     
     //-----------------------------------
     
@@ -392,7 +416,7 @@
         <
         ("KendallRules" ("FivePiecesOnBoard") ("MoveInFront5Pieces") ("NoStartingThrow") ("BearOffPiece") ("BearOffPieceOnWater"))
         > 
-    "The rules of Kendall with 5 pieces.")
+    "The rules of Kendall with 5 pieces.")**
     
     //-----------------------------------
     
@@ -1127,7 +1151,7 @@
     
     (info
         {
-        (useFor "Ruleset/Kendall (Scholarly)" (rules "These rules were proposed by Egyptologist Timothy Kendall. Pieces move according to the throws of the dice along the board. The goal is to move all pieces off the board with an exact throw. If a player lands on their opponent's piece, it is sent back to the space where the capturing piece began its turn. Having two pieces in consecutive spaces prevents your opponent from being able to do this. Marked spaces on the board indicate either safe spaces or dangerous ones to be avoided​"))
+    	(rules "These rules were proposed by Egyptologist Timothy Kendall. Pieces move according to the throws of the dice along the board. The goal is to move all pieces off the board with an exact throw. If a player lands on their opponent's piece, it is sent back to the space where the capturing piece began its turn. Having two pieces in consecutive spaces prevents your opponent from being able to do this. Marked spaces on the board indicate either safe spaces or dangerous ones to be avoided​")
         }
     )
     
@@ -1251,8 +1275,6 @@
         (useFor "Ruleset/Piccione (Scholarly)" (show Symbol "2human_knee" Cell 8 scale:0.9))
         (useFor "Ruleset/Piccione (Scholarly)" (show Symbol "2human_knee" Cell 8 scale:0.9))
         (useFor "Ruleset/Piccione (Scholarly)" (show Symbol "horus" Cell 9 scale:0.9))
-        
-        (board Placement offsetY:-0.3)
         
         (board Colour Symbols (colour DarkBrown))
         (piece ExtendName P2 "2")  
