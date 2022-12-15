@@ -1,0 +1,129 @@
+(game "Guettal" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Counter" Each 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Counter1" 
+                (union { 
+                    (expand 
+                        (sites Bottom)
+                    )
+                    
+                    (sites { "D3" "E3"}
+                    )
+                    }
+                )
+            )
+            
+            (place "Counter2" 
+                (union { 
+                    (sites { "A3" "B3"}
+                    )
+                    
+                    (expand 
+                        (sites Top)
+                    )
+                    }
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece top:True)
+        )
+        
+        (end 
+            (if 
+                (and 
+                    (no Moves P1)
+                    
+                    (no Moves P2)
+                )
+                { 
+                (if 
+                    (< 
+                        (count Pieces P1)
+                        
+                        (count Pieces P2)
+                    )
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (< 
+                        (count Pieces P2)
+                        
+                        (count Pieces P1)
+                    )
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (= 
+                        (count Pieces P2)
+                        
+                        (count Pieces P1)
+                    )
+                    
+                    (result Mover Draw)
+                )
+                }
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Capture" True)
+    })
+    )

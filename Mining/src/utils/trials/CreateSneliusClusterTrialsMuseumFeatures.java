@@ -47,7 +47,7 @@ public class CreateSneliusClusterTrialsMuseumFeatures
 		final ArrayList<ProcessData> processDataList = new ArrayList<ProcessData>();
 		try (final PrintWriter mainWriter = new UnixPrintWriter(new File(mainScriptName), "UTF-8"))
 		{
-			final String gameName = "/Thermenmuseum.lud";
+			final String gameName = "/Ludus Coriovalli.lud";
 
 			final Game game = GameLoader.loadGameFromName(gameName);
 
