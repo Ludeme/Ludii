@@ -47,7 +47,8 @@ public class ReconstructionGenerator
 	final static String defaultOptionName        = "Variant/Incomplete";
 	
 	final static double defaultConceptualWeight = 0.0;
-	final static double defaultHistoricalWeight = 1.0;
+	final static double defaultHistoricalWeight = 0.0;
+	final static double defaultGeographicalWeight = 1.0;
 	final static double defaultThreshold = 0.99;
 	
 	final static boolean checkTimeoutRandomPlayout = false;
@@ -64,10 +65,11 @@ public class ReconstructionGenerator
 		int maxNumberAttempts = args.length < 2 ?                   defaultNumAttempts : Integer.parseInt(args[2]);
 		double conceptualWeight = args.length < 3 ?                 defaultConceptualWeight : Double.parseDouble(args[3]);
 		double historicalWeight = args.length < 4 ?                 defaultHistoricalWeight : Double.parseDouble(args[4]);
-		String reconsPath = args.length < 5 ?                       defaultReconsPath : args[5];
-		String optionName = args.length < 6 ?                       defaultOptionName : args[6];
+		double geoWeight = args.length < 5 ?                 	    defaultGeographicalWeight : Double.parseDouble(args[5]);
+		String reconsPath = args.length < 6 ?                       defaultReconsPath : args[6];
+		String optionName = args.length < 7 ?                       defaultOptionName : args[7];
 	
-		reconstruction(outputPath, numReconsNoWarningExpectedConcepts, maxNumberAttempts, conceptualWeight, historicalWeight, reconsPath, optionName);
+		reconstruction(outputPath, numReconsNoWarningExpectedConcepts, maxNumberAttempts, conceptualWeight, historicalWeight, geoWeight, reconsPath, optionName);
 	}
 	
 	/**
@@ -85,18 +87,19 @@ public class ReconstructionGenerator
 		int    maxNumberAttempts,
 		double conceptualWeight,
 		double historicalWeight,
+		double geographicalWeight,
 		String reconsPath,
 		String optionName
 	)
 	{
 		System.out.println("\n=========================================\nStart reconstruction:\n");
 		System.out.println("Output Path = " + outputPath);
-		System.out.println("Historical Weight = " + historicalWeight + " Conceptual Weight = " + conceptualWeight);
+		System.out.println("Historical Weight = " + historicalWeight + " Conceptual Weight = " + conceptualWeight + " Geographical Weight = " + geographicalWeight);
 		final long startAt = System.nanoTime();
 
 		// Load from memory
 		final String[] choices = FileHandling.listGames();
-		CompleterWithPrepro completer = new CompleterWithPrepro(conceptualWeight, historicalWeight, defaultThreshold);
+		CompleterWithPrepro completer = new CompleterWithPrepro(conceptualWeight, historicalWeight, geographicalWeight, defaultThreshold);
 		for (final String fileName : choices)
 		{
 			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains(reconsPath))
