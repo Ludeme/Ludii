@@ -12,6 +12,7 @@ public class Completion
 	private double score = 0;  // confidence in enumeration (0..1)
 	private double similarityScore = 0;  // (0..1)
 	private double commonTrueConceptsScore = 0;  // (0..1)
+	private double geographicalScore = 0;  // (0..1)
 	private TIntArrayList idsUsed = new TIntArrayList(); // The ruleset ids used to make the completion.
 
 	//-------------------------------------------------------------------------
@@ -51,6 +52,16 @@ public class Completion
 	public void setSimilarityScore(final double value)
 	{
 		similarityScore = value;
+	}
+	
+	public double geographicalScore()
+	{
+		return geographicalScore;
+	}
+	
+	public void setGeographicalScore(final double value)
+	{
+		geographicalScore = value;
 	}
 	
 	public double commonExpectedConceptsScore()

@@ -53,6 +53,9 @@ public class CompleterWithPrepro
 	/** The weight of the historical similarity. */
 	private final double historicalWeight;
 	
+	/** The weight of the geographical distance. */
+	private final double geographicalWeight;
+	
 	/** The list of completions already tried. */
 	private final List<Completion> history = new ArrayList<Completion>();
 	
@@ -68,11 +71,13 @@ public class CompleterWithPrepro
 	(
 		final double conceptualWeight,
 		final double historicalWeight,
+		final double geographicalWeight,
 		final double threshold
 	)
 	{
 		this.conceptualWeight = conceptualWeight;
 		this.historicalWeight = historicalWeight;
+		this.geographicalWeight = geographicalWeight;
 		this.threshold = threshold;
 		ludMap = new HashMap<Integer, String>();
 		
@@ -372,6 +377,7 @@ public class CompleterWithPrepro
 					
 					double culturalSimilarity = 0.0;
 					double conceptualSimilarity = 0.0;
+					double geoSimilarity = 0.0;
 					if(rulesetReconId == -1) // We do not use the CSN.
 						culturalSimilarity = 1.0;
 					else
@@ -385,6 +391,11 @@ public class CompleterWithPrepro
 						else
 							culturalSimilarity = DistanceUtils.getRulesetCSNDistance(rulesetId, rulesetReconId);
 						
+						if(!fileSimilarity1.exists() || !fileSimilarity2.exists() || (rulesetReconId == rulesetId)) // If Geo not computing or comparing the same rulesets, similarity is 0.
+							geoSimilarity = 0.0;
+						else
+							geoSimilarity = DistanceUtils.getRulesetGeoDistance(rulesetId, rulesetReconId);
+						
 						conceptualSimilarity = getAVGCommonExpectedConcept(rulesetReconId, rulesetId);
 					}
 					
@@ -392,7 +403,11 @@ public class CompleterWithPrepro
 					if(culturalSimilarity <= 0)
 						continue;
 					
-					final double score = historicalWeight * culturalSimilarity + conceptualWeight * conceptualSimilarity;
+					// We ignore all the ludemes coming from a negative similarity value or 0.
+					if(geographicalWeight != 0 && geoSimilarity <= 0)
+						continue;
+					
+					final double score = historicalWeight * culturalSimilarity + conceptualWeight * conceptualSimilarity + geographicalWeight * geoSimilarity;
 					
 					final int l = candidate.indexOf(parent[0]);
 					
@@ -454,12 +469,14 @@ public class CompleterWithPrepro
 						//System.out.println("Adding completion:\n" + completion.raw());
 						final double newScore = (completion.idsUsed().size() == 0) ? score : ((completion.score() * completion.idsUsed().size() + score) / (1 + completion.idsUsed().size()));
 						final double newSimilarityScore = (completion.idsUsed().size() == 0) ? culturalSimilarity : ((completion.score() * completion.idsUsed().size() + culturalSimilarity) / (1 + completion.idsUsed().size()));
+						final double newGeographicalScore = (completion.idsUsed().size() == 0) ? geoSimilarity : ((completion.score() * completion.idsUsed().size() + geoSimilarity) / (1 + completion.idsUsed().size()));
 						final double newCommonTrueConceptsAvgScore = (completion.idsUsed().size() == 0) ? conceptualSimilarity : ((completion.score() * completion.idsUsed().size() + conceptualSimilarity) / (1 + completion.idsUsed().size()));
 						
 						newCompletion.setIdsUsed(completion.idsUsed());
 						newCompletion.addId(rulesetId);
 						newCompletion.setScore(newScore);
 						newCompletion.setSimilarityScore(newSimilarityScore);
+						newCompletion.setGeographicalScore(newGeographicalScore);
 						newCompletion.setCommonTrueConceptsScore(newCommonTrueConceptsAvgScore);
 						//System.out.println("SCORE IS " + completion.score());
 						
@@ -1019,6 +1036,7 @@ public class CompleterWithPrepro
 			final int rulesetId = entry.getKey().intValue();
 			double culturalSimilarity = 0.0;
 			double conceptualSimilarity = 0.0;
+			double geoSimilarity = 0.0;
 			if(rulesetReconId == -1) // We do not use the CSN.
 				culturalSimilarity = 1.0;
 			else
@@ -1032,6 +1050,11 @@ public class CompleterWithPrepro
 				else
 					culturalSimilarity = DistanceUtils.getRulesetCSNDistance(rulesetId, rulesetReconId);
 				
+				if(!fileSimilarity1.exists() || !fileSimilarity2.exists() || (rulesetReconId == rulesetId)) // If Geo not computing or comparing the same rulesets, similarity is 0.
+					geoSimilarity = 0.0;
+				else
+					geoSimilarity = DistanceUtils.getRulesetGeoDistance(rulesetId, rulesetReconId);
+				
 				conceptualSimilarity = getAVGCommonExpectedConcept(rulesetReconId, rulesetId);
 			}
 
@@ -1039,7 +1062,11 @@ public class CompleterWithPrepro
 			if(culturalSimilarity <= 0)
 				continue;
 			
-			final double score = historicalWeight * culturalSimilarity + conceptualWeight * conceptualSimilarity;
+			// We ignore all the ludemes coming from a negative similarity value or 0.
+			if(geographicalWeight != 0 && geoSimilarity <= 0)
+				continue;
+			
+			final double score = historicalWeight * culturalSimilarity + conceptualWeight * conceptualSimilarity + geographicalWeight * geoSimilarity;
 			
 			if(score >= threshold)
 				ludMapUsed.put(entry.getKey(), entry.getValue());
