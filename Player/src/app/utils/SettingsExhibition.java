@@ -23,7 +23,7 @@ public class SettingsExhibition
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Nard Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Papan Dakon Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Sahkku Exhibition English.lud";
-	public static final String exhibitionGamePath = "/lud/wip/exhibition/Senet Exhibition English.lud";
+//	public static final String exhibitionGamePath = "/lud/wip/exhibition/Senet Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Shatranj Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Shodra Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Toguz Kumalak Exhibition English.lud";
@@ -38,7 +38,7 @@ public class SettingsExhibition
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Nard Exhibition Swedish.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Papan Dakon Exhibition Swedish.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Sahkku Exhibition Swedish.lud";
-//	public static final String exhibitionGamePath = "/lud/wip/exhibition/Senet Exhibition Swedish.lud";
+	public static final String exhibitionGamePath = "/lud/wip/exhibition/Senet Exhibition Swedish.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Shatranj Exhibition Swedish.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Shodra Exhibition Swedish.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Toguz Kumalak Exhibition Swedish.lud";

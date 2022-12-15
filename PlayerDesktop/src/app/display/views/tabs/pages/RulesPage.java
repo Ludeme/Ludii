@@ -80,7 +80,7 @@ public class RulesPage extends TabPage
 					}
 					addText("\n");
 				}			
-				if (app.manager().settingsManager().userSelections().ruleset() == Constants.UNDEFINED)
+				if (app.manager().settingsManager().userSelections().ruleset() == Constants.UNDEFINED && !SettingsExhibition.exhibitionVersion)
 				{
 					final List<Option> activeOptions = 
 							game.description().gameOptions().activeOptionObjects
