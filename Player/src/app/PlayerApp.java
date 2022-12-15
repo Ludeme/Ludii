@@ -439,7 +439,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		MoveAnimation.saveMoveAnimationDetails(this, move);
 		
 		if (SettingsExhibition.exhibitionVersion)
-			Sound.playSound("Pling-KevanGC-1485374730");
+			Sound.playSound("Ludemeljud");
 		
 		final Timer animationTimer = new Timer();
 		final TimerTask animationTask = new TimerTask()

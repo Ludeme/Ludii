@@ -22,8 +22,8 @@ public class SettingsExhibition
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Mweso Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Nard Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Papan Dakon Exhibition English.lud";
-	public static final String exhibitionGamePath = "/lud/wip/exhibition/Sahkku Exhibition English.lud";
-//	public static final String exhibitionGamePath = "/lud/wip/exhibition/Senet Exhibition English.lud";
+//	public static final String exhibitionGamePath = "/lud/wip/exhibition/Sahkku Exhibition English.lud";
+	public static final String exhibitionGamePath = "/lud/wip/exhibition/Senet Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Shatranj Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Shodra Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Toguz Kumalak Exhibition English.lud";
