@@ -1,0 +1,140 @@
+"2895","1558","Guettal1",NULL,"Reconstructed with Ludii","2",NULL,"The game "Guettal" is played by two players on a 5x5 rectangle board with square tiling. 
+All players play with Counters.
+Rules for Pieces:
+     Counters hop adjacent then if the to location of the last move is in , a piece of the moving player the to location of the last move, this piece can promote into DoubleCounter and set the value of Player the moving player to 0 or step adjacent then set the value of Player the moving player to 1 if the to location of the last move is in , a piece of the moving player the to location of the last move, this piece can promote into DoubleCounter.
+Players take turns moving.
+Setup:
+     Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+     Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+Rules: 
+     If in the same turn, if vertex the to location of the last move is occupied, select Vertex in the to location of the last move if true and select Vertex in the number of sites within 1 spaces of the to location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of to in the direction same direction then from vertex in the from location of the last move to vertex the to location of the last move moveRule: true and for all pieces on Vertexes starting from the to location of the last move with  direction if the target is there is an enemy Player at toremove pieces at to and if can move select Vertex in the to location of the last move if true and select Vertex in the number of sites within 1 spaces of the to location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of to in the direction same direction or select Vertex in the to location of the last move if true and select Vertex in the number of sites within 1 spaces of the to location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of the location of the piece in the direction opposite direction, move again or select Vertex in the to location of the last move if true and select Vertex in the number of sites within 1 spaces of the to location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of the location of the piece in the direction opposite direction then from vertex in the from location of the last move to vertex the to location of the last move moveRule: true and for all pieces on Vertexes starting from the from location of the last move with  direction if the target is there is an enemy Player at toremove pieces at to and if can move select Vertex in the to location of the last move if true and select Vertex in the number of sites within 1 spaces of the to location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of to in the direction same direction or select Vertex in the to location of the last move if true and select Vertex in the number of sites within 1 spaces of the to location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of the location of the piece in the direction opposite direction, move again, else select Vertex in the from location of the last move if true and select Vertex in the number of sites within 1 spaces of the from location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of to in the direction same direction then from vertex in the from location of the last move to vertex the to location of the last move moveRule: true and for all pieces on Vertexes starting from the to location of the last move with  direction if the target is there is an enemy Player at toremove pieces at to and if can move select Vertex in the from location of the last move if true and select Vertex in the number of sites within 1 spaces of the from location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of to in the direction same direction or select Vertex in the from location of the last move if true and select Vertex in the number of sites within 1 spaces of the from location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of the location of the piece in the direction opposite direction, move again or select Vertex in the from location of the last move if true and select Vertex in the number of sites within 1 spaces of the from location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of the location of the piece in the direction opposite direction then from vertex in the from location of the last move to vertex the to location of the last move moveRule: true and for all pieces on Vertexes starting from the from location of the last move with  direction if the target is there is an enemy Player at toremove pieces at to and if can move select Vertex in the from location of the last move if true and select Vertex in the number of sites within 1 spaces of the from location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of to in the direction same direction or select Vertex in the from location of the last move if true and select Vertex in the number of sites within 1 spaces of the from location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of the location of the piece in the direction opposite direction, move again or pass, else moves with priority: move one of your pieces or move one of your pieces, move one of your pieces.
+Aim: 
+     If player one cannot move and player two cannot move.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.997","0.997","0.686","0.0","774, 50"
+"2896","1558","Guettal2",NULL,"Reconstructed with Ludii","2",NULL,"The game "Guettal" is played by two players on a 5x5 rectangle board with square tiling. 
+All players play with Counters.
+Rules for Pieces:
+     Counters hop adjacent then if the to location of the last move is in , a piece of the moving player the to location of the last move, this piece can promote into DoubleCounter and set the value of Player the moving player to 0 or step adjacent then set the value of Player the moving player to 1 if the to location of the last move is in , a piece of the moving player the to location of the last move, this piece can promote into DoubleCounter.
+Players take turns moving.
+Setup:
+     Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+     Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+Rules: 
+     Moves with priority: if 1 is the mover, move one of your pieces or move one of your pieces, move one of your pieces.
+Aim: 
+     If player one cannot move and player two cannot move.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.997","0.997","0.717","0.0","774, 1068"
+"2897","1558","Guettal3",NULL,"Reconstructed with Ludii","2",NULL,"The game "Guettal" is played by two players on a 5x5 rectangle board with square tiling. 
+All players play with Counters.
+Rules for Pieces:
+     Counters step the difference between directions forwards and DirectionChoice(Diagonal, ) or hop adjacent if the to location of the last move is in , a piece of the moving player the to location of the last move, this piece can promote into DoubleCounter.
+Players take turns moving.
+Setup:
+     Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+     Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+Rules: 
+     Moves with priority: if 1 is the mover, move one of your pieces or move one of your pieces, move one of your pieces.
+Aim: 
+     If player one cannot move and player two cannot move.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.997","0.997","0.717","0.0","1386, 1068"
+"2898","1558","Guettal4",NULL,"Reconstructed with Ludii","2",NULL,"The game "Guettal" is played by two players on a 5x5 rectangle board with square tiling. 
+All players play with Counters.
+Rules for Pieces:
+     Counters step forwards or hop adjacent if the to location of the last move is in , a piece of the moving player the to location of the last move, this piece can promote into DoubleCounter.
+Players take turns moving.
+Setup:
+     Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+     Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+Rules: 
+     Moves with priority: if 1 is the mover, move one of your pieces or move one of your pieces, move one of your pieces.
+Aim: 
+     If player one cannot move and player two cannot move.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.997","0.997","0.717","0.0","415, 1068"
+"2899","1558","Guettal5",NULL,"Reconstructed with Ludii","2",NULL,"The game "Guettal" is played by two players on a 5x5 rectangle board with square tiling. 
+All players play with Counters.
+Rules for Pieces:
+     Counters step diagonal or slide from the location of the piece in the orthogonal direction through [between] is in the set of empty vertexs or hop diagonal then if can move hop diagonal or hop orthogonal, move again or hop orthogonal then if can move hop diagonal or hop orthogonal, move again.
+Players take turns moving.
+Setup:
+     Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+     Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+Rules: 
+     If in the same turn, if vertex the to location of the last move is occupied, select Vertex in the to location of the last move if true and select Vertex in the number of sites within 1 spaces of the to location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of to in the direction same direction then from vertex in the from location of the last move to vertex the to location of the last move moveRule: true and for all pieces on Vertexes starting from the to location of the last move with  direction if the target is there is an enemy Player at toremove pieces at to and if can move select Vertex in the to location of the last move if true and select Vertex in the number of sites within 1 spaces of the to location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of to in the direction same direction or select Vertex in the to location of the last move if true and select Vertex in the number of sites within 1 spaces of the to location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of the location of the piece in the direction opposite direction, move again or select Vertex in the to location of the last move if true and select Vertex in the number of sites within 1 spaces of the to location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of the location of the piece in the direction opposite direction then from vertex in the from location of the last move to vertex the to location of the last move moveRule: true and for all pieces on Vertexes starting from the from location of the last move with  direction if the target is there is an enemy Player at toremove pieces at to and if can move select Vertex in the to location of the last move if true and select Vertex in the number of sites within 1 spaces of the to location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of to in the direction same direction or select Vertex in the to location of the last move if true and select Vertex in the number of sites within 1 spaces of the to location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of the location of the piece in the direction opposite direction, move again, else select Vertex in the from location of the last move if true and select Vertex in the number of sites within 1 spaces of the from location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of to in the direction same direction then from vertex in the from location of the last move to vertex the to location of the last move moveRule: true and for all pieces on Vertexes starting from the to location of the last move with  direction if the target is there is an enemy Player at toremove pieces at to and if can move select Vertex in the from location of the last move if true and select Vertex in the number of sites within 1 spaces of the from location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of to in the direction same direction or select Vertex in the from location of the last move if true and select Vertex in the number of sites within 1 spaces of the from location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of the location of the piece in the direction opposite direction, move again or select Vertex in the from location of the last move if true and select Vertex in the number of sites within 1 spaces of the from location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of the location of the piece in the direction opposite direction then from vertex in the from location of the last move to vertex the to location of the last move moveRule: true and for all pieces on Vertexes starting from the from location of the last move with  direction if the target is there is an enemy Player at toremove pieces at to and if can move select Vertex in the from location of the last move if true and select Vertex in the number of sites within 1 spaces of the from location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of to in the direction same direction or select Vertex in the from location of the last move if true and select Vertex in the number of sites within 1 spaces of the from location of the last move includeOrigin: false if not site to has already been visited, empty and there is an enemy Player at  the Vertex 1 steps ahead of the location of the piece in the direction opposite direction, move again or pass, else moves with priority: move one of your pieces or move one of your pieces, move one of your pieces.
+Aim: 
+     If player one cannot move and player two cannot move.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.989","0.989","0.678","0.0","884, 50"
+"2900","1558","Guettal6",NULL,"Reconstructed with Ludii","2",NULL,"The game "Guettal" is played by two players on a 5x5 rectangle board with square tiling. 
+All players play with Counters.
+Rules for Pieces:
+     Counters hop adjacent or step adjacent.
+Players take turns moving.
+Setup:
+     Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+     Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If player one cannot move and player two cannot move.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.899","0.899","0.668","0.0","161, 393"
+"2901","1558","Guettal7",NULL,"Reconstructed with Ludii","2",NULL,"The game "Guettal" is played by two players on a 5x5 rectangle board with square tiling. 
+All players play with Counters.
+Rules for Pieces:
+     Counters hop adjacent or step adjacent.
+Players take turns moving.
+Setup:
+     Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+     Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+Rules: 
+     If in the same turn, hop orthogonal then if can move hop orthogonal, move again or pass, else move one of your pieces.
+Aim: 
+     If player one cannot move and player two cannot move.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.898","0.898","0.636","0.0","154, 791"
+"2902","1558","Guettal8",NULL,"Reconstructed with Ludii","2",NULL,"The game "Guettal" is played by two players on a 5x5 rectangle board with square tiling. 
+All players play with Counters.
+Rules for Pieces:
+     Counters hop adjacent or step adjacent.
+Players take turns moving.
+Setup:
+     Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+     Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If player one cannot move and player two cannot move.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.898","0.898","0.699","0.0","159, 752"
+"2903","1558","Guettal9",NULL,"Reconstructed with Ludii","2",NULL,"The game "Guettal" is played by two players on a 5x5 rectangle board with square tiling. 
+All players play with Counters.
+Rules for Pieces:
+     Counters hop adjacent or step adjacent.
+Players take turns moving.
+Setup:
+     Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+     Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If player one cannot move and player two cannot move.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.897","0.897","0.511","0.0","159, 983"
+"2904","1558","Guettal10",NULL,"Reconstructed with Ludii","2",NULL,"The game "Guettal" is played by two players on a 5x5 rectangle board with square tiling. 
+All players play with Counters.
+Rules for Pieces:
+     Counters hop adjacent or step adjacent.
+Players take turns moving.
+Setup:
+     Place a Counter for player one at the union of the bottom sites of the board expanded by 1 steps and the vertexes with coordinates [D3, E3].
+     Place a Counter for player two at the union of the vertexes with coordinates [A3, B3] and the top sites of the board expanded by 1 steps..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If player one cannot move and player two cannot move.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.897","0.897","0.605","0.0","158, 1034"

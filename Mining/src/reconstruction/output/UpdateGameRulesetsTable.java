@@ -34,7 +34,7 @@ public class UpdateGameRulesetsTable
 	final static String pathReconstructed    = "./res/recons/output/";
 	
 	// The game name.
-	final static String gameName        = "Sahkku (Lujavv'r)";
+	final static String gameName        = "Guettal";
 	
 	// The precision of the double to use.
 	final static int DOUBLE_PRECISION = 5;
@@ -65,6 +65,7 @@ public class UpdateGameRulesetsTable
 		final TDoubleArrayList scoreList = new TDoubleArrayList();
 		final TDoubleArrayList similaryScoreList = new TDoubleArrayList();
 		final TDoubleArrayList conceptualScoreList = new TDoubleArrayList();
+		final TDoubleArrayList geographicalScoreList = new TDoubleArrayList();
 		final List<String> idsUsedList = new ArrayList<String>();
 		final List<String> toEnglishList = new ArrayList<String>();
 		
@@ -100,6 +101,11 @@ public class UpdateGameRulesetsTable
 				conceptualScoreList.add(Double.parseDouble(culturalScoreStr.length() > DOUBLE_PRECISION ? culturalScoreStr.substring(0, DOUBLE_PRECISION) : culturalScoreStr));
 				
 				lineNoQuote = lineNoQuote.substring(culturalScoreStr.length() + 1);
+				separatorIndex = lineNoQuote.indexOf(',');
+				String geographicalScoreStr = lineNoQuote.substring(0, separatorIndex);
+				geographicalScoreList.add(Double.parseDouble(geographicalScoreStr.length() > DOUBLE_PRECISION ? geographicalScoreStr.substring(0, DOUBLE_PRECISION) : geographicalScoreStr));
+				
+				lineNoQuote = lineNoQuote.substring(geographicalScoreStr.length() + 1);
 				final String ids = lineNoQuote.substring(1,lineNoQuote.length() - 1);
 				idsUsedList.add(ids);
 				
@@ -146,6 +152,7 @@ public class UpdateGameRulesetsTable
 					lineToWrite.add("\"" + scoreList.get(i) + "\"");
 					lineToWrite.add("\"" + similaryScoreList.get(i) + "\"");
 					lineToWrite.add("\"" + conceptualScoreList.get(i) + "\"");
+					lineToWrite.add("\"" + geographicalScoreList.get(i) + "\"");
 					lineToWrite.add("\"" + idsUsedList.get(i) + "\"");
 					writer.println(StringRoutines.join(",", lineToWrite));
 			    }
