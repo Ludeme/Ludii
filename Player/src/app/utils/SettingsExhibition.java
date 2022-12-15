@@ -16,7 +16,6 @@ public class SettingsExhibition
 	public static final int exhibitionDisplayHeight = 1080;
 	
 	/** The game to load (there exists both an English and Swedish version of each game). */
-//	public static final String exhibitionGamePath = "/lud/wip/exhibition/Tic-Tac-Toe.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Baghchal Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Hnefatafl Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Mu Torere Exhibition English.lud";
