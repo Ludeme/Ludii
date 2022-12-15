@@ -476,13 +476,17 @@ public class EvaluationDialog extends JDialog
 						value = 1.0;
 						
 					weights.set(i, Double.valueOf(value));
-					allMetricSliders.get(i).setValue((int) (value*100));
 				}
 
 				for(final ActionListener a: okButton.getActionListeners()) {
 				    a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
 				          // Nothing needs go here.
 				    });
+				}
+				
+				for (int i = 0; i < weights.size(); i++)
+				{
+					allMetricSliders.get(i).setValue(allMetricSliders.get(i).getValue());
 				}
 			}
 		});
