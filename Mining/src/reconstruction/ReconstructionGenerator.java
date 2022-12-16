@@ -46,11 +46,11 @@ public class ReconstructionGenerator
 	//final static String defaultReconsPath        = "/lud/reconstruction/validation/Canadian Draughts";
 	final static String defaultOptionName        = "Variant/Incomplete";
 	
-	final static double  defaultConceptualWeight = 0.5;
-	final static double  defaultHistoricalWeight = 0.0;
-	final static double  defaultGeographicalWeight = 0.5;
+	final static double  defaultConceptualWeight = 0.33;
+	final static double  defaultHistoricalWeight = 0.33;
+	final static double  defaultGeographicalWeight = 0.33;
 	final static double  defaultThreshold = 0.99;
-	final static boolean geographicalOrder = false;
+	final static boolean geographicalOrder = true;
 	
 	final static boolean checkTimeoutRandomPlayout = false;
 	final static int     defaultPlayoutsAttempts = 100;
