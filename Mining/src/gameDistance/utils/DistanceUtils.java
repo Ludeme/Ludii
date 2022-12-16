@@ -161,7 +161,9 @@ public class DistanceUtils
 	 */
 	public static double getRulesetGeoDistance(final int rulesetId1, final int rulesetId2)
 	{
-		return getAllRulesetCSNDistances(rulesetId1).get(Integer.valueOf(rulesetId2)).doubleValue();
+		final Map<Integer, Double> geoSimilarities = getAllRulesetGeoDistances(rulesetId1);
+		final Double geoSimilarity = geoSimilarities.get(Integer.valueOf(rulesetId2));
+		return geoSimilarity != null ? geoSimilarity.doubleValue() : 0.0;
 	}
 	
 	/**

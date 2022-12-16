@@ -61,6 +61,12 @@ public class CompleterWithPrepro
 	
 	/** threshold used to look first the top similarities scores. */
 	private double threshold = 0.99;
+
+	/** Geographical threshold to return the rulesets with the shortest geographical order. */
+	private double geoThreshold = 0.99;
+	
+	/** The geographical similarities between all the rulesets */
+	private static Map<Integer, Double> allRulesetGeoSimilarities = null;
 	
 	//-------------------------------------------------------------------------
 		
@@ -72,13 +78,15 @@ public class CompleterWithPrepro
 		final double conceptualWeight,
 		final double historicalWeight,
 		final double geographicalWeight,
-		final double threshold
+		final double threshold,
+		final double geoThreshold
 	)
 	{
 		this.conceptualWeight = conceptualWeight;
 		this.historicalWeight = historicalWeight;
 		this.geographicalWeight = geographicalWeight;
 		this.threshold = threshold;
+		this.geoThreshold = geoThreshold;
 		ludMap = new HashMap<Integer, String>();
 		
 		// Get the ids and descriptions of the rulesets.
@@ -155,7 +163,15 @@ public class CompleterWithPrepro
 		//System.out.println(rulesetDescriptionOneLine);
 		
 		Completion comp = new Completion(rulesetDescriptionOneLine);
-		System.out.println("new threshold = " + threshold);
+
+		if(geoThreshold == -1)
+			System.out.println("new threshold = " + threshold);
+		else
+		{
+			allRulesetGeoSimilarities = DistanceUtils.getAllRulesetGeoDistances(rulesetReconId);
+			System.out.println("new threshold = " + threshold + " new geoThreshold = " + geoThreshold);
+		}
+		
 		applyThresholdToLudMap(rulesetReconId);
 		while (needsCompleting(comp.raw()))
 		{
@@ -170,8 +186,24 @@ public class CompleterWithPrepro
 					System.out.println("All combinations tried, no result.");
 					return null;
 				}
-				threshold = threshold - 0.01;
-				System.out.println("new threshold = " + threshold);
+				
+				if(geoThreshold == -1)
+				{
+					threshold = threshold - 0.01;
+					System.out.println("new threshold = " + threshold);
+				}
+				else
+				{
+					if(geoThreshold != 0)
+						geoThreshold = geoThreshold - 0.03;
+					else
+					{
+						threshold = threshold - 0.01;
+						geoThreshold = 0.99;
+					}
+
+					System.out.println("new threshold = " + threshold + " new geoThreshold = " + geoThreshold);
+				}
 				comp = new Completion(rulesetDescriptionOneLine);
 				applyThresholdToLudMap(rulesetReconId);
 			}
@@ -394,7 +426,7 @@ public class CompleterWithPrepro
 						if(!fileSimilarity1.exists() || !fileSimilarity2.exists() || (rulesetReconId == rulesetId)) // If Geo not computing or comparing the same rulesets, similarity is 0.
 							geoSimilarity = 0.0;
 						else
-							geoSimilarity = DistanceUtils.getRulesetGeoDistance(rulesetId, rulesetReconId);
+							geoSimilarity = getRulesetGeoDistance(rulesetId);
 						
 						conceptualSimilarity = getAVGCommonExpectedConcept(rulesetReconId, rulesetId);
 					}
@@ -1053,7 +1085,7 @@ public class CompleterWithPrepro
 				if(!fileSimilarity1.exists() || !fileSimilarity2.exists() || (rulesetReconId == rulesetId)) // If Geo not computing or comparing the same rulesets, similarity is 0.
 					geoSimilarity = 0.0;
 				else
-					geoSimilarity = DistanceUtils.getRulesetGeoDistance(rulesetId, rulesetReconId);
+					geoSimilarity = getRulesetGeoDistance(rulesetId);
 				
 				conceptualSimilarity = getAVGCommonExpectedConcept(rulesetReconId, rulesetId);
 			}
@@ -1068,10 +1100,30 @@ public class CompleterWithPrepro
 			
 			final double score = historicalWeight * culturalSimilarity + conceptualWeight * conceptualSimilarity + geographicalWeight * geoSimilarity;
 			
-			if(score >= threshold)
-				ludMapUsed.put(entry.getKey(), entry.getValue());
+			if(geoThreshold == -1)
+			{
+				if(score >= threshold)
+					ludMapUsed.put(entry.getKey(), entry.getValue());
+			}
+			else
+			{
+				if(score >= threshold && geoSimilarity >= geoThreshold)
+				{
+					//System.out.println("score = " + score + " geoScore = " + geoSimilarity);
+					ludMapUsed.put(entry.getKey(), entry.getValue());
+				}
+			}
 		}
 		System.out.println("num Rulesets used to recons = " + ludMapUsed.size());
+	}
+
+	/**
+	 * @return Geo distance between two rulesetIds
+	 */
+	public static double getRulesetGeoDistance(final int rulesetId2)
+	{
+		final Double geoSimilarity = allRulesetGeoSimilarities.get(Integer.valueOf(rulesetId2));
+		return geoSimilarity != null ? geoSimilarity.doubleValue() : 0.0;
 	}
 	
 }
