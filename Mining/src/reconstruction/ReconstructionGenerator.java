@@ -47,10 +47,10 @@ public class ReconstructionGenerator
 	final static String defaultOptionName        = "Variant/Incomplete";
 	
 	final static double  defaultConceptualWeight = 0.0;
-	final static double  defaultHistoricalWeight = 1.0;
-	final static double  defaultGeographicalWeight = 0.0;
+	final static double  defaultHistoricalWeight = 0.0;
+	final static double  defaultGeographicalWeight = 1.0;
 	final static double  defaultThreshold = 0.99;
-	final static boolean geographicalOrder = true;
+	final static boolean geographicalOrder = false;
 	
 	final static boolean checkTimeoutRandomPlayout = false;
 	final static int     defaultPlayoutsAttempts = 100;
@@ -100,7 +100,7 @@ public class ReconstructionGenerator
 
 		// Load from memory
 		final String[] choices = FileHandling.listGames();
-		CompleterWithPrepro completer = new CompleterWithPrepro(conceptualWeight, historicalWeight, geographicalWeight, (geographicalOrder ? 0.99 : -1), defaultThreshold);
+		CompleterWithPrepro completer = new CompleterWithPrepro(conceptualWeight, historicalWeight, geographicalWeight, defaultThreshold, (geographicalOrder ? 0.99 : -1));
 		for (final String fileName : choices)
 		{
 			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains(reconsPath))

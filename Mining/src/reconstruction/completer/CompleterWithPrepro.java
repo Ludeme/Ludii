@@ -161,16 +161,14 @@ public class CompleterWithPrepro
 		final String rulesetDescriptionOneLine = StringRoutines.formatOneLineDesc(description.expanded()); // Same format of all other rulesets.
 				
 		//System.out.println(rulesetDescriptionOneLine);
-		
+
+		allRulesetGeoSimilarities = DistanceUtils.getAllRulesetGeoDistances(rulesetReconId);
 		Completion comp = new Completion(rulesetDescriptionOneLine);
 
 		if(geoThreshold == -1)
 			System.out.println("new threshold = " + threshold);
 		else
-		{
-			allRulesetGeoSimilarities = DistanceUtils.getAllRulesetGeoDistances(rulesetReconId);
 			System.out.println("new threshold = " + threshold + " new geoThreshold = " + geoThreshold);
-		}
 		
 		applyThresholdToLudMap(rulesetReconId);
 		while (needsCompleting(comp.raw()))
