@@ -57,10 +57,10 @@ public class RulesPage extends TabPage
 					{
 						if (SettingsExhibition.exhibitionVersion)
 						{
-							for (final String line : s.split("\\."))
+							for (final String line : s.split(">"))
 							{
 								if (line.trim().length() > 1)
-									addText(line.trim() + "." + "\n\n");
+									addText(line.trim() + "\n\n");
 							}
 						}
 						else
