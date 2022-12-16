@@ -9731,11 +9731,11 @@ public enum Concept
 	),
 	
 	/** Computed with playouts. */
-	SkillTraceSlope
+	SkillTraceErrorSlope
 	(
 		"4.13.3",
 		808, 
-		"Skill Trace Slope.",
+		"Skill Trace Error Slope.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
@@ -9745,11 +9745,11 @@ public enum Concept
 	),
 	
 	/** Computed with playouts. */
-	SkillTraceIntercept
+	SkillTraceErrorIntercept
 	(
 		"4.13.4",
 		809, 
-		"Skill Trace Intercept.",
+		"Skill Trace Error Intercept.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
