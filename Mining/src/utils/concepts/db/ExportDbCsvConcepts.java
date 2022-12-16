@@ -201,6 +201,25 @@ public class ExportDbCsvConcepts
 	 */
 	public static void exportConceptCSV()
 	{
+		List<String> toNotShowOnWebsite = new ArrayList<String>();
+		toNotShowOnWebsite.add("Properties");
+		toNotShowOnWebsite.add("Format");
+		toNotShowOnWebsite.add("Time");
+		toNotShowOnWebsite.add("Turns");
+		toNotShowOnWebsite.add("Players");
+		toNotShowOnWebsite.add("Equipment");
+		toNotShowOnWebsite.add("Board");
+		toNotShowOnWebsite.add("Container");
+		toNotShowOnWebsite.add("Component");
+		toNotShowOnWebsite.add("Rules");
+		toNotShowOnWebsite.add("Play");
+		toNotShowOnWebsite.add("Efficiency");
+		toNotShowOnWebsite.add("Implementation");
+		toNotShowOnWebsite.add("Visual");
+		toNotShowOnWebsite.add("Style");
+		toNotShowOnWebsite.add("Math");
+		toNotShowOnWebsite.add("Behaviour");
+		
 		final String outputConcept = "Concepts.csv";
 		System.out.println("Writing Concepts.csv");
 		try (final PrintWriter writer = new UnixPrintWriter(new File(outputConcept), "UTF-8"))
@@ -216,6 +235,7 @@ public class ExportDbCsvConcepts
 				lineToWrite.add(concept.computationType().id() + "");
 				lineToWrite.add("\"" + concept.taxonomy() + "\"");
 				lineToWrite.add(concept.isleaf() ? "1" : "0");
+				lineToWrite.add(toNotShowOnWebsite.contains(concept.name()) ? "0" : "1");
 				writer.println(StringRoutines.join(",", lineToWrite));
 			}
 		}
