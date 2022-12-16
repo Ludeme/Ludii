@@ -1,0 +1,1514 @@
+(game "Guettal" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Counter" Each 
+            (or 
+                (move Step 
+                    (difference Forwards Diagonal)
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is In 
+                            (last To)
+                            
+                            (sites Next)
+                        )
+                        
+                        (promote 
+                            (last To)
+                            
+                            (piece "DoubleCounter")
+                        Mover)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Counter1" 
+                (union { 
+                    (expand 
+                        (sites Bottom)
+                    )
+                    
+                    (sites { "D3" "E3"}
+                    )
+                    }
+                )
+            )
+            
+            (place "Counter2" 
+                (union { 
+                    (sites { "A3" "B3"}
+                    )
+                    
+                    (expand 
+                        (sites Top)
+                    )
+                    }
+                )
+            )
+            }
+        )
+        
+        (play 
+            (if 
+                (is Prev Mover)
+                
+                (or 
+                    (if 
+                        (is Occupied 
+                            (last To)
+                        )
+                        
+                        (or 
+                            (move Select 
+                                (from 
+                                    (last To)
+                                )
+                                
+                                (to 
+                                    (sites Around 
+                                        (last To)
+                                    )
+                                    if:
+                                    (and { 
+                                        (not 
+                                            (is Visited 
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (is Empty 
+                                            (to)
+                                        )
+                                        
+                                        (is Enemy 
+                                            (who at:
+                                                (ahead 
+                                                    (to)
+                                                SameDirection )
+                                            )
+                                        )
+                                        }
+                                    )
+                                )
+                                
+                                (then 
+                                    (and { 
+                                        (fromTo 
+                                            (from 
+                                                (last From)
+                                            )
+                                            
+                                            (to 
+                                                (last To)
+                                            )
+                                        )
+                                        
+                                        (directional 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (directions Vertex from:
+                                                (last From)
+                                                to:
+                                                (last To)
+                                            )
+                                            
+                                            (to if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (if 
+                                            (can Move 
+                                                (or 
+                                                    (move Select 
+                                                        (from 
+                                                            (last To)
+                                                        )
+                                                        
+                                                        (to 
+                                                            (sites Around 
+                                                                (last To)
+                                                            )
+                                                            if:
+                                                            (and { 
+                                                                (not 
+                                                                    (is Visited 
+                                                                        (to )
+                                                                    )
+                                                                )
+                                                                
+                                                                (is Empty 
+                                                                    (to )
+                                                                )
+                                                                
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (ahead 
+                                                                            (to )
+                                                                        SameDirection )
+                                                                    )
+                                                                )
+                                                                }
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (move Select 
+                                                        (from 
+                                                            (last To)
+                                                        )
+                                                        
+                                                        (to 
+                                                            (sites Around 
+                                                                (last To)
+                                                            )
+                                                            if:
+                                                            (and { 
+                                                                (not 
+                                                                    (is Visited 
+                                                                        (to )
+                                                                    )
+                                                                )
+                                                                
+                                                                (is Empty 
+                                                                    (to )
+                                                                )
+                                                                
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (ahead 
+                                                                            (from )
+                                                                        OppositeDirection )
+                                                                    )
+                                                                )
+                                                                }
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (moveAgain)
+                                        )
+                                        }
+                                    )
+                                )
+                            )
+                            
+                            (move Select 
+                                (from 
+                                    (last To)
+                                )
+                                
+                                (to 
+                                    (sites Around 
+                                        (last To)
+                                    )
+                                    if:
+                                    (and { 
+                                        (not 
+                                            (is Visited 
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (is Empty 
+                                            (to)
+                                        )
+                                        
+                                        (is Enemy 
+                                            (who at:
+                                                (ahead 
+                                                    (from)
+                                                OppositeDirection )
+                                            )
+                                        )
+                                        }
+                                    )
+                                )
+                                
+                                (then 
+                                    (and { 
+                                        (fromTo 
+                                            (from 
+                                                (last From)
+                                            )
+                                            
+                                            (to 
+                                                (last To)
+                                            )
+                                        )
+                                        
+                                        (directional 
+                                            (from 
+                                                (last From)
+                                            )
+                                            
+                                            (directions Vertex from:
+                                                (last To)
+                                                to:
+                                                (last From)
+                                            )
+                                            
+                                            (to if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (if 
+                                            (can Move 
+                                                (or 
+                                                    (move Select 
+                                                        (from 
+                                                            (last To)
+                                                        )
+                                                        
+                                                        (to 
+                                                            (sites Around 
+                                                                (last To)
+                                                            )
+                                                            if:
+                                                            (and { 
+                                                                (not 
+                                                                    (is Visited 
+                                                                        (to )
+                                                                    )
+                                                                )
+                                                                
+                                                                (is Empty 
+                                                                    (to )
+                                                                )
+                                                                
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (ahead 
+                                                                            (to )
+                                                                        SameDirection )
+                                                                    )
+                                                                )
+                                                                }
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (move Select 
+                                                        (from 
+                                                            (last To)
+                                                        )
+                                                        
+                                                        (to 
+                                                            (sites Around 
+                                                                (last To)
+                                                            )
+                                                            if:
+                                                            (and { 
+                                                                (not 
+                                                                    (is Visited 
+                                                                        (to )
+                                                                    )
+                                                                )
+                                                                
+                                                                (is Empty 
+                                                                    (to )
+                                                                )
+                                                                
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (ahead 
+                                                                            (from )
+                                                                        OppositeDirection )
+                                                                    )
+                                                                )
+                                                                }
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (moveAgain)
+                                        )
+                                        }
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (or 
+                            (move Select 
+                                (from 
+                                    (last From)
+                                )
+                                
+                                (to 
+                                    (sites Around 
+                                        (last From)
+                                    )
+                                    if:
+                                    (and { 
+                                        (not 
+                                            (is Visited 
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (is Empty 
+                                            (to)
+                                        )
+                                        
+                                        (is Enemy 
+                                            (who at:
+                                                (ahead 
+                                                    (to)
+                                                SameDirection )
+                                            )
+                                        )
+                                        }
+                                    )
+                                )
+                                
+                                (then 
+                                    (and { 
+                                        (fromTo 
+                                            (from 
+                                                (last From)
+                                            )
+                                            
+                                            (to 
+                                                (last To)
+                                            )
+                                        )
+                                        
+                                        (directional 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (directions Vertex from:
+                                                (last From)
+                                                to:
+                                                (last To)
+                                            )
+                                            
+                                            (to if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (if 
+                                            (can Move 
+                                                (or 
+                                                    (move Select 
+                                                        (from 
+                                                            (last From)
+                                                        )
+                                                        
+                                                        (to 
+                                                            (sites Around 
+                                                                (last From )
+                                                            )
+                                                            if:
+                                                            (and { 
+                                                                (not 
+                                                                    (is Visited 
+                                                                        (to )
+                                                                    )
+                                                                )
+                                                                
+                                                                (is Empty 
+                                                                    (to )
+                                                                )
+                                                                
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (ahead 
+                                                                            (to )
+                                                                        SameDirection )
+                                                                    )
+                                                                )
+                                                                }
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (move Select 
+                                                        (from 
+                                                            (last From)
+                                                        )
+                                                        
+                                                        (to 
+                                                            (sites Around 
+                                                                (last From )
+                                                            )
+                                                            if:
+                                                            (and { 
+                                                                (not 
+                                                                    (is Visited 
+                                                                        (to )
+                                                                    )
+                                                                )
+                                                                
+                                                                (is Empty 
+                                                                    (to )
+                                                                )
+                                                                
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (ahead 
+                                                                            (from )
+                                                                        OppositeDirection )
+                                                                    )
+                                                                )
+                                                                }
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (moveAgain)
+                                        )
+                                        }
+                                    )
+                                )
+                            )
+                            
+                            (move Select 
+                                (from 
+                                    (last From)
+                                )
+                                
+                                (to 
+                                    (sites Around 
+                                        (last From)
+                                    )
+                                    if:
+                                    (and { 
+                                        (not 
+                                            (is Visited 
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (is Empty 
+                                            (to)
+                                        )
+                                        
+                                        (is Enemy 
+                                            (who at:
+                                                (ahead 
+                                                    (from)
+                                                OppositeDirection )
+                                            )
+                                        )
+                                        }
+                                    )
+                                )
+                                
+                                (then 
+                                    (and { 
+                                        (fromTo 
+                                            (from 
+                                                (last From)
+                                            )
+                                            
+                                            (to 
+                                                (last To)
+                                            )
+                                        )
+                                        
+                                        (directional 
+                                            (from 
+                                                (last From)
+                                            )
+                                            
+                                            (directions Vertex from:
+                                                (last To)
+                                                to:
+                                                (last From)
+                                            )
+                                            
+                                            (to if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (if 
+                                            (can Move 
+                                                (or 
+                                                    (move Select 
+                                                        (from 
+                                                            (last From)
+                                                        )
+                                                        
+                                                        (to 
+                                                            (sites Around 
+                                                                (last From )
+                                                            )
+                                                            if:
+                                                            (and { 
+                                                                (not 
+                                                                    (is Visited 
+                                                                        (to )
+                                                                    )
+                                                                )
+                                                                
+                                                                (is Empty 
+                                                                    (to )
+                                                                )
+                                                                
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (ahead 
+                                                                            (to )
+                                                                        SameDirection )
+                                                                    )
+                                                                )
+                                                                }
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (move Select 
+                                                        (from 
+                                                            (last From)
+                                                        )
+                                                        
+                                                        (to 
+                                                            (sites Around 
+                                                                (last From )
+                                                            )
+                                                            if:
+                                                            (and { 
+                                                                (not 
+                                                                    (is Visited 
+                                                                        (to )
+                                                                    )
+                                                                )
+                                                                
+                                                                (is Empty 
+                                                                    (to )
+                                                                )
+                                                                
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (ahead 
+                                                                            (from )
+                                                                        OppositeDirection )
+                                                                    )
+                                                                )
+                                                                }
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (moveAgain)
+                                        )
+                                        }
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+                
+                (priority { 
+                    (or 
+                        (forEach Piece 
+                            (move Select 
+                                (from)
+                                
+                                (to 
+                                    (sites Around 
+                                        (from)
+                                    )
+                                    if:
+                                    (and 
+                                        (is Empty 
+                                            (to)
+                                        )
+                                        
+                                        (is Enemy 
+                                            (who at:
+                                                (ahead 
+                                                    (to)
+                                                SameDirection )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (then 
+                                    (and 
+                                        (fromTo 
+                                            (from 
+                                                (last From)
+                                            )
+                                            
+                                            (to 
+                                                (last To)
+                                            )
+                                        )
+                                        
+                                        (directional 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (directions Vertex from:
+                                                (last From)
+                                                to:
+                                                (last To)
+                                            )
+                                            
+                                            (to if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (or 
+                                            (move Select 
+                                                (from 
+                                                    (last To)
+                                                )
+                                                
+                                                (to 
+                                                    (sites Around 
+                                                        (last To)
+                                                    )
+                                                    if:
+                                                    (and { 
+                                                        (not 
+                                                            (is Visited 
+                                                                (to)
+                                                            )
+                                                        )
+                                                        
+                                                        (is Empty 
+                                                            (to)
+                                                        )
+                                                        
+                                                        (is Enemy 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (to )
+                                                                SameDirection )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                                
+                                                (then 
+                                                    (and { 
+                                                        (fromTo 
+                                                            (from 
+                                                                (last From )
+                                                            )
+                                                            
+                                                            (to 
+                                                                (last To )
+                                                            )
+                                                        )
+                                                        
+                                                        (directional 
+                                                            (from 
+                                                                (last To )
+                                                            )
+                                                            
+                                                            (directions Vertex from:
+                                                                (last From )
+                                                                to:
+                                                                (last To )
+                                                            )
+                                                            
+                                                            (to if:
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (to )
+                                                                    )
+                                                                )
+                                                                
+                                                                (apply 
+                                                                    (remove 
+                                                                        (to )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (if 
+                                                            (can Move 
+                                                                (or 
+                                                                    (move Select 
+                                                                        (from 
+                                                                            (last To )
+                                                                        )
+                                                                        
+                                                                        (to 
+                                                                            (sites Around 
+                                                                                (last To )
+                                                                            )
+                                                                            if:
+                                                                            (and { 
+                                                                                (not 
+                                                                                    (is Visited 
+                                                                                        (to )
+                                                                                    )
+                                                                                )
+                                                                                
+                                                                                (is Empty 
+                                                                                    (to )
+                                                                                )
+                                                                                
+                                                                                (is Enemy 
+                                                                                    (who at:
+                                                                                        (ahead 
+                                                                                            (to )
+                                                                                        SameDirection )
+                                                                                    )
+                                                                                )
+                                                                                }
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                    
+                                                                    (move Select 
+                                                                        (from 
+                                                                            (last To )
+                                                                        )
+                                                                        
+                                                                        (to 
+                                                                            (sites Around 
+                                                                                (last To )
+                                                                            )
+                                                                            if:
+                                                                            (and { 
+                                                                                (not 
+                                                                                    (is Visited 
+                                                                                        (to )
+                                                                                    )
+                                                                                )
+                                                                                
+                                                                                (is Empty 
+                                                                                    (to )
+                                                                                )
+                                                                                
+                                                                                (is Enemy 
+                                                                                    (who at:
+                                                                                        (ahead 
+                                                                                            (from )
+                                                                                        OppositeDirection )
+                                                                                    )
+                                                                                )
+                                                                                }
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                            
+                                                            (moveAgain )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (move Select 
+                                                (from 
+                                                    (last To)
+                                                )
+                                                
+                                                (to 
+                                                    (sites Around 
+                                                        (last To)
+                                                    )
+                                                    if:
+                                                    (and { 
+                                                        (not 
+                                                            (is Visited 
+                                                                (to)
+                                                            )
+                                                        )
+                                                        
+                                                        (is Empty 
+                                                            (to)
+                                                        )
+                                                        
+                                                        (is Enemy 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (from )
+                                                                OppositeDirection )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                                
+                                                (then 
+                                                    (and { 
+                                                        (fromTo 
+                                                            (from 
+                                                                (last From )
+                                                            )
+                                                            
+                                                            (to 
+                                                                (last To )
+                                                            )
+                                                        )
+                                                        
+                                                        (directional 
+                                                            (from 
+                                                                (last From )
+                                                            )
+                                                            
+                                                            (directions Vertex from:
+                                                                (last To )
+                                                                to:
+                                                                (last From )
+                                                            )
+                                                            
+                                                            (to if:
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (to )
+                                                                    )
+                                                                )
+                                                                
+                                                                (apply 
+                                                                    (remove 
+                                                                        (to )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (if 
+                                                            (can Move 
+                                                                (or 
+                                                                    (move Select 
+                                                                        (from 
+                                                                            (last To )
+                                                                        )
+                                                                        
+                                                                        (to 
+                                                                            (sites Around 
+                                                                                (last To )
+                                                                            )
+                                                                            if:
+                                                                            (and { 
+                                                                                (not 
+                                                                                    (is Visited 
+                                                                                        (to )
+                                                                                    )
+                                                                                )
+                                                                                
+                                                                                (is Empty 
+                                                                                    (to )
+                                                                                )
+                                                                                
+                                                                                (is Enemy 
+                                                                                    (who at:
+                                                                                        (ahead 
+                                                                                            (to )
+                                                                                        SameDirection )
+                                                                                    )
+                                                                                )
+                                                                                }
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                    
+                                                                    (move Select 
+                                                                        (from 
+                                                                            (last To )
+                                                                        )
+                                                                        
+                                                                        (to 
+                                                                            (sites Around 
+                                                                                (last To )
+                                                                            )
+                                                                            if:
+                                                                            (and { 
+                                                                                (not 
+                                                                                    (is Visited 
+                                                                                        (to )
+                                                                                    )
+                                                                                )
+                                                                                
+                                                                                (is Empty 
+                                                                                    (to )
+                                                                                )
+                                                                                
+                                                                                (is Enemy 
+                                                                                    (who at:
+                                                                                        (ahead 
+                                                                                            (from )
+                                                                                        OppositeDirection )
+                                                                                    )
+                                                                                )
+                                                                                }
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                            
+                                                            (moveAgain )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece 
+                            (move Select 
+                                (from)
+                                
+                                (to 
+                                    (sites Around 
+                                        (from)
+                                    )
+                                    if:
+                                    (and 
+                                        (is Empty 
+                                            (to)
+                                        )
+                                        
+                                        (is Enemy 
+                                            (who at:
+                                                (ahead 
+                                                    (from)
+                                                OppositeDirection )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (then 
+                                    (and 
+                                        (fromTo 
+                                            (from 
+                                                (last From)
+                                            )
+                                            
+                                            (to 
+                                                (last To)
+                                            )
+                                        )
+                                        
+                                        (directional 
+                                            (from 
+                                                (last From)
+                                            )
+                                            
+                                            (directions Vertex from:
+                                                (last To)
+                                                to:
+                                                (last From)
+                                            )
+                                            
+                                            (to if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (or 
+                                            (move Select 
+                                                (from 
+                                                    (last To)
+                                                )
+                                                
+                                                (to 
+                                                    (sites Around 
+                                                        (last To)
+                                                    )
+                                                    if:
+                                                    (and { 
+                                                        (not 
+                                                            (is Visited 
+                                                                (to)
+                                                            )
+                                                        )
+                                                        
+                                                        (is Empty 
+                                                            (to)
+                                                        )
+                                                        
+                                                        (is Enemy 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (to )
+                                                                SameDirection )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                                
+                                                (then 
+                                                    (and { 
+                                                        (fromTo 
+                                                            (from 
+                                                                (last From )
+                                                            )
+                                                            
+                                                            (to 
+                                                                (last To )
+                                                            )
+                                                        )
+                                                        
+                                                        (directional 
+                                                            (from 
+                                                                (last To )
+                                                            )
+                                                            
+                                                            (directions Vertex from:
+                                                                (last From )
+                                                                to:
+                                                                (last To )
+                                                            )
+                                                            
+                                                            (to if:
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (to )
+                                                                    )
+                                                                )
+                                                                
+                                                                (apply 
+                                                                    (remove 
+                                                                        (to )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (if 
+                                                            (can Move 
+                                                                (or 
+                                                                    (move Select 
+                                                                        (from 
+                                                                            (last To )
+                                                                        )
+                                                                        
+                                                                        (to 
+                                                                            (sites Around 
+                                                                                (last To )
+                                                                            )
+                                                                            if:
+                                                                            (and { 
+                                                                                (not 
+                                                                                    (is Visited 
+                                                                                        (to )
+                                                                                    )
+                                                                                )
+                                                                                
+                                                                                (is Empty 
+                                                                                    (to )
+                                                                                )
+                                                                                
+                                                                                (is Enemy 
+                                                                                    (who at:
+                                                                                        (ahead 
+                                                                                            (to )
+                                                                                        SameDirection )
+                                                                                    )
+                                                                                )
+                                                                                }
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                    
+                                                                    (move Select 
+                                                                        (from 
+                                                                            (last To )
+                                                                        )
+                                                                        
+                                                                        (to 
+                                                                            (sites Around 
+                                                                                (last To )
+                                                                            )
+                                                                            if:
+                                                                            (and { 
+                                                                                (not 
+                                                                                    (is Visited 
+                                                                                        (to )
+                                                                                    )
+                                                                                )
+                                                                                
+                                                                                (is Empty 
+                                                                                    (to )
+                                                                                )
+                                                                                
+                                                                                (is Enemy 
+                                                                                    (who at:
+                                                                                        (ahead 
+                                                                                            (from )
+                                                                                        OppositeDirection )
+                                                                                    )
+                                                                                )
+                                                                                }
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                            
+                                                            (moveAgain )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (move Select 
+                                                (from 
+                                                    (last To)
+                                                )
+                                                
+                                                (to 
+                                                    (sites Around 
+                                                        (last To)
+                                                    )
+                                                    if:
+                                                    (and { 
+                                                        (not 
+                                                            (is Visited 
+                                                                (to)
+                                                            )
+                                                        )
+                                                        
+                                                        (is Empty 
+                                                            (to)
+                                                        )
+                                                        
+                                                        (is Enemy 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (from )
+                                                                OppositeDirection )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                                
+                                                (then 
+                                                    (and { 
+                                                        (fromTo 
+                                                            (from 
+                                                                (last From )
+                                                            )
+                                                            
+                                                            (to 
+                                                                (last To )
+                                                            )
+                                                        )
+                                                        
+                                                        (directional 
+                                                            (from 
+                                                                (last From )
+                                                            )
+                                                            
+                                                            (directions Vertex from:
+                                                                (last To )
+                                                                to:
+                                                                (last From )
+                                                            )
+                                                            
+                                                            (to if:
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (to )
+                                                                    )
+                                                                )
+                                                                
+                                                                (apply 
+                                                                    (remove 
+                                                                        (to )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (if 
+                                                            (can Move 
+                                                                (or 
+                                                                    (move Select 
+                                                                        (from 
+                                                                            (last To )
+                                                                        )
+                                                                        
+                                                                        (to 
+                                                                            (sites Around 
+                                                                                (last To )
+                                                                            )
+                                                                            if:
+                                                                            (and { 
+                                                                                (not 
+                                                                                    (is Visited 
+                                                                                        (to )
+                                                                                    )
+                                                                                )
+                                                                                
+                                                                                (is Empty 
+                                                                                    (to )
+                                                                                )
+                                                                                
+                                                                                (is Enemy 
+                                                                                    (who at:
+                                                                                        (ahead 
+                                                                                            (to )
+                                                                                        SameDirection )
+                                                                                    )
+                                                                                )
+                                                                                }
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                    
+                                                                    (move Select 
+                                                                        (from 
+                                                                            (last To )
+                                                                        )
+                                                                        
+                                                                        (to 
+                                                                            (sites Around 
+                                                                                (last To )
+                                                                            )
+                                                                            if:
+                                                                            (and { 
+                                                                                (not 
+                                                                                    (is Visited 
+                                                                                        (to )
+                                                                                    )
+                                                                                )
+                                                                                
+                                                                                (is Empty 
+                                                                                    (to )
+                                                                                )
+                                                                                
+                                                                                (is Enemy 
+                                                                                    (who at:
+                                                                                        (ahead 
+                                                                                            (from )
+                                                                                        OppositeDirection )
+                                                                                    )
+                                                                                )
+                                                                                }
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                            
+                                                            (moveAgain )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece 
+                        (move Step 
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    }
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (and 
+                    (no Moves P1)
+                    
+                    (no Moves P2)
+                )
+                { 
+                (if 
+                    (< 
+                        (count Pieces P1)
+                        
+                        (count Pieces P2)
+                    )
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (< 
+                        (count Pieces P2)
+                        
+                        (count Pieces P1)
+                    )
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (= 
+                        (count Pieces P2)
+                        
+                        (count Pieces P1)
+                    )
+                    
+                    (result Mover Draw)
+                )
+                }
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Capture" True)
+    })
+    )
