@@ -132,7 +132,7 @@ public abstract class TabPage extends View
 			
 			try(InputStream in = getClass().getResourceAsStream("/National-Regular.ttf"))
 			{
-				textArea.setFont(Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(26f));
+				textArea.setFont(Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(32f));
 			}
 			catch (final Exception e)
 			{
