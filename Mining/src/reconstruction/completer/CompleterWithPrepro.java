@@ -194,7 +194,7 @@ public class CompleterWithPrepro
 				}
 				else
 				{
-					if(geoThreshold != 0)
+					if(geoThreshold >= 0)
 						geoThreshold = geoThreshold - 0.03;
 					else
 					{
