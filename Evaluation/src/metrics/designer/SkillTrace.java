@@ -201,7 +201,7 @@ public class SkillTrace extends Metric
 				entryString += matchCount + ",";
 				entryString += hardTimeLimit + ",";
 				entryString += linearRegression.slopeStdErr() + ",";
-				entryString += linearRegression.interceptStdErr() + ",";
+				entryString += linearRegression.interceptStdErr();
 				writer.println(entryString);
 			}
 			catch (final FileNotFoundException e2)
