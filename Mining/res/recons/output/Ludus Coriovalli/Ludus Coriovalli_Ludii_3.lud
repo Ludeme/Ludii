@@ -1,0 +1,93 @@
+(game "Ludus Coriovalli" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (add 
+                (merge { 
+                    (rectangle 1 2)
+                    
+                    (shift 1 0 
+                        (rectangle 1 3)
+                    )
+                    
+                    (shift 3 0 
+                        (rectangle 1 2)
+                    )
+                    
+                    (rectangle 2 1)
+                    
+                    (shift 4 0 
+                        (rectangle 2 1)
+                    )
+                    
+                    (shift 4 1.5 
+                        (rectangle 2 1)
+                    )
+                    
+                    (shift 0 1.5 
+                        (rectangle 2 1)
+                    )
+                    
+                    (shift 0 2.5 
+                        (rectangle 1 2)
+                    )
+                    
+                    (shift 1 2.5 
+                        (rectangle 1 3)
+                    )
+                    
+                    (shift 3 2.5 
+                        (rectangle 1 2)
+                    )
+                    }
+                )
+                edges:{ { 9 5}
+                { 5 1}
+                { 9 11}
+                { 12 2}
+                { 13 7}
+                { 6 3}
+                { 6 7}
+                }
+            )
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each)
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:3)
+        )
+        
+        (play 
+            (move 
+                (from 
+                    (handSite Mover)
+                )
+                
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "TerritoryEnd" False)
+    })
+    )

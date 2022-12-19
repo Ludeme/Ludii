@@ -1,0 +1,305 @@
+(game "Ludus Coriovalli" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (add 
+                (merge { 
+                    (scale 2 1 
+                        (rectangle 1 3)
+                    )
+                    
+                    (rectangle 2 1)
+                    
+                    (shift 4 0 
+                        (rectangle 2 1)
+                    )
+                    
+                    (shift 4 1.5 
+                        (rectangle 2 1)
+                    )
+                    
+                    (shift 0 1.5 
+                        (rectangle 2 1)
+                    )
+                    
+                    (scale 2 1 
+                        (shift 0 2.5 
+                            (rectangle 1 3)
+                        )
+                    )
+                    
+                    (scale 2 1 
+                        (shift 0 3 
+                            (rectangle 1 3)
+                        )
+                    )
+                    
+                    (scale 2 1 
+                        (shift 0 -0.5 
+                            (rectangle 1 3)
+                        )
+                    )
+                    }
+                )
+                edges:{ { 3 7}
+                { 5 4}
+                { 9 1}
+                { 3 1}
+                { 1 4}
+                { 5 9}
+                { 9 7}
+                { 9 11}
+                { 1 14}
+                }
+            )
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (if 
+                (or 
+                    (= 
+                        (state at:
+                            (from)
+                        )
+                    0)
+                    
+                    (and 
+                        (= 1 
+                            (mapEntry 
+                                (count Pips)
+                            )
+                        )
+                        
+                        (= 
+                            (state at:
+                                (from)
+                            )
+                        1)
+                    )
+                )
+                
+                (if 
+                    (!= 
+                        (trackSite Move steps:
+                            (mapEntry 
+                                (count Pips)
+                            )
+                        )
+                    Off )
+                    
+                    (if 
+                        (or 
+                            (not 
+                                (is In 
+                                    (from)
+                                    
+                                    (sites Next)
+                                )
+                            )
+                            
+                            (and 
+                                (is In 
+                                    (from)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (= 
+                                    (count Sites in:
+                                        (intersection 
+                                            (sites Occupied by:Next)
+                                            
+                                            (sites Next)
+                                        )
+                                    )
+                                0 )
+                            )
+                        )
+                        
+                        (if 
+                            (or 
+                                (is In 
+                                    (trackSite Move steps:
+                                        (mapEntry 
+                                            (count Pips)
+                                        )
+                                    )
+                                    
+                                    (sites Empty)
+                                )
+                                
+                                (is Enemy 
+                                    (who at:
+                                        (trackSite Move steps:
+                                            (mapEntry 
+                                                (count Pips)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (or 
+                                (if 
+                                    (= 
+                                        (+ 
+                                            (mapEntry 
+                                                (count Pips)
+                                            )
+                                        1)
+                                        
+                                        (count at:
+                                            (from)
+                                        )
+                                    )
+                                    
+                                    (move 
+                                        (from)
+                                        
+                                        (to 
+                                            (trackSite Move steps:
+                                                (mapEntry 
+                                                    (count Pips)
+                                                )
+                                            )
+                                            
+                                            (apply if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (remove 
+                                                    (to)
+                                                    
+                                                    (then 
+                                                        (addScore Mover 1)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        count:
+                                        (mapEntry 
+                                            (count Pips)
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:
+                                            (mapEntry 
+                                                (count Pips)
+                                            )
+                                        )
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (remove 
+                                                (to)
+                                                
+                                                (then 
+                                                    (addScore Mover 1)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    count:
+                                    (count at:
+                                        (from)
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (and 
+                                    (is In 
+                                        (trackSite Move steps:
+                                            (mapEntry 
+                                                (count Pips)
+                                            )
+                                        )
+                                        
+                                        (sites "CentralRows")
+                                    )
+                                    
+                                    (is Friend 
+                                        (who at:
+                                            (trackSite Move steps:
+                                                (mapEntry 
+                                                    (count Pips)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:
+                                            (mapEntry 
+                                                (count Pips)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (set State at:
+                            (last To)
+                        0)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:3)
+        )
+        
+        (play 
+            (move 
+                (from 
+                    (handSite Mover)
+                )
+                
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "TerritoryEnd" False)
+    })
+    )

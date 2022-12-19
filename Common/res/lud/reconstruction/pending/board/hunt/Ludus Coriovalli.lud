@@ -146,9 +146,7 @@
           (piece [#])
       })
       (rules  
-          (start [#])
-          (play [#])
-          (end [#])
+    	  [#]
       )
       >
       "The incomplete ruleset."
@@ -179,6 +177,10 @@
     (graphics {
         (show Edges Diagonal Hidden)
         (piece Families {"Abstract" "Themed"})
+    })
+    
+    (recon {
+        (concept "TerritoryEnd" False)
     })
     
 )
