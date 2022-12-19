@@ -196,6 +196,7 @@ public class SkillTrace extends Metric
 			{
 				String entryString = currentDatabaseId + ",";
 				entryString += game.name() + ",";
+				entryString += game.metadata().info().getId().get(0) + ",";
 				entryString += skillTrace + ",";
 				entryString += numTrialsPerMatch + ",";
 				entryString += matchCount + ",";
