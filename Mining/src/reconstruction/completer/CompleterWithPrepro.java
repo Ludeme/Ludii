@@ -1060,7 +1060,10 @@ public class CompleterWithPrepro
 	/** To update the list of luds to use for recons after each update of the threshold.*/
 	public void applyThresholdToLudMap(final int rulesetReconId)
 	{
+		// The map used according to the thresholds.
 		ludMapUsed = new HashMap<Integer, String>();
+		
+		// A temporary map used only in this method to do not waste time to look at the geo threshold if the score threshold can not get any rulesets to recons.
 		final Map<Integer, String> ludMapUsedWithoutGeo = new HashMap<Integer, String>();
 		
 		do

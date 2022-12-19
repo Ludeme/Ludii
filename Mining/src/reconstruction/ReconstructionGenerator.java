@@ -40,7 +40,7 @@ import utils.RandomAI;
 public class ReconstructionGenerator
 {
 	final static String defaultOutputPath        = "./res/recons/output/";
-	final static int    defaultNumReconsExpected = 2;
+	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 100000;
 	final static String defaultReconsPath        = "/lud/reconstruction/done/board/hunt/Fortresse";
 	//final static String defaultReconsPath        = "/lud/reconstruction/done/board/war/replacement/checkmate/chaturanga/Samantsy";
