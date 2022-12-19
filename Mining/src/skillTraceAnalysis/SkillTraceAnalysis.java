@@ -11,19 +11,22 @@ import main.FileHandling;
 import metrics.designer.SkillTrace;
 import other.GameLoader;
 
+/**
+ * Calculates the Skill Trace statistics for all games in Ludii.
+ * 
+ * @author Matthew.Stephenson
+ */
 public class SkillTraceAnalysis 
 {
 
-	//-------------------------------------------------------------------------
-	
 	/**
-	 * Predicts the win-rate for a variety of games, AI agents and prediction algorithms.
+	 * Main entry point.
 	 */
 	public static void main(final String[] args)
 	{		
 		final SkillTrace skillTraceMetric = new SkillTrace();
 		skillTraceMetric.setAddToDatabaseFile(true);
-		skillTraceMetric.setCurrentDatabaseId(1);
+		skillTraceMetric.setCurrentDatabaseId(1);						// Update this to the value one more the last id value in "SkillTraceResults.csv"
 		final String[] choices = FileHandling.listGames();
 		
 		// Record games that have already been done, and should not be redone.
@@ -67,6 +70,4 @@ public class SkillTraceAnalysis
 		}
 	}
 
-	//-------------------------------------------------------------------------
-	
 }
