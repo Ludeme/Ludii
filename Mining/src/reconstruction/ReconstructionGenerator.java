@@ -40,18 +40,18 @@ import utils.RandomAI;
 public class ReconstructionGenerator
 {
 	final static String defaultOutputPath        = "./res/recons/output/";
-	final static int    defaultNumReconsExpected = 10;
+	final static int    defaultNumReconsExpected = 2;
 	final static int    defaultNumAttempts       = 100000;
-	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/hunt/Ludus Coriovalli";
+	final static String defaultReconsPath        = "/lud/reconstruction/done/board/hunt/Fortresse";
 	//final static String defaultReconsPath        = "/lud/reconstruction/done/board/war/replacement/checkmate/chaturanga/Samantsy";
 	//final static String defaultReconsPath        = "/lud/reconstruction/validation/Canadian Draughts";
 	final static String defaultOptionName        = "Variant/Incomplete";
 	
-	final static double  defaultConceptualWeight = 0.0;
-	final static double  defaultHistoricalWeight = 1.0;
+	final static double  defaultConceptualWeight = 0.5;
+	final static double  defaultHistoricalWeight = 0.5;
 	final static double  defaultGeographicalWeight = 0.0;
 	final static double  defaultThreshold = 0.99;
-	final static boolean geographicalOrder = false;
+	final static boolean geographicalOrder = true;
 	
 	final static boolean checkTimeoutRandomPlayout = false;
 	final static int     defaultPlayoutsAttempts = 100;
@@ -295,7 +295,7 @@ public class ReconstructionGenerator
 											if(!descAlreadyObtained)
 											{
 												correctCompletions.add(completion);
-												System.out.println("Score = " + completion.score() + " Cultural Score = " + completion.similarityScore() + " Conceptual Score = " + completion.commonExpectedConceptsScore() + " Geographical Score = " + completion.geographicalScore()) ; 
+												System.out.println("Score = " + completion.score() + " Cultural Score = " + completion.culturalScore() + " Conceptual Score = " + completion.conceptualScore() + " Geographical Score = " + completion.geographicalScore()) ; 
 												System.out.println("ids used = " + completion.idsUsed());
 												System.out.println(completion.raw());
 												System.out.println(correctCompletions.size() + " COMPLETIONS GENERATED.");
@@ -315,7 +315,7 @@ public class ReconstructionGenerator
 			
 			for (int n = 1; n < correctCompletions.size() + 1; n++) 
 			{
-				System.out.println("Completion " + n  + " has a score of " + correctCompletions.get(n -1).score() + " similarity Score = " + correctCompletions.get(n -1).similarityScore() + " true concepts score = " + correctCompletions.get(n - 1).commonExpectedConceptsScore() + " IDS used = " + correctCompletions.get(n -1).idsUsed() + (correctCompletions.get(n -1).otherIdsUsed().isEmpty() ? "" : " other possible IDS = " + correctCompletions.get(n -1).otherIdsUsed()));
+				System.out.println("Completion " + n  + " has a score of " + correctCompletions.get(n -1).score() + " Cultural Score = " + correctCompletions.get(n -1).culturalScore() + " conceptual score = " + correctCompletions.get(n - 1).conceptualScore() + " geographical score = " + correctCompletions.get(n - 1).geographicalScore() + " IDS used = " + correctCompletions.get(n -1).idsUsed() + (correctCompletions.get(n -1).otherIdsUsed().isEmpty() ? "" : " other possible IDS = " + correctCompletions.get(n -1).otherIdsUsed()));
 				CompleterWithPrepro.saveCompletion(outputPath + gameName + "/", gameName + " (Ludii " + n + ")", correctCompletions.get(n -1).raw());
 			}
 
@@ -331,8 +331,8 @@ public class ReconstructionGenerator
 					lineToWrite.add(gameName + " (Ludii " + n + ")");
 					lineToWrite.add(idRulesetToRecons+"");
 					lineToWrite.add(correctCompletions.get(n-1).score() +"");
-					lineToWrite.add(correctCompletions.get(n-1).similarityScore() +"");
-					lineToWrite.add(correctCompletions.get(n-1).commonExpectedConceptsScore() +"");
+					lineToWrite.add(correctCompletions.get(n-1).culturalScore() +"");
+					lineToWrite.add(correctCompletions.get(n-1).conceptualScore() +"");
 					lineToWrite.add(correctCompletions.get(n-1).geographicalScore() +"");
 					lineToWrite.add(correctCompletions.get(n-1).idsUsed() +"");
 					lineToWrite.add(correctCompletions.get(n-1).otherIdsUsed() +"");

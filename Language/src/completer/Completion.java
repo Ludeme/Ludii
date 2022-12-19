@@ -13,8 +13,8 @@ public class Completion
 {
 	private String raw;  // completed game description
 	private double score = 0;  // confidence in enumeration (0..1)
-	private double similarityScore = 0;  // (0..1)
-	private double commonTrueConceptsScore = 0;  // (0..1)
+	private double culturalScore = 0;  // (0..1)
+	private double conceptualScore = 0;  // (0..1)
 	private double geographicalScore = 0;  // (0..1)
 	private TIntArrayList idsUsed = new TIntArrayList(); // The ruleset ids used to make the completion.
 	private List<TIntArrayList> otherIdsUSed = new ArrayList<TIntArrayList>(); // The other possible combinations of rulesets used to obtain the same completion.
@@ -48,14 +48,14 @@ public class Completion
 		score = value;
 	}
 	
-	public double similarityScore()
+	public double culturalScore()
 	{
-		return similarityScore;
+		return culturalScore;
 	}
 	
-	public void setSimilarityScore(final double value)
+	public void setCulturalScore(final double value)
 	{
-		similarityScore = value;
+		culturalScore = value;
 	}
 	
 	public double geographicalScore()
@@ -68,14 +68,14 @@ public class Completion
 		geographicalScore = value;
 	}
 	
-	public double commonExpectedConceptsScore()
+	public double conceptualScore()
 	{
-		return commonTrueConceptsScore;
+		return conceptualScore;
 	}
 	
-	public void setCommonTrueConceptsScore(final double value)
+	public void setConceptualScore(final double value)
 	{
-		commonTrueConceptsScore = value;
+		conceptualScore = value;
 	}
 	
 	public TIntArrayList idsUsed()
