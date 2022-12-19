@@ -2,6 +2,7 @@ package metrics.designer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -36,12 +37,18 @@ public class SkillTrace extends Metric
 	private int numMatches = 8;
 	
 	// Number of trials per match
-	private int numTrialsPerMatch = 10;
+	private int numTrialsPerMatch = 30;
 	
 	// A hard time limit in seconds, after which any future trials are aborted
-	private int hardTimeLimit = 300;
+	private int hardTimeLimit = 60;
 	
+	// Output path for more details results
 	private String outputPath = "";
+	
+	// Database storage options
+	private final static boolean addToDatabaseFile = true;
+	private final static String combinedResultsOutputPath = "SkillTraceResults.csv";
+	private static int currentId = 1;
 
 	//-------------------------------------------------------------------------
 
@@ -180,6 +187,27 @@ public class SkillTrace extends Metric
 			{
 				e2.printStackTrace();
 			}
+		}
+		
+		// Append output as an entry of the csv defined in "combinedResultsOutputPath", for uploading to Database.
+		if (addToDatabaseFile)
+		{	
+			try (final PrintWriter writer = new PrintWriter(new FileOutputStream(new File(combinedResultsOutputPath), true)))
+			{
+				String entryString = currentId + ",";
+				entryString += game.name() + ",";
+				entryString += skillTrace + ",";
+				entryString += numTrialsPerMatch + ",";
+				entryString += matchCount + ",";
+				entryString += linearRegression.slopeStdErr() + ",";
+				entryString += linearRegression.interceptStdErr() + ",";
+				writer.println(entryString);
+				currentId++;
+			}
+			catch (final FileNotFoundException e2)
+			{
+				e2.printStackTrace();
+			}	
 		}
 		
 		return Double.valueOf(skillTrace);
