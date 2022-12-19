@@ -1,0 +1,173 @@
+(game "Ijil Buga" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (rotate 45 
+                    (shift 1.5 8.2 
+                        (square 2 diagonals:Solid)
+                    )
+                )
+                
+                (shift 0.67 -1.32 
+                    (scale 0.66 
+                        (wedge 3)
+                    )
+                )
+                
+                (rectangle 9 5 diagonals:Alternating)
+                
+                (rotate 45 
+                    (shift 4.2 5.5 
+                        (square 2 diagonals:Solid)
+                    )
+                )
+                
+                (rotate 45 
+                    (shift 4.2 1.5 
+                        (square 2 diagonals:Solid)
+                    )
+                )
+                
+                (shift -1.99 1.34 
+                    (rotate -90 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                )
+                
+                (shift -1.98 5.35 
+                    (rotate -90 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                )
+                }
+            )
+        use:Vertex)
+        
+        (piece "Deer" P1 
+            (and 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Dog" P2 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        
+        (hand P2)
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Deer1" 
+                (sites { "E11" "G9" "C9" "C5" "G5" "E3"}
+                )
+            )
+            
+            (place "Dog2" 
+                (forEach 
+                    (sites Empty)
+                    if:
+                    (not 
+                        (is In 
+                            (site)
+                            
+                            (expand 
+                                (union 
+                                    (sites Top)
+                                    
+                                    (sites Bottom)
+                                )
+                            steps:2)
+                        )
+                    )
+                )
+            )
+            
+            (place "Dog2" 
+                (handSite P2)
+            count:42)
+            }
+        )
+        
+        (play 
+            (or 
+                (forEach Piece)
+                
+                (if 
+                    (is Mover P2)
+                    
+                    (move 
+                        (from 
+                            (handSite P2)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end { 
+            (if 
+                (no Moves P1)
+                
+                (result P2 Win)
+            )
+            
+            (if 
+                (no Pieces P2)
+                
+                (result P1 Win)
+            )
+            }
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "NumStartComponents" minValue:16 maxValue:86)
+    }))
