@@ -46,9 +46,9 @@ public class SkillTrace extends Metric
 	private String outputPath = "";
 	
 	// Database storage options
-	private final static boolean addToDatabaseFile = true;
-	private final static String combinedResultsOutputPath = "SkillTraceResults.csv";
-	private static int currentId = 1;
+	private boolean addToDatabaseFile = false;
+	private String combinedResultsOutputPath = "SkillTraceResults.csv";
+	private int currentDatabaseId = 1;
 
 	//-------------------------------------------------------------------------
 
@@ -194,7 +194,7 @@ public class SkillTrace extends Metric
 		{	
 			try (final PrintWriter writer = new PrintWriter(new FileOutputStream(new File(combinedResultsOutputPath), true)))
 			{
-				String entryString = currentId + ",";
+				String entryString = currentDatabaseId + ",";
 				entryString += game.name() + ",";
 				entryString += skillTrace + ",";
 				entryString += numTrialsPerMatch + ",";
@@ -203,7 +203,7 @@ public class SkillTrace extends Metric
 				entryString += linearRegression.slopeStdErr() + ",";
 				entryString += linearRegression.interceptStdErr() + ",";
 				writer.println(entryString);
-				currentId++;
+				currentDatabaseId++;
 			}
 			catch (final FileNotFoundException e2)
 			{
@@ -232,6 +232,21 @@ public class SkillTrace extends Metric
 	public void setOutputPath(final String s) 
 	{
 		outputPath = s;
+	}
+
+	public void setCombinedResultsOutputPath(final String combinedResultsOutputPath) 
+	{
+		this.combinedResultsOutputPath = combinedResultsOutputPath;
+	}
+
+	public void setAddToDatabaseFile(final boolean addToDatabaseFile) 
+	{
+		this.addToDatabaseFile = addToDatabaseFile;
+	}
+
+	public void setCurrentDatabaseId(final int currentDatabaseId) 
+	{
+		this.currentDatabaseId = currentDatabaseId;
 	}
 
 	//-------------------------------------------------------------------------

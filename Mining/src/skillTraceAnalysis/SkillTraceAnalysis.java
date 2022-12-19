@@ -2,7 +2,6 @@ package skillTraceAnalysis;
 
 import game.Game;
 import main.FileHandling;
-import metrics.Metric;
 import metrics.designer.SkillTrace;
 import other.GameLoader;
 
@@ -16,7 +15,8 @@ public class SkillTraceAnalysis
 	 */
 	public static void main(final String[] args)
 	{		
-		final Metric skillTraceMetric = new SkillTrace();
+		final SkillTrace skillTraceMetric = new SkillTrace();
+		skillTraceMetric.setAddToDatabaseFile(true);
 		final String[] choices = FileHandling.listGames();
 		
 		for (final String s : choices)
