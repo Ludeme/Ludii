@@ -1,5 +1,8 @@
 package completer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gnu.trove.list.array.TIntArrayList;
 
 /**
@@ -14,6 +17,7 @@ public class Completion
 	private double commonTrueConceptsScore = 0;  // (0..1)
 	private double geographicalScore = 0;  // (0..1)
 	private TIntArrayList idsUsed = new TIntArrayList(); // The ruleset ids used to make the completion.
+	private List<TIntArrayList> otherIdsUSed = new ArrayList<TIntArrayList>(); // The other possible combinations of rulesets used to obtain the same completion.
 
 	//-------------------------------------------------------------------------
 
@@ -87,6 +91,17 @@ public class Completion
 	public void addId(final int id)
 	{
 		idsUsed.add(id);
+	}
+	
+	public List<TIntArrayList> otherIdsUsed()
+	{
+		return otherIdsUSed;
+	}
+	
+	
+	public void addOtherIds(final TIntArrayList ids)
+	{
+		otherIdsUSed.add(ids);
 	}
 	
 	//-------------------------------------------------------------------------
