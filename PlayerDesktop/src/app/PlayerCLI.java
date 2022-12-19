@@ -8,6 +8,7 @@ import ludemeplexDetection.LudemeplexDetection;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
+import skillTraceAnalysis.SkillTraceAnalysis;
 import supplementary.experiments.debugging.FindCrashingTrial;
 import supplementary.experiments.eval.EvalAgents;
 import supplementary.experiments.eval.EvalGames;
@@ -76,7 +77,8 @@ public class PlayerCLI
 //					"--learning-with-descent",
 					"--generate-biased-mcts-eval-scripts",
 					"--kilothon",
-					"--identify-top-features"
+					"--identify-top-features",
+					"--skill-trace-analysis"
 				)
 				.withNumVals(1)
 				.withType(OptionTypes.String));
@@ -126,6 +128,8 @@ public class PlayerCLI
 			Kilothon.main(passArgs);
 		else if (command.equalsIgnoreCase("--identify-top-features"))
 			IdentifyTopFeatures.main(passArgs);
+		else if (command.equalsIgnoreCase("--skill-trace-analysis"))
+			SkillTraceAnalysis.main(passArgs);
 //		else if (command.equalsIgnoreCase("--eval-ubfm"))
 //			EvaluateAllUBFMs.main(passArgs);
 //		else if (command.equalsIgnoreCase("--learning-with-descent"))
