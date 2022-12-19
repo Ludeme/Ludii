@@ -26,7 +26,6 @@ public class SkillTraceAnalysis
 	{		
 		final SkillTrace skillTraceMetric = new SkillTrace();
 		skillTraceMetric.setAddToDatabaseFile(true);
-		skillTraceMetric.setCurrentDatabaseId(1);						// Update this to the value one more the last id value in "SkillTraceResults.csv"
 		final String[] choices = FileHandling.listGames();
 		
 		// Record games that have already been done, and should not be redone.
@@ -40,7 +39,7 @@ public class SkillTraceAnalysis
 				{
 					break;
 				}
-				final String gameName = line.split(",")[1];
+				final String gameName = line.split(",")[0];
 				gameNamesAlreadyDone.add(gameName);
 			}
 		}
