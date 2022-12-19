@@ -1,0 +1,172 @@
+(game "Ludus Coriovalli" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (add 
+                (merge { 
+                    (scale 2 1 
+                        (rectangle 1 3)
+                    )
+                    
+                    (rectangle 2 1)
+                    
+                    (shift 4 0 
+                        (rectangle 2 1)
+                    )
+                    
+                    (shift 4 1.5 
+                        (rectangle 2 1)
+                    )
+                    
+                    (shift 0 1.5 
+                        (rectangle 2 1)
+                    )
+                    
+                    (scale 2 1 
+                        (shift 0 2.5 
+                            (rectangle 1 3)
+                        )
+                    )
+                    
+                    (scale 2 1 
+                        (shift 0 3 
+                            (rectangle 1 3)
+                        )
+                    )
+                    
+                    (scale 2 1 
+                        (shift 0 -0.5 
+                            (rectangle 1 3)
+                        )
+                    )
+                    }
+                )
+                edges:{ { 3 7}
+                { 5 4}
+                { 9 1}
+                { 3 1}
+                { 1 4}
+                { 5 9}
+                { 9 7}
+                { 9 11}
+                { 1 14}
+                }
+            )
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Pawn" Each 
+            (or { 
+                (move Step Forward 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (directions { FR FL }
+                    )
+                    
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                }
+                
+                (then 
+                    (if 
+                        (is In 
+                            (last To)
+                            
+                            (sites Mover "Promotion")
+                        )
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules phases:{ 
+        (phase "Placement" 
+            (play 
+                (move Add 
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            
+            (nextPhase "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (move Leap 
+                    (from 
+                        (last To)
+                    )
+                    { { F F R F }
+                    { F F L F }
+                    }
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (add 
+                            (to 
+                                (last From)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end { 
+            (if 
+                (>= 
+                    (count Moves)
+                    
+                    (count Sites "Board")
+                )
+                
+                (result P1 Win)
+            )
+            
+            (if 
+                (no Moves P1)
+                
+                (result P1 Loss)
+            )
+            }
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "TerritoryEnd" False)
+    })
+    )

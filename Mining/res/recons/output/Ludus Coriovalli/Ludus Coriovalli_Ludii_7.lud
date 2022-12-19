@@ -1,0 +1,1511 @@
+(game "Ludus Coriovalli" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (add 
+                (merge { 
+                    (rectangle 1 2)
+                    
+                    (shift 1 0 
+                        (rectangle 1 3)
+                    )
+                    
+                    (shift 3 0 
+                        (rectangle 1 2)
+                    )
+                    
+                    (rectangle 2 1)
+                    
+                    (shift 4 0 
+                        (rectangle 2 1)
+                    )
+                    
+                    (shift 4 1.5 
+                        (rectangle 2 1)
+                    )
+                    
+                    (shift 0 1.5 
+                        (rectangle 2 1)
+                    )
+                    
+                    (shift 0 2.5 
+                        (rectangle 1 2)
+                    )
+                    
+                    (shift 1 2.5 
+                        (rectangle 1 3)
+                    )
+                    
+                    (shift 3 2.5 
+                        (rectangle 1 2)
+                    )
+                    
+                    (scale 2 1 
+                        (shift 0 3 
+                            (rectangle 1 3)
+                        )
+                    )
+                    }
+                )
+                edges:{ { 9 5}
+                { 5 1}
+                { 9 11}
+                { 12 2}
+                { 13 7}
+                { 6 3}
+                { 6 7}
+                { 15 12}
+                }
+            )
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move 
+                (from)
+                
+                (to 
+                    (if 
+                        (is In 
+                            (from)
+                            
+                            (sites Track "Ring7")
+                        )
+                        
+                        (trackSite Move "Ring7" steps:
+                            (count Pips)
+                        )
+                        
+                        (if 
+                            (is In 
+                                (from)
+                                
+                                (sites Track "Ring6")
+                            )
+                            
+                            (trackSite Move "Ring6" steps:
+                                (count Pips)
+                            )
+                            
+                            (if 
+                                (is In 
+                                    (from)
+                                    
+                                    (sites Track "Ring5")
+                                )
+                                
+                                (trackSite Move "Ring5" steps:
+                                    (count Pips)
+                                )
+                                
+                                (if 
+                                    (is In 
+                                        (from)
+                                        
+                                        (sites Track "Ring4")
+                                    )
+                                    
+                                    (trackSite Move "Ring4" steps:
+                                        (count Pips)
+                                    )
+                                    
+                                    (if 
+                                        (is In 
+                                            (from)
+                                            
+                                            (sites Track "Ring3")
+                                        )
+                                        
+                                        (trackSite Move "Ring3" steps:
+                                            (count Pips)
+                                        )
+                                        
+                                        (if 
+                                            (is In 
+                                                (from)
+                                                
+                                                (sites Track "Ring2")
+                                            )
+                                            
+                                            (trackSite Move "Ring2" steps:
+                                                (count Pips)
+                                            )
+                                            
+                                            (trackSite Move "Ring1" steps:
+                                                (count Pips)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (not 
+                            (or { 
+                                (and 
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites "Section0")
+                                    )
+                                    
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites "Section0")
+                                    )
+                                )
+                                
+                                (and 
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites "Section1")
+                                    )
+                                    
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites "Section1")
+                                    )
+                                )
+                                
+                                (and 
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites "Section2")
+                                    )
+                                    
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites "Section2")
+                                    )
+                                )
+                                
+                                (and 
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites "Section3")
+                                    )
+                                    
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites "Section3")
+                                    )
+                                )
+                                
+                                (and 
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites "Section4")
+                                    )
+                                    
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites "Section4")
+                                    )
+                                )
+                                
+                                (and 
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites "Section5")
+                                    )
+                                    
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites "Section5")
+                                    )
+                                )
+                                
+                                (and 
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites "Section6")
+                                    )
+                                    
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites "Section6")
+                                    )
+                                )
+                                
+                                (and 
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites "Section7")
+                                    )
+                                    
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites "Section7")
+                                    )
+                                )
+                                
+                                (and 
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites "Section8")
+                                    )
+                                    
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites "Section8")
+                                    )
+                                )
+                                
+                                (and 
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites "Section9")
+                                    )
+                                    
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites "Section9")
+                                    )
+                                )
+                                
+                                (and 
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites "Section10")
+                                    )
+                                    
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites "Section10")
+                                    )
+                                )
+                                
+                                (and 
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites "Section11")
+                                    )
+                                    
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites "Section11")
+                                    )
+                                )
+                                }
+                            )
+                        )
+                        
+                        (forEach Site 
+                            (sites Occupied by:Enemy)
+                            
+                            (addScore Mover 
+                                (mapEntry "Score" 
+                                    (if 
+                                        (is In 
+                                            (last To)
+                                            
+                                            (sites "Section0")
+                                        )
+                                        
+                                        (if 
+                                            (is In 
+                                                (site)
+                                                
+                                                (sites "Section0")
+                                            )
+                                            0 
+                                            (if 
+                                                (or 
+                                                    (is In 
+                                                        (site)
+                                                        
+                                                        (sites "Section1")
+                                                    )
+                                                    
+                                                    (is In 
+                                                        (site)
+                                                        
+                                                        (sites "Section11" )
+                                                    )
+                                                )
+                                                1 
+                                                (if 
+                                                    (or 
+                                                        (is In 
+                                                            (site)
+                                                            
+                                                            (sites "Section2" )
+                                                        )
+                                                        
+                                                        (is In 
+                                                            (site)
+                                                            
+                                                            (sites "Section10" )
+                                                        )
+                                                    )
+                                                    2 
+                                                    (if 
+                                                        (or 
+                                                            (is In 
+                                                                (site)
+                                                                
+                                                                (sites "Section3" )
+                                                            )
+                                                            
+                                                            (is In 
+                                                                (site)
+                                                                
+                                                                (sites "Section9" )
+                                                            )
+                                                        )
+                                                        3 
+                                                        (if 
+                                                            (or 
+                                                                (is In 
+                                                                    (site)
+                                                                    
+                                                                    (sites "Section4" )
+                                                                )
+                                                                
+                                                                (is In 
+                                                                    (site)
+                                                                    
+                                                                    (sites "Section8" )
+                                                                )
+                                                            )
+                                                            4 
+                                                            (if 
+                                                                (or 
+                                                                    (is In 
+                                                                        (site )
+                                                                        
+                                                                        (sites "Section5" )
+                                                                    )
+                                                                    
+                                                                    (is In 
+                                                                        (site )
+                                                                        
+                                                                        (sites "Section7" )
+                                                                    )
+                                                                )
+                                                            5 6 )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (if 
+                                            (is In 
+                                                (last To)
+                                                
+                                                (sites "Section1")
+                                            )
+                                            
+                                            (if 
+                                                (is In 
+                                                    (site)
+                                                    
+                                                    (sites "Section1")
+                                                )
+                                                0 
+                                                (if 
+                                                    (or 
+                                                        (is In 
+                                                            (site)
+                                                            
+                                                            (sites "Section2" )
+                                                        )
+                                                        
+                                                        (is In 
+                                                            (site)
+                                                            
+                                                            (sites "Section0" )
+                                                        )
+                                                    )
+                                                    1 
+                                                    (if 
+                                                        (or 
+                                                            (is In 
+                                                                (site)
+                                                                
+                                                                (sites "Section3" )
+                                                            )
+                                                            
+                                                            (is In 
+                                                                (site)
+                                                                
+                                                                (sites "Section11" )
+                                                            )
+                                                        )
+                                                        2 
+                                                        (if 
+                                                            (or 
+                                                                (is In 
+                                                                    (site)
+                                                                    
+                                                                    (sites "Section4" )
+                                                                )
+                                                                
+                                                                (is In 
+                                                                    (site)
+                                                                    
+                                                                    (sites "Section10" )
+                                                                )
+                                                            )
+                                                            3 
+                                                            (if 
+                                                                (or 
+                                                                    (is In 
+                                                                        (site )
+                                                                        
+                                                                        (sites "Section5" )
+                                                                    )
+                                                                    
+                                                                    (is In 
+                                                                        (site )
+                                                                        
+                                                                        (sites "Section9" )
+                                                                    )
+                                                                )
+                                                                4 
+                                                                (if 
+                                                                    (or 
+                                                                        (is In 
+                                                                            (site )
+                                                                            
+                                                                            (sites "Section6" )
+                                                                        )
+                                                                        
+                                                                        (is In 
+                                                                            (site )
+                                                                            
+                                                                            (sites "Section8" )
+                                                                        )
+                                                                    )
+                                                                5 6 )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (if 
+                                                (is In 
+                                                    (last To)
+                                                    
+                                                    (sites "Section2")
+                                                )
+                                                
+                                                (if 
+                                                    (is In 
+                                                        (site)
+                                                        
+                                                        (sites "Section2")
+                                                    )
+                                                    0 
+                                                    (if 
+                                                        (or 
+                                                            (is In 
+                                                                (site)
+                                                                
+                                                                (sites "Section3" )
+                                                            )
+                                                            
+                                                            (is In 
+                                                                (site)
+                                                                
+                                                                (sites "Section1" )
+                                                            )
+                                                        )
+                                                        1 
+                                                        (if 
+                                                            (or 
+                                                                (is In 
+                                                                    (site)
+                                                                    
+                                                                    (sites "Section4" )
+                                                                )
+                                                                
+                                                                (is In 
+                                                                    (site)
+                                                                    
+                                                                    (sites "Section0" )
+                                                                )
+                                                            )
+                                                            2 
+                                                            (if 
+                                                                (or 
+                                                                    (is In 
+                                                                        (site )
+                                                                        
+                                                                        (sites "Section5" )
+                                                                    )
+                                                                    
+                                                                    (is In 
+                                                                        (site )
+                                                                        
+                                                                        (sites "Section11" )
+                                                                    )
+                                                                )
+                                                                3 
+                                                                (if 
+                                                                    (or 
+                                                                        (is In 
+                                                                            (site )
+                                                                            
+                                                                            (sites "Section6" )
+                                                                        )
+                                                                        
+                                                                        (is In 
+                                                                            (site )
+                                                                            
+                                                                            (sites "Section10" )
+                                                                        )
+                                                                    )
+                                                                    4 
+                                                                    (if 
+                                                                        (or 
+                                                                            (is In 
+                                                                                (site )
+                                                                                
+                                                                                (sites "Section7" )
+                                                                            )
+                                                                            
+                                                                            (is In 
+                                                                                (site )
+                                                                                
+                                                                                (sites "Section9" )
+                                                                            )
+                                                                        )
+                                                                    5 6 )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (if 
+                                                    (is In 
+                                                        (last To)
+                                                        
+                                                        (sites "Section3")
+                                                    )
+                                                    
+                                                    (if 
+                                                        (is In 
+                                                            (site)
+                                                            
+                                                            (sites "Section3" )
+                                                        )
+                                                        0 
+                                                        (if 
+                                                            (or 
+                                                                (is In 
+                                                                    (site)
+                                                                    
+                                                                    (sites "Section4" )
+                                                                )
+                                                                
+                                                                (is In 
+                                                                    (site)
+                                                                    
+                                                                    (sites "Section2" )
+                                                                )
+                                                            )
+                                                            1 
+                                                            (if 
+                                                                (or 
+                                                                    (is In 
+                                                                        (site )
+                                                                        
+                                                                        (sites "Section5" )
+                                                                    )
+                                                                    
+                                                                    (is In 
+                                                                        (site )
+                                                                        
+                                                                        (sites "Section1" )
+                                                                    )
+                                                                )
+                                                                2 
+                                                                (if 
+                                                                    (or 
+                                                                        (is In 
+                                                                            (site )
+                                                                            
+                                                                            (sites "Section6" )
+                                                                        )
+                                                                        
+                                                                        (is In 
+                                                                            (site )
+                                                                            
+                                                                            (sites "Section0" )
+                                                                        )
+                                                                    )
+                                                                    3 
+                                                                    (if 
+                                                                        (or 
+                                                                            (is In 
+                                                                                (site )
+                                                                                
+                                                                                (sites "Section7" )
+                                                                            )
+                                                                            
+                                                                            (is In 
+                                                                                (site )
+                                                                                
+                                                                                (sites "Section11" )
+                                                                            )
+                                                                        )
+                                                                        4 
+                                                                        (if 
+                                                                            (or 
+                                                                                (is In 
+                                                                                    (site )
+                                                                                    
+                                                                                    (sites "Section8" )
+                                                                                )
+                                                                                
+                                                                                (is In 
+                                                                                    (site )
+                                                                                    
+                                                                                    (sites "Section10" )
+                                                                                )
+                                                                            )
+                                                                        5 6 )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (if 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites "Section4" )
+                                                        )
+                                                        
+                                                        (if 
+                                                            (is In 
+                                                                (site)
+                                                                
+                                                                (sites "Section4" )
+                                                            )
+                                                            0 
+                                                            (if 
+                                                                (or 
+                                                                    (is In 
+                                                                        (site )
+                                                                        
+                                                                        (sites "Section5" )
+                                                                    )
+                                                                    
+                                                                    (is In 
+                                                                        (site )
+                                                                        
+                                                                        (sites "Section3" )
+                                                                    )
+                                                                )
+                                                                1 
+                                                                (if 
+                                                                    (or 
+                                                                        (is In 
+                                                                            (site )
+                                                                            
+                                                                            (sites "Section6" )
+                                                                        )
+                                                                        
+                                                                        (is In 
+                                                                            (site )
+                                                                            
+                                                                            (sites "Section2" )
+                                                                        )
+                                                                    )
+                                                                    2 
+                                                                    (if 
+                                                                        (or 
+                                                                            (is In 
+                                                                                (site )
+                                                                                
+                                                                                (sites "Section7" )
+                                                                            )
+                                                                            
+                                                                            (is In 
+                                                                                (site )
+                                                                                
+                                                                                (sites "Section1" )
+                                                                            )
+                                                                        )
+                                                                        3 
+                                                                        (if 
+                                                                            (or 
+                                                                                (is In 
+                                                                                    (site )
+                                                                                    
+                                                                                    (sites "Section8" )
+                                                                                )
+                                                                                
+                                                                                (is In 
+                                                                                    (site )
+                                                                                    
+                                                                                    (sites "Section0" )
+                                                                                )
+                                                                            )
+                                                                            4 
+                                                                            (if 
+                                                                                (or 
+                                                                                    (is In 
+                                                                                        (site )
+                                                                                        
+                                                                                        (sites "Section9" )
+                                                                                    )
+                                                                                    
+                                                                                    (is In 
+                                                                                        (site )
+                                                                                        
+                                                                                        (sites "Section11" )
+                                                                                    )
+                                                                                )
+                                                                            5 6 )
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (if 
+                                                            (is In 
+                                                                (last To)
+                                                                
+                                                                (sites "Section5" )
+                                                            )
+                                                            
+                                                            (if 
+                                                                (is In 
+                                                                    (site)
+                                                                    
+                                                                    (sites "Section5" )
+                                                                )
+                                                                0 
+                                                                (if 
+                                                                    (or 
+                                                                        (is In 
+                                                                            (site )
+                                                                            
+                                                                            (sites "Section6" )
+                                                                        )
+                                                                        
+                                                                        (is In 
+                                                                            (site )
+                                                                            
+                                                                            (sites "Section4" )
+                                                                        )
+                                                                    )
+                                                                    1 
+                                                                    (if 
+                                                                        (or 
+                                                                            (is In 
+                                                                                (site )
+                                                                                
+                                                                                (sites "Section7" )
+                                                                            )
+                                                                            
+                                                                            (is In 
+                                                                                (site )
+                                                                                
+                                                                                (sites "Section3" )
+                                                                            )
+                                                                        )
+                                                                        2 
+                                                                        (if 
+                                                                            (or 
+                                                                                (is In 
+                                                                                    (site )
+                                                                                    
+                                                                                    (sites "Section8" )
+                                                                                )
+                                                                                
+                                                                                (is In 
+                                                                                    (site )
+                                                                                    
+                                                                                    (sites "Section2" )
+                                                                                )
+                                                                            )
+                                                                            3 
+                                                                            (if 
+                                                                                (or 
+                                                                                    (is In 
+                                                                                        (site )
+                                                                                        
+                                                                                        (sites "Section9" )
+                                                                                    )
+                                                                                    
+                                                                                    (is In 
+                                                                                        (site )
+                                                                                        
+                                                                                        (sites "Section1" )
+                                                                                    )
+                                                                                )
+                                                                                4 
+                                                                                (if 
+                                                                                    (or 
+                                                                                        (is In 
+                                                                                            (site )
+                                                                                            
+                                                                                            (sites "Section10" )
+                                                                                        )
+                                                                                        
+                                                                                        (is In 
+                                                                                            (site )
+                                                                                            
+                                                                                            (sites "Section0" )
+                                                                                        )
+                                                                                    )
+                                                                                5 6 )
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                            
+                                                            (if 
+                                                                (is In 
+                                                                    (last To )
+                                                                    
+                                                                    (sites "Section6" )
+                                                                )
+                                                                
+                                                                (if 
+                                                                    (is In 
+                                                                        (site )
+                                                                        
+                                                                        (sites "Section6" )
+                                                                    )
+                                                                    0 
+                                                                    (if 
+                                                                        (or 
+                                                                            (is In 
+                                                                                (site )
+                                                                                
+                                                                                (sites "Section7" )
+                                                                            )
+                                                                            
+                                                                            (is In 
+                                                                                (site )
+                                                                                
+                                                                                (sites "Section5" )
+                                                                            )
+                                                                        )
+                                                                        1 
+                                                                        (if 
+                                                                            (or 
+                                                                                (is In 
+                                                                                    (site )
+                                                                                    
+                                                                                    (sites "Section8" )
+                                                                                )
+                                                                                
+                                                                                (is In 
+                                                                                    (site )
+                                                                                    
+                                                                                    (sites "Section4" )
+                                                                                )
+                                                                            )
+                                                                            2 
+                                                                            (if 
+                                                                                (or 
+                                                                                    (is In 
+                                                                                        (site )
+                                                                                        
+                                                                                        (sites "Section9" )
+                                                                                    )
+                                                                                    
+                                                                                    (is In 
+                                                                                        (site )
+                                                                                        
+                                                                                        (sites "Section3" )
+                                                                                    )
+                                                                                )
+                                                                                3 
+                                                                                (if 
+                                                                                    (or 
+                                                                                        (is In 
+                                                                                            (site )
+                                                                                            
+                                                                                            (sites "Section10" )
+                                                                                        )
+                                                                                        
+                                                                                        (is In 
+                                                                                            (site )
+                                                                                            
+                                                                                            (sites "Section2" )
+                                                                                        )
+                                                                                    )
+                                                                                    4 
+                                                                                    (if 
+                                                                                        (or 
+                                                                                            (is In 
+                                                                                                (site )
+                                                                                                
+                                                                                                (sites "Section11" )
+                                                                                            )
+                                                                                            
+                                                                                            (is In 
+                                                                                                (site )
+                                                                                                
+                                                                                                (sites "Section1" )
+                                                                                            )
+                                                                                        )
+                                                                                    5 6 )
+                                                                                )
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                )
+                                                                
+                                                                (if 
+                                                                    (is In 
+                                                                        (last To )
+                                                                        
+                                                                        (sites "Section7" )
+                                                                    )
+                                                                    
+                                                                    (if 
+                                                                        (is In 
+                                                                            (site )
+                                                                            
+                                                                            (sites "Section7" )
+                                                                        )
+                                                                        0 
+                                                                        (if 
+                                                                            (or 
+                                                                                (is In 
+                                                                                    (site )
+                                                                                    
+                                                                                    (sites "Section8" )
+                                                                                )
+                                                                                
+                                                                                (is In 
+                                                                                    (site )
+                                                                                    
+                                                                                    (sites "Section6" )
+                                                                                )
+                                                                            )
+                                                                            1 
+                                                                            (if 
+                                                                                (or 
+                                                                                    (is In 
+                                                                                        (site )
+                                                                                        
+                                                                                        (sites "Section9" )
+                                                                                    )
+                                                                                    
+                                                                                    (is In 
+                                                                                        (site )
+                                                                                        
+                                                                                        (sites "Section5" )
+                                                                                    )
+                                                                                )
+                                                                                2 
+                                                                                (if 
+                                                                                    (or 
+                                                                                        (is In 
+                                                                                            (site )
+                                                                                            
+                                                                                            (sites "Section10" )
+                                                                                        )
+                                                                                        
+                                                                                        (is In 
+                                                                                            (site )
+                                                                                            
+                                                                                            (sites "Section4" )
+                                                                                        )
+                                                                                    )
+                                                                                    3 
+                                                                                    (if 
+                                                                                        (or 
+                                                                                            (is In 
+                                                                                                (site )
+                                                                                                
+                                                                                                (sites "Section11" )
+                                                                                            )
+                                                                                            
+                                                                                            (is In 
+                                                                                                (site )
+                                                                                                
+                                                                                                (sites "Section3" )
+                                                                                            )
+                                                                                        )
+                                                                                        4 
+                                                                                        (if 
+                                                                                            (or 
+                                                                                                (is In 
+                                                                                                    (site )
+                                                                                                    
+                                                                                                    (sites "Section0" )
+                                                                                                )
+                                                                                                
+                                                                                                (is In 
+                                                                                                    (site )
+                                                                                                    
+                                                                                                    (sites "Section2" )
+                                                                                                )
+                                                                                            )
+                                                                                        5 6 )
+                                                                                    )
+                                                                                )
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                    
+                                                                    (if 
+                                                                        (is In 
+                                                                            (last To )
+                                                                            
+                                                                            (sites "Section8" )
+                                                                        )
+                                                                        
+                                                                        (if 
+                                                                            (is In 
+                                                                                (site )
+                                                                                
+                                                                                (sites "Section8" )
+                                                                            )
+                                                                            0 
+                                                                            (if 
+                                                                                (or 
+                                                                                    (is In 
+                                                                                        (site )
+                                                                                        
+                                                                                        (sites "Section9" )
+                                                                                    )
+                                                                                    
+                                                                                    (is In 
+                                                                                        (site )
+                                                                                        
+                                                                                        (sites "Section7" )
+                                                                                    )
+                                                                                )
+                                                                                1 
+                                                                                (if 
+                                                                                    (or 
+                                                                                        (is In 
+                                                                                            (site )
+                                                                                            
+                                                                                            (sites "Section10" )
+                                                                                        )
+                                                                                        
+                                                                                        (is In 
+                                                                                            (site )
+                                                                                            
+                                                                                            (sites "Section6" )
+                                                                                        )
+                                                                                    )
+                                                                                    2 
+                                                                                    (if 
+                                                                                        (or 
+                                                                                            (is In 
+                                                                                                (site )
+                                                                                                
+                                                                                                (sites "Section11" )
+                                                                                            )
+                                                                                            
+                                                                                            (is In 
+                                                                                                (site )
+                                                                                                
+                                                                                                (sites "Section5" )
+                                                                                            )
+                                                                                        )
+                                                                                        3 
+                                                                                        (if 
+                                                                                            (or 
+                                                                                                (is In 
+                                                                                                    (site )
+                                                                                                    
+                                                                                                    (sites "Section0" )
+                                                                                                )
+                                                                                                
+                                                                                                (is In 
+                                                                                                    (site )
+                                                                                                    
+                                                                                                    (sites "Section4" )
+                                                                                                )
+                                                                                            )
+                                                                                            4 
+                                                                                            (if 
+                                                                                                (or 
+                                                                                                    (is In 
+                                                                                                        (site )
+                                                                                                        
+                                                                                                        (sites "Section1" )
+                                                                                                    )
+                                                                                                    
+                                                                                                    (is In 
+                                                                                                        (site )
+                                                                                                        
+                                                                                                        (sites "Section3" )
+                                                                                                    )
+                                                                                                )
+                                                                                            5 6 )
+                                                                                        )
+                                                                                    )
+                                                                                )
+                                                                            )
+                                                                        )
+                                                                        
+                                                                        (if 
+                                                                            (is In 
+                                                                                (last To )
+                                                                                
+                                                                                (sites "Section9" )
+                                                                            )
+                                                                            
+                                                                            (if 
+                                                                                (is In 
+                                                                                    (site )
+                                                                                    
+                                                                                    (sites "Section9" )
+                                                                                )
+                                                                                0 
+                                                                                (if 
+                                                                                    (or 
+                                                                                        (is In 
+                                                                                            (site )
+                                                                                            
+                                                                                            (sites "Section10" )
+                                                                                        )
+                                                                                        
+                                                                                        (is In 
+                                                                                            (site )
+                                                                                            
+                                                                                            (sites "Section8" )
+                                                                                        )
+                                                                                    )
+                                                                                    1 
+                                                                                    (if 
+                                                                                        (or 
+                                                                                            (is In 
+                                                                                                (site )
+                                                                                                
+                                                                                                (sites "Section11" )
+                                                                                            )
+                                                                                            
+                                                                                            (is In 
+                                                                                                (site )
+                                                                                                
+                                                                                                (sites "Section7" )
+                                                                                            )
+                                                                                        )
+                                                                                        2 
+                                                                                        (if 
+                                                                                            (or 
+                                                                                                (is In 
+                                                                                                    (site )
+                                                                                                    
+                                                                                                    (sites "Section0" )
+                                                                                                )
+                                                                                                
+                                                                                                (is In 
+                                                                                                    (site )
+                                                                                                    
+                                                                                                    (sites "Section6" )
+                                                                                                )
+                                                                                            )
+                                                                                            3 
+                                                                                            (if 
+                                                                                                (or 
+                                                                                                    (is In 
+                                                                                                        (site )
+                                                                                                        
+                                                                                                        (sites "Section1" )
+                                                                                                    )
+                                                                                                    
+                                                                                                    (is In 
+                                                                                                        (site )
+                                                                                                        
+                                                                                                        (sites "Section5" )
+                                                                                                    )
+                                                                                                )
+                                                                                                4 
+                                                                                                (if 
+                                                                                                    (or 
+                                                                                                        (is In 
+                                                                                                            (site )
+                                                                                                            
+                                                                                                            (sites "Section2" )
+                                                                                                        )
+                                                                                                        
+                                                                                                        (is In 
+                                                                                                            (site )
+                                                                                                            
+                                                                                                            (sites "Section4" )
+                                                                                                        )
+                                                                                                    )
+                                                                                                5 6 )
+                                                                                            )
+                                                                                        )
+                                                                                    )
+                                                                                )
+                                                                            )
+                                                                            
+                                                                            (if 
+                                                                                (is In 
+                                                                                    (last To )
+                                                                                    
+                                                                                    (sites "Section10" )
+                                                                                )
+                                                                                
+                                                                                (if 
+                                                                                    (is In 
+                                                                                        (site )
+                                                                                        
+                                                                                        (sites "Section10" )
+                                                                                    )
+                                                                                    0 
+                                                                                    (if 
+                                                                                        (or 
+                                                                                            (is In 
+                                                                                                (site )
+                                                                                                
+                                                                                                (sites "Section11" )
+                                                                                            )
+                                                                                            
+                                                                                            (is In 
+                                                                                                (site )
+                                                                                                
+                                                                                                (sites "Section9" )
+                                                                                            )
+                                                                                        )
+                                                                                        1 
+                                                                                        (if 
+                                                                                            (or 
+                                                                                                (is In 
+                                                                                                    (site )
+                                                                                                    
+                                                                                                    (sites "Section0" )
+                                                                                                )
+                                                                                                
+                                                                                                (is In 
+                                                                                                    (site )
+                                                                                                    
+                                                                                                    (sites "Section8" )
+                                                                                                )
+                                                                                            )
+                                                                                            2 
+                                                                                            (if 
+                                                                                                (or 
+                                                                                                    (is In 
+                                                                                                        (site )
+                                                                                                        
+                                                                                                        (sites "Section1" )
+                                                                                                    )
+                                                                                                    
+                                                                                                    (is In 
+                                                                                                        (site )
+                                                                                                        
+                                                                                                        (sites "Section7" )
+                                                                                                    )
+                                                                                                )
+                                                                                                3 
+                                                                                                (if 
+                                                                                                    (or 
+                                                                                                        (is In 
+                                                                                                            (site )
+                                                                                                            
+                                                                                                            (sites "Section2" )
+                                                                                                        )
+                                                                                                        
+                                                                                                        (is In 
+                                                                                                            (site )
+                                                                                                            
+                                                                                                            (sites "Section6" )
+                                                                                                        )
+                                                                                                    )
+                                                                                                    4 
+                                                                                                    (if 
+                                                                                                        (or 
+                                                                                                            (is In 
+                                                                                                                (site )
+                                                                                                                
+                                                                                                                (sites "Section3" )
+                                                                                                            )
+                                                                                                            
+                                                                                                            (is In 
+                                                                                                                (site )
+                                                                                                                
+                                                                                                                (sites "Section5" )
+                                                                                                            )
+                                                                                                        )
+                                                                                                    5 6 )
+                                                                                                )
+                                                                                            )
+                                                                                        )
+                                                                                    )
+                                                                                )
+                                                                                
+                                                                                (if 
+                                                                                    (is In 
+                                                                                        (site )
+                                                                                        
+                                                                                        (sites "Section11" )
+                                                                                    )
+                                                                                    0 
+                                                                                    (if 
+                                                                                        (or 
+                                                                                            (is In 
+                                                                                                (site )
+                                                                                                
+                                                                                                (sites "Section0" )
+                                                                                            )
+                                                                                            
+                                                                                            (is In 
+                                                                                                (site )
+                                                                                                
+                                                                                                (sites "Section10" )
+                                                                                            )
+                                                                                        )
+                                                                                        1 
+                                                                                        (if 
+                                                                                            (or 
+                                                                                                (is In 
+                                                                                                    (site )
+                                                                                                    
+                                                                                                    (sites "Section1" )
+                                                                                                )
+                                                                                                
+                                                                                                (is In 
+                                                                                                    (site )
+                                                                                                    
+                                                                                                    (sites "Section9" )
+                                                                                                )
+                                                                                            )
+                                                                                            2 
+                                                                                            (if 
+                                                                                                (or 
+                                                                                                    (is In 
+                                                                                                        (site )
+                                                                                                        
+                                                                                                        (sites "Section2" )
+                                                                                                    )
+                                                                                                    
+                                                                                                    (is In 
+                                                                                                        (site )
+                                                                                                        
+                                                                                                        (sites "Section8" )
+                                                                                                    )
+                                                                                                )
+                                                                                                3 
+                                                                                                (if 
+                                                                                                    (or 
+                                                                                                        (is In 
+                                                                                                            (site )
+                                                                                                            
+                                                                                                            (sites "Section3" )
+                                                                                                        )
+                                                                                                        
+                                                                                                        (is In 
+                                                                                                            (site )
+                                                                                                            
+                                                                                                            (sites "Section7" )
+                                                                                                        )
+                                                                                                    )
+                                                                                                    4 
+                                                                                                    (if 
+                                                                                                        (or 
+                                                                                                            (is In 
+                                                                                                                (site )
+                                                                                                                
+                                                                                                                (sites "Section4" )
+                                                                                                            )
+                                                                                                            
+                                                                                                            (is In 
+                                                                                                                (site )
+                                                                                                                
+                                                                                                                (sites "Section6" )
+                                                                                                            )
+                                                                                                        )
+                                                                                                    5 6 )
+                                                                                                )
+                                                                                            )
+                                                                                        )
+                                                                                    )
+                                                                                )
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:3)
+        )
+        
+        (play 
+            (move 
+                (from 
+                    (handSite Mover)
+                )
+                
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "TerritoryEnd" False)
+    })
+    )
