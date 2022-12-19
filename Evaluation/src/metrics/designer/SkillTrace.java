@@ -199,6 +199,7 @@ public class SkillTrace extends Metric
 				entryString += skillTrace + ",";
 				entryString += numTrialsPerMatch + ",";
 				entryString += matchCount + ",";
+				entryString += hardTimeLimit + ",";
 				entryString += linearRegression.slopeStdErr() + ",";
 				entryString += linearRegression.interceptStdErr() + ",";
 				writer.println(entryString);
