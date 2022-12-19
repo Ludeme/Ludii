@@ -316,7 +316,7 @@ public class ReconstructionGenerator
 			for (int n = 1; n < correctCompletions.size() + 1; n++) 
 			{
 				System.out.println("Completion " + n  + " has a score of " + correctCompletions.get(n -1).score() + " similarity Score = " + correctCompletions.get(n -1).similarityScore() + " true concepts score = " + correctCompletions.get(n - 1).commonExpectedConceptsScore() + " IDS used = " + correctCompletions.get(n -1).idsUsed() + (correctCompletions.get(n -1).otherIdsUsed().isEmpty() ? "" : " other possible IDS = " + correctCompletions.get(n -1).otherIdsUsed()));
-				CompleterWithPrepro.saveCompletion(outputPath + gameName + "/", gameName + "_Ludii_" + n, correctCompletions.get(n -1).raw());
+				CompleterWithPrepro.saveCompletion(outputPath + gameName + "/", gameName + " (Ludii " + n + ")", correctCompletions.get(n -1).raw());
 			}
 
 			System.out.println("Num Attempts = " + numAttempts);
@@ -328,7 +328,7 @@ public class ReconstructionGenerator
 				for (int n = 1; n < correctCompletions.size() + 1; n++) 
 				{
 					final List<String> lineToWrite = new ArrayList<String>();
-					lineToWrite.add(gameName + "_Ludii_" + n);
+					lineToWrite.add(gameName + " (Ludii " + n + ")");
 					lineToWrite.add(idRulesetToRecons+"");
 					lineToWrite.add(correctCompletions.get(n-1).score() +"");
 					lineToWrite.add(correctCompletions.get(n-1).similarityScore() +"");
