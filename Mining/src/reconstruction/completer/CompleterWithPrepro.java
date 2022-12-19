@@ -1080,6 +1080,8 @@ public class CompleterWithPrepro
 				else
 					culturalSimilarity = DistanceUtils.getRulesetCSNDistance(rulesetId, rulesetReconId);
 				
+				//System.out.println("Id = " + rulesetId + " Other Id = " + rulesetReconId + " CSN Value = " + DistanceUtils.getRulesetCSNDistance(rulesetId, rulesetReconId));
+				
 				if(!fileSimilarity1.exists() || !fileSimilarity2.exists() || (rulesetReconId == rulesetId)) // If Geo not computing or comparing the same rulesets, similarity is 0.
 					geoSimilarity = 0.0;
 				else
