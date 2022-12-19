@@ -21,6 +21,9 @@ public class SkillTraceAnalysis
 		
 		for (final String s : choices)
 		{
+			if (FileHandling.shouldIgnoreLudRelease(s))
+				continue;
+			
 			final String gameName = s.split("\\/")[s.split("\\/").length-1];
 			final Game game = GameLoader.loadGameFromName(gameName);
 			System.out.println("\n------------");
