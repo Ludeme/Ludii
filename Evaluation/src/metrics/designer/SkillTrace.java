@@ -192,7 +192,7 @@ public class SkillTrace extends Metric
 		// Append output as an entry of the csv defined in "combinedResultsOutputPath", for uploading to Database.
 		if (addToDatabaseFile)
 		{	
-			try (final PrintWriter writer = new PrintWriter(new FileOutputStream(new File(combinedResultsOutputPath), true)))
+			try (final PrintWriter writer = new PrintWriter(new FileOutputStream(new File(combinedResultsOutputPath()), true)))
 			{
 				String entryString = currentDatabaseId + ",";
 				entryString += game.name() + ",";
@@ -247,6 +247,11 @@ public class SkillTrace extends Metric
 	public void setCurrentDatabaseId(final int currentDatabaseId) 
 	{
 		this.currentDatabaseId = currentDatabaseId;
+	}
+
+	public String combinedResultsOutputPath() 
+	{
+		return combinedResultsOutputPath;
 	}
 
 	//-------------------------------------------------------------------------
