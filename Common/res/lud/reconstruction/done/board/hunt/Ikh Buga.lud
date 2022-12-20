@@ -6,7 +6,7 @@
 
 (option "Variant" <Variant> args:{ <variant> }
     {
-    (item "Ikh Buga1" <
+    (item "Ikh Buga (Ludii 1)" <
         
         (players 2)
         
@@ -155,17 +155,25 @@
                 
                 (place "Dog2" 
                     (handSite P2)
-                count:68)
+                count:33)
                 }
             )
             
-            (play
-                (or
+            (play 
+                (or 
                     (forEach Piece)
-                    (if (is Mover P2)
+                    
+                    (if 
+                        (is Mover P2)
+                        
                         (move 
-                            (from (handSite P2)) 
-                            (to (sites Empty)) 
+                            (from 
+                                (handSite P2)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
                         )
                     )
                 )
@@ -187,9 +195,9 @@
             )
         )
         
-    > "The Ikh Buga1 ruleset.")
+    > "The Ikh Buga (Ludii 1) ruleset.")
     
-    (item "Ikh Buga2" <
+    (item "Ikh Buga (Ludii 2)" <
         
         (players 2)
         
@@ -318,7 +326,7 @@
                 
                 (place "Dog2" 
                     (forEach 
-                        (sites Outer)
+                        (sites Corners)
                         if:
                         (not 
                             (is In 
@@ -338,17 +346,25 @@
                 
                 (place "Dog2" 
                     (handSite P2)
-                count:36)
+                count:51)
                 }
             )
             
-            (play
-                (or
+            (play 
+                (or 
                     (forEach Piece)
-                    (if (is Mover P2)
+                    
+                    (if 
+                        (is Mover P2)
+                        
                         (move 
-                            (from (handSite P2)) 
-                            (to (sites Empty)) 
+                            (from 
+                                (handSite P2)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
                         )
                     )
                 )
@@ -370,7 +386,198 @@
             )
         )
         
-    > "The Ikh Buga2 ruleset.")
+    > "The Ikh Buga (Ludii 2) ruleset.")
+    
+    (item "Ikh Buga (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (shift 0.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (shift 4.67 -1.32 
+                        (scale 0.66 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (square 9 diagonals:Alternating)
+                    
+                    (shift -1.99 1.34 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift -1.98 5.35 
+                        (rotate -90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift 0.67 8 
+                        (rotate 180 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift 4.67 8 
+                        (rotate 180 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift 7.34 1.34 
+                        (rotate 90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    
+                    (shift 7.34 5.34 
+                        (rotate 90 
+                            (scale 0.66 
+                                (wedge 3)
+                            )
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Deer" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (hand P2)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Deer1" 
+                    (sites { "E11" "I11" "K9" "C9" "C5" "K5" "I3" "E3"}
+                    )
+                )
+                
+                (place "Dog2" 
+                    (forEach 
+                        (sites Corners)
+                        if:
+                        (not 
+                            (is In 
+                                (site)
+                                
+                                (expand 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                steps:2)
+                            )
+                        )
+                    )
+                )
+                
+                (place "Dog2" 
+                    (handSite P2)
+                count:30)
+                }
+            )
+            
+            (play 
+                (or 
+                    (forEach Piece)
+                    
+                    (if 
+                        (is Mover P2)
+                        
+                        (move 
+                            (from 
+                                (handSite P2)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Ikh Buga (Ludii 3) ruleset.")
     
     (item "Incomplete"
         <
@@ -424,12 +631,15 @@
 
 (rulesets {
     
-    (ruleset "Ruleset/Ikh Buga1 (Reconstructed)" {
-        "Variant/Ikh Buga1"
+    (ruleset "Ruleset/Ikh Buga (Ludii 1) (Reconstructed)" {
+        "Variant/Ikh Buga (Ludii 1)"
     })
-    (ruleset "Ruleset/Ikh Buga2 (Reconstructed)" {
-        "Variant/Ikh Buga2"
-    }) 
+    (ruleset "Ruleset/Ikh Buga (Ludii 2) (Reconstructed)" {
+        "Variant/Ikh Buga (Ludii 2)"
+    })
+    (ruleset "Ruleset/Ikh Buga (Ludii 3) (Reconstructed)" {
+        "Variant/Ikh Buga (Ludii 3)"
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -443,46 +653,7 @@
     
     (info
         {
-        (description "Ikh Buga is a hunt game played in Mongolia on a large board. It is said to either be a representation of a deer hunt, or that it reflects the sacred nature of deer. It is only played during the winter and spring months.")
-        (useFor "Ruleset/Historical Information (Incomplete)" (rules "9x9 intersecting lines, with diagonals drawn in each 3x3 square. Intersecting with the third and seventh line on each side, a triangle, with a line bisecting the base and another bisecting this line and intersecting with the other two sides of the triangle. The apex intersects with the main board. One player plays as eight deer, which begin on the points where the small squares intersect with the main board. The other player plays with 80 dogs, at least some of which begin in the main part of the board, but some may be introduced later. Pieces move to an adjacent empty spot along the lines of the board. The deer may capture an adjacent dog by hopping over it to an empty space immediately on the opposite side of it along the lines of the board. the goal of the deer is to capture all of the dogs, the goal of the dogs is to block the deer from being able to move."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (id "1006"))
-        (useFor "Ruleset/Ikh Buga1 (Reconstructed)" (rules "The game Ikh Buga is played by two players on a noshape board with nobasis tiling. 
-                Player one plays with Deers. Player two plays with Dogs.
-                Rules for Pieces:
-                Deers step adjacent and hop adjacent.
-                Dogs step adjacent.
-                Players take turns moving.
-                Setup:
-                Place a Deer for player one at the vertexes with coordinates [E11, I11, K9, C9, C5, K5, I3, E3].
-                Place a Dog for player two at not current site is in the union of the top sites of the board and the bottom sites of the board expanded by 2 steps the corner sites of the board..
-                Rules: 
-                Move one of your pieces or if 2 is the mover, from vertex in Player 2's hand site 0 to vertex in the set of empty vertexs moveRule: true.
-                Aim: 
-                If player one cannot move, player two wins If there are no pieces owned by Player 2, player one wins.
-                
-        "))
-        (useFor "Ruleset/Ikh Buga1 (Reconstructed)" (id "2100"))
-        (useFor "Ruleset/Ikh Buga2 (Reconstructed)" (rules "The game Ikh Buga is played by two players on a noshape board with nobasis tiling. 
-                Player one plays with Deers. Player two plays with Dogs.
-                Rules for Pieces:
-                Deers step adjacent and hop adjacent.
-                Dogs step adjacent.
-                Players take turns moving.
-                Setup:
-                Place a Deer for player one at the vertexes with coordinates [E11, I11, K9, C9, C5, K5, I3, E3].
-                Place a Dog for player two at not current site is in the union of the top sites of the board and the bottom sites of the board expanded by 2 steps the outer sites of the board..
-                Rules: 
-                Move one of your pieces or if 2 is the mover, from vertex in Player 2's hand site 0 to vertex in the set of empty vertexs moveRule: true.
-                Aim: 
-                If player one cannot move, player two wins If there are no pieces owned by Player 2, player one wins.
-                
-        "))
-        (useFor "Ruleset/Ikh Buga2 (Reconstructed)" (id "2101"))
-        (version "1.3.8")
-        (classification "board/hunt/reconstruction/done")
-        (credit "Eric Piette")
-        (origin "This game was played in Mongolia, from around 1988 to 1991.")
+        (id "1006")
         }
     )
     
@@ -491,7 +662,8 @@
     })
     
     (recon {
-        (concept "NumStartComponents" 88)
+        //(concept "NumStartComponents" 88)
+        (concept "NumStartComponentsBoard" minValue:7 maxValue:80)
     })
     
 )

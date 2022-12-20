@@ -363,6 +363,7 @@ public class CompleterWithPrepro
 					newCompletion.setScore(completion.score());
 					newCompletion.setCulturalScore(completion.culturalScore());
 					newCompletion.setConceptualScore(completion.conceptualScore());
+					newCompletion.setGeographicalScore(completion.geographicalScore());
 					
 					completions.add(newCompletion);
 				}
