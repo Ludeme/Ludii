@@ -5,404 +5,235 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-{
-(item "Qirq (Ludii 1)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
+    {
+    (item "Qirq (Ludii 1)" <
         
-        (hand Each)
+        (players 2)
         
-        (piece "Marker" Each 
-            (move 
-                (from)
-                
-                (to 
-                    (sites Empty)
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
-            )
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
             
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
-                        )
-                    )
-                )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3 Orthogonal)
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Qirq (Ludii 1) ruleset.")
-
-(item "Qirq (Ludii 2)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Stick" Each 
-            (move 
-                (from)
-                
-                (to 
-                    (sites Empty)
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Stick" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
-            )
+            (hand Each)
             
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
-                        )
-                    )
-                )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3 Orthogonal)
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Qirq (Ludii 2) ruleset.")
-
-(item "Qirq (Ludii 3)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each)
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
+            (piece "Marker" Each 
                 (move 
-                    (from 
-                        (handSite Mover)
-                    )
+                    (from)
                     
                     (to 
                         (sites Empty)
                     )
                 )
             )
-            
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
-                        )
-                    )
-                )
-            "Movement" )
+            }
         )
         
-        (phase "Movement" 
-            (play 
-                (move 
-                    (from 
-                        (sites Occupied by:Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
             )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3 Orthogonal)
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Qirq (Ludii 3) ruleset.")
-
-(item "Qirq (Ludii 4)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
-            )
-            
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
-                        )
-                    )
-                )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (move 
-                    (from 
-                        (sites Occupied by:Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3 Orthogonal)
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Qirq (Ludii 4) ruleset.")
-
-(item "Qirq (Ludii 5)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (if 
-                (not 
-                    (or 
-                        (if 
-                            (and 
-                                (!= 
-                                    (ahead 
-                                        (from)
-                                    N)
-                                    
-                                    (from)
-                                )
-                                
-                                (!= 
-                                    (ahead 
-                                        (from)
-                                    S)
-                                    
-                                    (from)
-                                )
-                            )
-                            
-                            (and 
-                                (= 
-                                    (next)
-                                    
-                                    (who at:
-                                        (ahead 
-                                            (from)
-                                        N)
-                                    )
-                                )
-                                
-                                (= 
-                                    (next)
-                                    
-                                    (who at:
-                                        (ahead 
-                                            (from)
-                                        S)
-                                    )
-                                )
-                            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
                         )
                         
-                        (if 
-                            (and 
-                                (!= 
-                                    (ahead 
-                                        (from)
-                                    E)
-                                    
-                                    (from)
-                                )
-                                
-                                (!= 
-                                    (ahead 
-                                        (from)
-                                    W)
-                                    
-                                    (from)
-                                )
-                            )
-                            
-                            (and 
-                                (= 
-                                    (next)
-                                    
-                                    (who at:
-                                        (ahead 
-                                            (from)
-                                        E)
-                                    )
-                                )
-                                
-                                (= 
-                                    (next)
-                                    
-                                    (who at:
-                                        (ahead 
-                                            (from)
-                                        W)
-                                    )
-                                )
-                            )
+                        (to 
+                            (sites Empty)
                         )
                     )
                 )
                 
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Qirq (Ludii 1) ruleset.")
+    
+    (item "Qirq (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Stick" Each 
+                (move 
+                    (from)
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Stick" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Qirq (Ludii 2) ruleset.")
+    
+    (item "Qirq (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (move 
+                        (from 
+                            (sites Occupied by:Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Qirq (Ludii 3) ruleset.")
+    
+    (item "Qirq (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
                 (move Step 
                     (to if:
                         (is Empty 
@@ -411,304 +242,312 @@
                     )
                 )
             )
+            }
         )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
             )
-            
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
                         )
                     )
                 )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (move 
-                    (from 
-                        (sites Occupied by:Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3 Orthogonal)
                 
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Qirq (Ludii 5) ruleset.")
-
-(item "Qirq (Ludii 6)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each)
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
-            )
-            
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
-                        )
-                    )
-                )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3)
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Qirq (Ludii 6) ruleset.")
-
-(item "Qirq (Ludii 7)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
-            )
-            
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
-                        )
-                    )
-                )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3)
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Qirq (Ludii 7) ruleset.")
-
-(item "Qirq (Ludii 8)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (if 
-                (not 
-                    (or 
-                        (if 
-                            (and 
-                                (!= 
-                                    (ahead 
-                                        (from)
-                                    N)
-                                    
-                                    (from)
-                                )
-                                
-                                (!= 
-                                    (ahead 
-                                        (from)
-                                    S)
-                                    
-                                    (from)
-                                )
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
                             )
-                            
-                            (and 
-                                (= 
-                                    (next)
-                                    
-                                    (who at:
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (move 
+                        (from 
+                            (sites Occupied by:Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Qirq (Ludii 4) ruleset.")
+    
+    (item "Qirq (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (if 
+                    (not 
+                        (or 
+                            (if 
+                                (and 
+                                    (!= 
                                         (ahead 
                                             (from)
                                         N)
+                                        
+                                        (from)
                                     )
-                                )
-                                
-                                (= 
-                                    (next)
                                     
-                                    (who at:
+                                    (!= 
                                         (ahead 
                                             (from)
                                         S)
+                                        
+                                        (from)
                                     )
                                 )
-                            )
-                        )
-                        
-                        (if 
-                            (and 
-                                (!= 
-                                    (ahead 
-                                        (from)
-                                    E)
-                                    
-                                    (from)
-                                )
                                 
-                                (!= 
-                                    (ahead 
-                                        (from)
-                                    W)
+                                (and 
+                                    (= 
+                                        (next)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (from)
+                                            N)
+                                        )
+                                    )
                                     
-                                    (from)
+                                    (= 
+                                        (next)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (from)
+                                            S)
+                                        )
+                                    )
                                 )
                             )
                             
-                            (and 
-                                (= 
-                                    (next)
-                                    
-                                    (who at:
+                            (if 
+                                (and 
+                                    (!= 
                                         (ahead 
                                             (from)
                                         E)
+                                        
+                                        (from)
                                     )
-                                )
-                                
-                                (= 
-                                    (next)
                                     
-                                    (who at:
+                                    (!= 
                                         (ahead 
                                             (from)
                                         W)
+                                        
+                                        (from)
+                                    )
+                                )
+                                
+                                (and 
+                                    (= 
+                                        (next)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (from)
+                                            E)
+                                        )
+                                    )
+                                    
+                                    (= 
+                                        (next)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (from)
+                                            W)
+                                        )
                                     )
                                 )
                             )
                         )
                     )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
                 )
                 
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (move 
+                        (from 
+                            (sites Occupied by:Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Qirq (Ludii 5) ruleset.")
+    
+    (item "Qirq (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Qirq (Ludii 6) ruleset.")
+    
+    (item "Qirq (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
                 (move Step 
                     (to if:
                         (is Empty 
@@ -717,232 +556,232 @@
                     )
                 )
             )
+            }
         )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
             )
-            
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
                         )
                     )
                 )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3)
                 
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Qirq (Ludii 8) ruleset.")
-
-(item "Qirq (Ludii 9)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
-            )
-            
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
-                        )
-                    )
-                )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3 Orthogonal)
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Qirq (Ludii 9) ruleset.")
-
-(item "Qirq (Ludii 10)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (if 
-                (not 
-                    (or 
-                        (if 
-                            (and 
-                                (!= 
-                                    (ahead 
-                                        (from)
-                                    N)
-                                    
-                                    (from)
-                                )
-                                
-                                (!= 
-                                    (ahead 
-                                        (from)
-                                    S)
-                                    
-                                    (from)
-                                )
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
                             )
-                            
-                            (and 
-                                (= 
-                                    (next)
-                                    
-                                    (who at:
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Qirq (Ludii 7) ruleset.")
+    
+    (item "Qirq (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (if 
+                    (not 
+                        (or 
+                            (if 
+                                (and 
+                                    (!= 
                                         (ahead 
                                             (from)
                                         N)
+                                        
+                                        (from)
                                     )
-                                )
-                                
-                                (= 
-                                    (next)
                                     
-                                    (who at:
+                                    (!= 
                                         (ahead 
                                             (from)
                                         S)
+                                        
+                                        (from)
                                     )
                                 )
-                            )
-                        )
-                        
-                        (if 
-                            (and 
-                                (!= 
-                                    (ahead 
-                                        (from)
-                                    E)
-                                    
-                                    (from)
-                                )
                                 
-                                (!= 
-                                    (ahead 
-                                        (from)
-                                    W)
+                                (and 
+                                    (= 
+                                        (next)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (from)
+                                            N)
+                                        )
+                                    )
                                     
-                                    (from)
+                                    (= 
+                                        (next)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (from)
+                                            S)
+                                        )
+                                    )
                                 )
                             )
                             
-                            (and 
-                                (= 
-                                    (next)
-                                    
-                                    (who at:
+                            (if 
+                                (and 
+                                    (!= 
                                         (ahead 
                                             (from)
                                         E)
+                                        
+                                        (from)
                                     )
-                                )
-                                
-                                (= 
-                                    (next)
                                     
-                                    (who at:
+                                    (!= 
                                         (ahead 
                                             (from)
                                         W)
+                                        
+                                        (from)
+                                    )
+                                )
+                                
+                                (and 
+                                    (= 
+                                        (next)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (from)
+                                            E)
+                                        )
+                                    )
+                                    
+                                    (= 
+                                        (next)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (from)
+                                            W)
+                                        )
                                     )
                                 )
                             )
                         )
                     )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
                 )
                 
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Qirq (Ludii 8) ruleset.")
+    
+    (item "Qirq (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
                 (move Step 
                     (to if:
                         (is Empty 
@@ -951,60 +790,220 @@
                     )
                 )
             )
+            }
         )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
             )
-            
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
                         )
                     )
                 )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3 Orthogonal)
                 
-                (result Mover Win)
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
             )
         )
-    )
-
- > "The Qirq (Ludii 10) ruleset.")
-
-
+        
+    > "The Qirq (Ludii 9) ruleset.")
+    
+    (item "Qirq (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (if 
+                    (not 
+                        (or 
+                            (if 
+                                (and 
+                                    (!= 
+                                        (ahead 
+                                            (from)
+                                        N)
+                                        
+                                        (from)
+                                    )
+                                    
+                                    (!= 
+                                        (ahead 
+                                            (from)
+                                        S)
+                                        
+                                        (from)
+                                    )
+                                )
+                                
+                                (and 
+                                    (= 
+                                        (next)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (from)
+                                            N)
+                                        )
+                                    )
+                                    
+                                    (= 
+                                        (next)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (from)
+                                            S)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (and 
+                                    (!= 
+                                        (ahead 
+                                            (from)
+                                        E)
+                                        
+                                        (from)
+                                    )
+                                    
+                                    (!= 
+                                        (ahead 
+                                            (from)
+                                        W)
+                                        
+                                        (from)
+                                    )
+                                )
+                                
+                                (and 
+                                    (= 
+                                        (next)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (from)
+                                            E)
+                                        )
+                                    )
+                                    
+                                    (= 
+                                        (next)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (from)
+                                            W)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Qirq (Ludii 10) ruleset.")
+    
     (item "Al-Qirq (Ludii 1)" <
         
         (players 2)
@@ -2456,43 +2455,42 @@
         "The incomplete ruleset."
     )
     
-
- })
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets {
-
-(ruleset "Ruleset/Qirq (Ludii 1) (Reconstructed)" {
-     "Variant/Qirq (Ludii 1)"
-})
-(ruleset "Ruleset/Qirq (Ludii 2) (Reconstructed)" {
-     "Variant/Qirq (Ludii 2)"
-})
-(ruleset "Ruleset/Qirq (Ludii 3) (Reconstructed)" {
-     "Variant/Qirq (Ludii 3)"
-})
-(ruleset "Ruleset/Qirq (Ludii 4) (Reconstructed)" {
-     "Variant/Qirq (Ludii 4)"
-})
-(ruleset "Ruleset/Qirq (Ludii 5) (Reconstructed)" {
-     "Variant/Qirq (Ludii 5)"
-})
-(ruleset "Ruleset/Qirq (Ludii 6) (Reconstructed)" {
-     "Variant/Qirq (Ludii 6)"
-})
-(ruleset "Ruleset/Qirq (Ludii 7) (Reconstructed)" {
-     "Variant/Qirq (Ludii 7)"
-})
-(ruleset "Ruleset/Qirq (Ludii 8) (Reconstructed)" {
-     "Variant/Qirq (Ludii 8)"
-})
-(ruleset "Ruleset/Qirq (Ludii 9) (Reconstructed)" {
-     "Variant/Qirq (Ludii 9)"
-})
-(ruleset "Ruleset/Qirq (Ludii 10) (Reconstructed)" {
-     "Variant/Qirq (Ludii 10)"
-})
+    
+    (ruleset "Ruleset/Qirq (Ludii 1) (Reconstructed)" {
+        "Variant/Qirq (Ludii 1)"
+    })
+    (ruleset "Ruleset/Qirq (Ludii 2) (Reconstructed)" {
+        "Variant/Qirq (Ludii 2)"
+    })
+    (ruleset "Ruleset/Qirq (Ludii 3) (Reconstructed)" {
+        "Variant/Qirq (Ludii 3)"
+    })
+    (ruleset "Ruleset/Qirq (Ludii 4) (Reconstructed)" {
+        "Variant/Qirq (Ludii 4)"
+    })
+    (ruleset "Ruleset/Qirq (Ludii 5) (Reconstructed)" {
+        "Variant/Qirq (Ludii 5)"
+    })
+    (ruleset "Ruleset/Qirq (Ludii 6) (Reconstructed)" {
+        "Variant/Qirq (Ludii 6)"
+    })
+    (ruleset "Ruleset/Qirq (Ludii 7) (Reconstructed)" {
+        "Variant/Qirq (Ludii 7)"
+    })
+    (ruleset "Ruleset/Qirq (Ludii 8) (Reconstructed)" {
+        "Variant/Qirq (Ludii 8)"
+    })
+    (ruleset "Ruleset/Qirq (Ludii 9) (Reconstructed)" {
+        "Variant/Qirq (Ludii 9)"
+    })
+    (ruleset "Ruleset/Qirq (Ludii 10) (Reconstructed)" {
+        "Variant/Qirq (Ludii 10)"
+    })
     
     (ruleset "Ruleset/Al-Qirq (Ludii 1) (Reconstructed)" {
         "Variant/Al-Qirq (Ludii 1)"
@@ -2533,7 +2531,7 @@
 
 //------------------------------------------------------------------------------
 
- (metadata 
+(metadata 
     
     (info
         {
@@ -2555,7 +2553,7 @@
 
 (option "Variant" <Variant> args:{ <variant> }
     {
-
+    
     (item "Incomplete"
         <
         (players 2)
@@ -2601,5 +2599,4 @@
     })
     
 )
-
 
