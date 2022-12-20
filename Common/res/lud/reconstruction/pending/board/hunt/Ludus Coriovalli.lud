@@ -130,34 +130,33 @@
 //------------------------------------------------------------------------------
 
 (game "Ludus Coriovalli"
-  <Variant>
+    <Variant>
 )
 
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-  {
-  (item "Incomplete"
-      <
-      (players 2) 
-      (equipment {
-          [("NoExtensionJoinedDiagonal") | ("TopExtensionJoinedDiagonal") | ("BothExtensionJoinedDiagonal") | ("NoExtensionNoJoinedDiagonal") | ("TopExtensionNoJoinedDiagonal") | ("BothExtensionNoJoinedDiagonal")]
-          (hand Each)
-          (piece [#])
-      })
-      (rules  
-    	  [#]
-      )
-      >
-      "The incomplete ruleset."
-  )
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment {
+            [("NoExtensionJoinedDiagonal") | ("TopExtensionJoinedDiagonal") | ("BothExtensionJoinedDiagonal") | ("NoExtensionNoJoinedDiagonal") | ("TopExtensionNoJoinedDiagonal") | ("BothExtensionNoJoinedDiagonal")]
+            (hand Each)
+            (piece [#])
+        })
+        (rules  
+            [#]
+        )
+        >
+        "The incomplete ruleset."
+    )
 })
-
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
-  
+    
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
     })

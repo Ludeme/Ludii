@@ -20,13 +20,13 @@
             })
             (play [#])
             (end 
-            	(if (and (no Moves P1) (no Moves P2))
-            	{
-            		(if (< (count Pieces P1) (count Pieces P2)) (result P2 Win))
-            		(if (< (count Pieces P2) (count Pieces P1)) (result P1 Win))
-            		(if (= (count Pieces P2) (count Pieces P1)) (result Mover Draw))
-            	}
-            	)
+                (if (and (no Moves P1) (no Moves P2))
+                    {
+                    (if (< (count Pieces P1) (count Pieces P2)) (result P2 Win))
+                    (if (< (count Pieces P2) (count Pieces P1)) (result P1 Win))
+                    (if (= (count Pieces P2) (count Pieces P1)) (result Mover Draw))
+                    }
+                )
             )
         )
         >

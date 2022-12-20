@@ -282,15 +282,15 @@
 (define "KendallRules" 
     (rules 
         #1 // Starting rules
-            (play 
-                (do 
-                    (roll #5)
-                    next:(if (can Move ("KendallMoves" #2 #3 #4 #6))
-                        ("KendallMoves" #2 #3 #4 #6)
-                        (move Pass (then (if (is In ("Throw") (sites {1 4 5})) (moveAgain))))
-                    )
+        (play 
+            (do 
+                (roll #5)
+                next:(if (can Move ("KendallMoves" #2 #3 #4 #6))
+                    ("KendallMoves" #2 #3 #4 #6)
+                    (move Pass (then (if (is In ("Throw") (sites {1 4 5})) (moveAgain))))
                 )
             )
+        )
         (end ("EscapeWin"))
     )
 )
@@ -372,18 +372,18 @@
     
     (info
         {
-    	(rules "These rules were proposed by Egyptologist Timothy Kendall. >Pieces move according to the throws of the dice along the board. The goal is to move all pieces off the board with an exact throw. If a player lands on their opponent's piece, it is sent back to the start. Having two pieces in consecutive spaces prevents your opponent from being able to do this. Marked spaces on the board indicate either safe spaces or dangerous ones to be avoided.​")
+        (rules "These rules were proposed by Egyptologist Timothy Kendall. >Pieces move according to the throws of the dice along the board. The goal is to move all pieces off the board with an exact throw. If a player lands on their opponent's piece, it is sent back to the start. Having two pieces in consecutive spaces prevents your opponent from being able to do this. Marked spaces on the board indicate either safe spaces or dangerous ones to be avoided.​")
         }
     )
     
     (graphics {
         
-       (show Symbol "3nefer" Cell 5 scale:0.75)
+        (show Symbol "3nefer" Cell 5 scale:0.75)
         (show Symbol "water" Cell 6 scale:0.75)
         (show Symbol "3flags" Cell 7 scale:0.75)
         (show Symbol "2flags" Cell 8 scale:0.75)
         (show Symbol "horus" Cell 9 scale:0.9)
-
+        
         (board Colour Symbols (colour DarkBrown))
         (piece ExtendName P2 "2")  
     })
