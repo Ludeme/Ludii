@@ -9556,146 +9556,6 @@ Aim:
      If the moving player cannot move, the game ends and the player with the highest score wins.
 
 ",NULL,NULL,NULL,NULL,NULL,"37°21'46.8""N, 23°31'48.43""E","5310,5310","0",NULL,"0","0","0","0","0",NULL,,NULL
-"2361","1189","Owana1",NULL,"Reconstructed with Ludii","2",NULL,"The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
-Regions:
-    RegionP1: the bottom sites of the board for P1
-    RegionP2: the top sites of the board for P2 
-All players play with null The following pieces are shared by all players: Seeds.
-Players take turns moving.
-Setup:
-     Set the count of the vertexes in track of board to 4.
-Rules: 
-     If The proposed is End, cast a vote with possible vote options [End] or cast a vote with possible vote options [No], else if we have repeated the same state three times, propose the following options [End] or select Vertex in if in the same turn if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, backtracking: the location of the piece is in RegionP1 or RegionP2 and the total number of vertex in the location of the piece is equal to 2 or the total number of vertex in the location of the piece is equal to 3, captureEffect: if to is in RegionP1 or RegionP2 and the total number of vertex in to is equal to 2 or the total number of vertex in to is equal to 3, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, else if 1 is less than the total number of vertex in to, move again, else if to is in RegionP1 or RegionP2 and 1 is less than the total number of vertex in if 1 is the mover then add the following values: [to,6] otherwise to minus 6, from vertex in if 1 is the mover then add the following values: [to,6] otherwise to minus 6 to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: false.
-Aim: 
-     If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
-
-",NULL,NULL,NULL,NULL,NULL,"2°45'3.01""S, 13°54'59.71""E","5471,5471","0",NULL,"0","0","0.974","0.948","1",NULL,"420",NULL
-"2362","1189","Owana2",NULL,"Reconstructed with Ludii","2",NULL,"The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
-Regions:
-    RegionP1: the bottom sites of the board for P1
-    RegionP2: the top sites of the board for P2 
-All players play with null The following pieces are shared by all players: Seeds.
-Players take turns moving.
-Setup:
-     Set the count of the vertexes in track of board to 4.
-Rules: 
-     Select Vertex in if in the same turn if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if to is in RegionP1 or RegionP2 and the total number of vertex in to is equal to 4, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true then Each turn, where the site is within if 1 is the mover, if the total number of vertex in current site is equal to 4, from vertex in current site to vertex Player the moving player's hand site 0 moveRule: true, else if 1 is less than the total number of vertex in to, move again, type: Vertex, includeSelf: false.
-Aim: 
-     If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
-
-",NULL,NULL,NULL,NULL,NULL,"2°45'3.01""S, 13°54'59.71""E","5471,5471","0",NULL,"0","0","0.974","0.948","1",NULL,"281",NULL
-"2363","1189","Owana3",NULL,"Reconstructed with Ludii","2",NULL,"The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
-Regions:
-    RegionP1: the bottom sites of the board for P1
-    RegionP2: the top sites of the board for P2 
-All players play with null The following pieces are shared by all players: Seeds.
-Players take turns moving.
-Setup:
-     Set the count of the vertexes in track of board to 4.
-Rules: 
-     If The proposed is End, cast a vote with possible vote options [End] or cast a vote with possible vote options [No], else if we have repeated the same state three times, propose the following options [End] or select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: to is in RegionP1 or RegionP2 and the total number of vertex in to is equal to 2 or the total number of vertex in to is equal to 3, backtracking: true, captureEffect: from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: false.
-Aim: 
-     If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
-
-",NULL,NULL,NULL,NULL,NULL,"2°45'3.01""S, 13°54'59.71""E","5471,5471","0",NULL,"0","0","0.974","0.948","1",NULL,"423",NULL
-"2364","1189","Owana4",NULL,"Reconstructed with Ludii","2",NULL,"The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
-Regions:
-    RegionP1: the bottom sites of the board for P1
-    RegionP2: the top sites of the board for P2 
-All players play with null The following pieces are shared by all players: Seeds.
-Players take turns moving.
-Setup:
-     Set the count of the vertexes in track of board to 4.
-Rules: 
-     Select Vertex in 10 if true then Sow with the following rules, startLoc: the to location of the last move, countFn: 2, numPerHoleFn: 1, origin: false, captureRule: true, type: Vertex, includeSelf: true.
-Aim: 
-     If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
-
-",NULL,NULL,NULL,NULL,NULL,"2°45'3.01""S, 13°54'59.71""E","5471,5471","0",NULL,"0","0","0.974","0.948","1",NULL,"247",NULL
-"2365","1189","Owana5",NULL,"Reconstructed with Ludii","2",NULL,"The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
-Regions:
-    RegionP1: the bottom sites of the board for P1
-    RegionP2: the top sites of the board for P2 
-All players play with null The following pieces are shared by all players: Seeds.
-Players take turns moving.
-Setup:
-     Set the count of the vertexes in track of board to 4.
-Rules: 
-     Select Vertex in if 0 is equal to the number of moves if vertex the location of the piece is occupied and 0 is equal to State at the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if 1 is less than the total number of vertex in to, if 0 is equal to State at to, move again and set the variable Replay to to, else if to is in RegionP1 or RegionP2, if 3 is not equal to the total number of vertex in if to is in the bottom sites of the board then add the following values: [to,6] otherwise to minus 6, if 0 is not equal to the total number of vertex in if to is in the bottom sites of the board then add the following values: [to,6] otherwise to minus 6, from vertex in if to is in the bottom sites of the board then add the following values: [to,6] otherwise to minus 6 to vertex Player the moving player's hand site 0 moveRule: true, else from vertex in if to is in the bottom sites of the board then add the following values: [to,6] otherwise to minus 6 to vertex to moveRule: true and set the state of the Vertex to to current moving player and set the state of the Vertex if to is in the bottom sites of the board then add the following values: [to,6] otherwise to minus 6 to current moving player, type: Vertex, includeSelf: true if not Player the moving player is the next mover and all sites in [1,2,3,4] satisfy the condition 0 is not equal to State at current site or empty or all sites in [5,6,7,8] satisfy the condition 0 is not equal to State at current site or empty, Each turn, where the site is within [1,2,3,4], if 0 is equal to State at current site, from vertex in current site to vertex Player 1's hand site 0 moveRule: true and Each turn, where the site is within [5,6,7,8], if 0 is equal to State at current site, from vertex in current site to vertex Player 2's hand site 0 moveRule: true and Each turn, where the site is within the sites of the board, if State at current site is equal to 1, from vertex in current site to vertex Player 1's hand site 0 moveRule: true, else if State at current site is equal to 2, from vertex in current site to vertex Player 2's hand site 0 moveRule: true.
-Aim: 
-     If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
-
-",NULL,NULL,NULL,NULL,NULL,"2°45'3.01""S, 13°54'59.71""E","5471,5471","0",NULL,"0","0","0.973","0.946","1",NULL,"242",NULL
-"2366","1189","Owana6",NULL,"Reconstructed with Ludii","2",NULL,"The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
-Regions:
-    RegionP1: the bottom sites of the board for P1
-    RegionP2: the top sites of the board for P2 
-All players play with null The following pieces are shared by all players: Seeds.
-Players take turns moving.
-Setup:
-     Set the count of the vertexes in track of board to 4.
-Rules: 
-     Select Vertex in if in the same turn if vertex the location of the piece is occupied and the location of the piece is in sites all remembered values then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, skipFn: not to is in the centre sites of the board and not to is in sites all remembered values, captureRule: true, captureEffect: if vertex 1 steps forward from site to on track Track is occupied, move again and set the variable Replay to to, else if 2 steps forward from site to on track Track is in the centre sites of the board, set the value of Player the moving player to 1, else if vertex 2 steps forward from site to on track Track is occupied, from vertex in 2 steps forward from site to on track Track to vertex Player the moving player's hand site 0 moveRule: true and if vertex if 2 steps forward from site to on track Track is in the bottom sites of the board then add the following values: [2 steps forward from site to on track Track,7] otherwise 2 steps forward from site to on track Track minus 7 is occupied, from vertex in if 2 steps forward from site to on track Track is in the bottom sites of the board then add the following values: [2 steps forward from site to on track Track,7] otherwise 2 steps forward from site to on track Track minus 7 to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true if all sites in the difference between the sites of the board and the centre sites of the board satisfy the condition 0 is equal to the total number of vertex in current site, forget all previously rememberd values and if 0 is not equal to add the following values: [the total number of vertex in 3,the total number of vertex in 10], if 1 is equal to the value of Player 1 and 1 is equal to the value of Player 2, if add the following values: [the total number of vertex in 3,the total number of vertex in 10] is even, from vertex in 3 to cell Player 1's hand site 0 moveRule: true and from vertex in 10 to cell Player 1's hand site 0 moveRule: true and from cell in Player 1's hand site 0 to cell Player 2's hand site 0 moveRule: true, else from vertex in 3 to cell Player 1's hand site 0 moveRule: true and from vertex in 10 to cell Player 1's hand site 0 moveRule: true and from cell in Player 1's hand site 0 to cell Player 2's hand site 0 moveRule: true, else if 1 is equal to the value of Player 1, from vertex in 3 to cell Player 1's hand site 0 moveRule: true and from vertex in 10 to cell Player 1's hand site 0 moveRule: true, else if 1 is equal to the value of Player 2, from vertex in 3 to cell Player 2's hand site 0 moveRule: true and from vertex in 10 to cell Player 2's hand site 0 moveRule: true.
-Aim: 
-     If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
-
-",NULL,NULL,NULL,NULL,NULL,"2°45'3.01""S, 13°54'59.71""E","5471,5471","0",NULL,"0","0","0.972","0.945","1",NULL,"920",NULL
-"2367","1189","Owana7",NULL,"Reconstructed with Ludii","2",NULL,"The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
-Regions:
-    RegionP1: the bottom sites of the board for P1
-    RegionP2: the top sites of the board for P2 
-All players play with null The following pieces are shared by all players: Seeds.
-Players take turns moving.
-Setup:
-     Set the count of the vertexes in track of board to 4.
-Rules: 
-     Select Vertex in if in the same turn if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if the total number of vertex in 1 steps forward from site to on track null is greater than 0, move again, else if the total number of vertex in if 1 steps forward from site to on track null is in the bottom sites of the board then add the following values: [1 steps forward from site to on track null,7] otherwise 1 steps forward from site to on track null minus 7 is greater than 0, from vertex in if 1 steps forward from site to on track null is in the bottom sites of the board then add the following values: [1 steps forward from site to on track null,7] otherwise 1 steps forward from site to on track null minus 7 to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
-Aim: 
-     If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
-
-",NULL,NULL,NULL,NULL,NULL,"2°45'3.01""S, 13°54'59.71""E","5471,5471","0",NULL,"0","0","0.972","0.945","1",NULL,"432",NULL
-"2368","1189","Owana8",NULL,"Reconstructed with Ludii","2",NULL,"The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
-Regions:
-    RegionP1: the bottom sites of the board for P1
-    RegionP2: the top sites of the board for P2 
-All players play with null The following pieces are shared by all players: Seeds.
-Players take turns moving.
-Setup:
-     Set the count of the vertexes in track of board to 4.
-Rules: 
-     Select Vertex in if in the same turn if vertex the location of the piece is occupied, the location of the piece is in sites all remembered values and the next mover is not equal to State at the location of the piece then set the variable NumSowed to the total number of vertex in the to location of the last move and set the variable StateSowFrom to State at the to location of the last move and afterwards Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, trackName: TrackCW, origin: false, skipFn: State at to is not equal to current moving player and State at to is not equal to 0 or not to is in sites all remembered values, captureRule: true, captureEffect: if vertex 1 steps forward from site to on track Track is occupied, move again and set the variable Replay to 1 steps forward from site to on track Track, else if vertex if 1 steps forward from site to on track Track is in the bottom sites of the board then add the following values: [1 steps forward from site to on track Track,7] otherwise 1 steps forward from site to on track Track minus 7 is occupied, from vertex in if 1 steps forward from site to on track Track is in the bottom sites of the board then add the following values: [1 steps forward from site to on track Track,7] otherwise 1 steps forward from site to on track Track minus 7 to vertex Player the moving player's hand site 0 moveRule: true and set the state of the Vertex if 1 steps forward from site to on track Track is in the bottom sites of the board then add the following values: [1 steps forward from site to on track Track,7] otherwise 1 steps forward from site to on track Track minus 7 to State at if 1 steps forward from site to on track Track is in the bottom sites of the board then add the following values: [1 steps forward from site to on track Track,7] otherwise 1 steps forward from site to on track Track minus 7, type: Vertex, includeSelf: true then Each turn, where the site is within track of board, if the value of Player the moving player is equal to the total number of vertex in current site and State at current site is equal to current moving player or State at current site is equal to 0, from vertex in current site to vertex Player the moving player's hand site 0 moveRule: true and set the state of the Vertex current site to State at current site, else if vertex current site is occupied and current moving player is equal to State at current site, from vertex in current site to vertex Player the moving player's hand site 0 moveRule: true and set the state of the Vertex current site to State at current site and set the variable NumSowed to 0 and if 0 is less than state variableStateSowFrom, set the state of the Vertex the from location of the last move to state variableStateSowFrom if all sites in 0 is equal to State at current site the sites of the board satisfy the condition 0 is equal to the total number of vertex in current site, Each turn, where the site is within the sites of the board, if State at current site is equal to 1, from vertex in current site to vertex Player 1's hand site 0 moveRule: true and if State at current site is equal to 2, from vertex in current site to vertex Player 2's hand site 0 moveRule: true and forget all previously rememberd values and if the total number of cell in Player 1's hand site 0 is greater than or equal to the total number of cell in Player 2's hand site 0, set the variable CurrentWinner to 1, else set the variable CurrentWinner to 2 and set the value of Player 2 to 0 and set the value of Player 1 to 0 and Each turn, where the site is within the sites of the board, if 0 is not equal to State at current site, set the state of the Vertex current site to 0.
-Aim: 
-     If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
-
-",NULL,NULL,NULL,NULL,NULL,"2°45'3.01""S, 13°54'59.71""E","5471,5471","0",NULL,"0","0","0.972","0.945","1",NULL,"431",NULL
-"2369","1189","Owana9",NULL,"Reconstructed with Ludii","2",NULL,"The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
-Regions:
-    RegionP1: the bottom sites of the board for P1
-    RegionP2: the top sites of the board for P2 
-All players play with null The following pieces are shared by all players: Seeds.
-Players take turns moving.
-Setup:
-     Set the count of the vertexes in track of board to 4.
-Rules: 
-     Select Vertex in if in the same turn if the total number of vertex in the location of the piece is greater than 0 then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if vertex 1 steps forward from site to on track null is occupied, set the site to to pending and from vertex in 1 steps forward from site to on track null to vertex Player the moving player's hand site 0 moveRule: true and move again, else if vertex 2 steps forward from site to on track null is occupied, from vertex in 2 steps forward from site to on track null to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
-Aim: 
-     If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
-
-",NULL,NULL,NULL,NULL,NULL,"2°45'3.01""S, 13°54'59.71""E","5471,5471","0",NULL,"0","0","0.971","0.943","1",NULL,"940",NULL
-"2370","1189","Owana10",NULL,"Reconstructed with Ludii","2",NULL,"The game Owana is played by two players on a 2 x 4 Mancala board with 2 outer stores.
-Regions:
-    RegionP1: the bottom sites of the board for P1
-    RegionP2: the top sites of the board for P2 
-All players play with null The following pieces are shared by all players: Seeds.
-Players take turns moving.
-Setup:
-     Set the count of the vertexes in track of board to 4.
-Rules: 
-     Select Vertex in RegionP1 or RegionP2 if the total number of vertex in the location of the piece is greater than 0 then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if 2 is equal to the total number of vertex in to or 4 is equal to the total number of vertex in to, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
-Aim: 
-     If all sites in [1,2,3,4] satisfy the condition 0 is equal to the total number of vertex in current site, player two wins If all sites in [5,6,7,8] satisfy the condition 0 is equal to the total number of vertex in current site, player one wins.
-
-",NULL,NULL,NULL,NULL,NULL,"2°45'3.01""S, 13°54'59.71""E","5471,5471","0",NULL,"0","0","0.971","0.943","1",NULL,"1346",NULL
 "2391","1112","Ashanti Alignment Game1",NULL,"Reconstructed with Ludii","2",NULL,"The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
 All players play with Markers.
 Rules for Pieces:
@@ -17168,3 +17028,111 @@ Rules:
      If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
 
 ",NULL,NULL,NULL,NULL,NULL,"8°57'30.23""N, 9°26'31.23""E","5431,5431","0",NULL,"0","0","0.947","0.972","0.921","0.876","1285, 1285","[]"
+"3004","1343","Al-Qirq (Ludii 1)",NULL,"Reconstructed with Ludii","2",NULL,"The game Al-Qirq is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.989","0.984","0.994","0.952","956, 956","[{956, 955}, {955, 955}, {955, 956}, {1944, 956}, {1944, 955}, {1288, 956}, {563, 956}, {563, 955}, {1288, 955}, {92, 956}, {92, 955}]"
+"3005","1343","Al-Qirq (Ludii 2)",NULL,"Reconstructed with Ludii","2",NULL,"The game Al-Qirq is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.959","0.924","0.994","0.909","955, 92","[{956, 92}, {92, 92}, {1944, 92}, {563, 92}, {1288, 92}]"
+"3006","1343","Al-Qirq (Ludii 3)",NULL,"Reconstructed with Ludii","2",NULL,"The game Al-Qirq is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 4, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.957","0.937","0.978","0.908","955, 957","[{956, 957}, {1944, 957}, {563, 957}, {1288, 957}, {92, 957}]"
+"3007","1343","Al-Qirq (Ludii 4)",NULL,"Reconstructed with Ludii","2",NULL,"The game Al-Qirq is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.957","0.952","0.963","0.92","957, 955","[{957, 956}]"
+"3008","1343","Al-Qirq (Ludii 5)",NULL,"Reconstructed with Ludii","2",NULL,"The game Al-Qirq is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line and not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, move again move one of your pieces remove pieces at sites occupied by any component owned by Enemy in Board then move again.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.947","0.934","0.961","0.918","955, 739","[]"
+"3009","1343","Al-Qirq (Ludii 6)",NULL,"Reconstructed with Ludii","2",NULL,"The game Al-Qirq is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.947","0.942","0.952","0.91","739, 956","[]"
+"3010","1343","Al-Qirq (Ludii 7)",NULL,"Reconstructed with Ludii","2",NULL,"The game Al-Qirq is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the next player cannot move or the number of pieces owned by Player the next player is less than or equal to 2, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.936","0.904","0.969","0.842","563, 1944","[{956, 1944}, {955, 1944}, {1288, 1944}, {1944, 1944}, {92, 1944}]"
+"3011","1343","Al-Qirq (Ludii 8)",NULL,"Reconstructed with Ludii","2",NULL,"The game Al-Qirq is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the next player cannot move or the number of pieces owned by Player the next player is less than or equal to 2, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.93","0.898","0.963","0.836","957, 1944","[]"
+"3012","1343","Al-Qirq (Ludii 9)",NULL,"Reconstructed with Ludii","2",NULL,"The game Al-Qirq is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.927","0.892","0.963","0.877","957, 92","[]"
+"3013","1343","Al-Qirq (Ludii 10)",NULL,"Reconstructed with Ludii","2",NULL,"The game Al-Qirq is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 4, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.926","0.905","0.946","0.876","957, 957","[]"
