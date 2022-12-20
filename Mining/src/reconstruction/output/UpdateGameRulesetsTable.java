@@ -34,7 +34,7 @@ public class UpdateGameRulesetsTable
 	final static String pathReconstructed    = "./res/recons/output/";
 	
 	// The game name.
-	final static String gameName        = "Samantsy";
+	final static String gameName        = "Barail";
 	
 	// The precision of the double to use.
 	final static int DOUBLE_PRECISION = 5;
@@ -107,12 +107,12 @@ public class UpdateGameRulesetsTable
 				geographicalScoreList.add(Double.parseDouble(geographicalScoreStr.length() > DOUBLE_PRECISION ? geographicalScoreStr.substring(0, DOUBLE_PRECISION) : geographicalScoreStr));
 				
 				lineNoQuote = lineNoQuote.substring(geographicalScoreStr.length() + 1);
-				separatorIndex = lineNoQuote.indexOf(',');
+				separatorIndex = lineNoQuote.indexOf('}') + 1 ;
 				String ids = lineNoQuote.substring(1, separatorIndex - 1);
 				idsUsedList.add(ids);
 				
 				lineNoQuote = lineNoQuote.substring(ids.length() + 3);
-				final String otherIds = lineNoQuote.substring(0,lineNoQuote.length());
+				final String otherIds = lineNoQuote.substring(0, lineNoQuote.length());
 				otherIdsList.add(otherIds);
 				
 				final String pathReconstruction = pathFolderReconstrutions + rulesetName + ".lud"; 
