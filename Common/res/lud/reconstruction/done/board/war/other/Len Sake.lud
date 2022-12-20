@@ -18,140 +18,179 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-{
-(item "Len Sake (Ludii 1)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (rectangle 1 6)
-                
-                (shift 7 0 
-                    (rectangle 1 6)
-                )
-                
-                (shift 0 6 
-                    (rectangle 1 6)
-                )
-                
-                (shift 7 6 
-                    (rectangle 1 6)
-                )
-                }
-            )
-            { 
-            (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
-            P1 directed:True)
-            
-            (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
-            P2 directed:True)
-            }
-        use:Vertex)
+    {
+    (item "Len Sake (Ludii 1)" <
         
-        (dice num:2)
+        (players 2)
         
-        (piece "Disc" Each 
-            (move 
-                (from 
-                    (from)
-                    level:
-                    (level)
-                )
-                
-                (to 
-                    (trackSite Move from:
-                        (from)
-                        steps:
-                        (pips)
-                    )
-                    if:
-                    (or 
-                        (not 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                        )
-                        
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (= 1 
-                                (size Stack at:
-                                    (to)
-                                )
-                            )
-                        )
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
                     )
                     
-                    (apply 
-                        (if 
-                            (is Enemy 
-                                (who at:
-                                    (to)
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice num:2)
+            
+            (piece "Disc" Each 
+                (move 
+                    (from 
+                        (from)
+                        level:
+                        (level)
+                    )
+                    
+                    (to 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (pips)
+                        )
+                        if:
+                        (or 
+                            (not 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
                                 )
                             )
                             
-                            (remove 
-                                (to)
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
                             )
                         )
                     )
                 )
             )
-        )
-        
-        (hand Each)
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place Stack "Disc1" 
-                (handSite P1)
-            count:4)
             
-            (place Stack "Disc2" 
-                (handSite P2)
-            count:2)
+            (hand Each)
             }
         )
-        phases:{ 
-        (phase "Entering" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:4)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:2)
+                }
+            )
+            phases:{ 
+            (phase "Entering" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
                             )
                             
-                            (to 
-                                (trackSite Move from:
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (move 
+                                (from 
                                     (handSite Mover)
-                                    steps:
-                                    (pips)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (handSite Mover)
+                                        steps:
+                                        (pips)
+                                    )
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (not 
+                                            (all DiceUsed)
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
                                 )
                             )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (is Empty 
+                        (handSite Mover)
+                    )
+                "Playing")
+            )
+            
+            (phase "Playing" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
+                            )
+                            
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (forEach Piece top:True)
                             
                             (then 
                                 (if 
@@ -166,193 +205,193 @@
                     )
                 )
             )
-            
-            (nextPhase Mover 
-                (is Empty 
-                    (handSite Mover)
-                )
-            "Playing")
-        )
-        
-        (phase "Playing" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (forEach Piece top:True)
-                        
-                        (then 
-                            (if 
-                                (not 
-                                    (all DiceUsed)
-                                )
-                                
-                                (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (> 8 
-                    (count Pieces Next)
-                )
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Len Sake (Ludii 1) ruleset.")
-
-(item "Len Sake (Ludii 2)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (rectangle 1 6)
-                
-                (shift 7 0 
-                    (rectangle 1 6)
-                )
-                
-                (shift 0 6 
-                    (rectangle 1 6)
-                )
-                
-                (shift 7 6 
-                    (rectangle 1 6)
-                )
-                }
-            )
-            { 
-            (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
-            P1 directed:True)
-            
-            (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
-            P2 directed:True)
             }
-        use:Vertex)
-        
-        (dice d:6 num:2)
-        
-        (piece "Disc" Each 
-            (move 
-                (from 
-                    (from)
-                    level:
-                    (level)
-                )
-                
-                (to 
-                    (trackSite Move from:
-                        (from)
-                        steps:
-                        (pips)
-                    )
-                    if:
-                    (or 
-                        (not 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                        )
-                        
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (= 1 
-                                (size Stack at:
-                                    (to)
-                                )
-                            )
-                        )
+            
+            (end 
+                (if 
+                    (> 8 
+                        (count Pieces Next)
                     )
                     
-                    (apply 
-                        (if 
-                            (is Enemy 
-                                (who at:
-                                    (to)
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Len Sake (Ludii 1) ruleset.")
+    
+    (item "Len Sake (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (move 
+                    (from 
+                        (from)
+                        level:
+                        (level)
+                    )
+                    
+                    (to 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (pips)
+                        )
+                        if:
+                        (or 
+                            (not 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
                                 )
                             )
                             
-                            (remove 
-                                (to)
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
                             )
                         )
                     )
                 )
             )
-        )
-        
-        (hand Each)
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place Stack "Disc1" 
-                (handSite P1)
-            count:15)
             
-            (place Stack "Disc2" 
-                (handSite P2)
-            count:6)
+            (hand Each)
             }
         )
-        phases:{ 
-        (phase "Entering" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:15)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:6)
+                }
+            )
+            phases:{ 
+            (phase "Entering" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
                             )
                             
-                            (to 
-                                (trackSite Move from:
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (move 
+                                (from 
                                     (handSite Mover)
-                                    steps:
-                                    (pips)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (handSite Mover)
+                                        steps:
+                                        (pips)
+                                    )
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (not 
+                                            (all DiceUsed)
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
                                 )
                             )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (is Empty 
+                        (handSite Mover)
+                    )
+                "Playing")
+            )
+            
+            (phase "Playing" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
+                            )
+                            
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (forEach Piece top:True)
                             
                             (then 
                                 (if 
@@ -367,193 +406,193 @@
                     )
                 )
             )
-            
-            (nextPhase Mover 
-                (is Empty 
-                    (handSite Mover)
-                )
-            "Playing")
-        )
-        
-        (phase "Playing" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (forEach Piece top:True)
-                        
-                        (then 
-                            (if 
-                                (not 
-                                    (all DiceUsed)
-                                )
-                                
-                                (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (> 6 
-                    (count Pieces Next)
-                )
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Len Sake (Ludii 2) ruleset.")
-
-(item "Len Sake (Ludii 3)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (rectangle 1 6)
-                
-                (shift 7 0 
-                    (rectangle 1 6)
-                )
-                
-                (shift 0 6 
-                    (rectangle 1 6)
-                )
-                
-                (shift 7 6 
-                    (rectangle 1 6)
-                )
-                }
-            )
-            { 
-            (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
-            P1 directed:True)
-            
-            (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
-            P2 directed:True)
             }
-        use:Vertex)
-        
-        (dice d:2 from:0 num:4)
-        
-        (piece "Disc" Each 
-            (move 
-                (from 
-                    (from)
-                    level:
-                    (level)
-                )
-                
-                (to 
-                    (trackSite Move from:
-                        (from)
-                        steps:
-                        (pips)
-                    )
-                    if:
-                    (or 
-                        (not 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                        )
-                        
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (= 1 
-                                (size Stack at:
-                                    (to)
-                                )
-                            )
-                        )
+            
+            (end 
+                (if 
+                    (> 6 
+                        (count Pieces Next)
                     )
                     
-                    (apply 
-                        (if 
-                            (is Enemy 
-                                (who at:
-                                    (to)
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Len Sake (Ludii 2) ruleset.")
+    
+    (item "Len Sake (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:2 from:0 num:4)
+            
+            (piece "Disc" Each 
+                (move 
+                    (from 
+                        (from)
+                        level:
+                        (level)
+                    )
+                    
+                    (to 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (pips)
+                        )
+                        if:
+                        (or 
+                            (not 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
                                 )
                             )
                             
-                            (remove 
-                                (to)
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
                             )
                         )
                     )
                 )
             )
-        )
-        
-        (hand Each)
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place Stack "Disc1" 
-                (handSite P1)
-            count:12)
             
-            (place Stack "Disc2" 
-                (handSite P2)
-            count:2)
+            (hand Each)
             }
         )
-        phases:{ 
-        (phase "Entering" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:12)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:2)
+                }
+            )
+            phases:{ 
+            (phase "Entering" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
                             )
                             
-                            (to 
-                                (trackSite Move from:
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (move 
+                                (from 
                                     (handSite Mover)
-                                    steps:
-                                    (pips)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (handSite Mover)
+                                        steps:
+                                        (pips)
+                                    )
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (not 
+                                            (all DiceUsed)
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
                                 )
                             )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (is Empty 
+                        (handSite Mover)
+                    )
+                "Playing")
+            )
+            
+            (phase "Playing" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
+                            )
+                            
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (forEach Piece top:True)
                             
                             (then 
                                 (if 
@@ -568,193 +607,193 @@
                     )
                 )
             )
-            
-            (nextPhase Mover 
-                (is Empty 
-                    (handSite Mover)
-                )
-            "Playing")
-        )
-        
-        (phase "Playing" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (forEach Piece top:True)
-                        
-                        (then 
-                            (if 
-                                (not 
-                                    (all DiceUsed)
-                                )
-                                
-                                (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (> 15 
-                    (count Pieces Next)
-                )
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Len Sake (Ludii 3) ruleset.")
-
-(item "Len Sake (Ludii 4)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (rectangle 1 6)
-                
-                (shift 7 0 
-                    (rectangle 1 6)
-                )
-                
-                (shift 0 6 
-                    (rectangle 1 6)
-                )
-                
-                (shift 7 6 
-                    (rectangle 1 6)
-                )
-                }
-            )
-            { 
-            (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
-            P1 directed:True)
-            
-            (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
-            P2 directed:True)
             }
-        use:Vertex)
-        
-        (dice d:2 from:0 num:4)
-        
-        (piece "Disc" Each 
-            (move 
-                (from 
-                    (from)
-                    level:
-                    (level)
-                )
-                
-                (to 
-                    (trackSite Move from:
-                        (from)
-                        steps:
-                        (pips)
-                    )
-                    if:
-                    (or 
-                        (not 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                        )
-                        
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (= 1 
-                                (size Stack at:
-                                    (to)
-                                )
-                            )
-                        )
+            
+            (end 
+                (if 
+                    (> 15 
+                        (count Pieces Next)
                     )
                     
-                    (apply 
-                        (if 
-                            (is Enemy 
-                                (who at:
-                                    (to)
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Len Sake (Ludii 3) ruleset.")
+    
+    (item "Len Sake (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:2 from:0 num:4)
+            
+            (piece "Disc" Each 
+                (move 
+                    (from 
+                        (from)
+                        level:
+                        (level)
+                    )
+                    
+                    (to 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (pips)
+                        )
+                        if:
+                        (or 
+                            (not 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
                                 )
                             )
                             
-                            (remove 
-                                (to)
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
                             )
                         )
                     )
                 )
             )
-        )
-        
-        (hand Each)
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place Stack "Disc1" 
-                (handSite P1)
-            count:11)
             
-            (place Stack "Disc2" 
-                (handSite P2)
-            count:10)
+            (hand Each)
             }
         )
-        phases:{ 
-        (phase "Entering" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:11)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:10)
+                }
+            )
+            phases:{ 
+            (phase "Entering" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
                             )
                             
-                            (to 
-                                (trackSite Move from:
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (move 
+                                (from 
                                     (handSite Mover)
-                                    steps:
-                                    (pips)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (handSite Mover)
+                                        steps:
+                                        (pips)
+                                    )
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (not 
+                                            (all DiceUsed)
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
                                 )
                             )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (is Empty 
+                        (handSite Mover)
+                    )
+                "Playing")
+            )
+            
+            (phase "Playing" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
+                            )
+                            
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (forEach Piece top:True)
                             
                             (then 
                                 (if 
@@ -769,193 +808,193 @@
                     )
                 )
             )
-            
-            (nextPhase Mover 
-                (is Empty 
-                    (handSite Mover)
-                )
-            "Playing")
-        )
-        
-        (phase "Playing" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (forEach Piece top:True)
-                        
-                        (then 
-                            (if 
-                                (not 
-                                    (all DiceUsed)
-                                )
-                                
-                                (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (> 14 
-                    (count Pieces Next)
-                )
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Len Sake (Ludii 4) ruleset.")
-
-(item "Len Sake (Ludii 5)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (rectangle 1 6)
-                
-                (shift 7 0 
-                    (rectangle 1 6)
-                )
-                
-                (shift 0 6 
-                    (rectangle 1 6)
-                )
-                
-                (shift 7 6 
-                    (rectangle 1 6)
-                )
-                }
-            )
-            { 
-            (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
-            P1 directed:True)
-            
-            (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
-            P2 directed:True)
             }
-        use:Vertex)
-        
-        (dice d:2 from:0 num:8)
-        
-        (piece "Disc" Each 
-            (move 
-                (from 
-                    (from)
-                    level:
-                    (level)
-                )
-                
-                (to 
-                    (trackSite Move from:
-                        (from)
-                        steps:
-                        (pips)
-                    )
-                    if:
-                    (or 
-                        (not 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                        )
-                        
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (= 1 
-                                (size Stack at:
-                                    (to)
-                                )
-                            )
-                        )
+            
+            (end 
+                (if 
+                    (> 14 
+                        (count Pieces Next)
                     )
                     
-                    (apply 
-                        (if 
-                            (is Enemy 
-                                (who at:
-                                    (to)
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Len Sake (Ludii 4) ruleset.")
+    
+    (item "Len Sake (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:2 from:0 num:8)
+            
+            (piece "Disc" Each 
+                (move 
+                    (from 
+                        (from)
+                        level:
+                        (level)
+                    )
+                    
+                    (to 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (pips)
+                        )
+                        if:
+                        (or 
+                            (not 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
                                 )
                             )
                             
-                            (remove 
-                                (to)
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
                             )
                         )
                     )
                 )
             )
-        )
-        
-        (hand Each)
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place Stack "Disc1" 
-                (handSite P1)
-            count:12)
             
-            (place Stack "Disc2" 
-                (handSite P2)
-            count:16)
+            (hand Each)
             }
         )
-        phases:{ 
-        (phase "Entering" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:12)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:16)
+                }
+            )
+            phases:{ 
+            (phase "Entering" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
                             )
                             
-                            (to 
-                                (trackSite Move from:
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (move 
+                                (from 
                                     (handSite Mover)
-                                    steps:
-                                    (pips)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (handSite Mover)
+                                        steps:
+                                        (pips)
+                                    )
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (not 
+                                            (all DiceUsed)
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
                                 )
                             )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (is Empty 
+                        (handSite Mover)
+                    )
+                "Playing")
+            )
+            
+            (phase "Playing" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
+                            )
+                            
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (forEach Piece top:True)
                             
                             (then 
                                 (if 
@@ -970,193 +1009,193 @@
                     )
                 )
             )
-            
-            (nextPhase Mover 
-                (is Empty 
-                    (handSite Mover)
-                )
-            "Playing")
-        )
-        
-        (phase "Playing" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (forEach Piece top:True)
-                        
-                        (then 
-                            (if 
-                                (not 
-                                    (all DiceUsed)
-                                )
-                                
-                                (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (> 4 
-                    (count Pieces Next)
-                )
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Len Sake (Ludii 5) ruleset.")
-
-(item "Len Sake (Ludii 6)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (rectangle 1 6)
-                
-                (shift 7 0 
-                    (rectangle 1 6)
-                )
-                
-                (shift 0 6 
-                    (rectangle 1 6)
-                )
-                
-                (shift 7 6 
-                    (rectangle 1 6)
-                )
-                }
-            )
-            { 
-            (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
-            P1 directed:True)
-            
-            (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
-            P2 directed:True)
             }
-        use:Vertex)
-        
-        (dice d:2 from:0 num:5)
-        
-        (piece "Disc" Each 
-            (move 
-                (from 
-                    (from)
-                    level:
-                    (level)
-                )
-                
-                (to 
-                    (trackSite Move from:
-                        (from)
-                        steps:
-                        (pips)
-                    )
-                    if:
-                    (or 
-                        (not 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                        )
-                        
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (= 1 
-                                (size Stack at:
-                                    (to)
-                                )
-                            )
-                        )
+            
+            (end 
+                (if 
+                    (> 4 
+                        (count Pieces Next)
                     )
                     
-                    (apply 
-                        (if 
-                            (is Enemy 
-                                (who at:
-                                    (to)
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Len Sake (Ludii 5) ruleset.")
+    
+    (item "Len Sake (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:2 from:0 num:5)
+            
+            (piece "Disc" Each 
+                (move 
+                    (from 
+                        (from)
+                        level:
+                        (level)
+                    )
+                    
+                    (to 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (pips)
+                        )
+                        if:
+                        (or 
+                            (not 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
                                 )
                             )
                             
-                            (remove 
-                                (to)
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
                             )
                         )
                     )
                 )
             )
-        )
-        
-        (hand Each)
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place Stack "Disc1" 
-                (handSite P1)
-            count:1)
             
-            (place Stack "Disc2" 
-                (handSite P2)
-            count:6)
+            (hand Each)
             }
         )
-        phases:{ 
-        (phase "Entering" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:1)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:6)
+                }
+            )
+            phases:{ 
+            (phase "Entering" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
                             )
                             
-                            (to 
-                                (trackSite Move from:
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (move 
+                                (from 
                                     (handSite Mover)
-                                    steps:
-                                    (pips)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (handSite Mover)
+                                        steps:
+                                        (pips)
+                                    )
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (not 
+                                            (all DiceUsed)
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
                                 )
                             )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (is Empty 
+                        (handSite Mover)
+                    )
+                "Playing")
+            )
+            
+            (phase "Playing" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
+                            )
+                            
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (forEach Piece top:True)
                             
                             (then 
                                 (if 
@@ -1171,193 +1210,193 @@
                     )
                 )
             )
-            
-            (nextPhase Mover 
-                (is Empty 
-                    (handSite Mover)
-                )
-            "Playing")
-        )
-        
-        (phase "Playing" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (forEach Piece top:True)
-                        
-                        (then 
-                            (if 
-                                (not 
-                                    (all DiceUsed)
-                                )
-                                
-                                (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (> 4 
-                    (count Pieces Next)
-                )
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Len Sake (Ludii 6) ruleset.")
-
-(item "Len Sake (Ludii 7)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (rectangle 1 6)
-                
-                (shift 7 0 
-                    (rectangle 1 6)
-                )
-                
-                (shift 0 6 
-                    (rectangle 1 6)
-                )
-                
-                (shift 7 6 
-                    (rectangle 1 6)
-                )
-                }
-            )
-            { 
-            (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
-            P1 directed:True)
-            
-            (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
-            P2 directed:True)
             }
-        use:Vertex)
-        
-        (dice d:6 num:2)
-        
-        (piece "Disc" Each 
-            (move 
-                (from 
-                    (from)
-                    level:
-                    (level)
-                )
-                
-                (to 
-                    (trackSite Move from:
-                        (from)
-                        steps:
-                        (pips)
-                    )
-                    if:
-                    (or 
-                        (not 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                        )
-                        
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (= 1 
-                                (size Stack at:
-                                    (to)
-                                )
-                            )
-                        )
+            
+            (end 
+                (if 
+                    (> 4 
+                        (count Pieces Next)
                     )
                     
-                    (apply 
-                        (if 
-                            (is Enemy 
-                                (who at:
-                                    (to)
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Len Sake (Ludii 6) ruleset.")
+    
+    (item "Len Sake (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (move 
+                    (from 
+                        (from)
+                        level:
+                        (level)
+                    )
+                    
+                    (to 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (pips)
+                        )
+                        if:
+                        (or 
+                            (not 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
                                 )
                             )
                             
-                            (remove 
-                                (to)
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
                             )
                         )
                     )
                 )
             )
-        )
-        
-        (hand Each)
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place Stack "Disc1" 
-                (handSite P1)
-            count:2)
             
-            (place Stack "Disc2" 
-                (handSite P2)
-            count:6)
+            (hand Each)
             }
         )
-        phases:{ 
-        (phase "Entering" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:2)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:6)
+                }
+            )
+            phases:{ 
+            (phase "Entering" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
                             )
                             
-                            (to 
-                                (trackSite Move from:
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (move 
+                                (from 
                                     (handSite Mover)
-                                    steps:
-                                    (pips)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (handSite Mover)
+                                        steps:
+                                        (pips)
+                                    )
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (not 
+                                            (all DiceUsed)
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
                                 )
                             )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (is Empty 
+                        (handSite Mover)
+                    )
+                "Playing")
+            )
+            
+            (phase "Playing" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
+                            )
+                            
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (forEach Piece top:True)
                             
                             (then 
                                 (if 
@@ -1372,193 +1411,193 @@
                     )
                 )
             )
-            
-            (nextPhase Mover 
-                (is Empty 
-                    (handSite Mover)
-                )
-            "Playing")
-        )
-        
-        (phase "Playing" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (forEach Piece top:True)
-                        
-                        (then 
-                            (if 
-                                (not 
-                                    (all DiceUsed)
-                                )
-                                
-                                (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (> 9 
-                    (count Pieces Next)
-                )
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Len Sake (Ludii 7) ruleset.")
-
-(item "Len Sake (Ludii 8)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (rectangle 1 6)
-                
-                (shift 7 0 
-                    (rectangle 1 6)
-                )
-                
-                (shift 0 6 
-                    (rectangle 1 6)
-                )
-                
-                (shift 7 6 
-                    (rectangle 1 6)
-                )
-                }
-            )
-            { 
-            (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
-            P1 directed:True)
-            
-            (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
-            P2 directed:True)
             }
-        use:Vertex)
-        
-        (dice d:6 num:2)
-        
-        (piece "Disc" Each 
-            (move 
-                (from 
-                    (from)
-                    level:
-                    (level)
-                )
-                
-                (to 
-                    (trackSite Move from:
-                        (from)
-                        steps:
-                        (pips)
-                    )
-                    if:
-                    (or 
-                        (not 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                        )
-                        
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (= 1 
-                                (size Stack at:
-                                    (to)
-                                )
-                            )
-                        )
+            
+            (end 
+                (if 
+                    (> 9 
+                        (count Pieces Next)
                     )
                     
-                    (apply 
-                        (if 
-                            (is Enemy 
-                                (who at:
-                                    (to)
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Len Sake (Ludii 7) ruleset.")
+    
+    (item "Len Sake (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (move 
+                    (from 
+                        (from)
+                        level:
+                        (level)
+                    )
+                    
+                    (to 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (pips)
+                        )
+                        if:
+                        (or 
+                            (not 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
                                 )
                             )
                             
-                            (remove 
-                                (to)
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
                             )
                         )
                     )
                 )
             )
-        )
-        
-        (hand Each)
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place Stack "Disc1" 
-                (handSite P1)
-            count:4)
             
-            (place Stack "Disc2" 
-                (handSite P2)
-            count:4)
+            (hand Each)
             }
         )
-        phases:{ 
-        (phase "Entering" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:4)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:4)
+                }
+            )
+            phases:{ 
+            (phase "Entering" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
                             )
                             
-                            (to 
-                                (trackSite Move from:
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (move 
+                                (from 
                                     (handSite Mover)
-                                    steps:
-                                    (pips)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (handSite Mover)
+                                        steps:
+                                        (pips)
+                                    )
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (not 
+                                            (all DiceUsed)
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
                                 )
                             )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (is Empty 
+                        (handSite Mover)
+                    )
+                "Playing")
+            )
+            
+            (phase "Playing" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
+                            )
+                            
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (forEach Piece top:True)
                             
                             (then 
                                 (if 
@@ -1573,193 +1612,193 @@
                     )
                 )
             )
-            
-            (nextPhase Mover 
-                (is Empty 
-                    (handSite Mover)
-                )
-            "Playing")
-        )
-        
-        (phase "Playing" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (forEach Piece top:True)
-                        
-                        (then 
-                            (if 
-                                (not 
-                                    (all DiceUsed)
-                                )
-                                
-                                (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (> 7 
-                    (count Pieces Next)
-                )
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Len Sake (Ludii 8) ruleset.")
-
-(item "Len Sake (Ludii 9)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (rectangle 1 6)
-                
-                (shift 7 0 
-                    (rectangle 1 6)
-                )
-                
-                (shift 0 6 
-                    (rectangle 1 6)
-                )
-                
-                (shift 7 6 
-                    (rectangle 1 6)
-                )
-                }
-            )
-            { 
-            (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
-            P1 directed:True)
-            
-            (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
-            P2 directed:True)
             }
-        use:Vertex)
-        
-        (dice d:2 from:0 num:6)
-        
-        (piece "Disc" Each 
-            (move 
-                (from 
-                    (from)
-                    level:
-                    (level)
-                )
-                
-                (to 
-                    (trackSite Move from:
-                        (from)
-                        steps:
-                        (pips)
-                    )
-                    if:
-                    (or 
-                        (not 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                        )
-                        
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (= 1 
-                                (size Stack at:
-                                    (to)
-                                )
-                            )
-                        )
+            
+            (end 
+                (if 
+                    (> 7 
+                        (count Pieces Next)
                     )
                     
-                    (apply 
-                        (if 
-                            (is Enemy 
-                                (who at:
-                                    (to)
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Len Sake (Ludii 8) ruleset.")
+    
+    (item "Len Sake (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:2 from:0 num:6)
+            
+            (piece "Disc" Each 
+                (move 
+                    (from 
+                        (from)
+                        level:
+                        (level)
+                    )
+                    
+                    (to 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (pips)
+                        )
+                        if:
+                        (or 
+                            (not 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
                                 )
                             )
                             
-                            (remove 
-                                (to)
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
                             )
                         )
                     )
                 )
             )
-        )
-        
-        (hand Each)
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place Stack "Disc1" 
-                (handSite P1)
-            count:12)
             
-            (place Stack "Disc2" 
-                (handSite P2)
-            count:7)
+            (hand Each)
             }
         )
-        phases:{ 
-        (phase "Entering" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:12)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:7)
+                }
+            )
+            phases:{ 
+            (phase "Entering" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
                             )
                             
-                            (to 
-                                (trackSite Move from:
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (move 
+                                (from 
                                     (handSite Mover)
-                                    steps:
-                                    (pips)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (handSite Mover)
+                                        steps:
+                                        (pips)
+                                    )
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (not 
+                                            (all DiceUsed)
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
                                 )
                             )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (is Empty 
+                        (handSite Mover)
+                    )
+                "Playing")
+            )
+            
+            (phase "Playing" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
+                            )
+                            
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (forEach Piece top:True)
                             
                             (then 
                                 (if 
@@ -1774,193 +1813,193 @@
                     )
                 )
             )
-            
-            (nextPhase Mover 
-                (is Empty 
-                    (handSite Mover)
-                )
-            "Playing")
-        )
-        
-        (phase "Playing" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (forEach Piece top:True)
-                        
-                        (then 
-                            (if 
-                                (not 
-                                    (all DiceUsed)
-                                )
-                                
-                                (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (> 11 
-                    (count Pieces Next)
-                )
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Len Sake (Ludii 9) ruleset.")
-
-(item "Len Sake (Ludii 10)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (rectangle 1 6)
-                
-                (shift 7 0 
-                    (rectangle 1 6)
-                )
-                
-                (shift 0 6 
-                    (rectangle 1 6)
-                )
-                
-                (shift 7 6 
-                    (rectangle 1 6)
-                )
-                }
-            )
-            { 
-            (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
-            P1 directed:True)
-            
-            (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
-            P2 directed:True)
             }
-        use:Vertex)
-        
-        (dice d:2 from:0 num:6)
-        
-        (piece "Disc" Each 
-            (move 
-                (from 
-                    (from)
-                    level:
-                    (level)
-                )
-                
-                (to 
-                    (trackSite Move from:
-                        (from)
-                        steps:
-                        (pips)
-                    )
-                    if:
-                    (or 
-                        (not 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                        )
-                        
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (= 1 
-                                (size Stack at:
-                                    (to)
-                                )
-                            )
-                        )
+            
+            (end 
+                (if 
+                    (> 11 
+                        (count Pieces Next)
                     )
                     
-                    (apply 
-                        (if 
-                            (is Enemy 
-                                (who at:
-                                    (to)
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Len Sake (Ludii 9) ruleset.")
+    
+    (item "Len Sake (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 24 0 1 2 3 4 5 6 7 8 9 10 11 23 22 21 20 19 18 17 16 15 14 13 12}
+                P1 directed:True)
+                
+                (track "Track2" { 25 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:2 from:0 num:6)
+            
+            (piece "Disc" Each 
+                (move 
+                    (from 
+                        (from)
+                        level:
+                        (level)
+                    )
+                    
+                    (to 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (pips)
+                        )
+                        if:
+                        (or 
+                            (not 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
                                 )
                             )
                             
-                            (remove 
-                                (to)
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
                             )
                         )
                     )
                 )
             )
-        )
-        
-        (hand Each)
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place Stack "Disc1" 
-                (handSite P1)
-            count:9)
             
-            (place Stack "Disc2" 
-                (handSite P2)
-            count:12)
+            (hand Each)
             }
         )
-        phases:{ 
-        (phase "Entering" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 
+                    (handSite P1)
+                count:9)
+                
+                (place Stack "Disc2" 
+                    (handSite P2)
+                count:12)
+                }
+            )
+            phases:{ 
+            (phase "Entering" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
                             )
                             
-                            (to 
-                                (trackSite Move from:
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (move 
+                                (from 
                                     (handSite Mover)
-                                    steps:
-                                    (pips)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (handSite Mover)
+                                        steps:
+                                        (pips)
+                                    )
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (not 
+                                            (all DiceUsed)
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
                                 )
                             )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (is Empty 
+                        (handSite Mover)
+                    )
+                "Playing")
+            )
+            
+            (phase "Playing" 
+                (play 
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
+                            )
+                            
+                            (roll)
+                        )
+                        next:
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (forEach Piece top:True)
                             
                             (then 
                                 (if 
@@ -1975,61 +2014,20 @@
                     )
                 )
             )
+            }
             
-            (nextPhase Mover 
-                (is Empty 
-                    (handSite Mover)
-                )
-            "Playing")
-        )
-        
-        (phase "Playing" 
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
+            (end 
+                (if 
+                    (> 6 
+                        (count Pieces Next)
                     )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (forEach Piece top:True)
-                        
-                        (then 
-                            (if 
-                                (not 
-                                    (all DiceUsed)
-                                )
-                                
-                                (moveAgain)
-                            )
-                        )
-                    )
+                    
+                    (result Mover Win)
                 )
             )
         )
-        }
         
-        (end 
-            (if 
-                (> 6 
-                    (count Pieces Next)
-                )
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Len Sake (Ludii 10) ruleset.")
-
-
+    > "The Len Sake (Ludii 10) ruleset.")
     
     (item "Incomplete"
         <
@@ -2104,43 +2102,42 @@
         "The incomplete ruleset."
     )
     
-
- })
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets {
-
-(ruleset "Ruleset/Len Sake (Ludii 1) (Reconstructed)" {
-     "Variant/Len Sake (Ludii 1)"
-})
-(ruleset "Ruleset/Len Sake (Ludii 2) (Reconstructed)" {
-     "Variant/Len Sake (Ludii 2)"
-})
-(ruleset "Ruleset/Len Sake (Ludii 3) (Reconstructed)" {
-     "Variant/Len Sake (Ludii 3)"
-})
-(ruleset "Ruleset/Len Sake (Ludii 4) (Reconstructed)" {
-     "Variant/Len Sake (Ludii 4)"
-})
-(ruleset "Ruleset/Len Sake (Ludii 5) (Reconstructed)" {
-     "Variant/Len Sake (Ludii 5)"
-})
-(ruleset "Ruleset/Len Sake (Ludii 6) (Reconstructed)" {
-     "Variant/Len Sake (Ludii 6)"
-})
-(ruleset "Ruleset/Len Sake (Ludii 7) (Reconstructed)" {
-     "Variant/Len Sake (Ludii 7)"
-})
-(ruleset "Ruleset/Len Sake (Ludii 8) (Reconstructed)" {
-     "Variant/Len Sake (Ludii 8)"
-})
-(ruleset "Ruleset/Len Sake (Ludii 9) (Reconstructed)" {
-     "Variant/Len Sake (Ludii 9)"
-})
-(ruleset "Ruleset/Len Sake (Ludii 10) (Reconstructed)" {
-     "Variant/Len Sake (Ludii 10)"
-})
+    
+    (ruleset "Ruleset/Len Sake (Ludii 1) (Reconstructed)" {
+        "Variant/Len Sake (Ludii 1)"
+    })
+    (ruleset "Ruleset/Len Sake (Ludii 2) (Reconstructed)" {
+        "Variant/Len Sake (Ludii 2)"
+    })
+    (ruleset "Ruleset/Len Sake (Ludii 3) (Reconstructed)" {
+        "Variant/Len Sake (Ludii 3)"
+    })
+    (ruleset "Ruleset/Len Sake (Ludii 4) (Reconstructed)" {
+        "Variant/Len Sake (Ludii 4)"
+    })
+    (ruleset "Ruleset/Len Sake (Ludii 5) (Reconstructed)" {
+        "Variant/Len Sake (Ludii 5)"
+    })
+    (ruleset "Ruleset/Len Sake (Ludii 6) (Reconstructed)" {
+        "Variant/Len Sake (Ludii 6)"
+    })
+    (ruleset "Ruleset/Len Sake (Ludii 7) (Reconstructed)" {
+        "Variant/Len Sake (Ludii 7)"
+    })
+    (ruleset "Ruleset/Len Sake (Ludii 8) (Reconstructed)" {
+        "Variant/Len Sake (Ludii 8)"
+    })
+    (ruleset "Ruleset/Len Sake (Ludii 9) (Reconstructed)" {
+        "Variant/Len Sake (Ludii 9)"
+    })
+    (ruleset "Ruleset/Len Sake (Ludii 10) (Reconstructed)" {
+        "Variant/Len Sake (Ludii 10)"
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -2150,7 +2147,7 @@
 
 //------------------------------------------------------------------------------
 
- (metadata 
+(metadata 
     
     (info
         {
@@ -2166,5 +2163,4 @@
     })
     
 )
-
 
