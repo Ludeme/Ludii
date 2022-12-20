@@ -42,7 +42,7 @@
 
 (option "Variant" <Variant> args:{ <variant> }
     {
-    (item "Macheng1" <
+    (item "Macheng (Ludii 1)" <
         
         (players 2)
         
@@ -128,7 +128,643 @@
         
         (rules 
             (start 
-                (place "Marker" "Hand" count:12)
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (and { 
+                                    (custodial 
+                                        (from 
+                                            (last To)
+                                        )
+                                        Orthogonal 
+                                        (between 
+                                            (max 1)
+                                            if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                            
+                                            (apply 
+                                                (remove 
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Friend 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (intervene 
+                                        (from 
+                                            (last To)
+                                        )
+                                        Orthogonal 
+                                        (to if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (apply 
+                                                (remove 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (is Line 3 Orthogonal exact:True)
+                                        
+                                        (moveAgain)
+                                    )
+                                    }
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Macheng (Ludii 1) ruleset.")
+    
+    (item "Macheng (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (and { 
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between 
+                                    (max 1)
+                                    if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (intervene 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (to if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                            }
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (and { 
+                                    (custodial 
+                                        (from 
+                                            (last To)
+                                        )
+                                        Orthogonal 
+                                        (between 
+                                            (max 1)
+                                            if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                            
+                                            (apply 
+                                                (remove 
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Friend 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (intervene 
+                                        (from 
+                                            (last To)
+                                        )
+                                        Orthogonal 
+                                        (to if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (apply 
+                                                (remove 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (is Line 3 Orthogonal exact:True)
+                                        
+                                        (moveAgain)
+                                    )
+                                    }
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (or 
+                        (no Moves Next)
+                        
+                        (<= 
+                            (count Pieces Next)
+                        2)
+                    )
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Macheng (Ludii 2) ruleset.")
+    
+    (item "Macheng (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (and { 
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between 
+                                    (max 1)
+                                    if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (intervene 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (to if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                            }
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (and { 
+                                    (custodial 
+                                        (from 
+                                            (last To)
+                                        )
+                                        Orthogonal 
+                                        (between 
+                                            (max 1)
+                                            if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                            
+                                            (apply 
+                                                (remove 
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Friend 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (intervene 
+                                        (from 
+                                            (last To)
+                                        )
+                                        Orthogonal 
+                                        (to if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (apply 
+                                                (remove 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (is Line 3 Orthogonal exact:True)
+                                        
+                                        (moveAgain)
+                                    )
+                                    }
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Macheng (Ludii 3) ruleset.")
+    
+    (item "Macheng (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (and { 
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between 
+                                    (max 1)
+                                    if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (intervene 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (to if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                            }
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
             )
             phases:{ 
             (phase "Placement" 
@@ -259,15 +895,15 @@
             )
         )
         
-    > "The Macheng1 ruleset.")
+    > "The Macheng (Ludii 4) ruleset.")
     
-    (item "Macheng2" <
+    (item "Macheng (Ludii 5)" <
         
         (players 2)
         
         (equipment { 
             (board 
-                (concentric Square rings:3 joinCorners:True)
+                (concentric Square rings:3)
             use:Vertex)
             
             (hand Each)
@@ -347,226 +983,7 @@
         
         (rules 
             (start 
-                (place "Marker" "Hand" count:12)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (and { 
-                                    (custodial 
-                                        (from 
-                                            (last To)
-                                        )
-                                        Orthogonal 
-                                        (between 
-                                            (max 1)
-                                            if:
-                                            (is Enemy 
-                                                (who at:
-                                                    (between)
-                                                )
-                                            )
-                                            
-                                            (apply 
-                                                (remove 
-                                                    (between)
-                                                )
-                                            )
-                                        )
-                                        
-                                        (to if:
-                                            (is Friend 
-                                                (who at:
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                    )
-                                    
-                                    (intervene 
-                                        (from 
-                                            (last To)
-                                        )
-                                        Orthogonal 
-                                        (to if:
-                                            (is Enemy 
-                                                (who at:
-                                                    (to)
-                                                )
-                                            )
-                                            
-                                            (apply 
-                                                (remove 
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                    )
-                                    
-                                    (if 
-                                        (is Line 3 Orthogonal exact:True)
-                                        
-                                        (moveAgain)
-                                    )
-                                    }
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement")
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end { 
-                (if 
-                    (no Moves P2)
-                    
-                    (result P1 Win)
-                )
-                
-                (if 
-                    (< 
-                        (count Pieces P1)
-                    2)
-                    
-                    (result P2 Win)
-                )
-                }
-            )
-        )
-        
-    > "The Macheng2 ruleset.")
-    
-    (item "Macheng3" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (and { 
-                            (custodial 
-                                (from 
-                                    (last To)
-                                )
-                                Orthogonal 
-                                (between 
-                                    (max 1)
-                                    if:
-                                    (is Enemy 
-                                        (who at:
-                                            (between)
-                                        )
-                                    )
-                                    
-                                    (apply 
-                                        (remove 
-                                            (between)
-                                        )
-                                    )
-                                )
-                                
-                                (to if:
-                                    (is Friend 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (intervene 
-                                (from 
-                                    (last To)
-                                )
-                                Orthogonal 
-                                (to if:
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (apply 
-                                        (remove 
-                                            (to)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (if 
-                                (is Line 3 Orthogonal exact:True)
-                                
-                                (moveAgain)
-                            )
-                            }
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:12)
+                (place "Marker" "Hand" count:9)
             )
             phases:{ 
             (phase "Placement" 
@@ -681,16 +1098,22 @@
             
             (end 
                 (if 
-                    (no Moves Next)
+                    (or 
+                        (no Moves Next)
+                        
+                        (<= 
+                            (count Pieces Next)
+                        2)
+                    )
                     
                     (result Mover Win)
                 )
             )
         )
         
-    > "The Macheng3 ruleset.")
+    > "The Macheng (Ludii 5) ruleset.")
     
-    (item "Macheng4" <
+    (item "Macheng (Ludii 6)" <
         
         (players 2)
         
@@ -776,1267 +1199,7 @@
         
         (rules 
             (start 
-                (place "Marker" "Hand" count:12)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (and { 
-                                    (custodial 
-                                        (from 
-                                            (last To)
-                                        )
-                                        Orthogonal 
-                                        (between 
-                                            (max 1)
-                                            if:
-                                            (is Enemy 
-                                                (who at:
-                                                    (between)
-                                                )
-                                            )
-                                            
-                                            (apply 
-                                                (remove 
-                                                    (between)
-                                                )
-                                            )
-                                        )
-                                        
-                                        (to if:
-                                            (is Friend 
-                                                (who at:
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                    )
-                                    
-                                    (intervene 
-                                        (from 
-                                            (last To)
-                                        )
-                                        Orthogonal 
-                                        (to if:
-                                            (is Enemy 
-                                                (who at:
-                                                    (to)
-                                                )
-                                            )
-                                            
-                                            (apply 
-                                                (remove 
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                    )
-                                    
-                                    (if 
-                                        (is Line 3 Orthogonal exact:True)
-                                        
-                                        (moveAgain)
-                                    )
-                                    }
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement")
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (no Moves Next)
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Macheng4 ruleset.")
-    
-    (item "Macheng5" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (and { 
-                            (custodial 
-                                (from 
-                                    (last To)
-                                )
-                                Orthogonal 
-                                (between 
-                                    (max 1)
-                                    if:
-                                    (is Enemy 
-                                        (who at:
-                                            (between)
-                                        )
-                                    )
-                                    
-                                    (apply 
-                                        (remove 
-                                            (between)
-                                        )
-                                    )
-                                )
-                                
-                                (to if:
-                                    (is Friend 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (intervene 
-                                (from 
-                                    (last To)
-                                )
-                                Orthogonal 
-                                (to if:
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (apply 
-                                        (remove 
-                                            (to)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (if 
-                                (is Line 3 Orthogonal exact:True)
-                                
-                                (moveAgain)
-                            )
-                            }
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:12)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (and { 
-                                    (custodial 
-                                        (from 
-                                            (last To)
-                                        )
-                                        Orthogonal 
-                                        (between 
-                                            (max 1)
-                                            if:
-                                            (is Enemy 
-                                                (who at:
-                                                    (between)
-                                                )
-                                            )
-                                            
-                                            (apply 
-                                                (remove 
-                                                    (between)
-                                                )
-                                            )
-                                        )
-                                        
-                                        (to if:
-                                            (is Friend 
-                                                (who at:
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                    )
-                                    
-                                    (intervene 
-                                        (from 
-                                            (last To)
-                                        )
-                                        Orthogonal 
-                                        (to if:
-                                            (is Enemy 
-                                                (who at:
-                                                    (to)
-                                                )
-                                            )
-                                            
-                                            (apply 
-                                                (remove 
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                    )
-                                    
-                                    (if 
-                                        (is Line 3 Orthogonal exact:True)
-                                        
-                                        (moveAgain)
-                                    )
-                                    }
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement")
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (no Pieces Next)
-                    
-                    (result Next Loss)
-                )
-            )
-        )
-        
-    > "The Macheng5 ruleset.")
-    
-    (item "Macheng6" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (and { 
-                            (custodial 
-                                (from 
-                                    (last To)
-                                )
-                                Orthogonal 
-                                (between 
-                                    (max 1)
-                                    if:
-                                    (is Enemy 
-                                        (who at:
-                                            (between)
-                                        )
-                                    )
-                                    
-                                    (apply 
-                                        (remove 
-                                            (between)
-                                        )
-                                    )
-                                )
-                                
-                                (to if:
-                                    (is Friend 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (intervene 
-                                (from 
-                                    (last To)
-                                )
-                                Orthogonal 
-                                (to if:
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (apply 
-                                        (remove 
-                                            (to)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (if 
-                                (is Line 3 Orthogonal exact:True)
-                                
-                                (moveAgain)
-                            )
-                            }
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:12)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (and { 
-                                    (custodial 
-                                        (from 
-                                            (last To)
-                                        )
-                                        Orthogonal 
-                                        (between 
-                                            (max 1)
-                                            if:
-                                            (is Enemy 
-                                                (who at:
-                                                    (between)
-                                                )
-                                            )
-                                            
-                                            (apply 
-                                                (remove 
-                                                    (between)
-                                                )
-                                            )
-                                        )
-                                        
-                                        (to if:
-                                            (is Friend 
-                                                (who at:
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                    )
-                                    
-                                    (intervene 
-                                        (from 
-                                            (last To)
-                                        )
-                                        Orthogonal 
-                                        (to if:
-                                            (is Enemy 
-                                                (who at:
-                                                    (to)
-                                                )
-                                            )
-                                            
-                                            (apply 
-                                                (remove 
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                    )
-                                    
-                                    (if 
-                                        (is Line 3 Orthogonal exact:True)
-                                        
-                                        (moveAgain)
-                                    )
-                                    }
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement")
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (no Moves Next)
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Macheng6 ruleset.")
-    
-    (item "Macheng7" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (and { 
-                            (custodial 
-                                (from 
-                                    (last To)
-                                )
-                                Orthogonal 
-                                (between 
-                                    (max 1)
-                                    if:
-                                    (is Enemy 
-                                        (who at:
-                                            (between)
-                                        )
-                                    )
-                                    
-                                    (apply 
-                                        (remove 
-                                            (between)
-                                        )
-                                    )
-                                )
-                                
-                                (to if:
-                                    (is Friend 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (intervene 
-                                (from 
-                                    (last To)
-                                )
-                                Orthogonal 
-                                (to if:
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (apply 
-                                        (remove 
-                                            (to)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (if 
-                                (is Line 3 Orthogonal exact:True)
-                                
-                                (moveAgain)
-                            )
-                            }
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:12)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (and { 
-                                    (custodial 
-                                        (from 
-                                            (last To)
-                                        )
-                                        Orthogonal 
-                                        (between 
-                                            (max 1)
-                                            if:
-                                            (is Enemy 
-                                                (who at:
-                                                    (between)
-                                                )
-                                            )
-                                            
-                                            (apply 
-                                                (remove 
-                                                    (between)
-                                                )
-                                            )
-                                        )
-                                        
-                                        (to if:
-                                            (is Friend 
-                                                (who at:
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                    )
-                                    
-                                    (intervene 
-                                        (from 
-                                            (last To)
-                                        )
-                                        Orthogonal 
-                                        (to if:
-                                            (is Enemy 
-                                                (who at:
-                                                    (to)
-                                                )
-                                            )
-                                            
-                                            (apply 
-                                                (remove 
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                    )
-                                    
-                                    (if 
-                                        (is Line 3 Orthogonal exact:True)
-                                        
-                                        (moveAgain)
-                                    )
-                                    }
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement")
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (no Moves Next)
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Macheng7 ruleset.")
-    
-    (item "Macheng8" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (and { 
-                            (custodial 
-                                (from 
-                                    (last To)
-                                )
-                                Orthogonal 
-                                (between 
-                                    (max 1)
-                                    if:
-                                    (is Enemy 
-                                        (who at:
-                                            (between)
-                                        )
-                                    )
-                                    
-                                    (apply 
-                                        (remove 
-                                            (between)
-                                        )
-                                    )
-                                )
-                                
-                                (to if:
-                                    (is Friend 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (intervene 
-                                (from 
-                                    (last To)
-                                )
-                                Orthogonal 
-                                (to if:
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (apply 
-                                        (remove 
-                                            (to)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (if 
-                                (is Line 3 Orthogonal exact:True)
-                                
-                                (moveAgain)
-                            )
-                            }
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:12)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (and { 
-                                    (custodial 
-                                        (from 
-                                            (last To)
-                                        )
-                                        Orthogonal 
-                                        (between 
-                                            (max 1)
-                                            if:
-                                            (is Enemy 
-                                                (who at:
-                                                    (between)
-                                                )
-                                            )
-                                            
-                                            (apply 
-                                                (remove 
-                                                    (between)
-                                                )
-                                            )
-                                        )
-                                        
-                                        (to if:
-                                            (is Friend 
-                                                (who at:
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                    )
-                                    
-                                    (intervene 
-                                        (from 
-                                            (last To)
-                                        )
-                                        Orthogonal 
-                                        (to if:
-                                            (is Enemy 
-                                                (who at:
-                                                    (to)
-                                                )
-                                            )
-                                            
-                                            (apply 
-                                                (remove 
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                    )
-                                    
-                                    (if 
-                                        (is Line 3 Orthogonal exact:True)
-                                        
-                                        (moveAgain)
-                                    )
-                                    }
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement")
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (no Moves Next)
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Macheng8 ruleset.")
-    
-    (item "Macheng9" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (and { 
-                            (custodial 
-                                (from 
-                                    (last To)
-                                )
-                                Orthogonal 
-                                (between 
-                                    (max 1)
-                                    if:
-                                    (is Enemy 
-                                        (who at:
-                                            (between)
-                                        )
-                                    )
-                                    
-                                    (apply 
-                                        (remove 
-                                            (between)
-                                        )
-                                    )
-                                )
-                                
-                                (to if:
-                                    (is Friend 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (intervene 
-                                (from 
-                                    (last To)
-                                )
-                                Orthogonal 
-                                (to if:
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (apply 
-                                        (remove 
-                                            (to)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (if 
-                                (is Line 3 Orthogonal exact:True)
-                                
-                                (moveAgain)
-                            )
-                            }
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:12)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (and { 
-                                    (custodial 
-                                        (from 
-                                            (last To)
-                                        )
-                                        Orthogonal 
-                                        (between 
-                                            (max 1)
-                                            if:
-                                            (is Enemy 
-                                                (who at:
-                                                    (between)
-                                                )
-                                            )
-                                            
-                                            (apply 
-                                                (remove 
-                                                    (between)
-                                                )
-                                            )
-                                        )
-                                        
-                                        (to if:
-                                            (is Friend 
-                                                (who at:
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                    )
-                                    
-                                    (intervene 
-                                        (from 
-                                            (last To)
-                                        )
-                                        Orthogonal 
-                                        (to if:
-                                            (is Enemy 
-                                                (who at:
-                                                    (to)
-                                                )
-                                            )
-                                            
-                                            (apply 
-                                                (remove 
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                    )
-                                    
-                                    (if 
-                                        (is Line 3 Orthogonal exact:True)
-                                        
-                                        (moveAgain)
-                                    )
-                                    }
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement")
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (no Pieces Next)
-                    
-                    (result Next Loss)
-                )
-            )
-        )
-        
-    > "The Macheng9 ruleset.")
-    
-    (item "Macheng10" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (and { 
-                            (custodial 
-                                (from 
-                                    (last To)
-                                )
-                                Orthogonal 
-                                (between 
-                                    (max 1)
-                                    if:
-                                    (is Enemy 
-                                        (who at:
-                                            (between)
-                                        )
-                                    )
-                                    
-                                    (apply 
-                                        (remove 
-                                            (between)
-                                        )
-                                    )
-                                )
-                                
-                                (to if:
-                                    (is Friend 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (intervene 
-                                (from 
-                                    (last To)
-                                )
-                                Orthogonal 
-                                (to if:
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (apply 
-                                        (remove 
-                                            (to)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (if 
-                                (is Line 3 Orthogonal exact:True)
-                                
-                                (moveAgain)
-                            )
-                            }
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:12)
+                (place "Marker" "Hand" count:9)
             )
             phases:{ 
             (phase "Placement" 
@@ -2157,7 +1320,9 @@
                 )
                 
                 (if 
-                    (no Pieces P2)
+                    (< 
+                        (count Pieces P2)
+                    2)
                     
                     (result P1 Win)
                 )
@@ -2165,7 +1330,876 @@
             )
         )
         
-    > "The Macheng10 ruleset.")
+    > "The Macheng (Ludii 6) ruleset.")
+    
+    (item "Macheng (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (and { 
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between 
+                                    (max 1)
+                                    if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (intervene 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (to if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                            }
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (and { 
+                                    (custodial 
+                                        (from 
+                                            (last To)
+                                        )
+                                        Orthogonal 
+                                        (between 
+                                            (max 1)
+                                            if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                            
+                                            (apply 
+                                                (remove 
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Friend 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (intervene 
+                                        (from 
+                                            (last To)
+                                        )
+                                        Orthogonal 
+                                        (to if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (apply 
+                                                (remove 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (is Line 3 Orthogonal exact:True)
+                                        
+                                        (moveAgain)
+                                    )
+                                    }
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end { 
+                (if 
+                    (no Moves P2)
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (< 
+                        (count Pieces P1)
+                    2)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Macheng (Ludii 7) ruleset.")
+    
+    (item "Macheng (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (and { 
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between 
+                                    (max 1)
+                                    if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (intervene 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (to if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                            }
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (and { 
+                                    (custodial 
+                                        (from 
+                                            (last To)
+                                        )
+                                        Orthogonal 
+                                        (between 
+                                            (max 1)
+                                            if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                            
+                                            (apply 
+                                                (remove 
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Friend 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (intervene 
+                                        (from 
+                                            (last To)
+                                        )
+                                        Orthogonal 
+                                        (to if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (apply 
+                                                (remove 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (is Line 3 Orthogonal exact:True)
+                                        
+                                        (moveAgain)
+                                    )
+                                    }
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end { 
+                (if 
+                    (no Moves P2)
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (< 
+                        (count Pieces P1)
+                    2)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Macheng (Ludii 8) ruleset.")
+    
+    (item "Macheng (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (and { 
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between 
+                                    (max 1)
+                                    if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (intervene 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (to if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                            }
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (and { 
+                                    (custodial 
+                                        (from 
+                                            (last To)
+                                        )
+                                        Orthogonal 
+                                        (between 
+                                            (max 1)
+                                            if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                            
+                                            (apply 
+                                                (remove 
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Friend 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (intervene 
+                                        (from 
+                                            (last To)
+                                        )
+                                        Orthogonal 
+                                        (to if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (apply 
+                                                (remove 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (is Line 3 Orthogonal exact:True)
+                                        
+                                        (moveAgain)
+                                    )
+                                    }
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (< 
+                        (count Pieces P2)
+                    2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Macheng (Ludii 9) ruleset.")
+    
+    (item "Macheng (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (and { 
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between 
+                                    (max 1)
+                                    if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (intervene 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (to if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                            }
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (and { 
+                                    (custodial 
+                                        (from 
+                                            (last To)
+                                        )
+                                        Orthogonal 
+                                        (between 
+                                            (max 1)
+                                            if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                            
+                                            (apply 
+                                                (remove 
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Friend 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (intervene 
+                                        (from 
+                                            (last To)
+                                        )
+                                        Orthogonal 
+                                        (to if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (apply 
+                                                (remove 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (is Line 3 Orthogonal exact:True)
+                                        
+                                        (moveAgain)
+                                    )
+                                    }
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (= 
+                        (score Mover)
+                    5)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Macheng (Ludii 10) ruleset.")
     
     (item "Incomplete"
         <
@@ -2234,36 +2268,36 @@
 
 (rulesets {
     
-    (ruleset "Ruleset/Macheng1 (Reconstructed)" {
-        "Variant/Macheng1"
+    (ruleset "Ruleset/Macheng (Ludii 1) (Reconstructed)" {
+        "Variant/Macheng (Ludii 1)"
     })
-    (ruleset "Ruleset/Macheng2 (Reconstructed)" {
-        "Variant/Macheng2"
+    (ruleset "Ruleset/Macheng (Ludii 2) (Reconstructed)" {
+        "Variant/Macheng (Ludii 2)"
     })
-    (ruleset "Ruleset/Macheng3 (Reconstructed)" {
-        "Variant/Macheng3"
+    (ruleset "Ruleset/Macheng (Ludii 3) (Reconstructed)" {
+        "Variant/Macheng (Ludii 3)"
     })
-    (ruleset "Ruleset/Macheng4 (Reconstructed)" {
-        "Variant/Macheng4"
+    (ruleset "Ruleset/Macheng (Ludii 4) (Reconstructed)" {
+        "Variant/Macheng (Ludii 4)"
     })
-    (ruleset "Ruleset/Macheng5 (Reconstructed)" {
-        "Variant/Macheng5"
+    (ruleset "Ruleset/Macheng (Ludii 5) (Reconstructed)" {
+        "Variant/Macheng (Ludii 5)"
     })
-    (ruleset "Ruleset/Macheng6 (Reconstructed)" {
-        "Variant/Macheng6"
+    (ruleset "Ruleset/Macheng (Ludii 6) (Reconstructed)" {
+        "Variant/Macheng (Ludii 6)"
     })
-    (ruleset "Ruleset/Macheng7 (Reconstructed)" {
-        "Variant/Macheng7"
+    (ruleset "Ruleset/Macheng (Ludii 7) (Reconstructed)" {
+        "Variant/Macheng (Ludii 7)"
     })
-    (ruleset "Ruleset/Macheng8 (Reconstructed)" {
-        "Variant/Macheng8"
+    (ruleset "Ruleset/Macheng (Ludii 8) (Reconstructed)" {
+        "Variant/Macheng (Ludii 8)"
     })
-    (ruleset "Ruleset/Macheng9 (Reconstructed)" {
-        "Variant/Macheng9"
+    (ruleset "Ruleset/Macheng (Ludii 9) (Reconstructed)" {
+        "Variant/Macheng (Ludii 9)"
     })
-    (ruleset "Ruleset/Macheng10 (Reconstructed)" {
-        "Variant/Macheng10"
-    }) 
+    (ruleset "Ruleset/Macheng (Ludii 10) (Reconstructed)" {
+        "Variant/Macheng (Ludii 10)"
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -2277,135 +2311,7 @@
     
     (info
         {
-        (description "Macheng is a capturing game played in Ming Dynasty China. It was described as a game commonly played in alleys.")
-        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Played on a merels board. Players place their pieces on the board. When three pieces are in a straight line, one of the opponent's pieces is removed from the board. When a player surrounds an opponent's piece with two of their pieces, the opponent's piece is  removed. When a player places their piece between two of the opponent's pieces, the opponent's pieces are removed."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (id "1239"))
-        (useFor "Ruleset/Macheng1 (Reconstructed)" (rules "The game Macheng is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If player two cannot move, player one wins If the number of null owned by Player 1 is less than 2, player two wins.
-                
-        "))
-        (useFor "Ruleset/Macheng1 (Reconstructed)" (id "2119"))
-        (useFor "Ruleset/Macheng2 (Reconstructed)" (rules "The game Macheng is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If player two cannot move, player one wins If the number of null owned by Player 1 is less than 2, player two wins.
-                
-        "))
-        (useFor "Ruleset/Macheng2 (Reconstructed)" (id "2120"))
-        (useFor "Ruleset/Macheng3 (Reconstructed)" (rules "The game Macheng is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If the next player cannot move, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Macheng3 (Reconstructed)" (id "2121"))
-        (useFor "Ruleset/Macheng4 (Reconstructed)" (rules "The game Macheng is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If the next player cannot move, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Macheng4 (Reconstructed)" (id "2122"))
-        (useFor "Ruleset/Macheng5 (Reconstructed)" (rules "The game Macheng is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Macheng5 (Reconstructed)" (id "2123"))
-        (useFor "Ruleset/Macheng6 (Reconstructed)" (rules "The game Macheng is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If the next player cannot move, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Macheng6 (Reconstructed)" (id "2124"))
-        (useFor "Ruleset/Macheng7 (Reconstructed)" (rules "The game Macheng is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If the next player cannot move, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Macheng7 (Reconstructed)" (id "2125"))
-        (useFor "Ruleset/Macheng8 (Reconstructed)" (rules "The game Macheng is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If the next player cannot move, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Macheng8 (Reconstructed)" (id "2126"))
-        (useFor "Ruleset/Macheng9 (Reconstructed)" (rules "The game Macheng is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Macheng9 (Reconstructed)" (id "2127"))
-        (useFor "Ruleset/Macheng10 (Reconstructed)" (rules "The game Macheng is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and apply remove pieces at to to all sites flanking Vertexes the to location of the last move in dirrection Orthogonal and if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If player one cannot move, player two wins If there are no pieces owned by Player 2, player one wins.
-                
-        "))
-        (useFor "Ruleset/Macheng10 (Reconstructed)" (id "2128"))
-        (source "Wu and Sebillaud 2020: 49.")
-        (version "1.3.8")
-        (classification "board/war/reconstruction/done")
-        (credit "Eric Piette")
-        (origin "This game was played in China, from around 1567 to 1624.")
+        (id "1239")
         }
     )
     
