@@ -1,0 +1,75 @@
+(game "Roman Small Merels" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 3)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:5)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (move 
+                    (from 
+                        (handSite Mover)
+                    )
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            
+            (nextPhase 
+                (all Sites 
+                    (sites Hand P2)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement" )
+        )
+        
+        (phase "Movement" 
+            (play 
+                (forEach Piece)
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (is Line 5)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "NumStartComponents" minValue:0 maxValue:10)
+    })
+    )
