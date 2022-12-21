@@ -5,7 +5,1744 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-    {
+{
+(item "Wan Fu Cave Game (Ludii 1)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (can Move 
+                                (hop 
+                                    (from 
+                                        (last To)
+                                    )
+                                    
+                                    (between if:
+                                        (and 
+                                            (not 
+                                                (is In 
+                                                    (between)
+                                                    
+                                                    (sites ToClear)
+                                                )
+                                            )
+                                            
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Empty 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union 
+                    (expand 
+                        (sites Bottom)
+                    )
+                    
+                    (sites { "D3" "E3"}
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (union 
+                    (expand 
+                        (sites Top)
+                    )
+                    
+                    (sites { "A3" "B3"}
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end { 
+            (if 
+                (no Moves Next)
+                
+                (result Next Loss)
+            )
+            
+            (if 
+                (<= 
+                    (count Pieces P1)
+                9)
+                
+                (result P1 Loss)
+            )
+            }
+        )
+    )
+
+ > "The Wan Fu Cave Game (Ludii 1) ruleset.")
+
+(item "Wan Fu Cave Game (Ludii 2)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (can Move 
+                                (hop 
+                                    (from 
+                                        (last To)
+                                    )
+                                    
+                                    (between if:
+                                        (and 
+                                            (not 
+                                                (is In 
+                                                    (between)
+                                                    
+                                                    (sites ToClear)
+                                                )
+                                            )
+                                            
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Empty 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union 
+                    (expand 
+                        (sites Bottom)
+                    )
+                    
+                    (sites { "D3" "E3"}
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (union 
+                    (expand 
+                        (sites Top)
+                    )
+                    
+                    (sites { "A3" "B3"}
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (if 
+                (is Prev Mover)
+                
+                (or 
+                    (move Hop 
+                        (from 
+                            (last To)
+                        )
+                        
+                        (between if:
+                            (and 
+                                (not 
+                                    (is In 
+                                        (between)
+                                        
+                                        (sites ToClear)
+                                    )
+                                )
+                                
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+                
+                (forEach Piece)
+            )
+        )
+        
+        (end { 
+            (if 
+                (no Moves Next)
+                
+                (result Next Loss)
+            )
+            
+            (if 
+                (<= 
+                    (count Pieces P1)
+                9)
+                
+                (result P1 Loss)
+            )
+            }
+        )
+    )
+
+ > "The Wan Fu Cave Game (Ludii 2) ruleset.")
+
+(item "Wan Fu Cave Game (Ludii 3)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (can Move 
+                                (hop 
+                                    (from 
+                                        (last To)
+                                    )
+                                    
+                                    (between if:
+                                        (and 
+                                            (not 
+                                                (is In 
+                                                    (between)
+                                                    
+                                                    (sites ToClear)
+                                                )
+                                            )
+                                            
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Empty 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union 
+                    (expand 
+                        (sites Bottom)
+                    )
+                    
+                    (sites { "D3" "E3"}
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (union 
+                    (expand 
+                        (sites Top)
+                    )
+                    
+                    (sites { "A3" "B3"}
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (and 
+                    (no Moves Next)
+                    
+                    (>= 1 
+                        (count Pieces Next)
+                    )
+                )
+                
+                (result Mover Win)
+            )
+        )
+    )
+
+ > "The Wan Fu Cave Game (Ludii 3) ruleset.")
+
+(item "Wan Fu Cave Game (Ludii 4)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (can Move 
+                                (hop 
+                                    (from 
+                                        (last To)
+                                    )
+                                    
+                                    (between if:
+                                        (and 
+                                            (not 
+                                                (is In 
+                                                    (between)
+                                                    
+                                                    (sites ToClear)
+                                                )
+                                            )
+                                            
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Empty 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union 
+                    (expand 
+                        (sites Bottom)
+                    )
+                    
+                    (sites { "D3" "E3"}
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (union 
+                    (expand 
+                        (sites Top)
+                    )
+                    
+                    (sites { "A3" "B3"}
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end { 
+            (if 
+                (no Moves Next)
+                
+                (result Mover Win)
+            )
+            
+            (if 
+                (= 7 
+                    (value Player Mover)
+                )
+                
+                (result Mover Draw)
+            )
+            }
+        )
+    )
+
+ > "The Wan Fu Cave Game (Ludii 4) ruleset.")
+
+(item "Wan Fu Cave Game (Ludii 5)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (can Move 
+                                (hop 
+                                    (from 
+                                        (last To)
+                                    )
+                                    
+                                    (between if:
+                                        (and 
+                                            (not 
+                                                (is In 
+                                                    (between)
+                                                    
+                                                    (sites ToClear)
+                                                )
+                                            )
+                                            
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Empty 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union 
+                    (expand 
+                        (sites Bottom)
+                    )
+                    
+                    (sites { "D3" "E3"}
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (union 
+                    (expand 
+                        (sites Top)
+                    )
+                    
+                    (sites { "A3" "B3"}
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Moves Next)
+                
+                (result Mover Win)
+            )
+        )
+    )
+
+ > "The Wan Fu Cave Game (Ludii 5) ruleset.")
+
+(item "Wan Fu Cave Game (Ludii 6)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (can Move 
+                                (hop 
+                                    (from 
+                                        (last To)
+                                    )
+                                    
+                                    (between if:
+                                        (and 
+                                            (not 
+                                                (is In 
+                                                    (between)
+                                                    
+                                                    (sites ToClear)
+                                                )
+                                            )
+                                            
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Empty 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union 
+                    (expand 
+                        (sites Bottom)
+                    )
+                    
+                    (sites { "D3" "E3"}
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (union 
+                    (expand 
+                        (sites Top)
+                    )
+                    
+                    (sites { "A3" "B3"}
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (if 
+                (is Prev Mover)
+                
+                (or 
+                    (move Hop 
+                        (from 
+                            (last To)
+                        )
+                        
+                        (between if:
+                            (and 
+                                (not 
+                                    (is In 
+                                        (between)
+                                        
+                                        (sites ToClear)
+                                    )
+                                )
+                                
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+                
+                (forEach Piece)
+            )
+        )
+        
+        (end 
+            (if 
+                (and 
+                    (no Moves Next)
+                    
+                    (>= 1 
+                        (count Pieces Next)
+                    )
+                )
+                
+                (result Mover Win)
+            )
+        )
+    )
+
+ > "The Wan Fu Cave Game (Ludii 6) ruleset.")
+
+(item "Wan Fu Cave Game (Ludii 7)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (can Move 
+                                (hop 
+                                    (from 
+                                        (last To)
+                                    )
+                                    
+                                    (between if:
+                                        (and 
+                                            (not 
+                                                (is In 
+                                                    (between)
+                                                    
+                                                    (sites ToClear)
+                                                )
+                                            )
+                                            
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Empty 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union 
+                    (expand 
+                        (sites Bottom)
+                    )
+                    
+                    (sites { "D3" "E3"}
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (union 
+                    (expand 
+                        (sites Top)
+                    )
+                    
+                    (sites { "A3" "B3"}
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (if 
+                (is Prev Mover)
+                
+                (or 
+                    (move Hop 
+                        (from 
+                            (last To)
+                        )
+                        
+                        (between if:
+                            (and 
+                                (not 
+                                    (is In 
+                                        (between)
+                                        
+                                        (sites ToClear)
+                                    )
+                                )
+                                
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+                
+                (forEach Piece)
+            )
+        )
+        
+        (end { 
+            (if 
+                (no Moves Next)
+                
+                (result Mover Win)
+            )
+            
+            (if 
+                (= 7 
+                    (value Player Mover)
+                )
+                
+                (result Mover Draw)
+            )
+            }
+        )
+    )
+
+ > "The Wan Fu Cave Game (Ludii 7) ruleset.")
+
+(item "Wan Fu Cave Game (Ludii 8)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (can Move 
+                                (hop 
+                                    (from 
+                                        (last To)
+                                    )
+                                    
+                                    (between if:
+                                        (and 
+                                            (not 
+                                                (is In 
+                                                    (between)
+                                                    
+                                                    (sites ToClear)
+                                                )
+                                            )
+                                            
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Empty 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union 
+                    (expand 
+                        (sites Bottom)
+                    )
+                    
+                    (sites { "D3" "E3"}
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (union 
+                    (expand 
+                        (sites Top)
+                    )
+                    
+                    (sites { "A3" "B3"}
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (if 
+                (is Prev Mover)
+                
+                (or 
+                    (move Hop 
+                        (from 
+                            (last To)
+                        )
+                        
+                        (between if:
+                            (and 
+                                (not 
+                                    (is In 
+                                        (between)
+                                        
+                                        (sites ToClear)
+                                    )
+                                )
+                                
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+                
+                (forEach Piece)
+            )
+        )
+        
+        (end 
+            (if 
+                (no Moves Next)
+                
+                (result Mover Win)
+            )
+        )
+    )
+
+ > "The Wan Fu Cave Game (Ludii 8) ruleset.")
+
+(item "Wan Fu Cave Game (Ludii 9)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (can Move 
+                                (hop 
+                                    (from 
+                                        (last To)
+                                    )
+                                    
+                                    (between if:
+                                        (and 
+                                            (not 
+                                                (is In 
+                                                    (between)
+                                                    
+                                                    (sites ToClear)
+                                                )
+                                            )
+                                            
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Empty 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (forEach 
+                    (sites Board)
+                    if:
+                    (< 
+                        (site)
+                        
+                        (centrePoint)
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (forEach 
+                    (sites Board)
+                    if:
+                    (> 
+                        (site)
+                        
+                        (centrePoint)
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (if 
+                (is Prev Mover)
+                
+                (or 
+                    (move Pass)
+                    
+                    (move Hop 
+                        (from 
+                            (last To)
+                        )
+                        
+                        (between if:
+                            (and 
+                                (not 
+                                    (is In 
+                                        (between)
+                                        
+                                        (sites ToClear)
+                                    )
+                                )
+                                
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+                
+                (forEach Piece top:True)
+            )
+        )
+        
+        (end 
+            (if 
+                (no Moves Next)
+                
+                (result Mover Win)
+            )
+        )
+    )
+
+ > "The Wan Fu Cave Game (Ludii 9) ruleset.")
+
+(item "Wan Fu Cave Game (Ludii 10)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 if:
+                            (= 1 
+                                (size Stack at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (forEach 
+                    (sites Board)
+                    if:
+                    (< 
+                        (site)
+                        
+                        (centrePoint)
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (forEach 
+                    (sites Board)
+                    if:
+                    (> 
+                        (site)
+                        
+                        (centrePoint)
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (if 
+                (is Prev Mover)
+                
+                (or 
+                    (move Pass)
+                    
+                    (move Hop 
+                        (from 
+                            (last To)
+                        )
+                        
+                        (between if:
+                            (and 
+                                (not 
+                                    (is In 
+                                        (between)
+                                        
+                                        (sites ToClear)
+                                    )
+                                )
+                                
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+                
+                (forEach Piece top:True)
+            )
+        )
+        
+        (end 
+            (forEach Player if:
+                (no Pieces Player)
+                
+                (result Player Loss)
+            )
+        )
+    )
+
+ > "The Wan Fu Cave Game (Ludii 10) ruleset.")
+
+
     (item "Incomplete"
         <
         (players 2) 
@@ -22,11 +1759,43 @@
         "The incomplete ruleset."
     )
     
-})
+
+ })
 
 //------------------------------------------------------------------------------
 
 (rulesets {
+
+(ruleset "Ruleset/Wan Fu Cave Game (Ludii 1) (Reconstructed)" {
+     "Variant/Wan Fu Cave Game (Ludii 1)"
+})
+(ruleset "Ruleset/Wan Fu Cave Game (Ludii 2) (Reconstructed)" {
+     "Variant/Wan Fu Cave Game (Ludii 2)"
+})
+(ruleset "Ruleset/Wan Fu Cave Game (Ludii 3) (Reconstructed)" {
+     "Variant/Wan Fu Cave Game (Ludii 3)"
+})
+(ruleset "Ruleset/Wan Fu Cave Game (Ludii 4) (Reconstructed)" {
+     "Variant/Wan Fu Cave Game (Ludii 4)"
+})
+(ruleset "Ruleset/Wan Fu Cave Game (Ludii 5) (Reconstructed)" {
+     "Variant/Wan Fu Cave Game (Ludii 5)"
+})
+(ruleset "Ruleset/Wan Fu Cave Game (Ludii 6) (Reconstructed)" {
+     "Variant/Wan Fu Cave Game (Ludii 6)"
+})
+(ruleset "Ruleset/Wan Fu Cave Game (Ludii 7) (Reconstructed)" {
+     "Variant/Wan Fu Cave Game (Ludii 7)"
+})
+(ruleset "Ruleset/Wan Fu Cave Game (Ludii 8) (Reconstructed)" {
+     "Variant/Wan Fu Cave Game (Ludii 8)"
+})
+(ruleset "Ruleset/Wan Fu Cave Game (Ludii 9) (Reconstructed)" {
+     "Variant/Wan Fu Cave Game (Ludii 9)"
+})
+(ruleset "Ruleset/Wan Fu Cave Game (Ludii 10) (Reconstructed)" {
+     "Variant/Wan Fu Cave Game (Ludii 10)"
+})
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -36,13 +1805,13 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+ (metadata 
     
     (info
         {
-        (id "1141")
         }
     )
     
 )
+
 
