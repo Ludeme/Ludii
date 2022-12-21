@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry excluding="graphics/element/|graphics/Parser.java|graphics/svg2/|graphics/FormatReader.java|main/grammar/ArgCombos.java" kind="src" path="src"/>
+	<classpathentry excluding="img/|audio/|out/recons/" kind="src" path="res"/>
+	<classpathentry kind="src" path="res/img"/>
+	<classpathentry kind="src" path="res/audio"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry excluding="graphics/element/|graphics/Parser.java|graphics/svg2/|graphics/FormatReader.java|main/grammar/ArgCombos.java" kind="src" path="src"/>
-	<classpathentry excluding="img/|audio/|out/recons/" kind="src" path="res"/>
-	<classpathentry kind="src" path="res/img"/>
-	<classpathentry kind="src" path="res/audio"/>
-	<classpathentry kind="lib" path="lib/json-20180813.jar"/>
-	<classpathentry kind="lib" path="lib/Trove4j_ApacheCommonsRNG.jar" sourcepath="lib/Trove4j_ApacheCommonsRNG-sources.jar"/>
 	<classpathentry kind="lib" path="lib/jfreesvg-3.4.jar"/>
+	<classpathentry kind="lib" path="lib/json-20180813.jar" sourcepath="lib/json-20180813-sources.jar"/>
+	<classpathentry kind="lib" path="lib/Trove4j_ApacheCommonsRNG.jar" sourcepath="lib/Trove4j_ApacheCommonsRNG-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
