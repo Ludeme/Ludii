@@ -5,7 +5,1287 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-    {
+{
+(item "Nzengue (Large) (Ludii 1)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:2)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 Orthogonal exact:True)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:12)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement" )
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end 
+            (forEach NonMover if:
+                (= 2 
+                    (count Pieces Player)
+                )
+                
+                (result Player Loss)
+            )
+        )
+    )
+
+ > "The Nzengue (Large) (Ludii 1) ruleset.")
+
+(item "Nzengue (Large) (Ludii 2)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:2)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (or { 
+                            (is Line 3 N exact:True)
+                            
+                            (is Line 3 S exact:True)
+                            
+                            (is Line 3 E exact:True)
+                            
+                            (is Line 3 W exact:True)
+                            }
+                        )
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:12)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement" )
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end 
+            (forEach NonMover if:
+                (= 2 
+                    (count Pieces Player)
+                )
+                
+                (result Player Loss)
+            )
+        )
+    )
+
+ > "The Nzengue (Large) (Ludii 2) ruleset.")
+
+(item "Nzengue (Large) (Ludii 3)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 Orthogonal exact:True)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:12)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement" )
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end 
+            (forEach NonMover if:
+                (= 2 
+                    (count Pieces Player)
+                )
+                
+                (result Player Loss)
+            )
+        )
+    )
+
+ > "The Nzengue (Large) (Ludii 3) ruleset.")
+
+(item "Nzengue (Large) (Ludii 4)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3 joinCorners:True)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 Orthogonal exact:True)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:12)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement" )
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end 
+            (forEach NonMover if:
+                (= 2 
+                    (count Pieces Player)
+                )
+                
+                (result Player Loss)
+            )
+        )
+    )
+
+ > "The Nzengue (Large) (Ludii 4) ruleset.")
+
+(item "Nzengue (Large) (Ludii 5)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:2)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (if 
+                (= 3 
+                    (count Pieces Mover)
+                )
+                
+                (move 
+                    (from 
+                        (from)
+                    )
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 Orthogonal)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:12)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement" )
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end 
+            (forEach NonMover if:
+                (= 2 
+                    (count Pieces Player)
+                )
+                
+                (result Player Loss)
+            )
+        )
+    )
+
+ > "The Nzengue (Large) (Ludii 5) ruleset.")
+
+(item "Nzengue (Large) (Ludii 6)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (or { 
+                            (is Line 3 N exact:True)
+                            
+                            (is Line 3 S exact:True)
+                            
+                            (is Line 3 E exact:True)
+                            
+                            (is Line 3 W exact:True)
+                            }
+                        )
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:12)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement" )
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end 
+            (forEach NonMover if:
+                (= 2 
+                    (count Pieces Player)
+                )
+                
+                (result Player Loss)
+            )
+        )
+    )
+
+ > "The Nzengue (Large) (Ludii 6) ruleset.")
+
+(item "Nzengue (Large) (Ludii 7)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3 joinCorners:True)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (or { 
+                            (is Line 3 N exact:True)
+                            
+                            (is Line 3 S exact:True)
+                            
+                            (is Line 3 E exact:True)
+                            
+                            (is Line 3 W exact:True)
+                            }
+                        )
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:12)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement" )
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end 
+            (forEach NonMover if:
+                (= 2 
+                    (count Pieces Player)
+                )
+                
+                (result Player Loss)
+            )
+        )
+    )
+
+ > "The Nzengue (Large) (Ludii 7) ruleset.")
+
+(item "Nzengue (Large) (Ludii 8)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:12)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement" )
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end 
+            (forEach NonMover if:
+                (= 2 
+                    (count Pieces Player)
+                )
+                
+                (result Player Loss)
+            )
+        )
+    )
+
+ > "The Nzengue (Large) (Ludii 8) ruleset.")
+
+(item "Nzengue (Large) (Ludii 9)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3 joinCorners:True)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:12)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement" )
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end 
+            (forEach NonMover if:
+                (= 2 
+                    (count Pieces Player)
+                )
+                
+                (result Player Loss)
+            )
+        )
+    )
+
+ > "The Nzengue (Large) (Ludii 9) ruleset.")
+
+(item "Nzengue (Large) (Ludii 10)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3 joinCorners:True)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (if 
+                (= 3 
+                    (count Pieces Mover)
+                )
+                
+                (move 
+                    (from 
+                        (from)
+                    )
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 Orthogonal)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:12)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement" )
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end 
+            (forEach NonMover if:
+                (= 2 
+                    (count Pieces Player)
+                )
+                
+                (result Player Loss)
+            )
+        )
+    )
+
+ > "The Nzengue (Large) (Ludii 10) ruleset.")
+
+
     (item "Incomplete"
         <
         (players 2) 
@@ -20,11 +1300,43 @@
         "The incomplete ruleset."
     )
     
-})
+
+ })
 
 //------------------------------------------------------------------------------
 
 (rulesets {
+
+(ruleset "Ruleset/Nzengue (Large) (Ludii 1) (Reconstructed)" {
+     "Variant/Nzengue (Large) (Ludii 1)"
+})
+(ruleset "Ruleset/Nzengue (Large) (Ludii 2) (Reconstructed)" {
+     "Variant/Nzengue (Large) (Ludii 2)"
+})
+(ruleset "Ruleset/Nzengue (Large) (Ludii 3) (Reconstructed)" {
+     "Variant/Nzengue (Large) (Ludii 3)"
+})
+(ruleset "Ruleset/Nzengue (Large) (Ludii 4) (Reconstructed)" {
+     "Variant/Nzengue (Large) (Ludii 4)"
+})
+(ruleset "Ruleset/Nzengue (Large) (Ludii 5) (Reconstructed)" {
+     "Variant/Nzengue (Large) (Ludii 5)"
+})
+(ruleset "Ruleset/Nzengue (Large) (Ludii 6) (Reconstructed)" {
+     "Variant/Nzengue (Large) (Ludii 6)"
+})
+(ruleset "Ruleset/Nzengue (Large) (Ludii 7) (Reconstructed)" {
+     "Variant/Nzengue (Large) (Ludii 7)"
+})
+(ruleset "Ruleset/Nzengue (Large) (Ludii 8) (Reconstructed)" {
+     "Variant/Nzengue (Large) (Ludii 8)"
+})
+(ruleset "Ruleset/Nzengue (Large) (Ludii 9) (Reconstructed)" {
+     "Variant/Nzengue (Large) (Ludii 9)"
+})
+(ruleset "Ruleset/Nzengue (Large) (Ludii 10) (Reconstructed)" {
+     "Variant/Nzengue (Large) (Ludii 10)"
+})
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -34,7 +1346,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+ (metadata 
     
     (info
         {
@@ -50,4 +1362,5 @@
     })
     
 )
+
 
