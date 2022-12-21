@@ -5018,34 +5018,6 @@ Rules:
      From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
 
 ",NULL,NULL,NULL,NULL,NULL,"26°9'57.42""N, 98°5'37.41""E","5382,5382","0",NULL,"0","0","0","0","0",NULL,,NULL
-"2359","414","Mandoli1",NULL,"Reconstructed with Ludii","2",NULL,"The game Mandoli is played by two players on a 2 x 6 Mancala board with 2 none stores.
-Regions:
-    RegionP1: the bottom sites of the board for P1
-    RegionP2: the top sites of the board for P2 
-All players play with null The following pieces are shared by all players: Seeds.
-Players take turns moving.
-Setup:
-     Set the count of the vertexes in track of board to 6.
-Rules: 
-     Select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: to is in RegionP1 or RegionP2 and the total number of vertex in to is even, backtracking: true, captureEffect: if the number of turns is greater than 2, from vertex in to to vertex Player current moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
-Aim: 
-     If the moving player cannot move, the game ends and the player with the highest score wins.
-
-",NULL,NULL,NULL,NULL,NULL,"37°21'47.59""N, 23°31'43.35""E","5310,5310","0",NULL,"0","0","0","0","0",NULL,,NULL
-"2360","414","Mandoli2",NULL,"Reconstructed with Ludii","2",NULL,"The game Mandoli is played by two players on a 2 x 6 Mancala board with 2 none stores.
-Regions:
-    RegionP1: the bottom sites of the board for P1
-    RegionP2: the top sites of the board for P2 
-All players play with null The following pieces are shared by all players: Seeds.
-Players take turns moving.
-Setup:
-     Set the count of the vertexes in track of board to 6.
-Rules: 
-     Select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: to is in RegionP1 or RegionP2 and the total number of vertex in to is even, backtracking: true, captureEffect: if the number of turns is greater than 2, from vertex in to to vertex Player current moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
-Aim: 
-     If the moving player cannot move, the game ends and the player with the highest score wins.
-
-",NULL,NULL,NULL,NULL,NULL,"37°19'8.5""N, 23°27'42.26""E","5310,5310","0",NULL,"0","0","0","0","0",NULL,,NULL
 "2391","1112","Ashanti Alignment Game1",NULL,"Reconstructed with Ludii","2",NULL,"The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
 All players play with Markers.
 Rules for Pieces:
@@ -12780,3 +12752,113 @@ Aim:
      If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the number of pieces owned by Player the next player is equal to 1, the moving player wins If the next player cannot move, the moving player wins.
 
 ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.892","0.875","0.908","0.915","1435, 1435","[]"
+"3299","899","Dris et-Tessa (Ludii 1)",NULL,"Reconstructed with Ludii","2",NULL,"The game Dris et-Tessa is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.993","0.989","0.996","0.969","955, 955","[{956, 955}, {955, 956}, {956, 956}, {563, 955}, {563, 956}, {1944, 955}, {1944, 956}, {1288, 956}, {1288, 955}, {92, 955}]"
+"3300","899","Dris et-Tessa (Ludii 2)",NULL,"Reconstructed with Ludii","2",NULL,"The game Dris et-Tessa is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.967","0.938","0.996","0.9","956, 563","[{955, 563}, {563, 563}, {1944, 563}, {1288, 563}]"
+"3301","899","Dris et-Tessa (Ludii 3)",NULL,"Reconstructed with Ludii","2",NULL,"The game Dris et-Tessa is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.966","0.936","0.996","0.866","955, 1288","[{956, 1288}, {1944, 1288}, {563, 1288}]"
+"3302","899","Dris et-Tessa (Ludii 4)",NULL,"Reconstructed with Ludii","2",NULL,"The game Dris et-Tessa is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the next player cannot move or the number of pieces owned by Player the next player is less than or equal to 2, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.965","0.934","0.996","0.887","956, 1944","[{563, 1944}, {955, 1944}, {1944, 1944}, {1288, 1944}, {92, 1944}]"
+"3303","899","Dris et-Tessa (Ludii 5)",NULL,"Reconstructed with Ludii","2",NULL,"The game Dris et-Tessa is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.961","0.957","0.964","0.937","957, 955","[{957, 956}]"
+"3304","899","Dris et-Tessa (Ludii 6)",NULL,"Reconstructed with Ludii","2",NULL,"The game Dris et-Tessa is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 4, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.961","0.942","0.979","0.924","956, 957","[{955, 957}, {1288, 957}]"
+"3305","899","Dris et-Tessa (Ludii 7)",NULL,"Reconstructed with Ludii","2",NULL,"The game Dris et-Tessa is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.959","0.922","0.996","0.917","956, 92","[{955, 92}, {92, 92}, {1944, 92}]"
+"3306","899","Dris et-Tessa (Ludii 8)",NULL,"Reconstructed with Ludii","2",NULL,"The game Dris et-Tessa is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the next player cannot move or the number of pieces owned by Player the next player is less than or equal to 2, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.933","0.903","0.964","0.855","957, 1944","[]"
+"3307","899","Dris et-Tessa (Ludii 9)",NULL,"Reconstructed with Ludii","2",NULL,"The game Dris et-Tessa is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 4, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.929","0.91","0.948","0.892","957, 957","[]"
+"3308","899","Dris et-Tessa (Ludii 10)",NULL,"Reconstructed with Ludii","2",NULL,"The game Dris et-Tessa is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.927","0.89","0.964","0.885","957, 92","[]"
