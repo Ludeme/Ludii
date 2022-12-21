@@ -1,0 +1,304 @@
+(game "Rwandan Alignment Game" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3 joinCorners:True)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step Orthogonal 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (custodial 
+                        (from 
+                            (last To)
+                        )
+                        Orthogonal 
+                        (between 
+                            (max 1)
+                            if:
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (!= 
+                                    (centrePoint)
+                                    
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (and 
+                                    (remove 
+                                        (between)
+                                    )
+                                    
+                                    (if 
+                                        (or { 
+                                            (can Move 
+                                                (custodial 
+                                                    (from 
+                                                        (ahead 
+                                                            (last To)
+                                                        N )
+                                                    )
+                                                    Orthogonal 
+                                                    (between 
+                                                        (max 1)
+                                                        if:
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (between )
+                                                                )
+                                                            )
+                                                            
+                                                            (!= 
+                                                                (centrePoint )
+                                                                
+                                                                (between )
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (to if:
+                                                        (is Friend 
+                                                            (who at:
+                                                                (to )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (can Move 
+                                                (custodial 
+                                                    (from 
+                                                        (ahead 
+                                                            (last To)
+                                                        E )
+                                                    )
+                                                    Orthogonal 
+                                                    (between 
+                                                        (max 1)
+                                                        if:
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (between )
+                                                                )
+                                                            )
+                                                            
+                                                            (!= 
+                                                                (centrePoint )
+                                                                
+                                                                (between )
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (to if:
+                                                        (is Friend 
+                                                            (who at:
+                                                                (to )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (can Move 
+                                                (custodial 
+                                                    (from 
+                                                        (ahead 
+                                                            (last To)
+                                                        W )
+                                                    )
+                                                    Orthogonal 
+                                                    (between 
+                                                        (max 1)
+                                                        if:
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (between )
+                                                                )
+                                                            )
+                                                            
+                                                            (!= 
+                                                                (centrePoint )
+                                                                
+                                                                (between )
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (to if:
+                                                        (is Friend 
+                                                            (who at:
+                                                                (to )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (can Move 
+                                                (custodial 
+                                                    (from 
+                                                        (ahead 
+                                                            (last To)
+                                                        S )
+                                                    )
+                                                    Orthogonal 
+                                                    (between 
+                                                        (max 1)
+                                                        if:
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (between )
+                                                                )
+                                                            )
+                                                            
+                                                            (!= 
+                                                                (centrePoint )
+                                                                
+                                                                (between )
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (to if:
+                                                        (is Friend 
+                                                            (who at:
+                                                                (to )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            }
+                                        )
+                                        
+                                        (moveAgain)
+                                        
+                                        (if 
+                                            (no Moves Next)
+                                            
+                                            (and 
+                                                (set Pending)
+                                                
+                                                (moveAgain)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:6)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (sites Occupied by:Enemy container:"Board")
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement" )
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (sites Occupied by:Enemy container:"Board")
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (<= 
+                    (count Pieces Next)
+                2)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "NumStartComponents" minValue:6 maxValue:12)
+    })
+    )
