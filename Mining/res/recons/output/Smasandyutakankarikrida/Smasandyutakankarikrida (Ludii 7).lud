@@ -1,0 +1,113 @@
+(game "Smasandyutakankarikrida" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (shift -2 -4 
+                    (wedge 5)
+                )
+                
+                (rectangle 5 5 diagonals:Alternating)
+                
+                (shift -2 4 
+                    (rotate 180 
+                        (wedge 5)
+                    )
+                )
+                }
+            )
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union 
+                    (expand 
+                        (sites Bottom)
+                    steps:1)
+                    
+                    (expand origin:
+                        (coord "I3")
+                    steps:5 W)
+                )
+            )
+            
+            (place "Marker2" 
+                (union 
+                    (expand 
+                        (sites Top)
+                    steps:1)
+                    
+                    (expand origin:
+                        (coord "A7")
+                    steps:5 E)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end { 
+            (if 
+                (no Moves Next)
+                
+                (result Next Loss)
+            )
+            
+            (if 
+                (<= 
+                    (count Pieces P1)
+                15)
+                
+                (result P1 Loss)
+            )
+            }
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Capture" True)
+        (concept "HopDecision" True)
+    }))

@@ -1,0 +1,134 @@
+(game "Smasandyutakankarikrida" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (shift -2 -4 
+                    (wedge 5)
+                )
+                
+                (rectangle 5 5 diagonals:Alternating)
+                
+                (shift -2 4 
+                    (rotate 180 
+                        (wedge 5)
+                    )
+                )
+                }
+            )
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (or { 
+                (move Hop Orthogonal 
+                    (between if:
+                        (and 
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (not 
+                                (is In 
+                                    (between)
+                                    
+                                    (union 
+                                        (sites Bottom)
+                                        
+                                        (sites Top)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (if 
+                    (= 1 
+                        (state at:
+                            (from)
+                        )
+                    )
+                    
+                    (move Slide Orthogonal 
+                        (between 
+                            (exact 2)
+                            if:
+                            (is Empty 
+                                (between)
+                            )
+                        )
+                        
+                        (then 
+                            (set State at:
+                                (last To)
+                            0)
+                        )
+                    )
+                )
+                }
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (sites Bottom)
+            state:1)
+            
+            (place "Marker2" 
+                (sites Top)
+            state:1)
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end { 
+            (if 
+                (no Moves P2)
+                
+                (result P1 Win)
+            )
+            
+            (if 
+                (no Pieces P1)
+                
+                (result P2 Win)
+            )
+            }
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Capture" True)
+        (concept "HopDecision" True)
+    }))
