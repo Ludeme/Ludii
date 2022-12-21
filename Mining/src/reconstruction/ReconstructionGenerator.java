@@ -42,7 +42,7 @@ public class ReconstructionGenerator
 	final static String defaultOutputPath        = "./res/recons/output/";
 	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 100000;
-	final static String defaultReconsPath        = "/lud/reconstruction/done/board/war/other/Four-Fang";
+	final static String defaultReconsPath        = "/lud/reconstruction/done/board/war/other/Seven-Fang";
 	//final static String defaultReconsPath        = "/lud/reconstruction/done/board/war/replacement/checkmate/chaturanga/Samantsy";
 	//final static String defaultReconsPath        = "/lud/reconstruction/validation/Canadian Draughts";
 	final static String defaultOptionName        = "Variant/Incomplete";
@@ -74,7 +74,7 @@ public class ReconstructionGenerator
 		reconstruction(outputPath, numReconsNoWarningExpectedConcepts, maxNumberAttempts, conceptualWeight, historicalWeight, geoWeight, reconsPath, optionName);
 	}
 	
-	/**
+/**
 	 * @param outputPath         The path of the folder to place the reconstructions.
 	 * @param numReconsExpected  The number of reconstruction expected to generate.
 	 * @param maxNumberAttempts  The number of attempts.

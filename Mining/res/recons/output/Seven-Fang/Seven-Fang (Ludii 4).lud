@@ -1,0 +1,318 @@
+(game "Seven-Fang" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 7)
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (move Step Orthogonal 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (custodial 
+                        (from 
+                            (last To)
+                        )
+                        Orthogonal 
+                        (between 
+                            (max 1)
+                            if:
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (!= 
+                                    (centrePoint)
+                                    
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (and 
+                                    (remove 
+                                        (between)
+                                    )
+                                    
+                                    (if 
+                                        (or { 
+                                            (can Move 
+                                                (custodial 
+                                                    (from 
+                                                        (ahead 
+                                                            (last To)
+                                                        N )
+                                                    )
+                                                    Orthogonal 
+                                                    (between 
+                                                        (max 1)
+                                                        if:
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (between )
+                                                                )
+                                                            )
+                                                            
+                                                            (!= 
+                                                                (centrePoint )
+                                                                
+                                                                (between )
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (to if:
+                                                        (is Friend 
+                                                            (who at:
+                                                                (to )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (can Move 
+                                                (custodial 
+                                                    (from 
+                                                        (ahead 
+                                                            (last To)
+                                                        E )
+                                                    )
+                                                    Orthogonal 
+                                                    (between 
+                                                        (max 1)
+                                                        if:
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (between )
+                                                                )
+                                                            )
+                                                            
+                                                            (!= 
+                                                                (centrePoint )
+                                                                
+                                                                (between )
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (to if:
+                                                        (is Friend 
+                                                            (who at:
+                                                                (to )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (can Move 
+                                                (custodial 
+                                                    (from 
+                                                        (ahead 
+                                                            (last To)
+                                                        W )
+                                                    )
+                                                    Orthogonal 
+                                                    (between 
+                                                        (max 1)
+                                                        if:
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (between )
+                                                                )
+                                                            )
+                                                            
+                                                            (!= 
+                                                                (centrePoint )
+                                                                
+                                                                (between )
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (to if:
+                                                        (is Friend 
+                                                            (who at:
+                                                                (to )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (can Move 
+                                                (custodial 
+                                                    (from 
+                                                        (ahead 
+                                                            (last To)
+                                                        S )
+                                                    )
+                                                    Orthogonal 
+                                                    (between 
+                                                        (max 1)
+                                                        if:
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (between )
+                                                                )
+                                                            )
+                                                            
+                                                            (!= 
+                                                                (centrePoint )
+                                                                
+                                                                (between )
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (to if:
+                                                        (is Friend 
+                                                            (who at:
+                                                                (to )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            }
+                                        )
+                                        
+                                        (moveAgain)
+                                        
+                                        (if 
+                                            (no Moves Next)
+                                            
+                                            (and 
+                                                (set Pending)
+                                                
+                                                (moveAgain)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (hand Each)
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:24)
+        )
+        phases:{ 
+        (phase "FirstPlacement" P1 
+            (play 
+                (move 
+                    (from 
+                        (handSite Mover)
+                    )
+                    
+                    (to 
+                        (sites Centre)
+                    )
+                )
+            )
+            
+            (nextPhase "Placement")
+        )
+        
+        (phase "Placement" 
+            (play 
+                (move 
+                    (from 
+                        (handSite Mover)
+                    )
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Playing" )
+        )
+        
+        (phase "Playing" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (sites Occupied by:Next)
+                        
+                        (then 
+                            (if 
+                                (> 
+                                    (value Player Mover)
+                                1)
+                                
+                                (and 
+                                    (moveAgain)
+                                    
+                                    (set Value Mover 
+                                        (- 
+                                            (value Player Mover)
+                                        1)
+                                    )
+                                )
+                                
+                                (set Value Mover 0)
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+
