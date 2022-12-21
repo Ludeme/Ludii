@@ -4978,46 +4978,6 @@ You win if you remove 3 of the 5 colors.",NULL,NULL,NULL,NULL,NULL,NULL,"0,5520"
 "2080","8","Tab Crossover 3 D6",NULL,"Tab rules on Crossover 3 board with D6.","4","Tab rules on Crossover 3 board with D6.","Tab rules on Crossover 3 board with D6.",NULL,NULL,NULL,NULL,NULL,"40°6'9.43""N, 49°23'6.77""E","1300,2999","0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
 "2081","8","Tab Crossover 4 D6",NULL,"Tab rules on Crossover 4 board with D6.","4","Tab rules on Crossover 4 board with D6.","Tab rules on Crossover 4 board with D6.",NULL,NULL,NULL,NULL,NULL,"40°6'9.43""N, 49°23'6.77""E","1300,2999","0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
 "2082","8","Tab Crossover 5 D6",NULL,"Tab rules on Crossover 5 board with D6.","4","Tab rules on Crossover 5 board with D6.","Tab rules on Crossover 5 board with D6.",NULL,NULL,NULL,NULL,NULL,"40°6'9.43""N, 49°23'6.77""E","1300,2999","0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
-"2102","930","Lay Gwet Kyah1",NULL,"Reconstructed with Ludii","2",NULL,"The game Lay Gwet Kyah is played by two players on a 4x4 rectangle board with square tiling. 
-Player one plays with Tigers. Player two plays with Markers.
-Rules for Pieces:
-     Markers step adjacent.
-     Tigers step adjacent and hop adjacent.
-Players take turns moving.
-Rules: 
-     From cell in Player the moving player's hand site 0 to cell in the set of empty cells moveRule: true move one of your pieces.
-
-",NULL,NULL,NULL,NULL,NULL,"22°33'55.44""N, 93°41'8.44""E","5382,5382","0",NULL,"0","0","0","0","0",NULL,,NULL
-"2103","930","Lay Gwet Kyah2",NULL,"Reconstructed with Ludii","2",NULL,"The game Lay Gwet Kyah is played by two players on a 4x4 rectangle board with square tiling. 
-Player one plays with Tigers. Player two plays with Markers.
-Rules for Pieces:
-     Markers step adjacent.
-     Tigers step adjacent and hop adjacent.
-Players take turns moving.
-Rules: 
-     From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
-
-",NULL,NULL,NULL,NULL,NULL,"18°25'49.83""N, 95°54'1.29""E","5382,5382","0",NULL,"0","0","0","0","0",NULL,,NULL
-"2104","930","Lay Gwet Kyah3",NULL,"Reconstructed with Ludii","2",NULL,"The game Lay Gwet Kyah is played by two players on a 4x4 rectangle board with square tiling. 
-Player one plays with Tigers. Player two plays with Markers.
-Rules for Pieces:
-     Markers step adjacent.
-     Tigers step adjacent and hop adjacent.
-Players take turns moving.
-Rules: 
-     From cell in Player the moving player's hand site 0 to cell in the set of empty cells moveRule: true move one of your pieces.
-
-",NULL,NULL,NULL,NULL,NULL,"21°37'47.31""N, 99°25'33.85""E","5382,5382","0",NULL,"0","0","0","0","0",NULL,,NULL
-"2105","930","Lay Gwet Kyah4",NULL,"Reconstructed with Ludii","2",NULL,"The game Lay Gwet Kyah is played by two players on a 4x4 rectangle board with square tiling. 
-Player one plays with Tigers. Player two plays with Markers.
-Rules for Pieces:
-     Markers step adjacent.
-     Tigers step adjacent and hop adjacent.
-Players take turns moving.
-Rules: 
-     From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
-
-",NULL,NULL,NULL,NULL,NULL,"26°9'57.42""N, 98°5'37.41""E","5382,5382","0",NULL,"0","0","0","0","0",NULL,,NULL
 "2391","1112","Ashanti Alignment Game1",NULL,"Reconstructed with Ludii","2",NULL,"The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
 All players play with Markers.
 Rules for Pieces:
@@ -12774,3 +12734,125 @@ Aim:
      If the moving player cannot move, the game ends and the player with the highest score wins.
 
 ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0","0","0","0",,"[]"
+"3311","976","Eleven-Fang (Ludii 1)",NULL,"Reconstructed with Ludii","2",NULL,"The game Eleven-Fang is played by two players on a 11x11 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers if 1 is equal to add the following values: [the total number of cell in Player the moving player's hand site 0,the number of pieces owned by Player the moving player], hop adjacent or slide from the location of the piece in the adjacent direction through [between] is in the set of empty vertexs then for all flanked pieces on Vertexes starting from the to location of the last move with Adjacent direction with a limit of the number of Vertex rows pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and from vertex in Player the moving player's hand site 0 to vertex between moveRule: true.
+Players take turns moving.
+Setup:
+     Place a Marker for player one at the union of the top sites of the board and the difference between the right sites of the board and the bottom sites of the board.
+     Place a Marker for player two at the union of the bottom sites of the board and the difference between the left sites of the board and the top sites of the board..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If the next player cannot move, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.999","0.999","0.999","0.979","377, 377","[]"
+"3312","976","Eleven-Fang (Ludii 2)",NULL,"Reconstructed with Ludii","2",NULL,"The game Eleven-Fang is played by two players on a 11x11 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers if 1 is equal to add the following values: [the total number of cell in Player the moving player's hand site 0,the number of pieces owned by Player the moving player], hop adjacent or slide from the location of the piece in the adjacent direction through [between] is in the set of empty vertexs then for all flanked pieces on Vertexes starting from the to location of the last move with Adjacent direction with a limit of the number of Vertex rows pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and from vertex in Player the moving player's hand site 0 to vertex between moveRule: true.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in if 0 is equal to the number of pieces in the region the sites of the board moveRule: empty then if not in the same turn, move again if in the same turn, step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between then if can move step orthogonal, move again or pass, else move one of your pieces.
+Aim: 
+     If the next player cannot move, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.897","0.948","0.846","0.793","377, 1940","[]"
+"3313","976","Eleven-Fang (Ludii 3)",NULL,"Reconstructed with Ludii","2",NULL,"The game Eleven-Fang is played by two players on a 11x11 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between then if can move step orthogonal, move again.
+Players take turns moving.
+Setup:
+     Place a Marker for player one at the union of the top sites of the board and the difference between the right sites of the board and the bottom sites of the board.
+     Place a Marker for player two at the union of the bottom sites of the board and the difference between the left sites of the board and the top sites of the board..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If the next player cannot move, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.897","0.897","0.897","0.878","1940, 377","[]"
+"3314","976","Eleven-Fang (Ludii 4)",NULL,"Reconstructed with Ludii","2",NULL,"The game Eleven-Fang is played by two players on a 11x11 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Setup:
+     Place a Marker for player one at the union of the top sites of the board and the difference between the right sites of the board and the bottom sites of the board.
+     Place a Marker for player two at the union of the bottom sites of the board and the difference between the left sites of the board and the top sites of the board..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If the next player cannot move, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.896","0.895","0.896","0.876","953, 377","[]"
+"3315","976","Eleven-Fang (Ludii 5)",NULL,"Reconstructed with Ludii","2",NULL,"The game Eleven-Fang is played by two players on a 11x11 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers if 1 is equal to add the following values: [the total number of cell in Player the moving player's hand site 0,the number of pieces owned by Player the moving player], hop adjacent or slide from the location of the piece in the adjacent direction through [between] is in the set of empty vertexs then for all flanked pieces on Vertexes starting from the to location of the last move with Adjacent direction with a limit of the number of Vertex rows pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and from vertex in Player the moving player's hand site 0 to vertex between moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Marker1] at vertex Player 1's hand site 0
+     Place stack of [Marker2] at vertex Player 2's hand site 0.
+Rules: 
+     If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.896","0.987","0.805","0.978","377, 953","[]"
+"3316","976","Eleven-Fang (Ludii 6)",NULL,"Reconstructed with Ludii","2",NULL,"The game Eleven-Fang is played by two players on a 11x11 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers if 1 is equal to add the following values: [the total number of cell in Player the moving player's hand site 0,the number of pieces owned by Player the moving player], hop adjacent or slide from the location of the piece in the adjacent direction through [between] is in the set of empty vertexs then for all flanked pieces on Vertexes starting from the to location of the last move with Adjacent direction with a limit of the number of Vertex rows pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and from vertex in Player the moving player's hand site 0 to vertex between moveRule: true.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in if there are no pieces owned by Player the moving player of the sites of the board moveRule: empty then if not in the same turn, move again if in the same turn, step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between then if can move step orthogonal, move again or pass, else move one of your pieces.
+Aim: 
+     If the next player cannot move, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.89","0.948","0.833","0.793","377, 1939","[]"
+"3317","976","Eleven-Fang (Ludii 7)",NULL,"Reconstructed with Ludii","2",NULL,"The game Eleven-Fang is played by two players on a 11x11 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between then if can move step orthogonal, move again.
+Players take turns moving.
+Setup:
+     Place stack of [Marker1] at vertex Player 1's hand site 0
+     Place stack of [Marker2] at vertex Player 2's hand site 0.
+Rules: 
+     If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.794","0.885","0.703","0.876","1940, 953","[]"
+"3318","976","Eleven-Fang (Ludii 8)",NULL,"Reconstructed with Ludii","2",NULL,"The game Eleven-Fang is played by two players on a 11x11 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in if 0 is equal to the number of pieces in the region the sites of the board moveRule: empty then if not in the same turn, move again if in the same turn, step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between then if can move step orthogonal, move again or pass, else move one of your pieces.
+Aim: 
+     If the next player cannot move, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.794","0.844","0.743","0.689","953, 1940","[]"
+"3319","976","Eleven-Fang (Ludii 9)",NULL,"Reconstructed with Ludii","2",NULL,"The game Eleven-Fang is played by two players on a 11x11 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Setup:
+     Place stack of [Marker1] at vertex Player 1's hand site 0
+     Place stack of [Marker2] at vertex Player 2's hand site 0.
+Rules: 
+     If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.793","0.884","0.702","0.875","953, 953","[]"
+"3320","976","Eleven-Fang (Ludii 10)",NULL,"Reconstructed with Ludii","2",NULL,"The game Eleven-Fang is played by two players on a 11x11 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in if there are no pieces owned by Player the moving player of the sites of the board moveRule: empty then if not in the same turn, move again if in the same turn, step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between then if can move step orthogonal, move again or pass, else move one of your pieces.
+Aim: 
+     If the next player cannot move, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.787","0.844","0.729","0.689","953, 1939","[]"
