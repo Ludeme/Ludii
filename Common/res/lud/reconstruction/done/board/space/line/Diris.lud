@@ -6,6 +6,2201 @@
 
 (option "Variant" <Variant> args:{ <variant> }
     {
+    (item "Diris (Ludii 1)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            
+            (play 
+                (or 
+                    (if 
+                        (not 
+                            (all Sites 
+                                (sites Hand Mover)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Diris (Ludii 1) ruleset.")
+    
+    (item "Diris (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Marker1" 
+                    (handSite P1)
+                count:12)
+                
+                (place Stack "Marker2" 
+                    (handSite P2)
+                count:12)
+                }
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (forEach 
+                                    (sites Occupied by:Next container:"Board")
+                                    if:
+                                    (= 
+                                        (size Stack at:
+                                            (site)
+                                        )
+                                    1)
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (not 
+                                (all Sites 
+                                    (sites Hand Mover)
+                                    if:
+                                    (= 0 
+                                        (count Cell at:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (is Line 3 if:
+                                            (= 1 
+                                                (size Stack at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (and 
+                                    (not 
+                                        (is Next Mover)
+                                    )
+                                    
+                                    (and 
+                                        (all Sites 
+                                            (sites Hand P1)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (all Sites 
+                                            (sites Hand P2)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (and 
+                                    (forEach Site 
+                                        (forEach 
+                                            (sites Occupied by:P1 container:"Board" )
+                                            if:
+                                            (= 
+                                                (size Stack at:
+                                                    (site)
+                                                )
+                                            2)
+                                        )
+                                        
+                                        (and { 
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (add 
+                                                (piece 
+                                                    (id "Marker" P1)
+                                                )
+                                                
+                                                (to 
+                                                    (site)
+                                                )
+                                            )
+                                            }
+                                        )
+                                    )
+                                    
+                                    (forEach Site 
+                                        (forEach 
+                                            (sites Occupied by:P2 container:"Board" )
+                                            if:
+                                            (= 
+                                                (size Stack at:
+                                                    (site)
+                                                )
+                                            2)
+                                        )
+                                        
+                                        (and { 
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (add 
+                                                (piece 
+                                                    (id "Marker" P2)
+                                                )
+                                                
+                                                (to 
+                                                    (site)
+                                                )
+                                            )
+                                            }
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (not 
+                            (is Next Mover)
+                        )
+                        
+                        (and 
+                            (all Sites 
+                                (sites Hand P1)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
+                            )
+                            
+                            (all Sites 
+                                (sites Hand P2)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            3)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (end 
+                    (if 
+                        (no Moves Next)
+                        
+                        (result Mover Win)
+                    )
+                )
+            )
+            }
+        )
+        
+    > "The Diris (Ludii 2) ruleset.")
+    
+    (item "Diris (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (forEach 
+                                (sites Occupied by:Enemy container:"Board")
+                                if:
+                                (not 
+                                    (is Line 3 Orthogonal through:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (forEach 
+                                (sites Occupied by:Enemy container:"Board")
+                                if:
+                                (not 
+                                    (is Line 3 Orthogonal through:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (forEach NonMover if:
+                    (= 2 
+                        (count Pieces Player)
+                    )
+                    
+                    (result Player Loss)
+                )
+            )
+        )
+        
+    > "The Diris (Ludii 3) ruleset.")
+    
+    (item "Diris (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (and 
+                                (if 
+                                    (and 
+                                        (< 
+                                            (var)
+                                        1)
+                                        
+                                        (is Line 3)
+                                    )
+                                    
+                                    (set Var 
+                                        (mover)
+                                    )
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all Sites 
+                                            (sites Hand P1)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (all Sites 
+                                            (sites Hand P2)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (< 
+                                            (var)
+                                        1)
+                                        
+                                        (moveAgain)
+                                        
+                                        (set NextPlayer 
+                                            (player 
+                                                (var)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (all Sites 
+                            (sites Hand P1)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                        
+                        (all Sites 
+                            (sites Hand P2)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                "Remove" )
+            )
+            
+            (phase "Remove" 
+                (play 
+                    (move Remove 
+                        (sites Occupied by:Next container:"Board")
+                    )
+                )
+                
+                (nextPhase Mover "Move")
+            )
+            
+            (phase "Move" 
+                (play 
+                    (if 
+                        (and 
+                            (not 
+                                (is Pending)
+                            )
+                            
+                            (is Prev Mover)
+                        )
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                            
+                            (then 
+                                (if 
+                                    (no Moves Next)
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Pending)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (is Pending)
+                            
+                            (do 
+                                (forEach Piece 
+                                    (move Step 
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                ifAfterwards:
+                                (can Move 
+                                    (forEach Piece Next)
+                                )
+                            )
+                            
+                            (forEach Piece)
+                        )
+                        
+                        (then 
+                            (if 
+                                (= 2 
+                                    (count Pieces P1)
+                                )
+                                
+                                (addScore P2 1 
+                                    (then 
+                                        (if 
+                                            (!= 
+                                                (score P2)
+                                            5)
+                                            
+                                            (and { 
+                                                (remove 
+                                                    (sites Occupied by:All )
+                                                )
+                                                
+                                                (add 
+                                                    (piece 
+                                                        (id "Marker" P1)
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite P1)
+                                                    )
+                                                count:12 )
+                                                
+                                                (add 
+                                                    (piece 
+                                                        (id "Marker" P2)
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite P2)
+                                                    )
+                                                count:12 )
+                                                }
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (= 2 
+                                        (count Pieces P2)
+                                    )
+                                    
+                                    (addScore P1 1 
+                                        (then 
+                                            (if 
+                                                (!= 
+                                                    (score P1)
+                                                5)
+                                                
+                                                (and { 
+                                                    (remove 
+                                                        (sites Occupied by:All )
+                                                    )
+                                                    
+                                                    (add 
+                                                        (piece 
+                                                            (id "Marker" P1 )
+                                                        )
+                                                        
+                                                        (to 
+                                                            (handSite P1)
+                                                        )
+                                                    count:12 )
+                                                    
+                                                    (add 
+                                                        (piece 
+                                                            (id "Marker" P2 )
+                                                        )
+                                                        
+                                                        (to 
+                                                            (handSite P2)
+                                                        )
+                                                    count:12 )
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (= 0 
+                        (count Sites in:
+                            (sites Occupied by:All container:"Board")
+                        )
+                    )
+                "Placement" )
+            )
+            }
+            
+            (end 
+                (if 
+                    (= 
+                        (score Mover)
+                    5)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Diris (Ludii 4) ruleset.")
+    
+    (item "Diris (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (not 
+                                    (is Prev Mover)
+                                )
+                                
+                                (is Line 3)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (no Moves Next)
+                                
+                                (and 
+                                    (moveAgain)
+                                    
+                                    (set Pending)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            
+            (play 
+                (or 
+                    (if 
+                        (not 
+                            (all Sites 
+                                (sites Hand Mover)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Diris (Ludii 5) ruleset.")
+    
+    (item "Diris (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 if:
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Marker1" 
+                    (handSite P1)
+                count:12)
+                
+                (place Stack "Marker2" 
+                    (handSite P2)
+                count:12)
+                }
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (forEach 
+                                    (sites Occupied by:Next container:"Board")
+                                    if:
+                                    (= 
+                                        (size Stack at:
+                                            (site)
+                                        )
+                                    1)
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (not 
+                                (all Sites 
+                                    (sites Hand Mover)
+                                    if:
+                                    (= 0 
+                                        (count Cell at:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (is Line 3 if:
+                                            (= 1 
+                                                (size Stack at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (and 
+                                    (not 
+                                        (is Next Mover)
+                                    )
+                                    
+                                    (and 
+                                        (all Sites 
+                                            (sites Hand P1)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (all Sites 
+                                            (sites Hand P2)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (and 
+                                    (forEach Site 
+                                        (forEach 
+                                            (sites Occupied by:P1 container:"Board" )
+                                            if:
+                                            (= 
+                                                (size Stack at:
+                                                    (site)
+                                                )
+                                            2)
+                                        )
+                                        
+                                        (and { 
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (add 
+                                                (piece 
+                                                    (id "Marker" P1)
+                                                )
+                                                
+                                                (to 
+                                                    (site)
+                                                )
+                                            )
+                                            }
+                                        )
+                                    )
+                                    
+                                    (forEach Site 
+                                        (forEach 
+                                            (sites Occupied by:P2 container:"Board" )
+                                            if:
+                                            (= 
+                                                (size Stack at:
+                                                    (site)
+                                                )
+                                            2)
+                                        )
+                                        
+                                        (and { 
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (add 
+                                                (piece 
+                                                    (id "Marker" P2)
+                                                )
+                                                
+                                                (to 
+                                                    (site)
+                                                )
+                                            )
+                                            }
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (not 
+                            (is Next Mover)
+                        )
+                        
+                        (and 
+                            (all Sites 
+                                (sites Hand P1)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
+                            )
+                            
+                            (all Sites 
+                                (sites Hand P2)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            3)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (end 
+                    (if 
+                        (no Moves Next)
+                        
+                        (result Mover Win)
+                    )
+                )
+            )
+            }
+        )
+        
+    > "The Diris (Ludii 6) ruleset.")
+    
+    (item "Diris (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (not 
+                                    (is Prev Mover)
+                                )
+                                
+                                (is Line 3)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (no Moves Next)
+                                
+                                (and 
+                                    (moveAgain)
+                                    
+                                    (set Pending)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Marker1" 
+                    (handSite P1)
+                count:12)
+                
+                (place Stack "Marker2" 
+                    (handSite P2)
+                count:12)
+                }
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (forEach 
+                                    (sites Occupied by:Next container:"Board")
+                                    if:
+                                    (= 
+                                        (size Stack at:
+                                            (site)
+                                        )
+                                    1)
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (not 
+                                (all Sites 
+                                    (sites Hand Mover)
+                                    if:
+                                    (= 0 
+                                        (count Cell at:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (is Line 3 if:
+                                            (= 1 
+                                                (size Stack at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (and 
+                                    (not 
+                                        (is Next Mover)
+                                    )
+                                    
+                                    (and 
+                                        (all Sites 
+                                            (sites Hand P1)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (all Sites 
+                                            (sites Hand P2)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (and 
+                                    (forEach Site 
+                                        (forEach 
+                                            (sites Occupied by:P1 container:"Board" )
+                                            if:
+                                            (= 
+                                                (size Stack at:
+                                                    (site)
+                                                )
+                                            2)
+                                        )
+                                        
+                                        (and { 
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (add 
+                                                (piece 
+                                                    (id "Marker" P1)
+                                                )
+                                                
+                                                (to 
+                                                    (site)
+                                                )
+                                            )
+                                            }
+                                        )
+                                    )
+                                    
+                                    (forEach Site 
+                                        (forEach 
+                                            (sites Occupied by:P2 container:"Board" )
+                                            if:
+                                            (= 
+                                                (size Stack at:
+                                                    (site)
+                                                )
+                                            2)
+                                        )
+                                        
+                                        (and { 
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (add 
+                                                (piece 
+                                                    (id "Marker" P2)
+                                                )
+                                                
+                                                (to 
+                                                    (site)
+                                                )
+                                            )
+                                            }
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (not 
+                            (is Next Mover)
+                        )
+                        
+                        (and 
+                            (all Sites 
+                                (sites Hand P1)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
+                            )
+                            
+                            (all Sites 
+                                (sites Hand P2)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            3)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (end 
+                    (if 
+                        (no Moves Next)
+                        
+                        (result Mover Win)
+                    )
+                )
+            )
+            }
+        )
+        
+    > "The Diris (Ludii 7) ruleset.")
+    
+    (item "Diris (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (if 
+                    (= 3 
+                        (count Pieces Mover)
+                    )
+                    
+                    (move 
+                        (from 
+                            (from)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (and 
+                                (if 
+                                    (and 
+                                        (< 
+                                            (var)
+                                        1)
+                                        
+                                        (is Line 3)
+                                    )
+                                    
+                                    (set Var 
+                                        (mover)
+                                    )
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all Sites 
+                                            (sites Hand P1)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (all Sites 
+                                            (sites Hand P2)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (< 
+                                            (var)
+                                        1)
+                                        
+                                        (moveAgain)
+                                        
+                                        (set NextPlayer 
+                                            (player 
+                                                (var)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (all Sites 
+                            (sites Hand P1)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                        
+                        (all Sites 
+                            (sites Hand P2)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                "Remove" )
+            )
+            
+            (phase "Remove" 
+                (play 
+                    (move Remove 
+                        (sites Occupied by:Next container:"Board")
+                    )
+                )
+                
+                (nextPhase Mover "Move")
+            )
+            
+            (phase "Move" 
+                (play 
+                    (if 
+                        (and 
+                            (not 
+                                (is Pending)
+                            )
+                            
+                            (is Prev Mover)
+                        )
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                            
+                            (then 
+                                (if 
+                                    (no Moves Next)
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Pending)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (is Pending)
+                            
+                            (do 
+                                (forEach Piece 
+                                    (move Step 
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                ifAfterwards:
+                                (can Move 
+                                    (forEach Piece Next)
+                                )
+                            )
+                            
+                            (forEach Piece)
+                        )
+                        
+                        (then 
+                            (if 
+                                (= 2 
+                                    (count Pieces P1)
+                                )
+                                
+                                (addScore P2 1 
+                                    (then 
+                                        (if 
+                                            (!= 
+                                                (score P2)
+                                            5)
+                                            
+                                            (and { 
+                                                (remove 
+                                                    (sites Occupied by:All )
+                                                )
+                                                
+                                                (add 
+                                                    (piece 
+                                                        (id "Marker" P1)
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite P1)
+                                                    )
+                                                count:12 )
+                                                
+                                                (add 
+                                                    (piece 
+                                                        (id "Marker" P2)
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite P2)
+                                                    )
+                                                count:12 )
+                                                }
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (= 2 
+                                        (count Pieces P2)
+                                    )
+                                    
+                                    (addScore P1 1 
+                                        (then 
+                                            (if 
+                                                (!= 
+                                                    (score P1)
+                                                5)
+                                                
+                                                (and { 
+                                                    (remove 
+                                                        (sites Occupied by:All )
+                                                    )
+                                                    
+                                                    (add 
+                                                        (piece 
+                                                            (id "Marker" P1 )
+                                                        )
+                                                        
+                                                        (to 
+                                                            (handSite P1)
+                                                        )
+                                                    count:12 )
+                                                    
+                                                    (add 
+                                                        (piece 
+                                                            (id "Marker" P2 )
+                                                        )
+                                                        
+                                                        (to 
+                                                            (handSite P2)
+                                                        )
+                                                    count:12 )
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (= 0 
+                        (count Sites in:
+                            (sites Occupied by:All container:"Board")
+                        )
+                    )
+                "Placement" )
+            )
+            }
+            
+            (end 
+                (if 
+                    (= 
+                        (score Mover)
+                    5)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Diris (Ludii 8) ruleset.")
+    
+    (item "Diris (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (not 
+                                    (is Prev Mover)
+                                )
+                                
+                                (is Line 3)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (no Moves Next)
+                                
+                                (and 
+                                    (moveAgain)
+                                    
+                                    (set Pending)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (forEach 
+                                (sites Occupied by:Enemy container:"Board")
+                                if:
+                                (not 
+                                    (is Line 3 Orthogonal through:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (forEach 
+                                (sites Occupied by:Enemy container:"Board")
+                                if:
+                                (not 
+                                    (is Line 3 Orthogonal through:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (forEach NonMover if:
+                    (= 2 
+                        (count Pieces Player)
+                    )
+                    
+                    (result Player Loss)
+                )
+            )
+        )
+        
+    > "The Diris (Ludii 9) ruleset.")
+    
+    (item "Diris (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (not 
+                                    (is Prev Mover)
+                                )
+                                
+                                (is Line 3)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (no Moves Next)
+                                
+                                (and 
+                                    (moveAgain)
+                                    
+                                    (set Pending)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (and 
+                                (if 
+                                    (and 
+                                        (< 
+                                            (var)
+                                        1)
+                                        
+                                        (is Line 3)
+                                    )
+                                    
+                                    (set Var 
+                                        (mover)
+                                    )
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all Sites 
+                                            (sites Hand P1)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (all Sites 
+                                            (sites Hand P2)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (< 
+                                            (var)
+                                        1)
+                                        
+                                        (moveAgain)
+                                        
+                                        (set NextPlayer 
+                                            (player 
+                                                (var)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (all Sites 
+                            (sites Hand P1)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                        
+                        (all Sites 
+                            (sites Hand P2)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                "Remove" )
+            )
+            
+            (phase "Remove" 
+                (play 
+                    (move Remove 
+                        (sites Occupied by:Next container:"Board")
+                    )
+                )
+                
+                (nextPhase Mover "Move")
+            )
+            
+            (phase "Move" 
+                (play 
+                    (if 
+                        (and 
+                            (not 
+                                (is Pending)
+                            )
+                            
+                            (is Prev Mover)
+                        )
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                            
+                            (then 
+                                (if 
+                                    (no Moves Next)
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Pending)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (is Pending)
+                            
+                            (do 
+                                (forEach Piece 
+                                    (move Step 
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                ifAfterwards:
+                                (can Move 
+                                    (forEach Piece Next)
+                                )
+                            )
+                            
+                            (forEach Piece)
+                        )
+                        
+                        (then 
+                            (if 
+                                (= 2 
+                                    (count Pieces P1)
+                                )
+                                
+                                (addScore P2 1 
+                                    (then 
+                                        (if 
+                                            (!= 
+                                                (score P2)
+                                            5)
+                                            
+                                            (and { 
+                                                (remove 
+                                                    (sites Occupied by:All )
+                                                )
+                                                
+                                                (add 
+                                                    (piece 
+                                                        (id "Marker" P1)
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite P1)
+                                                    )
+                                                count:12 )
+                                                
+                                                (add 
+                                                    (piece 
+                                                        (id "Marker" P2)
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite P2)
+                                                    )
+                                                count:12 )
+                                                }
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (= 2 
+                                        (count Pieces P2)
+                                    )
+                                    
+                                    (addScore P1 1 
+                                        (then 
+                                            (if 
+                                                (!= 
+                                                    (score P1)
+                                                5)
+                                                
+                                                (and { 
+                                                    (remove 
+                                                        (sites Occupied by:All )
+                                                    )
+                                                    
+                                                    (add 
+                                                        (piece 
+                                                            (id "Marker" P1 )
+                                                        )
+                                                        
+                                                        (to 
+                                                            (handSite P1)
+                                                        )
+                                                    count:12 )
+                                                    
+                                                    (add 
+                                                        (piece 
+                                                            (id "Marker" P2 )
+                                                        )
+                                                        
+                                                        (to 
+                                                            (handSite P2)
+                                                        )
+                                                    count:12 )
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (= 0 
+                        (count Sites in:
+                            (sites Occupied by:All container:"Board")
+                        )
+                    )
+                "Placement" )
+            )
+            }
+            
+            (end 
+                (if 
+                    (= 
+                        (score Mover)
+                    5)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Diris (Ludii 10) ruleset.")
+    
     (item "Incomplete"
         <
         (players 2)
@@ -26,6 +2221,37 @@
 //------------------------------------------------------------------------------
 
 (rulesets {
+    
+    (ruleset "Ruleset/Diris (Ludii 1) (Reconstructed)" {
+        "Variant/Diris (Ludii 1)"
+    })
+    (ruleset "Ruleset/Diris (Ludii 2) (Reconstructed)" {
+        "Variant/Diris (Ludii 2)"
+    })
+    (ruleset "Ruleset/Diris (Ludii 3) (Reconstructed)" {
+        "Variant/Diris (Ludii 3)"
+    })
+    (ruleset "Ruleset/Diris (Ludii 4) (Reconstructed)" {
+        "Variant/Diris (Ludii 4)"
+    })
+    (ruleset "Ruleset/Diris (Ludii 5) (Reconstructed)" {
+        "Variant/Diris (Ludii 5)"
+    })
+    (ruleset "Ruleset/Diris (Ludii 6) (Reconstructed)" {
+        "Variant/Diris (Ludii 6)"
+    })
+    (ruleset "Ruleset/Diris (Ludii 7) (Reconstructed)" {
+        "Variant/Diris (Ludii 7)"
+    })
+    (ruleset "Ruleset/Diris (Ludii 8) (Reconstructed)" {
+        "Variant/Diris (Ludii 8)"
+    })
+    (ruleset "Ruleset/Diris (Ludii 9) (Reconstructed)" {
+        "Variant/Diris (Ludii 9)"
+    })
+    (ruleset "Ruleset/Diris (Ludii 10) (Reconstructed)" {
+        "Variant/Diris (Ludii 10)"
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
