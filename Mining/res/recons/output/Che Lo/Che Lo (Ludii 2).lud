@@ -1,0 +1,156 @@
+(game "Che Lo" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 3 3 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 if:
+                            (= 1 
+                                (size Stack at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (sites Bottom)
+            )
+            
+            (place "Marker2" 
+                (sites Top)
+            )
+            }
+        )
+        
+        (play 
+            (if 
+                (is Prev Mover)
+                
+                (or 
+                    (move Hop 
+                        (from 
+                            (last To)
+                        )
+                        
+                        (between if:
+                            (and 
+                                (not 
+                                    (is In 
+                                        (between)
+                                        
+                                        (sites ToClear)
+                                    )
+                                )
+                                
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+                
+                (forEach Piece)
+            )
+        )
+        
+        (end { 
+            (if 
+                (no Moves Next)
+                
+                (result Next Loss)
+            )
+            
+            (if 
+                (<= 
+                    (count Pieces P1)
+                0)
+                
+                (result P1 Loss)
+            )
+            }
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "NumStartComponents" 6)
+    })
+    )
