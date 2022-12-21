@@ -1,0 +1,81 @@
+(game "Eleven-Fang" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 11)
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 if:
+                            (= 1 
+                                (size Stack at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        
+        (hand Each)
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker" "Hand" count:16)
+            
+            (place "Marker1" 
+                (union 
+                    (sites Top)
+                    
+                    (difference 
+                        (sites Right)
+                        
+                        (sites Bottom)
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (union 
+                    (sites Bottom)
+                    
+                    (difference 
+                        (sites Left)
+                        
+                        (sites Top)
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Moves Next)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+
