@@ -16408,3 +16408,112 @@ Aim:
      If King of the next player is threatened and not can move move one of your pieces, the moving player wins If 1 is equal to the number of pieces owned by Player the next player, the moving player wins If the moving player cannot move, it's a draw.
 
 ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.809","0.864","0.754","0.894","1331","[]"
+"3089","1342","Diris (Ludii 1)",NULL,"Reconstructed with Ludii","2",NULL,"The game Diris is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal.
+Players take turns moving.
+Rules: 
+     If not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true or move one of your pieces.
+Aim: 
+     If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.92","0.899","0.94","0.924","723, 723","[]"
+"3090","1342","Diris (Ludii 2)",NULL,"Reconstructed with Ludii","2",NULL,"The game Diris is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal.
+Players take turns moving.
+Setup:
+     Place stack of [Marker1] at vertex Player 1's hand site 0
+     Place stack of [Marker2] at vertex Player 2's hand site 0.
+Rules: 
+     If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.901","0.9","0.902","0.844","723, 953","[]"
+"3091","1342","Diris (Ludii 3)",NULL,"Reconstructed with Ludii","2",NULL,"The game Diris is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.9","0.899","0.902","0.803","723, 1285","[]"
+"3092","1342","Diris (Ludii 4)",NULL,"Reconstructed with Ludii","2",NULL,"The game Diris is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if state variablenull is less than 1 and a player places 3 of their pieces in an adjacent direction line, set the variable null to current moving player and if all sites in the sites in Player 1's hand satisfy the condition 0 is equal to the total number of cell in current site and all sites in the sites in Player 2's hand satisfy the condition 0 is equal to the total number of cell in current site, if state variablenull is less than 1, move again, else set the next mover to Player [state variablenull] remove pieces at sites occupied by any component owned by Next in Board if not a state is pending and in the same turn, remove pieces at sites occupied by any component owned by Next in Board then if the next player cannot move, move again and set pending, else if a state is pending, move one of your pieces, else move one of your pieces.
+Aim: 
+     If the score of Player the moving player is equal to 5, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.9","0.898","0.902","0.909","723, 789","[]"
+"3093","1342","Diris (Ludii 5)",NULL,"Reconstructed with Ludii","2",NULL,"The game Diris is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if not in the same turn and a player places 3 of their pieces in an adjacent direction line, move again, else if the next player cannot move, move again and set pending.
+Players take turns moving.
+Rules: 
+     If not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true or move one of your pieces.
+Aim: 
+     If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.9","0.879","0.92","0.904","789, 723","[]"
+"3094","1342","Diris (Ludii 6)",NULL,"Reconstructed with Ludii","2",NULL,"The game Diris is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Setup:
+     Place stack of [Marker1] at vertex Player 1's hand site 0
+     Place stack of [Marker2] at vertex Player 2's hand site 0.
+Rules: 
+     If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.882","0.881","0.883","0.825","953, 953","[]"
+"3095","1342","Diris (Ludii 7)",NULL,"Reconstructed with Ludii","2",NULL,"The game Diris is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if not in the same turn and a player places 3 of their pieces in an adjacent direction line, move again, else if the next player cannot move, move again and set pending.
+Players take turns moving.
+Setup:
+     Place stack of [Marker1] at vertex Player 1's hand site 0
+     Place stack of [Marker2] at vertex Player 2's hand site 0.
+Rules: 
+     If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.881","0.88","0.882","0.824","789, 953","[]"
+"3096","1342","Diris (Ludii 8)",NULL,"Reconstructed with Ludii","2",NULL,"The game Diris is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers if 3 is equal to the number of pieces owned by Player the moving player, from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true, else step adjacent.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if state variablenull is less than 1 and a player places 3 of their pieces in an adjacent direction line, set the variable null to current moving player and if all sites in the sites in Player 1's hand satisfy the condition 0 is equal to the total number of cell in current site and all sites in the sites in Player 2's hand satisfy the condition 0 is equal to the total number of cell in current site, if state variablenull is less than 1, move again, else set the next mover to Player [state variablenull] remove pieces at sites occupied by any component owned by Next in Board if not a state is pending and in the same turn, remove pieces at sites occupied by any component owned by Next in Board then if the next player cannot move, move again and set pending, else if a state is pending, move one of your pieces, else move one of your pieces.
+Aim: 
+     If the score of Player the moving player is equal to 5, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.881","0.878","0.883","0.89","1285, 789","[]"
+"3097","1342","Diris (Ludii 9)",NULL,"Reconstructed with Ludii","2",NULL,"The game Diris is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if not in the same turn and a player places 3 of their pieces in an adjacent direction line, move again, else if the next player cannot move, move again and set pending.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.881","0.879","0.882","0.783","789, 1285","[]"
+"3098","1342","Diris (Ludii 10)",NULL,"Reconstructed with Ludii","2",NULL,"The game Diris is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if not in the same turn and a player places 3 of their pieces in an adjacent direction line, move again, else if the next player cannot move, move again and set pending.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if state variablenull is less than 1 and a player places 3 of their pieces in an adjacent direction line, set the variable null to current moving player and if all sites in the sites in Player 1's hand satisfy the condition 0 is equal to the total number of cell in current site and all sites in the sites in Player 2's hand satisfy the condition 0 is equal to the total number of cell in current site, if state variablenull is less than 1, move again, else set the next mover to Player [state variablenull] remove pieces at sites occupied by any component owned by Next in Board if not a state is pending and in the same turn, remove pieces at sites occupied by any component owned by Next in Board then if the next player cannot move, move again and set pending, else if a state is pending, move one of your pieces, else move one of your pieces.
+Aim: 
+     If the score of Player the moving player is equal to 5, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.88","0.878","0.882","0.889","789, 789","[]"
