@@ -5,744 +5,742 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-{
-(item "Cashlan Gherra (Ludii 1)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (rectangle 3 3 diagonals:Alternating)
-        use:Vertex)
+    {
+    (item "Cashlan Gherra (Ludii 1)" <
         
-        (hand Each)
+        (players 2)
         
-        (piece "Marker" Each 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
-            )
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
             
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
                         )
                     )
                 )
-            "Movement" )
+            )
+            }
         )
         
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
             )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3)
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Cashlan Gherra (Ludii 1) ruleset.")
-
-(item "Cashlan Gherra (Ludii 2)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (rectangle 3 3 diagonals:Alternating)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step All 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
-            )
-            
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
                         )
                     )
                 )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3)
                 
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Cashlan Gherra (Ludii 2) ruleset.")
-
-(item "Cashlan Gherra (Ludii 3)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (rectangle 3 3 diagonals:Alternating)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
                     )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
+                "Movement" )
             )
             
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Cashlan Gherra (Ludii 1) ruleset.")
+    
+    (item "Cashlan Gherra (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step All 
+                    (to if:
+                        (is Empty 
+                            (to)
                         )
                     )
                 )
-            "Movement" )
+            )
+            }
         )
         
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
             )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3 Orthogonal)
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Cashlan Gherra (Ludii 3) ruleset.")
-
-(item "Cashlan Gherra (Ludii 4)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (rectangle 3 3 diagonals:Alternating)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step Orthogonal 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
-            )
-            
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
                         )
                     )
                 )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3)
                 
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Cashlan Gherra (Ludii 4) ruleset.")
-
-(item "Cashlan Gherra (Ludii 5)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (rectangle 3 3 diagonals:Alternating)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
                     )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Opening" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (centrePoint)
-                    )
-                )
+                "Movement" )
             )
             
-            (nextPhase "Placing")
-        )
-        
-        (phase "Placing" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
                 )
             )
+            }
             
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Cashlan Gherra (Ludii 2) ruleset.")
+    
+    (item "Cashlan Gherra (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
                         )
                     )
                 )
-            "Moving" )
+            )
+            }
         )
         
-        (phase "Moving" 
-            (play 
-                (forEach Piece)
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
             )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3)
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Cashlan Gherra (Ludii 5) ruleset.")
-
-(item "Cashlan Gherra (Ludii 6)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (rectangle 3 3 diagonals:Alternating)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
-            )
-            
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
                         )
                     )
                 )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3)
                 
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Cashlan Gherra (Ludii 6) ruleset.")
-
-(item "Cashlan Gherra (Ludii 7)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (rectangle 3 3 diagonals:Alternating)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step All 
-                (to if:
-                    (is Empty 
-                        (to)
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
                     )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
+                "Movement" )
             )
             
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Cashlan Gherra (Ludii 3) ruleset.")
+    
+    (item "Cashlan Gherra (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
                         )
                     )
                 )
-            "Movement" )
+            )
+            }
         )
         
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
             )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3)
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Cashlan Gherra (Ludii 7) ruleset.")
-
-(item "Cashlan Gherra (Ludii 8)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (rectangle 3 3 diagonals:Alternating)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step All 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
-            )
-            
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
                         )
                     )
                 )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3 Orthogonal)
                 
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Cashlan Gherra (Ludii 8) ruleset.")
-
-(item "Cashlan Gherra (Ludii 9)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (rectangle 3 3 diagonals:Alternating)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step Orthogonal 
-                (to if:
-                    (is Empty 
-                        (to)
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
                     )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
+                "Movement" )
             )
             
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Cashlan Gherra (Ludii 4) ruleset.")
+    
+    (item "Cashlan Gherra (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
                         )
                     )
                 )
-            "Movement" )
+            )
+            }
         )
         
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
             )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3)
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Cashlan Gherra (Ludii 9) ruleset.")
-
-(item "Cashlan Gherra (Ludii 10)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (rectangle 3 3 diagonals:Alternating)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step Orthogonal 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
-            )
-            
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            phases:{ 
+            (phase "Opening" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (centrePoint)
                         )
                     )
                 )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3 Orthogonal)
                 
-                (result Mover Win)
+                (nextPhase "Placing")
+            )
+            
+            (phase "Placing" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Moving" )
+            )
+            
+            (phase "Moving" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
             )
         )
-    )
-
- > "The Cashlan Gherra (Ludii 10) ruleset.")
-
-
+        
+    > "The Cashlan Gherra (Ludii 5) ruleset.")
+    
+    (item "Cashlan Gherra (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Cashlan Gherra (Ludii 6) ruleset.")
+    
+    (item "Cashlan Gherra (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step All 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Cashlan Gherra (Ludii 7) ruleset.")
+    
+    (item "Cashlan Gherra (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step All 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Cashlan Gherra (Ludii 8) ruleset.")
+    
+    (item "Cashlan Gherra (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Cashlan Gherra (Ludii 9) ruleset.")
+    
+    (item "Cashlan Gherra (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Cashlan Gherra (Ludii 10) ruleset.")
     
     (item "Incomplete"
         <
@@ -757,43 +755,42 @@
         "The incomplete ruleset."
     )
     
-
- })
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets {
-
-(ruleset "Ruleset/Cashlan Gherra (Ludii 1) (Reconstructed)" {
-     "Variant/Cashlan Gherra (Ludii 1)"
-})
-(ruleset "Ruleset/Cashlan Gherra (Ludii 2) (Reconstructed)" {
-     "Variant/Cashlan Gherra (Ludii 2)"
-})
-(ruleset "Ruleset/Cashlan Gherra (Ludii 3) (Reconstructed)" {
-     "Variant/Cashlan Gherra (Ludii 3)"
-})
-(ruleset "Ruleset/Cashlan Gherra (Ludii 4) (Reconstructed)" {
-     "Variant/Cashlan Gherra (Ludii 4)"
-})
-(ruleset "Ruleset/Cashlan Gherra (Ludii 5) (Reconstructed)" {
-     "Variant/Cashlan Gherra (Ludii 5)"
-})
-(ruleset "Ruleset/Cashlan Gherra (Ludii 6) (Reconstructed)" {
-     "Variant/Cashlan Gherra (Ludii 6)"
-})
-(ruleset "Ruleset/Cashlan Gherra (Ludii 7) (Reconstructed)" {
-     "Variant/Cashlan Gherra (Ludii 7)"
-})
-(ruleset "Ruleset/Cashlan Gherra (Ludii 8) (Reconstructed)" {
-     "Variant/Cashlan Gherra (Ludii 8)"
-})
-(ruleset "Ruleset/Cashlan Gherra (Ludii 9) (Reconstructed)" {
-     "Variant/Cashlan Gherra (Ludii 9)"
-})
-(ruleset "Ruleset/Cashlan Gherra (Ludii 10) (Reconstructed)" {
-     "Variant/Cashlan Gherra (Ludii 10)"
-})
+    
+    (ruleset "Ruleset/Cashlan Gherra (Ludii 1) (Reconstructed)" {
+        "Variant/Cashlan Gherra (Ludii 1)"
+    })
+    (ruleset "Ruleset/Cashlan Gherra (Ludii 2) (Reconstructed)" {
+        "Variant/Cashlan Gherra (Ludii 2)"
+    })
+    (ruleset "Ruleset/Cashlan Gherra (Ludii 3) (Reconstructed)" {
+        "Variant/Cashlan Gherra (Ludii 3)"
+    })
+    (ruleset "Ruleset/Cashlan Gherra (Ludii 4) (Reconstructed)" {
+        "Variant/Cashlan Gherra (Ludii 4)"
+    })
+    (ruleset "Ruleset/Cashlan Gherra (Ludii 5) (Reconstructed)" {
+        "Variant/Cashlan Gherra (Ludii 5)"
+    })
+    (ruleset "Ruleset/Cashlan Gherra (Ludii 6) (Reconstructed)" {
+        "Variant/Cashlan Gherra (Ludii 6)"
+    })
+    (ruleset "Ruleset/Cashlan Gherra (Ludii 7) (Reconstructed)" {
+        "Variant/Cashlan Gherra (Ludii 7)"
+    })
+    (ruleset "Ruleset/Cashlan Gherra (Ludii 8) (Reconstructed)" {
+        "Variant/Cashlan Gherra (Ludii 8)"
+    })
+    (ruleset "Ruleset/Cashlan Gherra (Ludii 9) (Reconstructed)" {
+        "Variant/Cashlan Gherra (Ludii 9)"
+    })
+    (ruleset "Ruleset/Cashlan Gherra (Ludii 10) (Reconstructed)" {
+        "Variant/Cashlan Gherra (Ludii 10)"
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -803,7 +800,7 @@
 
 //------------------------------------------------------------------------------
 
- (metadata 
+(metadata 
     (info
         {
         }
@@ -814,5 +811,4 @@
     })
     
 )
-
 
