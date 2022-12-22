@@ -5,7 +5,160 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-    {
+{
+(item "Banyarwanda Mill Game (Ludii 1)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 3 3 diagonals:Alternating)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Hop 
+                (between if:
+                    (is Occupied 
+                        (between)
+                    )
+                )
+                
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:6)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (move 
+                    (from 
+                        (handSite Mover)
+                    )
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            
+            (nextPhase 
+                (all Sites 
+                    (sites Hand P2)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (forEach Piece)
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+
+ > "The Banyarwanda Mill Game (Ludii 1) ruleset.")
+
+(item "Banyarwanda Mill Game (Ludii 2)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 3 3 diagonals:Alternating)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move 
+                (from 
+                    (from)
+                )
+                
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:6)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (move 
+                    (from 
+                        (handSite Mover)
+                    )
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            
+            (nextPhase 
+                (all Sites 
+                    (sites Hand P2)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (forEach Piece)
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+
+ > "The Banyarwanda Mill Game (Ludii 2) ruleset.")
+
+
     (item "Incomplete"
         <
         (players 2) 
@@ -48,11 +201,19 @@
         "The incomplete ruleset."
     )
     
-})
+
+ })
 
 //------------------------------------------------------------------------------
 
 (rulesets {
+
+(ruleset "Ruleset/Banyarwanda Mill Game (Ludii 1) (Reconstructed)" {
+     "Variant/Banyarwanda Mill Game (Ludii 1)"
+})
+(ruleset "Ruleset/Banyarwanda Mill Game (Ludii 2) (Reconstructed)" {
+     "Variant/Banyarwanda Mill Game (Ludii 2)"
+})
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -62,7 +223,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+ (metadata 
     
     (info
         {
@@ -70,4 +231,5 @@
         }
     )
 )
+
 
