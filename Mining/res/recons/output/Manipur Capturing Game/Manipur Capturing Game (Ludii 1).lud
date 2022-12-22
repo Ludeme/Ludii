@@ -1,0 +1,91 @@
+(game "Manipur Capturing Game" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (add 
+                (square 5)
+                edges:{ { 0 6}
+                { 6 12}
+                { 12 18}
+                { 18 24}
+                { 20 16}
+                { 16 12}
+                { 8 4}
+                { 12 8}
+                }
+            )
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (or 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Hop Orthogonal 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (expand 
+                    (sites Bottom)
+                )
+            )
+            
+            (place "Marker2" 
+                (expand 
+                    (sites Top)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "NumStartComponentsPerPlayer" minValue:5 maxValue:12)
+    }))

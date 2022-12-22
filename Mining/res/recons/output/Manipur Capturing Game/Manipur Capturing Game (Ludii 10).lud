@@ -1,0 +1,105 @@
+(game "Manipur Capturing Game" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (add 
+                (square 5)
+                edges:{ { 0 6}
+                { 6 12}
+                { 12 18}
+                { 18 24}
+                { 20 16}
+                { 16 12}
+                { 8 4}
+                { 12 8}
+                }
+            )
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (or 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Hop Orthogonal 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union { 
+                    (sites Row 0)
+                    
+                    (sites Row 1)
+                    
+                    (sites Row 2)
+                    
+                    (sites Row 3)
+                    }
+                )
+            )
+            
+            (place "Marker2" 
+                (union { 
+                    (sites Row 5)
+                    
+                    (sites Row 6)
+                    
+                    (sites Row 7)
+                    
+                    (sites Row 8)
+                    }
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "NumStartComponentsPerPlayer" minValue:5 maxValue:12)
+    }))
