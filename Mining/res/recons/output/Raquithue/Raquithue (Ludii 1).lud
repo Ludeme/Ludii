@@ -1,0 +1,167 @@
+(game "Raquithue" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (add 
+                (merge { 
+                    (rectangle 4 7)
+                    
+                    (shift 1 4.5 
+                        (rectangle 4 5)
+                    )
+                    }
+                )
+                edges:{ { 24 30}
+                }
+            )
+        use:Vertex)
+        
+        (piece "Lion" P1 
+            (or { 
+                (move Hop Orthogonal 
+                    (between if:
+                        (and 
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (not 
+                                (is In 
+                                    (between)
+                                    
+                                    (union 
+                                        (sites Bottom)
+                                        
+                                        (sites Top)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (if 
+                    (= 1 
+                        (state at:
+                            (from)
+                        )
+                    )
+                    
+                    (move Slide Orthogonal 
+                        (between 
+                            (exact 2)
+                            if:
+                            (is Empty 
+                                (between)
+                            )
+                        )
+                        
+                        (then 
+                            (set State at:
+                                (last To)
+                            0)
+                        )
+                    )
+                )
+                }
+            )
+        )
+        
+        (piece "Dog" P2 
+            (move Hop Orthogonal 
+                (between if:
+                    (and 
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (not 
+                            (is In 
+                                (between)
+                                
+                                (union 
+                                    (sites Bottom)
+                                    
+                                    (sites Top)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (between)
+                        )
+                    )
+                )
+                
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Lion1" 
+                (sites { "D8"}
+                )
+            )
+            
+            (place "Dog2" 
+                (expand 
+                    (sites Bottom)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (<= 
+                    (count Pieces Next)
+                3)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "NumStartComponents" 15)
+    }))

@@ -1,0 +1,287 @@
+(game "Raquithue" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (add 
+                (merge { 
+                    (rectangle 4 7)
+                    
+                    (shift 1 4.5 
+                        (rectangle 4 5)
+                    )
+                    }
+                )
+                edges:{ { 24 30}
+                }
+            )
+        use:Vertex)
+        
+        (piece "Lion" P1 
+            (or 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                
+                (if 
+                    (not 
+                        (= 1 
+                            (state at:
+                                (from)
+                            )
+                        )
+                    )
+                    
+                    (or { 
+                        (move Hop Orthogonal 
+                            (between 
+                                (exact 2)
+                            if:True)
+                            
+                            (to if:
+                                (not 
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (if 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (remove 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move Leap { { F F R F }
+                            { F F L F }
+                            }
+                            
+                            (to if:
+                                (not 
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (if 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (remove 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (is In 
+                                (from)
+                                
+                                (sites { "E8" "D1"}
+                                )
+                            )
+                            
+                            (or 
+                                (if 
+                                    (and { 
+                                        (is Empty 
+                                            (ahead 
+                                                (from)
+                                            steps:2 W )
+                                        )
+                                        
+                                        (= 
+                                            (what at:
+                                                (ahead 
+                                                    (from)
+                                                W )
+                                            )
+                                            
+                                            (id "Rook" Mover)
+                                        )
+                                        
+                                        (not 
+                                            (= 1 
+                                                (state at:
+                                                    (ahead 
+                                                        (from)
+                                                    W )
+                                                )
+                                            )
+                                        )
+                                        }
+                                    )
+                                    
+                                    (move 
+                                        (from)
+                                        
+                                        (to 
+                                            (ahead 
+                                                (from)
+                                            steps:2 W)
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (and { 
+                                        (is Empty 
+                                            (ahead 
+                                                (from)
+                                            steps:2 E )
+                                        )
+                                        
+                                        (= 
+                                            (what at:
+                                                (ahead 
+                                                    (from)
+                                                E )
+                                            )
+                                            
+                                            (id "Rook" Mover)
+                                        )
+                                        
+                                        (not 
+                                            (= 1 
+                                                (state at:
+                                                    (ahead 
+                                                        (from)
+                                                    E )
+                                                )
+                                            )
+                                        )
+                                        }
+                                    )
+                                    
+                                    (move 
+                                        (from)
+                                        
+                                        (to 
+                                            (ahead 
+                                                (from)
+                                            steps:2 E)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        }
+                        
+                        (then 
+                            (set State at:
+                                (last To)
+                            1)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Dog" P2 
+            (move Hop Orthogonal 
+                (between if:
+                    (and 
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (not 
+                            (is In 
+                                (between)
+                                
+                                (union 
+                                    (sites Bottom)
+                                    
+                                    (sites Top)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (between)
+                        )
+                    )
+                )
+                
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Lion1" 
+                (sites { "D8"}
+                )
+            )
+            
+            (place "Dog2" 
+                (expand 
+                    (sites Bottom)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (<= 
+                    (count Pieces Next)
+                3)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "NumStartComponents" 15)
+    }))
