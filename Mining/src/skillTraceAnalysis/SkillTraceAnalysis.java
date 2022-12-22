@@ -32,11 +32,10 @@ public class SkillTraceAnalysis
 	{		
 		final SkillTrace skillTraceMetric = new SkillTrace();
 		skillTraceMetric.setAddToDatabaseFile(true);
-		final String[] choicesUnsorted = FileHandling.listGames();
 		
 		// Order all games by their branching factor estimate.
 		final Map<String,Integer> choicesBranchingFactors = new HashMap<>();
-		for (final String s : choicesUnsorted)
+		for (final String s : FileHandling.listGames())
 		{
 			if (FileHandling.shouldIgnoreLudRelease(s))
 				continue;
