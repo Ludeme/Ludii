@@ -5,1494 +5,1493 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-{
-(item "Duqurjin (Ludii 1)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (concentric Square rings:3)
-        use:Vertex)
+    {
+    (item "Duqurjin (Ludii 1)" <
         
-        (hand Each)
+        (players 2)
         
-        (piece "Marker" Each 
-            (move Step Orthogonal 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-                
-                (then 
-                    (custodial 
-                        (from 
-                            (last To)
-                        )
-                        Orthogonal 
-                        (between 
-                            (max 1)
-                            if:
-                            (is Enemy 
-                                (who at:
-                                    (between)
-                                )
-                            )
-                            
-                            (apply 
-                                (remove 
-                                    (between)
-                                )
-                            )
-                        )
-                        
-                        (to if:
-                            (is Friend 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:12)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (difference 
-                            (sites Empty)
-                            
-                            (centrePoint)
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
                         )
                     )
                     
                     (then 
-                        (if 
-                            (not 
-                                (is Prev Mover)
+                        (custodial 
+                            (from 
+                                (last To)
                             )
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
-                        )
-                    )
-                )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (no Pieces Next)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Duqurjin (Ludii 1) ruleset.")
-
-(item "Duqurjin (Ludii 2)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (concentric Square rings:3 joinCorners:True)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step Orthogonal 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-                
-                (then 
-                    (custodial 
-                        (from 
-                            (last To)
-                        )
-                        Orthogonal 
-                        (between 
-                            (max 1)
-                            if:
-                            (is Enemy 
-                                (who at:
-                                    (between)
-                                )
-                            )
-                            
-                            (apply 
-                                (remove 
-                                    (between)
-                                )
-                            )
-                        )
-                        
-                        (to if:
-                            (is Friend 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:12)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (difference 
-                            (sites Empty)
-                            
-                            (centrePoint)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (not 
-                                (is Prev Mover)
-                            )
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
-                        )
-                    )
-                )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (no Pieces Next)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Duqurjin (Ludii 2) ruleset.")
-
-(item "Duqurjin (Ludii 3)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (concentric Square rings:3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step Orthogonal 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-                
-                (then 
-                    (custodial 
-                        (from 
-                            (last To)
-                        )
-                        Orthogonal 
-                        (between 
-                            (max 1)
-                            if:
-                            (and 
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
                                 (is Enemy 
                                     (who at:
                                         (between)
                                     )
                                 )
                                 
-                                (!= 
-                                    (centrePoint)
-                                    
-                                    (between)
-                                )
-                            )
-                            
-                            (apply 
-                                (and 
+                                (apply 
                                     (remove 
                                         (between)
                                     )
-                                    
-                                    (if 
-                                        (or { 
-                                            (can Move 
-                                                (custodial 
-                                                    (from 
-                                                        (ahead 
-                                                            (last To)
-                                                        N )
-                                                    )
-                                                    Orthogonal 
-                                                    (between 
-                                                        (max 1)
-                                                        if:
-                                                        (and 
-                                                            (is Enemy 
-                                                                (who at:
-                                                                    (between )
-                                                                )
-                                                            )
-                                                            
-                                                            (!= 
-                                                                (centrePoint )
-                                                                
-                                                                (between )
-                                                            )
-                                                        )
-                                                    )
-                                                    
-                                                    (to if:
-                                                        (is Friend 
-                                                            (who at:
-                                                                (to )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                            
-                                            (can Move 
-                                                (custodial 
-                                                    (from 
-                                                        (ahead 
-                                                            (last To)
-                                                        E )
-                                                    )
-                                                    Orthogonal 
-                                                    (between 
-                                                        (max 1)
-                                                        if:
-                                                        (and 
-                                                            (is Enemy 
-                                                                (who at:
-                                                                    (between )
-                                                                )
-                                                            )
-                                                            
-                                                            (!= 
-                                                                (centrePoint )
-                                                                
-                                                                (between )
-                                                            )
-                                                        )
-                                                    )
-                                                    
-                                                    (to if:
-                                                        (is Friend 
-                                                            (who at:
-                                                                (to )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                            
-                                            (can Move 
-                                                (custodial 
-                                                    (from 
-                                                        (ahead 
-                                                            (last To)
-                                                        W )
-                                                    )
-                                                    Orthogonal 
-                                                    (between 
-                                                        (max 1)
-                                                        if:
-                                                        (and 
-                                                            (is Enemy 
-                                                                (who at:
-                                                                    (between )
-                                                                )
-                                                            )
-                                                            
-                                                            (!= 
-                                                                (centrePoint )
-                                                                
-                                                                (between )
-                                                            )
-                                                        )
-                                                    )
-                                                    
-                                                    (to if:
-                                                        (is Friend 
-                                                            (who at:
-                                                                (to )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                            
-                                            (can Move 
-                                                (custodial 
-                                                    (from 
-                                                        (ahead 
-                                                            (last To)
-                                                        S )
-                                                    )
-                                                    Orthogonal 
-                                                    (between 
-                                                        (max 1)
-                                                        if:
-                                                        (and 
-                                                            (is Enemy 
-                                                                (who at:
-                                                                    (between )
-                                                                )
-                                                            )
-                                                            
-                                                            (!= 
-                                                                (centrePoint )
-                                                                
-                                                                (between )
-                                                            )
-                                                        )
-                                                    )
-                                                    
-                                                    (to if:
-                                                        (is Friend 
-                                                            (who at:
-                                                                (to )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                            }
-                                        )
-                                        
-                                        (moveAgain)
-                                        
-                                        (if 
-                                            (no Moves Next)
-                                            
-                                            (and 
-                                                (set Pending)
-                                                
-                                                (moveAgain)
-                                            )
-                                        )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
                                     )
                                 )
                             )
                         )
-                        
-                        (to if:
-                            (is Friend 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                        )
                     )
                 )
             )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:12)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (difference 
-                            (sites Empty)
-                            
-                            (centrePoint)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (not 
-                                (is Prev Mover)
-                            )
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
-                        )
-                    )
-                )
-            "Movement" )
+            }
         )
         
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
             )
-        )
-        }
-        
-        (end 
-            (if 
-                (no Pieces Next)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Duqurjin (Ludii 3) ruleset.")
-
-(item "Duqurjin (Ludii 4)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (concentric Square rings:3 joinCorners:True)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step Orthogonal 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-                
-                (then 
-                    (custodial 
-                        (from 
-                            (last To)
-                        )
-                        Orthogonal 
-                        (between 
-                            (max 1)
-                            if:
-                            (is Enemy 
-                                (who at:
-                                    (between)
-                                )
-                            )
-                            
-                            (apply 
-                                (remove 
-                                    (between)
-                                )
-                            )
-                        )
-                        
-                        (to if:
-                            (is Friend 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:9)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (if 
-                    (is Prev Mover)
-                    
-                    (move Remove 
-                        (sites Occupied by:Enemy container:"Board")
-                    )
-                    
+            phases:{ 
+            (phase "Placement" 
+                (play 
                     (move 
                         (from 
                             (handSite Mover)
                         )
                         
                         (to 
-                            (sites Empty)
+                            (difference 
+                                (sites Empty)
+                                
+                                (centrePoint)
+                            )
                         )
                         
                         (then 
                             (if 
-                                (is Line 3 Orthogonal exact:True)
+                                (not 
+                                    (is Prev Mover)
+                                )
                                 
                                 (moveAgain)
                             )
                         )
                     )
                 )
-            )
-            
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
                         )
                     )
-                )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (if 
-                    (is Prev Mover)
-                    
-                    (move Remove 
-                        (sites Occupied by:Enemy container:"Board")
-                    )
-                    
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
                     (forEach Piece)
                 )
             )
-        )
-        }
-        
-        (end 
-            (if 
-                (<= 
-                    (count Pieces Next)
-                2)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Duqurjin (Ludii 4) ruleset.")
-
-(item "Duqurjin (Ludii 5)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (concentric Square rings:3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step Orthogonal 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-                
-                (then 
-                    (custodial 
-                        (from 
-                            (last To)
-                        )
-                        Orthogonal 
-                        (between 
-                            (max 1)
-                            if:
-                            (is Enemy 
-                                (who at:
-                                    (between)
-                                )
-                            )
-                            
-                            (apply 
-                                (remove 
-                                    (between)
-                                )
-                            )
-                        )
-                        
-                        (to if:
-                            (is Friend 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:9)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (if 
-                    (is Prev Mover)
-                    
-                    (move Remove 
-                        (sites Occupied by:Enemy container:"Board")
-                    )
-                    
-                    (move 
-                        (from 
-                            (handSite Mover)
-                        )
-                        
-                        (to 
-                            (sites Empty)
-                        )
-                        
-                        (then 
-                            (if 
-                                (is Line 3 Orthogonal exact:True)
-                                
-                                (moveAgain)
-                            )
-                        )
-                    )
-                )
-            )
+            }
             
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
-                        )
-                    )
-                )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
+            (end 
                 (if 
-                    (is Prev Mover)
+                    (no Pieces Next)
                     
-                    (move Remove 
-                        (sites Occupied by:Enemy container:"Board")
-                    )
-                    
-                    (forEach Piece)
+                    (result Next Loss)
                 )
             )
         )
-        }
         
-        (end 
-            (if 
-                (<= 
-                    (count Pieces Next)
-                2)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Duqurjin (Ludii 5) ruleset.")
-
-(item "Duqurjin (Ludii 6)" <
- 
-    (players 2)
+    > "The Duqurjin (Ludii 1) ruleset.")
     
-    (equipment { 
-        (board 
-            (concentric Square rings:3)
-        use:Vertex)
+    (item "Duqurjin (Ludii 2)" <
         
-        (hand Each)
+        (players 2)
         
-        (piece "Marker" Each 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-                
-                (then 
-                    (if 
-                        (is Line 3 Orthogonal exact:True)
-                        
-                        (moveAgain)
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:12)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (difference 
-                            (sites Empty)
-                            
-                            (centrePoint)
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
                         )
                     )
                     
                     (then 
-                        (if 
-                            (not 
-                                (is Prev Mover)
+                        (custodial 
+                            (from 
+                                (last To)
                             )
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
-                        )
-                    )
-                )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (no Pieces Next)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Duqurjin (Ludii 6) ruleset.")
-
-(item "Duqurjin (Ludii 7)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (concentric Square rings:3 joinCorners:True)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-                
-                (then 
-                    (if 
-                        (is Line 3 Orthogonal exact:True)
-                        
-                        (moveAgain)
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:12)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (difference 
-                            (sites Empty)
-                            
-                            (centrePoint)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (not 
-                                (is Prev Mover)
-                            )
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
-                        )
-                    )
-                )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (no Pieces Next)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Duqurjin (Ludii 7) ruleset.")
-
-(item "Duqurjin (Ludii 8)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (concentric Square rings:3 joinCorners:True)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step Orthogonal 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-                
-                (then 
-                    (custodial 
-                        (from 
-                            (last To)
-                        )
-                        Orthogonal 
-                        (between 
-                            (max 1)
-                            if:
-                            (and 
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
                                 (is Enemy 
                                     (who at:
                                         (between)
                                     )
                                 )
                                 
-                                (!= 
-                                    (centrePoint)
-                                    
-                                    (between)
-                                )
-                            )
-                            
-                            (apply 
-                                (and 
+                                (apply 
                                     (remove 
                                         (between)
                                     )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (difference 
+                                (sites Empty)
+                                
+                                (centrePoint)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (not 
+                                    (is Prev Mover)
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Duqurjin (Ludii 2) ruleset.")
+    
+    (item "Duqurjin (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
                                     
-                                    (if 
-                                        (or { 
-                                            (can Move 
-                                                (custodial 
-                                                    (from 
-                                                        (ahead 
-                                                            (last To)
-                                                        N )
-                                                    )
-                                                    Orthogonal 
-                                                    (between 
-                                                        (max 1)
-                                                        if:
-                                                        (and 
-                                                            (is Enemy 
-                                                                (who at:
-                                                                    (between )
-                                                                )
-                                                            )
-                                                            
-                                                            (!= 
-                                                                (centrePoint )
-                                                                
-                                                                (between )
-                                                            )
-                                                        )
-                                                    )
-                                                    
-                                                    (to if:
-                                                        (is Friend 
-                                                            (who at:
-                                                                (to )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                            
-                                            (can Move 
-                                                (custodial 
-                                                    (from 
-                                                        (ahead 
-                                                            (last To)
-                                                        E )
-                                                    )
-                                                    Orthogonal 
-                                                    (between 
-                                                        (max 1)
-                                                        if:
-                                                        (and 
-                                                            (is Enemy 
-                                                                (who at:
-                                                                    (between )
-                                                                )
-                                                            )
-                                                            
-                                                            (!= 
-                                                                (centrePoint )
-                                                                
-                                                                (between )
-                                                            )
-                                                        )
-                                                    )
-                                                    
-                                                    (to if:
-                                                        (is Friend 
-                                                            (who at:
-                                                                (to )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                            
-                                            (can Move 
-                                                (custodial 
-                                                    (from 
-                                                        (ahead 
-                                                            (last To)
-                                                        W )
-                                                    )
-                                                    Orthogonal 
-                                                    (between 
-                                                        (max 1)
-                                                        if:
-                                                        (and 
-                                                            (is Enemy 
-                                                                (who at:
-                                                                    (between )
-                                                                )
-                                                            )
-                                                            
-                                                            (!= 
-                                                                (centrePoint )
-                                                                
-                                                                (between )
-                                                            )
-                                                        )
-                                                    )
-                                                    
-                                                    (to if:
-                                                        (is Friend 
-                                                            (who at:
-                                                                (to )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                            
-                                            (can Move 
-                                                (custodial 
-                                                    (from 
-                                                        (ahead 
-                                                            (last To)
-                                                        S )
-                                                    )
-                                                    Orthogonal 
-                                                    (between 
-                                                        (max 1)
-                                                        if:
-                                                        (and 
-                                                            (is Enemy 
-                                                                (who at:
-                                                                    (between )
-                                                                )
-                                                            )
-                                                            
-                                                            (!= 
-                                                                (centrePoint )
-                                                                
-                                                                (between )
-                                                            )
-                                                        )
-                                                    )
-                                                    
-                                                    (to if:
-                                                        (is Friend 
-                                                            (who at:
-                                                                (to )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                            }
+                                    (!= 
+                                        (centrePoint)
+                                        
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (and 
+                                        (remove 
+                                            (between)
                                         )
                                         
-                                        (moveAgain)
-                                        
                                         (if 
-                                            (no Moves Next)
-                                            
-                                            (and 
-                                                (set Pending)
+                                            (or { 
+                                                (can Move 
+                                                    (custodial 
+                                                        (from 
+                                                            (ahead 
+                                                                (last To)
+                                                            N )
+                                                        )
+                                                        Orthogonal 
+                                                        (between 
+                                                            (max 1)
+                                                            if:
+                                                            (and 
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (between )
+                                                                    )
+                                                                )
+                                                                
+                                                                (!= 
+                                                                    (centrePoint )
+                                                                    
+                                                                    (between )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (to if:
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (to )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
                                                 
-                                                (moveAgain)
+                                                (can Move 
+                                                    (custodial 
+                                                        (from 
+                                                            (ahead 
+                                                                (last To)
+                                                            E )
+                                                        )
+                                                        Orthogonal 
+                                                        (between 
+                                                            (max 1)
+                                                            if:
+                                                            (and 
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (between )
+                                                                    )
+                                                                )
+                                                                
+                                                                (!= 
+                                                                    (centrePoint )
+                                                                    
+                                                                    (between )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (to if:
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (to )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (can Move 
+                                                    (custodial 
+                                                        (from 
+                                                            (ahead 
+                                                                (last To)
+                                                            W )
+                                                        )
+                                                        Orthogonal 
+                                                        (between 
+                                                            (max 1)
+                                                            if:
+                                                            (and 
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (between )
+                                                                    )
+                                                                )
+                                                                
+                                                                (!= 
+                                                                    (centrePoint )
+                                                                    
+                                                                    (between )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (to if:
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (to )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (can Move 
+                                                    (custodial 
+                                                        (from 
+                                                            (ahead 
+                                                                (last To)
+                                                            S )
+                                                        )
+                                                        Orthogonal 
+                                                        (between 
+                                                            (max 1)
+                                                            if:
+                                                            (and 
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (between )
+                                                                    )
+                                                                )
+                                                                
+                                                                (!= 
+                                                                    (centrePoint )
+                                                                    
+                                                                    (between )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (to if:
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (to )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                }
+                                            )
+                                            
+                                            (moveAgain)
+                                            
+                                            (if 
+                                                (no Moves Next)
+                                                
+                                                (and 
+                                                    (set Pending)
+                                                    
+                                                    (moveAgain)
+                                                )
                                             )
                                         )
                                     )
                                 )
                             )
-                        )
-                        
-                        (to if:
-                            (is Friend 
-                                (who at:
-                                    (to)
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
                                 )
                             )
                         )
                     )
                 )
             )
+            }
         )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:9)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (if 
-                    (is Prev Mover)
-                    
-                    (move Remove 
-                        (sites Occupied by:Enemy container:"Board")
-                    )
-                    
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
                     (move 
                         (from 
                             (handSite Mover)
                         )
                         
                         (to 
-                            (sites Empty)
+                            (difference 
+                                (sites Empty)
+                                
+                                (centrePoint)
+                            )
                         )
                         
                         (then 
                             (if 
-                                (is Line 3 Orthogonal exact:True)
+                                (not 
+                                    (is Prev Mover)
+                                )
                                 
                                 (moveAgain)
                             )
                         )
                     )
                 )
-            )
-            
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
                         )
                     )
-                )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (if 
-                    (is Prev Mover)
-                    
-                    (move Remove 
-                        (sites Occupied by:Enemy container:"Board")
-                    )
-                    
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
                     (forEach Piece)
                 )
             )
-        )
-        }
-        
-        (end 
-            (if 
-                (<= 
-                    (count Pieces Next)
-                2)
-                
-                (result Next Loss)
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
             )
         )
-    )
-
- > "The Duqurjin (Ludii 8) ruleset.")
-
-(item "Duqurjin (Ludii 9)" <
- 
-    (players 2)
+        
+    > "The Duqurjin (Ludii 3) ruleset.")
     
-    (equipment { 
-        (board 
-            (concentric Square rings:3)
-        use:Vertex)
+    (item "Duqurjin (Ludii 4)" <
         
-        (hand Each)
+        (players 2)
         
-        (piece "Marker" Each 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
                     )
                 )
-                
-                (then 
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
                     (if 
-                        (is Line 3 Orthogonal exact:True)
+                        (is Prev Mover)
                         
-                        (moveAgain)
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:9)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (if 
-                    (is Prev Mover)
-                    
-                    (move Remove 
-                        (sites Occupied by:Enemy container:"Board")
-                    )
-                    
-                    (move 
-                        (from 
-                            (handSite Mover)
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
                         )
                         
-                        (to 
-                            (sites Empty)
-                        )
-                        
-                        (then 
-                            (if 
-                                (is Line 3 Orthogonal exact:True)
-                                
-                                (moveAgain)
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
                             )
                         )
                     )
                 )
-            )
-            
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
                         )
                     )
-                )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (if 
-                    (is Prev Mover)
-                    
-                    (move Remove 
-                        (sites Occupied by:Enemy container:"Board")
-                    )
-                    
-                    (forEach Piece)
-                )
+                "Movement" )
             )
-        )
-        }
-        
-        (end 
-            (if 
-                (<= 
-                    (count Pieces Next)
-                2)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Duqurjin (Ludii 9) ruleset.")
-
-(item "Duqurjin (Ludii 10)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (concentric Square rings:3 joinCorners:True)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-                
-                (then 
+            
+            (phase "Movement" 
+                (play 
                     (if 
-                        (is Line 3 Orthogonal exact:True)
+                        (is Prev Mover)
                         
-                        (moveAgain)
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
                     )
                 )
             )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:9)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
+            }
+            
+            (end 
                 (if 
-                    (is Prev Mover)
+                    (<= 
+                        (count Pieces Next)
+                    2)
                     
-                    (move Remove 
-                        (sites Occupied by:Enemy container:"Board")
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Duqurjin (Ludii 4) ruleset.")
+    
+    (item "Duqurjin (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
                     )
                     
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Duqurjin (Ludii 5) ruleset.")
+    
+    (item "Duqurjin (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
                     (move 
                         (from 
                             (handSite Mover)
                         )
                         
                         (to 
-                            (sites Empty)
+                            (difference 
+                                (sites Empty)
+                                
+                                (centrePoint)
+                            )
                         )
                         
                         (then 
                             (if 
-                                (is Line 3 Orthogonal exact:True)
+                                (not 
+                                    (is Prev Mover)
+                                )
                                 
                                 (moveAgain)
                             )
                         )
                     )
                 )
-            )
-            
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
                         )
                     )
-                )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (if 
-                    (is Prev Mover)
-                    
-                    (move Remove 
-                        (sites Occupied by:Enemy container:"Board")
-                    )
-                    
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
                     (forEach Piece)
                 )
             )
-        )
-        }
-        
-        (end 
-            (if 
-                (<= 
-                    (count Pieces Next)
-                2)
-                
-                (result Next Loss)
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
             )
         )
-    )
-
- > "The Duqurjin (Ludii 10) ruleset.")
-
-
+        
+    > "The Duqurjin (Ludii 6) ruleset.")
+    
+    (item "Duqurjin (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (difference 
+                                (sites Empty)
+                                
+                                (centrePoint)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (not 
+                                    (is Prev Mover)
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Duqurjin (Ludii 7) ruleset.")
+    
+    (item "Duqurjin (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (centrePoint)
+                                        
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (and 
+                                        (remove 
+                                            (between)
+                                        )
+                                        
+                                        (if 
+                                            (or { 
+                                                (can Move 
+                                                    (custodial 
+                                                        (from 
+                                                            (ahead 
+                                                                (last To)
+                                                            N )
+                                                        )
+                                                        Orthogonal 
+                                                        (between 
+                                                            (max 1)
+                                                            if:
+                                                            (and 
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (between )
+                                                                    )
+                                                                )
+                                                                
+                                                                (!= 
+                                                                    (centrePoint )
+                                                                    
+                                                                    (between )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (to if:
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (to )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (can Move 
+                                                    (custodial 
+                                                        (from 
+                                                            (ahead 
+                                                                (last To)
+                                                            E )
+                                                        )
+                                                        Orthogonal 
+                                                        (between 
+                                                            (max 1)
+                                                            if:
+                                                            (and 
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (between )
+                                                                    )
+                                                                )
+                                                                
+                                                                (!= 
+                                                                    (centrePoint )
+                                                                    
+                                                                    (between )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (to if:
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (to )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (can Move 
+                                                    (custodial 
+                                                        (from 
+                                                            (ahead 
+                                                                (last To)
+                                                            W )
+                                                        )
+                                                        Orthogonal 
+                                                        (between 
+                                                            (max 1)
+                                                            if:
+                                                            (and 
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (between )
+                                                                    )
+                                                                )
+                                                                
+                                                                (!= 
+                                                                    (centrePoint )
+                                                                    
+                                                                    (between )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (to if:
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (to )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (can Move 
+                                                    (custodial 
+                                                        (from 
+                                                            (ahead 
+                                                                (last To)
+                                                            S )
+                                                        )
+                                                        Orthogonal 
+                                                        (between 
+                                                            (max 1)
+                                                            if:
+                                                            (and 
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (between )
+                                                                    )
+                                                                )
+                                                                
+                                                                (!= 
+                                                                    (centrePoint )
+                                                                    
+                                                                    (between )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (to if:
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (to )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                }
+                                            )
+                                            
+                                            (moveAgain)
+                                            
+                                            (if 
+                                                (no Moves Next)
+                                                
+                                                (and 
+                                                    (set Pending)
+                                                    
+                                                    (moveAgain)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Duqurjin (Ludii 8) ruleset.")
+    
+    (item "Duqurjin (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Duqurjin (Ludii 9) ruleset.")
+    
+    (item "Duqurjin (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Duqurjin (Ludii 10) ruleset.")
+    
     (item "Incomplete"
         <
         (players 2)
@@ -1507,43 +1506,42 @@
         "The incomplete ruleset."
     )
     
-
- })
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets {
-
-(ruleset "Ruleset/Duqurjin (Ludii 1) (Reconstructed)" {
-     "Variant/Duqurjin (Ludii 1)"
-})
-(ruleset "Ruleset/Duqurjin (Ludii 2) (Reconstructed)" {
-     "Variant/Duqurjin (Ludii 2)"
-})
-(ruleset "Ruleset/Duqurjin (Ludii 3) (Reconstructed)" {
-     "Variant/Duqurjin (Ludii 3)"
-})
-(ruleset "Ruleset/Duqurjin (Ludii 4) (Reconstructed)" {
-     "Variant/Duqurjin (Ludii 4)"
-})
-(ruleset "Ruleset/Duqurjin (Ludii 5) (Reconstructed)" {
-     "Variant/Duqurjin (Ludii 5)"
-})
-(ruleset "Ruleset/Duqurjin (Ludii 6) (Reconstructed)" {
-     "Variant/Duqurjin (Ludii 6)"
-})
-(ruleset "Ruleset/Duqurjin (Ludii 7) (Reconstructed)" {
-     "Variant/Duqurjin (Ludii 7)"
-})
-(ruleset "Ruleset/Duqurjin (Ludii 8) (Reconstructed)" {
-     "Variant/Duqurjin (Ludii 8)"
-})
-(ruleset "Ruleset/Duqurjin (Ludii 9) (Reconstructed)" {
-     "Variant/Duqurjin (Ludii 9)"
-})
-(ruleset "Ruleset/Duqurjin (Ludii 10) (Reconstructed)" {
-     "Variant/Duqurjin (Ludii 10)"
-})
+    
+    (ruleset "Ruleset/Duqurjin (Ludii 1) (Reconstructed)" {
+        "Variant/Duqurjin (Ludii 1)"
+    })
+    (ruleset "Ruleset/Duqurjin (Ludii 2) (Reconstructed)" {
+        "Variant/Duqurjin (Ludii 2)"
+    })
+    (ruleset "Ruleset/Duqurjin (Ludii 3) (Reconstructed)" {
+        "Variant/Duqurjin (Ludii 3)"
+    })
+    (ruleset "Ruleset/Duqurjin (Ludii 4) (Reconstructed)" {
+        "Variant/Duqurjin (Ludii 4)"
+    })
+    (ruleset "Ruleset/Duqurjin (Ludii 5) (Reconstructed)" {
+        "Variant/Duqurjin (Ludii 5)"
+    })
+    (ruleset "Ruleset/Duqurjin (Ludii 6) (Reconstructed)" {
+        "Variant/Duqurjin (Ludii 6)"
+    })
+    (ruleset "Ruleset/Duqurjin (Ludii 7) (Reconstructed)" {
+        "Variant/Duqurjin (Ludii 7)"
+    })
+    (ruleset "Ruleset/Duqurjin (Ludii 8) (Reconstructed)" {
+        "Variant/Duqurjin (Ludii 8)"
+    })
+    (ruleset "Ruleset/Duqurjin (Ludii 9) (Reconstructed)" {
+        "Variant/Duqurjin (Ludii 9)"
+    })
+    (ruleset "Ruleset/Duqurjin (Ludii 10) (Reconstructed)" {
+        "Variant/Duqurjin (Ludii 10)"
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -1553,7 +1551,7 @@
 
 //------------------------------------------------------------------------------
 
- (metadata 
+(metadata 
     
     (info
         {
@@ -1565,5 +1563,4 @@
     })
     
 )
-
 
