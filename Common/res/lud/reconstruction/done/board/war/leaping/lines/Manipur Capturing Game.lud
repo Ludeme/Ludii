@@ -5,1022 +5,1021 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-{
-(item "Manipur Capturing Game (Ludii 1)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (add 
-                (square 5)
-                edges:{ { 0 6}
-                { 6 12}
-                { 12 18}
-                { 18 24}
-                { 20 16}
-                { 16 12}
-                { 8 4}
-                { 12 8}
-                }
-            )
-        use:Vertex)
+    {
+    (item "Manipur Capturing Game (Ludii 1)" <
         
-        (hand Each)
+        (players 2)
         
-        (piece "Marker" Each 
-            (or 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
+        (equipment { 
+            (board 
+                (add 
+                    (square 5)
+                    edges:{ { 0 6}
+                    { 6 12}
+                    { 12 18}
+                    { 18 24}
+                    { 20 16}
+                    { 16 12}
+                    { 8 4}
+                    { 12 8}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
                         )
                     )
-                )
-                
-                (move Hop Orthogonal 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
+                    
+                    (move Hop Orthogonal 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
                             )
                         )
                         
-                        (apply 
-                            (remove 
-                                (between)
+                        (to if:
+                            (is Empty 
+                                (to)
                             )
                         )
-                    )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (expand 
-                    (sites Bottom)
-                )
-            )
-            
-            (place "Marker2" 
-                (expand 
-                    (sites Top)
-                )
-            )
-            }
-        )
-        
-        (play 
-            (forEach Piece)
-        )
-        
-        (end 
-            (if 
-                (no Pieces Next)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Manipur Capturing Game (Ludii 1) ruleset.")
-
-(item "Manipur Capturing Game (Ludii 2)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (add 
-                (square 5)
-                edges:{ { 0 6}
-                { 6 12}
-                { 12 18}
-                { 18 24}
-                { 20 16}
-                { 16 12}
-                { 8 4}
-                { 12 8}
-                }
-            )
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (or 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-                
-                (move Hop Orthogonal 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
-                            )
-                        )
-                        
-                        (apply 
-                            (remove 
-                                (between)
-                            )
-                        )
-                    )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (union 
-                    (sites Bottom)
-                    
-                    (sites { "B2" "C2" "D2"}
-                    )
-                )
-            )
-            
-            (place "Marker2" 
-                (union 
-                    (sites Top)
-                    
-                    (sites { "B4" "C4" "D4"}
                     )
                 )
             )
             }
         )
         
-        (play 
-            (forEach Piece)
-        )
-        
-        (end 
-            (if 
-                (no Pieces Next)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Manipur Capturing Game (Ludii 2) ruleset.")
-
-(item "Manipur Capturing Game (Ludii 3)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (add 
-                (square 5)
-                edges:{ { 0 6}
-                { 6 12}
-                { 12 18}
-                { 18 24}
-                { 20 16}
-                { 16 12}
-                { 8 4}
-                { 12 8}
-                }
-            )
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Counter" Each 
-            (or 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-                
-                (move Hop Orthogonal 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
-                            )
-                        )
-                        
-                        (apply 
-                            (remove 
-                                (between)
-                            )
-                        )
-                    )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Counter1" 
-                (difference 
-                    (expand 
-                        (sites Bottom)
-                        steps:
-                        (- 4 1)
-                    )
-                    
-                    (sites Phase 1)
-                )
-            )
-            
-            (place "Counter2" 
-                (difference 
-                    (expand 
-                        (sites Top)
-                        steps:
-                        (- 4 1)
-                    )
-                    
-                    (sites Phase 1)
-                )
-            )
-            }
-        )
-        
-        (play 
-            (forEach Piece)
-        )
-        
-        (end 
-            (if 
-                (no Pieces Next)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Manipur Capturing Game (Ludii 3) ruleset.")
-
-(item "Manipur Capturing Game (Ludii 4)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (add 
-                (square 5)
-                edges:{ { 0 6}
-                { 6 12}
-                { 12 18}
-                { 18 24}
-                { 20 16}
-                { 16 12}
-                { 8 4}
-                { 12 8}
-                }
-            )
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (or 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-                
-                (move Hop Orthogonal 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
-                            )
-                        )
-                        
-                        (apply 
-                            (remove 
-                                (between)
-                            )
-                        )
-                    )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (union { 
+        (rules 
+            (start { 
+                (place "Marker1" 
                     (expand 
                         (sites Bottom)
                     )
-                    
-                    (sites { "D3" "E3"}
-                    )
-                    }
                 )
-            )
-            
-            (place "Marker2" 
-                (union { 
-                    (sites { "A3" "B3"}
-                    )
-                    
+                
+                (place "Marker2" 
                     (expand 
                         (sites Top)
                     )
-                    }
                 )
-            )
-            }
-        )
-        
-        (play 
-            (forEach Piece)
-        )
-        
-        (end 
-            (if 
-                (no Pieces Next)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Manipur Capturing Game (Ludii 4) ruleset.")
-
-(item "Manipur Capturing Game (Ludii 5)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (add 
-                (square 5)
-                edges:{ { 0 6}
-                { 6 12}
-                { 12 18}
-                { 18 24}
-                { 20 16}
-                { 16 12}
-                { 8 4}
-                { 12 8}
                 }
-            )
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (or 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-                
-                (move Hop Orthogonal 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
-                            )
-                        )
-                        
-                        (apply 
-                            (remove 
-                                (between)
-                            )
-                        )
-                    )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (forEach 
-                    (sites Board)
-                    if:
-                    (< 
-                        (site)
-                        
-                        (centrePoint)
-                    )
-                )
             )
             
-            (place "Marker2" 
-                (forEach 
-                    (sites Board)
-                    if:
-                    (> 
-                        (site)
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Manipur Capturing Game (Ludii 1) ruleset.")
+    
+    (item "Manipur Capturing Game (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 5)
+                    edges:{ { 0 6}
+                    { 6 12}
+                    { 12 18}
+                    { 18 24}
+                    { 20 16}
+                    { 16 12}
+                    { 8 4}
+                    { 12 8}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop Orthogonal 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
                         
-                        (centrePoint)
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
                     )
                 )
             )
             }
         )
         
-        (play 
-            (forEach Piece)
-        )
-        
-        (end 
-            (if 
-                (no Pieces Next)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Manipur Capturing Game (Ludii 5) ruleset.")
-
-(item "Manipur Capturing Game (Ludii 6)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (add 
-                (square 5)
-                edges:{ { 0 6}
-                { 6 12}
-                { 12 18}
-                { 18 24}
-                { 20 16}
-                { 16 12}
-                { 8 4}
-                { 12 8}
-                }
-            )
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Counter" Each 
-            (or 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-                
-                (move Hop Orthogonal 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
-                            )
-                        )
-                        
-                        (apply 
-                            (remove 
-                                (between)
-                            )
-                        )
-                    )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Counter1" 
-                (union { 
-                    (expand 
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union 
                         (sites Bottom)
+                        
+                        (sites { "B2" "C2" "D2"}
+                        )
                     )
-                    
-                    (sites { "D3" "E3"}
-                    )
-                    }
                 )
-            )
-            
-            (place "Counter2" 
-                (union { 
-                    (sites { "A3" "B3"}
-                    )
-                    
-                    (expand 
+                
+                (place "Marker2" 
+                    (union 
                         (sites Top)
-                    )
-                    }
-                )
-            )
-            }
-        )
-        
-        (play 
-            (forEach Piece)
-        )
-        
-        (end 
-            (if 
-                (no Pieces Next)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Manipur Capturing Game (Ludii 6) ruleset.")
-
-(item "Manipur Capturing Game (Ludii 7)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (add 
-                (square 5)
-                edges:{ { 0 6}
-                { 6 12}
-                { 12 18}
-                { 18 24}
-                { 20 16}
-                { 16 12}
-                { 8 4}
-                { 12 8}
-                }
-            )
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Counter" Each 
-            (or 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
+                        
+                        (sites { "B4" "C4" "D4"}
                         )
                     )
                 )
-                
-                (move Hop Orthogonal 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Manipur Capturing Game (Ludii 2) ruleset.")
+    
+    (item "Manipur Capturing Game (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 5)
+                    edges:{ { 0 6}
+                    { 6 12}
+                    { 12 18}
+                    { 18 24}
+                    { 20 16}
+                    { 16 12}
+                    { 8 4}
+                    { 12 8}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Counter" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop Orthogonal 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
                             )
                         )
                         
-                        (apply 
-                            (remove 
-                                (between)
+                        (to if:
+                            (is Empty 
+                                (to)
                             )
                         )
                     )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Counter1" 
-                (difference 
-                    (expand 
-                        (sites Bottom)
-                        steps:
-                        (- 3 1)
-                    )
-                    
-                    (sites Phase 1)
-                )
-            )
-            
-            (place "Counter2" 
-                (difference 
-                    (expand 
-                        (sites Top)
-                        steps:
-                        (- 3 1)
-                    )
-                    
-                    (sites Phase 1)
                 )
             )
             }
         )
         
-        (play 
-            (forEach Piece)
-        )
-        
-        (end 
-            (if 
-                (no Pieces Next)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Manipur Capturing Game (Ludii 7) ruleset.")
-
-(item "Manipur Capturing Game (Ludii 8)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (add 
-                (square 5)
-                edges:{ { 0 6}
-                { 6 12}
-                { 12 18}
-                { 18 24}
-                { 20 16}
-                { 16 12}
-                { 8 4}
-                { 12 8}
-                }
-            )
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (or 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                            steps:
+                            (- 4 1)
                         )
+                        
+                        (sites Phase 1)
                     )
                 )
                 
-                (move Hop Orthogonal 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
+                (place "Counter2" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                            steps:
+                            (- 4 1)
+                        )
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Manipur Capturing Game (Ludii 3) ruleset.")
+    
+    (item "Manipur Capturing Game (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 5)
+                    edges:{ { 0 6}
+                    { 6 12}
+                    { 12 18}
+                    { 18 24}
+                    { 20 16}
+                    { 16 12}
+                    { 8 4}
+                    { 12 8}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop Orthogonal 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
                             )
                         )
                         
-                        (apply 
-                            (remove 
-                                (between)
+                        (to if:
+                            (is Empty 
+                                (to)
                             )
                         )
                     )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (union { 
-                    (sites Row 0)
-                    
-                    (sites Row 1)
-                    
-                    (sites Row 2)
-                    
-                    (sites Row 3)
-                    
-                    (sites { 13 14}
-                    )
-                    }
-                )
-            )
-            
-            (place "Marker2" 
-                (union { 
-                    (sites Row 5)
-                    
-                    (sites Row 6)
-                    
-                    (sites Row 7)
-                    
-                    (sites Row 8)
-                    
-                    (sites { 10 11}
-                    )
-                    }
                 )
             )
             }
         )
         
-        (play 
-            (forEach Piece)
-        )
-        
-        (end 
-            (if 
-                (no Pieces Next)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Manipur Capturing Game (Ludii 8) ruleset.")
-
-(item "Manipur Capturing Game (Ludii 9)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (add 
-                (square 5)
-                edges:{ { 0 6}
-                { 6 12}
-                { 12 18}
-                { 18 24}
-                { 20 16}
-                { 16 12}
-                { 8 4}
-                { 12 8}
-                }
-            )
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (or 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
                         )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
                     )
                 )
                 
-                (move Hop Orthogonal 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
+                (place "Marker2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Manipur Capturing Game (Ludii 4) ruleset.")
+    
+    (item "Manipur Capturing Game (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 5)
+                    edges:{ { 0 6}
+                    { 6 12}
+                    { 12 18}
+                    { 18 24}
+                    { 20 16}
+                    { 16 12}
+                    { 8 4}
+                    { 12 8}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop Orthogonal 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
                             )
                         )
                         
-                        (apply 
-                            (remove 
-                                (between)
+                        (to if:
+                            (is Empty 
+                                (to)
                             )
                         )
                     )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (union { 
-                    (sites Row 0)
-                    
-                    (sites Row 1)
-                    
-                    (sites Row 2)
-                    
-                    (sites Row 3)
-                    
-                    (expand 
-                        (sites { "E5"}
-                        )
-                    W)
-                    }
-                )
-            )
-            
-            (place "Marker2" 
-                (union { 
-                    (sites Row 5)
-                    
-                    (sites Row 6)
-                    
-                    (sites Row 7)
-                    
-                    (sites Row 8)
-                    
-                    (expand 
-                        (sites { "A5"}
-                        )
-                    E)
-                    }
                 )
             )
             }
         )
         
-        (play 
-            (forEach Piece)
-        )
-        
-        (end 
-            (if 
-                (no Pieces Next)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Manipur Capturing Game (Ludii 9) ruleset.")
-
-(item "Manipur Capturing Game (Ludii 10)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (add 
-                (square 5)
-                edges:{ { 0 6}
-                { 6 12}
-                { 12 18}
-                { 18 24}
-                { 20 16}
-                { 16 12}
-                { 8 4}
-                { 12 8}
-                }
-            )
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (or 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (forEach 
+                        (sites Board)
+                        if:
+                        (< 
+                            (site)
+                            
+                            (centrePoint)
                         )
                     )
                 )
                 
-                (move Hop Orthogonal 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
+                (place "Marker2" 
+                    (forEach 
+                        (sites Board)
+                        if:
+                        (> 
+                            (site)
+                            
+                            (centrePoint)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Manipur Capturing Game (Ludii 5) ruleset.")
+    
+    (item "Manipur Capturing Game (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 5)
+                    edges:{ { 0 6}
+                    { 6 12}
+                    { 12 18}
+                    { 18 24}
+                    { 20 16}
+                    { 16 12}
+                    { 8 4}
+                    { 12 8}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Counter" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop Orthogonal 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
                             )
                         )
                         
-                        (apply 
-                            (remove 
-                                (between)
+                        (to if:
+                            (is Empty 
+                                (to)
                             )
                         )
                     )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (union { 
-                    (sites Row 0)
-                    
-                    (sites Row 1)
-                    
-                    (sites Row 2)
-                    
-                    (sites Row 3)
-                    }
-                )
-            )
-            
-            (place "Marker2" 
-                (union { 
-                    (sites Row 5)
-                    
-                    (sites Row 6)
-                    
-                    (sites Row 7)
-                    
-                    (sites Row 8)
-                    }
                 )
             )
             }
         )
         
-        (play 
-            (forEach Piece)
-        )
-        
-        (end 
-            (if 
-                (no Pieces Next)
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
                 
-                (result Next Loss)
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
             )
         )
-    )
-
- > "The Manipur Capturing Game (Ludii 10) ruleset.")
-
-
+        
+    > "The Manipur Capturing Game (Ludii 6) ruleset.")
+    
+    (item "Manipur Capturing Game (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 5)
+                    edges:{ { 0 6}
+                    { 6 12}
+                    { 12 18}
+                    { 18 24}
+                    { 20 16}
+                    { 16 12}
+                    { 8 4}
+                    { 12 8}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Counter" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop Orthogonal 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                            steps:
+                            (- 3 1)
+                        )
+                        
+                        (sites Phase 1)
+                    )
+                )
+                
+                (place "Counter2" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                            steps:
+                            (- 3 1)
+                        )
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Manipur Capturing Game (Ludii 7) ruleset.")
+    
+    (item "Manipur Capturing Game (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 5)
+                    edges:{ { 0 6}
+                    { 6 12}
+                    { 12 18}
+                    { 18 24}
+                    { 20 16}
+                    { 16 12}
+                    { 8 4}
+                    { 12 8}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop Orthogonal 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union { 
+                        (sites Row 0)
+                        
+                        (sites Row 1)
+                        
+                        (sites Row 2)
+                        
+                        (sites Row 3)
+                        
+                        (sites { 13 14}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union { 
+                        (sites Row 5)
+                        
+                        (sites Row 6)
+                        
+                        (sites Row 7)
+                        
+                        (sites Row 8)
+                        
+                        (sites { 10 11}
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Manipur Capturing Game (Ludii 8) ruleset.")
+    
+    (item "Manipur Capturing Game (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 5)
+                    edges:{ { 0 6}
+                    { 6 12}
+                    { 12 18}
+                    { 18 24}
+                    { 20 16}
+                    { 16 12}
+                    { 8 4}
+                    { 12 8}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop Orthogonal 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union { 
+                        (sites Row 0)
+                        
+                        (sites Row 1)
+                        
+                        (sites Row 2)
+                        
+                        (sites Row 3)
+                        
+                        (expand 
+                            (sites { "E5"}
+                            )
+                        W)
+                        }
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union { 
+                        (sites Row 5)
+                        
+                        (sites Row 6)
+                        
+                        (sites Row 7)
+                        
+                        (sites Row 8)
+                        
+                        (expand 
+                            (sites { "A5"}
+                            )
+                        E)
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Manipur Capturing Game (Ludii 9) ruleset.")
+    
+    (item "Manipur Capturing Game (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 5)
+                    edges:{ { 0 6}
+                    { 6 12}
+                    { 12 18}
+                    { 18 24}
+                    { 20 16}
+                    { 16 12}
+                    { 8 4}
+                    { 12 8}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop Orthogonal 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union { 
+                        (sites Row 0)
+                        
+                        (sites Row 1)
+                        
+                        (sites Row 2)
+                        
+                        (sites Row 3)
+                        }
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union { 
+                        (sites Row 5)
+                        
+                        (sites Row 6)
+                        
+                        (sites Row 7)
+                        
+                        (sites Row 8)
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Manipur Capturing Game (Ludii 10) ruleset.")
+    
     (item "Incomplete"
         <
         (players 2)
@@ -1050,44 +1049,42 @@
         "The incomplete ruleset."
     )
     
-
- })
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets {
-
-(ruleset "Ruleset/Manipur Capturing Game (Ludii 1) (Reconstructed)" {
-     "Variant/Manipur Capturing Game (Ludii 1)"
-})
-(ruleset "Ruleset/Manipur Capturing Game (Ludii 2) (Reconstructed)" {
-     "Variant/Manipur Capturing Game (Ludii 2)"
-})
-(ruleset "Ruleset/Manipur Capturing Game (Ludii 3) (Reconstructed)" {
-     "Variant/Manipur Capturing Game (Ludii 3)"
-})
-(ruleset "Ruleset/Manipur Capturing Game (Ludii 4) (Reconstructed)" {
-     "Variant/Manipur Capturing Game (Ludii 4)"
-})
-(ruleset "Ruleset/Manipur Capturing Game (Ludii 5) (Reconstructed)" {
-     "Variant/Manipur Capturing Game (Ludii 5)"
-})
-(ruleset "Ruleset/Manipur Capturing Game (Ludii 6) (Reconstructed)" {
-     "Variant/Manipur Capturing Game (Ludii 6)"
-})
-(ruleset "Ruleset/Manipur Capturing Game (Ludii 7) (Reconstructed)" {
-     "Variant/Manipur Capturing Game (Ludii 7)"
-})
-(ruleset "Ruleset/Manipur Capturing Game (Ludii 8) (Reconstructed)" {
-     "Variant/Manipur Capturing Game (Ludii 8)"
-})
-(ruleset "Ruleset/Manipur Capturing Game (Ludii 9) (Reconstructed)" {
-     "Variant/Manipur Capturing Game (Ludii 9)"
-})
-(ruleset "Ruleset/Manipur Capturing Game (Ludii 10) (Reconstructed)" {
-     "Variant/Manipur Capturing Game (Ludii 10)"
-})
     
+    (ruleset "Ruleset/Manipur Capturing Game (Ludii 1) (Reconstructed)" {
+        "Variant/Manipur Capturing Game (Ludii 1)"
+    })
+    (ruleset "Ruleset/Manipur Capturing Game (Ludii 2) (Reconstructed)" {
+        "Variant/Manipur Capturing Game (Ludii 2)"
+    })
+    (ruleset "Ruleset/Manipur Capturing Game (Ludii 3) (Reconstructed)" {
+        "Variant/Manipur Capturing Game (Ludii 3)"
+    })
+    (ruleset "Ruleset/Manipur Capturing Game (Ludii 4) (Reconstructed)" {
+        "Variant/Manipur Capturing Game (Ludii 4)"
+    })
+    (ruleset "Ruleset/Manipur Capturing Game (Ludii 5) (Reconstructed)" {
+        "Variant/Manipur Capturing Game (Ludii 5)"
+    })
+    (ruleset "Ruleset/Manipur Capturing Game (Ludii 6) (Reconstructed)" {
+        "Variant/Manipur Capturing Game (Ludii 6)"
+    })
+    (ruleset "Ruleset/Manipur Capturing Game (Ludii 7) (Reconstructed)" {
+        "Variant/Manipur Capturing Game (Ludii 7)"
+    })
+    (ruleset "Ruleset/Manipur Capturing Game (Ludii 8) (Reconstructed)" {
+        "Variant/Manipur Capturing Game (Ludii 8)"
+    })
+    (ruleset "Ruleset/Manipur Capturing Game (Ludii 9) (Reconstructed)" {
+        "Variant/Manipur Capturing Game (Ludii 9)"
+    })
+    (ruleset "Ruleset/Manipur Capturing Game (Ludii 10) (Reconstructed)" {
+        "Variant/Manipur Capturing Game (Ludii 10)"
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -1097,7 +1094,7 @@
 
 //------------------------------------------------------------------------------
 
- (metadata 
+(metadata 
     
     (info
         {
@@ -1113,5 +1110,4 @@
         (concept "NumStartComponentsPerPlayer" minValue:5 maxValue:12)
     })
 )
-
 

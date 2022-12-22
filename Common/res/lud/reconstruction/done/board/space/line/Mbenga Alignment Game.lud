@@ -5,137 +5,136 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-{
-(item "Mbenga Alignment Game (Ludii 1)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (rectangle 3 3 diagonals:Alternating)
-        use:Vertex)
+    {
+    (item "Mbenga Alignment Game (Ludii 1)" <
         
-        (hand Each)
+        (players 2)
         
-        (piece "Marker" Each)
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each)
+            }
         )
         
-        (play 
-            (move 
-                (from 
-                    (handSite Mover)
-                )
-                
-                (to 
-                    (sites Empty)
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            
+            (play 
+                (move 
+                    (from 
+                        (handSite Mover)
+                    )
+                    
+                    (to 
+                        (sites Empty)
+                    )
                 )
             )
-        )
-        
-        (end 
-            (if 
-                (is Line 3)
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Mbenga Alignment Game (Ludii 1) ruleset.")
-
-(item "Mbenga Alignment Game (Ludii 2)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (rectangle 3 3 diagonals:Alternating)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each)
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:5)
-        )
-        
-        (play 
-            (move 
-                (from 
-                    (handSite Mover)
-                )
-                
-                (to 
-                    (sites Empty)
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
                 )
             )
         )
         
-        (end 
-            (if 
-                (is Line 3)
-                
-                (result Mover Win)
+    > "The Mbenga Alignment Game (Ludii 1) ruleset.")
+    
+    (item "Mbenga Alignment Game (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:5)
             )
-        )
-    )
-
- > "The Mbenga Alignment Game (Ludii 2) ruleset.")
-
-(item "Mbenga Alignment Game (Ludii 3)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (rectangle 3 3 diagonals:Alternating)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each)
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:4)
-        )
-        
-        (play 
-            (move 
-                (from 
-                    (handSite Mover)
-                )
-                
-                (to 
-                    (sites Empty)
+            
+            (play 
+                (move 
+                    (from 
+                        (handSite Mover)
+                    )
+                    
+                    (to 
+                        (sites Empty)
+                    )
                 )
             )
-        )
-        
-        (end 
-            (if 
-                (is Line 3)
-                
-                (result Mover Win)
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
             )
         )
-    )
-
- > "The Mbenga Alignment Game (Ludii 3) ruleset.")
-
-
+        
+    > "The Mbenga Alignment Game (Ludii 2) ruleset.")
+    
+    (item "Mbenga Alignment Game (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:4)
+            )
+            
+            (play 
+                (move 
+                    (from 
+                        (handSite Mover)
+                    )
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Mbenga Alignment Game (Ludii 3) ruleset.")
+    
     (item "Incomplete"
         <
         (players 2) 
@@ -157,22 +156,21 @@
         "The incomplete ruleset."
     )
     
-
- })
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets {
-
-(ruleset "Ruleset/Mbenga Alignment Game (Ludii 1) (Reconstructed)" {
-     "Variant/Mbenga Alignment Game (Ludii 1)"
-})
-(ruleset "Ruleset/Mbenga Alignment Game (Ludii 2) (Reconstructed)" {
-     "Variant/Mbenga Alignment Game (Ludii 2)"
-})
-(ruleset "Ruleset/Mbenga Alignment Game (Ludii 3) (Reconstructed)" {
-     "Variant/Mbenga Alignment Game (Ludii 3)"
-})
+    
+    (ruleset "Ruleset/Mbenga Alignment Game (Ludii 1) (Reconstructed)" {
+        "Variant/Mbenga Alignment Game (Ludii 1)"
+    })
+    (ruleset "Ruleset/Mbenga Alignment Game (Ludii 2) (Reconstructed)" {
+        "Variant/Mbenga Alignment Game (Ludii 2)"
+    })
+    (ruleset "Ruleset/Mbenga Alignment Game (Ludii 3) (Reconstructed)" {
+        "Variant/Mbenga Alignment Game (Ludii 3)"
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -182,12 +180,11 @@
 
 //------------------------------------------------------------------------------
 
- (metadata 
+(metadata 
     (info
         {
         (id "1374")
         }
     )
 )
-
 
