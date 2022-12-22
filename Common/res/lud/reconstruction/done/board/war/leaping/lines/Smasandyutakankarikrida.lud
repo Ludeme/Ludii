@@ -5,1118 +5,1117 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-{
-(item "Smasandyutakankarikrida (Ludii 1)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (shift -2 -4 
-                    (wedge 5)
-                )
-                
-                (rectangle 5 5 diagonals:Alternating)
-                
-                (shift -2 4 
-                    (rotate 180 
+    {
+    (item "Smasandyutakankarikrida (Ludii 1)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (shift -2 -4 
                         (wedge 5)
                     )
-                )
-                }
-            )
-        use:Vertex)
-        
-        (piece "Marker" Each 
-            (or 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-                
-                (move Hop 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
-                            )
-                        )
-                        
-                        (apply 
-                            (remove 
-                                (between)
-                            )
-                        )
-                    )
                     
-                    (to if:
-                        (is Empty 
-                            (to)
+                    (rectangle 5 5 diagonals:Alternating)
+                    
+                    (shift -2 4 
+                        (rotate 180 
+                            (wedge 5)
                         )
                     )
+                    }
                 )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (union 
-                    (expand 
-                        (sites Bottom)
-                    steps:1)
-                    
-                    (expand origin:
-                        (coord "I3")
-                    steps:5 W)
-                )
-            )
+            use:Vertex)
             
-            (place "Marker2" 
-                (union 
-                    (expand 
-                        (sites Top)
-                    steps:1)
-                    
-                    (expand origin:
-                        (coord "A7")
-                    steps:5 E)
-                )
-            )
-            }
-        )
-        
-        (play 
-            (forEach Piece)
-        )
-        
-        (end 
-            (if 
-                (no Pieces Next)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Smasandyutakankarikrida (Ludii 1) ruleset.")
-
-(item "Smasandyutakankarikrida (Ludii 2)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (shift -2 -4 
-                    (wedge 5)
-                )
-                
-                (rectangle 5 5 diagonals:Alternating)
-                
-                (shift -2 4 
-                    (rotate 180 
-                        (wedge 5)
-                    )
-                )
-                }
-            )
-        use:Vertex)
-        
-        (piece "Marker" Each 
-            (or 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-                
-                (move Hop 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
-                            )
-                        )
-                        
-                        (apply 
-                            (remove 
-                                (between)
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
                             )
                         )
                     )
                     
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (union 
-                    (expand 
-                        (sites Bottom)
-                    steps:1)
-                    
-                    (expand origin:
-                        (coord "I3")
-                    steps:5 W)
-                )
-            )
-            
-            (place "Marker2" 
-                (union 
-                    (expand 
-                        (sites Top)
-                    steps:1)
-                    
-                    (expand origin:
-                        (coord "A7")
-                    steps:5 E)
-                )
-            )
-            }
-        )
-        
-        (play 
-            (forEach Piece)
-        )
-        
-        (end { 
-            (if 
-                (no Moves Next)
-                
-                (result Next Loss)
-            )
-            
-            (if 
-                (<= 
-                    (count Pieces P1)
-                15)
-                
-                (result P1 Loss)
-            )
-            }
-        )
-    )
-
- > "The Smasandyutakankarikrida (Ludii 2) ruleset.")
-
-(item "Smasandyutakankarikrida (Ludii 3)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (shift -2 -4 
-                    (wedge 5)
-                )
-                
-                (rectangle 5 5 diagonals:Alternating)
-                
-                (shift -2 4 
-                    (rotate 180 
-                        (wedge 5)
-                    )
-                )
-                }
-            )
-        use:Vertex)
-        
-        (piece "Marker" Each 
-            (or 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-                
-                (move Hop 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
-                            )
-                        )
-                        
-                        (apply 
-                            (remove 
-                                (between)
-                            )
-                        )
-                    )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (union 
-                    (expand 
-                        (sites Bottom)
-                    steps:1)
-                    
-                    (expand origin:
-                        (coord "I3")
-                    steps:5 W)
-                )
-            )
-            
-            (place "Marker2" 
-                (union 
-                    (expand 
-                        (sites Top)
-                    steps:1)
-                    
-                    (expand origin:
-                        (coord "A7")
-                    steps:5 E)
-                )
-            )
-            }
-        )
-        
-        (play 
-            (forEach Piece)
-        )
-        
-        (end { 
-            (if 
-                (no Moves Next)
-                
-                (result Next Loss)
-            )
-            
-            (if 
-                (<= 
-                    (count Pieces P1)
-                0)
-                
-                (result P1 Loss)
-            )
-            }
-        )
-    )
-
- > "The Smasandyutakankarikrida (Ludii 3) ruleset.")
-
-(item "Smasandyutakankarikrida (Ludii 4)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (shift -2 -4 
-                    (wedge 5)
-                )
-                
-                (rectangle 5 5 diagonals:Alternating)
-                
-                (shift -2 4 
-                    (rotate 180 
-                        (wedge 5)
-                    )
-                )
-                }
-            )
-        use:Vertex)
-        
-        (piece "Marker" Each 
-            (or 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-                
-                (move Hop 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
-                            )
-                        )
-                        
-                        (apply 
-                            (remove 
-                                (between)
-                            )
-                        )
-                    )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (sites Bottom)
-            state:1)
-            
-            (place "Marker2" 
-                (sites Top)
-            state:1)
-            }
-        )
-        
-        (play 
-            (forEach Piece)
-        )
-        
-        (end 
-            (if 
-                (<= 
-                    (count Pieces Next)
-                3)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Smasandyutakankarikrida (Ludii 4) ruleset.")
-
-(item "Smasandyutakankarikrida (Ludii 5)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (shift -2 -4 
-                    (wedge 5)
-                )
-                
-                (rectangle 5 5 diagonals:Alternating)
-                
-                (shift -2 4 
-                    (rotate 180 
-                        (wedge 5)
-                    )
-                )
-                }
-            )
-        use:Vertex)
-        
-        (piece "Marker" Each 
-            (or { 
-                (move Hop Orthogonal 
-                    (between if:
-                        (and 
+                    (move Hop 
+                        (between if:
                             (is Enemy 
                                 (who at:
                                     (between)
                                 )
                             )
                             
-                            (not 
-                                (is In 
+                            (apply 
+                                (remove 
                                     (between)
-                                    
-                                    (union 
-                                        (sites Bottom)
-                                        
-                                        (sites Top)
-                                    )
                                 )
                             )
                         )
                         
-                        (apply 
-                            (remove 
-                                (between)
-                            )
-                        )
-                    )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-                
-                (move Step Orthogonal 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-                
-                (if 
-                    (= 1 
-                        (state at:
-                            (from)
-                        )
-                    )
-                    
-                    (move Slide Orthogonal 
-                        (between 
-                            (exact 2)
-                            if:
+                        (to if:
                             (is Empty 
-                                (between)
+                                (to)
                             )
                         )
-                        
-                        (then 
-                            (set State at:
-                                (last To)
-                            0)
-                        )
                     )
-                )
-                }
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (union 
-                    (expand 
-                        (sites Bottom)
-                    steps:1)
-                    
-                    (expand origin:
-                        (coord "I3")
-                    steps:5 W)
-                )
-            )
-            
-            (place "Marker2" 
-                (union 
-                    (expand 
-                        (sites Top)
-                    steps:1)
-                    
-                    (expand origin:
-                        (coord "A7")
-                    steps:5 E)
                 )
             )
             }
         )
         
-        (play 
-            (forEach Piece)
-        )
-        
-        (end 
-            (if 
-                (no Pieces Next)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Smasandyutakankarikrida (Ludii 5) ruleset.")
-
-(item "Smasandyutakankarikrida (Ludii 6)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (shift -2 -4 
-                    (wedge 5)
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union 
+                        (expand 
+                            (sites Bottom)
+                        steps:1)
+                        
+                        (expand origin:
+                            (coord "I3")
+                        steps:5 W)
+                    )
                 )
                 
-                (rectangle 5 5 diagonals:Alternating)
-                
-                (shift -2 4 
-                    (rotate 180 
+                (place "Marker2" 
+                    (union 
+                        (expand 
+                            (sites Top)
+                        steps:1)
+                        
+                        (expand origin:
+                            (coord "A7")
+                        steps:5 E)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Smasandyutakankarikrida (Ludii 1) ruleset.")
+    
+    (item "Smasandyutakankarikrida (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (shift -2 -4 
                         (wedge 5)
                     )
-                )
-                }
-            )
-        use:Vertex)
-        
-        (piece "Marker" Each 
-            (or 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
+                    
+                    (rectangle 5 5 diagonals:Alternating)
+                    
+                    (shift -2 4 
+                        (rotate 180 
+                            (wedge 5)
                         )
                     )
+                    }
                 )
-                
-                (move Hop 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
-                            )
-                        )
-                        
-                        (apply 
-                            (remove 
-                                (between)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
                             )
                         )
                     )
                     
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (sites Bottom)
-            state:1)
-            
-            (place "Marker2" 
-                (sites Top)
-            state:1)
-            }
-        )
-        
-        (play 
-            (forEach Piece)
-        )
-        
-        (end { 
-            (if 
-                (no Moves Next)
-                
-                (result Next Loss)
-            )
-            
-            (if 
-                (<= 
-                    (count Pieces P1)
-                15)
-                
-                (result P1 Loss)
-            )
-            }
-        )
-    )
-
- > "The Smasandyutakankarikrida (Ludii 6) ruleset.")
-
-(item "Smasandyutakankarikrida (Ludii 7)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (shift -2 -4 
-                    (wedge 5)
-                )
-                
-                (rectangle 5 5 diagonals:Alternating)
-                
-                (shift -2 4 
-                    (rotate 180 
-                        (wedge 5)
-                    )
-                )
-                }
-            )
-        use:Vertex)
-        
-        (piece "Marker" Each 
-            (or 
-                (move Hop 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
-                            )
-                        )
-                        
-                        (apply 
-                            (remove 
-                                (between)
-                            )
-                        )
-                    )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-                
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (union 
-                    (expand 
-                        (sites Bottom)
-                    steps:1)
-                    
-                    (expand origin:
-                        (coord "I3")
-                    steps:5 W)
-                )
-            )
-            
-            (place "Marker2" 
-                (union 
-                    (expand 
-                        (sites Top)
-                    steps:1)
-                    
-                    (expand origin:
-                        (coord "A7")
-                    steps:5 E)
-                )
-            )
-            }
-        )
-        
-        (play 
-            (forEach Piece)
-        )
-        
-        (end { 
-            (if 
-                (no Moves Next)
-                
-                (result Next Loss)
-            )
-            
-            (if 
-                (<= 
-                    (count Pieces P1)
-                15)
-                
-                (result P1 Loss)
-            )
-            }
-        )
-    )
-
- > "The Smasandyutakankarikrida (Ludii 7) ruleset.")
-
-(item "Smasandyutakankarikrida (Ludii 8)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (shift -2 -4 
-                    (wedge 5)
-                )
-                
-                (rectangle 5 5 diagonals:Alternating)
-                
-                (shift -2 4 
-                    (rotate 180 
-                        (wedge 5)
-                    )
-                )
-                }
-            )
-        use:Vertex)
-        
-        (piece "Marker" Each 
-            (or 
-                (move Hop 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
-                            )
-                        )
-                        
-                        (apply 
-                            (remove 
-                                (between)
-                            )
-                        )
-                    )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-                
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (forEach 
-                    (sites Board)
-                    if:
-                    (< 
-                        (site)
-                        
-                        (centrePoint)
-                    )
-                )
-            )
-            
-            (place "Marker2" 
-                (forEach 
-                    (sites Board)
-                    if:
-                    (> 
-                        (site)
-                        
-                        (centrePoint)
-                    )
-                )
-            )
-            }
-        )
-        
-        (play 
-            (forEach Piece)
-        )
-        
-        (end 
-            (if 
-                (no Pieces Next)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Smasandyutakankarikrida (Ludii 8) ruleset.")
-
-(item "Smasandyutakankarikrida (Ludii 9)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (shift -2 -4 
-                    (wedge 5)
-                )
-                
-                (rectangle 5 5 diagonals:Alternating)
-                
-                (shift -2 4 
-                    (rotate 180 
-                        (wedge 5)
-                    )
-                )
-                }
-            )
-        use:Vertex)
-        
-        (piece "Marker" Each 
-            (or { 
-                (move Hop Orthogonal 
-                    (between if:
-                        (and 
+                    (move Hop 
+                        (between if:
                             (is Enemy 
                                 (who at:
                                     (between)
                                 )
                             )
                             
-                            (not 
-                                (is In 
+                            (apply 
+                                (remove 
                                     (between)
-                                    
-                                    (union 
-                                        (sites Bottom)
-                                        
-                                        (sites Top)
-                                    )
                                 )
                             )
                         )
                         
-                        (apply 
-                            (remove 
-                                (between)
-                            )
-                        )
-                    )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-                
-                (move Step Orthogonal 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-                
-                (if 
-                    (= 1 
-                        (state at:
-                            (from)
-                        )
-                    )
-                    
-                    (move Slide Orthogonal 
-                        (between 
-                            (exact 2)
-                            if:
+                        (to if:
                             (is Empty 
-                                (between)
+                                (to)
                             )
-                        )
-                        
-                        (then 
-                            (set State at:
-                                (last To)
-                            0)
                         )
                     )
                 )
-                }
             )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (sites Bottom)
-            state:1)
-            
-            (place "Marker2" 
-                (sites Top)
-            state:1)
             }
         )
         
-        (play 
-            (forEach Piece)
-        )
-        
-        (end 
-            (if 
-                (<= 
-                    (count Pieces Next)
-                3)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Smasandyutakankarikrida (Ludii 9) ruleset.")
-
-(item "Smasandyutakankarikrida (Ludii 10)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (merge { 
-                (shift -2 -4 
-                    (wedge 5)
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union 
+                        (expand 
+                            (sites Bottom)
+                        steps:1)
+                        
+                        (expand origin:
+                            (coord "I3")
+                        steps:5 W)
+                    )
                 )
                 
-                (rectangle 5 5 diagonals:Alternating)
-                
-                (shift -2 4 
-                    (rotate 180 
-                        (wedge 5)
+                (place "Marker2" 
+                    (union 
+                        (expand 
+                            (sites Top)
+                        steps:1)
+                        
+                        (expand origin:
+                            (coord "A7")
+                        steps:5 E)
                     )
                 )
                 }
             )
-        use:Vertex)
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+                
+                (if 
+                    (<= 
+                        (count Pieces P1)
+                    15)
+                    
+                    (result P1 Loss)
+                )
+                }
+            )
+        )
         
-        (piece "Marker" Each 
-            (or { 
-                (move Hop Orthogonal 
-                    (between if:
-                        (and 
+    > "The Smasandyutakankarikrida (Ludii 2) ruleset.")
+    
+    (item "Smasandyutakankarikrida (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (shift -2 -4 
+                        (wedge 5)
+                    )
+                    
+                    (rectangle 5 5 diagonals:Alternating)
+                    
+                    (shift -2 4 
+                        (rotate 180 
+                            (wedge 5)
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
                             (is Enemy 
                                 (who at:
                                     (between)
                                 )
                             )
                             
-                            (not 
-                                (is In 
+                            (apply 
+                                (remove 
                                     (between)
-                                    
-                                    (union 
-                                        (sites Bottom)
-                                        
-                                        (sites Top)
-                                    )
                                 )
                             )
                         )
                         
-                        (apply 
-                            (remove 
-                                (between)
+                        (to if:
+                            (is Empty 
+                                (to)
                             )
                         )
                     )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union 
+                        (expand 
+                            (sites Bottom)
+                        steps:1)
+                        
+                        (expand origin:
+                            (coord "I3")
+                        steps:5 W)
                     )
                 )
                 
-                (move Step Orthogonal 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
+                (place "Marker2" 
+                    (union 
+                        (expand 
+                            (sites Top)
+                        steps:1)
+                        
+                        (expand origin:
+                            (coord "A7")
+                        steps:5 E)
                     )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
                 )
                 
                 (if 
-                    (= 1 
-                        (state at:
-                            (from)
+                    (<= 
+                        (count Pieces P1)
+                    0)
+                    
+                    (result P1 Loss)
+                )
+                }
+            )
+        )
+        
+    > "The Smasandyutakankarikrida (Ludii 3) ruleset.")
+    
+    (item "Smasandyutakankarikrida (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (shift -2 -4 
+                        (wedge 5)
+                    )
+                    
+                    (rectangle 5 5 diagonals:Alternating)
+                    
+                    (shift -2 4 
+                        (rotate 180 
+                            (wedge 5)
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
                         )
                     )
                     
-                    (move Slide Orthogonal 
-                        (between 
-                            (exact 2)
-                            if:
-                            (is Empty 
-                                (between)
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
                             )
                         )
                         
-                        (then 
-                            (set State at:
-                                (last To)
-                            0)
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (sites Bottom)
+                state:1)
+                
+                (place "Marker2" 
+                    (sites Top)
+                state:1)
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    3)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Smasandyutakankarikrida (Ludii 4) ruleset.")
+    
+    (item "Smasandyutakankarikrida (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (shift -2 -4 
+                        (wedge 5)
+                    )
+                    
+                    (rectangle 5 5 diagonals:Alternating)
+                    
+                    (shift -2 4 
+                        (rotate 180 
+                            (wedge 5)
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or { 
+                    (move Hop Orthogonal 
+                        (between if:
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (not 
+                                    (is In 
+                                        (between)
+                                        
+                                        (union 
+                                            (sites Bottom)
+                                            
+                                            (sites Top)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step Orthogonal 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (= 1 
+                            (state at:
+                                (from)
+                            )
+                        )
+                        
+                        (move Slide Orthogonal 
+                            (between 
+                                (exact 2)
+                                if:
+                                (is Empty 
+                                    (between)
+                                )
+                            )
+                            
+                            (then 
+                                (set State at:
+                                    (last To)
+                                0)
+                            )
+                        )
+                    )
+                    }
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union 
+                        (expand 
+                            (sites Bottom)
+                        steps:1)
+                        
+                        (expand origin:
+                            (coord "I3")
+                        steps:5 W)
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (expand 
+                            (sites Top)
+                        steps:1)
+                        
+                        (expand origin:
+                            (coord "A7")
+                        steps:5 E)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Smasandyutakankarikrida (Ludii 5) ruleset.")
+    
+    (item "Smasandyutakankarikrida (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (shift -2 -4 
+                        (wedge 5)
+                    )
+                    
+                    (rectangle 5 5 diagonals:Alternating)
+                    
+                    (shift -2 4 
+                        (rotate 180 
+                            (wedge 5)
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (sites Bottom)
+                state:1)
+                
+                (place "Marker2" 
+                    (sites Top)
+                state:1)
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+                
+                (if 
+                    (<= 
+                        (count Pieces P1)
+                    15)
+                    
+                    (result P1 Loss)
+                )
+                }
+            )
+        )
+        
+    > "The Smasandyutakankarikrida (Ludii 6) ruleset.")
+    
+    (item "Smasandyutakankarikrida (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (shift -2 -4 
+                        (wedge 5)
+                    )
+                    
+                    (rectangle 5 5 diagonals:Alternating)
+                    
+                    (shift -2 4 
+                        (rotate 180 
+                            (wedge 5)
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union 
+                        (expand 
+                            (sites Bottom)
+                        steps:1)
+                        
+                        (expand origin:
+                            (coord "I3")
+                        steps:5 W)
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (expand 
+                            (sites Top)
+                        steps:1)
+                        
+                        (expand origin:
+                            (coord "A7")
+                        steps:5 E)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+                
+                (if 
+                    (<= 
+                        (count Pieces P1)
+                    15)
+                    
+                    (result P1 Loss)
+                )
+                }
+            )
+        )
+        
+    > "The Smasandyutakankarikrida (Ludii 7) ruleset.")
+    
+    (item "Smasandyutakankarikrida (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (shift -2 -4 
+                        (wedge 5)
+                    )
+                    
+                    (rectangle 5 5 diagonals:Alternating)
+                    
+                    (shift -2 4 
+                        (rotate 180 
+                            (wedge 5)
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (forEach 
+                        (sites Board)
+                        if:
+                        (< 
+                            (site)
+                            
+                            (centrePoint)
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (forEach 
+                        (sites Board)
+                        if:
+                        (> 
+                            (site)
+                            
+                            (centrePoint)
                         )
                     )
                 )
                 }
             )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
         )
-        }
-    )
+        
+    > "The Smasandyutakankarikrida (Ludii 8) ruleset.")
     
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (sites Bottom)
-            state:1)
+    (item "Smasandyutakankarikrida (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (shift -2 -4 
+                        (wedge 5)
+                    )
+                    
+                    (rectangle 5 5 diagonals:Alternating)
+                    
+                    (shift -2 4 
+                        (rotate 180 
+                            (wedge 5)
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
             
-            (place "Marker2" 
-                (sites Top)
-            state:1)
+            (piece "Marker" Each 
+                (or { 
+                    (move Hop Orthogonal 
+                        (between if:
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (not 
+                                    (is In 
+                                        (between)
+                                        
+                                        (union 
+                                            (sites Bottom)
+                                            
+                                            (sites Top)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step Orthogonal 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (= 1 
+                            (state at:
+                                (from)
+                            )
+                        )
+                        
+                        (move Slide Orthogonal 
+                            (between 
+                                (exact 2)
+                                if:
+                                (is Empty 
+                                    (between)
+                                )
+                            )
+                            
+                            (then 
+                                (set State at:
+                                    (last To)
+                                0)
+                            )
+                        )
+                    )
+                    }
+                )
+            )
             }
         )
         
-        (play 
-            (forEach Piece)
-        )
-        
-        (end { 
-            (if 
-                (no Moves P2)
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (sites Bottom)
+                state:1)
                 
-                (result P1 Win)
+                (place "Marker2" 
+                    (sites Top)
+                state:1)
+                }
             )
             
-            (if 
-                (no Pieces P1)
-                
-                (result P2 Win)
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    3)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Smasandyutakankarikrida (Ludii 9) ruleset.")
+    
+    (item "Smasandyutakankarikrida (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (shift -2 -4 
+                        (wedge 5)
+                    )
+                    
+                    (rectangle 5 5 diagonals:Alternating)
+                    
+                    (shift -2 4 
+                        (rotate 180 
+                            (wedge 5)
+                        )
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or { 
+                    (move Hop Orthogonal 
+                        (between if:
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (not 
+                                    (is In 
+                                        (between)
+                                        
+                                        (union 
+                                            (sites Bottom)
+                                            
+                                            (sites Top)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step Orthogonal 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (= 1 
+                            (state at:
+                                (from)
+                            )
+                        )
+                        
+                        (move Slide Orthogonal 
+                            (between 
+                                (exact 2)
+                                if:
+                                (is Empty 
+                                    (between)
+                                )
+                            )
+                            
+                            (then 
+                                (set State at:
+                                    (last To)
+                                0)
+                            )
+                        )
+                    )
+                    }
+                )
             )
             }
         )
-    )
-
- > "The Smasandyutakankarikrida (Ludii 10) ruleset.")
-
-
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (sites Bottom)
+                state:1)
+                
+                (place "Marker2" 
+                    (sites Top)
+                state:1)
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P2)
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (no Pieces P1)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Smasandyutakankarikrida (Ludii 10) ruleset.")
+    
     (item "Incomplete"
         <
         (players 2)
@@ -1140,43 +1139,42 @@
         "The incomplete ruleset."
     )
     
-
- })
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets {
-
-(ruleset "Ruleset/Smasandyutakankarikrida (Ludii 1) (Reconstructed)" {
-     "Variant/Smasandyutakankarikrida (Ludii 1)"
-})
-(ruleset "Ruleset/Smasandyutakankarikrida (Ludii 2) (Reconstructed)" {
-     "Variant/Smasandyutakankarikrida (Ludii 2)"
-})
-(ruleset "Ruleset/Smasandyutakankarikrida (Ludii 3) (Reconstructed)" {
-     "Variant/Smasandyutakankarikrida (Ludii 3)"
-})
-(ruleset "Ruleset/Smasandyutakankarikrida (Ludii 4) (Reconstructed)" {
-     "Variant/Smasandyutakankarikrida (Ludii 4)"
-})
-(ruleset "Ruleset/Smasandyutakankarikrida (Ludii 5) (Reconstructed)" {
-     "Variant/Smasandyutakankarikrida (Ludii 5)"
-})
-(ruleset "Ruleset/Smasandyutakankarikrida (Ludii 6) (Reconstructed)" {
-     "Variant/Smasandyutakankarikrida (Ludii 6)"
-})
-(ruleset "Ruleset/Smasandyutakankarikrida (Ludii 7) (Reconstructed)" {
-     "Variant/Smasandyutakankarikrida (Ludii 7)"
-})
-(ruleset "Ruleset/Smasandyutakankarikrida (Ludii 8) (Reconstructed)" {
-     "Variant/Smasandyutakankarikrida (Ludii 8)"
-})
-(ruleset "Ruleset/Smasandyutakankarikrida (Ludii 9) (Reconstructed)" {
-     "Variant/Smasandyutakankarikrida (Ludii 9)"
-})
-(ruleset "Ruleset/Smasandyutakankarikrida (Ludii 10) (Reconstructed)" {
-     "Variant/Smasandyutakankarikrida (Ludii 10)"
-})
+    
+    (ruleset "Ruleset/Smasandyutakankarikrida (Ludii 1) (Reconstructed)" {
+        "Variant/Smasandyutakankarikrida (Ludii 1)"
+    })
+    (ruleset "Ruleset/Smasandyutakankarikrida (Ludii 2) (Reconstructed)" {
+        "Variant/Smasandyutakankarikrida (Ludii 2)"
+    })
+    (ruleset "Ruleset/Smasandyutakankarikrida (Ludii 3) (Reconstructed)" {
+        "Variant/Smasandyutakankarikrida (Ludii 3)"
+    })
+    (ruleset "Ruleset/Smasandyutakankarikrida (Ludii 4) (Reconstructed)" {
+        "Variant/Smasandyutakankarikrida (Ludii 4)"
+    })
+    (ruleset "Ruleset/Smasandyutakankarikrida (Ludii 5) (Reconstructed)" {
+        "Variant/Smasandyutakankarikrida (Ludii 5)"
+    })
+    (ruleset "Ruleset/Smasandyutakankarikrida (Ludii 6) (Reconstructed)" {
+        "Variant/Smasandyutakankarikrida (Ludii 6)"
+    })
+    (ruleset "Ruleset/Smasandyutakankarikrida (Ludii 7) (Reconstructed)" {
+        "Variant/Smasandyutakankarikrida (Ludii 7)"
+    })
+    (ruleset "Ruleset/Smasandyutakankarikrida (Ludii 8) (Reconstructed)" {
+        "Variant/Smasandyutakankarikrida (Ludii 8)"
+    })
+    (ruleset "Ruleset/Smasandyutakankarikrida (Ludii 9) (Reconstructed)" {
+        "Variant/Smasandyutakankarikrida (Ludii 9)"
+    })
+    (ruleset "Ruleset/Smasandyutakankarikrida (Ludii 10) (Reconstructed)" {
+        "Variant/Smasandyutakankarikrida (Ludii 10)"
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -1186,7 +1184,7 @@
 
 //------------------------------------------------------------------------------
 
- (metadata 
+(metadata 
     
     (info
         {

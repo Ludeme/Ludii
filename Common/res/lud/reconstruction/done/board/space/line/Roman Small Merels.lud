@@ -5,728 +5,727 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-{
-(item "Roman Small Merels (Ludii 1)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
+    {
+    (item "Roman Small Merels (Ludii 1)" <
         
-        (hand Each)
+        (players 2)
         
-        (piece "Marker" Each 
-            (move 
-                (from)
-                
-                (to 
-                    (sites Empty)
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
                 (move 
-                    (from 
-                        (handSite Mover)
-                    )
+                    (from)
                     
                     (to 
                         (sites Empty)
                     )
                 )
             )
-            
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
                         )
                     )
                 )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3 Orthogonal)
                 
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Roman Small Merels (Ludii 1) ruleset.")
-
-(item "Roman Small Merels (Ludii 2)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step All 
-                (to if:
-                    (is Empty 
-                        (to)
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
                     )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
                 )
             )
         )
-        }
-    )
+        
+    > "The Roman Small Merels (Ludii 1) ruleset.")
     
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
+    (item "Roman Small Merels (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step All 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
                     )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Roman Small Merels (Ludii 2) ruleset.")
+    
+    (item "Roman Small Merels (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Stick" Each 
+                (move 
+                    (from)
                     
                     (to 
                         (sites Empty)
                     )
                 )
             )
-            
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Stick" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
                         )
                     )
                 )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3 Orthogonal)
                 
-                (result Mover Win)
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
             )
-        )
-    )
-
- > "The Roman Small Merels (Ludii 2) ruleset.")
-
-(item "Roman Small Merels (Ludii 3)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Stick" Each 
-            (move 
-                (from)
-                
-                (to 
-                    (sites Empty)
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
                 )
             )
         )
-        }
-    )
+        
+    > "The Roman Small Merels (Ludii 3) ruleset.")
     
-    (rules 
-        (start 
-            (place "Stick" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
+    (item "Roman Small Merels (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step All 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
                     )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:5)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 5)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Roman Small Merels (Ludii 4) ruleset.")
+    
+    (item "Roman Small Merels (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move 
+                    (from)
                     
                     (to 
                         (sites Empty)
                     )
                 )
             )
-            
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:5)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
                         )
                     )
                 )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3 Orthogonal)
                 
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Roman Small Merels (Ludii 3) ruleset.")
-
-(item "Roman Small Merels (Ludii 4)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step All 
-                (to if:
-                    (is Empty 
-                        (to)
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
                     )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 5)
+                    
+                    (result Mover Win)
                 )
             )
         )
-        }
-    )
+        
+    > "The Roman Small Merels (Ludii 5) ruleset.")
     
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:5)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
+    (item "Roman Small Merels (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
                 (move 
-                    (from 
-                        (handSite Mover)
-                    )
+                    (from)
                     
                     (to 
                         (sites Empty)
                     )
                 )
             )
-            
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:5)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
                         )
                     )
                 )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 5)
                 
-                (result Mover Win)
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
             )
-        )
-    )
-
- > "The Roman Small Merels (Ludii 4) ruleset.")
-
-(item "Roman Small Merels (Ludii 5)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move 
-                (from)
-                
-                (to 
-                    (sites Empty)
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 5)
+                    
+                    (result Mover Win)
                 )
             )
         )
-        }
-    )
+        
+    > "The Roman Small Merels (Ludii 6) ruleset.")
     
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:5)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
+    (item "Roman Small Merels (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
                     )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Roman Small Merels (Ludii 7) ruleset.")
+    
+    (item "Roman Small Merels (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move 
+                    (from)
                     
                     (to 
                         (sites Empty)
                     )
                 )
             )
-            
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
                         )
                     )
                 )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 5)
                 
-                (result Mover Win)
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
             )
-        )
-    )
-
- > "The Roman Small Merels (Ludii 5) ruleset.")
-
-(item "Roman Small Merels (Ludii 6)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move 
-                (from)
-                
-                (to 
-                    (sites Empty)
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
                 )
             )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:5)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
                     
-                    (to 
-                        (sites Empty)
-                    )
+                    (result Mover Win)
                 )
             )
+        )
+        
+    > "The Roman Small Merels (Ludii 8) ruleset.")
+    
+    (item "Roman Small Merels (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
             
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
                         )
                     )
                 )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
             )
+            }
         )
-        }
         
-        (end 
-            (if 
-                (is Line 5)
-                
-                (result Mover Win)
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:5)
             )
-        )
-    )
-
- > "The Roman Small Merels (Ludii 6) ruleset.")
-
-(item "Roman Small Merels (Ludii 7)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
                     )
                 )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
                     )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 5)
                     
-                    (to 
-                        (sites Empty)
-                    )
+                    (result Mover Win)
                 )
             )
+        )
+        
+    > "The Roman Small Merels (Ludii 9) ruleset.")
+    
+    (item "Roman Small Merels (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 3)
+            use:Vertex)
             
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
                         )
                     )
                 )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
             )
+            }
         )
-        }
         
-        (end 
-            (if 
-                (is Line 3 Orthogonal)
-                
-                (result Mover Win)
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
             )
-        )
-    )
-
- > "The Roman Small Merels (Ludii 7) ruleset.")
-
-(item "Roman Small Merels (Ludii 8)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move 
-                (from)
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
                 
-                (to 
-                    (sites Empty)
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
                 )
             )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
                     
-                    (to 
-                        (sites Empty)
-                    )
+                    (result Mover Win)
                 )
             )
-            
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
-                        )
-                    )
-                )
-            "Movement" )
         )
         
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3)
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Roman Small Merels (Ludii 8) ruleset.")
-
-(item "Roman Small Merels (Ludii 9)" <
- 
-    (players 2)
+    > "The Roman Small Merels (Ludii 10) ruleset.")
     
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:5)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
-            )
-            
-            (nextPhase 
-                (all Sites 
-                    (sites Hand P2)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
-                        )
-                    )
-                )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 5)
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Roman Small Merels (Ludii 9) ruleset.")
-
-(item "Roman Small Merels (Ludii 10)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 3)
-        use:Vertex)
-        
-        (hand Each)
-        
-        (piece "Marker" Each 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
-            )
-            
-            (nextPhase Mover 
-                (all Sites 
-                    (sites Hand Mover)
-                    if:
-                    (= 0 
-                        (count Cell at:
-                            (site)
-                        )
-                    )
-                )
-            "Movement" )
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-        )
-        }
-        
-        (end 
-            (if 
-                (is Line 3)
-                
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Roman Small Merels (Ludii 10) ruleset.")
-
-
     (item "Incomplete"
         <
         (players 2)
@@ -742,44 +741,42 @@
         "The incomplete ruleset."
     )
     
-
- })
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets {
-
-(ruleset "Ruleset/Roman Small Merels (Ludii 1) (Reconstructed)" {
-     "Variant/Roman Small Merels (Ludii 1)"
-})
-(ruleset "Ruleset/Roman Small Merels (Ludii 2) (Reconstructed)" {
-     "Variant/Roman Small Merels (Ludii 2)"
-})
-(ruleset "Ruleset/Roman Small Merels (Ludii 3) (Reconstructed)" {
-     "Variant/Roman Small Merels (Ludii 3)"
-})
-(ruleset "Ruleset/Roman Small Merels (Ludii 4) (Reconstructed)" {
-     "Variant/Roman Small Merels (Ludii 4)"
-})
-(ruleset "Ruleset/Roman Small Merels (Ludii 5) (Reconstructed)" {
-     "Variant/Roman Small Merels (Ludii 5)"
-})
-(ruleset "Ruleset/Roman Small Merels (Ludii 6) (Reconstructed)" {
-     "Variant/Roman Small Merels (Ludii 6)"
-})
-(ruleset "Ruleset/Roman Small Merels (Ludii 7) (Reconstructed)" {
-     "Variant/Roman Small Merels (Ludii 7)"
-})
-(ruleset "Ruleset/Roman Small Merels (Ludii 8) (Reconstructed)" {
-     "Variant/Roman Small Merels (Ludii 8)"
-})
-(ruleset "Ruleset/Roman Small Merels (Ludii 9) (Reconstructed)" {
-     "Variant/Roman Small Merels (Ludii 9)"
-})
-(ruleset "Ruleset/Roman Small Merels (Ludii 10) (Reconstructed)" {
-     "Variant/Roman Small Merels (Ludii 10)"
-})
     
+    (ruleset "Ruleset/Roman Small Merels (Ludii 1) (Reconstructed)" {
+        "Variant/Roman Small Merels (Ludii 1)"
+    })
+    (ruleset "Ruleset/Roman Small Merels (Ludii 2) (Reconstructed)" {
+        "Variant/Roman Small Merels (Ludii 2)"
+    })
+    (ruleset "Ruleset/Roman Small Merels (Ludii 3) (Reconstructed)" {
+        "Variant/Roman Small Merels (Ludii 3)"
+    })
+    (ruleset "Ruleset/Roman Small Merels (Ludii 4) (Reconstructed)" {
+        "Variant/Roman Small Merels (Ludii 4)"
+    })
+    (ruleset "Ruleset/Roman Small Merels (Ludii 5) (Reconstructed)" {
+        "Variant/Roman Small Merels (Ludii 5)"
+    })
+    (ruleset "Ruleset/Roman Small Merels (Ludii 6) (Reconstructed)" {
+        "Variant/Roman Small Merels (Ludii 6)"
+    })
+    (ruleset "Ruleset/Roman Small Merels (Ludii 7) (Reconstructed)" {
+        "Variant/Roman Small Merels (Ludii 7)"
+    })
+    (ruleset "Ruleset/Roman Small Merels (Ludii 8) (Reconstructed)" {
+        "Variant/Roman Small Merels (Ludii 8)"
+    })
+    (ruleset "Ruleset/Roman Small Merels (Ludii 9) (Reconstructed)" {
+        "Variant/Roman Small Merels (Ludii 9)"
+    })
+    (ruleset "Ruleset/Roman Small Merels (Ludii 10) (Reconstructed)" {
+        "Variant/Roman Small Merels (Ludii 10)"
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -789,7 +786,7 @@
 
 //------------------------------------------------------------------------------
 
- (metadata 
+(metadata 
     
     (info
         {
@@ -801,5 +798,4 @@
     })
     
 )
-
 

@@ -1,4 +1,4 @@
-(game "Yakamaido"
+(game "Riga Game" // Hunt game
     <Variant>
 )
 
@@ -6,147 +6,26 @@
 
 (option "Variant" <Variant> args:{ <variant> }
     {
-    (item "Yakamaido (Ludii 1)" <
+    (item "Riga Game (Ludii 1)" <
         
         (players 2)
         
         (equipment { 
             (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (is Line 3)
-                            
-                            (moveAgain)
-                        )
-                    )
+                (add 
+                    (concentric Square rings:3)
+                    vertices:{ { 0 0}
+                    }
+                    edges:{ { 6 24}
+                    { 11 24}
+                    { 15 24}
+                    { 16 24}
+                    { 17 24}
+                    { 12 24}
+                    { 8 24}
+                    { 7 24}
+                    }
                 )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:9)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (move 
-                        (from 
-                            (handSite Mover)
-                        )
-                        
-                        (to 
-                            (sites Empty)
-                        )
-                        
-                        (then 
-                            (if 
-                                (and 
-                                    (is Line 3)
-                                    
-                                    (not 
-                                        (all Sites 
-                                            (sites Hand Mover)
-                                            if:
-                                            (= 0 
-                                                (count Cell at:
-                                                    (site)
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                                
-                                (moveAgain)
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase 
-                    (and 
-                        (all Sites 
-                            (sites Hand P1)
-                            if:
-                            (= 0 
-                                (count Cell at:
-                                    (site)
-                                )
-                            )
-                        )
-                        
-                        (all Sites 
-                            (sites Hand P2)
-                            if:
-                            (= 0 
-                                (count Cell at:
-                                    (site)
-                                )
-                            )
-                        )
-                    )
-                "Movement" )
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (forEach Piece)
-                )
-                
-                (nextPhase Mover 
-                    (is Line 3)
-                "Capture")
-            )
-            
-            (phase "Capture" 
-                (play 
-                    (move Remove 
-                        (sites Occupied by:Enemy container:"Board")
-                        
-                        (then 
-                            (moveAgain)
-                        )
-                    )
-                )
-                
-                (nextPhase Mover "Movement")
-            )
-            }
-            
-            (end 
-                (forEach Player if:
-                    (<= 
-                        (count Pieces Player)
-                    2)
-                    
-                    (result Player Loss)
-                )
-            )
-        )
-        
-    > "The Yakamaido (Ludii 1) ruleset.")
-    
-    (item "Yakamaido (Ludii 2)" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
             use:Vertex)
             
             (hand Each)
@@ -178,58 +57,68 @@
             phases:{ 
             (phase "Placement" 
                 (play 
-                    (move 
-                        (from 
-                            (handSite Mover)
-                        )
+                    (if 
+                        (is Prev Mover)
                         
-                        (to 
-                            (sites Empty)
-                        )
-                        
-                        (then 
-                            (if 
-                                (and 
-                                    (is Line 3)
-                                    
-                                    (not 
-                                        (all Sites 
-                                            (sites Hand Mover)
-                                            if:
-                                            (= 0 
-                                                (count Cell at:
-                                                    (site)
-                                                )
+                        (if 
+                            (can Move 
+                                (move Remove 
+                                    (forEach 
+                                        (sites Occupied by:Enemy container:"Board" )
+                                        if:
+                                        (not 
+                                            (is Line 3 Orthogonal through:
+                                                (site)
                                             )
                                         )
                                     )
                                 )
-                                
-                                (moveAgain)
+                            )
+                            
+                            (move Remove 
+                                (forEach 
+                                    (sites Occupied by:Enemy container:"Board" )
+                                    if:
+                                    (not 
+                                        (is Line 3 Orthogonal through:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (sites Occupied by:Enemy container:"Board")
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
                             )
                         )
                     )
                 )
                 
-                (nextPhase 
-                    (and 
-                        (all Sites 
-                            (sites Hand P1)
-                            if:
-                            (= 0 
-                                (count Cell at:
-                                    (site)
-                                )
-                            )
-                        )
-                        
-                        (all Sites 
-                            (sites Hand P2)
-                            if:
-                            (= 0 
-                                (count Cell at:
-                                    (site)
-                                )
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
                             )
                         )
                     )
@@ -238,49 +127,96 @@
             
             (phase "Movement" 
                 (play 
-                    (forEach Piece)
-                )
-                
-                (nextPhase Mover 
-                    (is Line 3)
-                "Capture")
-            )
-            
-            (phase "Capture" 
-                (play 
-                    (move Remove 
-                        (sites Occupied by:Enemy container:"Board")
+                    (if 
+                        (is Prev Mover)
                         
-                        (then 
-                            (moveAgain)
+                        (if 
+                            (can Move 
+                                (move Remove 
+                                    (forEach 
+                                        (sites Occupied by:Enemy container:"Board" )
+                                        if:
+                                        (not 
+                                            (is Line 3 Orthogonal through:
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (forEach 
+                                    (sites Occupied by:Enemy container:"Board" )
+                                    if:
+                                    (not 
+                                        (is Line 3 Orthogonal through:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (sites Occupied by:Enemy container:"Board")
+                            )
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            3)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
                         )
                     )
                 )
-                
-                (nextPhase Mover "Movement")
             )
             }
             
             (end 
-                (forEach Player if:
+                (if 
                     (<= 
-                        (count Pieces Player)
+                        (count Pieces Next)
                     2)
                     
-                    (result Player Loss)
+                    (result Next Loss)
                 )
             )
         )
         
-    > "The Yakamaido (Ludii 2) ruleset.")
+    > "The Riga Game (Ludii 1) ruleset.")
     
-    (item "Yakamaido (Ludii 3)" <
+    (item "Riga Game (Ludii 2)" <
         
         (players 2)
         
         (equipment { 
             (board 
-                (concentric Square rings:3 joinCorners:True)
+                (add 
+                    (concentric Square rings:3)
+                    vertices:{ { 0 0}
+                    }
+                    edges:{ { 6 24}
+                    { 11 24}
+                    { 15 24}
+                    { 16 24}
+                    { 17 24}
+                    { 12 24}
+                    { 8 24}
+                    { 7 24}
+                    }
+                )
             use:Vertex)
             
             (hand Each)
@@ -295,7 +231,846 @@
                     
                     (then 
                         (if 
-                            (is Line 3)
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (or { 
+                                        (is Line 3 N exact:True)
+                                        
+                                        (is Line 3 S exact:True)
+                                        
+                                        (is Line 3 E exact:True)
+                                        
+                                        (is Line 3 W exact:True)
+                                        }
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            4)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Riga Game (Ludii 2) ruleset.")
+    
+    (item "Riga Game (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (concentric Square rings:3)
+                    vertices:{ { 0 0}
+                    }
+                    edges:{ { 6 24}
+                    { 11 24}
+                    { 15 24}
+                    { 16 24}
+                    { 17 24}
+                    { 12 24}
+                    { 8 24}
+                    { 7 24}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (or { 
+                                (is Line 3 N exact:True)
+                                
+                                (is Line 3 S exact:True)
+                                
+                                (is Line 3 E exact:True)
+                                
+                                (is Line 3 W exact:True)
+                                }
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (if 
+                            (can Move 
+                                (move Remove 
+                                    (forEach 
+                                        (sites Occupied by:Enemy container:"Board" )
+                                        if:
+                                        (not 
+                                            (is Line 3 Orthogonal through:
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (forEach 
+                                    (sites Occupied by:Enemy container:"Board" )
+                                    if:
+                                    (not 
+                                        (is Line 3 Orthogonal through:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (sites Occupied by:Enemy container:"Board")
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (if 
+                            (can Move 
+                                (move Remove 
+                                    (forEach 
+                                        (sites Occupied by:Enemy container:"Board" )
+                                        if:
+                                        (not 
+                                            (is Line 3 Orthogonal through:
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (forEach 
+                                    (sites Occupied by:Enemy container:"Board" )
+                                    if:
+                                    (not 
+                                        (is Line 3 Orthogonal through:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (sites Occupied by:Enemy container:"Board")
+                            )
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            3)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Riga Game (Ludii 3) ruleset.")
+    
+    (item "Riga Game (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (concentric Square rings:3)
+                    vertices:{ { 0 0}
+                    }
+                    edges:{ { 6 24}
+                    { 11 24}
+                    { 15 24}
+                    { 16 24}
+                    { 17 24}
+                    { 12 24}
+                    { 8 24}
+                    { 7 24}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (forEach 
+                                (sites Occupied by:Enemy container:"Board")
+                                if:
+                                (not 
+                                    (is Line 3 Orthogonal through:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (forEach 
+                                (sites Occupied by:Enemy container:"Board")
+                                if:
+                                (not 
+                                    (is Line 3 Orthogonal through:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end { 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+                
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+                }
+            )
+        )
+        
+    > "The Riga Game (Ludii 4) ruleset.")
+    
+    (item "Riga Game (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (concentric Square rings:3)
+                    vertices:{ { 0 0}
+                    }
+                    edges:{ { 6 24}
+                    { 11 24}
+                    { 15 24}
+                    { 16 24}
+                    { 17 24}
+                    { 12 24}
+                    { 8 24}
+                    { 7 24}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (if 
+                            (can Move 
+                                (move Remove 
+                                    (forEach 
+                                        (sites Occupied by:Enemy container:"Board" )
+                                        if:
+                                        (not 
+                                            (is Line 3 Orthogonal through:
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (forEach 
+                                    (sites Occupied by:Enemy container:"Board" )
+                                    if:
+                                    (not 
+                                        (is Line 3 Orthogonal through:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (sites Occupied by:Enemy container:"Board")
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (if 
+                            (can Move 
+                                (move Remove 
+                                    (forEach 
+                                        (sites Occupied by:Enemy container:"Board" )
+                                        if:
+                                        (not 
+                                            (is Line 3 Orthogonal through:
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (forEach 
+                                    (sites Occupied by:Enemy container:"Board" )
+                                    if:
+                                    (not 
+                                        (is Line 3 Orthogonal through:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (sites Occupied by:Enemy container:"Board")
+                            )
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            3)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Riga Game (Ludii 5) ruleset.")
+    
+    (item "Riga Game (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (concentric Square rings:3)
+                    vertices:{ { 0 0}
+                    }
+                    edges:{ { 6 24}
+                    { 11 24}
+                    { 15 24}
+                    { 16 24}
+                    { 17 24}
+                    { 12 24}
+                    { 8 24}
+                    { 7 24}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (or { 
+                                (is Line 3 N exact:True)
+                                
+                                (is Line 3 S exact:True)
+                                
+                                (is Line 3 E exact:True)
+                                
+                                (is Line 3 W exact:True)
+                                }
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (or { 
+                                        (is Line 3 N exact:True)
+                                        
+                                        (is Line 3 S exact:True)
+                                        
+                                        (is Line 3 E exact:True)
+                                        
+                                        (is Line 3 W exact:True)
+                                        }
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            4)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Riga Game (Ludii 6) ruleset.")
+    
+    (item "Riga Game (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (concentric Square rings:3)
+                    vertices:{ { 0 0}
+                    }
+                    edges:{ { 6 24}
+                    { 11 24}
+                    { 15 24}
+                    { 16 24}
+                    { 17 24}
+                    { 12 24}
+                    { 8 24}
+                    { 7 24}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (or { 
+                                (is Line 3 N exact:True)
+                                
+                                (is Line 3 S exact:True)
+                                
+                                (is Line 3 E exact:True)
+                                
+                                (is Line 3 W exact:True)
+                                }
+                            )
                             
                             (moveAgain)
                         )
@@ -450,15 +1225,28 @@
             )
         )
         
-    > "The Yakamaido (Ludii 3) ruleset.")
+    > "The Riga Game (Ludii 7) ruleset.")
     
-    (item "Yakamaido (Ludii 4)" <
+    (item "Riga Game (Ludii 8)" <
         
         (players 2)
         
         (equipment { 
             (board 
-                (concentric Square rings:3 joinCorners:True)
+                (add 
+                    (concentric Square rings:3)
+                    vertices:{ { 0 0}
+                    }
+                    edges:{ { 6 24}
+                    { 11 24}
+                    { 15 24}
+                    { 16 24}
+                    { 17 24}
+                    { 12 24}
+                    { 8 24}
+                    { 7 24}
+                    }
+                )
             use:Vertex)
             
             (hand Each)
@@ -473,7 +1261,16 @@
                     
                     (then 
                         (if 
-                            (is Line 3)
+                            (or { 
+                                (is Line 3 N exact:True)
+                                
+                                (is Line 3 S exact:True)
+                                
+                                (is Line 3 E exact:True)
+                                
+                                (is Line 3 W exact:True)
+                                }
+                            )
                             
                             (moveAgain)
                         )
@@ -493,35 +1290,15 @@
                     (if 
                         (is Prev Mover)
                         
-                        (if 
-                            (can Move 
-                                (move Remove 
-                                    (forEach 
-                                        (sites Occupied by:Enemy container:"Board" )
-                                        if:
-                                        (not 
-                                            (is Line 3 Orthogonal through:
-                                                (site)
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (move Remove 
-                                (forEach 
-                                    (sites Occupied by:Enemy container:"Board" )
-                                    if:
-                                    (not 
-                                        (is Line 3 Orthogonal through:
-                                            (site)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (move Remove 
+                        (move Remove 
+                            (forEach 
                                 (sites Occupied by:Enemy container:"Board")
+                                if:
+                                (not 
+                                    (is Line 3 Orthogonal through:
+                                        (site)
+                                    )
+                                )
                             )
                         )
                         
@@ -536,7 +1313,7 @@
                             
                             (then 
                                 (if 
-                                    (is Line 3 Orthogonal exact:True)
+                                    (is Line 3 Orthogonal)
                                     
                                     (moveAgain)
                                 )
@@ -563,35 +1340,15 @@
                     (if 
                         (is Prev Mover)
                         
-                        (if 
-                            (can Move 
-                                (move Remove 
-                                    (forEach 
-                                        (sites Occupied by:Enemy container:"Board" )
-                                        if:
-                                        (not 
-                                            (is Line 3 Orthogonal through:
-                                                (site)
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (move Remove 
-                                (forEach 
-                                    (sites Occupied by:Enemy container:"Board" )
-                                    if:
-                                    (not 
-                                        (is Line 3 Orthogonal through:
-                                            (site)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (move Remove 
+                        (move Remove 
+                            (forEach 
                                 (sites Occupied by:Enemy container:"Board")
+                                if:
+                                (not 
+                                    (is Line 3 Orthogonal through:
+                                        (site)
+                                    )
+                                )
                             )
                         )
                         
@@ -601,30 +1358,190 @@
             )
             }
             
-            (end 
+            (end { 
                 (if 
-                    (or 
-                        (no Moves Next)
-                        
-                        (<= 
-                            (count Pieces Next)
-                        2)
-                    )
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+                
+                (if 
+                    (no Moves Next)
                     
                     (result Mover Win)
                 )
+                }
             )
         )
         
-    > "The Yakamaido (Ludii 4) ruleset.")
+    > "The Riga Game (Ludii 8) ruleset.")
     
-    (item "Yakamaido (Ludii 5)" <
+    (item "Riga Game (Ludii 9)" <
         
         (players 2)
         
         (equipment { 
             (board 
-                (concentric Square rings:3 joinCorners:True)
+                (add 
+                    (concentric Square rings:3)
+                    vertices:{ { 0 0}
+                    }
+                    edges:{ { 6 24}
+                    { 11 24}
+                    { 15 24}
+                    { 16 24}
+                    { 17 24}
+                    { 12 24}
+                    { 8 24}
+                    { 7 24}
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (or { 
+                                        (is Line 3 N exact:True)
+                                        
+                                        (is Line 3 S exact:True)
+                                        
+                                        (is Line 3 E exact:True)
+                                        
+                                        (is Line 3 W exact:True)
+                                        }
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            4)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Riga Game (Ludii 9) ruleset.")
+    
+    (item "Riga Game (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (concentric Square rings:3)
+                    vertices:{ { 0 0}
+                    }
+                    edges:{ { 6 24}
+                    { 11 24}
+                    { 15 24}
+                    { 16 24}
+                    { 17 24}
+                    { 12 24}
+                    { 8 24}
+                    { 7 24}
+                    }
+                )
             use:Vertex)
             
             (hand Each)
@@ -794,733 +1711,28 @@
             )
         )
         
-    > "The Yakamaido (Ludii 5) ruleset.")
-    
-    (item "Yakamaido (Ludii 6)" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (is Line 3 Orthogonal exact:True)
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:9)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (if 
-                            (can Move 
-                                (move Remove 
-                                    (forEach 
-                                        (sites Occupied by:Enemy container:"Board" )
-                                        if:
-                                        (not 
-                                            (is Line 3 Orthogonal through:
-                                                (site)
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (move Remove 
-                                (forEach 
-                                    (sites Occupied by:Enemy container:"Board" )
-                                    if:
-                                    (not 
-                                        (is Line 3 Orthogonal through:
-                                            (site)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (move Remove 
-                                (sites Occupied by:Enemy container:"Board")
-                            )
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (if 
-                                    (is Line 3 Orthogonal exact:True)
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement" )
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (if 
-                            (can Move 
-                                (move Remove 
-                                    (forEach 
-                                        (sites Occupied by:Enemy container:"Board" )
-                                        if:
-                                        (not 
-                                            (is Line 3 Orthogonal through:
-                                                (site)
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (move Remove 
-                                (forEach 
-                                    (sites Occupied by:Enemy container:"Board" )
-                                    if:
-                                    (not 
-                                        (is Line 3 Orthogonal through:
-                                            (site)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (move Remove 
-                                (sites Occupied by:Enemy container:"Board")
-                            )
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (or 
-                        (no Moves Next)
-                        
-                        (<= 
-                            (count Pieces Next)
-                        2)
-                    )
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Yakamaido (Ludii 6) ruleset.")
-    
-    (item "Yakamaido (Ludii 7)" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (is Line 3 Orthogonal exact:True)
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:9)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Enemy container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (if 
-                                    (is Line 3 Orthogonal exact:True)
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement" )
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Enemy container:"Board")
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (<= 
-                        (count Pieces Next)
-                    2)
-                    
-                    (result Next Loss)
-                )
-            )
-        )
-        
-    > "The Yakamaido (Ludii 7) ruleset.")
-    
-    (item "Yakamaido (Ludii 8)" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (or { 
-                                (is Line 3 N exact:True)
-                                
-                                (is Line 3 S exact:True)
-                                
-                                (is Line 3 E exact:True)
-                                
-                                (is Line 3 W exact:True)
-                                }
-                            )
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:9)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (if 
-                            (can Move 
-                                (move Remove 
-                                    (forEach 
-                                        (sites Occupied by:Enemy container:"Board" )
-                                        if:
-                                        (not 
-                                            (is Line 3 Orthogonal through:
-                                                (site)
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (move Remove 
-                                (forEach 
-                                    (sites Occupied by:Enemy container:"Board" )
-                                    if:
-                                    (not 
-                                        (is Line 3 Orthogonal through:
-                                            (site)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (move Remove 
-                                (sites Occupied by:Enemy container:"Board")
-                            )
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (if 
-                                    (is Line 3 Orthogonal exact:True)
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement" )
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (if 
-                            (can Move 
-                                (move Remove 
-                                    (forEach 
-                                        (sites Occupied by:Enemy container:"Board" )
-                                        if:
-                                        (not 
-                                            (is Line 3 Orthogonal through:
-                                                (site)
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (move Remove 
-                                (forEach 
-                                    (sites Occupied by:Enemy container:"Board" )
-                                    if:
-                                    (not 
-                                        (is Line 3 Orthogonal through:
-                                            (site)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (move Remove 
-                                (sites Occupied by:Enemy container:"Board")
-                            )
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (or 
-                        (no Moves Next)
-                        
-                        (<= 
-                            (count Pieces Next)
-                        2)
-                    )
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Yakamaido (Ludii 8) ruleset.")
-    
-    (item "Yakamaido (Ludii 9)" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (is Line 3 Orthogonal exact:True)
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:9)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Enemy container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (if 
-                                    (or { 
-                                        (is Line 3 N exact:True)
-                                        
-                                        (is Line 3 S exact:True)
-                                        
-                                        (is Line 3 E exact:True)
-                                        
-                                        (is Line 3 W exact:True)
-                                        }
-                                    )
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement" )
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Enemy container:"Board")
-                        )
-                        
-                        (if 
-                            (> 
-                                (count Pieces Mover)
-                            4)
-                            
-                            (forEach Piece)
-                            
-                            (move 
-                                (from 
-                                    (sites Occupied by:Mover)
-                                )
-                                
-                                (to 
-                                    (sites Empty)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (<= 
-                        (count Pieces Next)
-                    2)
-                    
-                    (result Next Loss)
-                )
-            )
-        )
-        
-    > "The Yakamaido (Ludii 9) ruleset.")
-    
-    (item "Yakamaido (Ludii 10)" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (or { 
-                                (is Line 3 N exact:True)
-                                
-                                (is Line 3 S exact:True)
-                                
-                                (is Line 3 E exact:True)
-                                
-                                (is Line 3 W exact:True)
-                                }
-                            )
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:9)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Enemy container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (if 
-                                    (or { 
-                                        (is Line 3 N exact:True)
-                                        
-                                        (is Line 3 S exact:True)
-                                        
-                                        (is Line 3 E exact:True)
-                                        
-                                        (is Line 3 W exact:True)
-                                        }
-                                    )
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement" )
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Enemy container:"Board")
-                        )
-                        
-                        (if 
-                            (> 
-                                (count Pieces Mover)
-                            4)
-                            
-                            (forEach Piece)
-                            
-                            (move 
-                                (from 
-                                    (sites Occupied by:Mover)
-                                )
-                                
-                                (to 
-                                    (sites Empty)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (<= 
-                        (count Pieces Next)
-                    2)
-                    
-                    (result Next Loss)
-                )
-            )
-        )
-        
-    > "The Yakamaido (Ludii 10) ruleset.")
+    > "The Riga Game (Ludii 10) ruleset.")
     
     (item "Incomplete"
         <
-        (players 2)
-        
-        (equipment 
-            { 
-            (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
+        (players 2) 
+        (equipment { 
+            (board 
+                (add 
+                    (concentric Square rings:3)
+                    vertices:{ { 0 0}
+                    }
+                    edges:{ { 6 24}
+                    { 11 24}
+                    { 15 24}
+                    { 16 24}
+                    { 17 24}
+                    { 12 24}
+                    { 8 24}
+                    { 7 24}
+                    }
+                )
+            use:Vertex)
             (hand Each)
             (piece "Marker" Each [#])
         })
@@ -1535,35 +1747,35 @@
 
 (rulesets {
     
-    (ruleset "Ruleset/Yakamaido (Ludii 1) (Reconstructed)" {
-        "Variant/Yakamaido (Ludii 1)"
+    (ruleset "Ruleset/Riga Game (Ludii 1) (Reconstructed)" {
+        "Variant/Riga Game (Ludii 1)"
     })
-    (ruleset "Ruleset/Yakamaido (Ludii 2) (Reconstructed)" {
-        "Variant/Yakamaido (Ludii 2)"
+    (ruleset "Ruleset/Riga Game (Ludii 2) (Reconstructed)" {
+        "Variant/Riga Game (Ludii 2)"
     })
-    (ruleset "Ruleset/Yakamaido (Ludii 3) (Reconstructed)" {
-        "Variant/Yakamaido (Ludii 3)"
+    (ruleset "Ruleset/Riga Game (Ludii 3) (Reconstructed)" {
+        "Variant/Riga Game (Ludii 3)"
     })
-    (ruleset "Ruleset/Yakamaido (Ludii 4) (Reconstructed)" {
-        "Variant/Yakamaido (Ludii 4)"
+    (ruleset "Ruleset/Riga Game (Ludii 4) (Reconstructed)" {
+        "Variant/Riga Game (Ludii 4)"
     })
-    (ruleset "Ruleset/Yakamaido (Ludii 5) (Reconstructed)" {
-        "Variant/Yakamaido (Ludii 5)"
+    (ruleset "Ruleset/Riga Game (Ludii 5) (Reconstructed)" {
+        "Variant/Riga Game (Ludii 5)"
     })
-    (ruleset "Ruleset/Yakamaido (Ludii 6) (Reconstructed)" {
-        "Variant/Yakamaido (Ludii 6)"
+    (ruleset "Ruleset/Riga Game (Ludii 6) (Reconstructed)" {
+        "Variant/Riga Game (Ludii 6)"
     })
-    (ruleset "Ruleset/Yakamaido (Ludii 7) (Reconstructed)" {
-        "Variant/Yakamaido (Ludii 7)"
+    (ruleset "Ruleset/Riga Game (Ludii 7) (Reconstructed)" {
+        "Variant/Riga Game (Ludii 7)"
     })
-    (ruleset "Ruleset/Yakamaido (Ludii 8) (Reconstructed)" {
-        "Variant/Yakamaido (Ludii 8)"
+    (ruleset "Ruleset/Riga Game (Ludii 8) (Reconstructed)" {
+        "Variant/Riga Game (Ludii 8)"
     })
-    (ruleset "Ruleset/Yakamaido (Ludii 9) (Reconstructed)" {
-        "Variant/Yakamaido (Ludii 9)"
+    (ruleset "Ruleset/Riga Game (Ludii 9) (Reconstructed)" {
+        "Variant/Riga Game (Ludii 9)"
     })
-    (ruleset "Ruleset/Yakamaido (Ludii 10) (Reconstructed)" {
-        "Variant/Yakamaido (Ludii 10)"
+    (ruleset "Ruleset/Riga Game (Ludii 10) (Reconstructed)" {
+        "Variant/Riga Game (Ludii 10)"
     })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
@@ -1584,6 +1796,4 @@
     (recon {
         (concept "NumStartComponents" minValue:6 maxValue:27)
     })
-    
 )
-

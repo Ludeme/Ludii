@@ -5,18 +5,51 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-{
-(item "Lay Gwet Kyah (Ludii 1)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 5)
-        use:Vertex)
+    {
+    (item "Lay Gwet Kyah (Ludii 1)" <
         
-        (piece "Tiger" P1 
-            (and 
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            use:Vertex)
+            
+            (piece "Tiger" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Marker" P2 
                 (move Step 
                     (to if:
                         (is Empty 
@@ -24,131 +57,131 @@
                         )
                     )
                 )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Tiger1" 
+                    (handSite P1)
+                count:3)
                 
-                (move Hop 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
+                (place "Marker2" 
+                    (handSite P2)
+                count:12)
+                }
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (all Sites 
+                            (sites Hand P1)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
                             )
                         )
                         
-                        (apply 
-                            (remove 
-                                (between)
+                        (all Sites 
+                            (sites Hand P2)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
                             )
                         )
                     )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        
-        (piece "Marker" P2 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        
-        (hand Each)
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Tiger1" 
-                (handSite P1)
-            count:3)
-            
-            (place "Marker2" 
-                (handSite P2)
-            count:12)
-            }
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
+                "Movement")
             )
             
-            (nextPhase 
-                (and 
-                    (all Sites 
-                        (sites Hand P1)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                    
-                    (all Sites 
-                        (sites Hand P2)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                )
-            "Movement")
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-            
-            (end { 
-                (if 
-                    (no Moves P1)
-                    
-                    (result P2 Win)
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
                 )
                 
-                (if 
-                    (no Pieces P2)
+                (end { 
+                    (if 
+                        (no Moves P1)
+                        
+                        (result P2 Win)
+                    )
                     
-                    (result P1 Win)
+                    (if 
+                        (no Pieces P2)
+                        
+                        (result P1 Win)
+                    )
+                    }
                 )
-                }
             )
+            }
         )
-        }
-    )
-
- > "The Lay Gwet Kyah (Ludii 1) ruleset.")
-
-(item "Lay Gwet Kyah (Ludii 2)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 4)
-        use:Cell)
         
-        (piece "Tiger" P1 
-            (and 
+    > "The Lay Gwet Kyah (Ludii 1) ruleset.")
+    
+    (item "Lay Gwet Kyah (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 4)
+            use:Cell)
+            
+            (piece "Tiger" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Marker" P2 
                 (move Step 
                     (to if:
                         (is Empty 
@@ -156,131 +189,131 @@
                         )
                     )
                 )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Tiger1" 
+                    (handSite P1)
+                count:3)
                 
-                (move Hop 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
+                (place "Marker2" 
+                    (handSite P2)
+                count:12)
+                }
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (all Sites 
+                            (sites Hand P1)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
                             )
                         )
                         
-                        (apply 
-                            (remove 
-                                (between)
+                        (all Sites 
+                            (sites Hand P2)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
                             )
                         )
                     )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        
-        (piece "Marker" P2 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        
-        (hand Each)
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Tiger1" 
-                (handSite P1)
-            count:3)
-            
-            (place "Marker2" 
-                (handSite P2)
-            count:12)
-            }
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
+                "Movement")
             )
             
-            (nextPhase 
-                (and 
-                    (all Sites 
-                        (sites Hand P1)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                    
-                    (all Sites 
-                        (sites Hand P2)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                )
-            "Movement")
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-            
-            (end { 
-                (if 
-                    (no Moves P1)
-                    
-                    (result P2 Win)
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
                 )
                 
-                (if 
-                    (no Pieces P2)
+                (end { 
+                    (if 
+                        (no Moves P1)
+                        
+                        (result P2 Win)
+                    )
                     
-                    (result P1 Win)
+                    (if 
+                        (no Pieces P2)
+                        
+                        (result P1 Win)
+                    )
+                    }
                 )
-                }
             )
+            }
         )
-        }
-    )
-
- > "The Lay Gwet Kyah (Ludii 2) ruleset.")
-
-(item "Lay Gwet Kyah (Ludii 3)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 5)
-        use:Vertex)
         
-        (piece "Tiger" P1 
-            (and 
+    > "The Lay Gwet Kyah (Ludii 2) ruleset.")
+    
+    (item "Lay Gwet Kyah (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 5)
+            use:Vertex)
+            
+            (piece "Tiger" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Marker" P2 
                 (move Step 
                     (to if:
                         (is Empty 
@@ -288,131 +321,131 @@
                         )
                     )
                 )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Tiger1" 
+                    (handSite P1)
+                count:3)
                 
-                (move Hop 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
+                (place "Marker2" 
+                    (handSite P2)
+                count:11)
+                }
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (all Sites 
+                            (sites Hand P1)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
                             )
                         )
                         
-                        (apply 
-                            (remove 
-                                (between)
+                        (all Sites 
+                            (sites Hand P2)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
                             )
                         )
                     )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        
-        (piece "Marker" P2 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        
-        (hand Each)
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Tiger1" 
-                (handSite P1)
-            count:3)
-            
-            (place "Marker2" 
-                (handSite P2)
-            count:11)
-            }
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
+                "Movement")
             )
             
-            (nextPhase 
-                (and 
-                    (all Sites 
-                        (sites Hand P1)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                    
-                    (all Sites 
-                        (sites Hand P2)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                )
-            "Movement")
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-            
-            (end { 
-                (if 
-                    (no Moves P1)
-                    
-                    (result P2 Win)
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
                 )
                 
-                (if 
-                    (no Pieces P2)
+                (end { 
+                    (if 
+                        (no Moves P1)
+                        
+                        (result P2 Win)
+                    )
                     
-                    (result P1 Win)
+                    (if 
+                        (no Pieces P2)
+                        
+                        (result P1 Win)
+                    )
+                    }
                 )
-                }
             )
+            }
         )
-        }
-    )
-
- > "The Lay Gwet Kyah (Ludii 3) ruleset.")
-
-(item "Lay Gwet Kyah (Ludii 4)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (square 4)
-        use:Cell)
         
-        (piece "Tiger" P1 
-            (and 
+    > "The Lay Gwet Kyah (Ludii 3) ruleset.")
+    
+    (item "Lay Gwet Kyah (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 4)
+            use:Cell)
+            
+            (piece "Tiger" P1 
+                (and 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Marker" P2 
                 (move Step 
                     (to if:
                         (is Empty 
@@ -420,121 +453,87 @@
                         )
                     )
                 )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Tiger1" 
+                    (handSite P1)
+                count:3)
                 
-                (move Hop 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
+                (place "Marker2" 
+                    (handSite P2)
+                count:11)
+                }
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (all Sites 
+                            (sites Hand P1)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
                             )
                         )
                         
-                        (apply 
-                            (remove 
-                                (between)
+                        (all Sites 
+                            (sites Hand P2)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
                             )
                         )
                     )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        
-        (piece "Marker" P2 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        
-        (hand Each)
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Tiger1" 
-                (handSite P1)
-            count:3)
-            
-            (place "Marker2" 
-                (handSite P2)
-            count:11)
-            }
-        )
-        phases:{ 
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from 
-                        (handSite Mover)
-                    )
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
+                "Movement")
             )
             
-            (nextPhase 
-                (and 
-                    (all Sites 
-                        (sites Hand P1)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                    
-                    (all Sites 
-                        (sites Hand P2)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                )
-            "Movement")
-        )
-        
-        (phase "Movement" 
-            (play 
-                (forEach Piece)
-            )
-            
-            (end { 
-                (if 
-                    (no Moves P1)
-                    
-                    (result P2 Win)
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
                 )
                 
-                (if 
-                    (no Pieces P2)
+                (end { 
+                    (if 
+                        (no Moves P1)
+                        
+                        (result P2 Win)
+                    )
                     
-                    (result P1 Win)
+                    (if 
+                        (no Pieces P2)
+                        
+                        (result P1 Win)
+                    )
+                    }
                 )
-                }
             )
+            }
         )
-        }
-    )
-
- > "The Lay Gwet Kyah (Ludii 4) ruleset.")
-
-
+        
+    > "The Lay Gwet Kyah (Ludii 4) ruleset.")
+    
     (item "Incomplete"
         <
         (players 2) 
@@ -580,25 +579,24 @@
         "The incomplete ruleset."
     )
     
-
- })
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets {
-
-(ruleset "Ruleset/Lay Gwet Kyah (Ludii 1) (Reconstructed)" {
-     "Variant/Lay Gwet Kyah (Ludii 1)"
-})
-(ruleset "Ruleset/Lay Gwet Kyah (Ludii 2) (Reconstructed)" {
-     "Variant/Lay Gwet Kyah (Ludii 2)"
-})
-(ruleset "Ruleset/Lay Gwet Kyah (Ludii 3) (Reconstructed)" {
-     "Variant/Lay Gwet Kyah (Ludii 3)"
-})
-(ruleset "Ruleset/Lay Gwet Kyah (Ludii 4) (Reconstructed)" {
-     "Variant/Lay Gwet Kyah (Ludii 4)"
-})
+    
+    (ruleset "Ruleset/Lay Gwet Kyah (Ludii 1) (Reconstructed)" {
+        "Variant/Lay Gwet Kyah (Ludii 1)"
+    })
+    (ruleset "Ruleset/Lay Gwet Kyah (Ludii 2) (Reconstructed)" {
+        "Variant/Lay Gwet Kyah (Ludii 2)"
+    })
+    (ruleset "Ruleset/Lay Gwet Kyah (Ludii 3) (Reconstructed)" {
+        "Variant/Lay Gwet Kyah (Ludii 3)"
+    })
+    (ruleset "Ruleset/Lay Gwet Kyah (Ludii 4) (Reconstructed)" {
+        "Variant/Lay Gwet Kyah (Ludii 4)"
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -608,7 +606,7 @@
 
 //------------------------------------------------------------------------------
 
- (metadata 
+(metadata 
     
     (info
         {
@@ -624,5 +622,4 @@
     })
     
 )
-
 
