@@ -42,8 +42,7 @@ public class SkillTraceAnalysis
 				continue;
 			
 			// Load the game and estimate branching factor as the number of legal moves at the start of the game.
-			final String gameName = s.split("\\/")[s.split("\\/").length-1];
-			final Game game = GameLoader.loadGameFromName(gameName);
+			final Game game = GameLoader.loadGameFromName(s);
 			final Trial trial = new Trial(game);
 			final Context context = new Context(game, trial);
 			game.start(context);
@@ -77,8 +76,7 @@ public class SkillTraceAnalysis
 		
 		for (final String s : choicesSorted)
 		{
-			final String gameName = s.split("\\/")[s.split("\\/").length-1];
-			final Game game = GameLoader.loadGameFromName(gameName);
+			final Game game = GameLoader.loadGameFromName(s);
 			if (gameNamesAlreadyDone.contains(game.name()))
 			{
 				System.out.println("\n------------");
