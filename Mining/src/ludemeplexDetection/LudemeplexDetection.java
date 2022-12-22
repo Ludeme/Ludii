@@ -27,8 +27,8 @@ public class LudemeplexDetection
 {
 
 	final static boolean DETECTLUDEMEPLEXES = false;		// Set to true to also detect ludemeplexes (slow)
-	final static int MINLUDMEPLEXSIZE = 4;					// Minimum number of ludemes inside a define ludemeplex
-	final static int MAXLUDEMEPLEXSIZE = 6;					// Maximum number of ludemes inside a detected ludemeplex
+	final static int MINLUDMEPLEXSIZE = 4;					// Minimum number of ludemes inside a ludemeplex
+	final static int MAXLUDEMEPLEXSIZE = 6;					// Maximum number of ludemes inside a ludemeplex
 	final static int MAXDEFINELUDEMEPLEXDIFFERENCE = 2;		// Maximum number of # symbols inside define ludemeplexes
 	
 	//-------------------------------------------------------------------------
