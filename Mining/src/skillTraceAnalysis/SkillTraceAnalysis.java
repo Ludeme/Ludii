@@ -74,6 +74,7 @@ public class SkillTraceAnalysis
 			e.printStackTrace();
 		}
 		
+		// Calculate skill trace metrics for all games (in order of branching factor) that haven't already been done.
 		for (final String s : choicesSorted)
 		{
 			final Game game = GameLoader.loadGameFromName(s);
