@@ -40,7 +40,7 @@ public class SkillTrace extends Metric
 	private int numTrialsPerMatch = 30;
 	
 	// A hard time limit in seconds, after which any future trials are aborted
-	private int hardTimeLimit = 60;
+	private int hardTimeLimit = 180;
 	
 	// Output path for more details results
 	private String outputPath = "";
