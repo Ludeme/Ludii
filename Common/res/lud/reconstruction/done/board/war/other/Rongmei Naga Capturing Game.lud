@@ -5,7 +5,390 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-    {
+{
+(item "Rongmei Naga Capturing Game (Ludii 1)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (square 5 diagonals:Alternating)
+                
+                (shift 0 4 
+                    (rotate 180 
+                        (wedge 3)
+                    )
+                )
+                
+                (shift 0 -2 
+                    (wedge 3)
+                )
+                }
+            )
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union { 
+                    (sites Row 0)
+                    
+                    (sites Row 1)
+                    
+                    (sites Row 2)
+                    }
+                )
+            )
+            
+            (place "Marker2" 
+                (union { 
+                    (sites Row 8)
+                    
+                    (sites Row 7)
+                    
+                    (sites Row 6)
+                    }
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Rongmei Naga Capturing Game (Ludii 1) ruleset.")
+
+(item "Rongmei Naga Capturing Game (Ludii 2)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (square 5 diagonals:Alternating)
+                
+                (shift 0 4 
+                    (rotate 180 
+                        (wedge 3)
+                    )
+                )
+                
+                (shift 0 -2 
+                    (wedge 3)
+                )
+                }
+            )
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union { 
+                    (sites Row 0)
+                    
+                    (sites Row 1)
+                    
+                    (sites Row 2)
+                    
+                    (sites Row 3)
+                    }
+                )
+            )
+            
+            (place "Marker2" 
+                (union { 
+                    (sites Row 8)
+                    
+                    (sites Row 7)
+                    
+                    (sites Row 6)
+                    
+                    (sites Row 5)
+                    }
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Rongmei Naga Capturing Game (Ludii 2) ruleset.")
+
+(item "Rongmei Naga Capturing Game (Ludii 3)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (square 5 diagonals:Alternating)
+                
+                (shift 0 4 
+                    (rotate 180 
+                        (wedge 3)
+                    )
+                )
+                
+                (shift 0 -2 
+                    (wedge 3)
+                )
+                }
+            )
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (sites Row 0)
+            )
+            
+            (place "Marker2" 
+                (sites Row 8)
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Rongmei Naga Capturing Game (Ludii 3) ruleset.")
+
+(item "Rongmei Naga Capturing Game (Ludii 4)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (square 5 diagonals:Alternating)
+                
+                (shift 0 4 
+                    (rotate 180 
+                        (wedge 3)
+                    )
+                )
+                
+                (shift 0 -2 
+                    (wedge 3)
+                )
+                }
+            )
+        use:Vertex)
+        
+        (piece "Marker" Each 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union { 
+                    (sites Row 0)
+                    
+                    (sites Row 1)
+                    }
+                )
+            )
+            
+            (place "Marker2" 
+                (union { 
+                    (sites Row 8)
+                    
+                    (sites Row 7)
+                    }
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Rongmei Naga Capturing Game (Ludii 4) ruleset.")
+
+
     
     (item "Incomplete"
         <
@@ -49,11 +432,25 @@
         "The incomplete ruleset."
     )
     
-})
+
+ })
 
 //------------------------------------------------------------------------------
 
 (rulesets {
+
+(ruleset "Ruleset/Rongmei Naga Capturing Game (Ludii 1) (Reconstructed)" {
+     "Variant/Rongmei Naga Capturing Game (Ludii 1)"
+})
+(ruleset "Ruleset/Rongmei Naga Capturing Game (Ludii 2) (Reconstructed)" {
+     "Variant/Rongmei Naga Capturing Game (Ludii 2)"
+})
+(ruleset "Ruleset/Rongmei Naga Capturing Game (Ludii 3) (Reconstructed)" {
+     "Variant/Rongmei Naga Capturing Game (Ludii 3)"
+})
+(ruleset "Ruleset/Rongmei Naga Capturing Game (Ludii 4) (Reconstructed)" {
+     "Variant/Rongmei Naga Capturing Game (Ludii 4)"
+})
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -63,7 +460,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+ (metadata 
     
     (info
         {
@@ -75,4 +472,5 @@
         (show Edges Diagonal (colour Hidden))
     })
 )
+
 
