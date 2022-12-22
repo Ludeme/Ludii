@@ -5,7 +5,4018 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-    {
+{
+(item "Nardshir (Ludii 1)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (rectangle 1 6)
+                
+                (shift 7 0 
+                    (rectangle 1 6)
+                )
+                
+                (shift 0 6 
+                    (rectangle 1 6)
+                )
+                
+                (shift 7 6 
+                    (rectangle 1 6)
+                )
+                }
+            )
+            { 
+            (track "Track1" { 24 11..0 12..23}
+            P1 directed:True)
+            
+            (track "Track2" { 25 23..12 0..11}
+            P2 directed:True)
+            }
+        use:Vertex)
+        
+        (dice d:6 num:2)
+        
+        (piece "Disc" Each 
+            (or 
+                (forEach Die if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (if 
+                            (or 
+                                (not 
+                                    (is Enemy 
+                                        (who at:
+                                            (trackSite Move steps:
+                                                (pips)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (= 1 
+                                    (size Stack at:
+                                        (trackSite Move steps:
+                                            (pips)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from)
+                                
+                                (to 
+                                    (trackSite Move steps:
+                                        (pips)
+                                    )
+                                    
+                                    (apply if:
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (handSite 
+                                                    (who at:
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (if 
+                    (= 
+                        (value Player Mover)
+                    Undefined)
+                    
+                    (or { 
+                        (if 
+                            (= 
+                                (trackSite Move steps:1)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:1 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:1 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:1)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:2)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:2 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:2 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:2)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:3)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:3 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:3 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:3)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:4)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:4 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:4 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:4)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:5)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:5 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:5 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:5)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:6)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:6 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:6 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:6)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        }
+                        
+                        (then 
+                            (if 
+                                (not 
+                                    (all DiceUsed)
+                                )
+                                
+                                (and 
+                                    (moveAgain)
+                                    
+                                    (set Value Mover 1)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (hand Each)
+        
+        (map { 
+            (pair 1 24)
+            
+            (pair 2 25)
+            }
+        )
+        
+        (regions P1 { 2}
+        )
+        
+        (regions P2 { 23 22 21 20 19 18}
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place Stack "Disc1" 
+                (handSite P1)
+            count:15)
+            
+            (place Stack "Disc2" 
+                (handSite P2)
+            count:15)
+            }
+        )
+        
+        (play 
+            (do 
+                (if 
+                    (not 
+                        (is Prev Mover)
+                    )
+                    
+                    (roll)
+                )
+                next:
+                (or 
+                    (forEach Piece top:True)
+                    
+                    (forEach Piece container:
+                        (mover)
+                    top:True)
+                    
+                    (then 
+                        (if 
+                            (or 
+                                (= 
+                                    (value Player Mover)
+                                Undefined)
+                                
+                                (not 
+                                    (all DiceUsed)
+                                )
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (and 
+                                    (all DiceUsed)
+                                    
+                                    (= 
+                                        (value Player Mover)
+                                    1)
+                                )
+                                
+                                (set Value Mover Undefined)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (no Pieces Mover)
+                
+                (result Mover Win)
+            )
+        )
+    )
+
+ > "The Nardshir (Ludii 1) ruleset.")
+
+(item "Nardshir (Ludii 2)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (rectangle 1 6)
+                
+                (shift 7 0 
+                    (rectangle 1 6)
+                )
+                
+                (shift 0 6 
+                    (rectangle 1 6)
+                )
+                
+                (shift 7 6 
+                    (rectangle 1 6)
+                )
+                }
+            )
+            { 
+            (track "Track1" { 24 0..23}
+            P1 directed:True)
+            
+            (track "Track2" { 25 23..0}
+            P2 directed:True)
+            }
+        use:Vertex)
+        
+        (dice d:6 num:2)
+        
+        (piece "Disc" Each 
+            (forEach Die replayDouble:True if:
+                (!= 
+                    (pips)
+                0)
+                
+                (if 
+                    (= 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (pips)
+                        )
+                    End)
+                    
+                    (if 
+                        (all Sites 
+                            (sites Occupied by:Mover)
+                            if:
+                            (is In 
+                                (site)
+                                
+                                (sites Mover "FinalQuadrant")
+                            )
+                        )
+                        
+                        (move Remove 
+                            (from)
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (from)
+                        )
+                        
+                        (to 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                            if:
+                            (and { 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (not 
+                                        (is In 
+                                            (to)
+                                            
+                                            (sites Mover "StartingSide" )
+                                        )
+                                    )
+                                    True 
+                                    (> 2 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (not 
+                                        (is In 
+                                            (to)
+                                            
+                                            (sites Mover "AfterPenultimate" )
+                                        )
+                                    )
+                                    True 
+                                    (>= 10 
+                                        (count Pieces in:
+                                            (sites { 
+                                                (handSite Mover)
+                                                
+                                                (mapEntry "Entry" Mover )
+                                                }
+                                            )
+                                        )
+                                    )
+                                )
+                                }
+                            )
+                            
+                            (apply if:
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (handSite Next)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (not 
+                            (all DiceUsed)
+                        )
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        
+        (hand Each)
+        
+        (map { 
+            (pair 1 24)
+            
+            (pair 2 25)
+            }
+        )
+        
+        (regions P1 { 6}
+        )
+        
+        (regions P2 { 23 22 21 20 19 18}
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place Stack "Disc1" 
+                (handSite P1)
+            count:15)
+            
+            (place Stack "Disc2" 
+                (handSite P2)
+            count:15)
+            }
+        )
+        
+        (play 
+            (do 
+                (if 
+                    (not 
+                        (is Prev Mover)
+                    )
+                    
+                    (roll)
+                )
+                next:
+                (or 
+                    (forEach Piece top:True)
+                    
+                    (forEach Piece container:
+                        (mover)
+                    top:True)
+                    
+                    (then 
+                        (if 
+                            (or 
+                                (= 
+                                    (value Player Mover)
+                                Undefined)
+                                
+                                (not 
+                                    (all DiceUsed)
+                                )
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (and 
+                                    (all DiceUsed)
+                                    
+                                    (= 
+                                        (value Player Mover)
+                                    1)
+                                )
+                                
+                                (set Value Mover Undefined)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end { 
+            (if 
+                (no Pieces Mover)
+                
+                (result Mover Win)
+            )
+            
+            (if 
+                (and 
+                    (no Moves P1)
+                    
+                    (no Moves P2)
+                )
+                
+                (result Mover Draw)
+            )
+            }
+        )
+    )
+
+ > "The Nardshir (Ludii 2) ruleset.")
+
+(item "Nardshir (Ludii 3)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (rectangle 1 6)
+                
+                (shift 7 0 
+                    (rectangle 1 6)
+                )
+                
+                (shift 0 6 
+                    (rectangle 1 6)
+                )
+                
+                (shift 7 6 
+                    (rectangle 1 6)
+                )
+                }
+            )
+            { 
+            (track "Track1" { 24 0..23}
+            P1 directed:True)
+            
+            (track "Track2" { 25 23..0}
+            P2 directed:True)
+            }
+        use:Vertex)
+        
+        (dice d:6 num:2)
+        
+        (piece "Disc" Each 
+            (or 
+                (forEach Die if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (if 
+                            (or 
+                                (not 
+                                    (is Enemy 
+                                        (who at:
+                                            (trackSite Move steps:
+                                                (pips)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (= 1 
+                                    (size Stack at:
+                                        (trackSite Move steps:
+                                            (pips)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from)
+                                
+                                (to 
+                                    (trackSite Move steps:
+                                        (pips)
+                                    )
+                                    
+                                    (apply if:
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (handSite 
+                                                    (who at:
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (if 
+                    (= 
+                        (value Player Mover)
+                    Undefined)
+                    
+                    (or { 
+                        (if 
+                            (= 
+                                (trackSite Move steps:1)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:1 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:1 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:1)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:2)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:2 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:2 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:2)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:3)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:3 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:3 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:3)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:4)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:4 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:4 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:4)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:5)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:5 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:5 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:5)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:6)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:6 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:6 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:6)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        }
+                        
+                        (then 
+                            (if 
+                                (not 
+                                    (all DiceUsed)
+                                )
+                                
+                                (and 
+                                    (moveAgain)
+                                    
+                                    (set Value Mover 1)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (hand Each)
+        
+        (map { 
+            (pair 1 24)
+            
+            (pair 2 25)
+            }
+        )
+        
+        (regions P1 { 2}
+        )
+        
+        (regions P2 { 23 22 21 20 19 18}
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place Stack "Disc1" 
+                (handSite P1)
+            count:15)
+            
+            (place Stack "Disc2" 
+                (handSite P2)
+            count:15)
+            }
+        )
+        
+        (play 
+            (do 
+                (if 
+                    (not 
+                        (is Prev Mover)
+                    )
+                    
+                    (roll)
+                )
+                next:
+                (or 
+                    (forEach Piece top:True)
+                    
+                    (forEach Piece container:
+                        (mover)
+                    top:True)
+                    
+                    (then 
+                        (if 
+                            (or 
+                                (= 
+                                    (value Player Mover)
+                                Undefined)
+                                
+                                (not 
+                                    (all DiceUsed)
+                                )
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (and 
+                                    (all DiceUsed)
+                                    
+                                    (= 
+                                        (value Player Mover)
+                                    1)
+                                )
+                                
+                                (set Value Mover Undefined)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end { 
+            (if 
+                (no Pieces Mover)
+                
+                (byScore { 
+                    (score P1 
+                        (if 
+                            (is Mover P1)
+                            
+                            (if 
+                                (= 
+                                    (size Stack in:
+                                        (sites Occupied by:P2)
+                                    )
+                                15 )
+                            2 1 )
+                        0 )
+                    )
+                    
+                    (score P2 
+                        (if 
+                            (is Mover P2)
+                            
+                            (if 
+                                (= 
+                                    (size Stack in:
+                                        (sites Occupied by:P1)
+                                    )
+                                15 )
+                            2 1 )
+                        0 )
+                    )
+                    }
+                )
+            )
+            }
+        )
+    )
+
+ > "The Nardshir (Ludii 3) ruleset.")
+
+(item "Nardshir (Ludii 4)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (rectangle 1 6)
+                
+                (shift 7 0 
+                    (rectangle 1 6)
+                )
+                
+                (shift 0 6 
+                    (rectangle 1 6)
+                )
+                
+                (shift 7 6 
+                    (rectangle 1 6)
+                )
+                }
+            )
+            { 
+            (track "Track1" { 24 0..23}
+            P1 directed:True)
+            
+            (track "Track2" { 25 23..0}
+            P2 directed:True)
+            }
+        use:Vertex)
+        
+        (dice d:6 num:2)
+        
+        (piece "Disc" Each 
+            (forEach Die if:
+                (!= 
+                    (pips)
+                0)
+                
+                (if 
+                    (= 
+                        (trackSite Move steps:
+                            (pips)
+                        )
+                    Off)
+                    
+                    (move Remove 
+                        (from)
+                    )
+                    
+                    (if 
+                        (or 
+                            (not 
+                                (is Enemy 
+                                    (who at:
+                                        (trackSite Move steps:
+                                            (pips)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (= 1 
+                                (size Stack at:
+                                    (trackSite Move steps:
+                                        (pips)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from)
+                            
+                            (to 
+                                (trackSite Move steps:
+                                    (pips)
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (hand Each)
+        
+        (map { 
+            (pair 1 24)
+            
+            (pair 2 25)
+            }
+        )
+        
+        (regions P1 { 7}
+        )
+        
+        (regions P2 { 23 22 21 20 19 18}
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place Stack "Disc1" 
+                (handSite P1)
+            count:15)
+            
+            (place Stack "Disc2" 
+                (handSite P2)
+            count:15)
+            }
+        )
+        
+        (play 
+            (do 
+                (if 
+                    (not 
+                        (is Prev Mover)
+                    )
+                    
+                    (roll)
+                )
+                next:
+                (or 
+                    (forEach Piece top:True)
+                    
+                    (forEach Piece container:
+                        (mover)
+                    top:True)
+                    
+                    (then 
+                        (if 
+                            (or 
+                                (= 
+                                    (value Player Mover)
+                                Undefined)
+                                
+                                (not 
+                                    (all DiceUsed)
+                                )
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (and 
+                                    (all DiceUsed)
+                                    
+                                    (= 
+                                        (value Player Mover)
+                                    1)
+                                )
+                                
+                                (set Value Mover Undefined)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end { 
+            (if 
+                (no Pieces Mover)
+                
+                (byScore { 
+                    (score P1 
+                        (if 
+                            (is Mover P1)
+                            
+                            (if 
+                                (= 
+                                    (size Stack in:
+                                        (sites Occupied by:P2)
+                                    )
+                                15 )
+                            2 1 )
+                        0 )
+                    )
+                    
+                    (score P2 
+                        (if 
+                            (is Mover P2)
+                            
+                            (if 
+                                (= 
+                                    (size Stack in:
+                                        (sites Occupied by:P1)
+                                    )
+                                15 )
+                            2 1 )
+                        0 )
+                    )
+                    }
+                )
+            )
+            }
+        )
+    )
+
+ > "The Nardshir (Ludii 4) ruleset.")
+
+(item "Nardshir (Ludii 5)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (rectangle 1 6)
+                
+                (shift 7 0 
+                    (rectangle 1 6)
+                )
+                
+                (shift 0 6 
+                    (rectangle 1 6)
+                )
+                
+                (shift 7 6 
+                    (rectangle 1 6)
+                )
+                }
+            )
+            { 
+            (track "Track1" { 24 0..23}
+            P1 directed:True)
+            
+            (track "Track2" { 25 23..0}
+            P2 directed:True)
+            }
+        use:Vertex)
+        
+        (dice d:6 num:2)
+        
+        (piece "Disc" Each 
+            (or 
+                (forEach Die if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (if 
+                            (or 
+                                (not 
+                                    (is Enemy 
+                                        (who at:
+                                            (trackSite Move steps:
+                                                (pips)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (= 1 
+                                    (size Stack at:
+                                        (trackSite Move steps:
+                                            (pips)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from)
+                                
+                                (to 
+                                    (trackSite Move steps:
+                                        (pips)
+                                    )
+                                    
+                                    (apply if:
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (handSite 
+                                                    (who at:
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (if 
+                    (= 
+                        (value Player Mover)
+                    Undefined)
+                    
+                    (or { 
+                        (if 
+                            (= 
+                                (trackSite Move steps:1)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:1 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:1 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:1)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:2)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:2 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:2 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:2)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:3)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:3 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:3 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:3)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:4)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:4 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:4 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:4)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:5)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:5 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:5 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:5)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:6)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:6 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:6 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:6)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        }
+                        
+                        (then 
+                            (if 
+                                (not 
+                                    (all DiceUsed)
+                                )
+                                
+                                (and 
+                                    (moveAgain)
+                                    
+                                    (set Value Mover 1)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (hand Each)
+        
+        (map { 
+            (pair 1 24)
+            
+            (pair 2 25)
+            }
+        )
+        
+        (regions P1 { 3}
+        )
+        
+        (regions P2 { 23 22 21 20 19 18}
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place Stack "Disc1" 
+                (handSite P1)
+            count:15)
+            
+            (place Stack "Disc2" 
+                (handSite P2)
+            count:15)
+            }
+        )
+        
+        (play 
+            (do 
+                (if 
+                    (not 
+                        (is Prev Mover)
+                    )
+                    
+                    (roll)
+                )
+                next:
+                (or 
+                    (forEach Piece top:True)
+                    
+                    (forEach Piece container:
+                        (mover)
+                    top:True)
+                    
+                    (then 
+                        (if 
+                            (or 
+                                (= 
+                                    (value Player Mover)
+                                Undefined)
+                                
+                                (not 
+                                    (all DiceUsed)
+                                )
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (and 
+                                    (all DiceUsed)
+                                    
+                                    (= 
+                                        (value Player Mover)
+                                    1)
+                                )
+                                
+                                (set Value Mover Undefined)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end { 
+            (if 
+                (no Pieces Mover)
+                
+                (result Mover Win)
+            )
+            
+            (if 
+                (and 
+                    (no Moves P1)
+                    
+                    (no Moves P2)
+                )
+                
+                (result Mover Draw)
+            )
+            }
+        )
+    )
+
+ > "The Nardshir (Ludii 5) ruleset.")
+
+(item "Nardshir (Ludii 6)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (rectangle 1 6)
+                
+                (shift 7 0 
+                    (rectangle 1 6)
+                )
+                
+                (shift 0 6 
+                    (rectangle 1 6)
+                )
+                
+                (shift 7 6 
+                    (rectangle 1 6)
+                )
+                }
+            )
+            { 
+            (track "Track1" { 24 0..23}
+            P1 directed:True)
+            
+            (track "Track2" { 25 23..0}
+            P2 directed:True)
+            }
+        use:Vertex)
+        
+        (dice d:6 num:2)
+        
+        (piece "Disc" Each 
+            (forEach Die if:
+                (!= 
+                    (pips)
+                0)
+                
+                (if 
+                    (= 
+                        (trackSite Move steps:
+                            (pips)
+                        )
+                    Off)
+                    
+                    (move Remove 
+                        (from)
+                    )
+                    
+                    (if 
+                        (or 
+                            (not 
+                                (is Enemy 
+                                    (who at:
+                                        (trackSite Move steps:
+                                            (pips)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (= 1 
+                                (size Stack at:
+                                    (trackSite Move steps:
+                                        (pips)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from)
+                            
+                            (to 
+                                (trackSite Move steps:
+                                    (pips)
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (hand Each)
+        
+        (map { 
+            (pair 1 24)
+            
+            (pair 2 25)
+            }
+        )
+        
+        (regions P1 { 6}
+        )
+        
+        (regions P2 { 23 22 21 20 19 18}
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place Stack "Disc1" 
+                (handSite P1)
+            count:15)
+            
+            (place Stack "Disc2" 
+                (handSite P2)
+            count:15)
+            }
+        )
+        
+        (play 
+            (do 
+                (if 
+                    (not 
+                        (is Prev Mover)
+                    )
+                    
+                    (roll)
+                )
+                next:
+                (or 
+                    (forEach Piece top:True)
+                    
+                    (forEach Piece container:
+                        (mover)
+                    top:True)
+                    
+                    (then 
+                        (if 
+                            (or 
+                                (= 
+                                    (value Player Mover)
+                                Undefined)
+                                
+                                (not 
+                                    (all DiceUsed)
+                                )
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (and 
+                                    (all DiceUsed)
+                                    
+                                    (= 
+                                        (value Player Mover)
+                                    1)
+                                )
+                                
+                                (set Value Mover Undefined)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end { 
+            (if 
+                (no Pieces Mover)
+                
+                (result Mover Win)
+            )
+            
+            (if 
+                (and 
+                    (no Moves P1)
+                    
+                    (no Moves P2)
+                )
+                
+                (result Mover Draw)
+            )
+            }
+        )
+    )
+
+ > "The Nardshir (Ludii 6) ruleset.")
+
+(item "Nardshir (Ludii 7)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (rectangle 1 6)
+                
+                (shift 7 0 
+                    (rectangle 1 6)
+                )
+                
+                (shift 0 6 
+                    (rectangle 1 6)
+                )
+                
+                (shift 7 6 
+                    (rectangle 1 6)
+                )
+                }
+            )
+            { 
+            (track "Track1" { 24 11..0 12..23}
+            P1 directed:True)
+            
+            (track "Track2" { 25 23..12 0..11}
+            P2 directed:True)
+            }
+        use:Vertex)
+        
+        (dice d:6 num:2)
+        
+        (piece "Disc" Each 
+            (forEach Die if:
+                (!= 
+                    (pips)
+                0)
+                
+                (if 
+                    (= 
+                        (trackSite Move steps:
+                            (pips)
+                        )
+                    Off)
+                    
+                    (move Remove 
+                        (from)
+                    )
+                    
+                    (if 
+                        (or 
+                            (not 
+                                (is Enemy 
+                                    (who at:
+                                        (trackSite Move steps:
+                                            (pips)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (= 1 
+                                (size Stack at:
+                                    (trackSite Move steps:
+                                        (pips)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from)
+                            
+                            (to 
+                                (trackSite Move steps:
+                                    (pips)
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (hand Each)
+        
+        (map { 
+            (pair 1 24)
+            
+            (pair 2 25)
+            }
+        )
+        
+        (regions P1 { 4}
+        )
+        
+        (regions P2 { 23 22 21 20 19 18}
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place Stack "Disc1" 
+                (handSite P1)
+            count:15)
+            
+            (place Stack "Disc2" 
+                (handSite P2)
+            count:15)
+            }
+        )
+        
+        (play 
+            (do 
+                (if 
+                    (not 
+                        (is Prev Mover)
+                    )
+                    
+                    (roll)
+                )
+                next:
+                (or 
+                    (forEach Piece top:True)
+                    
+                    (forEach Piece container:
+                        (mover)
+                    top:True)
+                    
+                    (then 
+                        (if 
+                            (or 
+                                (= 
+                                    (value Player Mover)
+                                Undefined)
+                                
+                                (not 
+                                    (all DiceUsed)
+                                )
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (and 
+                                    (all DiceUsed)
+                                    
+                                    (= 
+                                        (value Player Mover)
+                                    1)
+                                )
+                                
+                                (set Value Mover Undefined)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end { 
+            (if 
+                (no Pieces Mover)
+                
+                (result Mover Win)
+            )
+            
+            (if 
+                (and 
+                    (no Moves P1)
+                    
+                    (no Moves P2)
+                )
+                
+                (result Mover Draw)
+            )
+            }
+        )
+    )
+
+ > "The Nardshir (Ludii 7) ruleset.")
+
+(item "Nardshir (Ludii 8)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (rectangle 1 6)
+                
+                (shift 7 0 
+                    (rectangle 1 6)
+                )
+                
+                (shift 0 6 
+                    (rectangle 1 6)
+                )
+                
+                (shift 7 6 
+                    (rectangle 1 6)
+                )
+                }
+            )
+            { 
+            (track "Track1" { 24 11..0 12..23}
+            P1 directed:True)
+            
+            (track "Track2" { 25 23..12 0..11}
+            P2 directed:True)
+            }
+        use:Vertex)
+        
+        (dice d:6 num:2)
+        
+        (piece "Disc" Each 
+            (or 
+                (forEach Die if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (if 
+                            (or 
+                                (not 
+                                    (is Enemy 
+                                        (who at:
+                                            (trackSite Move steps:
+                                                (pips)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (= 1 
+                                    (size Stack at:
+                                        (trackSite Move steps:
+                                            (pips)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from)
+                                
+                                (to 
+                                    (trackSite Move steps:
+                                        (pips)
+                                    )
+                                    
+                                    (apply if:
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (handSite 
+                                                    (who at:
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (if 
+                    (= 
+                        (value Player Mover)
+                    Undefined)
+                    
+                    (or { 
+                        (if 
+                            (= 
+                                (trackSite Move steps:1)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:1 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:1 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:1)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:2)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:2 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:2 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:2)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:3)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:3 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:3 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:3)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:4)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:4 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:4 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:4)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:5)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:5 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:5 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:5)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:6)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:6 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:6 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:6)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        }
+                        
+                        (then 
+                            (if 
+                                (not 
+                                    (all DiceUsed)
+                                )
+                                
+                                (and 
+                                    (moveAgain)
+                                    
+                                    (set Value Mover 1)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (hand Each)
+        
+        (map { 
+            (pair 1 24)
+            
+            (pair 2 25)
+            }
+        )
+        
+        (regions P1 { 9}
+        )
+        
+        (regions P2 { 23 22 21 20 19 18}
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place Stack "Disc1" 
+                (handSite P1)
+            count:15)
+            
+            (place Stack "Disc2" 
+                (handSite P2)
+            count:15)
+            }
+        )
+        
+        (play 
+            (do 
+                (if 
+                    (not 
+                        (is Prev Mover)
+                    )
+                    
+                    (roll)
+                )
+                next:
+                (or 
+                    (forEach Piece top:True)
+                    
+                    (forEach Piece container:
+                        (mover)
+                    top:True)
+                    
+                    (then 
+                        (if 
+                            (or 
+                                (= 
+                                    (value Player Mover)
+                                Undefined)
+                                
+                                (not 
+                                    (all DiceUsed)
+                                )
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (and 
+                                    (all DiceUsed)
+                                    
+                                    (= 
+                                        (value Player Mover)
+                                    1)
+                                )
+                                
+                                (set Value Mover Undefined)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end { 
+            (if 
+                (no Pieces Mover)
+                
+                (result Mover Win)
+            )
+            
+            (if 
+                (and 
+                    (no Moves P1)
+                    
+                    (no Moves P2)
+                )
+                
+                (result Mover Draw)
+            )
+            }
+        )
+    )
+
+ > "The Nardshir (Ludii 8) ruleset.")
+
+(item "Nardshir (Ludii 9)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (rectangle 1 6)
+                
+                (shift 7 0 
+                    (rectangle 1 6)
+                )
+                
+                (shift 0 6 
+                    (rectangle 1 6)
+                )
+                
+                (shift 7 6 
+                    (rectangle 1 6)
+                )
+                }
+            )
+            { 
+            (track "Track1" { 24 11..0 12..23}
+            P1 directed:True)
+            
+            (track "Track2" { 25 23..12 0..11}
+            P2 directed:True)
+            }
+        use:Vertex)
+        
+        (dice d:6 num:2)
+        
+        (piece "Disc" Each 
+            (forEach Die if:
+                (!= 
+                    (pips)
+                0)
+                
+                (if 
+                    (= 
+                        (trackSite Move steps:
+                            (pips)
+                        )
+                    Off)
+                    
+                    (move Remove 
+                        (from)
+                    )
+                    
+                    (if 
+                        (or 
+                            (not 
+                                (is Enemy 
+                                    (who at:
+                                        (trackSite Move steps:
+                                            (pips)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (= 1 
+                                (size Stack at:
+                                    (trackSite Move steps:
+                                        (pips)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from)
+                            
+                            (to 
+                                (trackSite Move steps:
+                                    (pips)
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (hand Each)
+        
+        (map { 
+            (pair 1 24)
+            
+            (pair 2 25)
+            }
+        )
+        
+        (regions P1 { 3}
+        )
+        
+        (regions P2 { 23 22 21 20 19 18}
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place Stack "Disc1" 
+                (handSite P1)
+            count:15)
+            
+            (place Stack "Disc2" 
+                (handSite P2)
+            count:15)
+            }
+        )
+        
+        (play 
+            (do 
+                (if 
+                    (not 
+                        (is Prev Mover)
+                    )
+                    
+                    (roll)
+                )
+                next:
+                (or 
+                    (forEach Piece top:True)
+                    
+                    (forEach Piece container:
+                        (mover)
+                    top:True)
+                    
+                    (then 
+                        (if 
+                            (or 
+                                (= 
+                                    (value Player Mover)
+                                Undefined)
+                                
+                                (not 
+                                    (all DiceUsed)
+                                )
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (and 
+                                    (all DiceUsed)
+                                    
+                                    (= 
+                                        (value Player Mover)
+                                    1)
+                                )
+                                
+                                (set Value Mover Undefined)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end { 
+            (if 
+                (no Pieces Mover)
+                
+                (result Mover Win)
+            )
+            
+            (if 
+                (and 
+                    (no Moves P1)
+                    
+                    (no Moves P2)
+                )
+                
+                (result Mover Draw)
+            )
+            }
+        )
+    )
+
+ > "The Nardshir (Ludii 9) ruleset.")
+
+(item "Nardshir (Ludii 10)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (rectangle 1 6)
+                
+                (shift 7 0 
+                    (rectangle 1 6)
+                )
+                
+                (shift 0 6 
+                    (rectangle 1 6)
+                )
+                
+                (shift 7 6 
+                    (rectangle 1 6)
+                )
+                }
+            )
+            { 
+            (track "Track1" { 24 0..23}
+            P1 directed:True)
+            
+            (track "Track2" { 25 23..0}
+            P2 directed:True)
+            }
+        use:Vertex)
+        
+        (dice d:6 num:2)
+        
+        (piece "Disc" Each 
+            (or 
+                (forEach Die if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (if 
+                            (or 
+                                (not 
+                                    (is Enemy 
+                                        (who at:
+                                            (trackSite Move steps:
+                                                (pips)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (= 1 
+                                    (size Stack at:
+                                        (trackSite Move steps:
+                                            (pips)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from)
+                                
+                                (to 
+                                    (trackSite Move steps:
+                                        (pips)
+                                    )
+                                    
+                                    (apply if:
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (handSite 
+                                                    (who at:
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (if 
+                    (= 
+                        (value Player Mover)
+                    Undefined)
+                    
+                    (or { 
+                        (if 
+                            (= 
+                                (trackSite Move steps:1)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:1 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:1 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:1)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:2)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:2 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:2 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:2)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:3)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:3 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:3 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:3)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:4)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:4 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:4 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:4)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:5)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:5 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:5 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:5)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move steps:6)
+                            Off)
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (trackSite Move steps:6 )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (trackSite Move steps:6 )
+                                        )
+                                    )
+                                )
+                                
+                                (move 
+                                    (from)
+                                    
+                                    (to 
+                                        (trackSite Move steps:6)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        }
+                        
+                        (then 
+                            (if 
+                                (not 
+                                    (all DiceUsed)
+                                )
+                                
+                                (and 
+                                    (moveAgain)
+                                    
+                                    (set Value Mover 1)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (hand Each)
+        
+        (map { 
+            (pair 1 24)
+            
+            (pair 2 25)
+            }
+        )
+        
+        (regions P1 { 4}
+        )
+        
+        (regions P2 { 23 22 21 20 19 18}
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place Stack "Disc1" 
+                (handSite P1)
+            count:15)
+            
+            (place Stack "Disc2" 
+                (handSite P2)
+            count:15)
+            }
+        )
+        
+        (play 
+            (do 
+                (if 
+                    (not 
+                        (is Prev Mover)
+                    )
+                    
+                    (roll)
+                )
+                next:
+                (or 
+                    (forEach Piece top:True)
+                    
+                    (forEach Piece container:
+                        (mover)
+                    top:True)
+                    
+                    (then 
+                        (if 
+                            (or 
+                                (= 
+                                    (value Player Mover)
+                                Undefined)
+                                
+                                (not 
+                                    (all DiceUsed)
+                                )
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (and 
+                                    (all DiceUsed)
+                                    
+                                    (= 
+                                        (value Player Mover)
+                                    1)
+                                )
+                                
+                                (set Value Mover Undefined)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end { 
+            (if 
+                (no Pieces Mover)
+                
+                (result Mover Win)
+            )
+            
+            (if 
+                (and 
+                    (no Moves P1)
+                    
+                    (no Moves P2)
+                )
+                
+                (result Mover Draw)
+            )
+            }
+        )
+    )
+
+ > "The Nardshir (Ludii 10) ruleset.")
+
+
     (item "Incomplete"
         <
         (players 2)
@@ -45,11 +4056,43 @@
         "The incomplete ruleset."
     )
     
-})
+
+ })
 
 //------------------------------------------------------------------------------
 
 (rulesets {
+
+(ruleset "Ruleset/Nardshir (Ludii 1) (Reconstructed)" {
+     "Variant/Nardshir (Ludii 1)"
+})
+(ruleset "Ruleset/Nardshir (Ludii 2) (Reconstructed)" {
+     "Variant/Nardshir (Ludii 2)"
+})
+(ruleset "Ruleset/Nardshir (Ludii 3) (Reconstructed)" {
+     "Variant/Nardshir (Ludii 3)"
+})
+(ruleset "Ruleset/Nardshir (Ludii 4) (Reconstructed)" {
+     "Variant/Nardshir (Ludii 4)"
+})
+(ruleset "Ruleset/Nardshir (Ludii 5) (Reconstructed)" {
+     "Variant/Nardshir (Ludii 5)"
+})
+(ruleset "Ruleset/Nardshir (Ludii 6) (Reconstructed)" {
+     "Variant/Nardshir (Ludii 6)"
+})
+(ruleset "Ruleset/Nardshir (Ludii 7) (Reconstructed)" {
+     "Variant/Nardshir (Ludii 7)"
+})
+(ruleset "Ruleset/Nardshir (Ludii 8) (Reconstructed)" {
+     "Variant/Nardshir (Ludii 8)"
+})
+(ruleset "Ruleset/Nardshir (Ludii 9) (Reconstructed)" {
+     "Variant/Nardshir (Ludii 9)"
+})
+(ruleset "Ruleset/Nardshir (Ludii 10) (Reconstructed)" {
+     "Variant/Nardshir (Ludii 10)"
+})
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -59,7 +4102,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+ (metadata 
     
     (info
         {
@@ -81,4 +4124,5 @@
     })
     
 )
+
 
