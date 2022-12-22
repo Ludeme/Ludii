@@ -1,0 +1,42 @@
+(game "Mbenga Alignment Game" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 3 3 diagonals:Alternating)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each)
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:4)
+        )
+        
+        (play 
+            (move 
+                (from 
+                    (handSite Mover)
+                )
+                
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+
