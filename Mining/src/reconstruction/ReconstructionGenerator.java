@@ -42,7 +42,7 @@ public class ReconstructionGenerator
 	final static String defaultOutputPath        = "./res/recons/output/";
 	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 100000;
-	final static String defaultReconsPath        = "/lud/reconstruction/done/board/race/escape/Pasakakrida (Type 4)";
+	final static String defaultReconsPath        = "/lud/reconstruction/done/board/race/escape/Pasakakrida (Type 5)";
 	//final static String defaultReconsPath        = "/lud/reconstruction/done/board/war/replacement/checkmate/chaturanga/Samantsy";
 	//final static String defaultReconsPath        = "/lud/reconstruction/validation/Canadian Draughts";
 	final static String defaultOptionName        = "Variant/Incomplete";
