@@ -1,0 +1,241 @@
+(game "Guettal" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Counter" Each 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (and 
+                            (if 
+                                (is In 
+                                    (last To)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (promote 
+                                    (last To)
+                                    
+                                    (piece "DoubleCounter")
+                                Mover )
+                            )
+                            
+                            (set Value Mover 0)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (set Value Mover 1)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is In 
+                            (last To)
+                            
+                            (sites Next)
+                        )
+                        
+                        (promote 
+                            (last To)
+                            
+                            (piece "DoubleCounter")
+                        Mover)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Counter1" 
+                (union { 
+                    (expand 
+                        (sites Bottom)
+                    )
+                    
+                    (sites { "D3" "E3"}
+                    )
+                    }
+                )
+            )
+            
+            (place "Counter2" 
+                (union { 
+                    (sites { "A3" "B3"}
+                    )
+                    
+                    (expand 
+                        (sites Top)
+                    )
+                    }
+                )
+            )
+            }
+        )
+        
+        (play 
+            (move Add 
+                (to 
+                    (sites Empty)
+                    if:
+                    (= 
+                        (state at:
+                            (to)
+                        )
+                    0)
+                )
+                
+                (then 
+                    (and 
+                        (forEach Site 
+                            (sites Empty)
+                            
+                            (if 
+                                (!= 0 
+                                    (state at:
+                                        (site)
+                                    )
+                                )
+                                
+                                (set State at:
+                                    (site)
+                                0)
+                            )
+                        )
+                        
+                        (enclose 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between if:
+                                (or 
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (is Empty 
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (and 
+                                        (if 
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                            
+                                            (remove 
+                                                (between)
+                                            )
+                                        )
+                                        
+                                        (set State at:
+                                            (between)
+                                            
+                                            (mover)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (and 
+                    (no Moves P1)
+                    
+                    (no Moves P2)
+                )
+                { 
+                (if 
+                    (< 
+                        (count Pieces P1)
+                        
+                        (count Pieces P2)
+                    )
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (< 
+                        (count Pieces P2)
+                        
+                        (count Pieces P1)
+                    )
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (= 
+                        (count Pieces P2)
+                        
+                        (count Pieces P1)
+                    )
+                    
+                    (result Mover Draw)
+                )
+                }
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Capture" True)
+    })
+    )
