@@ -34,7 +34,7 @@ public class UpdateGameRulesetsTable
 	final static String pathReconstructed    = "./res/recons/output/";
 	
 	// The game name.
-	final static String gameName        = "Pasakakrida (Type 6)";
+	final static String gameName        = "Guettal";
 	
 	// The precision of the double to use.
 	final static int DOUBLE_PRECISION = 5;
