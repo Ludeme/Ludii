@@ -40,9 +40,9 @@ import utils.RandomAI;
 public class ReconstructionGenerator
 {
 	final static String defaultOutputPath        = "./res/recons/output/";
-	final static int    defaultNumReconsExpected = 10;
-	final static int    defaultNumAttempts       = 100000;
-	final static String defaultReconsPath        = "/lud/reconstruction/done/board/space/line/Ashanti Alignment Game";
+	final static int    defaultNumReconsExpected = 2;
+	final static int    defaultNumAttempts       = 300;
+	final static String defaultReconsPath        = "/lud/reconstruction/done/board/war/leaping/diagonal/Yup'ik Checkers";
 	//final static String defaultReconsPath        = "/lud/reconstruction/done/board/war/replacement/checkmate/chaturanga/Samantsy";
 	//final static String defaultReconsPath        = "/lud/reconstruction/validation/Canadian Draughts";
 	final static String defaultOptionName        = "Variant/Incomplete";
