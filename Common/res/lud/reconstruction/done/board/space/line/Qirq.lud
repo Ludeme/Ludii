@@ -1,4 +1,4 @@
-(game "Al-Qirq"
+(game "Qirq"
     <Variant>
 )
 
@@ -2522,58 +2522,6 @@
     (ruleset "Ruleset/Al-Qirq (Ludii 10) (Reconstructed)" {
         "Variant/Al-Qirq (Ludii 10)"
     })
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        "Variant/Incomplete"
-    })
-    
-})
-
-//------------------------------------------------------------------------------
-
-(metadata 
-    
-    (info
-        {
-        }
-    )
-    
-    (recon {
-        (concept "NumStartComponents" 18)
-        (concept "Line" True)
-    })
-    
-)
-
-(game "Qirq"
-    <Variant>
-)
-
-//------------------------------------------------------------------------------
-
-(option "Variant" <Variant> args:{ <variant> }
-    {
-    
-    (item "Incomplete"
-        <
-        (players 2)
-        
-        (equipment 
-            { 
-            (board (square 3) use:Vertex) 
-            (hand Each)
-            (piece [#])
-        })
-        (rules [#])
-        >
-        "The incomplete ruleset."
-    )
-    
-})
-
-//------------------------------------------------------------------------------
-
-(rulesets {
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
