@@ -34,7 +34,7 @@ public class UpdateGameRulesetsTable
 	final static String pathReconstructed    = "./res/recons/output/";
 	
 	// The game name.
-	final static String gameName        = "Banyarwanda Mill Game";
+	final static String gameName        = "Ashanti Alignment Game";
 	
 	// The precision of the double to use.
 	final static int DOUBLE_PRECISION = 5;
@@ -76,7 +76,7 @@ public class UpdateGameRulesetsTable
 			while (line != null)
 			{
 				String lineNoQuote = line.replaceAll(Pattern.quote("\""), "");
-
+				
 				int separatorIndex = lineNoQuote.indexOf(',');
 				final String rulesetName = lineNoQuote.substring(0, separatorIndex);
 				lineNoQuote = lineNoQuote.substring(rulesetName.length() + 1);
