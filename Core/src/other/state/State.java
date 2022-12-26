@@ -1552,7 +1552,8 @@ public class State implements Serializable
 	{
 		final int pendingValue = (value == Constants.UNDEFINED) ? 1 : value;
 		updatePendingHash(pendingValue);
-		pendingValues.add(pendingValue);
+		if(pendingValues != null)
+			pendingValues.add(pendingValue);
 	}
 	
 	/**
