@@ -477,6 +477,7 @@ public class Generator
 		String str = instantiateStrings(input.trim(), rng);
 		str = instantiateIntegers(str, rng);
 		str = instantiateFloats(str, rng);
+		str = instantiateDims(str, rng);
 		return str;
 	}
 		

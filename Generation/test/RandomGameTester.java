@@ -8,6 +8,6 @@ public class RandomGameTester
 {
 	public static void main(final String[] arg)
 	{
-		Generator.testGames(1000, false, false, false, false);
+		Generator.testGames(1000, true, false, false, false);
 	}
 }
