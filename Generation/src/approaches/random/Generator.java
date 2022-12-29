@@ -245,7 +245,7 @@ public class Generator
 			if (rng.nextInt(2 + depth) != 0)
 			{
 				// Stop recursion and return terminal version
-				return "int";
+				return "%int%";
 			}
 		}
 		else if (rule.lhs().equals("<boolean>"))
@@ -253,7 +253,7 @@ public class Generator
 			if (rng.nextInt(2 + depth) != 0)
 			{
 				// Stop recursion and return terminal version
-				return (rng.nextInt(2) != 0) ? "true" : "false";
+				return (rng.nextInt(2) != 0) ? "True" : "False";
 			}
 		}
 		else if (rule.lhs().equals("<float>"))
@@ -261,7 +261,7 @@ public class Generator
 			if (rng.nextInt(2 + depth) != 0)
 			{
 				// Stop recursion and return terminal version
-				return "float";
+				return "%float%";
 			}
 		}
 		else if (rule.lhs().equals("<dim>"))
@@ -272,7 +272,7 @@ public class Generator
 			if (rng.nextInt(2 + depth) != 0)
 			{
 				// Stop recursion and return terminal version
-				return "dim";
+				return "%dim%";
 			}
 		}
 
@@ -291,12 +291,17 @@ public class Generator
 		
 		if (clause.isTerminal())
 		{
+
+			if (clause.toString().equals("string")) {
+				return "%string%";
+			}
+
 			// Return complete clause immediately
 			return clause.toString();
 		}
 		
 		if (clause.isRule())
-		{				
+		{
 			final List<EBNFRule> clauseRule = findRules(clause.token());
 			if (clauseRule.isEmpty())
 			{
@@ -484,23 +489,10 @@ public class Generator
 		while (true)
 		{
 			// Find next occurrence of 'string'
-			c = str.indexOf("string", c + 1);
+			c = str.indexOf("%string%", c + 1);
 			if (c < 0)
 				break;
-			
-			final char chPrev = str.charAt(c - 1);
-			final char chNext = str.charAt(c + 6);
-			
-			if 
-			(
-				chPrev != ' ' && chPrev != ':' && chPrev != '{'
-				||
-				chNext != ' ' && chNext != ')' && chNext != '}'
-			)
-			{
-				continue;  // is not an actual string placeholder
-			}
-			
+
 			final String owner = enclosingLudemeName(str, c);
 			//System.out.println("owner='" + owner + "'");
 			
@@ -533,7 +525,7 @@ public class Generator
 				replacement = (char)('A' + rng.nextInt(26)) + ("" + rng.nextInt(26));
 			}
 			
-			str = str.substring(0, c) + "\"" + replacement + "\"" + str.substring(c + 6);
+			str = str.substring(0, c) + "\"" + replacement + "\"" + str.substring(c + 8);
 		}
 						
 		return str;
@@ -548,23 +540,10 @@ public class Generator
 		while (true)
 		{
 			// Find next occurrence of 'int'
-			c = str.indexOf("int", c + 1);
+			c = str.indexOf("%int%", c + 1);
 			if (c < 0)
 				break;
-			
-			final char chPrev = str.charAt(c - 1);
-			final char chNext = str.charAt(c + 3);
-			
-			if 
-			(
-				chPrev != ' ' && chPrev != ':' && chPrev != '{'
-				||
-				chNext != ' ' && chNext != ')' && chNext != '}'
-			)
-			{
-				continue;  // is not an actual int placeholder
-			}
-			
+
 			int num = lowBiasedRandomInteger(rng, true);
 			
 			final String owner = enclosingLudemeName(str, c);
@@ -574,7 +553,7 @@ public class Generator
 				num = num % 4 + 1;
 			}
 			
-			str = str.substring(0, c) + num + str.substring(c + 3);
+			str = str.substring(0, c) + num + str.substring(c + 5);
 		}
 						
 		return str;
@@ -589,23 +568,10 @@ public class Generator
 		while (true)
 		{
 			// Find next occurrence of 'dim'
-			c = str.indexOf("dim", c + 1);
+			c = str.indexOf("%dim%", c + 1);
 			if (c < 0)
 				break;
-			
-			final char chPrev = str.charAt(c - 1);
-			final char chNext = str.charAt(c + 3);
-			
-			if 
-			(
-				chPrev != ' ' && chPrev != ':' && chPrev != '{'
-				||
-				chNext != ' ' && chNext != ')' && chNext != '}'
-			)
-			{
-				continue;  // is not an actual int placeholder
-			}
-			
+
 			// Positive number within reasonable bounds
 			int num = Math.abs(lowBiasedRandomInteger(rng, true)) % 20;
 			
@@ -616,7 +582,7 @@ public class Generator
 				num = num % 4 + 1;
 			}
 			
-			str = str.substring(0, c) + num + str.substring(c + 3);
+			str = str.substring(0, c) + num + str.substring(c + 5);
 		}
 						
 		return str;
@@ -628,31 +594,18 @@ public class Generator
 		
 		final DecimalFormat df = new DecimalFormat("#.##");
 		
-		// Instantiate 'int' placeholders
+		// Instantiate 'float' placeholders
 		int c = 0;
 		while (true)
 		{
 			// Find next occurrence of 'float'
-			c = str.indexOf("float", c + 1);
+			c = str.indexOf("%float%", c + 1);
 			if (c < 0)
 				break;
-			
-			final char chPrev = str.charAt(c - 1);
-			final char chNext = str.charAt(c + 5);
-			
-			if 
-			(
-				chPrev != ' ' && chPrev != ':' && chPrev != '{'
-				||
-				chNext != ' ' && chNext != ')' && chNext != '}'
-			)
-			{
-				continue;  // is not an actual int placeholder
-			}
-			
+
 			final double num = lowBiasedRandomInteger(rng, true) / 4.0;
 						
-			str = str.substring(0, c) + df.format(num) + str.substring(c + 5);	
+			str = str.substring(0, c) + df.format(num) + str.substring(c + 7);
 		}
 						
 		return str;
