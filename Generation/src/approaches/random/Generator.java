@@ -3,6 +3,9 @@ package approaches.random;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -279,7 +282,10 @@ public class Generator
 			return "";
 		}
 
-		final EBNFClause clause = rule.rhs().get(rng.nextInt(rule.rhs().size()));
+		// We must sort the clauses to ensure that multiple iterations, with the same rng seed, produce the same output
+		List<EBNFClause> clauses = new LinkedList<>(rule.rhs());
+		Collections.sort(clauses, Comparator.comparing(EBNFClause::toString));
+		final EBNFClause clause = clauses.get(rng.nextInt(rule.rhs().size()));
 		
 //		System.out.println("clause: " + clause + " " + (clause.isTerminal() ? "T" : "") +  (clause.isRule() ? "R" : "") +  (clause.isConstructor() ? "C" : ""));
 		
