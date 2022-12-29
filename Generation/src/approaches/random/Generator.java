@@ -127,6 +127,8 @@ public class Generator
 	/** Point at which to stop random playouts. */
 	private final static int MAX_MOVES = 2000;
 	
+	private final static int MAX_ARRAY_LENGTH = 10;
+
 	//-------------------------------------------------------------------------
 
 	/**
@@ -294,6 +296,35 @@ public class Generator
 
 			if (clause.toString().equals("string")) {
 				return "%string%";
+			}
+
+			// Check for primitive arrays
+			if (clause.toString().equals("{<int>}")) {
+				return '{' +
+						"%int% ".repeat(Math.max(0, rng.nextInt(1, MAX_ARRAY_LENGTH))) +
+						'}';
+			}
+
+			if (clause.toString().equals("{<float>}")) {
+				return '{' +
+						"%float% ".repeat(Math.max(0, rng.nextInt(1, MAX_ARRAY_LENGTH))) +
+						'}';
+			}
+
+			if (clause.toString().equals("{<boolean>}")) {
+				StringBuilder sb = new StringBuilder();
+				sb.append('{');
+				for (int i=0; i < rng.nextInt(1, MAX_ARRAY_LENGTH); i++) {
+					sb.append((rng.nextInt(2) != 0) ? "True " : "False ");
+				}
+				sb.append('}');
+				return sb.toString();
+			}
+
+			if (clause.toString().equals("{<dim>}")) {
+				return '{' +
+						"%dim% ".repeat(Math.max(0, rng.nextInt(1, MAX_ARRAY_LENGTH))) +
+						'}';
 			}
 
 			// Return complete clause immediately
