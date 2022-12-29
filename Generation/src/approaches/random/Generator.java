@@ -300,21 +300,29 @@ public class Generator
 
 			// Check for primitive arrays
 			if (clause.toString().equals("{<int>}")) {
-				return '{' +
-						"%int% ".repeat(Math.max(0, rng.nextInt(1, MAX_ARRAY_LENGTH))) +
-						'}';
+				StringBuilder sb = new StringBuilder();
+				sb.append('{');
+				for (int i=0; i < rng.nextInt(MAX_ARRAY_LENGTH - 1) + 1; i++) {
+					sb.append("%int% ");
+				}
+				sb.append('}');
+				return sb.toString();
 			}
 
 			if (clause.toString().equals("{<float>}")) {
-				return '{' +
-						"%float% ".repeat(Math.max(0, rng.nextInt(1, MAX_ARRAY_LENGTH))) +
-						'}';
+				StringBuilder sb = new StringBuilder();
+				sb.append('{');
+				for (int i=0; i < rng.nextInt(MAX_ARRAY_LENGTH - 1) + 1; i++) {
+					sb.append("%float% ");
+				}
+				sb.append('}');
+				return sb.toString();
 			}
 
 			if (clause.toString().equals("{<boolean>}")) {
 				StringBuilder sb = new StringBuilder();
 				sb.append('{');
-				for (int i=0; i < rng.nextInt(1, MAX_ARRAY_LENGTH); i++) {
+				for (int i=0; i < rng.nextInt(MAX_ARRAY_LENGTH - 1) + 1; i++) {
 					sb.append((rng.nextInt(2) != 0) ? "True " : "False ");
 				}
 				sb.append('}');
@@ -322,9 +330,13 @@ public class Generator
 			}
 
 			if (clause.toString().equals("{<dim>}")) {
-				return '{' +
-						"%dim% ".repeat(Math.max(0, rng.nextInt(1, MAX_ARRAY_LENGTH))) +
-						'}';
+				StringBuilder sb = new StringBuilder();
+				sb.append('{');
+				for (int i=0; i < rng.nextInt(MAX_ARRAY_LENGTH - 1) + 1; i++) {
+					sb.append("%dim% ");
+				}
+				sb.append('}');
+				return sb.toString();
 			}
 
 			// Return complete clause immediately
