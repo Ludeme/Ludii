@@ -54,6 +54,18 @@ public final class LudiiStateWrapper
 	}
 	
 	/**
+	 * Constructor
+	 * @param gameWrapper
+	 * @param context
+	 */
+	public LudiiStateWrapper(final LudiiGameWrapper gameWrapper, final Context context)
+	{
+		this.game = gameWrapper;
+		trial = context.trial();
+		this.context = context;
+	}
+	
+	/**
 	 * Copy constructor
 	 * @param other
 	 */
