@@ -11,15 +11,12 @@
         (players 2) 
         (equipment { 
             ("AlquerqueBoardWithBottomAndTopTriangles")
-            (piece "Tiger" P1 (move [#]))
-            (piece "Sheep" P2 (move [#]))
+            (piece [#])
+            (piece [#])
         }) 
         
         (rules 
-            (start {
-                (place "Tiger1" [#]) // 3 Tigers
-                (place "Sheep2" [#]) // 13 Sheeps
-            })
+            (start [#])
             (play [#])
             (end [#])
         )
