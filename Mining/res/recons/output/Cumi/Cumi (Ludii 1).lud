@@ -1,0 +1,517 @@
+(game "Cumi" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 1 25)
+            { 
+            (track "Track1" { 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 }
+            loop:True P1 )
+            
+            (track "Track2" { 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0 }
+            loop:True P2 )
+            }
+        use:Edge )
+        
+        (dice d:2 from:0 num:4)
+        
+        (piece "Stick" Each 
+            (move 
+                (from 
+                    (from)
+                    level:
+                    (level)
+                )
+                
+                (to 
+                    (trackSite Move from:
+                        (from)
+                        steps:
+                        (mapEntry "Throw" 
+                            (count Pips)
+                        )
+                    )
+                    if:True 
+                    (apply 
+                        (and 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (if 
+                                    (= 
+                                        (if 
+                                            (= 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            P1)
+                                            
+                                            (if 
+                                                (= 
+                                                    (id "Stick" Neutral)
+                                                    
+                                                    (what at:1)
+                                                )
+                                                1 
+                                                (if 
+                                                    (= 
+                                                        (id "Stick" Neutral )
+                                                        
+                                                        (what at:2)
+                                                    )
+                                                    2 
+                                                    (if 
+                                                        (= 
+                                                            (id "Stick" Neutral )
+                                                            
+                                                            (what at:3)
+                                                        )
+                                                        3 
+                                                        (if 
+                                                            (= 
+                                                                (id "Stick" Neutral )
+                                                                
+                                                                (what at:4 )
+                                                            )
+                                                            4 
+                                                            (if 
+                                                                (= 
+                                                                    (id "Stick" Neutral )
+                                                                    
+                                                                    (what at:5 )
+                                                                )
+                                                                5 
+                                                                (if 
+                                                                    (= 
+                                                                        (id "Stick" Neutral )
+                                                                        
+                                                                        (what at:6 )
+                                                                    )
+                                                                    6 
+                                                                    (if 
+                                                                        (= 
+                                                                            (id "Stick" Neutral )
+                                                                            
+                                                                            (what at:7 )
+                                                                        )
+                                                                        7 
+                                                                        (if 
+                                                                            (= 
+                                                                                (id "Stick" Neutral )
+                                                                                
+                                                                                (what at:8 )
+                                                                            )
+                                                                            8 
+                                                                            (if 
+                                                                                (= 
+                                                                                    (id "Stick" Neutral )
+                                                                                    
+                                                                                    (what at:9 )
+                                                                                )
+                                                                                9 
+                                                                                (if 
+                                                                                    (= 
+                                                                                        (id "Stick" Neutral )
+                                                                                        
+                                                                                        (what at:10 )
+                                                                                    )
+                                                                                    10 
+                                                                                    (if 
+                                                                                        (= 
+                                                                                            (id "Stick" Neutral )
+                                                                                            
+                                                                                            (what at:11 )
+                                                                                        )
+                                                                                    11 Off )
+                                                                                )
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (if 
+                                                (= 
+                                                    (id "Stick" Neutral)
+                                                    
+                                                    (what at:22)
+                                                )
+                                                22 
+                                                (if 
+                                                    (= 
+                                                        (id "Stick" Neutral )
+                                                        
+                                                        (what at:21)
+                                                    )
+                                                    21 
+                                                    (if 
+                                                        (= 
+                                                            (id "Stick" Neutral )
+                                                            
+                                                            (what at:20)
+                                                        )
+                                                        20 
+                                                        (if 
+                                                            (= 
+                                                                (id "Stick" Neutral )
+                                                                
+                                                                (what at:19 )
+                                                            )
+                                                            19 
+                                                            (if 
+                                                                (= 
+                                                                    (id "Stick" Neutral )
+                                                                    
+                                                                    (what at:18 )
+                                                                )
+                                                                18 
+                                                                (if 
+                                                                    (= 
+                                                                        (id "Stick" Neutral )
+                                                                        
+                                                                        (what at:17 )
+                                                                    )
+                                                                    17 
+                                                                    (if 
+                                                                        (= 
+                                                                            (id "Stick" Neutral )
+                                                                            
+                                                                            (what at:16 )
+                                                                        )
+                                                                        16 
+                                                                        (if 
+                                                                            (= 
+                                                                                (id "Stick" Neutral )
+                                                                                
+                                                                                (what at:15 )
+                                                                            )
+                                                                            15 
+                                                                            (if 
+                                                                                (= 
+                                                                                    (id "Stick" Neutral )
+                                                                                    
+                                                                                    (what at:14 )
+                                                                                )
+                                                                                14 
+                                                                                (if 
+                                                                                    (= 
+                                                                                        (id "Stick" Neutral )
+                                                                                        
+                                                                                        (what at:13 )
+                                                                                    )
+                                                                                    13 
+                                                                                    (if 
+                                                                                        (= 
+                                                                                            (id "Stick" Neutral )
+                                                                                            
+                                                                                            (what at:12 )
+                                                                                        )
+                                                                                    12 Off )
+                                                                                )
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    Off )
+                                    
+                                    (remove 
+                                        (to)
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (if 
+                                                (= 
+                                                    (who at:
+                                                        (to)
+                                                    )
+                                                P1)
+                                                
+                                                (if 
+                                                    (= 
+                                                        (id "Stick" Neutral )
+                                                        
+                                                        (what at:1)
+                                                    )
+                                                    1 
+                                                    (if 
+                                                        (= 
+                                                            (id "Stick" Neutral )
+                                                            
+                                                            (what at:2)
+                                                        )
+                                                        2 
+                                                        (if 
+                                                            (= 
+                                                                (id "Stick" Neutral )
+                                                                
+                                                                (what at:3 )
+                                                            )
+                                                            3 
+                                                            (if 
+                                                                (= 
+                                                                    (id "Stick" Neutral )
+                                                                    
+                                                                    (what at:4 )
+                                                                )
+                                                                4 
+                                                                (if 
+                                                                    (= 
+                                                                        (id "Stick" Neutral )
+                                                                        
+                                                                        (what at:5 )
+                                                                    )
+                                                                    5 
+                                                                    (if 
+                                                                        (= 
+                                                                            (id "Stick" Neutral )
+                                                                            
+                                                                            (what at:6 )
+                                                                        )
+                                                                        6 
+                                                                        (if 
+                                                                            (= 
+                                                                                (id "Stick" Neutral )
+                                                                                
+                                                                                (what at:7 )
+                                                                            )
+                                                                            7 
+                                                                            (if 
+                                                                                (= 
+                                                                                    (id "Stick" Neutral )
+                                                                                    
+                                                                                    (what at:8 )
+                                                                                )
+                                                                                8 
+                                                                                (if 
+                                                                                    (= 
+                                                                                        (id "Stick" Neutral )
+                                                                                        
+                                                                                        (what at:9 )
+                                                                                    )
+                                                                                    9 
+                                                                                    (if 
+                                                                                        (= 
+                                                                                            (id "Stick" Neutral )
+                                                                                            
+                                                                                            (what at:10 )
+                                                                                        )
+                                                                                        10 
+                                                                                        (if 
+                                                                                            (= 
+                                                                                                (id "Stick" Neutral )
+                                                                                                
+                                                                                                (what at:11 )
+                                                                                            )
+                                                                                        11 Off )
+                                                                                    )
+                                                                                )
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (if 
+                                                    (= 
+                                                        (id "Stick" Neutral )
+                                                        
+                                                        (what at:22)
+                                                    )
+                                                    22 
+                                                    (if 
+                                                        (= 
+                                                            (id "Stick" Neutral )
+                                                            
+                                                            (what at:21)
+                                                        )
+                                                        21 
+                                                        (if 
+                                                            (= 
+                                                                (id "Stick" Neutral )
+                                                                
+                                                                (what at:20 )
+                                                            )
+                                                            20 
+                                                            (if 
+                                                                (= 
+                                                                    (id "Stick" Neutral )
+                                                                    
+                                                                    (what at:19 )
+                                                                )
+                                                                19 
+                                                                (if 
+                                                                    (= 
+                                                                        (id "Stick" Neutral )
+                                                                        
+                                                                        (what at:18 )
+                                                                    )
+                                                                    18 
+                                                                    (if 
+                                                                        (= 
+                                                                            (id "Stick" Neutral )
+                                                                            
+                                                                            (what at:17 )
+                                                                        )
+                                                                        17 
+                                                                        (if 
+                                                                            (= 
+                                                                                (id "Stick" Neutral )
+                                                                                
+                                                                                (what at:16 )
+                                                                            )
+                                                                            16 
+                                                                            (if 
+                                                                                (= 
+                                                                                    (id "Stick" Neutral )
+                                                                                    
+                                                                                    (what at:15 )
+                                                                                )
+                                                                                15 
+                                                                                (if 
+                                                                                    (= 
+                                                                                        (id "Stick" Neutral )
+                                                                                        
+                                                                                        (what at:14 )
+                                                                                    )
+                                                                                    14 
+                                                                                    (if 
+                                                                                        (= 
+                                                                                            (id "Stick" Neutral )
+                                                                                            
+                                                                                            (what at:13 )
+                                                                                        )
+                                                                                        13 
+                                                                                        (if 
+                                                                                            (= 
+                                                                                                (id "Stick" Neutral )
+                                                                                                
+                                                                                                (what at:12 )
+                                                                                            )
+                                                                                        12 Off )
+                                                                                    )
+                                                                                )
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (and { 
+                                    (is Occupied 
+                                        (to)
+                                    )
+                                    
+                                    (= 
+                                        (what at:
+                                            (to)
+                                        level:0)
+                                        
+                                        (id "Stick" Neutral)
+                                    )
+                                    
+                                    (is In 
+                                        (to)
+                                        
+                                        (sites Next "Side")
+                                    )
+                                    }
+                                )
+                                
+                                (remove 
+                                    (to)
+                                level:0)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Stick" Neutral)
+        
+        (map "Throw" { 
+            (pair 0 2)
+            
+            (pair 1 0)
+            
+            (pair 2 1)
+            
+            (pair 3 0)
+            
+            (pair 4 4)
+            }
+        )
+        
+        (regions "Side" P1 
+            (sites { 0 1 2 3 4 5 6 7 8 9 10 11}
+            )
+        )
+        
+        (regions "Side" P2 
+            (sites { 13 14 15 16 17 18 19 20 21 22 23}
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place Stack "Stick1" 0)
+            
+            (place Stack "Stick2" 23)
+            
+            (place Stack "Stick0" 
+                (sites { 1 2 3 4 5 6 7 8 9 10 11 13 14 15 16 17 18 19 20 21 22 }
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (>= 
+                    (score Mover)
+                100)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+

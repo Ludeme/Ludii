@@ -1,0 +1,96 @@
+(game "Cumi" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge 
+                (shift 0 2 
+                    (square 5 diagonals:Alternating)
+                )
+                
+                (wedge 3)
+            )
+        use:Vertex )
+        
+        (piece "Jaguar" P1 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Dog" P2 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Jaguar1" coord:"C6")
+            
+            (place "Dog2" 
+                (expand 
+                    (sites Bottom)
+                steps:2)
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end { 
+            (if 
+                (no Moves Next)
+                
+                (result Next Loss)
+            )
+            
+            (if 
+                (<= 
+                    (count Pieces P2)
+                0)
+                
+                (result P2 Loss)
+            )
+            }
+        )
+    )
+)
+
+
