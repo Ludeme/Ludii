@@ -42,7 +42,7 @@ public class ReconstructionGenerator
 	final static String defaultOutputPath        = "./res/recons/output/";
 	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 100000;
-	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/space/line/Umrabaraba";
+	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/space/line/Picaria (Large)";
 	//final static String defaultReconsPath        = "/lud/reconstruction/done/board/war/replacement/checkmate/chaturanga/Samantsy";
 	//final static String defaultReconsPath        = "/lud/reconstruction/validation/Canadian Draughts";
 	final static String defaultOptionName        = "Variant/Incomplete";
@@ -50,7 +50,7 @@ public class ReconstructionGenerator
 	final static double  defaultConceptualWeight = 0.0;
 	final static double  defaultHistoricalWeight = 0.5;
 	final static double  defaultGeographicalWeight = 0.5;
-	final static double  defaultThreshold = 0.8;
+	final static double  defaultThreshold = 0.99;
 	final static boolean geographicalOrder = true;
 	
 	final static boolean checkTimeoutRandomPlayout = false;

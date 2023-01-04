@@ -1,0 +1,288 @@
+(game "Picaria (Large)" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (if 
+                (= 
+                    (value Player Mover)
+                Off)
+                
+                (or 
+                    (if 
+                        (!= 
+                            (trackSite Move "TrackCW" steps:
+                                (count Pips)
+                            )
+                        Off )
+                        
+                        (if 
+                            (or 
+                                (is In 
+                                    (trackSite Move "TrackCW" steps:
+                                        (count Pips)
+                                    )
+                                    
+                                    (sites Empty)
+                                )
+                                
+                                (is Enemy 
+                                    (who at:
+                                        (trackSite Move "TrackCW" steps:
+                                            (count Pips)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (from)
+                                    level:
+                                    (level)
+                                )
+                                
+                                (to 
+                                    (trackSite Move "TrackCW" steps:
+                                        (count Pips)
+                                    )
+                                    
+                                    (apply if:
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (value Piece at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (= 
+                                    (value Player Mover)
+                                Off)
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (!= 
+                            (trackSite Move "TrackCCW" steps:
+                                (count Pips)
+                            )
+                        Off )
+                        
+                        (if 
+                            (or 
+                                (is In 
+                                    (trackSite Move "TrackCCW" steps:
+                                        (count Pips)
+                                    )
+                                    
+                                    (sites Empty)
+                                )
+                                
+                                (is Enemy 
+                                    (who at:
+                                        (trackSite Move "TrackCCW" steps:
+                                            (count Pips)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (from)
+                                    level:
+                                    (level)
+                                )
+                                
+                                (to 
+                                    (trackSite Move "TrackCCW" steps:
+                                        (count Pips)
+                                    )
+                                    
+                                    (apply if:
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (value Piece at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (= 
+                                    (value Player Mover)
+                                Off)
+                                
+                                (set Value Mover 2)
+                            )
+                        )
+                    )
+                )
+                
+                (if 
+                    (!= 
+                        (if 
+                            (= 
+                                (value Player Mover)
+                            2)
+                            
+                            (trackSite Move "TrackCCW" steps:
+                                (count Pips)
+                            )
+                            
+                            (trackSite Move "TrackCW" steps:
+                                (count Pips)
+                            )
+                        )
+                    Off )
+                    
+                    (if 
+                        (or 
+                            (is In 
+                                (if 
+                                    (= 
+                                        (value Player Mover)
+                                    2)
+                                    
+                                    (trackSite Move "TrackCCW" steps:
+                                        (count Pips)
+                                    )
+                                    
+                                    (trackSite Move "TrackCW" steps:
+                                        (count Pips)
+                                    )
+                                )
+                                
+                                (sites Empty)
+                            )
+                            
+                            (is Enemy 
+                                (who at:
+                                    (if 
+                                        (= 
+                                            (value Player Mover)
+                                        2)
+                                        
+                                        (trackSite Move "TrackCCW" steps:
+                                            (count Pips)
+                                        )
+                                        
+                                        (trackSite Move "TrackCW" steps:
+                                            (count Pips)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                                level:
+                                (level)
+                            )
+                            
+                            (to 
+                                (if 
+                                    (= 
+                                        (value Player Mover)
+                                    2)
+                                    
+                                    (trackSite Move "TrackCCW" steps:
+                                        (count Pips)
+                                    )
+                                    
+                                    (trackSite Move "TrackCW" steps:
+                                        (count Pips)
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (value Piece at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (play 
+            (move Add 
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+

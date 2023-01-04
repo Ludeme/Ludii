@@ -1,0 +1,224 @@
+(game "Picaria (Large)" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (if 
+                (= 
+                    (trackSite Move from:
+                        (from)
+                        steps:
+                        (if 
+                            (= 1 
+                                (count Pips)
+                            )
+                            1 
+                            (if 
+                                (= 4 
+                                    (count Pips)
+                                )
+                                5 
+                                (if 
+                                    (= 0 
+                                        (count Pips)
+                                    )
+                                    10 
+                                    (if 
+                                        (= 2 
+                                            (count Pips)
+                                        )
+                                        
+                                        (if 
+                                            (or 
+                                                (= 0 
+                                                    (face 73)
+                                                )
+                                                
+                                                (= 0 
+                                                    (face 74)
+                                                )
+                                            )
+                                        2 35 )
+                                        
+                                        (if 
+                                            (or 
+                                                (= 0 
+                                                    (face 73)
+                                                )
+                                                
+                                                (= 0 
+                                                    (face 74)
+                                                )
+                                            )
+                                            3 
+                                            (if 
+                                                (= 0 
+                                                    (face 71)
+                                                )
+                                            20 15)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                Off )
+                
+                (move Remove 
+                    (from)
+                    level:
+                    (level)
+                )
+                
+                (move 
+                    (from 
+                        (from)
+                        level:
+                        (level)
+                    )
+                    
+                    (to 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (if 
+                                (= 1 
+                                    (count Pips)
+                                )
+                                1 
+                                (if 
+                                    (= 4 
+                                        (count Pips)
+                                    )
+                                    5 
+                                    (if 
+                                        (= 0 
+                                            (count Pips)
+                                        )
+                                        10 
+                                        (if 
+                                            (= 2 
+                                                (count Pips)
+                                            )
+                                            
+                                            (if 
+                                                (or 
+                                                    (= 0 
+                                                        (face 73)
+                                                    )
+                                                    
+                                                    (= 0 
+                                                        (face 74)
+                                                    )
+                                                )
+                                            2 35 )
+                                            
+                                            (if 
+                                                (or 
+                                                    (= 0 
+                                                        (face 73)
+                                                    )
+                                                    
+                                                    (= 0 
+                                                        (face 74)
+                                                    )
+                                                )
+                                                3 
+                                                (if 
+                                                    (= 0 
+                                                        (face 71)
+                                                    )
+                                                20 15)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        if:True 
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (forEach Level 
+                                    (to)
+                                    FromTop 
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                            level:
+                                            (level)
+                                        )
+                                        
+                                        (to 
+                                            (handSite 
+                                                (who at:
+                                                    (to)
+                                                    level:
+                                                    (level)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites "RemoveSites")
+                            )
+                            
+                            (fromTo 
+                                (from 
+                                    (last To)
+                                )
+                                
+                                (to 
+                                    (handSite 
+                                        (mover)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (play 
+            (move Add 
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+

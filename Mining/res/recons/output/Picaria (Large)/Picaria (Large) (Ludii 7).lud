@@ -1,0 +1,488 @@
+(game "Picaria (Large)" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (if 
+                (= 
+                    (value Player Mover)
+                Off)
+                
+                (or 
+                    (if 
+                        (!= 
+                            (trackSite Move "TrackCW" steps:
+                                (mapEntry "ThrowDiceValue" 
+                                    (count Pips)
+                                )
+                            )
+                        Off )
+                        
+                        (if 
+                            (or 
+                                (is In 
+                                    (trackSite Move "TrackCW" steps:
+                                        (mapEntry "ThrowDiceValue" 
+                                            (count Pips)
+                                        )
+                                    )
+                                    
+                                    (sites Empty)
+                                )
+                                
+                                (is Enemy 
+                                    (who at:
+                                        (trackSite Move "TrackCW" steps:
+                                            (mapEntry "ThrowDiceValue" 
+                                                (count Pips)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (from)
+                                    level:
+                                    (level)
+                                )
+                                
+                                (to 
+                                    (trackSite Move "TrackCW" steps:
+                                        (mapEntry "ThrowDiceValue" 
+                                            (count Pips)
+                                        )
+                                    )
+                                    
+                                    (apply if:
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (value Piece at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (= 
+                                    (value Player Mover)
+                                Off)
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (!= 
+                            (trackSite Move "TrackCCW" steps:
+                                (mapEntry "ThrowDiceValue" 
+                                    (count Pips)
+                                )
+                            )
+                        Off )
+                        
+                        (if 
+                            (or 
+                                (is In 
+                                    (trackSite Move "TrackCCW" steps:
+                                        (mapEntry "ThrowDiceValue" 
+                                            (count Pips)
+                                        )
+                                    )
+                                    
+                                    (sites Empty)
+                                )
+                                
+                                (is Enemy 
+                                    (who at:
+                                        (trackSite Move "TrackCCW" steps:
+                                            (mapEntry "ThrowDiceValue" 
+                                                (count Pips)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (from)
+                                    level:
+                                    (level)
+                                )
+                                
+                                (to 
+                                    (trackSite Move "TrackCCW" steps:
+                                        (mapEntry "ThrowDiceValue" 
+                                            (count Pips)
+                                        )
+                                    )
+                                    
+                                    (apply if:
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (value Piece at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (= 
+                                    (value Player Mover)
+                                Off)
+                                
+                                (set Value Mover 2)
+                            )
+                        )
+                    )
+                )
+                
+                (if 
+                    (!= 
+                        (if 
+                            (= 
+                                (value Player Mover)
+                            2)
+                            
+                            (trackSite Move "TrackCCW" steps:
+                                (mapEntry "ThrowDiceValue" 
+                                    (count Pips)
+                                )
+                            )
+                            
+                            (trackSite Move "TrackCW" steps:
+                                (mapEntry "ThrowDiceValue" 
+                                    (count Pips)
+                                )
+                            )
+                        )
+                    Off )
+                    
+                    (if 
+                        (or 
+                            (is In 
+                                (if 
+                                    (= 
+                                        (value Player Mover)
+                                    2)
+                                    
+                                    (trackSite Move "TrackCCW" steps:
+                                        (mapEntry "ThrowDiceValue" 
+                                            (count Pips)
+                                        )
+                                    )
+                                    
+                                    (trackSite Move "TrackCW" steps:
+                                        (mapEntry "ThrowDiceValue" 
+                                            (count Pips)
+                                        )
+                                    )
+                                )
+                                
+                                (sites Empty)
+                            )
+                            
+                            (is Enemy 
+                                (who at:
+                                    (if 
+                                        (= 
+                                            (value Player Mover)
+                                        2)
+                                        
+                                        (trackSite Move "TrackCCW" steps:
+                                            (mapEntry "ThrowDiceValue" 
+                                                (count Pips)
+                                            )
+                                        )
+                                        
+                                        (trackSite Move "TrackCW" steps:
+                                            (mapEntry "ThrowDiceValue" 
+                                                (count Pips)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                                level:
+                                (level)
+                            )
+                            
+                            (to 
+                                (if 
+                                    (= 
+                                        (value Player Mover)
+                                    2)
+                                    
+                                    (trackSite Move "TrackCCW" steps:
+                                        (mapEntry "ThrowDiceValue" 
+                                            (count Pips)
+                                        )
+                                    )
+                                    
+                                    (trackSite Move "TrackCW" steps:
+                                        (mapEntry "ThrowDiceValue" 
+                                            (count Pips)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (value Piece at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (sites Phase 1)
+            )
+            
+            (place "Marker2" 
+                (sites Phase 0)
+            )
+            }
+        )
+        phases:{ 
+        (phase "OpeningP1" P1 
+            (play 
+                (move Remove 
+                    (intersection 
+                        (union 
+                            (sites Corners)
+                            
+                            (sites Centre)
+                        )
+                        
+                        (sites Phase 1)
+                    )
+                )
+            )
+            
+            (nextPhase Mover "Movement")
+        )
+        
+        (phase "OpeningP2" P2 
+            (play 
+                (move Remove 
+                    (sites Around 
+                        (last To)
+                    Own)
+                )
+            )
+            
+            (nextPhase Mover "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (or 
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            SameDirection 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (move Hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            SameDirection 
+                                            (between if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        
+                        (move Pass)
+                    )
+                    
+                    (forEach Piece "Marker" 
+                        (move Hop 
+                            (from 
+                                (from)
+                            )
+                            Orthogonal 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (move Hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            SameDirection 
+                                            (between if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (no Moves Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+

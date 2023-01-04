@@ -1,0 +1,394 @@
+(game "Picaria (Large)" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (if 
+                (= 
+                    (state at:
+                        (from)
+                    )
+                0)
+                
+                (if 
+                    (or 
+                        (!= 
+                            (from)
+                            
+                            (handSite Mover)
+                        )
+                        
+                        (and 
+                            (= 
+                                (from)
+                                
+                                (handSite Mover)
+                            )
+                            
+                            (all Sites 
+                                (sites Mover "Arc")
+                                if:
+                                (!= 
+                                    (who at:
+                                        (site)
+                                    )
+                                Mover)
+                            )
+                        )
+                    )
+                    
+                    (or 
+                        (if 
+                            (= 
+                                (trackSite Move "TrackCW" steps:
+                                    (mapEntry "Throw" 
+                                        (count Pips)
+                                    )
+                                )
+                            End )
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (!= 
+                                    (trackSite Move "TrackCW" steps:
+                                        (mapEntry "Throw" 
+                                            (count Pips)
+                                        )
+                                    )
+                                Off )
+                                
+                                (if 
+                                    (not 
+                                        (is Friend 
+                                            (who at:
+                                                (trackSite Move "TrackCW" steps:
+                                                    (mapEntry "Throw" 
+                                                        (count Pips)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (move 
+                                        (from)
+                                        
+                                        (to 
+                                            (trackSite Move "TrackCW" steps:
+                                                (mapEntry "Throw" 
+                                                    (count Pips)
+                                                )
+                                            )
+                                            
+                                            (apply if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (and 
+                                                    (set State at:
+                                                        (to)
+                                                    0)
+                                                    
+                                                    (fromTo 
+                                                        (from 
+                                                            (to)
+                                                        )
+                                                        
+                                                        (to 
+                                                            (handSite Next )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (and 
+                                        (= 
+                                            (state at:
+                                                (last To)
+                                            )
+                                        0)
+                                        
+                                        (is In 
+                                            (last To)
+                                            
+                                            (sites "AllSitesDifferentThanArc" )
+                                        )
+                                    )
+                                    
+                                    (set State at:
+                                        (last To)
+                                    1)
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (= 
+                                (trackSite Move "TrackCCW" steps:
+                                    (mapEntry "Throw" 
+                                        (count Pips)
+                                    )
+                                )
+                            End )
+                            
+                            (move Remove 
+                                (from)
+                            )
+                            
+                            (if 
+                                (!= 
+                                    (trackSite Move "TrackCCW" steps:
+                                        (mapEntry "Throw" 
+                                            (count Pips)
+                                        )
+                                    )
+                                Off )
+                                
+                                (if 
+                                    (not 
+                                        (is Friend 
+                                            (who at:
+                                                (trackSite Move "TrackCCW" steps:
+                                                    (mapEntry "Throw" 
+                                                        (count Pips)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (move 
+                                        (from)
+                                        
+                                        (to 
+                                            (trackSite Move "TrackCCW" steps:
+                                                (mapEntry "Throw" 
+                                                    (count Pips)
+                                                )
+                                            )
+                                            
+                                            (apply if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (and 
+                                                    (set State at:
+                                                        (to)
+                                                    0)
+                                                    
+                                                    (fromTo 
+                                                        (from 
+                                                            (to)
+                                                        )
+                                                        
+                                                        (to 
+                                                            (handSite Next )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (and 
+                                        (= 
+                                            (state at:
+                                                (last To)
+                                            )
+                                        0)
+                                        
+                                        (is In 
+                                            (last To)
+                                            
+                                            (sites "AllSitesDifferentThanArc" )
+                                        )
+                                    )
+                                    
+                                    (set State at:
+                                        (last To)
+                                    2)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (if 
+                    (= 
+                        (if 
+                            (= 
+                                (state at:
+                                    (from)
+                                )
+                            2)
+                            
+                            (trackSite Move "TrackCCW" steps:
+                                (mapEntry "Throw" 
+                                    (count Pips)
+                                )
+                            )
+                            
+                            (trackSite Move "TrackCW" steps:
+                                (mapEntry "Throw" 
+                                    (count Pips)
+                                )
+                            )
+                        )
+                    End )
+                    
+                    (move Remove 
+                        (from)
+                    )
+                    
+                    (if 
+                        (!= 
+                            (if 
+                                (= 
+                                    (state at:
+                                        (from)
+                                    )
+                                2)
+                                
+                                (trackSite Move "TrackCCW" steps:
+                                    (mapEntry "Throw" 
+                                        (count Pips)
+                                    )
+                                )
+                                
+                                (trackSite Move "TrackCW" steps:
+                                    (mapEntry "Throw" 
+                                        (count Pips)
+                                    )
+                                )
+                            )
+                        Off )
+                        
+                        (if 
+                            (not 
+                                (is Friend 
+                                    (who at:
+                                        (if 
+                                            (= 
+                                                (state at:
+                                                    (from)
+                                                )
+                                            2)
+                                            
+                                            (trackSite Move "TrackCCW" steps:
+                                                (mapEntry "Throw" 
+                                                    (count Pips)
+                                                )
+                                            )
+                                            
+                                            (trackSite Move "TrackCW" steps:
+                                                (mapEntry "Throw" 
+                                                    (count Pips)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from)
+                                
+                                (to 
+                                    (if 
+                                        (= 
+                                            (state at:
+                                                (from)
+                                            )
+                                        2)
+                                        
+                                        (trackSite Move "TrackCCW" steps:
+                                            (mapEntry "Throw" 
+                                                (count Pips)
+                                            )
+                                        )
+                                        
+                                        (trackSite Move "TrackCW" steps:
+                                            (mapEntry "Throw" 
+                                                (count Pips)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (apply if:
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (and 
+                                            (set State at:
+                                                (to)
+                                            0)
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite Next)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (play 
+            (move Add 
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+
