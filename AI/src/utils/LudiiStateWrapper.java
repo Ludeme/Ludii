@@ -137,6 +137,15 @@ public final class LudiiStateWrapper
 	}
 	
 	/**
+	 * Applies the given move
+	 * @param move
+	 */
+	public void applyMove(final Move move)
+	{
+		game.game.apply(context, move);
+	}
+	
+	/**
 	 * Applies the nth legal move in current game state
 	 * 
 	 * @param n Legal move index. NOTE: index in Ludii's list of legal move,
