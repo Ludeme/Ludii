@@ -217,6 +217,14 @@ public final class LudiiStateWrapper
 	}
 	
 	/**
+	 * @return Array of legal Move objects
+	 */
+	public Move[] legalMovesArray()
+	{
+		return game.game.moves(context).moves().toArray(new Move[0]);
+	}
+	
+	/**
 	 * @return Array of indices for legal moves. For a game state with N legal moves,
 	 * this will always simply be [0, 1, 2, ..., N-1]
 	 */
