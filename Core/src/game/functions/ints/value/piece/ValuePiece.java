@@ -167,7 +167,7 @@ public final class ValuePiece extends BaseIntFunction
 		if (level != null)
 			levelString = " at level " + level.toEnglish(game);
 		
-		return "the level of the piece on " + type.name().toLowerCase() + " " + loc.toEnglish(game) + levelString;
+		return "the level of the piece on " + ((type == null) ? game.board().defaultSite().name().toLowerCase() : type.name().toLowerCase())+ " " + loc.toEnglish(game) + levelString;
 	}
 	
 	//-------------------------------------------------------------------------

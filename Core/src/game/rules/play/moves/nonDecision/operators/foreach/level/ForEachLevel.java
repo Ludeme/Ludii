@@ -229,7 +229,7 @@ public final class ForEachLevel extends Effect
 		if (then() != null)
 			thenString = " then " + then().toEnglish(game);
 		
-		return "for each level at " + type.name() + " " + siteFn.toEnglish(game) + " (" + stackDirection.name() + ") " + generator.toEnglish(game) + thenString;
+		return "for each level at " + ((type == null) ? game.board().defaultSite().name() :  type.name()) + " " + siteFn.toEnglish(game) + " (" + stackDirection.name() + ") " + generator.toEnglish(game) + thenString;
 	}
 	
 	//-------------------------------------------------------------------------
