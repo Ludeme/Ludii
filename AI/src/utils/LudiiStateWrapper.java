@@ -339,6 +339,14 @@ public final class LudiiStateWrapper
 	}
 	
 	/**
+	 * Runs a random playout.
+	 */
+	public void runRandomPlayout()
+	{
+		game.game.playout(context, null, 0.0, null, 0, -1, ThreadLocalRandom.current());
+	}
+	
+	/**
 	 * Estimates a reward for a given player (assumed 0-index player) based on one
 	 * or more random rollouts from the current state.
 	 * 
