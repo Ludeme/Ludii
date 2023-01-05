@@ -1,0 +1,435 @@
+(game "Picaria (Large)" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (or 
+                (if 
+                    (= 0 
+                        (state at:
+                            (from)
+                            level:
+                            (level)
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (from)
+                            level:
+                            (level)
+                        )
+                        
+                        (to 
+                            (trackSite Move from:
+                                (from)
+                                "Track" steps:
+                                (mapEntry "Throw" 
+                                    (count Pips)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (is In 
+                                    (last To)
+                                    
+                                    (sites Occupied by:Enemy top:False)
+                                )
+                                
+                                (forEach Level 
+                                    (last To)
+                                    FromTop 
+                                    (and 
+                                        (if 
+                                            (is Enemy 
+                                                (who at:
+                                                    (last To)
+                                                    level:
+                                                    (level)
+                                                )
+                                            )
+                                            
+                                            (set State at:
+                                                (last To)
+                                                level:
+                                                (level)
+                                            2 )
+                                        )
+                                        
+                                        (if 
+                                            (is Friend 
+                                                (who at:
+                                                    (last To)
+                                                    level:
+                                                    (level)
+                                                )
+                                            )
+                                            
+                                            (set State at:
+                                                (last To)
+                                                level:
+                                                (level)
+                                            1 )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (if 
+                    (= 1 
+                        (state at:
+                            (from)
+                            level:
+                            (level)
+                        )
+                    )
+                    
+                    (if 
+                        (!= 
+                            (trackSite Move from:
+                                (from)
+                                "CaptureTrack" steps:
+                                (mapEntry "Throw" 
+                                    (count Pips)
+                                )
+                            )
+                        Off )
+                        
+                        (move 
+                            (from 
+                                (from)
+                                level:
+                                (level)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    "CaptureTrack" steps:
+                                    (mapEntry "Throw" 
+                                        (count Pips)
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (and 
+                                    (forEach Level 
+                                        (last From)
+                                        FromTop 
+                                        (if 
+                                            (= 2 
+                                                (state at:
+                                                    (last From)
+                                                    level:
+                                                    (level)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (last From)
+                                                    level:
+                                                    (level)
+                                                )
+                                                
+                                                (to 
+                                                    (last To)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (forEach Level 
+                                        (last From)
+                                        FromTop 
+                                        (if 
+                                            (is Friend 
+                                                (who at:
+                                                    (last From)
+                                                    level:
+                                                    (level)
+                                                )
+                                            )
+                                            
+                                            (set State at:
+                                                (last From)
+                                                level:
+                                                (level)
+                                            0 )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move Remove 
+                            (from)
+                            level:
+                            (level)
+                            
+                            (then 
+                                (and { 
+                                    (forEach Level 
+                                        (last From)
+                                        FromTop 
+                                        (if 
+                                            (is Friend 
+                                                (who at:
+                                                    (last From)
+                                                    level:
+                                                    (level)
+                                                )
+                                            )
+                                            
+                                            (set State at:
+                                                (last From)
+                                                level:
+                                                (level)
+                                            0 )
+                                        )
+                                    )
+                                    
+                                    (forEach Level 
+                                        (last From)
+                                        FromTop 
+                                        (if 
+                                            (= 2 
+                                                (state at:
+                                                    (last From)
+                                                    level:
+                                                    (level)
+                                                )
+                                            )
+                                            
+                                            (remove 
+                                                (last From)
+                                                level:
+                                                (level)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (add 
+                                        (piece 
+                                            (id "Marker" Mover)
+                                        )
+                                        
+                                        (to 
+                                            (handSite Mover)
+                                        )
+                                    )
+                                    }
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (sites Phase 1)
+            )
+            
+            (place "Marker2" 
+                (sites Phase 0)
+            )
+            }
+        )
+        phases:{ 
+        (phase "OpeningP1" P1 
+            (play 
+                (move Remove 
+                    (intersection 
+                        (union 
+                            (sites Corners)
+                            
+                            (sites Centre)
+                        )
+                        
+                        (sites Phase 1)
+                    )
+                )
+            )
+            
+            (nextPhase Mover "Movement")
+        )
+        
+        (phase "OpeningP2" P2 
+            (play 
+                (move Remove 
+                    (sites Around 
+                        (last To)
+                    Own)
+                )
+            )
+            
+            (nextPhase Mover "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (or 
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            SameDirection 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (move Hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            SameDirection 
+                                            (between if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        
+                        (move Pass)
+                    )
+                    
+                    (forEach Piece "Marker" 
+                        (move Hop 
+                            (from 
+                                (from)
+                            )
+                            Orthogonal 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (move Hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            SameDirection 
+                                            (between if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (no Moves Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "StackState" False)
+        (concept "LineEnd" False)
+    }))
