@@ -9,11 +9,11 @@
         (hand Each)
         
         (piece "Marker" Each 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
+            (move 
+                (from)
+                
+                (to 
+                    (sites Empty)
                 )
             )
         )
@@ -22,7 +22,7 @@
     
     (rules 
         (start 
-            (place "Marker" "Hand" count:6)
+            (place "Marker" "Hand" count:9)
         )
         phases:{ 
         (phase "Placement" 
@@ -31,7 +31,15 @@
                     (is Prev Mover)
                     
                     (move Remove 
-                        (sites Occupied by:Enemy container:"Board")
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
                     )
                     
                     (move 
@@ -45,7 +53,7 @@
                         
                         (then 
                             (if 
-                                (is Line 3 Orthogonal exact:True)
+                                (is Line 3 Orthogonal)
                                 
                                 (moveAgain)
                             )
@@ -73,7 +81,15 @@
                     (is Prev Mover)
                     
                     (move Remove 
-                        (sites Occupied by:Enemy container:"Board")
+                        (forEach 
+                            (sites Occupied by:Enemy container:"Board")
+                            if:
+                            (not 
+                                (is Line 3 Orthogonal through:
+                                    (site)
+                                )
+                            )
+                        )
                     )
                     
                     (forEach Piece)
@@ -82,12 +98,21 @@
         )
         }
         
-        (end 
+        (end { 
             (if 
-                (no Pieces Next)
+                (<= 
+                    (count Pieces Next)
+                2)
                 
                 (result Next Loss)
             )
+            
+            (if 
+                (no Moves Next)
+                
+                (result Mover Win)
+            )
+            }
         )
     )
 )
@@ -96,4 +121,6 @@
 (metadata (recon {
         (concept "StackState" False)
         (concept "LineEnd" False)
+        (concept "NumStartComponentsBoard" 0)
+        (concept "NumStartComponents" minValue:1 maxValue:40)
     }))

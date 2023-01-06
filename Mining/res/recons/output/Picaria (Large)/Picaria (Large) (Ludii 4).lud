@@ -9,19 +9,11 @@
         (hand Each)
         
         (piece "Marker" Each 
-            (move Step Orthogonal 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
+            (move 
+                (from)
                 
-                (then 
-                    (if 
-                        (is Line 3 Orthogonal)
-                        
-                        (moveAgain)
-                    )
+                (to 
+                    (sites Empty)
                 )
             )
         )
@@ -29,45 +21,59 @@
     )
     
     (rules 
-        (start { 
-            (place "Marker1" 
-                (sites Phase 1)
-            )
-            
-            (place "Marker2" 
-                (sites Phase 0)
-            )
-            }
+        (start 
+            (place "Marker" "Hand" count:9)
         )
         phases:{ 
-        (phase "OpeningP1" P1 
+        (phase "Placement" 
             (play 
-                (move Remove 
-                    (intersection 
-                        (union 
-                            (sites Corners)
-                            
-                            (sites Centre)
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (sites Occupied by:Enemy container:"Board")
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
                         )
                         
-                        (sites Phase 1)
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (or { 
+                                    (is Line 3 N exact:True)
+                                    
+                                    (is Line 3 S exact:True)
+                                    
+                                    (is Line 3 E exact:True)
+                                    
+                                    (is Line 3 W exact:True)
+                                    }
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
                     )
                 )
             )
             
-            (nextPhase Mover "Movement")
-        )
-        
-        (phase "OpeningP2" P2 
-            (play 
-                (move Remove 
-                    (sites Around 
-                        (last To)
-                    Own)
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
                 )
-            )
-            
-            (nextPhase Mover "Movement")
+            "Movement" )
         )
         
         (phase "Movement" 
@@ -75,128 +81,24 @@
                 (if 
                     (is Prev Mover)
                     
-                    (or 
-                        (move Hop 
-                            (from 
-                                (last To)
-                            )
-                            SameDirection 
-                            (between if:
-                                (is Enemy 
-                                    (who at:
-                                        (between)
-                                    )
-                                )
-                                
-                                (apply 
-                                    (remove 
-                                        (between)
-                                    )
-                                )
-                            )
-                            
-                            (to if:
-                                (is Empty 
-                                    (to)
-                                )
-                            )
-                            
-                            (then 
-                                (if 
-                                    (can Move 
-                                        (move Hop 
-                                            (from 
-                                                (last To)
-                                            )
-                                            SameDirection 
-                                            (between if:
-                                                (is Enemy 
-                                                    (who at:
-                                                        (between)
-                                                    )
-                                                )
-                                                
-                                                (apply 
-                                                    (remove 
-                                                        (between)
-                                                    )
-                                                )
-                                            )
-                                            
-                                            (to if:
-                                                (is Empty 
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                    )
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                        
-                        (move Pass)
+                    (move Remove 
+                        (sites Occupied by:Enemy container:"Board")
                     )
                     
-                    (forEach Piece "Marker" 
-                        (move Hop 
+                    (if 
+                        (> 
+                            (count Pieces Mover)
+                        4)
+                        
+                        (forEach Piece)
+                        
+                        (move 
                             (from 
-                                (from)
-                            )
-                            Orthogonal 
-                            (between if:
-                                (is Enemy 
-                                    (who at:
-                                        (between)
-                                    )
-                                )
-                                
-                                (apply 
-                                    (remove 
-                                        (between)
-                                    )
-                                )
+                                (sites Occupied by:Mover)
                             )
                             
-                            (to if:
-                                (is Empty 
-                                    (to)
-                                )
-                            )
-                            
-                            (then 
-                                (if 
-                                    (can Move 
-                                        (move Hop 
-                                            (from 
-                                                (last To)
-                                            )
-                                            SameDirection 
-                                            (between if:
-                                                (is Enemy 
-                                                    (who at:
-                                                        (between)
-                                                    )
-                                                )
-                                                
-                                                (apply 
-                                                    (remove 
-                                                        (between)
-                                                    )
-                                                )
-                                            )
-                                            
-                                            (to if:
-                                                (is Empty 
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                    )
-                                    
-                                    (moveAgain)
-                                )
+                            (to 
+                                (sites Empty)
                             )
                         )
                     )
@@ -207,7 +109,9 @@
         
         (end 
             (if 
-                (no Moves Next)
+                (<= 
+                    (count Pieces Next)
+                2)
                 
                 (result Next Loss)
             )
@@ -219,4 +123,6 @@
 (metadata (recon {
         (concept "StackState" False)
         (concept "LineEnd" False)
+        (concept "NumStartComponentsBoard" 0)
+        (concept "NumStartComponents" minValue:1 maxValue:40)
     }))
