@@ -118,6 +118,71 @@
 				}
 			)
 		)
+		// For every state and for every player (just one player here), we need to define the information set
+		// as a region
+		//
+		// Information Set {0}: root state
+		// Information Set {1, 2, 3}: prize has been randomly assigned to one door (hidden)
+		// Information Set {4, 7, 10}: player has selected left door
+		// Information Set {5, 8, 11}: player has selected middle door
+		// Information Set {6, 9, 12}: player has selected right door
+		// Information Set {13, 21}: player guessed left, middle door was opened
+		// Information Set {14, 17}: player guessed left, right door was opened
+		// Information Set {15, 19}: player guessed middle, right door was opened
+		// Information Set {16, 24}: player guessed right, middle door was opened
+		// Information Set {18, 22}: player guessed middle, left door was opened
+		// Information Set {20, 23}: player guessed right, left door was opened
+		// All other Information Sets just contain their own state, all info revealed.
+		//
+		(regions "InformationSet_0_1" {0})
+		(regions "InformationSet_1_1" {1 2 3})
+		(regions "InformationSet_2_1" {1 2 3})
+		(regions "InformationSet_3_1" {1 2 3})
+		(regions "InformationSet_4_1" {4 7 10})
+		(regions "InformationSet_5_1" {5 8 11})
+		(regions "InformationSet_6_1" {6 9 12})
+		(regions "InformationSet_7_1" {4 7 10})
+		(regions "InformationSet_8_1" {5 8 11})
+		(regions "InformationSet_9_1" {6 9 12})
+		(regions "InformationSet_10_1" {4 7 10})
+		(regions "InformationSet_11_1" {5 8 11})
+		(regions "InformationSet_12_1" {6 9 12})
+		(regions "InformationSet_13_1" {13 21})
+		(regions "InformationSet_14_1" {14 17})
+		(regions "InformationSet_15_1" {15 19})
+		(regions "InformationSet_16_1" {16 24})
+		(regions "InformationSet_17_1" {14 17})
+		(regions "InformationSet_18_1" {18 22})
+		(regions "InformationSet_19_1" {15 19})
+		(regions "InformationSet_20_1" {20 23})
+		(regions "InformationSet_21_1" {13 21})
+		(regions "InformationSet_22_1" {18 22})
+		(regions "InformationSet_23_1" {20 23})
+		(regions "InformationSet_24_1" {16 24})
+		(regions "InformationSet_25_1" {25})
+		(regions "InformationSet_26_1" {26})
+		(regions "InformationSet_27_1" {27})
+		(regions "InformationSet_28_1" {28})
+		(regions "InformationSet_29_1" {29})
+		(regions "InformationSet_30_1" {30})
+		(regions "InformationSet_31_1" {31})
+		(regions "InformationSet_32_1" {32})
+		(regions "InformationSet_33_1" {33})
+		(regions "InformationSet_34_1" {34})
+		(regions "InformationSet_35_1" {35})
+		(regions "InformationSet_36_1" {36})
+		(regions "InformationSet_37_1" {37})
+		(regions "InformationSet_38_1" {38})
+		(regions "InformationSet_39_1" {39})
+		(regions "InformationSet_40_1" {40})
+		(regions "InformationSet_41_1" {41})
+		(regions "InformationSet_42_1" {42})
+		(regions "InformationSet_43_1" {43})
+		(regions "InformationSet_44_1" {44})
+		(regions "InformationSet_45_1" {45})
+		(regions "InformationSet_46_1" {46})
+		(regions "InformationSet_47_1" {47})
+		(regions "InformationSet_48_1" {48})
     })
     
     (rules
@@ -142,7 +207,7 @@
         }
     )
 	(graphics {
-        (board Style PenAndPaper)	// This just makes the graphs visible in the GUI of Ludii
+        (board Style PenAndPaper)	// This just makes the graphs visible in the GUI of Ludii: not strictly necessary
     })
 )
 
