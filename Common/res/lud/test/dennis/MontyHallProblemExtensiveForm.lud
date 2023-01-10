@@ -183,6 +183,11 @@
 		(regions "InformationSet_46_1" {46})
 		(regions "InformationSet_47_1" {47})
 		(regions "InformationSet_48_1" {48})
+		
+		// For each player (including 0 as "nature player"), we have a region
+		// containing all the vertices of that player's copy of the game tree
+		(regions "Subgraph_0" {0..48})
+		(regions "Subgraph_1" {49..98})
     })
     
     (rules
