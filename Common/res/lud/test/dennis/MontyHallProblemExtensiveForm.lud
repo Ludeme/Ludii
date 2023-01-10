@@ -1,0 +1,148 @@
+(game "MontyHallProblemExtensiveForm"
+
+	// Subsection 3.1 of the paper
+    (players 1)
+	
+	// Subsection 3.2 of the paper
+    (equipment {
+        (piece "Marker" Neutral)
+        (piece "Marker" Each)
+		(board
+			(graph
+				// --------------------
+				// ROOT
+				// --------------------
+				// Vertex 0: initial empty state
+				//
+				// --------------------
+				// First ply
+				// --------------------
+				// Vertex 1: prize behind left door
+				// Vertex 2: prize behind middle door
+				// Vertex 3: prize behind right door
+				//
+				// --------------------
+				// Second ply
+				// --------------------
+				// Vertex 4: v1 (prize behind left door) --> player guesses left
+				// Vertex 5: v1 (prize behind left door) --> player guesses middle
+				// Vertex 6: v1 (prize behind left door) --> player guesses right
+				//
+				// Vertex 7: v2 (prize behind middle door) --> player guesses left
+				// Vertex 8: v2 (prize behind middle door) --> player guesses middle
+				// Vertex 9: v2 (prize behind middle door) --> player guesses right
+				//
+				// Vertex 10: v3 (prize behind right door) --> player guesses left
+				// Vertex 11: v3 (prize behind right door) --> player guesses middle
+				// Vertex 12: v3 (prize behind right door) --> player guesses right
+				//
+				// --------------------
+				// Third ply
+				// --------------------
+				// Vertex 13: v4 (prize left, guessed left) --> middle door opened
+				// Vertex 14: v4 (prize left, guessed left) --> right door opened
+				//
+				// Vertex 15: v5 (prize left, guessed middle) --> right door opened
+				//
+				// Vertex 16: v6 (prize left, guessed right) --> middle door opened
+				//
+				// Vertex 17: v7 (prize middle, guessed left) --> right door opened
+				//
+				// Vertex 18: v8 (prize middle, guessed middle) --> left door opened
+				// Vertex 19: v8 (prize middle, guessed middle) --> right door opened
+				//
+				// Vertex 20: v9 (prize middle, guessed right) --> left door opened
+				//
+				// Vertex 21: v10 (prize right, guessed left) --> middle door opened
+				//
+				// Vertex 22: v11 (prize right, guessed middle) --> left door opened
+				//
+				// Vertex 23: v12 (prize right, guessed right) --> left door opened
+				// Vertex 24: v12 (prize right, guessed right) --> middle door opened
+				//
+				// --------------------
+				// Fourth ply
+				// --------------------
+				// Vertex 25: v13 (prize left, guessed left, middle opened) --> stay left and WIN
+				// Vertex 26: v13 (prize left, guessed left, middle opened) --> switch to right and LOSE
+				//
+				// Vertex 27: v14 (prize left, guessed left, right opened) --> stay left and WIN
+				// Vertex 28: v14 (prize left, guessed left, right opened) --> switch to middle and LOSE
+				//
+				// Vertex 29: v15 (prize left, guessed middle, right opened) --> switch to left and WIN
+				// Vertex 30: v15 (prize left, guessed middle, right opened) --> stay middle and LOSE
+				//
+				// Vertex 31: v16 (prize left, guessed right, middle opened) --> switch to left and WIN
+				// Vertex 32: v16 (prize left, guessed right, middle opened) --> stay right and LOSE
+				//
+				// Vertex 33: v17 (prize middle, guessed left, right opened) --> stay left and LOSE
+				// Vertex 34: v17 (prize middle, guessed left, right opened) --> switch to middle and WIN
+				//
+				// Vertex 35: v18 (prize middle, guessed middle, left opened) --> stay middle and WIN
+				// Vertex 36: v18 (prize middle, guessed middle, left opened) --> switch to right and LOSE
+				//
+				// Vertex 37: v19 (prize middle, guessed middle, right opened) --> switch to left and LOSE
+				// Vertex 38: v19 (prize middle, guessed middle, right opened) --> stay middle and WIN
+				//
+				// Vertex 39: v20 (prize middle, guessed right, left opened) --> switch to middle and WIN
+				// Vertex 40: v20 (prize middle, guessed right, left opened) --> stay right and LOSE
+				//
+				// Vertex 41: v21 (prize right, guessed left, middle opened) --> stay left and LOSE
+				// Vertex 42: v21 (prize right, guessed left, middle opened) --> switch to right and WIN
+				//
+				// Vertex 43: v22 (prize right, guessed middle, left opened) --> stay middle and LOSE
+				// Vertex 44: v22 (prize right, guessed middle, left opened) --> switch to right and WIN
+				//
+				// Vertex 45: v23 (prize right, guessed right, left opened) --> switch to middle and LOSE
+				// Vertex 46: v23 (prize right, guessed right, left opened) --> stay right and WIN
+				//
+				// Vertex 47: v24 (prize right, guessed right, middle opened) --> switch to left and LOSE
+				// Vertex 48: v24 (prize right, guessed right, middle opened) --> stay right and WIN
+				
+				vertices:{
+					// Need 49 vertices in the "real" tree. For every vertex we specify an x- and y-coordinate,
+					// but their actual values don't matter (except for how it looks in GUI).
+					{0 0}
+					{0 -1} {1 -1} {2 -1}
+					{0 -2} {1 -2} {2 -2} {3 -2} {4 -2} {5 -2} {6 -2} {7 -2} {8 -2}
+					{0 -3} {1 -3} {2 -3} {3 -3} {4 -3} {5 -3} {6 -3} {7 -3} {8 -3} {9 -3} {10 -3} {11 -3}
+					{0 -4} {1 -4} {2 -4} {3 -4} {4 -4} {5 -4} {6 -4} {7 -4} {8 -4} {9 -4} {10 -4} {11 -4} {12 -4} {13 -4} {14 -4} {15 -4} {16 -4} {17 -4} {18 -4} {19 -4} {20 -4} {21 -4} {22 -4} {23 -4}
+					// And need a second set, again of 49 vertices, for a "copy" of the tree that tracks the information of Player 1.
+					// Again the numbers are x- and y-coordinates, the exact values of which do not matter except for how the game visually
+					// looks in the GUI of Ludii.
+					{30 0}
+					{30 -1} {31 -1} {32 -1}
+					{30 -2} {31 -2} {32 -2} {33 -2} {34 -2} {35 -2} {36 -2} {37 -2} {38 -2}
+					{30 -3} {31 -3} {32 -3} {33 -3} {34 -3} {35 -3} {36 -3} {37 -3} {38 -3} {39 -3} {40 -3} {41 -3}
+					{30 -4} {31 -4} {32 -4} {33 -4} {34 -4} {35 -4} {36 -4} {37 -4} {38 -4} {39 -4} {40 -4} {41 -4} {42 -4} {43 -4} {44 -4} {45 -4} {46 -4} {47 -4} {48 -4} {49 -4} {50 -4} {51 -4} {52 -4} {53 -4}
+				}
+			)
+		)
+    })
+    
+    (rules
+		// Subsection 3.3 of the paper
+        //(start {
+        //})
+        
+		// Subsection 3.4 of the paper
+        (play (move Add (to (sites Empty))))
+		
+		// Subsection 3.5 of the paper
+		(end (if (is Line 3) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "The Monty Hall problem, constructed to be equivalent to the game in extensive form as in the paper 'The Ludii Game Description Language is Universal'.")
+        }
+    )
+	(graphics {
+        (board Style PenAndPaper)	// This just makes the graphs visible in the GUI of Ludii
+    })
+)
+
