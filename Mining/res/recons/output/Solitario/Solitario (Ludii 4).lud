@@ -1,0 +1,85 @@
+(game "Solitario" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (square 5)
+                
+                (shift 0.5 4 
+                    (rotate 180 
+                        (scale 0.75 1.5 
+                            (wedge 3)
+                        )
+                    )
+                )
+                }
+            )
+        use:Vertex)
+        
+        (piece "Marker" P1 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Marker" P2 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (play 
+            (move Add 
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+

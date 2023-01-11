@@ -1,0 +1,149 @@
+(game "Solitario" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (square 5)
+                
+                (shift 0.5 4 
+                    (rotate 180 
+                        (scale 0.75 1.5 
+                            (wedge 3)
+                        )
+                    )
+                )
+                }
+            )
+        use:Vertex)
+        
+        (piece "Marker" P1 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (can Move 
+                                (hop 
+                                    (from 
+                                        (last To)
+                                    )
+                                    
+                                    (between if:
+                                        (and 
+                                            (not 
+                                                (is In 
+                                                    (between)
+                                                    
+                                                    (sites ToClear)
+                                                )
+                                            )
+                                            
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Empty 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Marker" P2 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker2" 
+                (difference 
+                    (expand 
+                        (sites Top)
+                    steps:4)
+                    
+                    (union 
+                        (sites Row 2)
+                        
+                        (sites Centre)
+                    )
+                )
+            )
+            
+            (place "Marker1" 
+                (sites Direction from:
+                    (sites Centre)
+                S included:True distance:1 )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end { 
+            (if 
+                (no Moves Next)
+                
+                (result Next Loss)
+            )
+            
+            (if 
+                (no Pieces P2)
+                
+                (result P2 Win)
+            )
+            }
+        )
+    )
+)
+
+
