@@ -4743,7 +4743,7 @@ public enum Concept
 	(
 		"3.3.2.8",
 		315, 
-		"Ccapture in surrounding.",
+		"Capture in surrounding.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
@@ -11569,6 +11569,7 @@ public enum Concept
 	 */
 	public static boolean isExpectedConcepts(final String description)
 	{
+		System.out.println(description);
 		final Game game = (Game)Compiler.compileTest(new Description(description), false);
 
 		final BitSet booleanConcepts = game.computeBooleanConcepts();	
