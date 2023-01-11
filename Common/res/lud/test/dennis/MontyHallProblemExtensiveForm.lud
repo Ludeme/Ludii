@@ -212,14 +212,38 @@
         	// We have to enumerate all possible (non-terminal) game states for playing rules
         	(if (= (where "Marker" Neutral) 0)
         		// Root state: nature player can pick between vertices 1, 2, and 3
-        	(random 
-        		{0.33 0.33 0.33} 
-        		{
-        			() 
-        			() 
-        			()
-        		}
-        	)
+	        	(random 
+	        		{0.33 0.33 0.33} 
+	        		{
+	        			(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 0) (to 1))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 1) (to (sites "InformationSet_1_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+	        			(move Select (from 1)
+	        				(then (and {
+	        					(fromTo (from 0) (to 2))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 1) (to (sites "InformationSet_2_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+	        			(move Select (from 2)
+	        				(then (and {
+	        					(fromTo (from 0) (to 3))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 1) (to (sites "InformationSet_3_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+	        		}
+	        	)
         	(if (= (where "Marker" Neutral) 1)
 	        ()
 	        (if (= (where "Marker" Neutral) 2)
