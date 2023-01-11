@@ -13,11 +13,7 @@
             (board (square 8))
             (piece [#]) // An opponent's piece may be captured when it is surrounded on opposite sides by two of the player's pieces. When a player moves a piece between two of the opponent's pieces, both of the opponent's pieces are taken.
         })
-        (rules
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
@@ -57,10 +53,7 @@
         (board Colour OuterEdges (colour Black))
     })
     
-    (recon {
-        (concept "CustodialCapture" True)
-        (concept "InterveneCapture" True)
-    })
+
     
 )
 

@@ -11569,7 +11569,6 @@ public enum Concept
 	 */
 	public static boolean isExpectedConcepts(final String description)
 	{
-		System.out.println(description);
 		final Game game = (Game)Compiler.compileTest(new Description(description), false);
 
 		final BitSet booleanConcepts = game.computeBooleanConcepts();	

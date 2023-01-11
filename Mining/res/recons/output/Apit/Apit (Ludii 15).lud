@@ -1,0 +1,75 @@
+(game "Apit" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Marker" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 3 if:
+                            (= 1 
+                                (size Stack at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union 
+                    (expand 
+                        (sites Bottom)
+                    )
+                    
+                    (sites { "A3"}
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (union 
+                    (expand 
+                        (sites Top)
+                    )
+                    
+                    (sites { "E3"}
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+

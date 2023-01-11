@@ -1,0 +1,127 @@
+(game "Apit" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Marker" Each 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (can Move 
+                                (hop 
+                                    (from 
+                                        (last To)
+                                    )
+                                    
+                                    (between if:
+                                        (and 
+                                            (not 
+                                                (is In 
+                                                    (between)
+                                                    
+                                                    (sites ToClear)
+                                                )
+                                            )
+                                            
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Empty 
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union { 
+                    (sites Row 0)
+                    
+                    (sites Row 1)
+                    
+                    (sites Row 2)
+                    
+                    (sites Row 3)
+                    }
+                )
+            )
+            
+            (place "Marker2" 
+                (union { 
+                    (sites Row 5)
+                    
+                    (sites Row 6)
+                    
+                    (sites Row 7)
+                    
+                    (sites Row 8)
+                    }
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+
