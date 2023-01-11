@@ -117,6 +117,7 @@
 					{30 -4} {31 -4} {32 -4} {33 -4} {34 -4} {35 -4} {36 -4} {37 -4} {38 -4} {39 -4} {40 -4} {41 -4} {42 -4} {43 -4} {44 -4} {45 -4} {46 -4} {47 -4} {48 -4} {49 -4} {50 -4} {51 -4} {52 -4} {53 -4}
 				}
 			)
+			use:Vertex
 		)
 		// For every state and for every player (just one player here), we need to define the information set
 		// as a region
@@ -187,13 +188,15 @@
 		// For each player (including 0 as "nature player"), we have a region
 		// containing all the vertices of that player's copy of the game tree
 		(regions "Subgraph_0" {0..48})
-		(regions "Subgraph_1" {49..98})
+		(regions "Subgraph_1" {49..97})
     })
     
     (rules
 		// Subsection 3.3 of the paper
-        //(start {
-        //})
+        (start {
+        	(place "Marker0" 0)
+        	(place "Marker" 49)
+        })
         
 		// Subsection 3.4 of the paper
         (play (move Add (to (sites Empty))))
