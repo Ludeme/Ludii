@@ -1,9 +1,13 @@
 (game "MontyHallProblemExtensiveForm"
 
+	//--------------------------------------------------------------------------
 	// Subsection 3.1 of the paper
+	//--------------------------------------------------------------------------
     (players 1)
 	
+    //--------------------------------------------------------------------------
 	// Subsection 3.2 of the paper
+    //--------------------------------------------------------------------------
     (equipment {
         (piece "Marker" Neutral)
         (piece "Marker" Each)
@@ -117,6 +121,7 @@
 					{30 -4} {31 -4} {32 -4} {33 -4} {34 -4} {35 -4} {36 -4} {37 -4} {38 -4} {39 -4} {40 -4} {41 -4} {42 -4} {43 -4} {44 -4} {45 -4} {46 -4} {47 -4} {48 -4} {49 -4} {50 -4} {51 -4} {52 -4} {53 -4}
 				}
 			)
+			use:Vertex
 		)
 		// For every state and for every player (just one player here), we need to define the information set
 		// as a region
@@ -187,18 +192,212 @@
 		// For each player (including 0 as "nature player"), we have a region
 		// containing all the vertices of that player's copy of the game tree
 		(regions "Subgraph_0" {0..48})
-		(regions "Subgraph_1" {49..98})
+		(regions "Subgraph_1" {49..97})
     })
     
     (rules
+    	//----------------------------------------------------------------------
 		// Subsection 3.3 of the paper
-        //(start {
-        //})
+    	//----------------------------------------------------------------------
+        (start {
+        	(place "Marker0" 0)		// Mark true game state
+        	(place "Marker" 49)		// Mark current information set P1
+        	(set Hidden (sites "Subgraph_0") to:All)		// True game tree hidden to all players
+        })
         
+        //----------------------------------------------------------------------
 		// Subsection 3.4 of the paper
-        (play (move Add (to (sites Empty))))
+        //----------------------------------------------------------------------
+        (play 
+        	// We have to enumerate all possible (non-terminal) game states for playing rules
+        	(if (= (where "Marker" Neutral) 0)
+        		// Root state: nature player can pick between vertices 1, 2, and 3
+	        	(random 
+	        		{0.33 0.33 0.33} 
+	        		{
+	        			(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 0) (to 1))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 1) (to (sites "InformationSet_1_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+	        			(move Select (from 1)
+	        				(then (and {
+	        					(fromTo (from 0) (to 2))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 1) (to (sites "InformationSet_2_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+	        			(move Select (from 2)
+	        				(then (and {
+	        					(fromTo (from 0) (to 3))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 1) (to (sites "InformationSet_3_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+	        		}
+	        	)
+        	(if (= (where "Marker" Neutral) 1)
+        		// Vertex 1: player can guess left/middle/right to go to vertex 4/5/6
+        		(or {
+        			
+        		})
+	        (if (= (where "Marker" Neutral) 2)
+	        	(or {
+        			
+        		})
+		    (if (= (where "Marker" Neutral) 3)
+		    	(or {
+        			
+        		})
+			(if (= (where "Marker" Neutral) 4)
+				(random
+					{}
+					{
+						
+					}
+				)
+			(if (= (where "Marker" Neutral) 5)
+				(random
+					{}
+					{
+						
+					}
+				)
+			(if (= (where "Marker" Neutral) 6)
+				(random
+					{}
+					{
+						
+					}
+				)
+			(if (= (where "Marker" Neutral) 7)
+				(random
+					{}
+					{
+						
+					}
+				)
+			(if (= (where "Marker" Neutral) 8)
+				(random
+					{}
+					{
+						
+					}
+				)
+			(if (= (where "Marker" Neutral) 9)
+				(random
+					{}
+					{
+						
+					}
+				)
+			(if (= (where "Marker" Neutral) 10)
+				(random
+					{}
+					{
+						
+					}
+				)
+			(if (= (where "Marker" Neutral) 11)
+				(random
+					{}
+					{
+						
+					}
+				)
+			(if (= (where "Marker" Neutral) 12)
+				(random
+					{}
+					{
+						
+					}
+				)
+			(if (= (where "Marker" Neutral) 13)
+				(or {
+        			
+        		})
+			(if (= (where "Marker" Neutral) 14)
+				(or {
+        			
+        		})
+			(if (= (where "Marker" Neutral) 15)
+				(or {
+        			
+        		})
+			(if (= (where "Marker" Neutral) 16)
+				(or {
+        			
+        		})
+			(if (= (where "Marker" Neutral) 17)
+				(or {
+        			
+        		})
+			(if (= (where "Marker" Neutral) 18)
+				(or {
+        			
+        		})
+			(if (= (where "Marker" Neutral) 19)
+				(or {
+        			
+        		})
+			(if (= (where "Marker" Neutral) 20)
+				(or {
+        			
+        		})
+			(if (= (where "Marker" Neutral) 21)
+				(or {
+        			
+        		})
+			(if (= (where "Marker" Neutral) 22)
+				(or {
+        			
+        		})
+			(if (= (where "Marker" Neutral) 23)
+				(or {
+        			
+        		})
+			(if (= (where "Marker" Neutral) 24)
+				(or {
+        			
+        		})
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+		    )
+	        )
+        	)
+        )
 		
+        //----------------------------------------------------------------------
 		// Subsection 3.5 of the paper
+        //----------------------------------------------------------------------
 		(end (if (is Line 3) (result Mover Win)))
     )
 )
