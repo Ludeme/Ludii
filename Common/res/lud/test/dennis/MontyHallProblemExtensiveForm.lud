@@ -194,8 +194,9 @@
     (rules
 		// Subsection 3.3 of the paper
         (start {
-        	(place "Marker0" 0)
-        	(place "Marker" 49)
+        	(place "Marker0" 0)		// Mark true game state
+        	(place "Marker" 49)		// Mark current information set P1
+        	(set Hidden (sites "Subgraph_0") to:All)		// True game tree hidden to all players
         })
         
 		// Subsection 3.4 of the paper
