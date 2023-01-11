@@ -75,7 +75,13 @@ public final class AutoIndenter
 		}
 
 		for (final File file : files)
+		{
+			final String absolutePath = file.getAbsolutePath();
+			if (absolutePath.contains("/test/dennis/") || absolutePath.contains("\\test\\dennis\\"))
+				continue;
+			
 			indentFileNicely(file.getAbsolutePath());
+		}
 
 		System.out.println(files.size() + " files found from "+ folderPath + ".");
 	}
