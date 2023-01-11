@@ -338,66 +338,174 @@
 	       			)
         		})
 			(if (= (where "Marker" Neutral) 4)
+				// Vertex 4: door getting opened may lead to vertex 13 or 14
 				(random
-					{}
+					{0.5 0.5}
 					{
-						
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 4) (to 13))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 1) (to (sites "InformationSet_13_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+	        			(move Select (from 1)
+	        				(then (and {
+	        					(fromTo (from 4) (to 14))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 1) (to (sites "InformationSet_14_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
 					}
 				)
 			(if (= (where "Marker" Neutral) 5)
+				// Vertex 5: door getting opened leads to vertex 15
 				(random
-					{}
+					{1}
 					{
-						
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 5) (to 15))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 1) (to (sites "InformationSet_15_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
 					}
 				)
 			(if (= (where "Marker" Neutral) 6)
+				// Vertex 6: door getting opened leads to vertex 16
 				(random
-					{}
+					{1}
 					{
-						
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 6) (to 16))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 1) (to (sites "InformationSet_16_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
 					}
 				)
 			(if (= (where "Marker" Neutral) 7)
+				// Vertex 7: door getting opened leads to vertex 17
 				(random
-					{}
+					{1}
 					{
-						
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 7) (to 17))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 1) (to (sites "InformationSet_17_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
 					}
 				)
 			(if (= (where "Marker" Neutral) 8)
+				// Vertex 8: door getting opened may lead to vertex 18 or 19
 				(random
-					{}
+					{0.5 0.5}
 					{
-						
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 8) (to 18))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 1) (to (sites "InformationSet_18_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+	        			(move Select (from 1)
+	        				(then (and {
+	        					(fromTo (from 8) (to 19))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 1) (to (sites "InformationSet_19_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
 					}
 				)
 			(if (= (where "Marker" Neutral) 9)
+				// Vertex 9: door getting opened leads to vertex 20
 				(random
-					{}
+					{1}
 					{
-						
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 9) (to 20))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 1) (to (sites "InformationSet_20_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
 					}
 				)
 			(if (= (where "Marker" Neutral) 10)
+				// Vertex 10: door getting opened leads to vertex 21
 				(random
-					{}
+					{1}
 					{
-						
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 10) (to 21))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 1) (to (sites "InformationSet_21_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
 					}
 				)
 			(if (= (where "Marker" Neutral) 11)
+				// Vertex 11: door getting opened leads to vertex 22
 				(random
-					{}
+					{1}
 					{
-						
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 11) (to 22))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 1) (to (sites "InformationSet_22_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
 					}
 				)
 			(if (= (where "Marker" Neutral) 12)
+				// Vertex 12: door getting opened leads to vertex 23 or 24
 				(random
-					{}
+					{0.5 0.5}
 					{
-						
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 12) (to 23))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 1) (to (sites "InformationSet_23_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 12) (to 24))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 1) (to (sites "InformationSet_24_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
 					}
 				)
 			(if (= (where "Marker" Neutral) 13)
