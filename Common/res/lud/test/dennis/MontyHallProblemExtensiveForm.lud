@@ -509,52 +509,268 @@
 					}
 				)
 			(if (= (where "Marker" Neutral) 13)
+				// Vertex 13: final player choice leads to vertex 25 or 26
 				(or {
-        			
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 13) (to 25))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_25_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 13) (to 26))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_26_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
         		})
 			(if (= (where "Marker" Neutral) 14)
+				// Vertex 14: final player choice leads to vertex 27 or 28
 				(or {
-        			
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 14) (to 27))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_27_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 14) (to 28))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_28_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
         		})
 			(if (= (where "Marker" Neutral) 15)
+				// Vertex 15: final player choice leads to vertex 29 or 30
 				(or {
-        			
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 15) (to 29))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_29_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 15) (to 30))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_30_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
         		})
 			(if (= (where "Marker" Neutral) 16)
+				// Vertex 16: final player choice leads to vertex 31 or 32
 				(or {
-        			
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 16) (to 31))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_31_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 16) (to 32))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_32_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
         		})
 			(if (= (where "Marker" Neutral) 17)
+				// Vertex 17: final player choice leads to vertex 33 or 34
 				(or {
-        			
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 17) (to 33))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_33_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 17) (to 34))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_34_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
         		})
 			(if (= (where "Marker" Neutral) 18)
+				// Vertex 18: final player choice leads to vertex 35 or 36
 				(or {
-        			
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 18) (to 35))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_35_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 18) (to 36))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_36_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
         		})
 			(if (= (where "Marker" Neutral) 19)
+				// Vertex 19: final player choice leads to vertex 37 or 38
 				(or {
-        			
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 19) (to 37))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_37_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 19) (to 38))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_38_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
         		})
 			(if (= (where "Marker" Neutral) 20)
+				// Vertex 20: final player choice leads to vertex 39 or 40
 				(or {
-        			
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 20) (to 39))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_39_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 20) (to 40))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_40_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
         		})
 			(if (= (where "Marker" Neutral) 21)
+				// Vertex 21: final player choice leads to vertex 41 or 42
 				(or {
-        			
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 21) (to 41))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_41_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 21) (to 42))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_42_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
         		})
 			(if (= (where "Marker" Neutral) 22)
+				// Vertex 22: final player choice leads to vertex 43 or 44
 				(or {
-        			
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 22) (to 43))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_43_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 22) (to 44))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_44_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
         		})
 			(if (= (where "Marker" Neutral) 23)
+				// Vertex 23: final player choice leads to vertex 45 or 46
 				(or {
-        			
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 23) (to 45))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_45_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 23) (to 46))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_46_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
         		})
 			(if (= (where "Marker" Neutral) 24)
+				// Vertex 24: final player choice leads to vertex 47 or 48
 				(or {
-        			
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 24) (to 47))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_47_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 24) (to 48))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 1) (to (sites "InformationSet_48_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
         		})
 			)
 			)
