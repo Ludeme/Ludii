@@ -224,7 +224,7 @@
 	        					(set NextPlayer (player 1))
 	        				}))
 	        			)
-	        			(move Select (from 1)
+	        			(move Select (from 0)
 	        				(then (and {
 	        					(fromTo (from 0) (to 2))
 	        					(remove (sites Occupied by:P1))
@@ -233,7 +233,7 @@
 	        					(set NextPlayer (player 1))
 	        				}))
 	        			)
-	        			(move Select (from 2)
+	        			(move Select (from 0)
 	        				(then (and {
 	        					(fromTo (from 0) (to 3))
 	        					(remove (sites Occupied by:P1))
@@ -351,7 +351,7 @@
 	        					(set NextPlayer (player 1))
 	        				}))
 	        			)
-	        			(move Select (from 1)
+	        			(move Select (from 0)
 	        				(then (and {
 	        					(fromTo (from 4) (to 14))
 	        					(remove (sites Occupied by:P1))
@@ -424,7 +424,7 @@
 	        					(set NextPlayer (player 1))
 	        				}))
 	        			)
-	        			(move Select (from 1)
+	        			(move Select (from 0)
 	        				(then (and {
 	        					(fromTo (from 8) (to 19))
 	        					(remove (sites Occupied by:P1))
