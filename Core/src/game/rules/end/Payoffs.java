@@ -68,46 +68,54 @@ public class Payoffs extends Result
 //			System.out.println("Player " + pid + " has score " + context.score(pid) + ".");
 			allPayoffs[pid] = context.payoff(pid);
 		}
-			
-		// Keep assigning ranks until everyone got a rank
-		int numAssignedRanks = 0;
 		
-		while (true)
+		if (numPlayers == 1)
 		{
-			double maxPayoff = Integer.MIN_VALUE;
-			int numMax = 0;
-
-			// Detection of the max score
-			for (int p = 1; p < allPayoffs.length; p++)
-			{
-				final double payoff = allPayoffs[p];
-				if (payoff > maxPayoff)
-				{
-					maxPayoff = payoff;
-					numMax = 1;
-				}
-				else if (payoff == maxPayoff)
-				{
-					++numMax;
-				}
-			}
-				
-			if (maxPayoff == Integer.MIN_VALUE) // We've assigned players to every rank
-				break;
-
-			final double nextWinRank = ((numAssignedRanks + 1.0) * 2.0 + numMax - 1.0) / 2.0;
-			assert(nextWinRank >= 1.0 && nextWinRank <= context.trial().ranking().length);
-
-			for (int p = 1; p < allPayoffs.length; p++)
-			{
-				if (maxPayoff == allPayoffs[p])
-				{
-					context.trial().ranking()[p] = nextWinRank;
-					allPayoffs[p] = Integer.MIN_VALUE;
-				}
-			}
+			// Special case: "lose" if payoff <= 0, "win" otherwise
+			context.trial().ranking()[1] = (allPayoffs[1] <= 0.0) ? 0.0 : 1.0;
+		}
+		else
+		{
+			// Keep assigning ranks until everyone got a rank
+			int numAssignedRanks = 0;
 			
-			numAssignedRanks += numMax;
+			while (true)
+			{
+				double maxPayoff = Integer.MIN_VALUE;
+				int numMax = 0;
+	
+				// Detection of the max score
+				for (int p = 1; p < allPayoffs.length; p++)
+				{
+					final double payoff = allPayoffs[p];
+					if (payoff > maxPayoff)
+					{
+						maxPayoff = payoff;
+						numMax = 1;
+					}
+					else if (payoff == maxPayoff)
+					{
+						++numMax;
+					}
+				}
+					
+				if (maxPayoff == Integer.MIN_VALUE) // We've assigned players to every rank
+					break;
+	
+				final double nextWinRank = ((numAssignedRanks + 1.0) * 2.0 + numMax - 1.0) / 2.0;
+				assert(nextWinRank >= 1.0 && nextWinRank <= context.trial().ranking().length);
+	
+				for (int p = 1; p < allPayoffs.length; p++)
+				{
+					if (maxPayoff == allPayoffs[p])
+					{
+						context.trial().ranking()[p] = nextWinRank;
+						allPayoffs[p] = Integer.MIN_VALUE;
+					}
+				}
+				
+				numAssignedRanks += numMax;
+			}
 		}
 			
 		// Set status (with winner if someone has full rank 1.0)
