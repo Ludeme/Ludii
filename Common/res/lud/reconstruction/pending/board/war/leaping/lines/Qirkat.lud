@@ -11,15 +11,11 @@
         (players 2) 
         (equipment { 
             ("AlquerqueBoard" 5 5)
-            (piece "Marker" P1 (move [#]))
-            (piece "Marker" P2 (move [#]))
+            (piece "Marker" P1 [#])
+            (piece "Marker" P2 [#])
         }) 
         
-        (rules 
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
