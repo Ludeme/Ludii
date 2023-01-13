@@ -8,13 +8,9 @@
     {
     (item "Incomplete"
         <
-        (players 2) 
+        ("TwoPlayersNorthSouth") 
         (equipment [#]) // There is some promoted pieces which can move any distance.
-        (rules
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
@@ -48,6 +44,7 @@
     )
     
     (recon {
+        (concept "PromotionEffect" True)
         (concept "Hop" True)
         (concept "PlayersWithDirections" True)
     })
