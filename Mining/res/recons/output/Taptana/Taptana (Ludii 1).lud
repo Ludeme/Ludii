@@ -1,0 +1,74 @@
+(game "Taptana" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" P1 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Marker" P2 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (play 
+            (move Add 
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+
