@@ -1,0 +1,144 @@
+(game "Smasandyutakankarikrida (Allahabad)" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (shift 2 2 
+                    (square 5 diagonals:Alternating)
+                )
+                
+                (shift 2 0 
+                    (wedge 3)
+                )
+                
+                (shift 5 3 
+                    (rotate 90 
+                        (wedge 3)
+                    )
+                )
+                
+                (shift 2 6 
+                    (rotate 180 
+                        (wedge 3)
+                    )
+                )
+                
+                (shift -1 3 
+                    (rotate 270 
+                        (wedge 3)
+                    )
+                )
+                
+                (shift 0.65 1.15 
+                    (scale 0.5 
+                        (rotate -45 
+                            (wedge 3)
+                        )
+                    )
+                )
+                
+                (shift 5.35 1.15 
+                    (scale 0.5 
+                        (rotate 45 
+                            (wedge 3)
+                        )
+                    )
+                )
+                
+                (shift 5.35 5.85 
+                    (scale 0.5 
+                        (rotate 135 
+                            (wedge 3)
+                        )
+                    )
+                )
+                
+                (shift 0.65 5.85 
+                    (scale 0.5 
+                        (rotate -135 
+                            (wedge 3)
+                        )
+                    )
+                )
+                }
+            )
+        use:Vertex)
+        
+        (piece "Marker" P1 
+            (move Hop 
+                (between if:
+                    (is Friend 
+                        (who at:
+                            (between)
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (between)
+                        )
+                    )
+                )
+                
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        
+        (piece "Marker" P2 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (expand 
+                    (union 
+                        (sites Bottom)
+                        
+                        (sites { "A3"}
+                        )
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (expand 
+                    (union 
+                        (sites Top)
+                        
+                        (sites { "E3"}
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+
