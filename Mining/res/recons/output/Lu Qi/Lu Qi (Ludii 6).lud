@@ -1,0 +1,121 @@
+(game "Lu Qi" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" P1 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        
+        (piece "Marker" P2 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (meta 
+            (no Repeat)
+        )
+        
+        (play 
+            (or 
+                (move Add 
+                    (to 
+                        (sites Empty)
+                    )
+                    
+                    (then 
+                        (enclose 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (move Pass)
+            )
+        )
+        
+        (end 
+            (if 
+                (all Passed)
+                
+                (byScore { 
+                    (score P1 
+                        (+ 
+                            (count Pieces P1)
+                            
+                            (size Territory P1)
+                        )
+                    )
+                    
+                    (score P2 
+                        (+ 
+                            (count Pieces P2)
+                            
+                            (size Territory P2)
+                        )
+                    )
+                    }
+                )
+            )
+        )
+    )
+)
+
+

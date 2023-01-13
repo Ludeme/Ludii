@@ -1,0 +1,85 @@
+(game "Lu Qi" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" P1 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        
+        (piece "Marker" P2 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (expand 
+                    (sites Bottom)
+                )
+            )
+            
+            (place "Marker2" 
+                (expand 
+                    (sites Top)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+

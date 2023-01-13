@@ -1,0 +1,97 @@
+(game "Lu Qi" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" P1 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        
+        (piece "Marker" P2 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (difference 
+                    (expand 
+                        (sites Bottom)
+                    steps:2)
+                    
+                    (expand 
+                        (sites Top)
+                    steps:2)
+                )
+            )
+            
+            (place "Marker2" 
+                (difference 
+                    (expand 
+                        (sites Top)
+                    steps:2)
+                    
+                    (expand 
+                        (sites Bottom)
+                    steps:2)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+

@@ -1,0 +1,181 @@
+(game "Lu Qi" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" P1 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        
+        (piece "Marker" P2 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (expand 
+                    (sites Bottom)
+                )
+            )
+            
+            (place "Marker2" 
+                (expand 
+                    (sites Top)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (if 
+                (is Prev Mover)
+                
+                (move Step 
+                    (from 
+                        (last To)
+                    )
+                    
+                    (to if:
+                        (and 
+                            (= 0 
+                                (state at:
+                                    (to)
+                                )
+                            )
+                            
+                            (if 
+                                (< 
+                                    (count MovesThisTurn)
+                                2)
+                                
+                                (is Empty 
+                                    (to)
+                                )
+                                
+                                (is In 
+                                    (to)
+                                    
+                                    (union 
+                                        (sites Occupied by:Next)
+                                        
+                                        (sites Empty)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (= 2 
+                                (count Sites in:
+                                    (forEach 
+                                        (sites Board)
+                                        if:
+                                        (= 1 
+                                            (state at:
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (forEach Site 
+                                (sites Board)
+                                
+                                (if 
+                                    (= 1 
+                                        (state at:
+                                            (site)
+                                        )
+                                    )
+                                    
+                                    (set State at:
+                                        (site)
+                                    0)
+                                )
+                            )
+                            
+                            (and 
+                                (set State at:
+                                    (last From)
+                                1)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+                
+                (forEach Piece)
+            )
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+
