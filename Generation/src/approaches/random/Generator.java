@@ -127,6 +127,7 @@ public class Generator
 	/** Point at which to stop random playouts. */
 	private final static int MAX_MOVES = 2000;
 	
+	/** Maximum length for generated arrays. */
 	private final static int MAX_ARRAY_LENGTH = 10;
 
 	//-------------------------------------------------------------------------
