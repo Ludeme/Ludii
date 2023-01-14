@@ -1,0 +1,141 @@
+(game "Wakanpamungthae" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (repeat 1 1 step:{ { 0.5 0}
+                    { 1 0 }
+                    }
+                    
+                    (poly { { -0.5 0}
+                        { 0.5 0 }
+                        { 0 0.5 }
+                        }
+                    )
+                )
+                
+                (repeat 1 1 step:{ { 0.5 0}
+                    { 1 0 }
+                    }
+                    
+                    (poly { { -0.5 0}
+                        { 0.5 0 }
+                        { 0 -0.5 }
+                        }
+                    )
+                )
+                
+                (repeat 15 1 step:{ { 0.5 0}
+                    { 1 0 }
+                    }
+                    
+                    (poly { { 0.5 0}
+                        { 0 0.5 }
+                        { 1 0.5 }
+                        }
+                    )
+                )
+                
+                (repeat 15 1 step:{ { 0.5 0}
+                    { 1 0 }
+                    }
+                    
+                    (poly { { 0.5 0}
+                        { 0 -0.5 }
+                        { 1 -0.5 }
+                        }
+                    )
+                )
+                
+                (shift 0.5 0 
+                    (rectangle 1 15)
+                )
+                }
+            )
+        use:Vertex )
+        
+        (piece "Counter" Each 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Counter1" 
+                (union 
+                    (sites Bottom)
+                    
+                    (sites Direction from:
+                        (centrePoint)
+                    W)
+                )
+            )
+            
+            (place "Counter2" 
+                (union 
+                    (sites Direction from:
+                        (centrePoint)
+                    E)
+                    
+                    (sites Top)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Moves Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Hop" True)
+    })
+    )

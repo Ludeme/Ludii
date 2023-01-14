@@ -1,0 +1,94 @@
+(game "Wakanpamungthae" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (square 5)
+        use:Vertex)
+        
+        (piece "Rabbit" P1 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        
+        (piece "Counter" P2 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (regions P1 
+            (union 
+                (expand 
+                    (sites Top)
+                )
+                
+                (sites { "A3" "E3"}
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (play 
+            (move Add 
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Hop" True)
+    })
+    )
