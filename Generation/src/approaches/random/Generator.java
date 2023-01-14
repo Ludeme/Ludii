@@ -650,7 +650,7 @@ public class Generator
 
 			final double num = lowBiasedRandomInteger(rng, true) / 4.0;
 
-			str = str.substring(0, c) + df.format(num).replace(',', '.') + str.substring(c + 7);
+			str = str.substring(0, c) + df.format(num).replace(',', '.') + str.substring(c + "%float%".length());
 		}
 						
 		return str;
