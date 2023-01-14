@@ -598,7 +598,7 @@ public class Generator
 				num = num % 4 + 1;
 			}
 			
-			str = str.substring(0, c) + num + str.substring(c + 5);
+			str = str.substring(0, c) + num + str.substring(c + "%int%".length());
 		}
 						
 		return str;
