@@ -299,7 +299,8 @@ public class Generator
 				return "%string%";
 			}
 
-			// Check for primitive arrays
+			// Check for primitive arrays.
+			// NOTE: the length of the arrays is biased towards small lengths since rng.nextInt() is re-evaluated at every iteration.
 			if (clause.toString().equals("{<int>}")) {
 				StringBuilder sb = new StringBuilder();
 				sb.append('{');
