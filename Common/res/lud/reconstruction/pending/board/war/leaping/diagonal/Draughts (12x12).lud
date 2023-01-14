@@ -11,14 +11,9 @@
         (players 2) 
         (equipment { 
             (board (square 12))
-            (piece "Disc" P1 (move [#])) 
-            (piece "Disc" P2 (move [#])) 
+            [#]
         }) 
-        (rules 
-            (start [#]) // 30 pieces per player.
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
