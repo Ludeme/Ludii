@@ -294,46 +294,53 @@ public class Generator
 		if (clause.isTerminal())
 		{
 			final String clauseString = clause.toString();
-			if (clauseString.equals("string")) {
+			if (clauseString.equals("string")) 
+			{
 				return "%string%";
 			}
-
 			// Check for primitive arrays.
 			// NOTE: the length of the arrays is biased towards small lengths since rng.nextInt() is re-evaluated at every iteration.
-			else if (clauseString.equals("{<int>}")) {
+			else if (clauseString.equals("{<int>}")) 
+			{
 				StringBuilder sb = new StringBuilder();
 				sb.append('{');
-				for (int i=0; i < rng.nextInt(MAX_ARRAY_LENGTH - 1) + 1; i++) {
+				for (int i = 0; i < rng.nextInt(MAX_ARRAY_LENGTH - 1) + 1; i++) 
+				{
 					sb.append("%int% ");
 				}
 				sb.append('}');
 				return sb.toString();
 			}
-
-			else if (clauseString.equals("{<float>}")) {
+			else if (clauseString.equals("{<float>}")) 
+			{
 				StringBuilder sb = new StringBuilder();
 				sb.append('{');
-				for (int i=0; i < rng.nextInt(MAX_ARRAY_LENGTH - 1) + 1; i++) {
+				for (int i = 0; i < rng.nextInt(MAX_ARRAY_LENGTH - 1) + 1; i++) 
+				{
 					sb.append("%float% ");
 				}
 				sb.append('}');
 				return sb.toString();
 			}
 
-			else if (clauseString.equals("{<boolean>}")) {
+			else if (clauseString.equals("{<boolean>}")) 
+			{
 				StringBuilder sb = new StringBuilder();
 				sb.append('{');
-				for (int i=0; i < rng.nextInt(MAX_ARRAY_LENGTH - 1) + 1; i++) {
+				for (int i = 0; i < rng.nextInt(MAX_ARRAY_LENGTH - 1) + 1; i++) 
+				{
 					sb.append((rng.nextInt(2) != 0) ? "True " : "False ");
 				}
 				sb.append('}');
 				return sb.toString();
 			}
 
-			else if (clauseString.equals("{<dim>}")) {
+			else if (clauseString.equals("{<dim>}")) 
+			{
 				StringBuilder sb = new StringBuilder();
 				sb.append('{');
-				for (int i=0; i < rng.nextInt(MAX_ARRAY_LENGTH - 1) + 1; i++) {
+				for (int i = 0; i < rng.nextInt(MAX_ARRAY_LENGTH - 1) + 1; i++) 
+				{
 					sb.append("%dim% ");
 				}
 				sb.append('}');
@@ -919,7 +926,7 @@ public class Generator
 		// Generate games
 		int n = 0;
 		int numTry = 0;
-		while(n < numGames)
+		while (n < numGames)
 		{
 			final String str = Generator.generate("game", rng.nextLong());
 			
