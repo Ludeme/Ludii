@@ -1,0 +1,101 @@
+(game "Nin Adnai Kit Adnat" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (mancalaBoard 2 6 
+            (track "Track" "1,E,N,W" loop:True)
+        )
+        
+        (regions P1 
+            (sites Bottom)
+        )
+        
+        (regions P2 
+            (sites Top)
+        )
+        
+        (map { 
+            (pair P1 FirstSite)
+            
+            (pair P2 LastSite)
+            }
+        )
+        
+        (piece "Seed" Shared)
+        }
+    )
+    
+    (rules 
+        (start 
+            (set Count 4 to:
+                (union 
+                    (sites P1)
+                    
+                    (sites P2)
+                )
+            )
+        )
+        
+        (play 
+            (move Select 
+                (from 
+                    (sites Mover)
+                    if:
+                    (> 
+                        (count at:
+                            (from)
+                        )
+                    0)
+                )
+                
+                (then 
+                    (sow apply:
+                        (if 
+                            (= 
+                                (to)
+                                
+                                (mapEntry Mover)
+                            )
+                            
+                            (moveAgain)
+                        )
+                        skipIf:
+                        (= 
+                            (to)
+                            
+                            (mapEntry Next)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (all Sites 
+                    (sites Mover)
+                    if:
+                    (= 0 
+                        (count at:
+                            (site)
+                        )
+                    )
+                )
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+            (concept "Hop" True)
+            (concept "PlayersWithDirections" True)
+        })
+    )

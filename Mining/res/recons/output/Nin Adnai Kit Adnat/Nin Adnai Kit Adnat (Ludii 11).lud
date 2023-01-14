@@ -1,0 +1,343 @@
+(game "Nin Adnai Kit Adnat" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Pawn" Each 
+            (or { 
+                (move Step Forward 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (directions { FR FL }
+                    )
+                    
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                
+                (or 
+                    (if 
+                        (is In 
+                            (from)
+                            
+                            (sites Start 
+                                (piece 
+                                    (what at:
+                                        (from)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move Slide Forward 
+                            (between 
+                                (exact 2)
+                                if:
+                                (is Empty 
+                                    (between)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (set Pending 
+                                    (ahead 
+                                        (last To)
+                                    Backward)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { FR FL }
+                        )
+                        
+                        (to if:
+                            (and 
+                                (is Pending)
+                                
+                                (= 
+                                    (to)
+                                    
+                                    (value Pending)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (remove 
+                                (ahead 
+                                    (last To)
+                                Backward)
+                            )
+                        )
+                    )
+                )
+                }
+                
+                (then 
+                    (and 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Mover "Promotion")
+                            )
+                            
+                            (moveAgain)
+                        )
+                        
+                        (set Counter)
+                    )
+                )
+            )
+        )
+        
+        (piece "Rook" Each 
+            (move Slide Orthogonal 
+                (to if:
+                    (is Enemy 
+                        (who at:
+                            (to)
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (to)
+                            
+                            (then 
+                                (set Counter)
+                            )
+                        )
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (= 
+                            (state at:
+                                (last To)
+                            )
+                        1)
+                        
+                        (set State at:
+                            (last To)
+                        0)
+                    )
+                )
+            )
+        )
+        
+        (piece "King" Each 
+            (move Step 
+                (to if:
+                    (not 
+                        (is Friend 
+                            (who at:
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (apply 
+                        (if 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (remove 
+                                (to)
+                                
+                                (then 
+                                    (set Counter)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (= 
+                            (state at:
+                                (last To)
+                            )
+                        1)
+                        
+                        (set State at:
+                            (last To)
+                        0)
+                    )
+                )
+            )
+        )
+        
+        (piece "Bishop" Each 
+            (move Slide Diagonal 
+                (to if:
+                    (is Enemy 
+                        (who at:
+                            (to)
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (to)
+                            
+                            (then 
+                                (set Counter)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Knight" Each 
+            (move Leap { { F F R F }
+                { F F L F }
+                }
+                
+                (to if:
+                    (not 
+                        (is Friend 
+                            (who at:
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (apply 
+                        (if 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (remove 
+                                (to)
+                                
+                                (then 
+                                    (set Counter)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Queen" Each 
+            (move Slide 
+                (to if:
+                    (is Enemy 
+                        (who at:
+                            (to)
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (to)
+                            
+                            (then 
+                                (set Counter)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (map "King" { 
+            (pair 1 "E1")
+            
+            (pair 2 "E8")
+            }
+        )
+        
+        (map "RookLeft" { 
+            (pair 1 "A1")
+            
+            (pair 2 "A8")
+            }
+        )
+        
+        (map "RookRight" { 
+            (pair 1 "H1")
+            
+            (pair 2 "H8")
+            }
+        )
+        
+        (regions "Promotion" P1 
+            (sites Top)
+        )
+        
+        (regions "Promotion" P2 
+            (sites Bottom)
+        )
+        }
+    )
+    
+    (rules 
+        (play 
+            (move Add 
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+            (concept "Hop" True)
+            (concept "PlayersWithDirections" True)
+        })
+    )

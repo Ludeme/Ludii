@@ -1,0 +1,54 @@
+(game "Nin Adnai Kit Adnat" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (square 12)
+        )
+        
+        (piece "Counter" P1 N)
+        
+        (piece "Counter" P2 S)
+        
+        (piece "DoubleCounter" Each)
+        
+        (regions P1 
+            (sites Bottom)
+        )
+        
+        (regions P2 
+            (sites Top)
+        )
+        }
+    )
+    
+    (rules 
+        (play 
+            (move Add 
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+            (concept "Hop" True)
+            (concept "PlayersWithDirections" True)
+        })
+    )
