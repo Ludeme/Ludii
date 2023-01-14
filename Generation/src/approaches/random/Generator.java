@@ -5,16 +5,13 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import game.Game;
 import compiler.Compiler;
+import game.Game;
 import grammar.Grammar;
-import parser.Expander;
-import parser.Parser;
 import main.FileHandling;
 import main.StringRoutines;
 import main.grammar.Baptist;
@@ -28,6 +25,8 @@ import main.options.UserSelections;
 import other.context.Context;
 import other.move.Move;
 import other.trial.Trial;
+import parser.Expander;
+import parser.Parser;
 
 //-----------------------------------------------------------------------------
 
@@ -907,8 +906,6 @@ public class Generator
 	)
 	{
 		Grammar.grammar().ebnf();  // trigger grammar and EBNF structure to be created
-	
-		final Generator generator = new Generator();
 		
 		final long startAt = System.currentTimeMillis();
 				
@@ -924,7 +921,7 @@ public class Generator
 		int numTry = 0;
 		while(n < numGames)
 		{
-			final String str = generator.generate("game", rng.nextLong());
+			final String str = Generator.generate("game", rng.nextLong());
 			
 			if (str == "")
 			{
