@@ -570,7 +570,7 @@ public class Generator
 				replacement = (char)('A' + rng.nextInt(26)) + ("" + rng.nextInt(26));
 			}
 			
-			str = str.substring(0, c) + "\"" + replacement + "\"" + str.substring(c + 8);
+			str = str.substring(0, c) + "\"" + replacement + "\"" + str.substring(c + "%string%".length());
 		}
 						
 		return str;
