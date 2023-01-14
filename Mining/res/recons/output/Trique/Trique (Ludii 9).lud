@@ -1,0 +1,77 @@
+(game "Trique" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (or 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (sites Bottom)
+            )
+            
+            (place "Marker2" 
+                (sites Top)
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Moves Next)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+
