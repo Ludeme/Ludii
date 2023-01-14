@@ -8,17 +8,12 @@
     {
     (item "Incomplete"
         <
-        (players 2) 
+        ("TwoPlayersNorthSouth") 
         (equipment { 
             (board (square 8))
-            (piece "Disc" P1 (move [#])) 
-            (piece "Disc" P2 (move [#])) 
+            [#] 
         }) 
-        (rules 
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
@@ -53,6 +48,11 @@
     
     (graphics {
         (board Style Chess)
+    })
+    
+    (recon {
+        (concept "Hop" True)
+        (concept "PlayersWithDirections" True)
     })
     
 )

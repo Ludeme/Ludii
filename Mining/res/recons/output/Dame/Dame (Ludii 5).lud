@@ -1,0 +1,121 @@
+(game "Dame" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Sheep" P2 N 
+            (move Step 
+                (directions { FR FL }
+                )
+                
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        
+        (piece "Wolf" P1 
+            (move Step Diagonal 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        
+        (hand P1)
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Wolf1" 
+                (handSite P1)
+            )
+            
+            (place "Sheep2" { "A1" "C1" "E1" "G1"}
+            )
+            }
+        )
+        phases:{ 
+        (phase "Placement" P1 
+            (play 
+                (move 
+                    (from 
+                        (handSite P1)
+                    )
+                    
+                    (to 
+                        (intersection 
+                            (sites Phase 0)
+                            
+                            (sites Empty)
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (forEach Piece)
+            )
+        )
+        }
+        
+        (end { 
+            (if 
+                (and 
+                    (no Moves P1)
+                    
+                    (is Mover P1)
+                )
+                
+                (result P2 Win)
+            )
+            
+            (if 
+                (= 0 
+                    (count Sites in:
+                        (forEach 
+                            (sites Occupied by:P2)
+                            if:
+                            (<= 
+                                (row of:
+                                    (site)
+                                )
+                                
+                                (row of:
+                                    (where "Wolf" P1)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (result P1 Win)
+            )
+            }
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Hop" True)
+        (concept "PlayersWithDirections" True)
+    })
+    )
