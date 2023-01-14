@@ -286,7 +286,7 @@ public class Generator
 		}
 
 		// We must sort the clauses to ensure that multiple iterations, with the same rng seed, produce the same output
-		List<EBNFClause> clauses = new LinkedList<>(rule.rhs());
+		final List<EBNFClause> clauses = new ArrayList<>(rule.rhs());
 		Collections.sort(clauses, Comparator.comparing(EBNFClause::toString));
 		final EBNFClause clause = clauses.get(rng.nextInt(rule.rhs().size()));
 		
