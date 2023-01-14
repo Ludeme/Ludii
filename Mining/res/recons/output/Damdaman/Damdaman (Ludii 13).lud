@@ -1,0 +1,229 @@
+(game "Damdaman" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (square 7)
+        )
+        
+        (piece "Marker" Each 
+            (move Step Orthogonal 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (and 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (surround 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between if:
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (is In 
+                                        (between)
+                                        
+                                        (sites Corners)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (hand Each)
+        
+        (regions "HalfBoard" P1 
+            (expand 
+                (sites Bottom)
+            steps:3)
+        )
+        
+        (regions "HalfBoard" P2 
+            (expand 
+                (sites Top)
+            steps:3)
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (handSite P1)
+            count:10)
+            
+            (place "Marker2" 
+                (handSite P2)
+            count:12)
+            
+            (place "Marker2" 
+                (centrePoint)
+            )
+            }
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (move 
+                    (from 
+                        (handSite Mover)
+                    )
+                    
+                    (to 
+                        (intersection 
+                            (sites Empty)
+                            
+                            (sites Mover)
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase 
+                (and 
+                    (all Sites 
+                        (sites Hand P1)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                )
+            "Movement" )
+        )
+        
+        (phase "Movement" 
+            (play 
+                (forEach Piece 
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (< 
+                        (count Pieces P2)
+                    2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        }
+    )
+)
+
+
+(metadata (recon {
+        (concept "Hop" True)
+        (concept "PlayersWithDirections" True)
+    })
+    )

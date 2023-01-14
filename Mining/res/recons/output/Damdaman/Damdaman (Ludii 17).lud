@@ -1,0 +1,198 @@
+(game "Damdaman" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (square 5)
+        )
+        
+        (hand Each)
+        
+        (regions P1 
+            (expand 
+                (sites Bottom)
+            steps:2)
+        )
+        
+        (regions P2 
+            (expand 
+                (sites Top)
+            steps:2)
+        )
+        
+        (regions "MarkedCells" 
+            (union { 
+                (sites Centre)
+                
+                (sites Corners)
+                
+                (intersection 
+                    (sites Outer)
+                    
+                    (sites Row 
+                        (row of:
+                            (centrePoint)
+                        )
+                    )
+                )
+                
+                (intersection 
+                    (sites Outer)
+                    
+                    (sites Column 
+                        (column of:
+                            (centrePoint)
+                        )
+                    )
+                )
+                }
+            )
+        )
+        
+        (piece "Marker" Each 
+            (move Step Orthogonal 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (forEach 
+                    (sites Board)
+                    if:
+                    (< 
+                        (site)
+                        
+                        (centrePoint)
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (forEach 
+                    (sites Board)
+                    if:
+                    (> 
+                        (site)
+                        
+                        (centrePoint)
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (if 
+                (is Prev Mover)
+                
+                (or 
+                    (move Hop 
+                        (from 
+                            (last To)
+                        )
+                        
+                        (between if:
+                            (and 
+                                (not 
+                                    (is In 
+                                        (between)
+                                        
+                                        (sites ToClear)
+                                    )
+                                )
+                                
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+                
+                (forEach Piece)
+            )
+        )
+        
+        (end 
+            (forEach Player if:
+                (no Pieces Player)
+                
+                (result Player Loss)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Hop" True)
+        (concept "PlayersWithDirections" True)
+    })
+    )

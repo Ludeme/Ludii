@@ -1,0 +1,153 @@
+(game "Damdaman" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (square 5 diagonals:Alternating)
+                
+                (shift 0 4 
+                    (rotate 180 
+                        (wedge 3)
+                    )
+                )
+                
+                (shift 0 -2 
+                    (wedge 3)
+                )
+                }
+            )
+        use:Vertex )
+        
+        (piece "King" P1 
+            (priority { 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                }
+            )
+        )
+        
+        (piece "Marker" P2 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        
+        (hand Each)
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "King1" 
+                (centrePoint)
+            count:2)
+            
+            (place "Marker2" 
+                (handSite P2)
+            count:16)
+            
+            (place "Marker2" 
+                (difference 
+                    (expand 
+                        (sites Centre)
+                    )
+                    
+                    (centrePoint)
+                )
+            )
+            }
+        )
+        phases:{ 
+        (phase "Placement" P2 
+            (play 
+                (move 
+                    (from 
+                        (handSite Mover)
+                    )
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement" )
+        )
+        
+        (phase "Movement" 
+            (play 
+                (forEach Piece)
+            )
+        )
+        }
+        
+        (end { 
+            (if 
+                (no Moves P1)
+                
+                (result P2 Win)
+            )
+            
+            (if 
+                (no Pieces P2)
+                
+                (result P1 Win)
+            )
+            }
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Hop" True)
+        (concept "PlayersWithDirections" True)
+    })
+    )

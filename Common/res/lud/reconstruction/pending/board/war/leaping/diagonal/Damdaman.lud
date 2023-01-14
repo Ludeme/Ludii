@@ -8,16 +8,9 @@
     {
     (item "Incomplete"
         <
-        (players 2) 
-        (equipment {
-            (board [#])
-            (piece "Marker" Each (move [#])) // More pieces than English draughts.
-        }) 
-        (rules
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+        ("TwoPlayersNorthSouth") 
+        (equipment [#]) 
+        (rules [#])
         >
         "The incomplete ruleset."
     )
@@ -49,5 +42,10 @@
         (origin "This game was played in Indonesia, around 1817.")
         }
     )
+    
+    (recon {
+        (concept "Hop" True)
+        (concept "PlayersWithDirections" True)
+    })
     
 )

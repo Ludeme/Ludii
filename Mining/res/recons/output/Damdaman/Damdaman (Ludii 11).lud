@@ -1,0 +1,423 @@
+(game "Damdaman" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (mancalaBoard 2 6 { 
+            (track "Track1" "1,E,ENE,WNW,W" loop:True P1)
+            
+            (track "Track2" "12,W,WSW,ESE,E" loop:True P2)
+            }
+        )
+        
+        (piece "Seed" Shared)
+        
+        (regions "Home" P1 
+            (sites Bottom)
+        )
+        
+        (regions "Home" P2 
+            (sites Top)
+        )
+        
+        (map { 
+            (pair P1 LastSite)
+            
+            (pair P2 FirstSite)
+            }
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (set Count 7 to:
+                (union 
+                    (sites Bottom)
+                    
+                    (sites Top)
+                )
+            )
+            
+            (forEach Value min:1 max:12 
+                (set RememberValue 
+                    (value)
+                )
+            )
+            }
+        )
+        phases:{ 
+        (phase "Round" 
+            (play 
+                (move Select 
+                    (from 
+                        (if 
+                            (and 
+                                (not 
+                                    (is Pending)
+                                )
+                                
+                                (is Prev Mover)
+                            )
+                            
+                            (sites { 
+                                (last To afterConsequence:True)
+                                }
+                            )
+                            
+                            (forEach 
+                                (sites Mover "Home")
+                                if:
+                                (is In 
+                                    (site)
+                                    
+                                    (values Remembered)
+                                )
+                            )
+                        )
+                        if:
+                        (> 
+                            (count at:
+                                (from)
+                            )
+                        0)
+                    )
+                    
+                    (then 
+                        (sow "Track" owner:
+                            (mover)
+                            apply:
+                            (if 
+                                (= 
+                                    (to)
+                                    
+                                    (mapEntry Mover)
+                                )
+                                
+                                (and 
+                                    (moveAgain)
+                                    
+                                    (set Pending)
+                                )
+                                
+                                (if 
+                                    (> 
+                                        (count at:
+                                            (to)
+                                        )
+                                    1)
+                                    
+                                    (moveAgain)
+                                    
+                                    (if 
+                                        (and 
+                                            (is In 
+                                                (to)
+                                                
+                                                (sites Mover "Home")
+                                            )
+                                            
+                                            (> 
+                                                (count at:
+                                                    (if 
+                                                        (is Mover P1)
+                                                        
+                                                        (+ 
+                                                            (to)
+                                                        6)
+                                                        
+                                                        (- 
+                                                            (to)
+                                                        6)
+                                                    )
+                                                )
+                                            0 )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (if 
+                                                    (is Mover P1)
+                                                    
+                                                    (+ 
+                                                        (to)
+                                                    6)
+                                                    
+                                                    (- 
+                                                        (to)
+                                                    6)
+                                                )
+                                            )
+                                            
+                                            (to 
+                                                (mapEntry Mover)
+                                            )
+                                            count:
+                                            (count at:
+                                                (if 
+                                                    (is Mover P1)
+                                                    
+                                                    (+ 
+                                                        (to)
+                                                    6)
+                                                    
+                                                    (- 
+                                                        (to)
+                                                    6)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (all Sites 
+                                        (forEach 
+                                            (difference 
+                                                (union 
+                                                    (sites Bottom)
+                                                    
+                                                    (sites Top)
+                                                )
+                                                
+                                                (sites Empty)
+                                            )
+                                            if:
+                                            (is In 
+                                                (site)
+                                                
+                                                (values Remembered)
+                                            )
+                                        )
+                                        if:
+                                        (= 0 
+                                            (count at:
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (forEach Site 
+                                            (difference 
+                                                (sites P1 "Home")
+                                                
+                                                (sites Empty)
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (site)
+                                                )
+                                                
+                                                (to 
+                                                    (mapEntry P1)
+                                                )
+                                                count:
+                                                (count at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (forEach Site 
+                                            (difference 
+                                                (sites P2 "Home")
+                                                
+                                                (sites Empty)
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (site)
+                                                )
+                                                
+                                                (to 
+                                                    (mapEntry P2)
+                                                )
+                                                count:
+                                                (count at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase 
+                (all Sites 
+                    (forEach 
+                        (difference 
+                            (union 
+                                (sites Bottom)
+                                
+                                (sites Top)
+                            )
+                            
+                            (sites Empty)
+                        )
+                        if:
+                        (is In 
+                            (site)
+                            
+                            (values Remembered)
+                        )
+                    )
+                    if:
+                    (= 0 
+                        (count at:
+                            (site)
+                        )
+                    )
+                )
+            "BetweenRound" )
+        )
+        
+        (phase "BetweenRound" 
+            (play 
+                (if 
+                    (>= 
+                        (count at:
+                            (mapEntry Mover)
+                        )
+                    7)
+                    
+                    (move 
+                        (from 
+                            (mapEntry Mover)
+                        )
+                        
+                        (to 
+                            (intersection 
+                                (sites Empty)
+                                
+                                (sites Mover "Home")
+                            )
+                        )
+                    count:7 )
+                    
+                    (then 
+                        (if 
+                            (or 
+                                (and 
+                                    (> 7 
+                                        (count at:
+                                            (mapEntry P2)
+                                        )
+                                    )
+                                    
+                                    (= 42 
+                                        (count in:
+                                            (sites Bottom)
+                                        )
+                                    )
+                                )
+                                
+                                (and 
+                                    (> 7 
+                                        (count at:
+                                            (mapEntry P1)
+                                        )
+                                    )
+                                    
+                                    (= 42 
+                                        (count in:
+                                            (sites Top)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (and 
+                                (forget Value All)
+                                
+                                (forEach Site 
+                                    (sites Board)
+                                    
+                                    (if 
+                                        (= 7 
+                                            (count at:
+                                                (site)
+                                            )
+                                        )
+                                        
+                                        (remember Value 
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase 
+                (or 
+                    (and 
+                        (> 7 
+                            (count at:
+                                (mapEntry P2)
+                            )
+                        )
+                        
+                        (= 42 
+                            (count in:
+                                (sites Bottom)
+                            )
+                        )
+                    )
+                    
+                    (and 
+                        (> 7 
+                            (count at:
+                                (mapEntry P1)
+                            )
+                        )
+                        
+                        (= 42 
+                            (count in:
+                                (sites Top)
+                            )
+                        )
+                    )
+                )
+            "Round" )
+        )
+        }
+        
+        (end 
+            (if 
+                (> 7 
+                    (count in:
+                        (difference 
+                            (sites Board)
+                            
+                            (mapEntry Mover)
+                        )
+                    )
+                )
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Hop" True)
+        (concept "PlayersWithDirections" True)
+    })
+    )
