@@ -294,14 +294,14 @@ public class Generator
 		
 		if (clause.isTerminal())
 		{
-
-			if (clause.toString().equals("string")) {
+			final String clauseString = clause.toString();
+			if (clauseString.equals("string")) {
 				return "%string%";
 			}
 
 			// Check for primitive arrays.
 			// NOTE: the length of the arrays is biased towards small lengths since rng.nextInt() is re-evaluated at every iteration.
-			if (clause.toString().equals("{<int>}")) {
+			else if (clauseString.equals("{<int>}")) {
 				StringBuilder sb = new StringBuilder();
 				sb.append('{');
 				for (int i=0; i < rng.nextInt(MAX_ARRAY_LENGTH - 1) + 1; i++) {
@@ -311,7 +311,7 @@ public class Generator
 				return sb.toString();
 			}
 
-			if (clause.toString().equals("{<float>}")) {
+			else if (clauseString.equals("{<float>}")) {
 				StringBuilder sb = new StringBuilder();
 				sb.append('{');
 				for (int i=0; i < rng.nextInt(MAX_ARRAY_LENGTH - 1) + 1; i++) {
@@ -321,7 +321,7 @@ public class Generator
 				return sb.toString();
 			}
 
-			if (clause.toString().equals("{<boolean>}")) {
+			else if (clauseString.equals("{<boolean>}")) {
 				StringBuilder sb = new StringBuilder();
 				sb.append('{');
 				for (int i=0; i < rng.nextInt(MAX_ARRAY_LENGTH - 1) + 1; i++) {
@@ -331,7 +331,7 @@ public class Generator
 				return sb.toString();
 			}
 
-			if (clause.toString().equals("{<dim>}")) {
+			else if (clauseString.equals("{<dim>}")) {
 				StringBuilder sb = new StringBuilder();
 				sb.append('{');
 				for (int i=0; i < rng.nextInt(MAX_ARRAY_LENGTH - 1) + 1; i++) {
@@ -342,7 +342,7 @@ public class Generator
 			}
 
 			// Return complete clause immediately
-			return clause.toString();
+			return clauseString;
 		}
 		
 		if (clause.isRule())
