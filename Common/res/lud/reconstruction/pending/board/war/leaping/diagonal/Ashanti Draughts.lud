@@ -46,8 +46,8 @@
     (recon {
         (concept "Hop" True)
         (concept "PlayersWithDirections" True)
-        (concept "NumComponentsTypePerPlayer" 2)
-        (concept "CircleTiling" False)
+        (concept "NumComponentsTypePerPlayer" 2) // added this to have promoted pieces.
+        (concept "CircleTiling" False) // added this to avoid the circle ones.
     })
     
 )
