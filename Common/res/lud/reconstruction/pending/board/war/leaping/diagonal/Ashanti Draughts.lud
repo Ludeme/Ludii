@@ -6,6 +6,2891 @@
 
 (option "Variant" <Variant> args:{ <variant> }
     {
+    (item "Ashanti Draughts (Ludii 1)" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (rectangle 5 5 diagonals:Alternating)
+            use:Vertex)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Counter" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (and 
+                                (if 
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites Next)
+                                    )
+                                    
+                                    (promote 
+                                        (last To)
+                                        
+                                        (piece "DoubleCounter")
+                                    Mover )
+                                )
+                                
+                                (set Value Mover 0)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (set Value Mover 1)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Next)
+                            )
+                            
+                            (promote 
+                                (last To)
+                                
+                                (piece "DoubleCounter")
+                            Mover)
+                        )
+                    )
+                )
+            )
+            
+            (piece "DoubleCounter" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (and 
+                                (if 
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites Next)
+                                    )
+                                    
+                                    (promote 
+                                        (last To)
+                                        
+                                        (piece "DoubleCounter")
+                                    Mover )
+                                )
+                                
+                                (set Value Mover 0)
+                            )
+                        )
+                    )
+                    
+                    (move Slide 
+                        (then 
+                            (set Value Mover 1)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (or 
+                    (if 
+                        (= 
+                            (value Player Prev)
+                        1)
+                        
+                        (or 
+                            (if 
+                                (and 
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites Pending)
+                                    )
+                                    
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites Empty)
+                                    )
+                                )
+                                
+                                (move Select 
+                                    (from 
+                                        (last To)
+                                        if:
+                                        (is Occupied 
+                                            (from)
+                                        )
+                                    )
+                                    
+                                    (then 
+                                        (and { 
+                                            (remove 
+                                                (last To)
+                                            )
+                                            
+                                            (moveAgain)
+                                            
+                                            (set Value Prev 0)
+                                            }
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Select 
+                                (from 
+                                    (sites Pending)
+                                    if:
+                                    (is Occupied 
+                                        (from)
+                                    )
+                                )
+                                
+                                (then 
+                                    (and { 
+                                        (remove 
+                                            (last To)
+                                        )
+                                        
+                                        (moveAgain)
+                                        
+                                        (set Value Prev 0)
+                                        }
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (do 
+                        (set Pending 
+                            (sites From 
+                                (or 
+                                    (forEach Piece "Counter" 
+                                        (move Hop 
+                                            (between if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (then 
+                                                (and 
+                                                    (if 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites Next)
+                                                        )
+                                                        
+                                                        (promote 
+                                                            (last To)
+                                                            
+                                                            (piece "DoubleCounter" )
+                                                        Mover )
+                                                    )
+                                                    
+                                                    (set Value Mover 0)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (forEach Piece "DoubleCounter" 
+                                        (move Hop 
+                                            (between if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (then 
+                                                (and 
+                                                    (if 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites Next)
+                                                        )
+                                                        
+                                                        (promote 
+                                                            (last To)
+                                                            
+                                                            (piece "DoubleCounter" )
+                                                        Mover )
+                                                    )
+                                                    
+                                                    (set Value Mover 0)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        next:
+                        (forEach Piece)
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Ashanti Draughts (Ludii 1) ruleset.")
+    
+    (item "Ashanti Draughts (Ludii 2)" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (rectangle 9 9 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Disc" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (and 
+                                (if 
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites Next)
+                                    )
+                                    
+                                    (promote 
+                                        (last To)
+                                        
+                                        (piece "DiscDouble")
+                                    Mover )
+                                )
+                                
+                                (set Value Mover 0)
+                            )
+                        )
+                    )
+                    
+                    (move Step Forwards 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (set Value Mover 1)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Next)
+                            )
+                            
+                            (promote 
+                                (last To)
+                                
+                                (piece "DiscDouble")
+                            Mover)
+                        )
+                    )
+                )
+            )
+            
+            (piece "DiscDouble" Each 
+                (or 
+                    (move Hop 
+                        (between before:
+                            (count Rows)
+                            after:
+                            (count Rows)
+                            if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (set Value Mover 0)
+                        )
+                    )
+                    
+                    (move Slide 
+                        (then 
+                            (set Value Mover 1)
+                        )
+                    )
+                )
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Disc1" 
+                    (forEach 
+                        (sites Board)
+                        if:
+                        (< 
+                            (site)
+                            
+                            (centrePoint)
+                        )
+                    )
+                )
+                
+                (place "Disc2" 
+                    (forEach 
+                        (sites Board)
+                        if:
+                        (> 
+                            (site)
+                            
+                            (centrePoint)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (or 
+                    (if 
+                        (= 
+                            (value Player Prev)
+                        1)
+                        
+                        (or 
+                            (if 
+                                (and 
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites Pending)
+                                    )
+                                    
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites Empty)
+                                    )
+                                )
+                                
+                                (move Select 
+                                    (from 
+                                        (last To)
+                                        if:
+                                        (is Occupied 
+                                            (from)
+                                        )
+                                    )
+                                    
+                                    (then 
+                                        (and { 
+                                            (remove 
+                                                (last To)
+                                            )
+                                            
+                                            (moveAgain)
+                                            
+                                            (set Value Prev 0)
+                                            }
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Select 
+                                (from 
+                                    (sites Pending)
+                                    if:
+                                    (is Occupied 
+                                        (from)
+                                    )
+                                )
+                                
+                                (then 
+                                    (and { 
+                                        (remove 
+                                            (last To)
+                                        )
+                                        
+                                        (moveAgain)
+                                        
+                                        (set Value Prev 0)
+                                        }
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (do 
+                        (set Pending 
+                            (sites From 
+                                (or 
+                                    (forEach Piece "Disc" 
+                                        (move Hop 
+                                            (between if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (then 
+                                                (and 
+                                                    (if 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites Next)
+                                                        )
+                                                        
+                                                        (promote 
+                                                            (last To)
+                                                            
+                                                            (piece "DiscDouble")
+                                                        Mover )
+                                                    )
+                                                    
+                                                    (set Value Mover 0)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (forEach Piece "DiscDouble" 
+                                        (move Hop 
+                                            (between before:
+                                                (count Rows)
+                                                after:
+                                                (count Rows)
+                                                if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        next:
+                        (forEach Piece)
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Mover)
+                    
+                    (result Next Win)
+                )
+            )
+        )
+        
+    > "The Ashanti Draughts (Ludii 2) ruleset.")
+    
+    (item "Ashanti Draughts (Ludii 3)" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (rectangle 5 5 diagonals:Alternating)
+            use:Vertex)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Counter" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (and 
+                                (if 
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites Next)
+                                    )
+                                    
+                                    (promote 
+                                        (last To)
+                                        
+                                        (piece "DoubleCounter")
+                                    Mover )
+                                )
+                                
+                                (set Value Mover 0)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (set Value Mover 1)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Next)
+                            )
+                            
+                            (promote 
+                                (last To)
+                                
+                                (piece "DoubleCounter")
+                            Mover)
+                        )
+                    )
+                )
+            )
+            
+            (piece "DoubleCounter" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (and 
+                                (if 
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites Next)
+                                    )
+                                    
+                                    (promote 
+                                        (last To)
+                                        
+                                        (piece "DoubleCounter")
+                                    Mover )
+                                )
+                                
+                                (set Value Mover 0)
+                            )
+                        )
+                    )
+                    
+                    (move Slide 
+                        (then 
+                            (set Value Mover 1)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter2" 
+                    (forEach 
+                        (sites Board)
+                        if:
+                        (< 
+                            (site)
+                            
+                            (centrePoint)
+                        )
+                    )
+                )
+                
+                (place "Counter1" 
+                    (forEach 
+                        (sites Board)
+                        if:
+                        (> 
+                            (site)
+                            
+                            (centrePoint)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Moves Mover)
+                    
+                    (result Next Win)
+                )
+            )
+        )
+        
+    > "The Ashanti Draughts (Ludii 3) ruleset.")
+    
+    (item "Ashanti Draughts (Ludii 4)" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (square 5 diagonals:Solid)
+            use:Vertex)
+            
+            (piece "Counter" Each 
+                (or 
+                    (move Step Forwards 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Next)
+                            )
+                            
+                            (promote 
+                                (last To)
+                                
+                                (piece "DoubleCounter")
+                            Mover)
+                        )
+                    )
+                )
+            )
+            
+            (piece "DoubleCounter" Each 
+                (or 
+                    (move Hop 
+                        (between before:
+                            (count Rows)
+                            after:
+                            (count Rows)
+                            if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Slide)
+                )
+            )
+            
+            (regions P1 
+                (sites Top)
+            )
+            
+            (regions P2 
+                (sites Bottom)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (or 
+                    (if 
+                        (= 
+                            (value Player Prev)
+                        1)
+                        
+                        (or 
+                            (if 
+                                (and 
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites Pending)
+                                    )
+                                    
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites Empty)
+                                    )
+                                )
+                                
+                                (move Select 
+                                    (from 
+                                        (last To)
+                                        if:
+                                        (is Occupied 
+                                            (from)
+                                        )
+                                    )
+                                    
+                                    (then 
+                                        (and { 
+                                            (remove 
+                                                (last To)
+                                            )
+                                            
+                                            (moveAgain)
+                                            
+                                            (set Value Prev 0)
+                                            }
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Select 
+                                (from 
+                                    (sites Pending)
+                                    if:
+                                    (is Occupied 
+                                        (from)
+                                    )
+                                )
+                                
+                                (then 
+                                    (and { 
+                                        (remove 
+                                            (last To)
+                                        )
+                                        
+                                        (moveAgain)
+                                        
+                                        (set Value Prev 0)
+                                        }
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (do 
+                        (set Pending 
+                            (sites From 
+                                (or 
+                                    (forEach Piece "Counter" 
+                                        (move Hop 
+                                            (between if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (then 
+                                                (and 
+                                                    (if 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites Next)
+                                                        )
+                                                        
+                                                        (promote 
+                                                            (last To)
+                                                            
+                                                            (piece "DoubleCounter" )
+                                                        Mover )
+                                                    )
+                                                    
+                                                    (set Value Mover 0)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (forEach Piece "DoubleCounter" 
+                                        (move Hop 
+                                            (between if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (then 
+                                                (and 
+                                                    (if 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites Next)
+                                                        )
+                                                        
+                                                        (promote 
+                                                            (last To)
+                                                            
+                                                            (piece "DoubleCounter" )
+                                                        Mover )
+                                                    )
+                                                    
+                                                    (set Value Mover 0)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        next:
+                        (forEach Piece)
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Ashanti Draughts (Ludii 4) ruleset.")
+    
+    (item "Ashanti Draughts (Ludii 5)" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 9)
+                    edges:{ { 0 10}
+                    { 10 20}
+                    { 20 30}
+                    { 30 40}
+                    { 40 50}
+                    { 50 60}
+                    { 60 70}
+                    { 70 80}
+                    { 72 64}
+                    { 64 56}
+                    { 56 48}
+                    { 48 40}
+                    { 40 32}
+                    { 32 24}
+                    { 16 24}
+                    { 16 8}
+                    }
+                )
+            use:Vertex )
+            
+            (piece "Counter" Each 
+                (or 
+                    (move Step 
+                        (difference Forwards Diagonal)
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Next)
+                            )
+                            
+                            (promote 
+                                (last To)
+                                
+                                (piece "DoubleCounter")
+                            Mover)
+                        )
+                    )
+                )
+            )
+            
+            (piece "DoubleCounter" Each 
+                (or 
+                    (move Slide)
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (or 
+                    (if 
+                        (= 
+                            (value Player Prev)
+                        1)
+                        
+                        (or 
+                            (if 
+                                (and 
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites Pending)
+                                    )
+                                    
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites Empty)
+                                    )
+                                )
+                                
+                                (move Select 
+                                    (from 
+                                        (last To)
+                                        if:
+                                        (is Occupied 
+                                            (from)
+                                        )
+                                    )
+                                    
+                                    (then 
+                                        (and { 
+                                            (remove 
+                                                (last To)
+                                            )
+                                            
+                                            (moveAgain)
+                                            
+                                            (set Value Prev 0)
+                                            }
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Select 
+                                (from 
+                                    (sites Pending)
+                                    if:
+                                    (is Occupied 
+                                        (from)
+                                    )
+                                )
+                                
+                                (then 
+                                    (and { 
+                                        (remove 
+                                            (last To)
+                                        )
+                                        
+                                        (moveAgain)
+                                        
+                                        (set Value Prev 0)
+                                        }
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (do 
+                        (set Pending 
+                            (sites From 
+                                (or 
+                                    (forEach Piece "Counter" 
+                                        (move Hop 
+                                            (between if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (then 
+                                                (and 
+                                                    (if 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites Next)
+                                                        )
+                                                        
+                                                        (promote 
+                                                            (last To)
+                                                            
+                                                            (piece "DoubleCounter" )
+                                                        Mover )
+                                                    )
+                                                    
+                                                    (set Value Mover 0)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (forEach Piece "DoubleCounter" 
+                                        (move Hop 
+                                            (between if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (then 
+                                                (and 
+                                                    (if 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites Next)
+                                                        )
+                                                        
+                                                        (promote 
+                                                            (last To)
+                                                            
+                                                            (piece "DoubleCounter" )
+                                                        Mover )
+                                                    )
+                                                    
+                                                    (set Value Mover 0)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        next:
+                        (forEach Piece)
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Ashanti Draughts (Ludii 5) ruleset.")
+    
+    (item "Ashanti Draughts (Ludii 6)" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 9)
+                    edges:{ { 0 10}
+                    { 10 20}
+                    { 20 30}
+                    { 30 40}
+                    { 40 50}
+                    { 50 60}
+                    { 60 70}
+                    { 70 80}
+                    { 72 64}
+                    { 64 56}
+                    { 56 48}
+                    { 48 40}
+                    { 40 32}
+                    { 32 24}
+                    { 16 24}
+                    { 16 8}
+                    }
+                )
+            use:Vertex )
+            
+            (piece "Counter" Each 
+                (or 
+                    (move Step 
+                        (difference Forwards Diagonal)
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Next)
+                            )
+                            
+                            (promote 
+                                (last To)
+                                
+                                (piece "DoubleCounter")
+                            Mover)
+                        )
+                    )
+                )
+            )
+            
+            (piece "DoubleCounter" Each 
+                (or 
+                    (move Slide)
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union 
+                        (sites { 41 42 43 44}
+                        )
+                        
+                        (expand 
+                            (sites Bottom)
+                        steps:3)
+                    )
+                )
+                
+                (place "Counter2" 
+                    (union 
+                        (sites { 36 37 38 39}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        steps:3)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Draughts (Ludii 6) ruleset.")
+    
+    (item "Ashanti Draughts (Ludii 7)" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (concentric { 4 4 4 4 4 4 4 4}
+                    )
+                    
+                    (shift -7 7 
+                        (square 1)
+                    )
+                    
+                    (shift -6 7 
+                        (square 1)
+                    )
+                    
+                    (shift -7 6 
+                        (square 1)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 28 24 20 16 12 8 4 0}
+                P1 directed:True)
+                
+                (track "Track2" { 29 25 21 17 13 9 5 1}
+                P2 directed:True)
+                
+                (track "Track3" { 30 26 22 18 14 10 6 2}
+                P3 directed:True )
+                
+                (track "Track4" { 31 27 23 19 15 11 7 3}
+                P4 directed:True )
+                }
+            use:Vertex )
+            
+            (piece "Marker" Each)
+            
+            (piece "Stick" Shared)
+            
+            (piece "Ball" Each)
+            
+            (piece "Ball" Shared)
+            
+            (hand Each size:2)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (difference 
+                                (sites Board)
+                                
+                                (centrePoint)
+                            )
+                            if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (is Empty 
+                        (handSite Mover)
+                    )
+                "Move")
+            )
+            
+            (phase "Move" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (or 
+                            (move Hop 
+                                (from 
+                                    (last To)
+                                )
+                                
+                                (between if:
+                                    (and 
+                                        (not 
+                                            (is In 
+                                                (between)
+                                                
+                                                (sites ToClear)
+                                            )
+                                        )
+                                        
+                                        (is Enemy 
+                                            (who at:
+                                                (between)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Empty 
+                                        (to)
+                                    )
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (can Move 
+                                            (hop 
+                                                (from 
+                                                    (last To)
+                                                )
+                                                
+                                                (between if:
+                                                    (and 
+                                                        (not 
+                                                            (is In 
+                                                                (between)
+                                                                
+                                                                (sites ToClear )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Enemy 
+                                                            (who at:
+                                                                (between)
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (to if:
+                                                    (is Empty 
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                            
+                            (move Pass)
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+                
+                (end 
+                    (if 
+                        (no Pieces Next)
+                        
+                        (result Next Loss)
+                    )
+                )
+            )
+            }
+        )
+        
+    > "The Ashanti Draughts (Ludii 7) ruleset.")
+    
+    (item "Ashanti Draughts (Ludii 8)" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (rectangle 5 5 diagonals:Alternating)
+            use:Vertex)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Counter" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (and 
+                                (if 
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites Next)
+                                    )
+                                    
+                                    (promote 
+                                        (last To)
+                                        
+                                        (piece "DoubleCounter")
+                                    Mover )
+                                )
+                                
+                                (set Value Mover 0)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (set Value Mover 1)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Next)
+                            )
+                            
+                            (promote 
+                                (last To)
+                                
+                                (piece "DoubleCounter")
+                            Mover)
+                        )
+                    )
+                )
+            )
+            
+            (piece "DoubleCounter" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (and 
+                                (if 
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites Next)
+                                    )
+                                    
+                                    (promote 
+                                        (last To)
+                                        
+                                        (piece "DoubleCounter")
+                                    Mover )
+                                )
+                                
+                                (set Value Mover 0)
+                            )
+                        )
+                    )
+                    
+                    (move Slide 
+                        (then 
+                            (set Value Mover 1)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece "Counter" 
+                    (or 
+                        (move Hop 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (move Step 
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Draughts (Ludii 8) ruleset.")
+    
+    (item "Ashanti Draughts (Ludii 9)" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 9)
+                    edges:{ { 0 10}
+                    { 10 20}
+                    { 20 30}
+                    { 30 40}
+                    { 40 50}
+                    { 50 60}
+                    { 60 70}
+                    { 70 80}
+                    { 72 64}
+                    { 64 56}
+                    { 56 48}
+                    { 48 40}
+                    { 40 32}
+                    { 32 24}
+                    { 16 24}
+                    { 16 8}
+                    }
+                )
+            use:Vertex )
+            
+            (piece "Counter" Each 
+                (or 
+                    (move Step 
+                        (difference Forwards Diagonal)
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Next)
+                            )
+                            
+                            (promote 
+                                (last To)
+                                
+                                (piece "DoubleCounter")
+                            Mover)
+                        )
+                    )
+                )
+            )
+            
+            (piece "DoubleCounter" Each 
+                (or 
+                    (move Slide)
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece "Counter" 
+                    (or 
+                        (move Hop 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (move Step 
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Draughts (Ludii 9) ruleset.")
+    
+    (item "Ashanti Draughts (Ludii 10)" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (add 
+                    (square 9)
+                    edges:{ { 0 10}
+                    { 10 20}
+                    { 20 30}
+                    { 30 40}
+                    { 40 50}
+                    { 50 60}
+                    { 60 70}
+                    { 70 80}
+                    { 72 64}
+                    { 64 56}
+                    { 56 48}
+                    { 48 40}
+                    { 40 32}
+                    { 32 24}
+                    { 16 24}
+                    { 16 8}
+                    }
+                )
+            use:Vertex )
+            
+            (piece "Counter" Each 
+                (or 
+                    (move Step 
+                        (difference Forwards Diagonal)
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Next)
+                            )
+                            
+                            (promote 
+                                (last To)
+                                
+                                (piece "DoubleCounter")
+                            Mover)
+                        )
+                    )
+                )
+            )
+            
+            (piece "DoubleCounter" Each 
+                (or 
+                    (move Slide)
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Counter1" 
+                    (union { 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "D3" "E3"}
+                        )
+                        }
+                    )
+                )
+                
+                (place "Counter2" 
+                    (union { 
+                        (sites { "A3" "B3"}
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        )
+                        }
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (or 
+                    (if 
+                        (and 
+                            (not 
+                                (is Prev Mover)
+                            )
+                            
+                            (= 
+                                (value Player Prev)
+                            1)
+                        )
+                        
+                        (or 
+                            (if 
+                                (and 
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites Pending)
+                                    )
+                                    
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites Empty)
+                                    )
+                                )
+                                
+                                (move Select 
+                                    (from 
+                                        (last To)
+                                        if:
+                                        (is Occupied 
+                                            (from)
+                                        )
+                                    )
+                                    
+                                    (then 
+                                        (and { 
+                                            (remove 
+                                                (last To)
+                                            )
+                                            
+                                            (moveAgain)
+                                            
+                                            (set Value Prev 0)
+                                            }
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Select 
+                                (from 
+                                    (sites Pending)
+                                    if:
+                                    (is Occupied 
+                                        (from)
+                                    )
+                                )
+                                
+                                (then 
+                                    (and { 
+                                        (remove 
+                                            (last To)
+                                        )
+                                        
+                                        (moveAgain)
+                                        
+                                        (set Value Prev 0)
+                                        }
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (is Prev Mover)
+                        
+                        (if 
+                            (= 
+                                (last To)
+                                
+                                (last From)
+                            )
+                            
+                            (do 
+                                (set Pending 
+                                    (sites From 
+                                        (forEach Piece "Counter" 
+                                            (move Hop 
+                                                (between if:
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                    
+                                                    (apply 
+                                                        (remove 
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (to if:
+                                                    (is Empty 
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (then 
+                                                    (and 
+                                                        (if 
+                                                            (can Move 
+                                                                (move Hop 
+                                                                    (from 
+                                                                        (last To)
+                                                                    )
+                                                                    
+                                                                    (between if:
+                                                                        (is Enemy 
+                                                                            (who at:
+                                                                                (between )
+                                                                            )
+                                                                        )
+                                                                        
+                                                                        (apply 
+                                                                            (remove 
+                                                                                (between )
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                    
+                                                                    (to if:
+                                                                        (is Empty 
+                                                                            (to)
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                            
+                                                            (moveAgain)
+                                                        )
+                                                        
+                                                        (set Value Mover 0)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                next:
+                                (forEach Piece "Counter" 
+                                    (or 
+                                        (move Hop 
+                                            (between if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (then 
+                                                (and 
+                                                    (if 
+                                                        (can Move 
+                                                            (move Hop 
+                                                                (from 
+                                                                    (last To)
+                                                                )
+                                                                
+                                                                (between if:
+                                                                    (is Enemy 
+                                                                        (who at:
+                                                                            (between )
+                                                                        )
+                                                                    )
+                                                                    
+                                                                    (apply 
+                                                                        (remove 
+                                                                            (between )
+                                                                        )
+                                                                    )
+                                                                )
+                                                                
+                                                                (to if:
+                                                                    (is Empty 
+                                                                        (to)
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (moveAgain)
+                                                    )
+                                                    
+                                                    (set Value Mover 0)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (move Step 
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (then 
+                                                (set Value Mover 1)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Hop 
+                                (from 
+                                    (last To)
+                                )
+                                
+                                (between if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Empty 
+                                        (to)
+                                    )
+                                )
+                                
+                                (then 
+                                    (set Value Mover 0)
+                                )
+                            )
+                        )
+                        
+                        (do 
+                            (set Pending 
+                                (sites From 
+                                    (forEach Piece "Counter" 
+                                        (move Hop 
+                                            (between if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (then 
+                                                (and 
+                                                    (if 
+                                                        (can Move 
+                                                            (move Hop 
+                                                                (from 
+                                                                    (last To)
+                                                                )
+                                                                
+                                                                (between if:
+                                                                    (is Enemy 
+                                                                        (who at:
+                                                                            (between )
+                                                                        )
+                                                                    )
+                                                                    
+                                                                    (apply 
+                                                                        (remove 
+                                                                            (between )
+                                                                        )
+                                                                    )
+                                                                )
+                                                                
+                                                                (to if:
+                                                                    (is Empty 
+                                                                        (to)
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (moveAgain)
+                                                    )
+                                                    
+                                                    (set Value Mover 0)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            next:
+                            (forEach Piece "Counter" 
+                                (or 
+                                    (move Hop 
+                                        (between if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                            
+                                            (apply 
+                                                (remove 
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (then 
+                                            (and 
+                                                (if 
+                                                    (can Move 
+                                                        (move Hop 
+                                                            (from 
+                                                                (last To)
+                                                            )
+                                                            
+                                                            (between if:
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (between )
+                                                                    )
+                                                                )
+                                                                
+                                                                (apply 
+                                                                    (remove 
+                                                                        (between)
+                                                                    )
+                                                                )
+                                                            )
+                                                            
+                                                            (to if:
+                                                                (is Empty 
+                                                                    (to)
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (moveAgain)
+                                                )
+                                                
+                                                (set Value Mover 0)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (move Step 
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (then 
+                                            (set Value Mover 1)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Draughts (Ludii 10) ruleset.")
+    
     (item "Incomplete"
         <
         ("TwoPlayersNorthSouth") 
@@ -14,11 +2899,43 @@
         >
         "The incomplete ruleset."
     )
+    
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
+(rulesets {
+    
+    (ruleset "Ruleset/Ashanti Draughts (Ludii 1) (Reconstructed)" {
+        "Variant/Ashanti Draughts (Ludii 1)"
+    })
+    (ruleset "Ruleset/Ashanti Draughts (Ludii 2) (Reconstructed)" {
+        "Variant/Ashanti Draughts (Ludii 2)"
+    })
+    (ruleset "Ruleset/Ashanti Draughts (Ludii 3) (Reconstructed)" {
+        "Variant/Ashanti Draughts (Ludii 3)"
+    })
+    (ruleset "Ruleset/Ashanti Draughts (Ludii 4) (Reconstructed)" {
+        "Variant/Ashanti Draughts (Ludii 4)"
+    })
+    (ruleset "Ruleset/Ashanti Draughts (Ludii 5) (Reconstructed)" {
+        "Variant/Ashanti Draughts (Ludii 5)"
+    })
+    (ruleset "Ruleset/Ashanti Draughts (Ludii 6) (Reconstructed)" {
+        "Variant/Ashanti Draughts (Ludii 6)"
+    })
+    (ruleset "Ruleset/Ashanti Draughts (Ludii 7) (Reconstructed)" {
+        "Variant/Ashanti Draughts (Ludii 7)"
+    })
+    (ruleset "Ruleset/Ashanti Draughts (Ludii 8) (Reconstructed)" {
+        "Variant/Ashanti Draughts (Ludii 8)"
+    })
+    (ruleset "Ruleset/Ashanti Draughts (Ludii 9) (Reconstructed)" {
+        "Variant/Ashanti Draughts (Ludii 9)"
+    })
+    (ruleset "Ruleset/Ashanti Draughts (Ludii 10) (Reconstructed)" {
+        "Variant/Ashanti Draughts (Ludii 10)"
+    }) 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -43,6 +2960,10 @@
         }
     )
     
+    (graphics {
+        (show Edges Diagonal Hidden)
+    })
+    
     (recon {
         (concept "HopDecision" True)
         (concept "PlayersWithDirections" True)
@@ -50,3 +2971,4 @@
     })
     
 )
+
