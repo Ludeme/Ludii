@@ -53,6 +53,7 @@
     (recon {
         (concept "Hop" True)
         (concept "PlayersWithDirections" True)
+        (concept "NumComponentsTypePerPlayer" minValue:1 maxValue:2) // min 1 max 2, to avoid chess games
     })
     
 )
