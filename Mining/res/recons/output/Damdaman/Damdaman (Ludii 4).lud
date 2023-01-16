@@ -1,0 +1,192 @@
+(game "Damdaman" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (square 5 diagonals:Alternating)
+                
+                (shift 0 4 
+                    (rotate 180 
+                        (wedge 3)
+                    )
+                )
+                
+                (shift 0 -2 
+                    (wedge 3)
+                )
+                }
+            )
+        use:Vertex )
+        
+        (hand P2)
+        
+        (piece "Tiger" P1 
+            (or { 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Hop 
+                    (between 
+                        (range 1 9)
+                        if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                }
+            )
+        )
+        
+        (piece "Sheep" P2 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Sheep2" 
+                (difference 
+                    (expand 
+                        (sites Centre)
+                    )
+                    
+                    (centrePoint)
+                )
+            )
+            
+            (place Stack "Sheep2" 
+                (handSite P2)
+            count:15)
+            
+            (place Stack "Tiger1" 
+                (sites Centre)
+                counts:{ 2}
+            )
+            }
+        )
+        phases:{ 
+        (phase "Movement" 
+            (play 
+                (forEach Piece top:True)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+            
+            (nextPhase 
+                (and 
+                    (not 
+                        (all Sites 
+                            (sites Hand P2)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (< 
+                        (count Sites in:
+                            (sites Occupied by:P2 container:"Board")
+                        )
+                    8 )
+                )
+            "Placement" )
+        )
+        
+        (phase "Placement" 
+            (play 
+                (move 
+                    (from 
+                        (handSite Mover)
+                    )
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                    
+                    (then 
+                        (moveAgain)
+                    )
+                )
+            )
+            
+            (nextPhase 
+                (or 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (= 
+                        (count Sites in:
+                            (sites Occupied by:P2 container:"Board")
+                        )
+                    8 )
+                )
+            "Movement" )
+        )
+        }
+    )
+)
+
+
+(metadata (recon {
+        (concept "HopDecision" True)
+        (concept "PlayersWithDirections" True)
+        (concept "NumComponentsTypePerPlayer" minValue:1 maxValue:2)
+        (concept "NumStartComponents" minValue:25 maxValue:200)
+    })
+    )
