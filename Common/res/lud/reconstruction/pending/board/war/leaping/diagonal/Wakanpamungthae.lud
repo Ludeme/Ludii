@@ -44,7 +44,12 @@
     )
     
     (recon {
-        (concept "Hop" True)
+        (concept "HopDecision" True)
+        (concept "PlayersWithDirections" True)
+        (concept "Cell" True)
+        (concept "SquareShape" True)
+        (concept "SquareTiling" True)
+        (concept "NumComponentsTypePerPlayer" minValue:1 maxValue:2)
     })
     
 )
