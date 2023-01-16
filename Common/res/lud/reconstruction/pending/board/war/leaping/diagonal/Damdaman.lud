@@ -44,8 +44,10 @@
     )
     
     (recon {
-        (concept "Hop" True)
+        (concept "HopDecision" True)
         (concept "PlayersWithDirections" True)
+        (concept "NumComponentsTypePerPlayer" minValue:1 maxValue:2)
+        (concept "NumStartComponents" minValue:25 maxValue:200)
     })
     
 )
