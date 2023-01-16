@@ -320,60 +320,60 @@
 //----------------------------------
 
 (metadata
-    (info
-        {
-        (description "Quoted from the BGG entry: Bug ... is a 2 player combinatorial game where you build shapes on a hexagonal board, which then eat each other. The shapes that survive grow into different, larger shapes until one player runs out of space to grow (and thus wins).The game is played with white and black stones on any hexagonal tiling. The author strongly recommends playing at first on a 'hexhex3' board, and playing on larger boards only after accruing some skill.The game originated in the author's thinking about a cognitive phenomenon called 'perceptual binding', and how it may be used to make combinatorial games more easily understandable to the human mind, given its peculiarities. ...This implementation may differ slightly from the standard rules in exceptional cases, but is based on his confirmation of clarifying questions I asked the author in regards to the intent of the Eating rules.")
-        (rules "Definitions:
-            -- A 'bug' is an entire group of connected, same-color stones on the board. A single stone is also a bug.
-            -- The 'size' of a bug is the number of stones it contains.
-            -- The 'type' of a bug is its size and shape. Rotating or reflecting the shape of a bug does not affect its type. 
-            -- 'Growing' a bug is the creation of a new bug or the enlargement a single bug, using a single stone. (Merger is never allowed.)
-            -- 'Eating' is the removal of an adjacent bug of the same type.
-            
-            Play:
-            The board starts empty. 
-            Black begins the game by placing one black stone on any empty space. 
-            Then, starting with White, the players take turns.
-            
-            Each turn starts with a required growth, followed by eating and bonus growth in succession until no more bugs are available to eat.
-            Bug mergers are never allowed.
-            Note! A player who CANNOT move, WINS.
-            
-            Required growth:
-            -- The moving player must place a stone to grow a bug.
-            -- This first growth in a turn must not result in a bug that is larger than all the other bugs on the board.
-            
-            Successive cycles of eating and growth:
-            If there are any bugs that can be eaten, a new Eat-and-Bonus-Growth cycle must be taken.
-            
-            Eating
-            -- A bug is chosen to do the eating. 
-            -- It must be able to grow after eating.
-            -- It must then eat every bug that it can.
-            (i.e. all the bugs of the same type that are next to it)
-            
-            Bonus Growth
-            -- The same bug that ate must grow. 
-            -- For this bonus growth there is no limit to the size of the bug that results.
-            
-            If there are still bugs that can be eaten on the board, the cycle repeats.
-            If not, the next player's turn starts.
-            
-            Ending the game:
-            If you CANNOT place a stone at the beginning of your turn, you have WON. 
-            That is: you win if you’ve filled the ecosystem with your bugs so much you can no longer expand.
-            
-            The winner receives a point for each position where the other player could still place a stone.
-        The more experienced player's score must exceed any handicap agreed at the begining of the game.")
-        (id "1995")
-        (source "<a href=\"https://boardgamegeek.com/boardgame/240835/bug\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.8")
-        (classification "board/space/territory")
-        (author "Nick Bentley")
-        (credit "Dale W. Walton")
-        (date "2017")
-        }
-    )
+(info
+{
+(description "Quoted from the BGG entry: Bug ... is a 2 player combinatorial game where you build shapes on a hexagonal board, which then eat each other. The shapes that survive grow into different, larger shapes until one player runs out of space to grow (and thus wins).The game is played with white and black stones on any hexagonal tiling. The author strongly recommends playing at first on a 'hexhex3' board, and playing on larger boards only after accruing some skill.The game originated in the author's thinking about a cognitive phenomenon called 'perceptual binding', and how it may be used to make combinatorial games more easily understandable to the human mind, given its peculiarities. ...This implementation may differ slightly from the standard rules in exceptional cases, but is based on his confirmation of clarifying questions I asked the author in regards to the intent of the Eating rules.")
+(rules "Definitions:
+    -- A 'bug' is an entire group of connected, same-color stones on the board. A single stone is also a bug.
+    -- The 'size' of a bug is the number of stones it contains.
+    -- The 'type' of a bug is its size and shape. Rotating or reflecting the shape of a bug does not affect its type. 
+    -- 'Growing' a bug is the creation of a new bug or the enlargement a single bug, using a single stone. (Merger is never allowed.)
+    -- 'Eating' is the removal of an adjacent bug of the same type.
+    
+    Play:
+    The board starts empty. 
+    Black begins the game by placing one black stone on any empty space. 
+    Then, starting with White, the players take turns.
+    
+    Each turn starts with a required growth, followed by eating and bonus growth in succession until no more bugs are available to eat.
+    Bug mergers are never allowed.
+    Note! A player who CANNOT move, WINS.
+    
+    Required growth:
+    -- The moving player must place a stone to grow a bug.
+    -- This first growth in a turn must not result in a bug that is larger than all the other bugs on the board.
+    
+    Successive cycles of eating and growth:
+    If there are any bugs that can be eaten, a new Eat-and-Bonus-Growth cycle must be taken.
+    
+    Eating
+    -- A bug is chosen to do the eating. 
+    -- It must be able to grow after eating.
+    -- It must then eat every bug that it can.
+    (i.e. all the bugs of the same type that are next to it)
+        
+    Bonus Growth
+    -- The same bug that ate must grow. 
+    -- For this bonus growth there is no limit to the size of the bug that results.
+        
+    If there are still bugs that can be eaten on the board, the cycle repeats.
+    If not, the next player's turn starts.
+    
+    Ending the game:
+    If you CANNOT place a stone at the beginning of your turn, you have WON. 
+    That is: you win if you’ve filled the ecosystem with your bugs so much you can no longer expand.
+    
+    The winner receives a point for each position where the other player could still place a stone.
+    The more experienced player's score must exceed any handicap agreed at the begining of the game.")
+(id "1995")
+(source "<a href=\"https://boardgamegeek.com/boardgame/240835/bug\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+(version "1.3.9")
+(classification "board/space/territory")
+(author "Nick Bentley")
+(credit "Dale W. Walton")
+(date "2017")
+}
+)
     
     (graphics
         {

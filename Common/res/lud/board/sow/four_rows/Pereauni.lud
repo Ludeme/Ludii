@@ -189,23 +189,23 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Pereaüni is a four-row mancala-style board game played by several different groups in Uganda. In some places, it can be played on a larger board, but typically when people are bored with the typical course of play.")
-        (aliases {"Pereaüni"})
-        (useFor "Ruleset/Didinga (Observed)" (rules "4x8 board. Two counters in each hole. Opening play: Two players play simultaneously, lifting and sowing counters from their outer rows. Rules for sowing and capturing are the same as in the main phase of the game except that all holes in each player's outer rows are considered to be in opposition and back captures can be made from them. Once a counter has been sown into the inner row, this ceases and captures can only be made from the inner row. The opening ends when both players reach an empty hole, and the first player to do so begins play in the main phase. Main phase: Play begins from any hole on the player's side of the board with counters in it. Singletons cannot move. Sowing happens in an anti-clockwise direction. If the last counter lands in an empty hole, the turn is over. For capturing: four holes are in opposition when one player has the front row hole occupied and the opponent has both of the holes opposite it occupied. If the last hole in a sowing is in opposition, the player takes the counters in both of the opponent's holes and places them in the empty hole from which the player lifted the counters. The player then sows the captured counters from this hole. Further captures in the sowing can occur in the same way. If the last counter lands on a hole that is occupied but not in opposition, these counters are picked up and sowing continues. Play ends when one player captures all the opponent's counters or one player cannot play. The player who cannot play loses."))
-        (useFor "Ruleset/Didinga (Observed)" (source "Driberg 1927a: 505-508."))
-        (useFor "Ruleset/Didinga (Observed)" (id "259"))
-        (useFor "Ruleset/Longarim-Topotha (Observed)" (rules "4x9-16 board."))
-        (useFor "Ruleset/Longarim-Topotha (Observed)" (source "Driberg 1927b: 189."))
-        (useFor "Ruleset/Longarim-Topotha (Observed)" (id "638"))
-        (source "Murray 1951: 215-216.")
-        (id "259")
-        (version "1.3.8")
-        (classification "board/sow/four rows")
-        (credit "Eric Piette")
-        }
-    )
+(info
+{
+(description "Pereaüni is a four-row mancala-style board game played by several different groups in Uganda. In some places, it can be played on a larger board, but typically when people are bored with the typical course of play.")
+(aliases {"Pereaüni"})
+(useFor "Ruleset/Didinga (Observed)" (rules "4x8 board. Two counters in each hole. Opening play: Two players play simultaneously, lifting and sowing counters from their outer rows. Rules for sowing and capturing are the same as in the main phase of the game except that all holes in each player's outer rows are considered to be in opposition and back captures can be made from them. Once a counter has been sown into the inner row, this ceases and captures can only be made from the inner row. The opening ends when both players reach an empty hole, and the first player to do so begins play in the main phase. Main phase: Play begins from any hole on the player's side of the board with counters in it. Singletons cannot move. Sowing happens in an anti-clockwise direction. If the last counter lands in an empty hole, the turn is over. For capturing: four holes are in opposition when one player has the front row hole occupied and the opponent has both of the holes opposite it occupied. If the last hole in a sowing is in opposition, the player takes the counters in both of the opponent's holes and places them in the empty hole from which the player lifted the counters. The player then sows the captured counters from this hole. Further captures in the sowing can occur in the same way. If the last counter lands on a hole that is occupied but not in opposition, these counters are picked up and sowing continues. Play ends when one player captures all the opponent's counters or one player cannot play. The player who cannot play loses."))
+(useFor "Ruleset/Didinga (Observed)" (source "Driberg 1927a: 505-508."))
+(useFor "Ruleset/Didinga (Observed)" (id "259"))
+(useFor "Ruleset/Longarim-Topotha (Observed)" (rules "4x9-16 board."))
+(useFor "Ruleset/Longarim-Topotha (Observed)" (source "Driberg 1927b: 189."))
+(useFor "Ruleset/Longarim-Topotha (Observed)" (id "638"))
+(source "Murray 1951: 215-216.")
+(id "259")
+(version "1.3.9")
+(classification "board/sow/four rows")
+(credit "Eric Piette")
+}
+)
     
     (graphics {
         (board Style Mancala)

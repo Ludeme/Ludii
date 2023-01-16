@@ -94,23 +94,23 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Rimoe is a hunt game played on the island of Simeulue, and similar to others in neighboring lands. It is typically played in the Soeraoe, a religious building.")
-        (useFor "Ruleset/Rimoe (Observed)" (rules "5x5 intersecting lines, with diagonals drawn in the four quadrants of the board. Two triangles, their apices intersecting the main board at opposite midpoints. The base of the triangle is bisected by a line drawn from the apex, and this line is bisected and intersects with the other two sides of the triangle. One player plays as the Rimoe (king), which starts on the central point. The other player has 24 pieces, eight of which start on the board, on the points immediately adjacent to the Rimoe. The Rimoe plays first, and takes one of the opponent's pieces by hopping over it to an empty spot immediately behind it in a straight line. The Rimoe captures in this way any uninterrupted line of pieces with an odd number. The Rimoe cannot capture a line of pieces with an even number. When the Rimoe cannot capture, it moves one to an empty adjacent space along the lines of the board. The other player places on of their remaining pieces on the board on their turn. When there are no more pieces left to place, the player moves one of the pieces to an empty adjacent spot along the lines. The Rimoe wins by capturing all of the opponent's pieces; the opponent wins by blocking the Rimoe from being able to move."))
-        (useFor "Ruleset/Rimoe (Observed)" (source "Jacobsen 1919: 8-10."))
-        (useFor "Ruleset/Rimoe (Observed)" (id "806"))
-        (useFor "Ruleset/Two Rimoe (Observed)" (rules "Two Rimoe begin on the central point of the board. A Rimoe can only take one of the opponent's pieces by hopping over it. The player only moves one Rimoe per turn. The opponent wins by blocking both Rimoe from being able to move."))
-        (useFor "Ruleset/Two Rimoe (Observed)" (source "Jacobson 1919: 10."))
-        (useFor "Ruleset/Two Rimoe (Observed)" (id "807"))
-        (source "Murray 1951: 109. ")
-        (id "806")
-        (version "1.3.8")
-        (classification "board/hunt")
-        (credit "Eric Piette")
-        (origin "This game was played in Simeulue, around 1919.")
-        }
-    )
+(info
+{
+(description "Rimoe is a hunt game played on the island of Simeulue, and similar to others in neighboring lands. It is typically played in the Soeraoe, a religious building.")
+(useFor "Ruleset/Rimoe (Observed)" (rules "5x5 intersecting lines, with diagonals drawn in the four quadrants of the board. Two triangles, their apices intersecting the main board at opposite midpoints. The base of the triangle is bisected by a line drawn from the apex, and this line is bisected and intersects with the other two sides of the triangle. One player plays as the Rimoe (king), which starts on the central point. The other player has 24 pieces, eight of which start on the board, on the points immediately adjacent to the Rimoe. The Rimoe plays first, and takes one of the opponent's pieces by hopping over it to an empty spot immediately behind it in a straight line. The Rimoe captures in this way any uninterrupted line of pieces with an odd number. The Rimoe cannot capture a line of pieces with an even number. When the Rimoe cannot capture, it moves one to an empty adjacent space along the lines of the board. The other player places on of their remaining pieces on the board on their turn. When there are no more pieces left to place, the player moves one of the pieces to an empty adjacent spot along the lines. The Rimoe wins by capturing all of the opponent's pieces; the opponent wins by blocking the Rimoe from being able to move."))
+(useFor "Ruleset/Rimoe (Observed)" (source "Jacobsen 1919: 8-10."))
+(useFor "Ruleset/Rimoe (Observed)" (id "806"))
+(useFor "Ruleset/Two Rimoe (Observed)" (rules "Two Rimoe begin on the central point of the board. A Rimoe can only take one of the opponent's pieces by hopping over it. The player only moves one Rimoe per turn. The opponent wins by blocking both Rimoe from being able to move."))
+(useFor "Ruleset/Two Rimoe (Observed)" (source "Jacobson 1919: 10."))
+(useFor "Ruleset/Two Rimoe (Observed)" (id "807"))
+(source "Murray 1951: 109. ")
+(id "806")
+(version "1.3.9")
+(classification "board/hunt")
+(credit "Eric Piette")
+(origin "This game was played in Simeulue, around 1919.")
+}
+)
     
     (graphics {
         (piece Families {"Abstract" "Themed"})

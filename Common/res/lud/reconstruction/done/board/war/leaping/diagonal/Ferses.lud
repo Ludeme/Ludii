@@ -911,18 +911,51 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Ferses is a game known from medieval Europe. The name is related to the Ferz, the piece in Shatranj that became the Queen in Chess. It has been considered an early version, or ancestor, of Draughts. ")
-        (aliases {"Farisia" "Fierges"})
-        (rules "Twelve pieces per player. Pieces move forward one space diagonally. Pieces may be promoted. Players lose when all of their pieces are taken. ")
-        (source "DLP evidence.")
-        (id "886")
-        (version "1.3.8")
-        (classification "board/war/reconstruction/pending")
-        (credit "Eric Piette")
-        }
-    )
+(info
+{
+(description "Ferses is a game known from medieval Europe. The name is related to the Ferz, the piece in Shatranj that became the Queen in Chess. It has been considered an early version, or ancestor, of Draughts. ")
+(aliases {"Farisia" "Fierges"})
+(useFor "Ruleset/Historical Information (Incomplete)" (rules "Twelve pieces per player. Pieces move forward one space diagonally. Pieces may be promoted. Players lose when all of their pieces are taken. "))
+(useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+(useFor "Ruleset/Historical Information (Incomplete)" (id "886"))
+(useFor "Ruleset/Ferses (Ludii 1) (Reconstructed)" (rules "The game Ferses is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Counters and DoubleCounters.
+Players take turns moving.
+Setup:
+     Place a Counter for player one at the difference between the bottom sites of the board expanded by 3 minus 1 steps and all sites within [1,3,5,7,8,10,12,14,17,19,21,23,24,26,28,30,33,35,37,39,40,42,44,46,49,51,53,55,56,58,60,62].
+     Place a Counter for player two at the difference between the top sites of the board expanded by 3 minus 1 steps and all sites within [1,3,5,7,8,10,12,14,17,19,21,23,24,26,28,30,33,35,37,39,40,42,44,46,49,51,53,55,56,58,60,62]..
+Rules: 
+     If in the same turn, if Piece at the to location of the last move is equal to Counter of the moving player, hop forward-right or forward-left then if the to location of the last move is in RegionP1 or RegionP2, a piece of the moving player the to location of the last move, this piece can promote into DoubleCounter, else if can move hop forward-right or forward-left, move again, else hop diagonal then if can move hop diagonal, move again, else moves with priority: move one of your pieces or move one of your pieces, move one of your pieces or move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ferses (Ludii 1) (Reconstructed)" (id "3726"))
+(useFor "Ruleset/Ferses (Ludii 2) (Reconstructed)" (rules "The game Ferses is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Counters and DoubleCounters.
+Players take turns moving.
+Setup:
+     Place a Counter for player one at the difference between the bottom sites of the board expanded by 3 minus 1 steps and all sites within [1,3,5,7,8,10,12,14,17,19,21,23,24,26,28,30,33,35,37,39,40,42,44,46,49,51,53,55,56,58,60,62].
+     Place a Counter for player two at the difference between the top sites of the board expanded by 3 minus 1 steps and all sites within [1,3,5,7,8,10,12,14,17,19,21,23,24,26,28,30,33,35,37,39,40,42,44,46,49,51,53,55,56,58,60,62]..
+Rules: 
+     If in the same turn, if Piece at the to location of the last move is equal to Counter of the moving player, if false then perform any of the following moves which has the most sub-moves hop forward-right or forward-left then if the to location of the last move is in RegionP1 or RegionP2, a piece of the moving player the to location of the last move, this piece can promote into DoubleCounter, else if can move hop forward-right or forward-left, move again, else if false then perform any of the following moves which has the most sub-moves hop diagonal then if can move hop diagonal, move again, else moves with priority: if false then perform any of the following moves which has the most sub-moves moves with priority: move one of your pieces, move one of your pieces, move one of your pieces or move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ferses (Ludii 2) (Reconstructed)" (id "3727"))
+(source "Murray 1951: 74-75.")
+(version "1.3.9")
+(classification "board/war/leaping/diagonal/reconstruction/done")
+(credit "Eric Piette")
+}
+)
     
     (recon {
         (concept "NumStartComponents" 12)

@@ -223,34 +223,34 @@
 
 (metadata
     
-    (info
-        {
-        (description "A chess variant invented by László Polgár. played on a board made of hexagons.")
-        (aliases {"Hexagonal Chess"})
-        (rules "Starchess is played on a star-shaped hexagonal board that can be thought of as a hexagon-shaped board with each side having length 6, but with four spaces removed from each corner. The board has 37 spaces.
-            
-            Starchess starts off with the non-Pawn pieces being placed behind the Pawns. This happens one piece at a time, in alternating turns, until all non-Pawn pieces have been placed. Then the 'movement phase' of the game begins as usual.
-            
-            Piece Movement:
-            * Knights move as in Glinsky Chess.
-            - They move two spaces in any adjacent direction, then one space in another direction.
-            * Kings can move one space in any of those same six adjacent directions. There is no castling.
-            * Queens can slide in any of the six adjacent directions from their current space---North, South, or 60 degrees off either of those.
-            * Rooks can slide forward or backward only in their given column.
-            * Bishops can slide in only four of the adjacent directions: they cannot slide North or South.
-            * Pawns can advance one space forward without capturing. A Pawn on a Pawn start space can advance two spaces forward, even if it has previously moved (by capturing) to a different Pawn start space than it started the game on. Pawns capture by moving to one of the two adjacent spaces 60 degrees left or right of forward. On reaching the farthest rank in any of the innermost five columns, Pawns are promoted to a Queen, Rook, Bishop, or Knight, as the player chooses.
-            
-            The game ends on a checkmate or stalemate.
-            
-        Some terminology: a Pawn off to the side, in one of the two spaces at the extremes of the middle row is called a 'mummy', while a Pawn in one of the spaces adjacent to that is called a 'dead Pawn'. Mummies and dead Pawns cannot be promoted until they return to one of the innermost five columns.")
-        (id "853")
-        (source "For a comparison of popular versions of hexagonal chess, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For more details on other chess variants, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).")
-        (version "1.3.8")
-        (classification "board/war/replacement/checkmate/chess")
-        (author "László Polgár")
-        (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
-        }
-    )
+(info
+{
+(description "A chess variant invented by László Polgár. played on a board made of hexagons.")
+(aliases {"Hexagonal Chess"})
+(rules "Starchess is played on a star-shaped hexagonal board that can be thought of as a hexagon-shaped board with each side having length 6, but with four spaces removed from each corner. The board has 37 spaces.
+
+Starchess starts off with the non-Pawn pieces being placed behind the Pawns. This happens one piece at a time, in alternating turns, until all non-Pawn pieces have been placed. Then the 'movement phase' of the game begins as usual.
+
+Piece Movement:
+  * Knights move as in Glinsky Chess.
+      - They move two spaces in any adjacent direction, then one space in another direction.
+  * Kings can move one space in any of those same six adjacent directions. There is no castling.
+  * Queens can slide in any of the six adjacent directions from their current space---North, South, or 60 degrees off either of those.
+  * Rooks can slide forward or backward only in their given column.
+  * Bishops can slide in only four of the adjacent directions: they cannot slide North or South.
+  * Pawns can advance one space forward without capturing. A Pawn on a Pawn start space can advance two spaces forward, even if it has previously moved (by capturing) to a different Pawn start space than it started the game on. Pawns capture by moving to one of the two adjacent spaces 60 degrees left or right of forward. On reaching the farthest rank in any of the innermost five columns, Pawns are promoted to a Queen, Rook, Bishop, or Knight, as the player chooses.
+
+The game ends on a checkmate or stalemate.
+
+Some terminology: a Pawn off to the side, in one of the two spaces at the extremes of the middle row is called a 'mummy', while a Pawn in one of the spaces adjacent to that is called a 'dead Pawn'. Mummies and dead Pawns cannot be promoted until they return to one of the innermost five columns.")
+(id "853")
+(source "For a comparison of popular versions of hexagonal chess, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For more details on other chess variants, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).")
+(version "1.3.9")
+(classification "board/war/replacement/checkmate/chess")
+(author "László Polgár")
+(credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
+}
+)
     
     (graphics {
         (piece Scale "Pawn" 0.7)

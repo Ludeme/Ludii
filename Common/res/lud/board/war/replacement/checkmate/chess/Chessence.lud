@@ -105,30 +105,30 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Chessence is a chess variant invented by Jim Winslow in 1989. The board is a 6×9 rectangle of squares with eight squares missing. Each player has a king and nine men with initial setup as shown, including three men initially not yet in play at the side of the board. ")
-        (rules "In Chessence, kings do not move and must remain fixed on their starting squares the entire game. (Thus, a king is unable to move out of check.) 
-            
-            A man has capability to move based on its relative position to other friendly men on the board, as follows:
-            - If a man is orthogonally adjacent to a friendly man, then both have the ability to move as a rook in chess.
-            - If a man is diagonally adjacent to a friendly man, then both have the ability to move as a chess bishop.
-            - If a man is a knight's move away from a friendly man, then both have the ability to move as a knight.
-            
-            A man with more than one position relationship has the ability to move in more than one way. Likewise, if a man has no position relationship defined above, that man cannot move. The king has no bearing on how the other men may move.
-            
-            A man may not move to, nor through, a non-existent (blackened-out) square; except that a man moving as a knight may jump over a non-existent square. For a turn, a player may move a man on the board, or alternatively, they may put one of their reserve men in play by placing it on any of their six initial starting squares that are currently open.
-            
-        Checks, checkmate, and captures are as in standard chess. If a player has no legal moves, they lose the game.")
-        (id "1784")
-        (source "<a href=\"https://en.wikipedia.org/wiki/Chessence\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.8")
-        (classification "board/war/replacement/checkmate/chess")
-        (author "Jim Winslow")
-        (credit "Eric Piette")
-        (date "1989")
-        }
-    )
+(info
+{
+(description "Chessence is a chess variant invented by Jim Winslow in 1989. The board is a 6×9 rectangle of squares with eight squares missing. Each player has a king and nine men with initial setup as shown, including three men initially not yet in play at the side of the board. ")
+(rules "In Chessence, kings do not move and must remain fixed on their starting squares the entire game. (Thus, a king is unable to move out of check.) 
+
+A man has capability to move based on its relative position to other friendly men on the board, as follows:
+- If a man is orthogonally adjacent to a friendly man, then both have the ability to move as a rook in chess.
+- If a man is diagonally adjacent to a friendly man, then both have the ability to move as a chess bishop.
+- If a man is a knight's move away from a friendly man, then both have the ability to move as a knight.
+
+A man with more than one position relationship has the ability to move in more than one way. Likewise, if a man has no position relationship defined above, that man cannot move. The king has no bearing on how the other men may move.
+
+A man may not move to, nor through, a non-existent (blackened-out) square; except that a man moving as a knight may jump over a non-existent square. For a turn, a player may move a man on the board, or alternatively, they may put one of their reserve men in play by placing it on any of their six initial starting squares that are currently open.
+
+Checks, checkmate, and captures are as in standard chess. If a player has no legal moves, they lose the game.")
+(id "1784")
+(source "<a href=\"https://en.wikipedia.org/wiki/Chessence\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+(version "1.3.9")
+(classification "board/war/replacement/checkmate/chess")
+(author "Jim Winslow")
+(credit "Eric Piette")
+(date "1989")
+}
+)
     
     (graphics {
         (show Check "King")

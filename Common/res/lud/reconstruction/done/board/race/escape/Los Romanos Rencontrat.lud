@@ -2232,11 +2232,200 @@
 
 (metadata 
     
-    (info
-        {
-        (id "1513")
-        }
-    )
+(info
+{
+(description "Los Romanos Rencontrat is a European Tables game played in medieval Spain. It may also have been known as Reencontrat. ")
+(aliases {"Reencontrat"})
+(useFor "Ruleset/Historical Information (Incomplete)" (rules "2x12 board, divided in half. Three dice. Pieces begin on the opponent's side of the board, on the rightmost point with respect to the player. Play proceeds from right to left on the opponent's side of the board, and then left to right on the player's side of the board. When a piece hits an opponent's piece, it is sent back to its starting point. Pieces cannot be doubled on the player's first half of the board."))
+(useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+(useFor "Ruleset/Historical Information (Incomplete)" (id "1513"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 1) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 1) (Reconstructed)" (id "3074"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 2) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 2) (Reconstructed)" (id "3075"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 3) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins If player one cannot move and player two cannot move, it's a draw.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 3) (Reconstructed)" (id "3076"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 4) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins If player one cannot move and player two cannot move, it's a draw.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 4) (Reconstructed)" (id "3077"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 5) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins If 1 is StartQuadrantFull, player two wins If 2 is StartQuadrantFull, player one wins If not in the same turn and the moving player cannot move, the moving player loses.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 5) (Reconstructed)" (id "3078"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 6) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins If player one cannot move and player two cannot move, it's a draw.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 6) (Reconstructed)" (id "3079"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 7) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins If player one cannot move and player two cannot move, it's a draw.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 7) (Reconstructed)" (id "3080"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 8) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 8) (Reconstructed)" (id "3081"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 9) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 9) (Reconstructed)" (id "3082"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 10) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 10) (Reconstructed)" (id "3083"))
+(source "Murray 1951: 128.")
+(version "1.3.9")
+(classification "board/race/escape/reconstruction/done")
+(credit "Eric Piette")
+(origin "This game was played in Spain, around 1283.")
+}
+)
     
     (graphics {
         (show Edges Hidden)

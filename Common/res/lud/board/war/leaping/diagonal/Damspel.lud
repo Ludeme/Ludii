@@ -80,18 +80,18 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Damspel is a Draughts game played in Sweden.")
-        (rules "8x8 checkered board, the dark spaces placed so that the bottom right corner is a dark space. Twelve pieces per player, placed on the dark spaces of the first three rows closest to the players. Players alternate turns moving a piece forward diagonally to an empty space. Pieces may capture an opponent's piece by hopping over it to an empty adjacent space, in a forwards or backwards direction. Captures are not compulsory, multiple captures are possible, the maximum capture possible is not required. When a piece reaches the opposite edge of the board from where it started at the end of its turn, it it promoted. If it lands on the edge of the board in the middle of a capturing sequence, it is not promoted. Promoted pieces may move any distance diagonally forward or backward, and may capture any number of opponent's pieces it leaps over. The player who captures all of the opponent's pieces wins.
-        ")
-        (source "Parlett 1999: 252.")
-        (id "1246")
-        (version "1.3.8")
-        (classification "board/war/leaping/diagonal")
-        (credit "Eric Piette")
-        }
-    )
+(info
+{
+(description "Damspel is a Draughts game played in Sweden.")
+(rules "8x8 checkered board, the dark spaces placed so that the bottom right corner is a dark space. Twelve pieces per player, placed on the dark spaces of the first three rows closest to the players. Players alternate turns moving a piece forward diagonally to an empty space. Pieces may capture an opponent's piece by hopping over it to an empty adjacent space, in a forwards or backwards direction. Captures are not compulsory, multiple captures are possible, the maximum capture possible is not required. When a piece reaches the opposite edge of the board from where it started at the end of its turn, it it promoted. If it lands on the edge of the board in the middle of a capturing sequence, it is not promoted. Promoted pieces may move any distance diagonally forward or backward, and may capture any number of opponent's pieces it leaps over. The player who captures all of the opponent's pieces wins.
+")
+(source "Parlett 1999: 252.")
+(id "1246")
+(version "1.3.9")
+(classification "board/war/leaping/diagonal")
+(credit "Eric Piette")
+}
+)
     
     (graphics {
         (board Colour Phase0 (colour 250 221 144))

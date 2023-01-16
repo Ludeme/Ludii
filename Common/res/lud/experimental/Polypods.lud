@@ -456,62 +456,62 @@
 //---------------------------------------------
 
 (metadata
-    (info
-        {
-        (description "Polypods was created as an exploration of a new capture concept in which a group lives as long as it has more terminal ends than core pieces. Group capture naturally became determinened in two stages: removing terminals, which then in turn cause the group to exceed its core limit.     This works best on the hex grid.     Since terminals are added in play, they can also be removed without destroying the group.    All groups fall in the range of with 0 to 3 free terminals. Additions can either help stabilize the group, or destabilize it.     Efficiency in scoring encourages growing groups to near the critical size. As does attacking another player's terminals, and being attacked.        Critical size groups are most vulnerable to being killed by terminal attacks instead of merely suffering a terminal loss.    This is not difficult to use as a tactic, and if the result were to clear too much of the board the game would be too unstable an cycle. Removing only the core, ensures that the resultant groups will be singletons and pairs which are all legal formations, and keep the board from clearing too much.         However, tit-for-tat captures still can cause major resets. Therefore the capture rule specifies that the ownership of the terminals of the captured groups also changes to the capturing player.         This final solution allows tactical instability, but strategic stability.        On small boards ties may be more frequent than some players would like. Thus a tie-breaker based on empty territory control has also been added. This value is is intuitive, and not frequently correlated to the core score, so it functions well in this role.        Group count is not used for scoring, because the terminals provide a benefit in allowing for stability and future growth, and thus function best as investments rather than outcomes.")
-        (rules "Polypods is a game about groups of connected stones called Polypods.
-            
-            Understanding the mythical life of a polypod should help you to easily remember the rules.
-            
-            Polypods are creatures that have poisonous body segments that tie together its numerous feet. To survive, at least half of a polypod must be its feet, and this determines how they may grow and the shapes they may take. 
-            
-            The feet die and fall off upon contact with the poisonous body segments of other polypods,  however, since the feet themselves are not poisonous, there is no harm in their contact with other polypod's feet. Fortunately a polypod's foot is able to smell the area around it, and thus a polypod avoids extending its feet to touch the bodies of competing polypods.
-            
-            Hungry polypods do, however, find ways to bring their body against a foot of another polypod, causing that foot (or feet) to self-amputate.     If the attacking polypod is lucky, the loss of a foot will cause its neighbor to die. 
-            
-            The attacking polypod then ingests the body of its dead neighbor and spawns new polypods in the dead neighbor's feet.
-            
-            Definitions:
-            -- A POLYPOD is a group of interconnected stones. The group includes every stone of the same color that is connected to it.
-            (A single stone, or monopod, is also considered as a polypod in these rules.)
-            
-            Each stone in a polypod has one of two roles: Body or foot.   
-            -- FOOT STONES (FEET) are stones that connect to at most two other friendly stones:- and if connected to two stones, those two must already be adjacent to each other. 
-            -- BODY STONES are those that serve to link all the polypod feet together. 
-            
-            As the polypods grow or shrink, the roles of their individual stones change accordingly.
-            (In this application the body stones are marked with squares for convenience in reading the board.)
-            
-            A polypod is ALIVE if it has at least as many feet as body stones.
-            
-            -- Foot stones in contact with a body stone of the opposite color SELF-AMPUTATE (ie get immediately removed from the board)
-            -- when a Polypod DIES, its body stones are removed, and its feet change ownership.
-            
-            Rules:
-            The game uses discs played on the intersections of a triangular grid of the desired size and shape. 
-            The board starts empty and Dark starts. Turns Alternate.
-            
-            The moving player, either passes, or does the following sequence of actions, if possible:
-            1. The mover places a piece on an empty space.
-            -- The placement must not cause the immediate self-amputation of the placed stone.
-            -- It may add to or merge friendy polypods, UNLESS this would cause those polypod(s) to die.
-            2. The mover removes all self-amputating feet.
-            3. The mover resolves all polypod deaths.
-            
-            The game ends when the players pass consecutively.
-            
-            The winner is determined by tallying the value of each player's polypods.
-            The value of a polypod is the number of body stones that it contains.
-            If tied, score all the empty spaces adjacent to the players' own polypods.
-        If this count is also equal, the game is considered a draw.")
-        (id "1994")
-        (version "1.3.8")
-        (classification "experimental")
-        (author "Dale W. Walton")
-        (credit "Dale W. Walton")
-        (date "06-05-2022")
-        }
-    )
+(info
+{
+(description "Polypods was created as an exploration of a new capture concept in which a group lives as long as it has more terminal ends than core pieces. Group capture naturally became determinened in two stages: removing terminals, which then in turn cause the group to exceed its core limit.     This works best on the hex grid.     Since terminals are added in play, they can also be removed without destroying the group.    All groups fall in the range of with 0 to 3 free terminals. Additions can either help stabilize the group, or destabilize it.     Efficiency in scoring encourages growing groups to near the critical size. As does attacking another player's terminals, and being attacked.        Critical size groups are most vulnerable to being killed by terminal attacks instead of merely suffering a terminal loss.    This is not difficult to use as a tactic, and if the result were to clear too much of the board the game would be too unstable an cycle. Removing only the core, ensures that the resultant groups will be singletons and pairs which are all legal formations, and keep the board from clearing too much.         However, tit-for-tat captures still can cause major resets. Therefore the capture rule specifies that the ownership of the terminals of the captured groups also changes to the capturing player.         This final solution allows tactical instability, but strategic stability.        On small boards ties may be more frequent than some players would like. Thus a tie-breaker based on empty territory control has also been added. This value is is intuitive, and not frequently correlated to the core score, so it functions well in this role.        Group count is not used for scoring, because the terminals provide a benefit in allowing for stability and future growth, and thus function best as investments rather than outcomes.")
+(rules "Polypods is a game about groups of connected stones called Polypods.
+    
+    Understanding the mythical life of a polypod should help you to easily remember the rules.
+    
+    Polypods are creatures that have poisonous body segments that tie together its numerous feet. To survive, at least half of a polypod must be its feet, and this determines how they may grow and the shapes they may take. 
+    
+    The feet die and fall off upon contact with the poisonous body segments of other polypods,  however, since the feet themselves are not poisonous, there is no harm in their contact with other polypod's feet. Fortunately a polypod's foot is able to smell the area around it, and thus a polypod avoids extending its feet to touch the bodies of competing polypods.
+    
+    Hungry polypods do, however, find ways to bring their body against a foot of another polypod, causing that foot (or feet) to self-amputate.     If the attacking polypod is lucky, the loss of a foot will cause its neighbor to die. 
+    
+    The attacking polypod then ingests the body of its dead neighbor and spawns new polypods in the dead neighbor's feet.
+    
+    Definitions:
+-- A POLYPOD is a group of interconnected stones. The group includes every stone of the same color that is connected to it.
+(A single stone, or monopod, is also considered as a polypod in these rules.)
+
+Each stone in a polypod has one of two roles: Body or foot.   
+-- FOOT STONES (FEET) are stones that connect to at most two other friendly stones:- and if connected to two stones, those two must already be adjacent to each other. 
+-- BODY STONES are those that serve to link all the polypod feet together. 
+
+As the polypods grow or shrink, the roles of their individual stones change accordingly.
+(In this application the body stones are marked with squares for convenience in reading the board.)
+
+A polypod is ALIVE if it has at least as many feet as body stones.
+
+-- Foot stones in contact with a body stone of the opposite color SELF-AMPUTATE (ie get immediately removed from the board)
+-- when a Polypod DIES, its body stones are removed, and its feet change ownership.
+
+Rules:
+The game uses discs played on the intersections of a triangular grid of the desired size and shape. 
+The board starts empty and Dark starts. Turns Alternate.
+
+The moving player, either passes, or does the following sequence of actions, if possible:
+1. The mover places a piece on an empty space.
+-- The placement must not cause the immediate self-amputation of the placed stone.
+-- It may add to or merge friendy polypods, UNLESS this would cause those polypod(s) to die.
+2. The mover removes all self-amputating feet.
+3. The mover resolves all polypod deaths.
+
+The game ends when the players pass consecutively.
+
+The winner is determined by tallying the value of each player's polypods.
+The value of a polypod is the number of body stones that it contains.
+If tied, score all the empty spaces adjacent to the players' own polypods.
+If this count is also equal, the game is considered a draw.")
+(id "1994")
+(version "1.3.9")
+(classification "experimental")
+(author "Dale W. Walton")
+(credit "Dale W. Walton")
+(date "06-05-2022")
+}
+)
     
     <BoardShape:graphsOption>
     (ai

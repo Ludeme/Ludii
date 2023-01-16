@@ -59,19 +59,19 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Diagonal Draughts is a type of Draughts game played at least as early as the nineteenth century. In it, the pieces are arranged such that the long diagonal of the board is unoccupied, rather than the central two rows of squares. ")
-        (rules "10x10 board, 20 pieces per player, arranged on the dark squares, leaving the diagonal from bottom left to top right empty, with each player's pieces on opposite sides of it. Pieces move diagonally one or can jump an opponent's adjacent player to capture it. Pieces can move forward or backwards. When a piece reaches the opposite edge of the board from its starting position, it becomes a king and can may move and jump over any number of spaces diagonally. Captures are compulsory and the maximum number of jumps must be made. Winning is achieved by capturing all the opponent's pieces or by blocking them from moving.
-        ")
-        (source "Twiss 1805: 173.")
-        (id "885")
-        (version "1.3.8")
-        (classification "board/war/leaping/diagonal")
-        (credit "Eric Piette")
-        (origin "This game was played in England, around 1805.")
-        }
-    )
+(info
+{
+(description "Diagonal Draughts is a type of Draughts game played at least as early as the nineteenth century. In it, the pieces are arranged such that the long diagonal of the board is unoccupied, rather than the central two rows of squares. ")
+(rules "10x10 board, 20 pieces per player, arranged on the dark squares, leaving the diagonal from bottom left to top right empty, with each player's pieces on opposite sides of it. Pieces move diagonally one or can jump an opponent's adjacent player to capture it. Pieces can move forward or backwards. When a piece reaches the opposite edge of the board from its starting position, it becomes a king and can may move and jump over any number of spaces diagonally. Captures are compulsory and the maximum number of jumps must be made. Winning is achieved by capturing all the opponent's pieces or by blocking them from moving.
+")
+(source "Twiss 1805: 173.")
+(id "885")
+(version "1.3.9")
+(classification "board/war/leaping/diagonal")
+(credit "Eric Piette")
+(origin "This game was played in England, around 1805.")
+}
+)
     
     (graphics {
         (board Style Chess)

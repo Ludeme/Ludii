@@ -75,20 +75,20 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Shashki is a game with leaping captures related to other European Draughts games. The first description comes from the nineteenth century, though the term is older.")
-        (aliases {"Russian Draughts"})
-        (rules "Played on an 8x8 board with each player having twelve pieces. Pieces move diagonally one space forward, and can capture opponent's pieces by jumping them if they are adjacent. Capturing must happen if it is possible, multiple captures are allowed, and can happen in a forward or backward direction. Once pieces reach the opposite side of the board from their starting position, they become kings and can move diagonally either forwards or backwards. A piece may become a king in the midst of a sequence of captures, and then capture as a king in the same turn. Kings may capture over any distance, leaping over all opponent's pieces in a line. The goal is to capture all of the opponent's pieces.
-        ")
-        (source "van der Stoep 1984: 154")
-        (id "883")
-        (version "1.3.8")
-        (classification "board/war/leaping/diagonal")
-        (credit "Eric Piette")
-        (origin "This game was played in Russia, around 1827.")
-        }
-    )
+(info
+{
+(description "Shashki is a game with leaping captures related to other European Draughts games. The first description comes from the nineteenth century, though the term is older.")
+(aliases {"Russian Draughts"})
+(rules "Played on an 8x8 board with each player having twelve pieces. Pieces move diagonally one space forward, and can capture opponent's pieces by jumping them if they are adjacent. Capturing must happen if it is possible, multiple captures are allowed, and can happen in a forward or backward direction. Once pieces reach the opposite side of the board from their starting position, they become kings and can move diagonally either forwards or backwards. A piece may become a king in the midst of a sequence of captures, and then capture as a king in the same turn. Kings may capture over any distance, leaping over all opponent's pieces in a line. The goal is to capture all of the opponent's pieces.
+")
+(source "van der Stoep 1984: 154")
+(id "883")
+(version "1.3.9")
+(classification "board/war/leaping/diagonal")
+(credit "Eric Piette")
+(origin "This game was played in Russia, around 1827.")
+}
+)
     
     (graphics {
         (board Style Chess)

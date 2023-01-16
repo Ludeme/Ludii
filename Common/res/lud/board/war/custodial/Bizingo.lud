@@ -132,27 +132,27 @@
 )
 
 (metadata 
-    (info
-        {
-        (description "Bizingo is a two-player strategy board game created sometime in the 1850s in the United States. Two opposing armies on a triangular grid face off against one another. ")
-        (rules "A player can move a piece to any empty adjacent cell of the same color; so, on an open board, six moves are possible. Throughout the game, a player's pieces are restricted to cells of the same color.
-            
-            A captured piece is immediately removed from the game.
-            
-            A player captures a regular enemy piece by surrounding it on three sides.
-            A player captures an enemy captain by surrounding it on three sides, with the caveat that one of the surrounding pieces must be a captain. (Three regular pieces are insufficient and the enemy captain would be unaffected.)
-            An enemy piece on the edge of the board can be captured by surrounding it on two sides, with the caveat that one of the surrounding pieces must be a captain. (Two regular pieces are insufficient.)
-            If a piece (regular or captain) is moved to a cell already surrounded by three enemy pieces, it is instantly captured, unless the move itself performed a capture.
-            
-        A player wins the game by reducing the opponent to two pieces.")
-        (id "681")
-        (source "<a href=\"https://en.wikipedia.org/wiki/Bizingo\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.8")
-        (classification "board/war/custodial")
-        (credit "Eric Piette")
-        (date "1850")
-        }
-    )
+(info
+{
+(description "Bizingo is a two-player strategy board game created sometime in the 1850s in the United States. Two opposing armies on a triangular grid face off against one another. ")
+(rules "A player can move a piece to any empty adjacent cell of the same color; so, on an open board, six moves are possible. Throughout the game, a player's pieces are restricted to cells of the same color.
+
+A captured piece is immediately removed from the game.
+
+A player captures a regular enemy piece by surrounding it on three sides.
+A player captures an enemy captain by surrounding it on three sides, with the caveat that one of the surrounding pieces must be a captain. (Three regular pieces are insufficient and the enemy captain would be unaffected.)
+An enemy piece on the edge of the board can be captured by surrounding it on two sides, with the caveat that one of the surrounding pieces must be a captain. (Two regular pieces are insufficient.)
+If a piece (regular or captain) is moved to a cell already surrounded by three enemy pieces, it is instantly captured, unless the move itself performed a capture.
+
+A player wins the game by reducing the opponent to two pieces.")
+(id "681")
+(source "<a href=\"https://en.wikipedia.org/wiki/Bizingo\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+(version "1.3.9")
+(classification "board/war/custodial")
+(credit "Eric Piette")
+(date "1850")
+}
+)
     
     (graphics {
         (board Style Chess)

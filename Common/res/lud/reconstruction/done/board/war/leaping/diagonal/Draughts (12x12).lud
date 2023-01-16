@@ -1441,18 +1441,51 @@
 
 (metadata 
     
-    (info
-        {
-        (description "12x12 Draughts was a game reportedly played in London during the early nineteenth century. The presence of the game there if often cited as the ultimate source of Canadian Draughts, but the connection may not be clear. ")
-        (rules "12x12 board. 30 pieces per player.")
-        (source "DLP evidence.")
-        (id "1493")
-        (version "1.3.8")
-        (classification "board/war/leaping/diagonal/reconstruction/pending")
-        (credit "Eric Piette")
-        (origin "This game was played in England, around 1805.")
-        }
-    )
+(info
+{
+(description "12x12 Draughts was a game reportedly played in London during the early nineteenth century. The presence of the game there if often cited as the ultimate source of Canadian Draughts, but the connection may not be clear. ")
+(useFor "Ruleset/Historical Information (Incomplete)" (rules "12x12 board. 30 pieces per player."))
+(useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+(useFor "Ruleset/Historical Information (Incomplete)" (id "1493"))
+(useFor "Ruleset/Draughts (12x12) (Ludii 1) (Reconstructed)" (rules "The game Draughts (12x12) is played by two players on a 12x12 rectangle board with square tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Counters and DoubleCounters.
+Players take turns moving.
+Setup:
+     Place a Counter for player one at the difference between the bottom sites of the board expanded by 5 minus 1 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142].
+     Place a Counter for player two at the difference between the top sites of the board expanded by 5 minus 1 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142]..
+Rules: 
+     If in the same turn, if Piece at the to location of the last move is equal to Counter of the moving player, if false then perform any of the following moves which has the most sub-moves hop diagonal then if can move hop diagonal, move again, else if the to location of the last move is in RegionP1 or RegionP2, a piece of the moving player the to location of the last move, this piece can promote into DoubleCounter, else if false then perform any of the following moves which has the most sub-moves hop diagonal then if can move hop diagonal, move again, else moves with priority: if false then perform any of the following moves which has the most sub-moves move one of your pieces or move one of your pieces, move one of your pieces or move one of your pieces.
+Aim: 
+     If the next player cannot move, the moving player wins.
+
+"))
+(useFor "Ruleset/Draughts (12x12) (Ludii 1) (Reconstructed)" (id "3775"))
+(useFor "Ruleset/Draughts (12x12) (Ludii 2) (Reconstructed)" (rules "The game Draughts (12x12) is played by two players on a 12x12 rectangle board with square tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Counters and DoubleCounters.
+Players take turns moving.
+Setup:
+     Place a Counter for player one at the difference between the bottom sites of the board expanded by 5 minus 1 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142].
+     Place a Counter for player two at the difference between the top sites of the board expanded by 5 minus 1 steps and all sites within [1,3,5,7,9,11,12,14,16,18,20,22,25,27,29,31,33,35,36,38,40,42,44,46,49,51,53,55,57,59,60,62,64,66,68,70,73,75,77,79,81,83,84,86,88,90,92,94,97,99,101,103,105,107,108,110,112,114,116,118,121,123,125,127,129,131,132,134,136,138,140,142]..
+Rules: 
+     If the value of Player Prev is equal to 1, if the from location of the last move is in the pending sites and the from location of the last move is in the set of empty cells, select Cell in the to location of the last move if cell the location of the piece is occupied then remove pieces at the to location of the last move and move again and set the value of Player Prev to 0 or select Cell in the pending sites if cell the location of the piece is occupied then remove pieces at the to location of the last move and move again and set the value of Player Prev to 0 or set the region the from sites of if in the same turn, if Piece at the to location of the last move is equal to Counter of the moving player, if false then perform any of the following moves which has the most sub-moves hop diagonal then if can move hop diagonal, move again, else if the to location of the last move is in RegionP1 or RegionP2, a piece of the moving player the to location of the last move, this piece can promote into DoubleCounter, else if false then perform any of the following moves which has the most sub-moves hop diagonal then if can move hop diagonal, move again, else if false then perform any of the following moves which has the most sub-moves move one of your pieces or move one of your pieces to pending and afterwards if in the same turn and cell the to location of the last move is occupied, if Piece at the to location of the last move is equal to Counter of the moving player, hop diagonal then if can move hop diagonal, move again, else if the to location of the last move is in RegionP1 or RegionP2, a piece of the moving player the to location of the last move, this piece can promote into DoubleCounter, else hop diagonal then if can move hop diagonal, move again, else move one of your pieces or move one of your pieces set the value of Player the moving player to 0 or move one of your pieces or move one of your pieces.
+Aim: 
+     If the next player cannot move, the moving player wins.
+
+"))
+(useFor "Ruleset/Draughts (12x12) (Ludii 2) (Reconstructed)" (id "3776"))
+(source "Murray 1951: 81.")
+(version "1.3.9")
+(classification "board/war/leaping/diagonal/reconstruction/done")
+(credit "Eric Piette")
+(origin "This game was played in England, around 1805.")
+}
+)
     
     (graphics {
         (board Style Chess)

@@ -222,17 +222,17 @@
 (define "ColourBackground" <Variant:backgroundColour>)
 
 (metadata
-    (info
-        {
-        (description "Watershed is a square board placement game based on Branching Coral, with the principle of placing pieces, such that, after placement, every site on the boards still has a connection via empty sites to an empty site at the perimeter.                                      Scoring for the standard Plateau version is based on the size of the largest group plus a bonus factor for the number of opponent's pieces captured.  This works to reward capture and thus encourages breaking up opponent's groups, while remaining straight forward in the need to enlarge your largest group, it allows creating come-back groups, or staging combacks by capturing material.                           Ties are broken in favor of the underdog by considering only the largest group size as a negative score without including the capture bonus. Opponent-paired groups of the same size are excluded in this comparison. If all groups are paired in size with the opponent, last to play wins.                   Play is only on odd sized boards to avoid mirror strategy, since last to play also wins.                  A Floodplain variant reverses the board connections, group connections, bonus attribution and tie-breaker rules.")
-        (rules "Goal: Score the most points: 
+(info
+{
+(description "Watershed is a square board placement game based on Branching Coral, with the principle of placing pieces, such that, after placement, every site on the boards still has a connection via empty sites to an empty site at the perimeter.                                      Scoring for the standard Plateau version is based on the size of the largest group plus a bonus factor for the number of opponent's pieces captured.  This works to reward capture and thus encourages breaking up opponent's groups, while remaining straight forward in the need to enlarge your largest group, it allows creating come-back groups, or staging combacks by capturing material.                           Ties are broken in favor of the underdog by considering only the largest group size as a negative score without including the capture bonus. Opponent-paired groups of the same size are excluded in this comparison. If all groups are paired in size with the opponent, last to play wins.                   Play is only on odd sized boards to avoid mirror strategy, since last to play also wins.                  A Floodplain variant reverses the board connections, group connections, bonus attribution and tie-breaker rules.")
+(rules "Goal: Score the most points: 
             -- One point for each stone in one's largest group.
             -- Bonus points are also awarded for certain captured stones.
-            
+         
             The board starts empty.
             Players take alternating turns placing one of their stones onto an empty site.
             Directly after placement, every site of the board must remain connected to an empty perimeter site via a continuous path of empty sites, and the stone that was placed must be next to any 2 empty sites. 
-            
+ 
             Capture 
             After placement, simultaneously remove all the stones adjacent to the placed stone that are no longer next to 2 empty sites.
             
@@ -250,15 +250,15 @@
             Connection to the edge is by orthogonal steps. Stone groups are omni-directional adjacent. 
             Players score one point for every stone in their largest group, plus a bonus point for each of their stones that the opponent removed from the board.
             
-        The player with the higher score wins.")
-        (id "1661")
-        (version "1.3.8")
-        (classification "experimental")
-        (author "Dale W. Walton")
-        (credit "Dale W. Walton")
-        (date "06-05-2021")
-        }
-    )
+            The player with the higher score wins.")
+(id "1661")
+(version "1.3.9")
+(classification "experimental")
+(author "Dale W. Walton")
+(credit "Dale W. Walton")
+(date "06-05-2021")
+}
+)
     
     (graphics 
         {

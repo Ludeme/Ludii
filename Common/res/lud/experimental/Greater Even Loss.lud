@@ -59,18 +59,18 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-    (info
-        {
-        (description "Greater Even Loss is a theoretical game designed to demonstrate Monte Carlo resistance. Each turn there is one strategically optimal move against a competent opponent and many losing moves.")
-        (rules "Players take turns removing a piece of their colour whose number is higher than the last piece they removed (free choice of first piece). The mover loses if they remove an even numbered piece.")
-        (id "1355")
-        (version "1.3.8")
-        (classification "experimental")
-        (author "Cameron Browne")
-        (credit "Cameron Browne and Eric Piette")
-        (date "2021")
-        }
-    )
+(info
+{
+(description "Greater Even Loss is a theoretical game designed to demonstrate Monte Carlo resistance. Each turn there is one strategically optimal move against a competent opponent and many losing moves.")
+(rules "Players take turns removing a piece of their colour whose number is higher than the last piece they removed (free choice of first piece). The mover loses if they remove an even numbered piece.")
+(id "1355")
+(version "1.3.9")
+(classification "experimental")
+(author "Cameron Browne")
+(credit "Cameron Browne and Eric Piette")
+(date "2021")
+}
+)
     
     (graphics {
         (player Colour P1 (colour White))

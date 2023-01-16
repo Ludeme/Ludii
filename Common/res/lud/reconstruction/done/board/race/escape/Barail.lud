@@ -2475,10 +2475,180 @@
 
 (metadata 
     
-    (info
-        {
-        }
-    )
+(info
+{
+(description "Barail is a European Tables game played in sixteenth century Italy.")
+(useFor "Ruleset/Historical Information (Incomplete)" (rules "Backgammon board. Fifteen pieces per player. Three six-sided dice. Both players proceed in the same track, which goes from one left-hand point in the corner of the board in an anti-clockwise direction, ending at the point opposite it. One player has one piece on the tenth point and fourteen on the eleventh; the other has fifteen on the twelfth point. Players bear off from the end of the track.
+"))
+(useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+(useFor "Ruleset/Historical Information (Incomplete)" (id "1301"))
+(useFor "Ruleset/Barail (Ludii 1) (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player Player at to's hand site 0 moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 15
+     Place stack of [Disc1] at vertex 14
+     Place stack of [Disc2] at vertex 13.
+Rules: 
+     If a state is pending or not in the same turn, roll the dice and afterwards if 1 is equal to state variablePlayOpposite, move one of your pieces or move one of your pieces or pass then forget all previously rememberd values and set the variable PlayOpposite to 0 and set pending and move again, else if 0 is equal to the number of moves during this turn, all dice show equal values and 1 is equal to the value of Player the moving player, remember the value 7 minus the face of the die at site 28 and remember the value 7 minus the face of the die at site 28 and afterwards move one of your pieces or move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Barail (Ludii 1) (Reconstructed)" (id "2908"))
+(useFor "Ruleset/Barail (Ludii 2) (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player the next player's hand site 0 moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 15
+     Place stack of [Disc1] at vertex 14
+     Place stack of [Disc2] at vertex 13.
+Rules: 
+     If a state is pending or not in the same turn, roll the dice and afterwards if 1 is equal to state variablePlayOpposite, move one of your pieces or move one of your pieces or pass then forget all previously rememberd values and set the variable PlayOpposite to 0 and set pending and move again, else if 0 is equal to the number of moves during this turn, all dice show equal values and 1 is equal to the value of Player the moving player, remember the value 7 minus the face of the die at site 28 and remember the value 7 minus the face of the die at site 28 and afterwards move one of your pieces or move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Barail (Ludii 2) (Reconstructed)" (id "2909"))
+(useFor "Ruleset/Barail (Ludii 3) (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player Player at to's hand site 0 moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 15
+     Place stack of [Disc1] at vertex 14
+     Place stack of [Disc2] at vertex 13.
+Rules: 
+     If not in the same turn, roll the dice and afterwards move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Barail (Ludii 3) (Reconstructed)" (id "2910"))
+(useFor "Ruleset/Barail (Ludii 4) (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player the next player's hand site 0 moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 15
+     Place stack of [Disc1] at vertex 14
+     Place stack of [Disc2] at vertex 13.
+Rules: 
+     If not in the same turn, roll the dice and afterwards move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Barail (Ludii 4) (Reconstructed)" (id "2911"))
+(useFor "Ruleset/Barail (Ludii 5) (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player the next player's hand site 0 moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 15
+     Place stack of [Disc1] at vertex 14
+     Place stack of [Disc2] at vertex 13.
+Rules: 
+     If a state is pending or not in the same turn, roll the dice and afterwards move one of your pieces or move one of your pieces if not all dice have been used, move again and if all dice have been used and all dice show equal values, set pending and move again.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Barail (Ludii 5) (Reconstructed)" (id "2912"))
+(useFor "Ruleset/Barail (Ludii 6) (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player Player at to's hand site 0 moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 15
+     Place stack of [Disc1] at vertex 14
+     Place stack of [Disc2] at vertex 13.
+Rules: 
+     If a state is pending or not in the same turn, roll the dice and afterwards move one of your pieces or move one of your pieces if not all dice have been used, move again and if all dice have been used and all dice show equal values, set pending and move again.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Barail (Ludii 6) (Reconstructed)" (id "2913"))
+(useFor "Ruleset/Barail (Ludii 7) (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else if not there is an enemy Player at the number of pips on the dice steps forward from site the location of the piece on track null or 1 is equal to the size of the stack on vertex the number of pips on the dice steps forward from site the location of the piece on track null, from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: true captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player the next player's hand site 0 moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 15
+     Place stack of [Disc1] at vertex 14
+     Place stack of [Disc2] at vertex 13.
+Rules: 
+     If a state is pending or not in the same turn, roll the dice and afterwards if 1 is equal to state variablePlayOpposite, move one of your pieces or move one of your pieces or pass then forget all previously rememberd values and set the variable PlayOpposite to 0 and set pending and move again, else if 0 is equal to the number of moves during this turn, all dice show equal values and 1 is equal to the value of Player the moving player, remember the value 7 minus the face of the die at site 28 and remember the value 7 minus the face of the die at site 28 and afterwards move one of your pieces or move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Barail (Ludii 7) (Reconstructed)" (id "2914"))
+(useFor "Ruleset/Barail (Ludii 8) (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else if not there is an enemy Player at the number of pips on the dice steps forward from site the location of the piece on track null or 1 is equal to the size of the stack on vertex the number of pips on the dice steps forward from site the location of the piece on track null, from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: true captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player the next player's hand site 0 moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 15
+     Place stack of [Disc1] at vertex 14
+     Place stack of [Disc2] at vertex 13.
+Rules: 
+     If a state is pending or not in the same turn, roll the dice and afterwards move one of your pieces or move one of your pieces if not all dice have been used, move again and if all dice have been used and all dice show equal values, set pending and move again.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Barail (Ludii 8) (Reconstructed)" (id "2915"))
+(useFor "Ruleset/Barail (Ludii 9) (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else if not there is an enemy Player at the number of pips on the dice steps forward from site the location of the piece on track null or 1 is equal to the size of the stack on vertex the number of pips on the dice steps forward from site the location of the piece on track null, from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: true captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player the next player's hand site 0 moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 15
+     Place stack of [Disc1] at vertex 14
+     Place stack of [Disc2] at vertex 13.
+Rules: 
+     If not in the same turn, roll the dice and afterwards move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Barail (Ludii 9) (Reconstructed)" (id "2916"))
+(useFor "Ruleset/Barail (Ludii 10) (Reconstructed)" (rules "The game Barail is played by two players on a 2x13 rectangle board with square tiling. 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs according to the value of the dice, from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player the next player's hand site 0 moveRule: true, the double rules apply or if empty, according to the value of the dice, remove pieces at the location of the piece, the double rules apply.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 15
+     Place stack of [Disc1] at vertex 14
+     Place stack of [Disc2] at vertex 13.
+Rules: 
+     If not in the same turn, roll the dice and afterwards move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Barail (Ludii 10) (Reconstructed)" (id "2917"))
+(source "Parlett 1999: 79.")
+(version "1.3.9")
+(classification "board/race/escape/reconstruction/done")
+(credit "Eric Piette")
+(origin "This game was played in Italy, from around 1275 to 1299.")
+}
+)
     
     (graphics {
         (board Style backgammon)

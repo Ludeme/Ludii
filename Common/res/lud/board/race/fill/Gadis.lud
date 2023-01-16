@@ -246,26 +246,26 @@
 //-------------------------------------------------------------------------	
 
 (metadata
-    (info
-        {
-        (description "Gadis is a totally abstract game, which requires to play a special board consisting of three moving rings in a fixed frame.")
-        (rules "Initially, all pawns are placed on their starting positions in the outer sites of the circle.
-            All pawns can move to an empty or enemy site adjacent to its position.
-            Capture is mandatory. 
-            
-            A pawn can never move to one of the starting positions of its owner. 
-            If a pawn is moving from a ring of the circle to another (except the outer ring), after moving, the player has to rotate the ring where moved the pawn.
-            
-        The game ends, when a player has no moves at its turn. The player with the most pieces on the starting positions of the opponent is winning.")
-        (id "2032")
-        (source "<a href=\"https://regle.escaleajeux.fr/gadis_rg.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />escaleajeux.fr</a>")
-        (version "1.3.8")
-        (classification "board/race/fill")
-        (author "Gérald Saiveau")
-        (credit "Eric Piette")
-        (date "1987")
-        }
-    )
+(info
+{
+(description "Gadis is a totally abstract game, which requires to play a special board consisting of three moving rings in a fixed frame.")
+(rules "Initially, all pawns are placed on their starting positions in the outer sites of the circle.
+All pawns can move to an empty or enemy site adjacent to its position.
+Capture is mandatory. 
+
+A pawn can never move to one of the starting positions of its owner. 
+If a pawn is moving from a ring of the circle to another (except the outer ring), after moving, the player has to rotate the ring where moved the pawn.
+
+The game ends, when a player has no moves at its turn. The player with the most pieces on the starting positions of the opponent is winning.")
+(id "2032")
+(source "<a href=\"https://regle.escaleajeux.fr/gadis_rg.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />escaleajeux.fr</a>")
+(version "1.3.9")
+(classification "board/race/fill")
+(author "Gérald Saiveau")
+(credit "Eric Piette")
+(date "1987")
+}
+)
     (graphics {
         (region Colour (sites Inner) (colour 252 203 84))
         (region Colour (sites Outer) (colour 162 68 10))

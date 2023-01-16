@@ -162,10 +162,10 @@
 
 //----------------------------------------------------------
 (metadata
-    (info
-        {
-        (description "Sprout-R-Out is a newly invented territorial game for Cairo and limping Hex boards based on an original placement protocol:             Players place one stone next to each opponent's group, but without touching any other group. Any group that cannot be played beside is removed.                        This creates an capture dynamic superficially like Go where groups get overgrown and die.  Unlike Go, a single, isolated eye, once formed, is enough to give life.                        On the other hand, even multiple larger eyes can be insufficient for life, because the timing of capture and the requirement to play against every opponent's group if possible, can leave multiple eyes filled with uncaptured stones.                        The feeling of the game definitely not like Go. The game is more tactical because placements are constrained to be adjacent to existing pieces, and multiple pieces are played per turn.                         Spreading pieces out to quickly surround the opponent during your turn can easily backfire, as it leads to more opponent placements and fewer locations needed by the opponent to surround your pieces.")
-        (rules "Goal: 
+(info
+{
+(description "Sprout-R-Out is a newly invented territorial game for Cairo and limping Hex boards based on an original placement protocol:             Players place one stone next to each opponent's group, but without touching any other group. Any group that cannot be played beside is removed.                        This creates an capture dynamic superficially like Go where groups get overgrown and die.  Unlike Go, a single, isolated eye, once formed, is enough to give life.                        On the other hand, even multiple larger eyes can be insufficient for life, because the timing of capture and the requirement to play against every opponent's group if possible, can leave multiple eyes filled with uncaptured stones.                        The feeling of the game definitely not like Go. The game is more tactical because placements are constrained to be adjacent to existing pieces, and multiple pieces are played per turn.                         Spreading pieces out to quickly surround the opponent during your turn can easily backfire, as it leads to more opponent placements and fewer locations needed by the opponent to surround your pieces.")
+(rules "Goal: 
             Highest score when the scores stop changing. Scores are based on territory described later.
             
             Play:
@@ -184,16 +184,16 @@
             
             The application keeps this count for you.  When the count no longer changes after both players have taken their turns the game officially ends.  The result is normally clear well in advance, but may require careful checking for groups that don't contain a single-cell eye. 
             
-        (Future option not implemented: First move is a pie offering with associated victory points (Komi))")
-        (id "1649")
-        (source "Dale W. Walton  (<a href=\"https://boardgamegeek.com/thread/2709549\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>)")
-        (version "1.3.8")
-        (classification "experimental")
-        (author "Dale W. Walton")
-        (credit "Dale W. Walton")
-        (date "21-08-2021")
-        }
-    )
+            (Future option not implemented: First move is a pie offering with associated victory points (Komi))")
+(id "1649")
+(source "Dale W. Walton  (<a href=\"https://boardgamegeek.com/thread/2709549\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>)")
+(version "1.3.9")
+(classification "experimental")
+(author "Dale W. Walton")
+(credit "Dale W. Walton")
+(date "21-08-2021")
+}
+)
     
     (define "ColourP1" (colour Black))
     (define "ColourP2" (colour 252 255 234 #1))

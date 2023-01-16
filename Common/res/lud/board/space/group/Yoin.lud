@@ -93,31 +93,31 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    (info
-        {
-        (description "Yoin is a drawless game for two players: Black and White. It is played on the spaces (cells) of an initially empty hexagonal grid of hexagons (board).Yoin was invented by Luis Bolaños Mures in 2021.")
-        (rules "Definitions
-            A group is a stone along with all other stones one could reach from it through a series of steps between adjacent stones of its color.
-            
-            The size of a group is the number of stones in it.
-            
-            Play
-            Black plays first, then turns alternate. On your turn, place a stone of your color on an empty cell. When the board is full, the winner is determined as follows:
-            
-            (1) Let n equal 0.
-            (2) The player with fewer groups bigger than n stones wins.
-            (3) If no winner is found, increase n by 1 and go back to (2).
-            
-        The pie rule is used in order to make the game fair. This means White will have the option, on their first turn only, to swap sides with their opponent instead of making a regular move.")
-        (id "1978")
-        (source "<a href=\"https://boardgamegeek.com/boardgame/358594/yoin\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.8")
-        (classification "board/space/group")
-        (author "Luis Bolaños Mures")
-        (credit "Michael Amundsen")
-        (date "2021")
-        }
-    )
+(info
+{
+(description "Yoin is a drawless game for two players: Black and White. It is played on the spaces (cells) of an initially empty hexagonal grid of hexagons (board).Yoin was invented by Luis Bolaños Mures in 2021.")
+(rules "Definitions
+A group is a stone along with all other stones one could reach from it through a series of steps between adjacent stones of its color.
+
+The size of a group is the number of stones in it.
+
+Play
+Black plays first, then turns alternate. On your turn, place a stone of your color on an empty cell. When the board is full, the winner is determined as follows:
+
+(1) Let n equal 0.
+(2) The player with fewer groups bigger than n stones wins.
+(3) If no winner is found, increase n by 1 and go back to (2).
+
+The pie rule is used in order to make the game fair. This means White will have the option, on their first turn only, to swap sides with their opponent instead of making a regular move.")
+(id "1978")
+(source "<a href=\"https://boardgamegeek.com/boardgame/358594/yoin\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+(version "1.3.9")
+(classification "board/space/group")
+(author "Luis Bolaños Mures")
+(credit "Michael Amundsen")
+(date "2021")
+}
+)
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
