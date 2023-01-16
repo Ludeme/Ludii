@@ -62,23 +62,23 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-    (info
-        {
-        (description "Plotto is a twist on 4-in-a-row played on a Hex board(less) with four colours of stones.")
-        (rules "MOVE - Players move in turn to place one stone of either color on an empty cell.
-            - However, the dropped stone must be adjacent, at least, to two other stones.
-            - A stone cannot be adjacent to another stone of the same color.
-            
-        GOAL - Wins the player that makes a 4 in-a-row, with stones of his color at both ends (one player has Black and Blue, the other has White and Red).")
-        (id "1823")
-        (source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/plotto.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.di.fc.ul.pt</a>")
-        (version "1.3.8")
-        (classification "board/space/line")
-        (author "David Smith")
-        (credit "Eric Piette")
-        (date "1995")
-        }
-    )
+(info
+{
+(description "Plotto is a twist on 4-in-a-row played on a Hex board(less) with four colours of stones.")
+(rules "MOVE - Players move in turn to place one stone of either color on an empty cell.
+- However, the dropped stone must be adjacent, at least, to two other stones.
+- A stone cannot be adjacent to another stone of the same color.
+
+GOAL - Wins the player that makes a 4 in-a-row, with stones of his color at both ends (one player has Black and Blue, the other has White and Red).")
+(id "1823")
+(source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/plotto.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.di.fc.ul.pt</a>")
+(version "1.3.9")
+(classification "board/space/line")
+(author "David Smith")
+(credit "Eric Piette")
+(date "1995")
+}
+)
     
     (graphics {
         (player Colour P1 (colour Black))

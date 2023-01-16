@@ -6,7 +6,7 @@
 
 (option "Variant" <Variant> args:{ <variant> }
     {
-    (item "Lian Qi (A-Type)1" <
+    (item "Lian Qi (A-Type) (Ludii 1)" <
         
         (players 2)
         
@@ -289,9 +289,9 @@
             }
         )
         
-    > "The Lian Qi (A-Type)1 ruleset.")
+    > "The Lian Qi (A-Type) (Ludii 1) ruleset.")
     
-    (item "Lian Qi (A-Type)2" <
+    (item "Lian Qi (A-Type) (Ludii 2)" <
         
         (players 2)
         
@@ -568,297 +568,9 @@
             }
         )
         
-    > "The Lian Qi (A-Type)2 ruleset.")
+    > "The Lian Qi (A-Type) (Ludii 2) ruleset.")
     
-    (item "Lian Qi (A-Type)3" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (or { 
-                                (is Line 3 N exact:True)
-                                
-                                (is Line 3 S exact:True)
-                                
-                                (is Line 3 E exact:True)
-                                
-                                (is Line 3 W exact:True)
-                                }
-                            )
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start { 
-                (place Stack "Marker1" 
-                    (handSite P1)
-                count:12)
-                
-                (place Stack "Marker2" 
-                    (handSite P2)
-                count:12)
-                }
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (forEach 
-                                    (sites Occupied by:Next container:"Board")
-                                    if:
-                                    (= 
-                                        (size Stack at:
-                                            (site)
-                                        )
-                                    1)
-                                )
-                            )
-                        )
-                        
-                        (if 
-                            (not 
-                                (all Sites 
-                                    (sites Hand Mover)
-                                    if:
-                                    (= 0 
-                                        (count Cell at:
-                                            (site)
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (move 
-                                (from 
-                                    (handSite Mover)
-                                )
-                                
-                                (to 
-                                    (sites Empty)
-                                )
-                                
-                                (then 
-                                    (if 
-                                        (is Line 3 if:
-                                            (= 1 
-                                                (size Stack at:
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                        
-                                        (moveAgain)
-                                    )
-                                )
-                            )
-                        )
-                        
-                        (then 
-                            (if 
-                                (and 
-                                    (not 
-                                        (is Next Mover)
-                                    )
-                                    
-                                    (and 
-                                        (all Sites 
-                                            (sites Hand P1)
-                                            if:
-                                            (= 0 
-                                                (count Cell at:
-                                                    (site)
-                                                )
-                                            )
-                                        )
-                                        
-                                        (all Sites 
-                                            (sites Hand P2)
-                                            if:
-                                            (= 0 
-                                                (count Cell at:
-                                                    (site)
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                                
-                                (and 
-                                    (forEach Site 
-                                        (forEach 
-                                            (sites Occupied by:P1 container:"Board" )
-                                            if:
-                                            (= 
-                                                (size Stack at:
-                                                    (site)
-                                                )
-                                            2)
-                                        )
-                                        
-                                        (and { 
-                                            (remove 
-                                                (site)
-                                            )
-                                            
-                                            (remove 
-                                                (site)
-                                            )
-                                            
-                                            (add 
-                                                (piece 
-                                                    (id "Marker" P1)
-                                                )
-                                                
-                                                (to 
-                                                    (site)
-                                                )
-                                            )
-                                            }
-                                        )
-                                    )
-                                    
-                                    (forEach Site 
-                                        (forEach 
-                                            (sites Occupied by:P2 container:"Board" )
-                                            if:
-                                            (= 
-                                                (size Stack at:
-                                                    (site)
-                                                )
-                                            2)
-                                        )
-                                        
-                                        (and { 
-                                            (remove 
-                                                (site)
-                                            )
-                                            
-                                            (remove 
-                                                (site)
-                                            )
-                                            
-                                            (add 
-                                                (piece 
-                                                    (id "Marker" P2)
-                                                )
-                                                
-                                                (to 
-                                                    (site)
-                                                )
-                                            )
-                                            }
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase 
-                    (and 
-                        (not 
-                            (is Next Mover)
-                        )
-                        
-                        (and 
-                            (all Sites 
-                                (sites Hand P1)
-                                if:
-                                (= 0 
-                                    (count Cell at:
-                                        (site)
-                                    )
-                                )
-                            )
-                            
-                            (all Sites 
-                                (sites Hand P2)
-                                if:
-                                (= 0 
-                                    (count Cell at:
-                                        (site)
-                                    )
-                                )
-                            )
-                        )
-                    )
-                "Movement" )
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Enemy container:"Board")
-                        )
-                        
-                        (if 
-                            (> 
-                                (count Pieces Mover)
-                            3)
-                            
-                            (forEach Piece)
-                            
-                            (move 
-                                (from 
-                                    (sites Occupied by:Mover)
-                                )
-                                
-                                (to 
-                                    (sites Empty)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (end 
-                    (if 
-                        (no Moves Next)
-                        
-                        (result Mover Win)
-                    )
-                )
-            )
-            }
-        )
-        
-    > "The Lian Qi (A-Type)3 ruleset.")
-    
-    (item "Lian Qi (A-Type)4" <
+    (item "Lian Qi (A-Type) (Ludii 3)" <
         
         (players 2)
         
@@ -1135,9 +847,304 @@
             }
         )
         
-    > "The Lian Qi (A-Type)4 ruleset.")
+    > "The Lian Qi (A-Type) (Ludii 3) ruleset.")
     
-    (item "Lian Qi (A-Type)5" <
+    (item "Lian Qi (A-Type) (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (not 
+                                    (is Prev Mover)
+                                )
+                                
+                                (is Line 3)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (no Moves Next)
+                                
+                                (and 
+                                    (moveAgain)
+                                    
+                                    (set Pending)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Marker1" 
+                    (handSite P1)
+                count:12)
+                
+                (place Stack "Marker2" 
+                    (handSite P2)
+                count:12)
+                }
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (forEach 
+                                    (sites Occupied by:Next container:"Board")
+                                    if:
+                                    (= 
+                                        (size Stack at:
+                                            (site)
+                                        )
+                                    1)
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (not 
+                                (all Sites 
+                                    (sites Hand Mover)
+                                    if:
+                                    (= 0 
+                                        (count Cell at:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (is Line 3 if:
+                                            (= 1 
+                                                (size Stack at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (and 
+                                    (not 
+                                        (is Next Mover)
+                                    )
+                                    
+                                    (and 
+                                        (all Sites 
+                                            (sites Hand P1)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (all Sites 
+                                            (sites Hand P2)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (and 
+                                    (forEach Site 
+                                        (forEach 
+                                            (sites Occupied by:P1 container:"Board" )
+                                            if:
+                                            (= 
+                                                (size Stack at:
+                                                    (site)
+                                                )
+                                            2)
+                                        )
+                                        
+                                        (and { 
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (add 
+                                                (piece 
+                                                    (id "Marker" P1)
+                                                )
+                                                
+                                                (to 
+                                                    (site)
+                                                )
+                                            )
+                                            }
+                                        )
+                                    )
+                                    
+                                    (forEach Site 
+                                        (forEach 
+                                            (sites Occupied by:P2 container:"Board" )
+                                            if:
+                                            (= 
+                                                (size Stack at:
+                                                    (site)
+                                                )
+                                            2)
+                                        )
+                                        
+                                        (and { 
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (add 
+                                                (piece 
+                                                    (id "Marker" P2)
+                                                )
+                                                
+                                                (to 
+                                                    (site)
+                                                )
+                                            )
+                                            }
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (not 
+                            (is Next Mover)
+                        )
+                        
+                        (and 
+                            (all Sites 
+                                (sites Hand P1)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
+                            )
+                            
+                            (all Sites 
+                                (sites Hand P2)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            3)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (end 
+                    (if 
+                        (no Moves Next)
+                        
+                        (result Mover Win)
+                    )
+                )
+            )
+            }
+        )
+        
+    > "The Lian Qi (A-Type) (Ludii 4) ruleset.")
+    
+    (item "Lian Qi (A-Type) (Ludii 5)" <
         
         (players 2)
         
@@ -1301,407 +1308,9 @@
             )
         )
         
-    > "The Lian Qi (A-Type)5 ruleset.")
+    > "The Lian Qi (A-Type) (Ludii 5) ruleset.")
     
-    (item "Lian Qi (A-Type)6" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (is Line 3 Orthogonal exact:True)
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:9)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Enemy container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (if 
-                                    (or { 
-                                        (is Line 3 N exact:True)
-                                        
-                                        (is Line 3 S exact:True)
-                                        
-                                        (is Line 3 E exact:True)
-                                        
-                                        (is Line 3 W exact:True)
-                                        }
-                                    )
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement" )
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Enemy container:"Board")
-                        )
-                        
-                        (if 
-                            (> 
-                                (count Pieces Mover)
-                            4)
-                            
-                            (forEach Piece)
-                            
-                            (move 
-                                (from 
-                                    (sites Occupied by:Mover)
-                                )
-                                
-                                (to 
-                                    (sites Empty)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (<= 
-                        (count Pieces Next)
-                    2)
-                    
-                    (result Next Loss)
-                )
-            )
-        )
-        
-    > "The Lian Qi (A-Type)6 ruleset.")
-    
-    (item "Lian Qi (A-Type)7" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (is Line 3 Orthogonal exact:True)
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:9)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (forEach 
-                                (sites Occupied by:Enemy container:"Board")
-                                if:
-                                (not 
-                                    (is Line 3 Orthogonal through:
-                                        (site)
-                                    )
-                                )
-                            )
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (if 
-                                    (is Line 3 Orthogonal)
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement" )
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (forEach 
-                                (sites Occupied by:Enemy container:"Board")
-                                if:
-                                (not 
-                                    (is Line 3 Orthogonal through:
-                                        (site)
-                                    )
-                                )
-                            )
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end { 
-                (if 
-                    (<= 
-                        (count Pieces Next)
-                    2)
-                    
-                    (result Next Loss)
-                )
-                
-                (if 
-                    (no Moves Next)
-                    
-                    (result Mover Win)
-                )
-                }
-            )
-        )
-        
-    > "The Lian Qi (A-Type)7 ruleset.")
-    
-    (item "Lian Qi (A-Type)8" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (or { 
-                                (is Line 3 N exact:True)
-                                
-                                (is Line 3 S exact:True)
-                                
-                                (is Line 3 E exact:True)
-                                
-                                (is Line 3 W exact:True)
-                                }
-                            )
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:9)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (forEach 
-                                (sites Occupied by:Enemy container:"Board")
-                                if:
-                                (not 
-                                    (is Line 3 Orthogonal through:
-                                        (site)
-                                    )
-                                )
-                            )
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (if 
-                                    (is Line 3 Orthogonal)
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement" )
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (forEach 
-                                (sites Occupied by:Enemy container:"Board")
-                                if:
-                                (not 
-                                    (is Line 3 Orthogonal through:
-                                        (site)
-                                    )
-                                )
-                            )
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end { 
-                (if 
-                    (<= 
-                        (count Pieces Next)
-                    2)
-                    
-                    (result Next Loss)
-                )
-                
-                (if 
-                    (no Moves Next)
-                    
-                    (result Mover Win)
-                )
-                }
-            )
-        )
-        
-    > "The Lian Qi (A-Type)8 ruleset.")
-    
-    (item "Lian Qi (A-Type)9" <
+    (item "Lian Qi (A-Type) (Ludii 6)" <
         
         (players 2)
         
@@ -1742,8 +1351,36 @@
                     (if 
                         (is Prev Mover)
                         
-                        (move Remove 
-                            (sites Occupied by:Enemy container:"Board")
+                        (if 
+                            (can Move 
+                                (move Remove 
+                                    (forEach 
+                                        (sites Occupied by:Enemy container:"Board" )
+                                        if:
+                                        (not 
+                                            (is Line 3 Orthogonal through:
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (forEach 
+                                    (sites Occupied by:Enemy container:"Board" )
+                                    if:
+                                    (not 
+                                        (is Line 3 Orthogonal through:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (sites Occupied by:Enemy container:"Board")
+                            )
                         )
                         
                         (move 
@@ -1757,16 +1394,7 @@
                             
                             (then 
                                 (if 
-                                    (or { 
-                                        (is Line 3 N exact:True)
-                                        
-                                        (is Line 3 S exact:True)
-                                        
-                                        (is Line 3 E exact:True)
-                                        
-                                        (is Line 3 W exact:True)
-                                        }
-                                    )
+                                    (is Line 3 Orthogonal exact:True)
                                     
                                     (moveAgain)
                                 )
@@ -1793,27 +1421,39 @@
                     (if 
                         (is Prev Mover)
                         
-                        (move Remove 
-                            (sites Occupied by:Enemy container:"Board")
-                        )
-                        
                         (if 
-                            (> 
-                                (count Pieces Mover)
-                            4)
-                            
-                            (forEach Piece)
-                            
-                            (move 
-                                (from 
-                                    (sites Occupied by:Mover)
-                                )
-                                
-                                (to 
-                                    (sites Empty)
+                            (can Move 
+                                (move Remove 
+                                    (forEach 
+                                        (sites Occupied by:Enemy container:"Board" )
+                                        if:
+                                        (not 
+                                            (is Line 3 Orthogonal through:
+                                                (site)
+                                            )
+                                        )
+                                    )
                                 )
                             )
+                            
+                            (move Remove 
+                                (forEach 
+                                    (sites Occupied by:Enemy container:"Board" )
+                                    if:
+                                    (not 
+                                        (is Line 3 Orthogonal through:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (sites Occupied by:Enemy container:"Board")
+                            )
                         )
+                        
+                        (forEach Piece)
                     )
                 )
             )
@@ -1821,18 +1461,22 @@
             
             (end 
                 (if 
-                    (<= 
-                        (count Pieces Next)
-                    2)
+                    (or 
+                        (no Moves Next)
+                        
+                        (<= 
+                            (count Pieces Next)
+                        2)
+                    )
                     
-                    (result Next Loss)
+                    (result Mover Win)
                 )
             )
         )
         
-    > "The Lian Qi (A-Type)9 ruleset.")
+    > "The Lian Qi (A-Type) (Ludii 6) ruleset.")
     
-    (item "Lian Qi (A-Type)10" <
+    (item "Lian Qi (A-Type) (Ludii 7)" <
         
         (players 2)
         
@@ -1959,7 +1603,772 @@
             )
         )
         
-    > "The Lian Qi (A-Type)10 ruleset.")
+    > "The Lian Qi (A-Type) (Ludii 7) ruleset.")
+    
+    (item "Lian Qi (A-Type) (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (not 
+                                    (is Prev Mover)
+                                )
+                                
+                                (is Line 3)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (no Moves Next)
+                                
+                                (and 
+                                    (moveAgain)
+                                    
+                                    (set Pending)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (forEach 
+                                (sites Occupied by:Enemy container:"Board")
+                                if:
+                                (not 
+                                    (is Line 3 Orthogonal through:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (forEach 
+                                (sites Occupied by:Enemy container:"Board")
+                                if:
+                                (not 
+                                    (is Line 3 Orthogonal through:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end { 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+                
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+                }
+            )
+        )
+        
+    > "The Lian Qi (A-Type) (Ludii 8) ruleset.")
+    
+    (item "Lian Qi (A-Type) (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (and 
+                                (if 
+                                    (and 
+                                        (< 
+                                            (var)
+                                        1)
+                                        
+                                        (is Line 3)
+                                    )
+                                    
+                                    (set Var 
+                                        (mover)
+                                    )
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all Sites 
+                                            (sites Hand P1)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (all Sites 
+                                            (sites Hand P2)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (< 
+                                            (var)
+                                        1)
+                                        
+                                        (moveAgain)
+                                        
+                                        (set NextPlayer 
+                                            (player 
+                                                (var)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (all Sites 
+                            (sites Hand P1)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                        
+                        (all Sites 
+                            (sites Hand P2)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                "Remove" )
+            )
+            
+            (phase "Remove" 
+                (play 
+                    (move Remove 
+                        (sites Occupied by:Next container:"Board")
+                    )
+                )
+                
+                (nextPhase Mover "Move")
+            )
+            
+            (phase "Move" 
+                (play 
+                    (if 
+                        (and 
+                            (not 
+                                (is Pending)
+                            )
+                            
+                            (is Prev Mover)
+                        )
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                            
+                            (then 
+                                (if 
+                                    (no Moves Next)
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Pending)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (is Pending)
+                            
+                            (do 
+                                (forEach Piece 
+                                    (move Step 
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                ifAfterwards:
+                                (can Move 
+                                    (forEach Piece Next)
+                                )
+                            )
+                            
+                            (forEach Piece)
+                        )
+                        
+                        (then 
+                            (if 
+                                (= 2 
+                                    (count Pieces P1)
+                                )
+                                
+                                (addScore P2 1 
+                                    (then 
+                                        (if 
+                                            (!= 
+                                                (score P2)
+                                            5)
+                                            
+                                            (and { 
+                                                (remove 
+                                                    (sites Occupied by:All )
+                                                )
+                                                
+                                                (add 
+                                                    (piece 
+                                                        (id "Marker" P1)
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite P1)
+                                                    )
+                                                count:12 )
+                                                
+                                                (add 
+                                                    (piece 
+                                                        (id "Marker" P2)
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite P2)
+                                                    )
+                                                count:12 )
+                                                }
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (= 2 
+                                        (count Pieces P2)
+                                    )
+                                    
+                                    (addScore P1 1 
+                                        (then 
+                                            (if 
+                                                (!= 
+                                                    (score P1)
+                                                5)
+                                                
+                                                (and { 
+                                                    (remove 
+                                                        (sites Occupied by:All )
+                                                    )
+                                                    
+                                                    (add 
+                                                        (piece 
+                                                            (id "Marker" P1 )
+                                                        )
+                                                        
+                                                        (to 
+                                                            (handSite P1)
+                                                        )
+                                                    count:12 )
+                                                    
+                                                    (add 
+                                                        (piece 
+                                                            (id "Marker" P2 )
+                                                        )
+                                                        
+                                                        (to 
+                                                            (handSite P2)
+                                                        )
+                                                    count:12 )
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (= 0 
+                        (count Sites in:
+                            (sites Occupied by:All container:"Board")
+                        )
+                    )
+                "Placement" )
+            )
+            }
+            
+            (end 
+                (if 
+                    (= 
+                        (score Mover)
+                    5)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Lian Qi (A-Type) (Ludii 9) ruleset.")
+    
+    (item "Lian Qi (A-Type) (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (not 
+                                    (is Prev Mover)
+                                )
+                                
+                                (is Line 3)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (no Moves Next)
+                                
+                                (and 
+                                    (moveAgain)
+                                    
+                                    (set Pending)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (and 
+                                (if 
+                                    (and 
+                                        (< 
+                                            (var)
+                                        1)
+                                        
+                                        (is Line 3)
+                                    )
+                                    
+                                    (set Var 
+                                        (mover)
+                                    )
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all Sites 
+                                            (sites Hand P1)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (all Sites 
+                                            (sites Hand P2)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (< 
+                                            (var)
+                                        1)
+                                        
+                                        (moveAgain)
+                                        
+                                        (set NextPlayer 
+                                            (player 
+                                                (var)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (all Sites 
+                            (sites Hand P1)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                        
+                        (all Sites 
+                            (sites Hand P2)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                "Remove" )
+            )
+            
+            (phase "Remove" 
+                (play 
+                    (move Remove 
+                        (sites Occupied by:Next container:"Board")
+                    )
+                )
+                
+                (nextPhase Mover "Move")
+            )
+            
+            (phase "Move" 
+                (play 
+                    (if 
+                        (and 
+                            (not 
+                                (is Pending)
+                            )
+                            
+                            (is Prev Mover)
+                        )
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                            
+                            (then 
+                                (if 
+                                    (no Moves Next)
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Pending)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (is Pending)
+                            
+                            (do 
+                                (forEach Piece 
+                                    (move Step 
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                ifAfterwards:
+                                (can Move 
+                                    (forEach Piece Next)
+                                )
+                            )
+                            
+                            (forEach Piece)
+                        )
+                        
+                        (then 
+                            (if 
+                                (= 2 
+                                    (count Pieces P1)
+                                )
+                                
+                                (addScore P2 1 
+                                    (then 
+                                        (if 
+                                            (!= 
+                                                (score P2)
+                                            5)
+                                            
+                                            (and { 
+                                                (remove 
+                                                    (sites Occupied by:All )
+                                                )
+                                                
+                                                (add 
+                                                    (piece 
+                                                        (id "Marker" P1)
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite P1)
+                                                    )
+                                                count:12 )
+                                                
+                                                (add 
+                                                    (piece 
+                                                        (id "Marker" P2)
+                                                    )
+                                                    
+                                                    (to 
+                                                        (handSite P2)
+                                                    )
+                                                count:12 )
+                                                }
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (= 2 
+                                        (count Pieces P2)
+                                    )
+                                    
+                                    (addScore P1 1 
+                                        (then 
+                                            (if 
+                                                (!= 
+                                                    (score P1)
+                                                5)
+                                                
+                                                (and { 
+                                                    (remove 
+                                                        (sites Occupied by:All )
+                                                    )
+                                                    
+                                                    (add 
+                                                        (piece 
+                                                            (id "Marker" P1 )
+                                                        )
+                                                        
+                                                        (to 
+                                                            (handSite P1)
+                                                        )
+                                                    count:12 )
+                                                    
+                                                    (add 
+                                                        (piece 
+                                                            (id "Marker" P2 )
+                                                        )
+                                                        
+                                                        (to 
+                                                            (handSite P2)
+                                                        )
+                                                    count:12 )
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (= 0 
+                        (count Sites in:
+                            (sites Occupied by:All container:"Board")
+                        )
+                    )
+                "Placement" )
+            )
+            }
+            
+            (end 
+                (if 
+                    (= 
+                        (score Mover)
+                    5)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Lian Qi (A-Type) (Ludii 10) ruleset.")
     
     (item "Incomplete"
         <
@@ -1980,36 +2389,36 @@
 
 (rulesets {
     
-    (ruleset "Ruleset/Lian Qi (A-Type)1 (Reconstructed)" {
-        "Variant/Lian Qi (A-Type)1"
+    (ruleset "Ruleset/Lian Qi (A-Type) (Ludii 1) (Reconstructed)" {
+        "Variant/Lian Qi (A-Type) (Ludii 1)"
     })
-    (ruleset "Ruleset/Lian Qi (A-Type)2 (Reconstructed)" {
-        "Variant/Lian Qi (A-Type)2"
+    (ruleset "Ruleset/Lian Qi (A-Type) (Ludii 2) (Reconstructed)" {
+        "Variant/Lian Qi (A-Type) (Ludii 2)"
     })
-    (ruleset "Ruleset/Lian Qi (A-Type)3 (Reconstructed)" {
-        "Variant/Lian Qi (A-Type)3"
+    (ruleset "Ruleset/Lian Qi (A-Type) (Ludii 3) (Reconstructed)" {
+        "Variant/Lian Qi (A-Type) (Ludii 3)"
     })
-    (ruleset "Ruleset/Lian Qi (A-Type)4 (Reconstructed)" {
-        "Variant/Lian Qi (A-Type)4"
+    (ruleset "Ruleset/Lian Qi (A-Type) (Ludii 4) (Reconstructed)" {
+        "Variant/Lian Qi (A-Type) (Ludii 4)"
     })
-    (ruleset "Ruleset/Lian Qi (A-Type)5 (Reconstructed)" {
-        "Variant/Lian Qi (A-Type)5"
+    (ruleset "Ruleset/Lian Qi (A-Type) (Ludii 5) (Reconstructed)" {
+        "Variant/Lian Qi (A-Type) (Ludii 5)"
     })
-    (ruleset "Ruleset/Lian Qi (A-Type)6 (Reconstructed)" {
-        "Variant/Lian Qi (A-Type)6"
+    (ruleset "Ruleset/Lian Qi (A-Type) (Ludii 6) (Reconstructed)" {
+        "Variant/Lian Qi (A-Type) (Ludii 6)"
     })
-    (ruleset "Ruleset/Lian Qi (A-Type)7 (Reconstructed)" {
-        "Variant/Lian Qi (A-Type)7"
+    (ruleset "Ruleset/Lian Qi (A-Type) (Ludii 7) (Reconstructed)" {
+        "Variant/Lian Qi (A-Type) (Ludii 7)"
     })
-    (ruleset "Ruleset/Lian Qi (A-Type)8 (Reconstructed)" {
-        "Variant/Lian Qi (A-Type)8"
+    (ruleset "Ruleset/Lian Qi (A-Type) (Ludii 8) (Reconstructed)" {
+        "Variant/Lian Qi (A-Type) (Ludii 8)"
     })
-    (ruleset "Ruleset/Lian Qi (A-Type)9 (Reconstructed)" {
-        "Variant/Lian Qi (A-Type)9"
+    (ruleset "Ruleset/Lian Qi (A-Type) (Ludii 9) (Reconstructed)" {
+        "Variant/Lian Qi (A-Type) (Ludii 9)"
     })
-    (ruleset "Ruleset/Lian Qi (A-Type)10 (Reconstructed)" {
-        "Variant/Lian Qi (A-Type)10"
-    }) 
+    (ruleset "Ruleset/Lian Qi (A-Type) (Ludii 10) (Reconstructed)" {
+        "Variant/Lian Qi (A-Type) (Ludii 10)"
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -2021,144 +2430,144 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Lian Qi is a term used for alignment games in China. This version can be attested since the tenth century CE, and was the most commonly played, judging by the number of boards which have been found.")
-        (aliases {"Lian Huan Ma Qi" "Zhi Qi" "Cheng San Qi" "Ji Ri Ge"})
-        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Three concentric squares, with lines connecting the midpoints of the sides and the corners."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (id "1241"))
-        (useFor "Ruleset/Lian Qi (A-Type)1 (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
-                Players take turns moving.
-                Setup:
-                Place stack of [Marker1] at vertex Player 1's hand site 0
-                Place stack of [Marker2] at vertex Player 2's hand site 0.
-                Rules: 
-                If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of null owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
-                
-        "))
-        (useFor "Ruleset/Lian Qi (A-Type)1 (Reconstructed)" (id "2808"))
-        (useFor "Ruleset/Lian Qi (A-Type)2 (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Setup:
-                Place stack of [Marker1] at vertex Player 1's hand site 0
-                Place stack of [Marker2] at vertex Player 2's hand site 0.
-                Rules: 
-                If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of null owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
-                
-        "))
-        (useFor "Ruleset/Lian Qi (A-Type)2 (Reconstructed)" (id "2809"))
-        (useFor "Ruleset/Lian Qi (A-Type)3 (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
-                Players take turns moving.
-                Setup:
-                Place stack of [Marker1] at vertex Player 1's hand site 0
-                Place stack of [Marker2] at vertex Player 2's hand site 0.
-                Rules: 
-                If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of null owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
-                
-        "))
-        (useFor "Ruleset/Lian Qi (A-Type)3 (Reconstructed)" (id "2810"))
-        (useFor "Ruleset/Lian Qi (A-Type)4 (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Setup:
-                Place stack of [Marker1] at vertex Player 1's hand site 0
-                Place stack of [Marker2] at vertex Player 2's hand site 0.
-                Rules: 
-                If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of null owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
-                
-        "))
-        (useFor "Ruleset/Lian Qi (A-Type)4 (Reconstructed)" (id "2811"))
-        (useFor "Ruleset/Lian Qi (A-Type)5 (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
-                Aim: 
-                If the next player cannot move or the number of null owned by Player the next player is less than or equal to 2, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Lian Qi (A-Type)5 (Reconstructed)" (id "2812"))
-        (useFor "Ruleset/Lian Qi (A-Type)6 (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of null owned by Player the moving player is greater than 4, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Lian Qi (A-Type)6 (Reconstructed)" (id "2813"))
-        (useFor "Ruleset/Lian Qi (A-Type)7 (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses If the next player cannot move, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Lian Qi (A-Type)7 (Reconstructed)" (id "2814"))
-        (useFor "Ruleset/Lian Qi (A-Type)8 (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses If the next player cannot move, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Lian Qi (A-Type)8 (Reconstructed)" (id "2815"))
-        (useFor "Ruleset/Lian Qi (A-Type)9 (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of null owned by Player the moving player is greater than 4, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Lian Qi (A-Type)9 (Reconstructed)" (id "2816"))
-        (useFor "Ruleset/Lian Qi (A-Type)10 (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses If the next player cannot move, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Lian Qi (A-Type)10 (Reconstructed)" (id "2817"))
-        (source "Wu and Sebillaud 2020: 44.")
-        (version "1.3.8")
-        (classification "board/space/line/reconstruction/done")
-        (credit "Eric Piette")
-        (origin "This game was played in China, from around 900 to 1399.")
-        }
-    )
+(info
+{
+(description "Lian Qi is a term used for alignment games in China. This version can be attested since the tenth century CE, and was the most commonly played, judging by the number of boards which have been found.")
+(aliases {"Lian Huan Ma Qi" "Zhi Qi" "Cheng San Qi" "Ji Ri Ge"})
+(useFor "Ruleset/Historical Information (Incomplete)" (rules "Three concentric squares, with lines connecting the midpoints of the sides and the corners."))
+(useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+(useFor "Ruleset/Historical Information (Incomplete)" (id "1241"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 1) (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Setup:
+     Place stack of [Marker1] at vertex Player 1's hand site 0
+     Place stack of [Marker2] at vertex Player 2's hand site 0.
+Rules: 
+     If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+
+"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 1) (Reconstructed)" (id "3129"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 2) (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Setup:
+     Place stack of [Marker1] at vertex Player 1's hand site 0
+     Place stack of [Marker2] at vertex Player 2's hand site 0.
+Rules: 
+     If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+
+"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 2) (Reconstructed)" (id "3130"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 3) (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Setup:
+     Place stack of [Marker1] at vertex Player 1's hand site 0
+     Place stack of [Marker2] at vertex Player 2's hand site 0.
+Rules: 
+     If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+
+"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 3) (Reconstructed)" (id "3131"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 4) (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if not in the same turn and a player places 3 of their pieces in an adjacent direction line, move again, else if the next player cannot move, move again and set pending.
+Players take turns moving.
+Setup:
+     Place stack of [Marker1] at vertex Player 1's hand site 0
+     Place stack of [Marker2] at vertex Player 2's hand site 0.
+Rules: 
+     If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+
+"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 4) (Reconstructed)" (id "3132"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 5) (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the next player cannot move or the number of pieces owned by Player the next player is less than or equal to 2, the moving player wins.
+
+"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 5) (Reconstructed)" (id "3133"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 6) (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the next player cannot move or the number of pieces owned by Player the next player is less than or equal to 2, the moving player wins.
+
+"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 6) (Reconstructed)" (id "3134"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 7) (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses If the next player cannot move, the moving player wins.
+
+"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 7) (Reconstructed)" (id "3135"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 8) (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if not in the same turn and a player places 3 of their pieces in an adjacent direction line, move again, else if the next player cannot move, move again and set pending.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses If the next player cannot move, the moving player wins.
+
+"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 8) (Reconstructed)" (id "3136"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 9) (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if state variablenull is less than 1 and a player places 3 of their pieces in an adjacent direction line, set the variable null to current moving player and if all sites in the sites in Player 1's hand satisfy the condition 0 is equal to the total number of cell in current site and all sites in the sites in Player 2's hand satisfy the condition 0 is equal to the total number of cell in current site, if state variablenull is less than 1, move again, else set the next mover to Player [state variablenull] remove pieces at sites occupied by any component owned by Next in Board if not a state is pending and in the same turn, remove pieces at sites occupied by any component owned by Next in Board then if the next player cannot move, move again and set pending, else if a state is pending, move one of your pieces, else move one of your pieces.
+Aim: 
+     If the score of Player the moving player is equal to 5, the moving player wins.
+
+"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 9) (Reconstructed)" (id "3137"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 10) (Reconstructed)" (rules "The game Lian Qi (A-Type) is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if not in the same turn and a player places 3 of their pieces in an adjacent direction line, move again, else if the next player cannot move, move again and set pending.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if state variablenull is less than 1 and a player places 3 of their pieces in an adjacent direction line, set the variable null to current moving player and if all sites in the sites in Player 1's hand satisfy the condition 0 is equal to the total number of cell in current site and all sites in the sites in Player 2's hand satisfy the condition 0 is equal to the total number of cell in current site, if state variablenull is less than 1, move again, else set the next mover to Player [state variablenull] remove pieces at sites occupied by any component owned by Next in Board if not a state is pending and in the same turn, remove pieces at sites occupied by any component owned by Next in Board then if the next player cannot move, move again and set pending, else if a state is pending, move one of your pieces, else move one of your pieces.
+Aim: 
+     If the score of Player the moving player is equal to 5, the moving player wins.
+
+"))
+(useFor "Ruleset/Lian Qi (A-Type) (Ludii 10) (Reconstructed)" (id "3138"))
+(source "Wu and Sebillaud 2020: 44.")
+(version "1.3.9")
+(classification "board/space/line/reconstruction/done")
+(credit "Eric Piette")
+(origin "This game was played in China, from around 900 to 1399.")
+}
+)
     
     (recon {
         (concept "NumStartComponents" minValue:6 maxValue:27)

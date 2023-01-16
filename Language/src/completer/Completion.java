@@ -1,5 +1,8 @@
 package completer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gnu.trove.list.array.TIntArrayList;
 
 /**
@@ -10,9 +13,11 @@ public class Completion
 {
 	private String raw;  // completed game description
 	private double score = 0;  // confidence in enumeration (0..1)
-	private double similarityScore = 0;  // (0..1)
-	private double commonTrueConceptsScore = 0;  // (0..1)
+	private double culturalScore = 0;  // (0..1)
+	private double conceptualScore = 0;  // (0..1)
+	private double geographicalScore = 0;  // (0..1)
 	private TIntArrayList idsUsed = new TIntArrayList(); // The ruleset ids used to make the completion.
+	private List<TIntArrayList> otherIdsUSed = new ArrayList<TIntArrayList>(); // The other possible combinations of rulesets used to obtain the same completion.
 
 	//-------------------------------------------------------------------------
 
@@ -43,24 +48,34 @@ public class Completion
 		score = value;
 	}
 	
-	public double similarityScore()
+	public double culturalScore()
 	{
-		return similarityScore;
+		return culturalScore;
 	}
 	
-	public void setSimilarityScore(final double value)
+	public void setCulturalScore(final double value)
 	{
-		similarityScore = value;
+		culturalScore = value;
 	}
 	
-	public double commonExpectedConceptsScore()
+	public double geographicalScore()
 	{
-		return commonTrueConceptsScore;
+		return geographicalScore;
 	}
 	
-	public void setCommonTrueConceptsScore(final double value)
+	public void setGeographicalScore(final double value)
 	{
-		commonTrueConceptsScore = value;
+		geographicalScore = value;
+	}
+	
+	public double conceptualScore()
+	{
+		return conceptualScore;
+	}
+	
+	public void setConceptualScore(final double value)
+	{
+		conceptualScore = value;
 	}
 	
 	public TIntArrayList idsUsed()
@@ -76,6 +91,17 @@ public class Completion
 	public void addId(final int id)
 	{
 		idsUsed.add(id);
+	}
+	
+	public List<TIntArrayList> otherIdsUsed()
+	{
+		return otherIdsUSed;
+	}
+	
+	
+	public void addOtherIds(final TIntArrayList ids)
+	{
+		otherIdsUSed.add(ids);
 	}
 	
 	//-------------------------------------------------------------------------

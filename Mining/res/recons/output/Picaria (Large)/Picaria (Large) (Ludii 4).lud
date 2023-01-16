@@ -1,0 +1,128 @@
+(game "Picaria (Large)" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move 
+                (from)
+                
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:9)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (sites Occupied by:Enemy container:"Board")
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (or { 
+                                    (is Line 3 N exact:True)
+                                    
+                                    (is Line 3 S exact:True)
+                                    
+                                    (is Line 3 E exact:True)
+                                    
+                                    (is Line 3 W exact:True)
+                                    }
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement" )
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (sites Occupied by:Enemy container:"Board")
+                    )
+                    
+                    (if 
+                        (> 
+                            (count Pieces Mover)
+                        4)
+                        
+                        (forEach Piece)
+                        
+                        (move 
+                            (from 
+                                (sites Occupied by:Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (<= 
+                    (count Pieces Next)
+                2)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "StackState" False)
+        (concept "LineEnd" False)
+        (concept "NumStartComponentsBoard" 0)
+        (concept "NumStartComponents" minValue:1 maxValue:40)
+    }))

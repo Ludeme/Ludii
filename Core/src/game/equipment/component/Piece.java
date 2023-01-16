@@ -147,6 +147,11 @@ public class Piece extends Component implements Serializable
 				missingRequirement = true;
 			}
 		}
+		
+		if(generator() != null)
+			if(generator().missingRequirement(game))
+				missingRequirement = true;
+		
 		return missingRequirement;
 	}
 	

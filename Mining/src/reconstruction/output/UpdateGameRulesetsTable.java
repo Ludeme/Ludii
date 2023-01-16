@@ -34,7 +34,7 @@ public class UpdateGameRulesetsTable
 	final static String pathReconstructed    = "./res/recons/output/";
 	
 	// The game name.
-	final static String gameName        = "Sahkku (Lujavv'r)";
+	final static String gameName        = "Lu Qi";
 	
 	// The precision of the double to use.
 	final static int DOUBLE_PRECISION = 5;
@@ -65,7 +65,9 @@ public class UpdateGameRulesetsTable
 		final TDoubleArrayList scoreList = new TDoubleArrayList();
 		final TDoubleArrayList similaryScoreList = new TDoubleArrayList();
 		final TDoubleArrayList conceptualScoreList = new TDoubleArrayList();
+		final TDoubleArrayList geographicalScoreList = new TDoubleArrayList();
 		final List<String> idsUsedList = new ArrayList<String>();
+		final List<String> otherIdsList = new ArrayList<String>();
 		final List<String> toEnglishList = new ArrayList<String>();
 		
 		try (BufferedReader br = new BufferedReader(new FileReader(pathReportReconstrution))) 
@@ -74,7 +76,7 @@ public class UpdateGameRulesetsTable
 			while (line != null)
 			{
 				String lineNoQuote = line.replaceAll(Pattern.quote("\""), "");
-
+				
 				int separatorIndex = lineNoQuote.indexOf(',');
 				final String rulesetName = lineNoQuote.substring(0, separatorIndex);
 				lineNoQuote = lineNoQuote.substring(rulesetName.length() + 1);
@@ -100,8 +102,18 @@ public class UpdateGameRulesetsTable
 				conceptualScoreList.add(Double.parseDouble(culturalScoreStr.length() > DOUBLE_PRECISION ? culturalScoreStr.substring(0, DOUBLE_PRECISION) : culturalScoreStr));
 				
 				lineNoQuote = lineNoQuote.substring(culturalScoreStr.length() + 1);
-				final String ids = lineNoQuote.substring(1,lineNoQuote.length() - 1);
+				separatorIndex = lineNoQuote.indexOf(',');
+				String geographicalScoreStr = lineNoQuote.substring(0, separatorIndex);
+				geographicalScoreList.add(Double.parseDouble(geographicalScoreStr.length() > DOUBLE_PRECISION ? geographicalScoreStr.substring(0, DOUBLE_PRECISION) : geographicalScoreStr));
+				
+				lineNoQuote = lineNoQuote.substring(geographicalScoreStr.length() + 1);
+				separatorIndex = lineNoQuote.indexOf('}') + 1 ;
+				String ids = lineNoQuote.substring(1, separatorIndex - 1);
 				idsUsedList.add(ids);
+				
+				lineNoQuote = lineNoQuote.substring(ids.length() + 3);
+				final String otherIds = lineNoQuote.substring(0, lineNoQuote.length());
+				otherIdsList.add(otherIds);
 				
 				final String pathReconstruction = pathFolderReconstrutions + rulesetName + ".lud"; 
 				String desc = FileHandling.loadTextContentsFromFile(pathReconstruction);
@@ -146,7 +158,9 @@ public class UpdateGameRulesetsTable
 					lineToWrite.add("\"" + scoreList.get(i) + "\"");
 					lineToWrite.add("\"" + similaryScoreList.get(i) + "\"");
 					lineToWrite.add("\"" + conceptualScoreList.get(i) + "\"");
+					lineToWrite.add("\"" + geographicalScoreList.get(i) + "\"");
 					lineToWrite.add("\"" + idsUsedList.get(i) + "\"");
+					lineToWrite.add("\"" + otherIdsList.get(i) + "\"");
 					writer.println(StringRoutines.join(",", lineToWrite));
 			    }
 		}

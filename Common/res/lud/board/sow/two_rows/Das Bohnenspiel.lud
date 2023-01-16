@@ -44,18 +44,18 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-    (info
-        {
-        (description "Das Bohnenspiel is a two-row mancala-style game described by Fritz Jahn, who described the game and two boards, one said to be a duplicate of one used by Catherina II of Russia to play with the Persian Shah 100 years before, and a another from the wife of the Oberpresident of Waldow, who played it during her childhood in Sczeczin. The game was popular among German-Baltic and Prussian royal families during the 19th century, but was popularized with Jahn's book. It continued play through at least the 1980s, as several East German books were published about it.")
-        (rules "2x6 board with store holes at either end. The game begins with six counters in each hole. Each player owns one row of holes. At the beginning of the turn, a player picks up all of the counters from their side of the board and sows them, one each, into consecutive holes in a counterclockwise pattern. If the last counter lands in a hole that contains 2, 4, or 6 (after sowing), then the player captures the counters in that hole. If the player captures counters in a hole, then they may also capture counters in the previous hole, if it also has 2,4, or 6, continuing until reaching a hole without 2, 4, or 6. Play continues until one player cannot play on their turn, at which point the other player receives all of the remaining counters. The player with the most captured counters wins.")
-        (source "Jahn 1923: 13-15.")
-        (id "66")
-        (version "1.3.8")
-        (classification "board/sow/two rows")
-        (credit "Eric Piette")
-        (origin "This game was played in Russia? Iran?, from around 1908 to 1923.")
-        }
-    )
+(info
+{
+(description "Das Bohnenspiel is a two-row mancala-style game described by Fritz Jahn, who described the game and two boards, one said to be a duplicate of one used by Catherina II of Russia to play with the Persian Shah 100 years before, and a another from the wife of the Oberpresident of Waldow, who played it during her childhood in Sczeczin. The game was popular among German-Baltic and Prussian royal families during the 19th century, but was popularized with Jahn's book. It continued play through at least the 1980s, as several East German books were published about it.")
+(rules "2x6 board with store holes at either end. The game begins with six counters in each hole. Each player owns one row of holes. At the beginning of the turn, a player picks up all of the counters from their side of the board and sows them, one each, into consecutive holes in a counterclockwise pattern. If the last counter lands in a hole that contains 2, 4, or 6 (after sowing), then the player captures the counters in that hole. If the player captures counters in a hole, then they may also capture counters in the previous hole, if it also has 2,4, or 6, continuing until reaching a hole without 2, 4, or 6. Play continues until one player cannot play on their turn, at which point the other player receives all of the remaining counters. The player with the most captured counters wins.")
+(source "Jahn 1923: 13-15.")
+(id "66")
+(version "1.3.9")
+(classification "board/sow/two rows")
+(credit "Eric Piette")
+(origin "This game was played in Russia? Iran?, from around 1908 to 1923.")
+}
+)
     
     (graphics {
         (board Style Mancala)

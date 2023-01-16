@@ -24,111 +24,7 @@
 
 (option "Variant" <Variant> args:{ <variant> }
     {
-    (item "Ashanti Alignment Game1" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (is Line 3 Orthogonal exact:True)
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:8)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (if 
-                                    (is Line 3 Orthogonal exact:True)
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement")
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (no Pieces Next)
-                    
-                    (result Next Loss)
-                )
-            )
-        )
-        
-    > "The Ashanti Alignment Game1 ruleset.")
-    
-    (item "Ashanti Alignment Game2" <
+    (item "Ashanti Alignment Game (Ludii 1)" <
         
         (players 2)
         
@@ -161,7 +57,7 @@
         
         (rules 
             (start 
-                (place "Marker" "Hand" count:16)
+                (place "Marker" "Hand" count:21)
             )
             phases:{ 
             (phase "Placement" 
@@ -230,9 +126,113 @@
             )
         )
         
-    > "The Ashanti Alignment Game2 ruleset.")
+    > "The Ashanti Alignment Game (Ludii 1) ruleset.")
     
-    (item "Ashanti Alignment Game3" <
+    (item "Ashanti Alignment Game (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:False)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:13)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 2) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 3)" <
         
         (players 2)
         
@@ -265,7 +265,7 @@
         
         (rules 
             (start 
-                (place "Marker" "Hand" count:5)
+                (place "Marker" "Hand" count:6)
             )
             phases:{ 
             (phase "Placement" 
@@ -334,113 +334,9 @@
             )
         )
         
-    > "The Ashanti Alignment Game3 ruleset.")
+    > "The Ashanti Alignment Game (Ludii 3) ruleset.")
     
-    (item "Ashanti Alignment Game4" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step Orthogonal 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (is Line 2 Orthogonal)
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:12)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (if 
-                                    (is Line 3 Orthogonal exact:True)
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement")
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (no Pieces Next)
-                    
-                    (result Next Loss)
-                )
-            )
-        )
-        
-    > "The Ashanti Alignment Game4 ruleset.")
-    
-    (item "Ashanti Alignment Game5" <
+    (item "Ashanti Alignment Game (Ludii 4)" <
         
         (players 2)
         
@@ -452,37 +348,17 @@
             (hand Each)
             
             (piece "Marker" Each 
-                (or 
-                    (move Step Orthogonal 
-                        (to if:
-                            (is Empty 
-                                (to)
-                            )
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
                         )
                     )
                     
-                    (move Hop 
-                        (between if:
-                            (is Enemy 
-                                (who at:
-                                    (between)
-                                )
-                            )
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
                             
-                            (apply 
-                                (remove 
-                                    (between)
-                                )
-                            )
-                        )
-                        
-                        (to if:
-                            (is Empty 
-                                (to)
-                            )
-                        )
-                        
-                        (then 
                             (moveAgain)
                         )
                     )
@@ -493,7 +369,7 @@
         
         (rules 
             (start 
-                (place "Marker" "Hand" count:17)
+                (place "Marker" "Hand" count:11)
             )
             phases:{ 
             (phase "Placement" 
@@ -562,15 +438,15 @@
             )
         )
         
-    > "The Ashanti Alignment Game5 ruleset.")
+    > "The Ashanti Alignment Game (Ludii 4) ruleset.")
     
-    (item "Ashanti Alignment Game6" <
+    (item "Ashanti Alignment Game (Ludii 5)" <
         
         (players 2)
         
         (equipment { 
             (board 
-                (concentric Square rings:3 joinCorners:True)
+                (concentric Square rings:3 joinCorners:False)
             use:Vertex)
             
             (hand Each)
@@ -585,7 +461,7 @@
                     
                     (then 
                         (if 
-                            (is Line 3)
+                            (is Line 3 Orthogonal exact:True)
                             
                             (moveAgain)
                         )
@@ -597,7 +473,7 @@
         
         (rules 
             (start 
-                (place "Marker" "Hand" count:7)
+                (place "Marker" "Hand" count:10)
             )
             phases:{ 
             (phase "Placement" 
@@ -666,30 +542,376 @@
             )
         )
         
-    > "The Ashanti Alignment Game6 ruleset.")
+    > "The Ashanti Alignment Game (Ludii 5) ruleset.")
     
-    (item "Ashanti Alignment Game7" <
+    (item "Ashanti Alignment Game (Ludii 6)" <
         
         (players 2)
         
         (equipment { 
             (board 
-                (concentric Square rings:3 joinCorners:True)
+                (concentric Square rings:3 joinCorners:False)
             use:Vertex)
             
             (hand Each)
             
             (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
+                (if 
+                    (= 3 
+                        (count Pieces Mover)
+                    )
+                    
+                    (move 
+                        (from 
+                            (from)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
                         )
                     )
                     
                     (then 
                         (if 
                             (is Line 3 Orthogonal)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:22)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 6) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:False)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:22)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 7) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:4)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 8) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (if 
+                    (is In 
+                        (from)
+                        
+                        (sites Corners)
+                    )
+                    
+                    (move 
+                        (from 
+                            (from)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3)
                             
                             (moveAgain)
                         )
@@ -770,15 +992,655 @@
             )
         )
         
-    > "The Ashanti Alignment Game7 ruleset.")
+    > "The Ashanti Alignment Game (Ludii 9) ruleset.")
     
-    (item "Ashanti Alignment Game8" <
+    (item "Ashanti Alignment Game (Ludii 10)" <
         
         (players 2)
         
         (equipment { 
             (board 
                 (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 2 Orthogonal)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:8)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 10) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 11)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:10)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 11) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 12)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:23)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 12) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 13)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:4)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 13) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 14)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:19)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 14) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 15)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (if 
+                    (= 3 
+                        (count Pieces Mover)
+                    )
+                    
+                    (move 
+                        (from 
+                            (from)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 15) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 16)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
             use:Vertex)
             
             (hand Each)
@@ -874,119 +1736,15 @@
             )
         )
         
-    > "The Ashanti Alignment Game8 ruleset.")
+    > "The Ashanti Alignment Game (Ludii 16) ruleset.")
     
-    (item "Ashanti Alignment Game9" <
+    (item "Ashanti Alignment Game (Ludii 17)" <
         
         (players 2)
         
         (equipment { 
             (board 
-                (concentric Square rings:3 joinCorners:False)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (is Line 3)
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:16)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (if 
-                                    (is Line 3 Orthogonal exact:True)
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement")
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (no Pieces Next)
-                    
-                    (result Next Loss)
-                )
-            )
-        )
-        
-    > "The Ashanti Alignment Game9 ruleset.")
-    
-    (item "Ashanti Alignment Game10" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:False)
+                (rectangle 3 3 diagonals:Alternating)
             use:Vertex)
             
             (hand Each)
@@ -1082,17 +1840,2593 @@
             )
         )
         
-    > "The Ashanti Alignment Game10 ruleset.")
+    > "The Ashanti Alignment Game (Ludii 17) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 18)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (if 
+                    (is In 
+                        (from)
+                        
+                        (sites Corners)
+                    )
+                    
+                    (move 
+                        (from 
+                            (from)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:18)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 18) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 19)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (if 
+                    (is Line 4 Orthogonal through:
+                        (from)
+                    )
+                    
+                    (move Step Orthogonal 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step Orthogonal 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:16)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 19) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 20)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 2 Orthogonal)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:23)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 20) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 21)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Triangle rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:18)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 21) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 22)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Triangle rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:5)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 22) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 23)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Triangle rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:23)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 23) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 24)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Triangle rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:15)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 24) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 25)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Triangle rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (if 
+                    (= 3 
+                        (count Pieces Mover)
+                    )
+                    
+                    (move 
+                        (from 
+                            (from)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 25) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 26)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Triangle rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 26) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 27)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Triangle rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (if 
+                    (is In 
+                        (from)
+                        
+                        (sites Corners)
+                    )
+                    
+                    (move 
+                        (from 
+                            (from)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:2)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 27) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 28)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Triangle rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (if 
+                    (is Line 4 Orthogonal through:
+                        (from)
+                    )
+                    
+                    (move Step Orthogonal 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step Orthogonal 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:17)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 28) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 29)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Triangle rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 2 Orthogonal)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:5)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 29) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 30)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Triangle rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step Orthogonal 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:2)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 30) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 31)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rotate 30 
+                    (concentric Hexagon rings:3 joinCorners:True)
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:16)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 31) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 32)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rotate 30 
+                    (concentric Hexagon rings:3 joinCorners:True)
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:13)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 32) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 33)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rotate 30 
+                    (concentric Hexagon rings:3 joinCorners:True)
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:17)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 33) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 34)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rotate 30 
+                    (concentric Hexagon rings:3 joinCorners:True)
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:18)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 34) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 35)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rotate 30 
+                    (concentric Hexagon rings:3 joinCorners:True)
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:11)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 35) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 36)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rotate 30 
+                    (concentric Hexagon rings:3 joinCorners:True)
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (if 
+                    (= 3 
+                        (count Pieces Mover)
+                    )
+                    
+                    (move 
+                        (from 
+                            (from)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:2)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 36) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 37)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rotate 30 
+                    (concentric Hexagon rings:3 joinCorners:True)
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:24)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 37) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 38)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rotate 30 
+                    (concentric Hexagon rings:3 joinCorners:True)
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (if 
+                    (is In 
+                        (from)
+                        
+                        (sites Corners)
+                    )
+                    
+                    (move 
+                        (from 
+                            (from)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:23)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 38) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 39)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rotate 30 
+                    (concentric Hexagon rings:3 joinCorners:True)
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (if 
+                    (is Line 4 Orthogonal through:
+                        (from)
+                    )
+                    
+                    (move Step Orthogonal 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step Orthogonal 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3 Orthogonal exact:True)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:10)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 39) ruleset.")
+    
+    (item "Ashanti Alignment Game (Ludii 40)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rotate 30 
+                    (concentric Hexagon rings:3 joinCorners:True)
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 2 Orthogonal)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:22)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Ashanti Alignment Game (Ludii 40) ruleset.")
     
     (item "Incomplete"
         <
         (players 2)
         
         (equipment { 
-            (board (concentric Square rings:3 joinCorners:[True | False]) use:Vertex) 
+            [
+            (board
+                (rotate 30 (concentric Hexagon rings:3 joinCorners:True))
+                use:Vertex
+            )
+            |
+            (board
+                (concentric Triangle rings:3 joinCorners:True)
+                use:Vertex
+            )
+            |
+            ("ThreeMensMorrisBoard")
+            |
+            (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
+            |
+            (board (concentric Square rings:3 joinCorners:False) use:Vertex) 
+            ]
             (hand Each)
             (piece "Marker" Each [#]) 
-        }) 
+        })
         (rules 
             (start (place "Marker" "Hand" count:[1..24]))
             
@@ -1133,36 +4467,126 @@
 
 (rulesets {
     
-    (ruleset "Ruleset/Ashanti Alignment Game1 (Reconstructed)" {
-        "Variant/Ashanti Alignment Game1"
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 1) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 1)"
     })
-    (ruleset "Ruleset/Ashanti Alignment Game2 (Reconstructed)" {
-        "Variant/Ashanti Alignment Game2"
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 2) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 2)"
     })
-    (ruleset "Ruleset/Ashanti Alignment Game3 (Reconstructed)" {
-        "Variant/Ashanti Alignment Game3"
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 3) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 3)"
     })
-    (ruleset "Ruleset/Ashanti Alignment Game4 (Reconstructed)" {
-        "Variant/Ashanti Alignment Game4"
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 4) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 4)"
     })
-    (ruleset "Ruleset/Ashanti Alignment Game5 (Reconstructed)" {
-        "Variant/Ashanti Alignment Game5"
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 5) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 5)"
     })
-    (ruleset "Ruleset/Ashanti Alignment Game6 (Reconstructed)" {
-        "Variant/Ashanti Alignment Game6"
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 6) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 6)"
     })
-    (ruleset "Ruleset/Ashanti Alignment Game7 (Reconstructed)" {
-        "Variant/Ashanti Alignment Game7"
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 7) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 7)"
     })
-    (ruleset "Ruleset/Ashanti Alignment Game8 (Reconstructed)" {
-        "Variant/Ashanti Alignment Game8"
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 8) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 8)"
     })
-    (ruleset "Ruleset/Ashanti Alignment Game9 (Reconstructed)" {
-        "Variant/Ashanti Alignment Game9"
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 9) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 9)"
     })
-    (ruleset "Ruleset/Ashanti Alignment Game10 (Reconstructed)" {
-        "Variant/Ashanti Alignment Game10"
-    }) 
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 10) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 10)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 11) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 11)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 12) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 12)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 13) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 13)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 14) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 14)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 15) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 15)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 16) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 16)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 17) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 17)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 18) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 18)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 19) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 19)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 20) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 20)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 21) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 21)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 22) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 22)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 23) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 23)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 24) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 24)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 25) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 25)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 26) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 26)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 27) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 27)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 28) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 28)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 29) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 29)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 30) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 30)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 31) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 31)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 32) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 32)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 33) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 33)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 34) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 34)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 35) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 35)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 36) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 36)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 37) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 37)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 38) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 38)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 39) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 39)"
+    })
+    (ruleset "Ruleset/Ashanti Alignment Game (Ludii 40) (Reconstructed)" {
+        "Variant/Ashanti Alignment Game (Ludii 40)"
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -1174,138 +4598,498 @@
 
 (metadata 
     
-    (info
-        {
-        (description "This alignment game, the name of which was not recorded, was played in the Ashanti Kingdom in the early nineteenth century. It was played on a wooden board with perforations, and the pieces were pegs to be inserted in the board.")
-        (useFor "Ruleset/Historical Information (Incomplete)" (rules "The board is a series of intersecting lines in many directions, each line with three points. Players have equal numbers of pegs, and place their pieces at the same time. Players who place three of their pieces in a row remove one of the opponent's pieces. The player who removes all of the opponent's pieces wins."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (id "1269"))
-        (useFor "Ruleset/Ashanti Alignment Game1 (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Ashanti Alignment Game1 (Reconstructed)" (id "2391"))
-        (useFor "Ruleset/Ashanti Alignment Game2 (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Ashanti Alignment Game2 (Reconstructed)" (id "2392"))
-        (useFor "Ruleset/Ashanti Alignment Game3 (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Ashanti Alignment Game3 (Reconstructed)" (id "2393"))
-        (useFor "Ruleset/Ashanti Alignment Game4 (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal then if a player places 2 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Ashanti Alignment Game4 (Reconstructed)" (id "2394"))
-        (useFor "Ruleset/Ashanti Alignment Game5 (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal or hop adjacent then move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Ashanti Alignment Game5 (Reconstructed)" (id "2395"))
-        (useFor "Ruleset/Ashanti Alignment Game6 (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Ashanti Alignment Game6 (Reconstructed)" (id "2396"))
-        (useFor "Ruleset/Ashanti Alignment Game7 (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Ashanti Alignment Game7 (Reconstructed)" (id "2397"))
-        (useFor "Ruleset/Ashanti Alignment Game8 (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Ashanti Alignment Game8 (Reconstructed)" (id "2398"))
-        (useFor "Ruleset/Ashanti Alignment Game9 (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Ashanti Alignment Game9 (Reconstructed)" (id "2399"))
-        (useFor "Ruleset/Ashanti Alignment Game10 (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Ashanti Alignment Game10 (Reconstructed)" (id "2400"))
-        (version "1.3.8")
-        (classification "board/space/line/reconstruction/done")
-        (credit "Eric Piette")
-        (origin "This game was played in Ashanti, around 1817.")
-        }
-    )
+(info
+{
+(description "This alignment game, the name of which was not recorded, was played in the Ashanti Kingdom in the early nineteenth century. It was played on a wooden board with perforations, and the pieces were pegs to be inserted in the board.")
+(useFor "Ruleset/Historical Information (Incomplete)" (rules "The board is a series of intersecting lines in many directions, each line with three points. Players have equal numbers of pegs, and place their pieces at the same time. Players who place three of their pieces in a row remove one of the opponent's pieces. The player who removes all of the opponent's pieces wins."))
+(useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+(useFor "Ruleset/Historical Information (Incomplete)" (id "1269"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 1) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 1) (Reconstructed)" (id "3435"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 2) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 2) (Reconstructed)" (id "3436"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 3) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 3) (Reconstructed)" (id "3437"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 4) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 4) (Reconstructed)" (id "3438"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 5) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 5) (Reconstructed)" (id "3439"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 6) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers if 3 is equal to the number of pieces owned by Player the moving player, from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true, else step adjacent.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 6) (Reconstructed)" (id "3440"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 7) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 7) (Reconstructed)" (id "3441"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 8) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 8) (Reconstructed)" (id "3442"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 9) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers if the location of the piece is in the corner sites of the board, from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true, else step adjacent.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 9) (Reconstructed)" (id "3443"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 10) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then if a player places 2 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 10) (Reconstructed)" (id "3444"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 11) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 11) (Reconstructed)" (id "3445"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 12) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 12) (Reconstructed)" (id "3446"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 13) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 13) (Reconstructed)" (id "3447"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 14) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 14) (Reconstructed)" (id "3448"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 15) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers if 3 is equal to the number of pieces owned by Player the moving player, from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true, else step adjacent.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 15) (Reconstructed)" (id "3449"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 16) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 16) (Reconstructed)" (id "3450"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 17) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 17) (Reconstructed)" (id "3451"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 18) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers if the location of the piece is in the corner sites of the board, from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true, else step adjacent.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 18) (Reconstructed)" (id "3452"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 19) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers if a player places 4 of their pieces in an orthogonal direction line, step orthogonal, else step orthogonal then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 19) (Reconstructed)" (id "3453"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 20) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then if a player places 2 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 20) (Reconstructed)" (id "3454"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 21) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a triangle board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 21) (Reconstructed)" (id "3455"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 22) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a triangle board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 22) (Reconstructed)" (id "3456"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 23) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a triangle board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 23) (Reconstructed)" (id "3457"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 24) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a triangle board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 24) (Reconstructed)" (id "3458"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 25) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a triangle board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers if 3 is equal to the number of pieces owned by Player the moving player, from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true, else step adjacent.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 25) (Reconstructed)" (id "3459"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 26) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a triangle board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 26) (Reconstructed)" (id "3460"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 27) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a triangle board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers if the location of the piece is in the corner sites of the board, from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true, else step adjacent.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 27) (Reconstructed)" (id "3461"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 28) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a triangle board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers if a player places 4 of their pieces in an orthogonal direction line, step orthogonal, else step orthogonal then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 28) (Reconstructed)" (id "3462"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 29) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a triangle board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then if a player places 2 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 29) (Reconstructed)" (id "3463"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 30) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a triangle board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal or hop adjacent then move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 30) (Reconstructed)" (id "3464"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 31) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a hexagon board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 31) (Reconstructed)" (id "3465"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 32) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a hexagon board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 32) (Reconstructed)" (id "3466"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 33) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a hexagon board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 33) (Reconstructed)" (id "3467"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 34) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a hexagon board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 34) (Reconstructed)" (id "3468"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 35) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a hexagon board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 35) (Reconstructed)" (id "3469"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 36) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a hexagon board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers if 3 is equal to the number of pieces owned by Player the moving player, from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true, else step adjacent.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 36) (Reconstructed)" (id "3470"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 37) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a hexagon board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 37) (Reconstructed)" (id "3471"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 38) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a hexagon board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers if the location of the piece is in the corner sites of the board, from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true, else step adjacent.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 38) (Reconstructed)" (id "3472"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 39) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a hexagon board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers if a player places 4 of their pieces in an orthogonal direction line, step orthogonal, else step orthogonal then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 39) (Reconstructed)" (id "3473"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 40) (Reconstructed)" (rules "The game Ashanti Alignment Game is played by two players on a hexagon board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then if a player places 2 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Ashanti Alignment Game (Ludii 40) (Reconstructed)" (id "3474"))
+(version "1.3.9")
+(classification "board/space/line/reconstruction/done")
+(credit "Eric Piette")
+(origin "This game was played in Ashanti, around 1817.")
+}
+)
     
     (graphics {
         (show Edges Diagonal Hidden)

@@ -86,24 +86,24 @@
 
 (metadata
     
-    (info
-        {
-        (description "Juroku Musashi is a hunt game from Japan. It has a rule where the soldiers may also win by confining the general to the triangular extension of the baord.")
-        (aliases {"Sixteen Soldiers"})
-        (useFor "Ruleset/Juroku Musashi (Described)" (rules "5x5 intersecting lines, with the diagonals of every 2x2 square formed. On one side, a triangle, with the apex intesecting with the midpoint of that side. There is a line from the apex to the midpoint of the triangle's base, and another interior triangle, connecting the base of the larger triangle with the midpoints of the sides of the larger triangle. One player plays as the Taisho (\"general\"), the other as sixteen musashi (\"soliders\"). The Taisho begins in the central point, the musashi on each point of the perimeter of the square board. Players take turns moving from one point to an adjacent point along the lines on the board. The Taisho may capture a musashi by hopping over it. The Taisho wins if it captures all the musashi. The musashi win if they are able to immobilize the Taisho."))
-        (useFor "Ruleset/Juroku Musashi (Described)" (source "Culin 1898: 873-874."))
-        (useFor "Ruleset/Juroku Musashi (Described)" (id "170"))
-        (useFor "Ruleset/Tsuboi (Described)" (rules "Board without the diagonal lines in the triangle. Only the Taisho may enter the triangle."))
-        (useFor "Ruleset/Tsuboi (Described)" (source "Murray 1951: 101."))
-        (useFor "Ruleset/Tsuboi (Described)" (id "654"))
-        (source "Murray 1951: 101.")
-        (id "170")
-        (version "1.3.8")
-        (classification "board/hunt")
-        (credit "Eric Piette")
-        (origin "This game was played in Japan, from around 1700 to 1951.")
-        }
-    )
+(info
+{
+(description "Juroku Musashi is a hunt game from Japan. It has a rule where the soldiers may also win by confining the general to the triangular extension of the baord.")
+(aliases {"Sixteen Soldiers"})
+(useFor "Ruleset/Juroku Musashi (Described)" (rules "5x5 intersecting lines, with the diagonals of every 2x2 square formed. On one side, a triangle, with the apex intesecting with the midpoint of that side. There is a line from the apex to the midpoint of the triangle's base, and another interior triangle, connecting the base of the larger triangle with the midpoints of the sides of the larger triangle. One player plays as the Taisho (\"general\"), the other as sixteen musashi (\"soliders\"). The Taisho begins in the central point, the musashi on each point of the perimeter of the square board. Players take turns moving from one point to an adjacent point along the lines on the board. The Taisho may capture a musashi by hopping over it. The Taisho wins if it captures all the musashi. The musashi win if they are able to immobilize the Taisho."))
+(useFor "Ruleset/Juroku Musashi (Described)" (source "Culin 1898: 873-874."))
+(useFor "Ruleset/Juroku Musashi (Described)" (id "170"))
+(useFor "Ruleset/Tsuboi (Described)" (rules "Board without the diagonal lines in the triangle. Only the Taisho may enter the triangle."))
+(useFor "Ruleset/Tsuboi (Described)" (source "Murray 1951: 101."))
+(useFor "Ruleset/Tsuboi (Described)" (id "654"))
+(source "Murray 1951: 101.")
+(id "170")
+(version "1.3.9")
+(classification "board/hunt")
+(credit "Eric Piette")
+(origin "This game was played in Japan, from around 1700 to 1951.")
+}
+)
     
     (graphics {
         (show Edges Diagonal Hidden)

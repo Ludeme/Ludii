@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -83,6 +84,7 @@ public class EvaluationDialog extends JDialog
 	/**
 	 * Create the dialog.
 	 */
+	@SuppressWarnings("serial")
 	public EvaluationDialog(final PlayerApp app)
 	{
 		final List<Metric> metrics = new Evaluation().dialogMetrics();
@@ -189,56 +191,68 @@ public class EvaluationDialog extends JDialog
 		
 		
 		
-		
-		
 		final JLabel lblSkillTrace = new JLabel("Skill Trace");
-		lblSkillTrace.setBounds(26, 431, 175, 15);
+		lblSkillTrace.setBounds(26, 435, 175, 15);
 		LeftPanel.add(lblSkillTrace);
 		
+		final JLabel lblDirectory = new JLabel("Output Folder");
+		lblDirectory.setBounds(26, 461, 175, 15);
+		LeftPanel.add(lblDirectory);
+		
 		final JLabel lblNumMatches = new JLabel("Maximum Levels");
-		lblNumMatches.setBounds(26, 457, 175, 15);
+		lblNumMatches.setBounds(26, 487, 175, 15);
 		LeftPanel.add(lblNumMatches);
 		
 		final JLabel lblTrailsPerMatch = new JLabel("Trials Per Level");
-		lblTrailsPerMatch.setBounds(26, 483, 175, 15);
+		lblTrailsPerMatch.setBounds(26, 513, 175, 15);
 		LeftPanel.add(lblTrailsPerMatch);
 		
-		final JLabel lblHardTimeLimit = new JLabel("Maximium Time (s)");
-		lblHardTimeLimit.setBounds(26, 509, 175, 15);
+		final JLabel lblHardTimeLimit = new JLabel("Maximium Time(s)");
+		lblHardTimeLimit.setBounds(26, 539, 175, 15);
 		LeftPanel.add(lblHardTimeLimit);
+		
+		final JButton skillTraceButton = new JButton("Run Skill Trace Only");  
+		skillTraceButton.setBounds(180, 565, 202, 23);  
+	    LeftPanel.add(skillTraceButton);  
 		
 		textFieldNumMatches = new JTextField();
 		textFieldNumMatches.setText("8");
 		textFieldNumMatches.setColumns(10);
-		textFieldNumMatches.setBounds(220, 454, 162, 19);
+		textFieldNumMatches.setBounds(220, 484, 162, 19);
 		LeftPanel.add(textFieldNumMatches);
 		
 		textFieldNumTrialsPerMatch = new JTextField();
 		textFieldNumTrialsPerMatch.setText("100");
 		textFieldNumTrialsPerMatch.setColumns(10);
-		textFieldNumTrialsPerMatch.setBounds(220, 480, 162, 19);
+		textFieldNumTrialsPerMatch.setBounds(220, 510, 162, 19);
 		LeftPanel.add(textFieldNumTrialsPerMatch);
 		
 		textFieldHardTimeLimit = new JTextField();
 		textFieldHardTimeLimit.setText("60");
 		textFieldHardTimeLimit.setColumns(10);
-		textFieldHardTimeLimit.setBounds(220, 506, 162, 19);
+		textFieldHardTimeLimit.setBounds(220, 536, 162, 19);
 		LeftPanel.add(textFieldHardTimeLimit);
 		
+		String tempFilePath = DesktopApp.lastSelectedJsonPath();
+		if (tempFilePath == null)
+			tempFilePath = System.getProperty("user.dir");
+		final String defaultFilePath = tempFilePath;
+		
 		txtcommonresoutput = new JTextField();
-		txtcommonresoutput.setText("");
-		txtcommonresoutput.setBounds(140, 430, 180, 19);
+		txtcommonresoutput.setText(defaultFilePath);
+		txtcommonresoutput.setBounds(140, 460, 180, 19);
 		LeftPanel.add(txtcommonresoutput);
 		txtcommonresoutput.setColumns(10);
 		
-		final JButton buttonSelectDir = new JButton("Folder");
-		buttonSelectDir.setBounds(324, 430, 55, 18);
+		final JButton buttonSelectDir = new JButton("Select");
+		buttonSelectDir.setFont(new Font("Arial", Font.PLAIN, 7));
+		buttonSelectDir.setBounds(324, 460, 55, 18);
 		final ActionListener buttonListener = new ActionListener()
 		{
 			@Override
 			public void actionPerformed(final ActionEvent arg0)
 			{
-				final JFileChooser fileChooser = FileLoading.createFileChooser(DesktopApp.lastSelectedJsonPath(), ".txt", "TXT files (.txt)");
+				final JFileChooser fileChooser = FileLoading.createFileChooser(defaultFilePath, ".txt", "TXT files (.txt)");
 				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				fileChooser.setDialogTitle("Select output directory.");
 				final int jsonReturnVal = fileChooser.showOpenDialog(DesktopApp.frame());
@@ -255,7 +269,7 @@ public class EvaluationDialog extends JDialog
 				}
 				else
 				{
-					System.err.println("Could not find output directory.");
+					txtcommonresoutput.setText(defaultFilePath);
 				}
 			}
 		};
@@ -337,6 +351,9 @@ public class EvaluationDialog extends JDialog
 			}
 		}
 		
+		final List<JSlider> allMetricSliders = new ArrayList<>();
+		final List<JTextField> allMetricTextFields = new ArrayList<>();
+		JTextField textField_1 = new JTextField();
 		
 		// Ok button for starting the evaluation.
 		okButton.addActionListener(new ActionListener()
@@ -442,16 +459,43 @@ public class EvaluationDialog extends JDialog
 				
 				final Report report = new Report();
 				report.setReportMessageFunctions(new ReportMessengerGUI(app));
-
-				AIPlayer.AIEvalution(app, report, numberIterations, maxTurns, thinkTime, AIName, metrics, weights, useDatabaseTrialsCheckBox.isSelected());
+				
+				// Make a deepcopy of the weights to be used.
+				final ArrayList<Double> weightsCopy = new ArrayList<>();
+				for (final Double d : weights)
+					weightsCopy.add(new Double(d.doubleValue()));
+				
+				AIPlayer.AIEvalution(app, report, numberIterations, maxTurns, thinkTime, AIName, metrics, weightsCopy, useDatabaseTrialsCheckBox.isSelected());
 				DesktopApp.view().tabPanel().select(TabView.PanelAnalysis);
 			}
 		});
+		
+		// Skill trace only button for starting the evaluation.
+		skillTraceButton.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(final ActionEvent e)
+			{	
+				for (int i = 0; i < weights.size(); i++)
+				{
+					double value = 0.0;
+					if (metrics.get(i).name().equals("Skill trace"))
+						value = 1.0;
+						
+					weights.set(i, Double.valueOf(value));
+				}
 
-		JTextField textField_1 = new JTextField();
-
-		final List<JTextField> allMetricTextFields = new ArrayList<>();
-		final List<JSlider> allMetricSliders = new ArrayList<>();
+				for(final ActionListener a: okButton.getActionListeners()) {
+				    a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null) {
+				          // Nothing needs go here.
+				    });
+				}
+				
+				// Reset weights back afterwards
+				for (int i = 0; i < allMetricSliders.size(); i++)
+					weights.set(i, Double.valueOf(allMetricTextFields.get(i).getText()));
+			}
+		});
 		
 		// Set the branching factor (quickly) when the dialog is loaded.
 		final double brachingFactor = estimateBranchingFactor(app, 1);

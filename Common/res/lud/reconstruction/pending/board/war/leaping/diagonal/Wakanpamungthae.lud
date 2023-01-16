@@ -8,13 +8,9 @@
     {
     (item "Incomplete"
         <
-        (players 2) 
+        ("TwoPlayersNorthSouth") 
         (equipment [#]) 
-        (rules
-            (start [#])
-            (play [#]) 
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
@@ -34,17 +30,26 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Wakanpamungthae was a capturing game played by the Omaha people of Nebraska. It was  said to have been adopted from settlers from the United States in the middle of the nineteenth century. ")
-        (rules "Checkers game.")
-        (source "DLP evidence.")
-        (id "1238")
-        (version "1.3.8")
-        (classification "board/war/leaping/diagonal/reconstruction/pending")
-        (credit "Eric Piette")
-        (origin "This game was played in Nebraska, from around 1873 to 1893.")
-        }
-    )
+(info
+{
+(description "Wakanpamungthae was a capturing game played by the Omaha people of Nebraska. It was  said to have been adopted from settlers from the United States in the middle of the nineteenth century. ")
+(rules "Checkers game.")
+(source "DLP evidence.")
+(id "1238")
+(version "1.3.9")
+(classification "board/war/leaping/diagonal/reconstruction/pending")
+(credit "Eric Piette")
+(origin "This game was played in Nebraska, from around 1873 to 1893.")
+}
+)
+    
+    (recon {
+        (concept "HopDecision" True)
+        (concept "PlayersWithDirections" True)
+        (concept "Cell" True)
+        (concept "SquareShape" True)
+        (concept "SquareTiling" True)
+        (concept "NumComponentsTypePerPlayer" minValue:1 maxValue:2)
+    })
     
 )

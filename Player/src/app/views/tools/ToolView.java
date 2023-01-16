@@ -77,8 +77,8 @@ public class ToolView extends View
 		
 		if (SettingsExhibition.exhibitionVersion)
 		{
-			startX -= 40;
-			startY -= 70;
+			startX = 450;
+			startY = 950;
 		}
 		
 		if (portraitMode)
@@ -130,7 +130,9 @@ public class ToolView extends View
 			buttons.add(new ButtonQuit(app, cx, cy, sx, sy, QUIT_BUTTON_INDEX));
 		}
 	
-		final double spacing = placement.width / (double) buttons.size();
+		double spacing = placement.width / (double) buttons.size();
+		if (SettingsExhibition.exhibitionVersion)
+			spacing = 50;
 
 		for (int b = 0; b < buttons.size(); b++)
 		{
@@ -139,6 +141,10 @@ public class ToolView extends View
 			
 			cx = placement.x + (int) ((b + 0.25) * spacing) + 10;
 			buttons.get(b).setPosition(cx, cy);
+			
+			// Don't show any buttons except the pass and reset buttons
+			if (SettingsExhibition.exhibitionVersion && buttons.get(b).buttonIndex != PASS_BUTTON_INDEX && buttons.get(b).buttonIndex != START_BUTTON_INDEX)
+				buttons.get(b).setPosition(-1000, -1000);
 		}
 	}
 

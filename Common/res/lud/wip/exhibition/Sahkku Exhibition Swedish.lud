@@ -1,4 +1,4 @@
-(game "Sahkku Exhibition Swedish"
+(game "Sahkku Exhibition English"
     <Variant>
 )
 
@@ -1221,7 +1221,7 @@
             )
         )
         
-    > "The Sahkku (Lujavv'r)2 ruleset.")
+    > "The Sahkku (Lujavv'r)2 ruleset.")**
     
     (item "Incomplete"
         <
@@ -1250,7 +1250,7 @@
     })
     (ruleset "Ruleset/Sahkku (Lujavv'r)2 (Reconstructed)" {
         "Variant/Sahkku (Lujavv'r)2"
-    }) 
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -1264,9 +1264,9 @@
     
     (info
         {
-
-        (rules "Dessa regler rekonstruerades av Digital Ludeme Project med hjälp av en automatiserad process baserad på liknande närliggande spel. Delarna rör sig diagonalt mot den motsatta sidan av brädet. Pjäser fångas genom att hoppa över en motståndares pjäs. De kan fånga flera bitar i en sekvens och måste fånga om möjligt. En pjäs befordras när den når motsatt sida av brädet, då kan den flyttas framåt eller bakåt över vilken sträcka som helst. Spelaren som erövrar alla sina motståndares pjäser vinner.")
-
+        
+        (rules "Dessa regler rekonstruerades av Digital Ludeme Project med hjälp av en automatiserad process baserad på liknande närliggande spel. >Delarna rör sig diagonalt mot den motsatta sidan av brädet. Pjäser fångas genom att hoppa över en motståndares pjäs. De kan fånga flera pjäser i en sekvens, måste fånga om möjligt och måste fånga det maximala antalet pjäser i en tur. En pjäs befordras när den når motsatt sida av brädet, då kan den flyttas framåt eller bakåt över vilken sträcka som helst. Spelaren som erövrar alla sina motståndares pjäser vinner.")
+        
         }
     )
     
@@ -1275,6 +1275,7 @@
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
+        (board Placement scale:0.8 offsetY:-0.25)
     })
     
 )

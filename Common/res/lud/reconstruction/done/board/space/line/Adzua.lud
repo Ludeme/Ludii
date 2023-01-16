@@ -24,7 +24,7 @@
 
 (option "Variant" <Variant> args:{ <variant> }
     {
-    (item "Adzua1" <
+    (item "Adzua (Ludii 1)" <
         
         (players 2)
         
@@ -128,9 +128,115 @@
             )
         )
         
-    > "The Adzua1 ruleset.")
+    > "The Adzua (Ludii 1) ruleset.")
     
-    (item "Adzua2" <
+    (item "Adzua (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 5 6)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Adzua (Ludii 2) ruleset.")
+    
+    (item "Adzua (Ludii 3)" <
         
         (players 2)
         
@@ -234,9 +340,9 @@
             )
         )
         
-    > "The Adzua2 ruleset.")
+    > "The Adzua (Ludii 3) ruleset.")
     
-    (item "Adzua3" <
+    (item "Adzua (Ludii 4)" <
         
         (players 2)
         
@@ -335,14 +441,261 @@
                         (count Pieces Next)
                     2)
                     
-                    (result Next Loss)
+                    (result Mover Win)
                 )
             )
         )
         
-    > "The Adzua3 ruleset.")
+    > "The Adzua (Ludii 4) ruleset.")
     
-    (item "Adzua4" <
+    (item "Adzua (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 5 6)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (and { 
+                            (if 
+                                (and 
+                                    (!= 
+                                        (last From)
+                                        
+                                        (ahead 
+                                            (last From)
+                                        N)
+                                    )
+                                    
+                                    (= 
+                                        (mover)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (last From)
+                                            N)
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (is Line 3 Orthogonal through:
+                                        (ahead 
+                                            (last From)
+                                        N)
+                                    exact:True )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (addScore Mover 1)
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (and 
+                                    (!= 
+                                        (last From)
+                                        
+                                        (ahead 
+                                            (last From)
+                                        S)
+                                    )
+                                    
+                                    (= 
+                                        (mover)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (last From)
+                                            S)
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (is Line 3 Orthogonal through:
+                                        (ahead 
+                                            (last From)
+                                        S)
+                                    exact:True )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (addScore Mover 1)
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (and 
+                                    (!= 
+                                        (last From)
+                                        
+                                        (ahead 
+                                            (last From)
+                                        E)
+                                    )
+                                    
+                                    (= 
+                                        (mover)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (last From)
+                                            E)
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (is Line 3 Orthogonal through:
+                                        (ahead 
+                                            (last From)
+                                        E)
+                                    exact:True )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (addScore Mover 1)
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (and 
+                                    (!= 
+                                        (last From)
+                                        
+                                        (ahead 
+                                            (last From)
+                                        W)
+                                    )
+                                    
+                                    (= 
+                                        (mover)
+                                        
+                                        (who at:
+                                            (ahead 
+                                                (last From)
+                                            W)
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (is Line 3 Orthogonal through:
+                                        (ahead 
+                                            (last From)
+                                        W)
+                                    exact:True )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (addScore Mover 1)
+                                    )
+                                )
+                            )
+                            }
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Adzua (Ludii 5) ruleset.")
+    
+    (item "Adzua (Ludii 6)" <
         
         (players 2)
         
@@ -587,9 +940,9 @@
             )
         )
         
-    > "The Adzua4 ruleset.")
+    > "The Adzua (Ludii 6) ruleset.")
     
-    (item "Adzua5" <
+    (item "Adzua (Ludii 7)" <
         
         (players 2)
         
@@ -608,7 +961,7 @@
                     
                     (then 
                         (if 
-                            (is Line 3 Orthogonal exact:True)
+                            (is Line 3)
                             
                             (moveAgain)
                         )
@@ -693,574 +1046,9 @@
             )
         )
         
-    > "The Adzua5 ruleset.")
+    > "The Adzua (Ludii 7) ruleset.")
     
-    (item "Adzua6" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (rectangle 5 6)
-            use:Vertex)
-            
-            (piece "Marker" Each 
-                (move Step Orthogonal 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (is Line 3 Orthogonal exact:True)
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            
-            (hand Each)
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:12)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (if 
-                                    (is Line 3 Orthogonal exact:True)
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement")
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (<= 
-                        (count Pieces Next)
-                    2)
-                    
-                    (result Next Loss)
-                )
-            )
-        )
-        
-    > "The Adzua6 ruleset.")
-    
-    (item "Adzua7" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (rectangle 5 6)
-            use:Vertex)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (is Line 3 Orthogonal exact:True)
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            
-            (hand Each)
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:12)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (if 
-                                    (is Line 3 Orthogonal exact:True)
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement")
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (<= 
-                        (count Pieces Next)
-                    2)
-                    
-                    (result Next Loss)
-                )
-            )
-        )
-        
-    > "The Adzua7 ruleset.")
-    
-    (item "Adzua8" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (rectangle 5 6)
-            use:Vertex)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (is Line 3 Orthogonal exact:True)
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            
-            (hand Each)
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:12)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (if 
-                                    (is Line 3 Orthogonal exact:True)
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement")
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (<= 
-                        (count Pieces Next)
-                    2)
-                    
-                    (result Next Loss)
-                )
-            )
-        )
-        
-    > "The Adzua8 ruleset.")
-    
-    (item "Adzua9" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (rectangle 5 6)
-            use:Vertex)
-            
-            (piece "Marker" Each 
-                (move Step Orthogonal 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (and { 
-                            (if 
-                                (and 
-                                    (!= 
-                                        (last From)
-                                        
-                                        (ahead 
-                                            (last From)
-                                        N)
-                                    )
-                                    
-                                    (= 
-                                        (mover)
-                                        
-                                        (who at:
-                                            (ahead 
-                                                (last From)
-                                            N)
-                                        )
-                                    )
-                                )
-                                
-                                (if 
-                                    (is Line 3 Orthogonal through:
-                                        (ahead 
-                                            (last From)
-                                        N)
-                                    exact:True )
-                                    
-                                    (and 
-                                        (moveAgain)
-                                        
-                                        (addScore Mover 1)
-                                    )
-                                )
-                            )
-                            
-                            (if 
-                                (and 
-                                    (!= 
-                                        (last From)
-                                        
-                                        (ahead 
-                                            (last From)
-                                        S)
-                                    )
-                                    
-                                    (= 
-                                        (mover)
-                                        
-                                        (who at:
-                                            (ahead 
-                                                (last From)
-                                            S)
-                                        )
-                                    )
-                                )
-                                
-                                (if 
-                                    (is Line 3 Orthogonal through:
-                                        (ahead 
-                                            (last From)
-                                        S)
-                                    exact:True )
-                                    
-                                    (and 
-                                        (moveAgain)
-                                        
-                                        (addScore Mover 1)
-                                    )
-                                )
-                            )
-                            
-                            (if 
-                                (and 
-                                    (!= 
-                                        (last From)
-                                        
-                                        (ahead 
-                                            (last From)
-                                        E)
-                                    )
-                                    
-                                    (= 
-                                        (mover)
-                                        
-                                        (who at:
-                                            (ahead 
-                                                (last From)
-                                            E)
-                                        )
-                                    )
-                                )
-                                
-                                (if 
-                                    (is Line 3 Orthogonal through:
-                                        (ahead 
-                                            (last From)
-                                        E)
-                                    exact:True )
-                                    
-                                    (and 
-                                        (moveAgain)
-                                        
-                                        (addScore Mover 1)
-                                    )
-                                )
-                            )
-                            
-                            (if 
-                                (and 
-                                    (!= 
-                                        (last From)
-                                        
-                                        (ahead 
-                                            (last From)
-                                        W)
-                                    )
-                                    
-                                    (= 
-                                        (mover)
-                                        
-                                        (who at:
-                                            (ahead 
-                                                (last From)
-                                            W)
-                                        )
-                                    )
-                                )
-                                
-                                (if 
-                                    (is Line 3 Orthogonal through:
-                                        (ahead 
-                                            (last From)
-                                        W)
-                                    exact:True )
-                                    
-                                    (and 
-                                        (moveAgain)
-                                        
-                                        (addScore Mover 1)
-                                    )
-                                )
-                            )
-                            }
-                        )
-                    )
-                )
-            )
-            
-            (hand Each)
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:12)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (if 
-                                    (is Line 3 Orthogonal exact:True)
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement")
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Next container:"Board")
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (<= 
-                        (count Pieces Next)
-                    2)
-                    
-                    (result Next Loss)
-                )
-            )
-        )
-        
-    > "The Adzua9 ruleset.")
-    
-    (item "Adzua10" <
+    (item "Adzua (Ludii 8)" <
         
         (players 2)
         
@@ -1364,7 +1152,213 @@
             )
         )
         
-    > "The Adzua10 ruleset.")
+    > "The Adzua (Ludii 8) ruleset.")
+    
+    (item "Adzua (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 5 6)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move 
+                    (from 
+                        (from)
+                    )
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Adzua (Ludii 9) ruleset.")
+    
+    (item "Adzua (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 5 6)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (forEach NonMover if:
+                    (= 2 
+                        (count Pieces Player)
+                    )
+                    
+                    (result Player Loss)
+                )
+            )
+        )
+        
+    > "The Adzua (Ludii 10) ruleset.")
     
     (item "Incomplete"
         <
@@ -1415,35 +1409,35 @@
 
 (rulesets {
     
-    (ruleset "Ruleset/Adzua1 (Reconstructed)" {
-        "Variant/Adzua1"
+    (ruleset "Ruleset/Adzua (Ludii 1) (Reconstructed)" {
+        "Variant/Adzua (Ludii 1)"
     })
-    (ruleset "Ruleset/Adzua2 (Reconstructed)" {
-        "Variant/Adzua2"
+    (ruleset "Ruleset/Adzua (Ludii 2) (Reconstructed)" {
+        "Variant/Adzua (Ludii 2)"
     })
-    (ruleset "Ruleset/Adzua3 (Reconstructed)" {
-        "Variant/Adzua3"
+    (ruleset "Ruleset/Adzua (Ludii 3) (Reconstructed)" {
+        "Variant/Adzua (Ludii 3)"
     })
-    (ruleset "Ruleset/Adzua4 (Reconstructed)" {
-        "Variant/Adzua4"
+    (ruleset "Ruleset/Adzua (Ludii 4) (Reconstructed)" {
+        "Variant/Adzua (Ludii 4)"
     })
-    (ruleset "Ruleset/Adzua5 (Reconstructed)" {
-        "Variant/Adzua5"
+    (ruleset "Ruleset/Adzua (Ludii 5) (Reconstructed)" {
+        "Variant/Adzua (Ludii 5)"
     })
-    (ruleset "Ruleset/Adzua6 (Reconstructed)" {
-        "Variant/Adzua6"
+    (ruleset "Ruleset/Adzua (Ludii 6) (Reconstructed)" {
+        "Variant/Adzua (Ludii 6)"
     })
-    (ruleset "Ruleset/Adzua7 (Reconstructed)" {
-        "Variant/Adzua7"
+    (ruleset "Ruleset/Adzua (Ludii 7) (Reconstructed)" {
+        "Variant/Adzua (Ludii 7)"
     })
-    (ruleset "Ruleset/Adzua8 (Reconstructed)" {
-        "Variant/Adzua8"
+    (ruleset "Ruleset/Adzua (Ludii 8) (Reconstructed)" {
+        "Variant/Adzua (Ludii 8)"
     })
-    (ruleset "Ruleset/Adzua9 (Reconstructed)" {
-        "Variant/Adzua9"
+    (ruleset "Ruleset/Adzua (Ludii 9) (Reconstructed)" {
+        "Variant/Adzua (Ludii 9)"
     })
-    (ruleset "Ruleset/Adzua10 (Reconstructed)" {
-        "Variant/Adzua10"
+    (ruleset "Ruleset/Adzua (Ludii 10) (Reconstructed)" {
+        "Variant/Adzua (Ludii 10)"
     })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
@@ -1456,148 +1450,146 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Adzua is a game played by men of the Jukun people in Nigeria. ")
-        (aliases {"Ado"})
-        (useFor "Ruleset/Historical Information (Incomplete)" (rules "5x6 board, rendered as holes in the ground. Twelve pieces per player. Players alternate turns placing a piece in one of the holes. When a player succeeds in making a line of three holes with their pieces, they capture one of the opponent's pieces."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (id "1414"))
-        (useFor "Ruleset/Adzua1 (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Adzua1 (Reconstructed)" (id "2381"))
-        (useFor "Ruleset/Adzua2 (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Adzua2 (Reconstructed)" (id "2382"))
-        (useFor "Ruleset/Adzua3 (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Adzua3 (Reconstructed)" (id "2383"))
-        (useFor "Ruleset/Adzua4 (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal then if the from location of the last move is not equal to  the Vertex 1 steps ahead of the from location of the last move in the direction north and current moving player is equal to Player at  the Vertex 1 steps ahead of the from location of the last move in the direction north, if a player places 3 of their pieces in an orthogonal direction line, move again and add score 1 to player the moving player
-                and if the from location of the last move is not equal to  the Vertex 1 steps ahead of the from location of the last move in the direction south and current moving player is equal to Player at  the Vertex 1 steps ahead of the from location of the last move in the direction south, if a player places 3 of their pieces in an orthogonal direction line, move again and add score 1 to player the moving player
-                and if the from location of the last move is not equal to  the Vertex 1 steps ahead of the from location of the last move in the direction east and current moving player is equal to Player at  the Vertex 1 steps ahead of the from location of the last move in the direction east, if a player places 3 of their pieces in an orthogonal direction line, move again and add score 1 to player the moving player
-                and if the from location of the last move is not equal to  the Vertex 1 steps ahead of the from location of the last move in the direction west and current moving player is equal to Player at  the Vertex 1 steps ahead of the from location of the last move in the direction west, if a player places 3 of their pieces in an orthogonal direction line, move again and add score 1 to player the moving player
-                .
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Adzua4 (Reconstructed)" (id "2384"))
-        (useFor "Ruleset/Adzua5 (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Adzua5 (Reconstructed)" (id "2385"))
-        (useFor "Ruleset/Adzua6 (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Adzua6 (Reconstructed)" (id "2386"))
-        (useFor "Ruleset/Adzua7 (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Adzua7 (Reconstructed)" (id "2387"))
-        (useFor "Ruleset/Adzua8 (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Adzua8 (Reconstructed)" (id "2388"))
-        (useFor "Ruleset/Adzua9 (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal then if the from location of the last move is not equal to  the Vertex 1 steps ahead of the from location of the last move in the direction north and current moving player is equal to Player at  the Vertex 1 steps ahead of the from location of the last move in the direction north, if a player places 3 of their pieces in an orthogonal direction line, move again and add score 1 to player the moving player
-                and if the from location of the last move is not equal to  the Vertex 1 steps ahead of the from location of the last move in the direction south and current moving player is equal to Player at  the Vertex 1 steps ahead of the from location of the last move in the direction south, if a player places 3 of their pieces in an orthogonal direction line, move again and add score 1 to player the moving player
-                and if the from location of the last move is not equal to  the Vertex 1 steps ahead of the from location of the last move in the direction east and current moving player is equal to Player at  the Vertex 1 steps ahead of the from location of the last move in the direction east, if a player places 3 of their pieces in an orthogonal direction line, move again and add score 1 to player the moving player
-                and if the from location of the last move is not equal to  the Vertex 1 steps ahead of the from location of the last move in the direction west and current moving player is equal to Player at  the Vertex 1 steps ahead of the from location of the last move in the direction west, if a player places 3 of their pieces in an orthogonal direction line, move again and add score 1 to player the moving player
-                .
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Adzua9 (Reconstructed)" (id "2389"))
-        (useFor "Ruleset/Adzua10 (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal then if a player places 3 of their pieces in an adjacent direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Adzua10 (Reconstructed)" (id "2390"))
-        (source "Meek 1931: 456.")
-        (version "1.3.8")
-        (classification "board/space/line/reconstruction/done")
-        (credit "Eric Piette")
-        (origin "This game was played in Nigeria, around 1931.")
-        }
-    )
+(info
+{
+(description "Adzua is a game played by men of the Jukun people in Nigeria. ")
+(aliases {"Ado"})
+(useFor "Ruleset/Historical Information (Incomplete)" (rules "5x6 board, rendered as holes in the ground. Twelve pieces per player. Players alternate turns placing a piece in one of the holes. When a player succeeds in making a line of three holes with their pieces, they capture one of the opponent's pieces."))
+(useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+(useFor "Ruleset/Historical Information (Incomplete)" (id "1414"))
+(useFor "Ruleset/Adzua (Ludii 1) (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Adzua (Ludii 1) (Reconstructed)" (id "2984"))
+(useFor "Ruleset/Adzua (Ludii 2) (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Adzua (Ludii 2) (Reconstructed)" (id "2985"))
+(useFor "Ruleset/Adzua (Ludii 3) (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the moving player wins.
+
+"))
+(useFor "Ruleset/Adzua (Ludii 3) (Reconstructed)" (id "2986"))
+(useFor "Ruleset/Adzua (Ludii 4) (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the moving player wins.
+
+"))
+(useFor "Ruleset/Adzua (Ludii 4) (Reconstructed)" (id "2987"))
+(useFor "Ruleset/Adzua (Ludii 5) (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then if the from location of the last move is not equal to  the Vertex 1 steps ahead of the from location of the last move in the direction north and current moving player is equal to Player at  the Vertex 1 steps ahead of the from location of the last move in the direction north, if a player places 3 of their pieces in an orthogonal direction line, move again and add score 1 to player the moving player
+ and if the from location of the last move is not equal to  the Vertex 1 steps ahead of the from location of the last move in the direction south and current moving player is equal to Player at  the Vertex 1 steps ahead of the from location of the last move in the direction south, if a player places 3 of their pieces in an orthogonal direction line, move again and add score 1 to player the moving player
+ and if the from location of the last move is not equal to  the Vertex 1 steps ahead of the from location of the last move in the direction east and current moving player is equal to Player at  the Vertex 1 steps ahead of the from location of the last move in the direction east, if a player places 3 of their pieces in an orthogonal direction line, move again and add score 1 to player the moving player
+ and if the from location of the last move is not equal to  the Vertex 1 steps ahead of the from location of the last move in the direction west and current moving player is equal to Player at  the Vertex 1 steps ahead of the from location of the last move in the direction west, if a player places 3 of their pieces in an orthogonal direction line, move again and add score 1 to player the moving player
+.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the moving player wins.
+
+"))
+(useFor "Ruleset/Adzua (Ludii 5) (Reconstructed)" (id "2988"))
+(useFor "Ruleset/Adzua (Ludii 6) (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then if the from location of the last move is not equal to  the Vertex 1 steps ahead of the from location of the last move in the direction north and current moving player is equal to Player at  the Vertex 1 steps ahead of the from location of the last move in the direction north, if a player places 3 of their pieces in an orthogonal direction line, move again and add score 1 to player the moving player
+ and if the from location of the last move is not equal to  the Vertex 1 steps ahead of the from location of the last move in the direction south and current moving player is equal to Player at  the Vertex 1 steps ahead of the from location of the last move in the direction south, if a player places 3 of their pieces in an orthogonal direction line, move again and add score 1 to player the moving player
+ and if the from location of the last move is not equal to  the Vertex 1 steps ahead of the from location of the last move in the direction east and current moving player is equal to Player at  the Vertex 1 steps ahead of the from location of the last move in the direction east, if a player places 3 of their pieces in an orthogonal direction line, move again and add score 1 to player the moving player
+ and if the from location of the last move is not equal to  the Vertex 1 steps ahead of the from location of the last move in the direction west and current moving player is equal to Player at  the Vertex 1 steps ahead of the from location of the last move in the direction west, if a player places 3 of their pieces in an orthogonal direction line, move again and add score 1 to player the moving player
+.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Adzua (Ludii 6) (Reconstructed)" (id "2989"))
+(useFor "Ruleset/Adzua (Ludii 7) (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Adzua (Ludii 7) (Reconstructed)" (id "2990"))
+(useFor "Ruleset/Adzua (Ludii 8) (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the moving player wins.
+
+"))
+(useFor "Ruleset/Adzua (Ludii 8) (Reconstructed)" (id "2991"))
+(useFor "Ruleset/Adzua (Ludii 9) (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the moving player wins.
+
+"))
+(useFor "Ruleset/Adzua (Ludii 9) (Reconstructed)" (id "2992"))
+(useFor "Ruleset/Adzua (Ludii 10) (Reconstructed)" (rules "The game Adzua is played by two players on a 5x6 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Next in Board, else move one of your pieces.
+
+"))
+(useFor "Ruleset/Adzua (Ludii 10) (Reconstructed)" (id "2993"))
+(source "Meek 1931: 456.")
+(version "1.3.9")
+(classification "board/space/line/reconstruction/done")
+(credit "Eric Piette")
+(origin "This game was played in Nigeria, around 1931.")
+}
+)
     
     (graphics {
         (show Edges Hidden)
@@ -1605,3 +1597,4 @@
     })
     
 )
+

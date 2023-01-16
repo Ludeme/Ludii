@@ -156,6 +156,52 @@ public class DistanceUtils
 	
 	//-----------------------------------------------------------------------------
 	
+	/**
+	 * @return Geo distance between two rulesetIds
+	 */
+	public static double getRulesetGeoDistance(final int rulesetId1, final int rulesetId2)
+	{
+		final Map<Integer, Double> geoSimilarities = getAllRulesetGeoDistances(rulesetId1);
+		final Double geoSimilarity = geoSimilarities.get(Integer.valueOf(rulesetId2));
+		return geoSimilarity != null ? geoSimilarity.doubleValue() : 0.0;
+	}
+	
+	/**
+	 * @return Map of rulesetId (key) to Geo distance (value) pairs, based on distance to specified rulesetId.
+	 */
+	public static Map<Integer, Double> getAllRulesetGeoDistances(final int rulesetId)
+	{
+		// Load ruleset distances from specific directory.
+		final String distancesFilePath = "../Mining/res/recons/input/rulesetGeographicalDistances.csv";
+
+		final Map<Integer, Double> rulesetGeoDistanceIds = new HashMap<>();	
+		
+		try (BufferedReader br = new BufferedReader(new FileReader(distancesFilePath))) 
+		{
+			br.readLine();		// Skip first line of column headers.
+		    String line;
+		    while ((line = br.readLine()) != null) 
+		    {
+		        final String[] values = line.split(",");
+		        
+		        if (Integer.valueOf(values[0]).intValue() != rulesetId)
+		        	continue;
+		        
+		        final double similarity = Math.max((20000 - Double.valueOf(values[2]).doubleValue()) / 20000, 0);	// 20000km is the maximum possible distance
+		        rulesetGeoDistanceIds.put(Integer.valueOf(values[1]), Double.valueOf(similarity));
+		    }
+		}
+		catch (final Exception e)
+		{
+			System.out.println("Could not find similarity file, ruleset probably has no evidence.");
+			e.printStackTrace();
+		}
+		
+		return rulesetGeoDistanceIds;
+	}
+	
+	//-----------------------------------------------------------------------------
+	
 	public static Map<String, Double> getGameDataset(final Dataset dataset, final Game game)
 	{
 		final Map<String, Double> datasetGame = dataset.getBagOfWords(game);
@@ -187,6 +233,4 @@ public class DistanceUtils
 		return vocabulary;
 	}
 
-	//-----------------------------------------------------------------------------
-	
 }

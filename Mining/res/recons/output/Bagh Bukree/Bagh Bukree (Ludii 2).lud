@@ -1,0 +1,114 @@
+(game "Bagh Bukree" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (square 5 diagonals:Alternating)
+                
+                (shift 0 4 
+                    (rotate 180 
+                        (wedge 3)
+                    )
+                )
+                
+                (shift 0 -2 
+                    (wedge 3)
+                )
+                }
+            )
+        use:Vertex)
+        
+        (piece "Goat" P2 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        
+        (piece "Tiger" P1 
+            (or 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Tiger1" 
+                (sites Corners)
+            )
+            
+            (place "Goat2" 
+                (difference 
+                    (sites Board)
+                    
+                    (union 
+                        (sites Corners)
+                        
+                        (sites Centre)
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end { 
+            (if 
+                (no Moves P2)
+                
+                (result P1 Win)
+            )
+            
+            (if 
+                (no Pieces P1)
+                
+                (result P2 Win)
+            )
+            }
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "StepDecision" True)
+        (concept "Capture" True)
+    })
+    )

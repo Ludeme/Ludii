@@ -82,6 +82,9 @@ public final class SetState extends Effect
 
 		final int site = siteFn.eval(context);
 		
+		if(site < 0)
+			return moves;
+		
 		final int cid = site >= context.containerId().length ? 0 : context.containerId()[site];
 		SiteType realType = type;
 		if (cid > 0)

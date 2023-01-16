@@ -17,6 +17,7 @@ public enum EnglishSwedishTranslations
 	EDIT("Edit", "Redigera"),
 	HUMANVSHUMAN("vs. Human", "vs. Person"),
 	HUMANVSAI("vs. AI", "vs. AI"),
+	PRINT("Print", "Skriva ut"),
 	
 	// Goal Options
 	LINE3("Line 3", "Rad 3"),

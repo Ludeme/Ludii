@@ -54,6 +54,18 @@ public final class LudiiStateWrapper
 	}
 	
 	/**
+	 * Constructor
+	 * @param gameWrapper
+	 * @param context
+	 */
+	public LudiiStateWrapper(final LudiiGameWrapper gameWrapper, final Context context)
+	{
+		this.game = gameWrapper;
+		trial = context.trial();
+		this.context = context;
+	}
+	
+	/**
 	 * Copy constructor
 	 * @param other
 	 */
@@ -122,6 +134,15 @@ public final class LudiiStateWrapper
 			
 			return sb.toString();
 		}
+	}
+	
+	/**
+	 * Applies the given move
+	 * @param move
+	 */
+	public void applyMove(final Move move)
+	{
+		game.game.apply(context, move);
 	}
 	
 	/**
@@ -202,6 +223,14 @@ public final class LudiiStateWrapper
 	public void reset()
 	{
 		game.game.start(context);
+	}
+	
+	/**
+	 * @return Array of legal Move objects
+	 */
+	public Move[] legalMovesArray()
+	{
+		return game.game.moves(context).moves().toArray(new Move[0]);
 	}
 	
 	/**
@@ -307,6 +336,14 @@ public final class LudiiStateWrapper
 		}
 
 		return movesTensors;
+	}
+	
+	/**
+	 * Runs a random playout.
+	 */
+	public void runRandomPlayout()
+	{
+		game.game.playout(context, null, 0.0, null, 0, -1, ThreadLocalRandom.current());
 	}
 	
 	/**

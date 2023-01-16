@@ -25,11 +25,11 @@ import utils.DBGameInfo;
  */
 public class LudemeplexDetection 
 {
-	
-	final static int MINLUDMEPLEXSIZE = 4;
-	final static int MAXLUDEMEPLEXSIZE = 6;
-	
-	final static boolean detectLudemeplexes = false;		// Set to true to also detect ludemeplexes (slow)
+
+	final static boolean DETECTLUDEMEPLEXES = false;		// Set to true to also detect ludemeplexes (slow)
+	final static int MINLUDMEPLEXSIZE = 4;					// Minimum number of ludemes inside a ludemeplex
+	final static int MAXLUDEMEPLEXSIZE = 6;					// Maximum number of ludemes inside a ludemeplex
+	final static int MAXDEFINELUDEMEPLEXDIFFERENCE = 2;		// Maximum number of # symbols inside define ludemeplexes
 	
 	//-------------------------------------------------------------------------
 	// Stored results
@@ -128,7 +128,7 @@ public class LudemeplexDetection
 		
 		System.out.println("//-------------------------------------------------------------------------");
 		
-		if (detectLudemeplexes)
+		if (DETECTLUDEMEPLEXES)
 		{
 			// Record ludemeplexes across all rulesets.
 			for (final String[] gameRulesetName : chosenGames)
@@ -141,7 +141,7 @@ public class LudemeplexDetection
 			System.out.println("//-------------------------------------------------------------------------");
 			
 			// Record possible define ludemeplexes.
-			final Map<String, Set<String>> allDefineLudemeplexes = DatabaseFunctions.storeDefineLudemeplexInfo(allLudemeplexes, allLudemeplexesCount, 2);
+			final Map<String, Set<String>> allDefineLudemeplexes = DatabaseFunctions.storeDefineLudemeplexInfo(allLudemeplexes, allLudemeplexesCount, MAXDEFINELUDEMEPLEXDIFFERENCE);
 			DatabaseFunctions.storeDefineLudemeplexRulesetPairs(allDefineLudemeplexes);
 			System.out.println("Define Ruleset Ludemeplexes Recorded");
 			

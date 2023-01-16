@@ -1,8 +1,7 @@
 package main.grammar;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,7 @@ public class Baptist
 
 	private Baptist()
 	{
-		loadNames("../Common/src/main/grammar/npp-names-2.txt");
+		loadNames("/npp-names-2.txt");
 		//loadNames("src/main/grammar/latin-out.txt");
 		//loadNames("src/main/grammar/english-2000-2.txt");
 		processNames();
@@ -64,26 +63,19 @@ public class Baptist
 	void loadNames(final String filePath)
 	{
 		names.clear();
-		
-		try 
-		(
-			BufferedReader reader = new BufferedReader
-			(
-				new InputStreamReader(new FileInputStream(filePath), "UTF-8")
-			)
-		)
+		try(InputStream is = getClass().getResourceAsStream(filePath))
 		{
 			String line;
-			while (true)
-			{
-				line = reader.readLine();
-				if (line == null)
-					break;
-			
-				names.add(new String(line));
-			}
-		} 
-		catch (final IOException e) 
+			final BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            if (is != null) 
+            {                            
+                while ((line = reader.readLine()) != null) 
+                {    
+                	names.add(new String(line));
+                }                
+            }
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}

@@ -110,12 +110,13 @@
 (metadata 
     (info
         {
-        (rules "Dessa regler observerades på Borneo på 1950-talet. Räknare släpps i medurs riktning, inklusive spelarens sluthål men inte motståndarens. Spelet fortsätter tills alla räknare är i sluthålen. Sedan tar spelarna räknarna från deras sluthål, fyller sina hål med dessa och spelar igen. Den spelare som inte kan fylla några hål förlorar.")
+        (rules "Dessa regler observerades på Borneo på 1950-talet. >Räknare släpps i medurs riktning, inklusive spelarens sluthål men inte motståndarens. När den sista räknaren faller i spelarens rad kan de ta räknarna i hålet för att fortsätta så eller fånga räknarna i motståndarens intilliggande hål. Spelet fortsätter tills alla räknare är i sluthålen. Sedan tar spelarna räknarna från sina sluthål, fyller sina hål med dem och spelar igen. Spelaren som inte kan fylla några hål förlorar.")
         }
     )
     
     (graphics {
         (board Style Mancala)
+        (board Placement offsetY:-0.3)
     })
 )
 

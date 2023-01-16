@@ -34,7 +34,7 @@
     
     (info
         {
-        (rules "Detta är de moderna reglerna för Weiqi. Spelare lägger omväxlande en pjäs på brädet. Att omringa en grupp av motståndarens pjäser fångar dem. Spelaren med flest pjäser på brädet i slutet av spelet vinner.")
+        (rules "Detta är de moderna reglerna för Weiqi. >Spelare lägger växelvis en pjäs på brädet. Att omringa en grupp av motståndarens pjäser fångar dem. Spelaren med flest pjäser på brädet i slutet av spelet vinner.")
         }
     )
     
@@ -42,6 +42,7 @@
         (board Style Go)
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
+        (board Placement scale:0.8 offsetY:-0.25)
     })
     (ai
         "Weiqi_ai"

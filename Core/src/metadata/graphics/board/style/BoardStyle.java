@@ -91,7 +91,8 @@ public class BoardStyle implements GraphicsItem
 					concepts.set(Concept.MancalaFourRows.id(), true);
 				else if (numRows == 6)
 					concepts.set(Concept.MancalaSixRows.id(), true);
-
+				
+				concepts.set(Concept.Sow.id(), true);
 			}
 			else
 			{

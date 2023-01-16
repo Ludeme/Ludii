@@ -29,7 +29,7 @@
 
 (option "Variant" <Variant> args:{ <variant> }
     {
-    (item "Samantsy1" <
+    (item "Samantsy (Ludii 1)" <
         
         (players { 
             (player N)
@@ -406,741 +406,9 @@
             )
         )
         
-    > "The Samantsy1 ruleset.")
+    > "The Samantsy (Ludii 1) ruleset.")
     
-    (item "Samantsy2" <
-        
-        (players { 
-            (player N)
-            
-            (player S)
-            }
-        )
-        
-        (equipment { 
-            (board 
-                (square 8)
-            )
-            
-            (piece "King" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-            
-            (piece "Queen" Each 
-                (move Slide 
-                    (to if:
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (!= 
-                                (what at:
-                                    (to)
-                                )
-                                
-                                (id "King" Next)
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Pawn" Each 
-                (or { 
-                    (move Step Forward 
-                        (to if:
-                            (is Empty 
-                                (to)
-                            )
-                        )
-                    )
-                    
-                    (move Step 
-                        (directions { FR FL}
-                        )
-                        
-                        (to if:
-                            (and 
-                                (is Enemy 
-                                    (who at:
-                                        (to)
-                                    )
-                                )
-                                
-                                (!= 
-                                    (what at:
-                                        (to)
-                                    )
-                                    
-                                    (id "King" Next)
-                                )
-                            )
-                            
-                            (apply 
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                    }
-                    
-                    (then 
-                        (if 
-                            (is In 
-                                (last To)
-                                
-                                (sites Mover "Promotion")
-                            )
-                            
-                            (promote 
-                                (last To)
-                                
-                                (piece 
-                                    (id "Queen" Mover)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Knight" Each 
-                (move Leap { { F F R F}
-                    { F F L F}
-                    }
-                    
-                    (to if:
-                        (or 
-                            (is Empty 
-                                (to)
-                            )
-                            
-                            (and 
-                                (is Enemy 
-                                    (who at:
-                                        (to)
-                                    )
-                                )
-                                
-                                (!= 
-                                    (what at:
-                                        (to)
-                                    )
-                                    
-                                    (id "King" Next)
-                                )
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Rook" Each 
-                (move Slide Orthogonal 
-                    (to if:
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (!= 
-                                (what at:
-                                    (to)
-                                )
-                                
-                                (id "King" Next)
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Bishop" Each 
-                (move Slide Diagonal 
-                    (between 
-                        (exact 2)
-                        if:
-                        (is Empty 
-                            (between)
-                        )
-                    )
-                    
-                    (to if:
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (!= 
-                                (what at:
-                                    (to)
-                                )
-                                
-                                (id "King" Next)
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (regions "Promotion" P1 
-                (sites Top)
-            )
-            
-            (regions "Promotion" P2 
-                (sites Bottom)
-            )
-            }
-        )
-        
-        (rules 
-            (start { 
-                (place "Pawn1" 
-                    (sites Row 1)
-                )
-                
-                (place "Pawn2" 
-                    (sites Row 6)
-                )
-                
-                (place "Rook1" { "A1" "H1"}
-                )
-                
-                (place "Knight1" { "B1" "G1"}
-                )
-                
-                (place "Bishop1" { "C1" "F1"}
-                )
-                
-                (place "Queen1" coord:"D1")
-                
-                (place "King1" coord:"E1")
-                
-                (place "Rook2" { "A8" "H8"}
-                )
-                
-                (place "Knight2" { "B8" "G8"}
-                )
-                
-                (place "Bishop2" { "C8" "F8"}
-                )
-                
-                (place "Queen2" coord:"D8")
-                
-                (place "King2" coord:"E8")
-                }
-            )
-            
-            (play 
-                (forEach Piece)
-            )
-            
-            (end 
-                (if 
-                    (and 
-                        (is Threatened 
-                            (id "King" Next)
-                        )
-                        
-                        (not 
-                            (can Move 
-                                (do 
-                                    (forEach Piece Next)
-                                    ifAfterwards:
-                                    (not 
-                                        (is Threatened 
-                                            (id "King" Next)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Samantsy2 ruleset.")
-    
-    (item "Samantsy3" <
-        
-        (players { 
-            (player N)
-            
-            (player S)
-            }
-        )
-        
-        (equipment { 
-            (board 
-                (square 8)
-            )
-            
-            (piece "King" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-            
-            (piece "Queen" Each 
-                (move Slide 
-                    (to if:
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (!= 
-                                (what at:
-                                    (to)
-                                )
-                                
-                                (id "King" Next)
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Pawn" Each 
-                (or { 
-                    (move Step Forward 
-                        (to if:
-                            (is Empty 
-                                (to)
-                            )
-                        )
-                    )
-                    
-                    (move Step 
-                        (directions { FR FL}
-                        )
-                        
-                        (to if:
-                            (and 
-                                (is Enemy 
-                                    (who at:
-                                        (to)
-                                    )
-                                )
-                                
-                                (!= 
-                                    (what at:
-                                        (to)
-                                    )
-                                    
-                                    (id "King" Next)
-                                )
-                            )
-                            
-                            (apply 
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                    }
-                    
-                    (then 
-                        (if 
-                            (is In 
-                                (last To)
-                                
-                                (sites Mover "Promotion")
-                            )
-                            
-                            (promote 
-                                (last To)
-                                
-                                (piece 
-                                    (id "Queen" Mover)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Knight" Each 
-                (move Leap { { F F R F}
-                    { F F L F}
-                    }
-                    
-                    (to if:
-                        (or 
-                            (is Empty 
-                                (to)
-                            )
-                            
-                            (and 
-                                (is Enemy 
-                                    (who at:
-                                        (to)
-                                    )
-                                )
-                                
-                                (!= 
-                                    (what at:
-                                        (to)
-                                    )
-                                    
-                                    (id "King" Next)
-                                )
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Rook" Each 
-                (move Slide Orthogonal 
-                    (to if:
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (!= 
-                                (what at:
-                                    (to)
-                                )
-                                
-                                (id "King" Next)
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Bishop" Each 
-                (move Slide Diagonal 
-                    (between 
-                        (exact 2)
-                        if:
-                        (is Empty 
-                            (between)
-                        )
-                    )
-                    
-                    (to if:
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (!= 
-                                (what at:
-                                    (to)
-                                )
-                                
-                                (id "King" Next)
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (regions "Promotion" P1 
-                (sites Top)
-            )
-            
-            (regions "Promotion" P2 
-                (sites Bottom)
-            )
-            }
-        )
-        
-        (rules 
-            (start { 
-                (place "Pawn1" 
-                    (sites Row 1)
-                )
-                
-                (place "Pawn2" 
-                    (sites Row 6)
-                )
-                
-                (place "Rook1" { "A1" "H1"}
-                )
-                
-                (place "Knight1" { "B1" "G1"}
-                )
-                
-                (place "Bishop1" { "C1" "F1"}
-                )
-                
-                (place "Queen1" coord:"D1")
-                
-                (place "King1" coord:"E1")
-                
-                (place "Rook2" { "A8" "H8"}
-                )
-                
-                (place "Knight2" { "B8" "G8"}
-                )
-                
-                (place "Bishop2" { "C8" "F8"}
-                )
-                
-                (place "Queen2" coord:"D8")
-                
-                (place "King2" coord:"E8")
-                }
-            )
-            
-            (play 
-                (forEach Piece)
-            )
-            
-            (end 
-                (if 
-                    (and 
-                        (is Threatened 
-                            (id "King" Next)
-                        )
-                        
-                        (not 
-                            (can Move 
-                                (do 
-                                    (forEach Piece Next)
-                                    ifAfterwards:
-                                    (not 
-                                        (is Threatened 
-                                            (id "King" Next)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Samantsy3 ruleset.")
-    
-    (item "Samantsy4" <
+    (item "Samantsy (Ludii 2)" <
         
         (players { 
             (player N)
@@ -1519,9 +787,9 @@
             )
         )
         
-    > "The Samantsy4 ruleset.")
+    > "The Samantsy (Ludii 2) ruleset.")
     
-    (item "Samantsy5" <
+    (item "Samantsy (Ludii 3)" <
         
         (players { 
             (player N)
@@ -1885,1107 +1153,9 @@
             )
         )
         
-    > "The Samantsy5 ruleset.")
+    > "The Samantsy (Ludii 3) ruleset.")
     
-    (item "Samantsy6" <
-        
-        (players { 
-            (player N)
-            
-            (player S)
-            }
-        )
-        
-        (equipment { 
-            (board 
-                (square 8)
-            )
-            
-            (piece "King" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-            
-            (piece "Queen" Each 
-                (move Slide 
-                    (to if:
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (!= 
-                                (what at:
-                                    (to)
-                                )
-                                
-                                (id "King" Next)
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Pawn" Each 
-                (or { 
-                    (move Step Forward 
-                        (to if:
-                            (is Empty 
-                                (to)
-                            )
-                        )
-                    )
-                    
-                    (move Step 
-                        (directions { FR FL}
-                        )
-                        
-                        (to if:
-                            (and 
-                                (is Enemy 
-                                    (who at:
-                                        (to)
-                                    )
-                                )
-                                
-                                (!= 
-                                    (what at:
-                                        (to)
-                                    )
-                                    
-                                    (id "King" Next)
-                                )
-                            )
-                            
-                            (apply 
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                    }
-                    
-                    (then 
-                        (if 
-                            (is In 
-                                (last To)
-                                
-                                (sites Mover "Promotion")
-                            )
-                            
-                            (promote 
-                                (last To)
-                                
-                                (piece 
-                                    (id "Queen" Mover)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Knight" Each 
-                (move Leap { { F F R F}
-                    { F F L F}
-                    }
-                    
-                    (to if:
-                        (or 
-                            (is Empty 
-                                (to)
-                            )
-                            
-                            (and 
-                                (is Enemy 
-                                    (who at:
-                                        (to)
-                                    )
-                                )
-                                
-                                (!= 
-                                    (what at:
-                                        (to)
-                                    )
-                                    
-                                    (id "King" Next)
-                                )
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Rook" Each 
-                (move Slide Orthogonal 
-                    (to if:
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (!= 
-                                (what at:
-                                    (to)
-                                )
-                                
-                                (id "King" Next)
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Bishop" Each 
-                (move Slide Diagonal 
-                    (between 
-                        (exact 2)
-                        if:
-                        (is Empty 
-                            (between)
-                        )
-                    )
-                    
-                    (to if:
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (!= 
-                                (what at:
-                                    (to)
-                                )
-                                
-                                (id "King" Next)
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (regions "Promotion" P1 
-                (sites Top)
-            )
-            
-            (regions "Promotion" P2 
-                (sites Bottom)
-            )
-            }
-        )
-        
-        (rules 
-            (start { 
-                (place "Pawn1" 
-                    (sites Row 1)
-                )
-                
-                (place "Pawn2" 
-                    (sites Row 6)
-                )
-                
-                (place "Rook1" { "A1" "H1"}
-                )
-                
-                (place "Knight1" { "B1" "G1"}
-                )
-                
-                (place "Bishop1" { "C1" "F1"}
-                )
-                
-                (place "Queen1" coord:"D1")
-                
-                (place "King1" coord:"E1")
-                
-                (place "Rook2" { "A8" "H8"}
-                )
-                
-                (place "Knight2" { "B8" "G8"}
-                )
-                
-                (place "Bishop2" { "C8" "F8"}
-                )
-                
-                (place "Queen2" coord:"D8")
-                
-                (place "King2" coord:"E8")
-                }
-            )
-            
-            (play 
-                (forEach Piece)
-            )
-            
-            (end 
-                (if 
-                    (and 
-                        (is Threatened 
-                            (id "King" Next)
-                        )
-                        
-                        (not 
-                            (can Move 
-                                (do 
-                                    (forEach Piece Next)
-                                    ifAfterwards:
-                                    (not 
-                                        (is Threatened 
-                                            (id "King" Next)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Samantsy6 ruleset.")
-    
-    (item "Samantsy7" <
-        
-        (players { 
-            (player N)
-            
-            (player S)
-            }
-        )
-        
-        (equipment { 
-            (board 
-                (square 8)
-            )
-            
-            (piece "King" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-            
-            (piece "Queen" Each 
-                (move Slide 
-                    (to if:
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (!= 
-                                (what at:
-                                    (to)
-                                )
-                                
-                                (id "King" Next)
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Pawn" Each 
-                (or { 
-                    (move Step Forward 
-                        (to if:
-                            (is Empty 
-                                (to)
-                            )
-                        )
-                    )
-                    
-                    (move Step 
-                        (directions { FR FL}
-                        )
-                        
-                        (to if:
-                            (and 
-                                (is Enemy 
-                                    (who at:
-                                        (to)
-                                    )
-                                )
-                                
-                                (!= 
-                                    (what at:
-                                        (to)
-                                    )
-                                    
-                                    (id "King" Next)
-                                )
-                            )
-                            
-                            (apply 
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                    }
-                    
-                    (then 
-                        (if 
-                            (is In 
-                                (last To)
-                                
-                                (sites Mover "Promotion")
-                            )
-                            
-                            (promote 
-                                (last To)
-                                
-                                (piece 
-                                    (id "Queen" Mover)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Knight" Each 
-                (move Leap { { F F R F}
-                    { F F L F}
-                    }
-                    
-                    (to if:
-                        (or 
-                            (is Empty 
-                                (to)
-                            )
-                            
-                            (and 
-                                (is Enemy 
-                                    (who at:
-                                        (to)
-                                    )
-                                )
-                                
-                                (!= 
-                                    (what at:
-                                        (to)
-                                    )
-                                    
-                                    (id "King" Next)
-                                )
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Rook" Each 
-                (move Slide Orthogonal 
-                    (to if:
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (!= 
-                                (what at:
-                                    (to)
-                                )
-                                
-                                (id "King" Next)
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Bishop" Each 
-                (move Slide Diagonal 
-                    (between 
-                        (exact 2)
-                        if:
-                        (is Empty 
-                            (between)
-                        )
-                    )
-                    
-                    (to if:
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (!= 
-                                (what at:
-                                    (to)
-                                )
-                                
-                                (id "King" Next)
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (regions "Promotion" P1 
-                (sites Top)
-            )
-            
-            (regions "Promotion" P2 
-                (sites Bottom)
-            )
-            }
-        )
-        
-        (rules 
-            (start { 
-                (place "Pawn1" 
-                    (sites Row 1)
-                )
-                
-                (place "Pawn2" 
-                    (sites Row 6)
-                )
-                
-                (place "Rook1" { "A1" "H1"}
-                )
-                
-                (place "Knight1" { "B1" "G1"}
-                )
-                
-                (place "Bishop1" { "C1" "F1"}
-                )
-                
-                (place "Queen1" coord:"D1")
-                
-                (place "King1" coord:"E1")
-                
-                (place "Rook2" { "A8" "H8"}
-                )
-                
-                (place "Knight2" { "B8" "G8"}
-                )
-                
-                (place "Bishop2" { "C8" "F8"}
-                )
-                
-                (place "Queen2" coord:"D8")
-                
-                (place "King2" coord:"E8")
-                }
-            )
-            
-            (play 
-                (forEach Piece)
-            )
-            
-            (end 
-                (if 
-                    (and 
-                        (is Threatened 
-                            (id "King" Next)
-                        )
-                        
-                        (not 
-                            (can Move 
-                                (do 
-                                    (forEach Piece Next)
-                                    ifAfterwards:
-                                    (not 
-                                        (is Threatened 
-                                            (id "King" Next)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Samantsy7 ruleset.")
-    
-    (item "Samantsy8" <
-        
-        (players { 
-            (player N)
-            
-            (player S)
-            }
-        )
-        
-        (equipment { 
-            (board 
-                (square 8)
-            )
-            
-            (piece "King" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-            
-            (piece "Queen" Each 
-                (move Slide 
-                    (to if:
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (!= 
-                                (what at:
-                                    (to)
-                                )
-                                
-                                (id "King" Next)
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Pawn" Each 
-                (or { 
-                    (move Step Forward 
-                        (to if:
-                            (is Empty 
-                                (to)
-                            )
-                        )
-                    )
-                    
-                    (move Step 
-                        (directions { FR FL}
-                        )
-                        
-                        (to if:
-                            (and 
-                                (is Enemy 
-                                    (who at:
-                                        (to)
-                                    )
-                                )
-                                
-                                (!= 
-                                    (what at:
-                                        (to)
-                                    )
-                                    
-                                    (id "King" Next)
-                                )
-                            )
-                            
-                            (apply 
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                    }
-                    
-                    (then 
-                        (if 
-                            (is In 
-                                (last To)
-                                
-                                (sites Mover "Promotion")
-                            )
-                            
-                            (promote 
-                                (last To)
-                                
-                                (piece 
-                                    (id "Queen" Mover)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Knight" Each 
-                (move Leap { { F F R F}
-                    { F F L F}
-                    }
-                    
-                    (to if:
-                        (or 
-                            (is Empty 
-                                (to)
-                            )
-                            
-                            (and 
-                                (is Enemy 
-                                    (who at:
-                                        (to)
-                                    )
-                                )
-                                
-                                (!= 
-                                    (what at:
-                                        (to)
-                                    )
-                                    
-                                    (id "King" Next)
-                                )
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Rook" Each 
-                (move Slide Orthogonal 
-                    (to if:
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (!= 
-                                (what at:
-                                    (to)
-                                )
-                                
-                                (id "King" Next)
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (piece "Bishop" Each 
-                (move Slide Diagonal 
-                    (between 
-                        (exact 2)
-                        if:
-                        (is Empty 
-                            (between)
-                        )
-                    )
-                    
-                    (to if:
-                        (and 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (!= 
-                                (what at:
-                                    (to)
-                                )
-                                
-                                (id "King" Next)
-                            )
-                        )
-                        
-                        (apply 
-                            (if 
-                                (and 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (!= 
-                                        (what at:
-                                            (to)
-                                        )
-                                        
-                                        (id "King" Next)
-                                    )
-                                )
-                                
-                                (remove 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (regions "Promotion" P1 
-                (sites Top)
-            )
-            
-            (regions "Promotion" P2 
-                (sites Bottom)
-            )
-            }
-        )
-        
-        (rules 
-            (start { 
-                (place "Pawn1" 
-                    (sites Row 1)
-                )
-                
-                (place "Pawn2" 
-                    (sites Row 6)
-                )
-                
-                (place "Rook1" { "A1" "H1"}
-                )
-                
-                (place "Knight1" { "B1" "G1"}
-                )
-                
-                (place "Bishop1" { "C1" "F1"}
-                )
-                
-                (place "Queen1" coord:"D1")
-                
-                (place "King1" coord:"E1")
-                
-                (place "Rook2" { "A8" "H8"}
-                )
-                
-                (place "Knight2" { "B8" "G8"}
-                )
-                
-                (place "Bishop2" { "C8" "F8"}
-                )
-                
-                (place "Queen2" coord:"D8")
-                
-                (place "King2" coord:"E8")
-                }
-            )
-            
-            (play 
-                (forEach Piece)
-            )
-            
-            (end 
-                (if 
-                    (and 
-                        (is Threatened 
-                            (id "King" Next)
-                        )
-                        
-                        (not 
-                            (can Move 
-                                (do 
-                                    (forEach Piece Next)
-                                    ifAfterwards:
-                                    (not 
-                                        (is Threatened 
-                                            (id "King" Next)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Samantsy8 ruleset.")
-    
-    (item "Samantsy9" <
+    (item "Samantsy (Ludii 4)" <
         
         (players { 
             (player N)
@@ -3364,9 +1534,390 @@
             )
         )
         
-    > "The Samantsy9 ruleset.")
+    > "The Samantsy (Ludii 4) ruleset.")
     
-    (item "Samantsy10" <
+    (item "Samantsy (Ludii 5)" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "King" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Queen" Each 
+                (move Slide 
+                    (to if:
+                        (and 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (!= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "King" Next)
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Pawn" Each 
+                (or { 
+                    (move Step Forward 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { FR FL}
+                        )
+                        
+                        (to if:
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (!= 
+                                    (what at:
+                                        (to)
+                                    )
+                                    
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    }
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Mover "Promotion")
+                            )
+                            
+                            (promote 
+                                (last To)
+                                
+                                (piece 
+                                    (id "Queen" Mover)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Knight" Each 
+                (move Leap { { F F R F}
+                    { F F L F}
+                    }
+                    
+                    (to if:
+                        (or 
+                            (is Empty 
+                                (to)
+                            )
+                            
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (!= 
+                                    (what at:
+                                        (to)
+                                    )
+                                    
+                                    (id "King" Next)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Rook" Each 
+                (move Slide Orthogonal 
+                    (to if:
+                        (and 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (!= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "King" Next)
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Bishop" Each 
+                (move Slide Diagonal 
+                    (between 
+                        (exact 2)
+                        if:
+                        (is Empty 
+                            (between)
+                        )
+                    )
+                    
+                    (to if:
+                        (and 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (!= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "King" Next)
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "Promotion" P1 
+                (sites Top)
+            )
+            
+            (regions "Promotion" P2 
+                (sites Bottom)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Pawn1" 
+                    (sites Row 1)
+                )
+                
+                (place "Pawn2" 
+                    (sites Row 6)
+                )
+                
+                (place "Rook1" { "A1" "H1"}
+                )
+                
+                (place "Knight1" { "B1" "G1"}
+                )
+                
+                (place "Bishop1" { "C1" "F1"}
+                )
+                
+                (place "Queen1" coord:"D1")
+                
+                (place "King1" coord:"E1")
+                
+                (place "Rook2" { "A8" "H8"}
+                )
+                
+                (place "Knight2" { "B8" "G8"}
+                )
+                
+                (place "Bishop2" { "C8" "F8"}
+                )
+                
+                (place "Queen2" coord:"D8")
+                
+                (place "King2" coord:"E8")
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (and 
+                        (is Threatened 
+                            (id "King" Next)
+                        )
+                        
+                        (not 
+                            (can Move 
+                                (do 
+                                    (forEach Piece Next)
+                                    ifAfterwards:
+                                    (not 
+                                        (is Threatened 
+                                            (id "King" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Draw)
+                )
+                
+                (if 
+                    (= 
+                        (count Pieces Next)
+                    1)
+                    
+                    (result Mover Win)
+                )
+                }
+            )
+        )
+        
+    > "The Samantsy (Ludii 5) ruleset.")
+    
+    (item "Samantsy (Ludii 6)" <
         
         (players { 
             (player N)
@@ -3737,7 +2288,1432 @@
             )
         )
         
-    > "The Samantsy10 ruleset.")
+    > "The Samantsy (Ludii 6) ruleset.")
+    
+    (item "Samantsy (Ludii 7)" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "King" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Queen" Each 
+                (move Slide 
+                    (to if:
+                        (and 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (!= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "King" Next)
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Pawn" Each 
+                (or { 
+                    (move Step Forward 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { FR FL}
+                        )
+                        
+                        (to if:
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (!= 
+                                    (what at:
+                                        (to)
+                                    )
+                                    
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    }
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Mover "Promotion")
+                            )
+                            
+                            (promote 
+                                (last To)
+                                
+                                (piece 
+                                    (id "Queen" Mover)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Knight" Each 
+                (move Leap { { F F R F}
+                    { F F L F}
+                    }
+                    
+                    (to if:
+                        (or 
+                            (is Empty 
+                                (to)
+                            )
+                            
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (!= 
+                                    (what at:
+                                        (to)
+                                    )
+                                    
+                                    (id "King" Next)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Rook" Each 
+                (move Slide Orthogonal 
+                    (to if:
+                        (and 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (!= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "King" Next)
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Bishop" Each 
+                (move Slide Diagonal 
+                    (between 
+                        (exact 2)
+                        if:
+                        (is Empty 
+                            (between)
+                        )
+                    )
+                    
+                    (to if:
+                        (and 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (!= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "King" Next)
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "Promotion" P1 
+                (sites Top)
+            )
+            
+            (regions "Promotion" P2 
+                (sites Bottom)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Pawn1" 
+                    (sites Row 1)
+                )
+                
+                (place "Pawn2" 
+                    (sites Row 6)
+                )
+                
+                (place "Rook1" { "A1" "H1"}
+                )
+                
+                (place "Knight1" { "B1" "G1"}
+                )
+                
+                (place "Bishop1" { "C1" "F1"}
+                )
+                
+                (place "Queen1" coord:"D1")
+                
+                (place "King1" coord:"E1")
+                
+                (place "Rook2" { "A8" "H8"}
+                )
+                
+                (place "Knight2" { "B8" "G8"}
+                )
+                
+                (place "Bishop2" { "C8" "F8"}
+                )
+                
+                (place "Queen2" coord:"D8")
+                
+                (place "King2" coord:"E8")
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (and 
+                        (is Threatened 
+                            (id "King" Next)
+                        )
+                        
+                        (not 
+                            (can Move 
+                                (do 
+                                    (forEach Piece Next)
+                                    ifAfterwards:
+                                    (not 
+                                        (is Threatened 
+                                            (id "King" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (= 1 
+                        (count Pieces Next)
+                    )
+                    
+                    (result Mover Draw)
+                )
+                }
+            )
+        )
+        
+    > "The Samantsy (Ludii 7) ruleset.")
+    
+    (item "Samantsy (Ludii 8)" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "King" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Queen" Each 
+                (move Slide 
+                    (to if:
+                        (and 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (!= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "King" Next)
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Pawn" Each 
+                (or { 
+                    (move Step Forward 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { FR FL}
+                        )
+                        
+                        (to if:
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (!= 
+                                    (what at:
+                                        (to)
+                                    )
+                                    
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    }
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Mover "Promotion")
+                            )
+                            
+                            (promote 
+                                (last To)
+                                
+                                (piece 
+                                    (id "Queen" Mover)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Knight" Each 
+                (move Leap { { F F R F}
+                    { F F L F}
+                    }
+                    
+                    (to if:
+                        (or 
+                            (is Empty 
+                                (to)
+                            )
+                            
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (!= 
+                                    (what at:
+                                        (to)
+                                    )
+                                    
+                                    (id "King" Next)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Rook" Each 
+                (move Slide Orthogonal 
+                    (to if:
+                        (and 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (!= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "King" Next)
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Bishop" Each 
+                (move Slide Diagonal 
+                    (between 
+                        (exact 2)
+                        if:
+                        (is Empty 
+                            (between)
+                        )
+                    )
+                    
+                    (to if:
+                        (and 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (!= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "King" Next)
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "Promotion" P1 
+                (sites Top)
+            )
+            
+            (regions "Promotion" P2 
+                (sites Bottom)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Pawn1" 
+                    (sites Row 1)
+                )
+                
+                (place "Pawn2" 
+                    (sites Row 6)
+                )
+                
+                (place "Rook1" { "A1" "H1"}
+                )
+                
+                (place "Knight1" { "B1" "G1"}
+                )
+                
+                (place "Bishop1" { "C1" "F1"}
+                )
+                
+                (place "Queen1" coord:"D1")
+                
+                (place "King1" coord:"E1")
+                
+                (place "Rook2" { "A8" "H8"}
+                )
+                
+                (place "Knight2" { "B8" "G8"}
+                )
+                
+                (place "Bishop2" { "C8" "F8"}
+                )
+                
+                (place "Queen2" coord:"D8")
+                
+                (place "King2" coord:"E8")
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (= 
+                        (count Pieces Mover)
+                        
+                        (- 
+                            (count Pieces All)
+                        2)
+                    )
+                    
+                    (byScore)
+                )
+            )
+        )
+        
+    > "The Samantsy (Ludii 8) ruleset.")
+    
+    (item "Samantsy (Ludii 9)" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "King" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Queen" Each 
+                (move Slide 
+                    (to if:
+                        (and 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (!= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "King" Next)
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Pawn" Each 
+                (or { 
+                    (move Step Forward 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { FR FL}
+                        )
+                        
+                        (to if:
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (!= 
+                                    (what at:
+                                        (to)
+                                    )
+                                    
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    }
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Mover "Promotion")
+                            )
+                            
+                            (promote 
+                                (last To)
+                                
+                                (piece 
+                                    (id "Queen" Mover)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Knight" Each 
+                (move Leap { { F F R F}
+                    { F F L F}
+                    }
+                    
+                    (to if:
+                        (or 
+                            (is Empty 
+                                (to)
+                            )
+                            
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (!= 
+                                    (what at:
+                                        (to)
+                                    )
+                                    
+                                    (id "King" Next)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Rook" Each 
+                (move Slide Orthogonal 
+                    (to if:
+                        (and 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (!= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "King" Next)
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Bishop" Each 
+                (move Slide Diagonal 
+                    (between 
+                        (exact 2)
+                        if:
+                        (is Empty 
+                            (between)
+                        )
+                    )
+                    
+                    (to if:
+                        (and 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (!= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "King" Next)
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "Promotion" P1 
+                (sites Top)
+            )
+            
+            (regions "Promotion" P2 
+                (sites Bottom)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Pawn1" 
+                    (sites Row 1)
+                )
+                
+                (place "Pawn2" 
+                    (sites Row 6)
+                )
+                
+                (place "Rook1" { "A1" "H1"}
+                )
+                
+                (place "Knight1" { "B1" "G1"}
+                )
+                
+                (place "Bishop1" { "C1" "F1"}
+                )
+                
+                (place "Queen1" coord:"D1")
+                
+                (place "King1" coord:"E1")
+                
+                (place "Rook2" { "A8" "H8"}
+                )
+                
+                (place "Knight2" { "B8" "G8"}
+                )
+                
+                (place "Bishop2" { "C8" "F8"}
+                )
+                
+                (place "Queen2" coord:"D8")
+                
+                (place "King2" coord:"E8")
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Samantsy (Ludii 9) ruleset.")
+    
+    (item "Samantsy (Ludii 10)" <
+        
+        (players { 
+            (player N)
+            
+            (player S)
+            }
+        )
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "King" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Queen" Each 
+                (move Slide 
+                    (to if:
+                        (and 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (!= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "King" Next)
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Pawn" Each 
+                (or { 
+                    (move Step Forward 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { FR FL}
+                        )
+                        
+                        (to if:
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (!= 
+                                    (what at:
+                                        (to)
+                                    )
+                                    
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                    }
+                    
+                    (then 
+                        (if 
+                            (is In 
+                                (last To)
+                                
+                                (sites Mover "Promotion")
+                            )
+                            
+                            (promote 
+                                (last To)
+                                
+                                (piece 
+                                    (id "Queen" Mover)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Knight" Each 
+                (move Leap { { F F R F}
+                    { F F L F}
+                    }
+                    
+                    (to if:
+                        (or 
+                            (is Empty 
+                                (to)
+                            )
+                            
+                            (and 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (!= 
+                                    (what at:
+                                        (to)
+                                    )
+                                    
+                                    (id "King" Next)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Rook" Each 
+                (move Slide Orthogonal 
+                    (to if:
+                        (and 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (!= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "King" Next)
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Bishop" Each 
+                (move Slide Diagonal 
+                    (between 
+                        (exact 2)
+                        if:
+                        (is Empty 
+                            (between)
+                        )
+                    )
+                    
+                    (to if:
+                        (and 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (!= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "King" Next)
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (and 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (!= 
+                                        (what at:
+                                            (to)
+                                        )
+                                        
+                                        (id "King" Next)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "Promotion" P1 
+                (sites Top)
+            )
+            
+            (regions "Promotion" P2 
+                (sites Bottom)
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Pawn1" 
+                    (sites Row 1)
+                )
+                
+                (place "Pawn2" 
+                    (sites Row 6)
+                )
+                
+                (place "Rook1" { "A1" "H1"}
+                )
+                
+                (place "Knight1" { "B1" "G1"}
+                )
+                
+                (place "Bishop1" { "C1" "F1"}
+                )
+                
+                (place "Queen1" coord:"D1")
+                
+                (place "King1" coord:"E1")
+                
+                (place "Rook2" { "A8" "H8"}
+                )
+                
+                (place "Knight2" { "B8" "G8"}
+                )
+                
+                (place "Bishop2" { "C8" "F8"}
+                )
+                
+                (place "Queen2" coord:"D8")
+                
+                (place "King2" coord:"E8")
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Samantsy (Ludii 10) ruleset.")
     
     (item "Incomplete"
         <
@@ -3825,35 +3801,35 @@
 
 (rulesets {
     
-    (ruleset "Ruleset/Samantsy1 (Reconstructed)" {
-        "Variant/Samantsy1"
+    (ruleset "Ruleset/Samantsy (Ludii 1) (Reconstructed)" {
+        "Variant/Samantsy (Ludii 1)"
     })
-    (ruleset "Ruleset/Samantsy2 (Reconstructed)" {
-        "Variant/Samantsy2"
+    (ruleset "Ruleset/Samantsy (Ludii 2) (Reconstructed)" {
+        "Variant/Samantsy (Ludii 2)"
     })
-    (ruleset "Ruleset/Samantsy3 (Reconstructed)" {
-        "Variant/Samantsy3"
+    (ruleset "Ruleset/Samantsy (Ludii 3) (Reconstructed)" {
+        "Variant/Samantsy (Ludii 3)"
     })
-    (ruleset "Ruleset/Samantsy4 (Reconstructed)" {
-        "Variant/Samantsy4"
+    (ruleset "Ruleset/Samantsy (Ludii 4) (Reconstructed)" {
+        "Variant/Samantsy (Ludii 4)"
     })
-    (ruleset "Ruleset/Samantsy5 (Reconstructed)" {
-        "Variant/Samantsy5"
+    (ruleset "Ruleset/Samantsy (Ludii 5) (Reconstructed)" {
+        "Variant/Samantsy (Ludii 5)"
     })
-    (ruleset "Ruleset/Samantsy6 (Reconstructed)" {
-        "Variant/Samantsy6"
+    (ruleset "Ruleset/Samantsy (Ludii 6) (Reconstructed)" {
+        "Variant/Samantsy (Ludii 6)"
     })
-    (ruleset "Ruleset/Samantsy7 (Reconstructed)" {
-        "Variant/Samantsy7"
+    (ruleset "Ruleset/Samantsy (Ludii 7) (Reconstructed)" {
+        "Variant/Samantsy (Ludii 7)"
     })
-    (ruleset "Ruleset/Samantsy8 (Reconstructed)" {
-        "Variant/Samantsy8"
+    (ruleset "Ruleset/Samantsy (Ludii 8) (Reconstructed)" {
+        "Variant/Samantsy (Ludii 8)"
     })
-    (ruleset "Ruleset/Samantsy9 (Reconstructed)" {
-        "Variant/Samantsy9"
+    (ruleset "Ruleset/Samantsy (Ludii 9) (Reconstructed)" {
+        "Variant/Samantsy (Ludii 9)"
     })
-    (ruleset "Ruleset/Samantsy10 (Reconstructed)" {
-        "Variant/Samantsy10"
+    (ruleset "Ruleset/Samantsy (Ludii 10) (Reconstructed)" {
+        "Variant/Samantsy (Ludii 10)"
     })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
@@ -3866,349 +3842,349 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Samantsy is a capturing game played in Madagascar. ")
-        (useFor "Ruleset/Historical Information (Incomplete)" (rules "8x8 board. Pieces with the following movement, for each player: Hova (x1): moves one space orthogonally or diagonally, is not taken by other pieces and does not take other pieces; Anakova (x1): moves one space diagonally; Farasy (x2): moves one space orthogonally and one space diagonally, jumping over any intervening pieces; Basy (x2): moves diagonally to the second space, but does not jump over the first; Vorona (2): moves orthogonally any number of spaces; Zaza (x8): move one space forward orthogonally, captures one space forward diagonally to capture. When a Zaza reaches the opposite edge of the board, they are promoted to Anakova. The pieces are set up on the last row of the player's side of the board, from left to right, as follows: Vorona, Farasy, Basy, Hova, Anakova, Basy, Farasy, Vorona, except the Hova and Anakova are swapped for the opponent. The Zaza are placed in the row in front of these pieces.  Replacement capture."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (id "1328"))
-        (useFor "Ruleset/Samantsy1 (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
-                Regions:
-                Promotion: the top sites of the board for P1
-                Promotion: the bottom sites of the board for P2 
-                All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
-                Rules for Pieces:
-                Bishops slide from the location of the piece in the diagonal direction through empty.
-                Kings step adjacent.
-                Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
-                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
-                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
-                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
-                Players take turns moving.
-                Setup:
-                Place a Pawn for player one at each cell of the 1 row.
-                Place a Pawn for player two at each cell of the 6 row.
-                Place a Rook for player one on sites: A1 and H1.
-                Place a Knight for player one on sites: B1 and G1.
-                Place a Bishop for player one on sites: C1 and F1.
-                Place a Queen for player one on site D1.
-                Place a King for player one on site E1.
-                Place a Rook for player two on sites: A8 and H8.
-                Place a Knight for player two on sites: B8 and G8.
-                Place a Bishop for player two on sites: C8 and F8.
-                Place a Queen for player two on site D8.
-                Place a King for player two on site E8..
-                Rules: 
-                Move one of your pieces.
-                Aim: 
-                If King of the next player is threatened and not can move move one of your pieces, the moving player wins If the moving player cannot move or Counter is equal to 99, it's a draw.
-                
-        "))
-        (useFor "Ruleset/Samantsy1 (Reconstructed)" (id "2129"))
-        (useFor "Ruleset/Samantsy2 (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
-                Regions:
-                Promotion: the top sites of the board for P1
-                Promotion: the bottom sites of the board for P2 
-                All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
-                Rules for Pieces:
-                Bishops slide from the location of the piece in the diagonal direction through empty.
-                Kings step adjacent.
-                Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
-                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
-                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
-                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
-                Players take turns moving.
-                Setup:
-                Place a Pawn for player one at each cell of the 1 row.
-                Place a Pawn for player two at each cell of the 6 row.
-                Place a Rook for player one on sites: A1 and H1.
-                Place a Knight for player one on sites: B1 and G1.
-                Place a Bishop for player one on sites: C1 and F1.
-                Place a Queen for player one on site D1.
-                Place a King for player one on site E1.
-                Place a Rook for player two on sites: A8 and H8.
-                Place a Knight for player two on sites: B8 and G8.
-                Place a Bishop for player two on sites: C8 and F8.
-                Place a Queen for player two on site D8.
-                Place a King for player two on site E8..
-                Rules: 
-                Move one of your pieces.
-                Aim: 
-                If King of the next player is threatened and not can move move one of your pieces, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Samantsy2 (Reconstructed)" (id "2130"))
-        (useFor "Ruleset/Samantsy3 (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
-                Regions:
-                Promotion: the top sites of the board for P1
-                Promotion: the bottom sites of the board for P2 
-                All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
-                Rules for Pieces:
-                Bishops slide from the location of the piece in the diagonal direction through empty.
-                Kings step adjacent.
-                Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
-                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
-                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
-                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
-                Players take turns moving.
-                Setup:
-                Place a Pawn for player one at each cell of the 1 row.
-                Place a Pawn for player two at each cell of the 6 row.
-                Place a Rook for player one on sites: A1 and H1.
-                Place a Knight for player one on sites: B1 and G1.
-                Place a Bishop for player one on sites: C1 and F1.
-                Place a Queen for player one on site D1.
-                Place a King for player one on site E1.
-                Place a Rook for player two on sites: A8 and H8.
-                Place a Knight for player two on sites: B8 and G8.
-                Place a Bishop for player two on sites: C8 and F8.
-                Place a Queen for player two on site D8.
-                Place a King for player two on site E8..
-                Rules: 
-                Move one of your pieces.
-                Aim: 
-                If King of the next player is threatened and not can move move one of your pieces, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Samantsy3 (Reconstructed)" (id "2131"))
-        (useFor "Ruleset/Samantsy4 (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
-                Regions:
-                Promotion: the top sites of the board for P1
-                Promotion: the bottom sites of the board for P2 
-                All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
-                Rules for Pieces:
-                Bishops slide from the location of the piece in the diagonal direction through empty.
-                Kings step adjacent.
-                Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
-                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
-                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
-                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
-                Players take turns moving.
-                Setup:
-                Place a Pawn for player one at each cell of the 1 row.
-                Place a Pawn for player two at each cell of the 6 row.
-                Place a Rook for player one on sites: A1 and H1.
-                Place a Knight for player one on sites: B1 and G1.
-                Place a Bishop for player one on sites: C1 and F1.
-                Place a Queen for player one on site D1.
-                Place a King for player one on site E1.
-                Place a Rook for player two on sites: A8 and H8.
-                Place a Knight for player two on sites: B8 and G8.
-                Place a Bishop for player two on sites: C8 and F8.
-                Place a Queen for player two on site D8.
-                Place a King for player two on site E8..
-                Rules: 
-                Move one of your pieces.
-                Aim: 
-                If King of the next player is threatened and not can move move one of your pieces, the moving player wins If the next player cannot move, the moving player wins If the number of null owned by Player the next player is equal to 1, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Samantsy4 (Reconstructed)" (id "2132"))
-        (useFor "Ruleset/Samantsy5 (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
-                Regions:
-                Promotion: the top sites of the board for P1
-                Promotion: the bottom sites of the board for P2 
-                All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
-                Rules for Pieces:
-                Bishops slide from the location of the piece in the diagonal direction through empty.
-                Kings step adjacent.
-                Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
-                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
-                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
-                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
-                Players take turns moving.
-                Setup:
-                Place a Pawn for player one at each cell of the 1 row.
-                Place a Pawn for player two at each cell of the 6 row.
-                Place a Rook for player one on sites: A1 and H1.
-                Place a Knight for player one on sites: B1 and G1.
-                Place a Bishop for player one on sites: C1 and F1.
-                Place a Queen for player one on site D1.
-                Place a King for player one on site E1.
-                Place a Rook for player two on sites: A8 and H8.
-                Place a Knight for player two on sites: B8 and G8.
-                Place a Bishop for player two on sites: C8 and F8.
-                Place a Queen for player two on site D8.
-                Place a King for player two on site E8..
-                Rules: 
-                Move one of your pieces.
-                Aim: 
-                If King of the next player is threatened and not can move move one of your pieces, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Samantsy5 (Reconstructed)" (id "2133"))
-        (useFor "Ruleset/Samantsy6 (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
-                Regions:
-                Promotion: the top sites of the board for P1
-                Promotion: the bottom sites of the board for P2 
-                All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
-                Rules for Pieces:
-                Bishops slide from the location of the piece in the diagonal direction through empty.
-                Kings step adjacent.
-                Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
-                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
-                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
-                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
-                Players take turns moving.
-                Setup:
-                Place a Pawn for player one at each cell of the 1 row.
-                Place a Pawn for player two at each cell of the 6 row.
-                Place a Rook for player one on sites: A1 and H1.
-                Place a Knight for player one on sites: B1 and G1.
-                Place a Bishop for player one on sites: C1 and F1.
-                Place a Queen for player one on site D1.
-                Place a King for player one on site E1.
-                Place a Rook for player two on sites: A8 and H8.
-                Place a Knight for player two on sites: B8 and G8.
-                Place a Bishop for player two on sites: C8 and F8.
-                Place a Queen for player two on site D8.
-                Place a King for player two on site E8..
-                Rules: 
-                Move one of your pieces.
-                Aim: 
-                If King of the next player is threatened and not can move move one of your pieces, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Samantsy6 (Reconstructed)" (id "2134"))
-        (useFor "Ruleset/Samantsy7 (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
-                Regions:
-                Promotion: the top sites of the board for P1
-                Promotion: the bottom sites of the board for P2 
-                All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
-                Rules for Pieces:
-                Bishops slide from the location of the piece in the diagonal direction through empty.
-                Kings step adjacent.
-                Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
-                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
-                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
-                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
-                Players take turns moving.
-                Setup:
-                Place a Pawn for player one at each cell of the 1 row.
-                Place a Pawn for player two at each cell of the 6 row.
-                Place a Rook for player one on sites: A1 and H1.
-                Place a Knight for player one on sites: B1 and G1.
-                Place a Bishop for player one on sites: C1 and F1.
-                Place a Queen for player one on site D1.
-                Place a King for player one on site E1.
-                Place a Rook for player two on sites: A8 and H8.
-                Place a Knight for player two on sites: B8 and G8.
-                Place a Bishop for player two on sites: C8 and F8.
-                Place a Queen for player two on site D8.
-                Place a King for player two on site E8..
-                Rules: 
-                Move one of your pieces.
-                Aim: 
-                If King of the next player is threatened and not can move move one of your pieces, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Samantsy7 (Reconstructed)" (id "2135"))
-        (useFor "Ruleset/Samantsy8 (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
-                Regions:
-                Promotion: the top sites of the board for P1
-                Promotion: the bottom sites of the board for P2 
-                All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
-                Rules for Pieces:
-                Bishops slide from the location of the piece in the diagonal direction through empty.
-                Kings step adjacent.
-                Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
-                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
-                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
-                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
-                Players take turns moving.
-                Setup:
-                Place a Pawn for player one at each cell of the 1 row.
-                Place a Pawn for player two at each cell of the 6 row.
-                Place a Rook for player one on sites: A1 and H1.
-                Place a Knight for player one on sites: B1 and G1.
-                Place a Bishop for player one on sites: C1 and F1.
-                Place a Queen for player one on site D1.
-                Place a King for player one on site E1.
-                Place a Rook for player two on sites: A8 and H8.
-                Place a Knight for player two on sites: B8 and G8.
-                Place a Bishop for player two on sites: C8 and F8.
-                Place a Queen for player two on site D8.
-                Place a King for player two on site E8..
-                Rules: 
-                Move one of your pieces.
-                Aim: 
-                If King of the next player is threatened and not can move move one of your pieces, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Samantsy8 (Reconstructed)" (id "2136"))
-        (useFor "Ruleset/Samantsy9 (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
-                Regions:
-                Promotion: the top sites of the board for P1
-                Promotion: the bottom sites of the board for P2 
-                All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
-                Rules for Pieces:
-                Bishops slide from the location of the piece in the diagonal direction through empty.
-                Kings step adjacent.
-                Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
-                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
-                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
-                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
-                Players take turns moving.
-                Setup:
-                Place a Pawn for player one at each cell of the 1 row.
-                Place a Pawn for player two at each cell of the 6 row.
-                Place a Rook for player one on sites: A1 and H1.
-                Place a Knight for player one on sites: B1 and G1.
-                Place a Bishop for player one on sites: C1 and F1.
-                Place a Queen for player one on site D1.
-                Place a King for player one on site E1.
-                Place a Rook for player two on sites: A8 and H8.
-                Place a Knight for player two on sites: B8 and G8.
-                Place a Bishop for player two on sites: C8 and F8.
-                Place a Queen for player two on site D8.
-                Place a King for player two on site E8..
-                Rules: 
-                Move one of your pieces.
-                Aim: 
-                If King of the next player is threatened and not can move move one of your pieces, the moving player wins If 1 is equal to the number of null owned by Player the next player, the moving player wins If the next player cannot move, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Samantsy9 (Reconstructed)" (id "2137"))
-        (useFor "Ruleset/Samantsy10 (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
-                Regions:
-                Promotion: the top sites of the board for P1
-                Promotion: the bottom sites of the board for P2 
-                All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
-                Rules for Pieces:
-                Bishops slide from the location of the piece in the diagonal direction through empty.
-                Kings step adjacent.
-                Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
-                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
-                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
-                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
-                Players take turns moving.
-                Setup:
-                Place a Pawn for player one at each cell of the 1 row.
-                Place a Pawn for player two at each cell of the 6 row.
-                Place a Rook for player one on sites: A1 and H1.
-                Place a Knight for player one on sites: B1 and G1.
-                Place a Bishop for player one on sites: C1 and F1.
-                Place a Queen for player one on site D1.
-                Place a King for player one on site E1.
-                Place a Rook for player two on sites: A8 and H8.
-                Place a Knight for player two on sites: B8 and G8.
-                Place a Bishop for player two on sites: C8 and F8.
-                Place a Queen for player two on site D8.
-                Place a King for player two on site E8..
-                Rules: 
-                Move one of your pieces.
-                Aim: 
-                If King of the next player is threatened and not can move move one of your pieces, the moving player wins If the next player cannot move, it's a draw.
-                
-        "))
-        (useFor "Ruleset/Samantsy10 (Reconstructed)" (id "2138"))
-        (source "du Picq 1912: 267-268.")
-        (version "1.3.8")
-        (classification "board/war/replacement/checkmate/chaturanga/reconstruction/done")
-        (credit "Eric Piette")
-        (origin "This game was played in Madagascar, around 1912.")
-        }
-    )
+(info
+{
+(description "Samantsy is a capturing game played in Madagascar. ")
+(useFor "Ruleset/Historical Information (Incomplete)" (rules "8x8 board. Pieces with the following movement, for each player: Hova (x1): moves one space orthogonally or diagonally, is not taken by other pieces and does not take other pieces; Anakova (x1): moves one space diagonally; Farasy (x2): moves one space orthogonally and one space diagonally, jumping over any intervening pieces; Basy (x2): moves diagonally to the second space, but does not jump over the first; Vorona (2): moves orthogonally any number of spaces; Zaza (x8): move one space forward orthogonally, captures one space forward diagonally to capture. When a Zaza reaches the opposite edge of the board, they are promoted to Anakova. The pieces are set up on the last row of the player's side of the board, from left to right, as follows: Vorona, Farasy, Basy, Hova, Anakova, Basy, Farasy, Vorona, except the Hova and Anakova are swapped for the opponent. The Zaza are placed in the row in front of these pieces.  Replacement capture."))
+(useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+(useFor "Ruleset/Historical Information (Incomplete)" (id "1328"))
+(useFor "Ruleset/Samantsy (Ludii 1) (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
+Rules for Pieces:
+     Bishops slide from the location of the piece in the diagonal direction through empty.
+     Kings step adjacent.
+     Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
+     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Bishop for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a King for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Bishop for player two on sites: C8 and F8.
+     Place a Queen for player two on site D8.
+     Place a King for player two on site E8..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If King of the next player is threatened and not can move move one of your pieces, the moving player wins If the moving player cannot move or Counter is equal to 99, it's a draw.
+
+"))
+(useFor "Ruleset/Samantsy (Ludii 1) (Reconstructed)" (id "2898"))
+(useFor "Ruleset/Samantsy (Ludii 2) (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
+Rules for Pieces:
+     Bishops slide from the location of the piece in the diagonal direction through empty.
+     Kings step adjacent.
+     Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
+     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Bishop for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a King for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Bishop for player two on sites: C8 and F8.
+     Place a Queen for player two on site D8.
+     Place a King for player two on site E8..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If King of the next player is threatened and not can move move one of your pieces, the moving player wins If the next player cannot move, the moving player wins If the number of pieces owned by Player the next player is equal to 1, the moving player wins.
+
+"))
+(useFor "Ruleset/Samantsy (Ludii 2) (Reconstructed)" (id "2899"))
+(useFor "Ruleset/Samantsy (Ludii 3) (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
+Rules for Pieces:
+     Bishops slide from the location of the piece in the diagonal direction through empty.
+     Kings step adjacent.
+     Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
+     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Bishop for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a King for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Bishop for player two on sites: C8 and F8.
+     Place a Queen for player two on site D8.
+     Place a King for player two on site E8..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If King of the next player is threatened and not can move move one of your pieces, the moving player wins.
+
+"))
+(useFor "Ruleset/Samantsy (Ludii 3) (Reconstructed)" (id "2900"))
+(useFor "Ruleset/Samantsy (Ludii 4) (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
+Rules for Pieces:
+     Bishops slide from the location of the piece in the diagonal direction through empty.
+     Kings step adjacent.
+     Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
+     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Bishop for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a King for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Bishop for player two on sites: C8 and F8.
+     Place a Queen for player two on site D8.
+     Place a King for player two on site E8..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If King of the next player is threatened and not can move move one of your pieces, the moving player wins If 1 is equal to the number of pieces owned by Player the next player, the moving player wins If the next player cannot move, the moving player wins.
+
+"))
+(useFor "Ruleset/Samantsy (Ludii 4) (Reconstructed)" (id "2901"))
+(useFor "Ruleset/Samantsy (Ludii 5) (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
+Rules for Pieces:
+     Bishops slide from the location of the piece in the diagonal direction through empty.
+     Kings step adjacent.
+     Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
+     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Bishop for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a King for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Bishop for player two on sites: C8 and F8.
+     Place a Queen for player two on site D8.
+     Place a King for player two on site E8..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If King of the next player is threatened and not can move move one of your pieces, the moving player wins If the next player cannot move, it's a draw If the number of pieces owned by Player the next player is equal to 1, the moving player wins.
+
+"))
+(useFor "Ruleset/Samantsy (Ludii 5) (Reconstructed)" (id "2902"))
+(useFor "Ruleset/Samantsy (Ludii 6) (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
+Rules for Pieces:
+     Bishops slide from the location of the piece in the diagonal direction through empty.
+     Kings step adjacent.
+     Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
+     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Bishop for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a King for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Bishop for player two on sites: C8 and F8.
+     Place a Queen for player two on site D8.
+     Place a King for player two on site E8..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If King of the next player is threatened and not can move move one of your pieces, the moving player wins If the next player cannot move, it's a draw.
+
+"))
+(useFor "Ruleset/Samantsy (Ludii 6) (Reconstructed)" (id "2903"))
+(useFor "Ruleset/Samantsy (Ludii 7) (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
+Rules for Pieces:
+     Bishops slide from the location of the piece in the diagonal direction through empty.
+     Kings step adjacent.
+     Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
+     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Bishop for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a King for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Bishop for player two on sites: C8 and F8.
+     Place a Queen for player two on site D8.
+     Place a King for player two on site E8..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If King of the next player is threatened and not can move move one of your pieces, the moving player wins If 1 is equal to the number of pieces owned by Player the next player, it's a draw.
+
+"))
+(useFor "Ruleset/Samantsy (Ludii 7) (Reconstructed)" (id "2904"))
+(useFor "Ruleset/Samantsy (Ludii 8) (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
+Rules for Pieces:
+     Bishops slide from the location of the piece in the diagonal direction through empty.
+     Kings step adjacent.
+     Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
+     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Bishop for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a King for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Bishop for player two on sites: C8 and F8.
+     Place a Queen for player two on site D8.
+     Place a King for player two on site E8..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the moving player is equal to the number of pieces owned by Player All minus 2, the game ends and the player with the highest score wins.
+
+"))
+(useFor "Ruleset/Samantsy (Ludii 8) (Reconstructed)" (id "2905"))
+(useFor "Ruleset/Samantsy (Ludii 9) (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
+Rules for Pieces:
+     Bishops slide from the location of the piece in the diagonal direction through empty.
+     Kings step adjacent.
+     Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
+     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Bishop for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a King for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Bishop for player two on sites: C8 and F8.
+     Place a Queen for player two on site D8.
+     Place a King for player two on site E8..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Samantsy (Ludii 9) (Reconstructed)" (id "2906"))
+(useFor "Ruleset/Samantsy (Ludii 10) (Reconstructed)" (rules "The game Samantsy is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with Kings, Queens, Pawns, Knights, Rooks and Bishops.
+Rules for Pieces:
+     Bishops slide from the location of the piece in the diagonal direction through empty.
+     Kings step adjacent.
+     Knights leap a piece to empty or there is an enemy Player at to and Piece at to is not equal to King of the next player.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into .
+     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Bishop for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a King for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Bishop for player two on sites: C8 and F8.
+     Place a Queen for player two on site D8.
+     Place a King for player two on site E8..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If the next player cannot move, the moving player wins.
+
+"))
+(useFor "Ruleset/Samantsy (Ludii 10) (Reconstructed)" (id "2907"))
+(source "du Picq 1912: 267-268.")
+(version "1.3.9")
+(classification "board/war/replacement/checkmate/chaturanga/reconstruction/done")
+(credit "Eric Piette")
+(origin "This game was played in Madagascar, around 1912.")
+}
+)
     
     (graphics {
         (board Style Chess)

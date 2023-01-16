@@ -147,7 +147,7 @@
     (info
         {
         
-        (rules "Detta är de moderna standardreglerna för Xiangqi. Spelade på ett liknande sätt som schack. Det finns två \"slott\" som kungen och hans två generaler inte kan lämna. Det finns också en \"flod\" i mitten av brädan, som elefanterna inte kan korsa. Bönder främjas när de korsar floden.")
+        (rules "Detta är de moderna standardreglerna för Xiangqi. >Spelades på liknande sätt som schack. Det finns två \"slott\" som kungen och hans två generaler inte kan lämna. Det finns även en \"flod\" i mitten av brädan, som elefanterna inte kan ta sig över. Bönder främjas när de korsar floden.")
         
         }
     )
@@ -158,6 +158,7 @@
         (board Style Xiangqi)
         (piece Families {"Defined" "Western"})
         (piece ExtendName P2 "_black")
+        (board Placement scale:0.8 offsetY:-0.25)
     })
     
     (ai 

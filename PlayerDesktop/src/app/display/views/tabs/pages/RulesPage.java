@@ -57,9 +57,10 @@ public class RulesPage extends TabPage
 					{
 						if (SettingsExhibition.exhibitionVersion)
 						{
-							for (final String line : s.split("\\."))
+							for (final String line : s.split(">"))
 							{
-								addText(line.trim() + "." + "\n\n");
+								if (line.trim().length() > 1)
+									addText(line.trim() + "\n\n");
 							}
 						}
 						else
@@ -79,7 +80,7 @@ public class RulesPage extends TabPage
 					}
 					addText("\n");
 				}			
-				if (app.manager().settingsManager().userSelections().ruleset() == Constants.UNDEFINED)
+				if (app.manager().settingsManager().userSelections().ruleset() == Constants.UNDEFINED && !SettingsExhibition.exhibitionVersion)
 				{
 					final List<Option> activeOptions = 
 							game.description().gameOptions().activeOptionObjects

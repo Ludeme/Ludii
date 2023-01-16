@@ -13,11 +13,7 @@
             (board (square 8))
             (piece [#]) // An opponent's piece may be captured when it is surrounded on opposite sides by two of the player's pieces. When a player moves a piece between two of the opponent's pieces, both of the opponent's pieces are taken.
         })
-        (rules
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
@@ -37,29 +33,24 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Apit is a capturing game played in Malaysia in the early twentieth century.")
-        (aliases {"Apit-Sodok"})
-        (rules "8x8 board. An opponent's piece may be captured when it is surrounded on opposite sides by two of the player's pieces. When a player moves a piece between two of the opponent's pieces, both of the opponent's pieces are taken.")
-        (source "DLP evidence.")
-        (id "1131")
-        (version "1.3.8")
-        (classification "board/war/reconstruction/pending")
-        (credit "Eric Piette")
-        (origin "This game was played in Malaysia, around 1915.")
-        }
-    )
+(info
+{
+(description "Apit is a capturing game played in Malaysia in the early twentieth century.")
+(aliases {"Apit-Sodok"})
+(rules "8x8 board. An opponent's piece may be captured when it is surrounded on opposite sides by two of the player's pieces. When a player moves a piece between two of the opponent's pieces, both of the opponent's pieces are taken.")
+(source "DLP evidence.")
+(id "1131")
+(version "1.3.9")
+(classification "board/war/reconstruction/pending")
+(credit "Eric Piette")
+(origin "This game was played in Malaysia, around 1915.")
+}
+)
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
-    })
-    
-    (recon {
-        (concept "CustodialCapture" True)
-        (concept "InterveneCapture" True)
     })
     
 )

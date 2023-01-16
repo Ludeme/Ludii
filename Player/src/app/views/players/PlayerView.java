@@ -46,6 +46,8 @@ public class PlayerView extends View
 		final double maxPanelPercentageHeight = 0.7;	// Maximum height of the entire panel (as percentage of app height).			
 		
 		int boardSize = app.height();
+		if (SettingsExhibition.exhibitionVersion)
+			boardSize = app.getPanels().get(0).placement().width;		// Allows for custom board sizes.
 		int startX = boardSize + 8;
 		int startY = 8;
 		int width = app.width() - boardSize;

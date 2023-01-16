@@ -6,7 +6,7 @@
 
 (option "Variant" <Variant> args:{ <variant> }
     {
-    (item "Malomjatek1" <
+    (item "Malomjatek (Ludii 1)" <
         
         (players 2)
         
@@ -101,246 +101,34 @@
         
         (rules 
             (start 
-                (place "Marker" "Hand" count:3)
+                (place "Marker" "Hand" count:9)
             )
             phases:{ 
             (phase "Placement" 
                 (play 
-                    (move 
-                        (from 
-                            (handSite Mover)
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
                         )
                         
-                        (to 
-                            (sites Empty)
-                        )
-                    )
-                )
-                
-                (nextPhase 
-                    (all Sites 
-                        (sites Hand P2)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement" )
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (forEach Piece)
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (is Line 3)
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Malomjatek1 ruleset.")
-    
-    (item "Malomjatek2" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step Orthogonal 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (and 
-                            (custodial 
-                                (from 
-                                    (last To)
-                                )
-                                Orthogonal 
-                                (between 
-                                    (max 1)
-                                    if:
-                                    (is Enemy 
-                                        (who at:
-                                            (between)
-                                        )
-                                    )
-                                    
-                                    (apply 
-                                        (remove 
-                                            (between)
-                                        )
-                                    )
-                                )
-                                
-                                (to if:
-                                    (is Friend 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                )
+                        (move 
+                            (from 
+                                (handSite Mover)
                             )
                             
-                            (surround 
-                                (from 
-                                    (last To)
-                                )
-                                Orthogonal 
-                                (between if:
-                                    (and 
-                                        (is Enemy 
-                                            (who at:
-                                                (between)
-                                            )
-                                        )
-                                        
-                                        (is In 
-                                            (between)
-                                            
-                                            (sites Corners)
-                                        )
-                                    )
-                                    
-                                    (apply 
-                                        (remove 
-                                            (between)
-                                        )
-                                    )
-                                )
-                                
-                                (to if:
-                                    (is Friend 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:6)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (move 
-                        (from 
-                            (handSite Mover)
-                        )
-                        
-                        (to 
-                            (difference 
+                            (to 
                                 (sites Empty)
-                                
-                                (expand 
-                                    (sites Centre)
-                                    steps:
-                                    (- 
-                                        (/ 3 2)
-                                        
-                                        (if 
-                                            (is Even 3)
-                                        1 0)
-                                    )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
                                 )
                             )
-                        )
-                    )
-                )
-                
-                (nextPhase 
-                    (all Sites 
-                        (sites Hand P2)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement" )
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (forEach Piece)
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (no Pieces Next)
-                    
-                    (result Next Loss)
-                )
-            )
-        )
-        
-    > "The Malomjatek2 ruleset.")
-    
-    (item "Malomjatek3" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move 
-                    (from)
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:3)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (move 
-                        (from 
-                            (handSite Mover)
-                        )
-                        
-                        (to 
-                            (sites Empty)
                         )
                     )
                 )
@@ -360,187 +148,39 @@
             
             (phase "Movement" 
                 (play 
-                    (forEach Piece)
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (is Line 3)
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Malomjatek3 ruleset.")
-    
-    (item "Malomjatek4" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step Orthogonal 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:3)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (move 
-                        (from 
-                            (handSite Mover)
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
                         )
                         
-                        (to 
-                            (sites Empty)
-                        )
+                        (forEach Piece)
                     )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement" )
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (forEach Piece)
                 )
             )
             }
             
             (end 
                 (if 
-                    (is Line 3)
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Malomjatek4 ruleset.")
-    
-    (item "Malomjatek5" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move 
-                    (from)
-                    
-                    (to 
-                        (sites Empty)
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:6)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (move 
-                        (from 
-                            (handSite Mover)
-                        )
-                        
-                        (to 
-                            (difference 
-                                (sites Empty)
-                                
-                                (expand 
-                                    (sites Centre)
-                                    steps:
-                                    (- 
-                                        (/ 3 2)
-                                        
-                                        (if 
-                                            (is Even 3)
-                                        1 0)
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase 
-                    (all Sites 
-                        (sites Hand P2)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement" )
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (forEach Piece)
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (no Pieces Next)
+                    (<= 
+                        (count Pieces Next)
+                    2)
                     
                     (result Next Loss)
                 )
             )
         )
         
-    > "The Malomjatek5 ruleset.")
+    > "The Malomjatek (Ludii 1) ruleset.")
     
-    (item "Malomjatek6" <
+    (item "Malomjatek (Ludii 2)" <
         
         (players 2)
         
         (equipment { 
             (board 
-                (concentric Square rings:3)
+                (concentric Square rings:3 joinCorners:True)
             use:Vertex)
             
             (hand Each)
@@ -629,25 +269,41 @@
         
         (rules 
             (start 
-                (place "Marker" "Hand" count:5)
+                (place "Marker" "Hand" count:9)
             )
             phases:{ 
             (phase "Placement" 
                 (play 
-                    (move 
-                        (from 
-                            (handSite Mover)
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
                         )
                         
-                        (to 
-                            (sites Empty)
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
                         )
                     )
                 )
                 
-                (nextPhase 
+                (nextPhase Mover 
                     (all Sites 
-                        (sites Hand P2)
+                        (sites Hand Mover)
                         if:
                         (= 0 
                             (count Cell at:
@@ -660,23 +316,33 @@
             
             (phase "Movement" 
                 (play 
-                    (forEach Piece)
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
                 )
             )
             }
             
             (end 
                 (if 
-                    (is Line 5)
+                    (<= 
+                        (count Pieces Next)
+                    2)
                     
-                    (result Mover Win)
+                    (result Next Loss)
                 )
             )
         )
         
-    > "The Malomjatek6 ruleset.")
+    > "The Malomjatek (Ludii 2) ruleset.")
     
-    (item "Malomjatek7" <
+    (item "Malomjatek (Ludii 3)" <
         
         (players 2)
         
@@ -688,7 +354,234 @@
             (hand Each)
             
             (piece "Marker" Each 
-                (move Step All 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (step 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Orthogonal 
+                                            (to if:
+                                                (and 
+                                                    (is Empty 
+                                                        (to)
+                                                    )
+                                                    
+                                                    (or { 
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    W )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 W )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    E )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 E )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    N )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 N )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    S )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 S )
+                                                                )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Malomjatek (Ludii 3) ruleset.")
+    
+    (item "Malomjatek (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
                     (to if:
                         (is Empty 
                             (to)
@@ -772,9 +665,107 @@
             )
         )
         
-    > "The Malomjatek7 ruleset.")
+    > "The Malomjatek (Ludii 4) ruleset.")
     
-    (item "Malomjatek8" <
+    (item "Malomjatek (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Malomjatek (Ludii 5) ruleset.")
+    
+    (item "Malomjatek (Ludii 6)" <
         
         (players 2)
         
@@ -792,6 +783,14 @@
                             (to)
                         )
                     )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
                 )
             )
             }
@@ -870,51 +869,31 @@
             )
         )
         
-    > "The Malomjatek8 ruleset.")
+    > "The Malomjatek (Ludii 6) ruleset.")
     
-    (item "Malomjatek9" <
+    (item "Malomjatek (Ludii 7)" <
         
         (players 2)
         
         (equipment { 
             (board 
-                (concentric Square rings:3 joinCorners:True)
+                (concentric Square rings:3)
             use:Vertex)
             
             (hand Each)
             
             (piece "Marker" Each 
-                (or 
-                    (move Step Orthogonal 
-                        (to if:
-                            (is Empty 
-                                (to)
-                            )
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
                         )
                     )
                     
-                    (move Hop 
-                        (between if:
-                            (is Enemy 
-                                (who at:
-                                    (between)
-                                )
-                            )
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
                             
-                            (apply 
-                                (remove 
-                                    (between)
-                                )
-                            )
-                        )
-                        
-                        (to if:
-                            (is Empty 
-                                (to)
-                            )
-                        )
-                        
-                        (then 
                             (moveAgain)
                         )
                     )
@@ -925,25 +904,41 @@
         
         (rules 
             (start 
-                (place "Marker" "Hand" count:3)
+                (place "Marker" "Hand" count:9)
             )
             phases:{ 
             (phase "Placement" 
                 (play 
-                    (move 
-                        (from 
-                            (handSite Mover)
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
                         )
                         
-                        (to 
-                            (sites Empty)
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
                         )
                     )
                 )
                 
-                (nextPhase 
+                (nextPhase Mover 
                     (all Sites 
-                        (sites Hand P2)
+                        (sites Hand Mover)
                         if:
                         (= 0 
                             (count Cell at:
@@ -956,29 +951,39 @@
             
             (phase "Movement" 
                 (play 
-                    (forEach Piece)
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
                 )
             )
             }
             
             (end 
                 (if 
-                    (is Line 3)
+                    (<= 
+                        (count Pieces Next)
+                    2)
                     
-                    (result Mover Win)
+                    (result Next Loss)
                 )
             )
         )
         
-    > "The Malomjatek9 ruleset.")
+    > "The Malomjatek (Ludii 7) ruleset.")
     
-    (item "Malomjatek10" <
+    (item "Malomjatek (Ludii 8)" <
         
         (players 2)
         
         (equipment { 
             (board 
-                (concentric Square rings:3 joinCorners:True)
+                (concentric Square rings:3)
             use:Vertex)
             
             (hand Each)
@@ -992,10 +997,131 @@
                     )
                     
                     (then 
-                        (if 
-                            (is Line 2 Orthogonal)
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
                             
-                            (moveAgain)
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (step 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Orthogonal 
+                                            (to if:
+                                                (and 
+                                                    (is Empty 
+                                                        (to)
+                                                    )
+                                                    
+                                                    (or { 
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    W )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 W )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    E )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 E )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    N )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 N )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    S )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 S )
+                                                                )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
                         )
                     )
                 )
@@ -1005,25 +1131,41 @@
         
         (rules 
             (start 
-                (place "Marker" "Hand" count:5)
+                (place "Marker" "Hand" count:9)
             )
             phases:{ 
             (phase "Placement" 
                 (play 
-                    (move 
-                        (from 
-                            (handSite Mover)
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
                         )
                         
-                        (to 
-                            (sites Empty)
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
                         )
                     )
                 )
                 
-                (nextPhase 
+                (nextPhase Mover 
                     (all Sites 
-                        (sites Hand P2)
+                        (sites Hand Mover)
                         if:
                         (= 0 
                             (count Cell at:
@@ -1036,21 +1178,414 @@
             
             (phase "Movement" 
                 (play 
-                    (forEach Piece)
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
                 )
             )
             }
             
             (end 
                 (if 
-                    (is Line 5)
+                    (<= 
+                        (count Pieces Next)
+                    2)
                     
-                    (result Mover Win)
+                    (result Next Loss)
                 )
             )
         )
         
-    > "The Malomjatek10 ruleset.")
+    > "The Malomjatek (Ludii 8) ruleset.")
+    
+    (item "Malomjatek (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (step 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Orthogonal 
+                                            (to if:
+                                                (and 
+                                                    (is Empty 
+                                                        (to)
+                                                    )
+                                                    
+                                                    (or { 
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    W )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 W )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    E )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 E )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    N )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 N )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    S )
+                                                                )
+                                                            )
+                                                            
+                                                            (is Friend 
+                                                                (who at:
+                                                                    (ahead 
+                                                                        (to )
+                                                                    steps:2 S )
+                                                                )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (or { 
+                                        (is Line 3 N exact:True)
+                                        
+                                        (is Line 3 S exact:True)
+                                        
+                                        (is Line 3 E exact:True)
+                                        
+                                        (is Line 3 W exact:True)
+                                        }
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            4)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Malomjatek (Ludii 9) ruleset.")
+    
+    (item "Malomjatek (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (or { 
+                                        (is Line 3 N exact:True)
+                                        
+                                        (is Line 3 S exact:True)
+                                        
+                                        (is Line 3 E exact:True)
+                                        
+                                        (is Line 3 W exact:True)
+                                        }
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            4)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Malomjatek (Ludii 10) ruleset.")
     
     (item "Incomplete"
         <
@@ -1072,36 +1607,36 @@
 
 (rulesets {
     
-    (ruleset "Ruleset/Malomjatek1 (Reconstructed)" {
-        "Variant/Malomjatek1"
+    (ruleset "Ruleset/Malomjatek (Ludii 1) (Reconstructed)" {
+        "Variant/Malomjatek (Ludii 1)"
     })
-    (ruleset "Ruleset/Malomjatek2 (Reconstructed)" {
-        "Variant/Malomjatek2"
+    (ruleset "Ruleset/Malomjatek (Ludii 2) (Reconstructed)" {
+        "Variant/Malomjatek (Ludii 2)"
     })
-    (ruleset "Ruleset/Malomjatek3 (Reconstructed)" {
-        "Variant/Malomjatek3"
+    (ruleset "Ruleset/Malomjatek (Ludii 3) (Reconstructed)" {
+        "Variant/Malomjatek (Ludii 3)"
     })
-    (ruleset "Ruleset/Malomjatek4 (Reconstructed)" {
-        "Variant/Malomjatek4"
+    (ruleset "Ruleset/Malomjatek (Ludii 4) (Reconstructed)" {
+        "Variant/Malomjatek (Ludii 4)"
     })
-    (ruleset "Ruleset/Malomjatek5 (Reconstructed)" {
-        "Variant/Malomjatek5"
+    (ruleset "Ruleset/Malomjatek (Ludii 5) (Reconstructed)" {
+        "Variant/Malomjatek (Ludii 5)"
     })
-    (ruleset "Ruleset/Malomjatek6 (Reconstructed)" {
-        "Variant/Malomjatek6"
+    (ruleset "Ruleset/Malomjatek (Ludii 6) (Reconstructed)" {
+        "Variant/Malomjatek (Ludii 6)"
     })
-    (ruleset "Ruleset/Malomjatek7 (Reconstructed)" {
-        "Variant/Malomjatek7"
+    (ruleset "Ruleset/Malomjatek (Ludii 7) (Reconstructed)" {
+        "Variant/Malomjatek (Ludii 7)"
     })
-    (ruleset "Ruleset/Malomjatek8 (Reconstructed)" {
-        "Variant/Malomjatek8"
+    (ruleset "Ruleset/Malomjatek (Ludii 8) (Reconstructed)" {
+        "Variant/Malomjatek (Ludii 8)"
     })
-    (ruleset "Ruleset/Malomjatek9 (Reconstructed)" {
-        "Variant/Malomjatek9"
+    (ruleset "Ruleset/Malomjatek (Ludii 9) (Reconstructed)" {
+        "Variant/Malomjatek (Ludii 9)"
     })
-    (ruleset "Ruleset/Malomjatek10 (Reconstructed)" {
-        "Variant/Malomjatek10"
-    }) 
+    (ruleset "Ruleset/Malomjatek (Ludii 10) (Reconstructed)" {
+        "Variant/Malomjatek (Ludii 10)"
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -1113,140 +1648,140 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Malomjatek is an alignment game played in Hungary.")
-        (aliases {"Malmosdi"})
-        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Large merels game."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (id "1372"))
-        (useFor "Ruleset/Malomjatek1 (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and for all surrounded pieces on Vertexes starting from the to location of the last move with Orthogonal direction if the target is there is an enemy Player at between and between is in the corner sites of the board if the friend is is a friend except if 0remove pieces at between.
-                Players take turns moving.
-                Rules: 
-                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
-                Aim: 
-                If a player places 3 of their pieces in an adjacent direction line, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Malomjatek1 (Reconstructed)" (id "2698"))
-        (useFor "Ruleset/Malomjatek2 (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and for all surrounded pieces on Vertexes starting from the to location of the last move with Orthogonal direction if the target is there is an enemy Player at between and between is in the corner sites of the board if the friend is is a friend except if 0remove pieces at between.
-                Players take turns moving.
-                Rules: 
-                From vertex in Player the moving player's hand site 0 to vertex in the difference between the set of empty vertexs and the centre sites of the board expanded by 3 divided by 2 minus if 3 is even then 1 otherwise 0 steps moveRule: true move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Malomjatek2 (Reconstructed)" (id "2699"))
-        (useFor "Ruleset/Malomjatek3 (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true.
-                Players take turns moving.
-                Rules: 
-                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
-                Aim: 
-                If a player places 3 of their pieces in an adjacent direction line, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Malomjatek3 (Reconstructed)" (id "2700"))
-        (useFor "Ruleset/Malomjatek4 (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal.
-                Players take turns moving.
-                Rules: 
-                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
-                Aim: 
-                If a player places 3 of their pieces in an adjacent direction line, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Malomjatek4 (Reconstructed)" (id "2701"))
-        (useFor "Ruleset/Malomjatek5 (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true.
-                Players take turns moving.
-                Rules: 
-                From vertex in Player the moving player's hand site 0 to vertex in the difference between the set of empty vertexs and the centre sites of the board expanded by 3 divided by 2 minus if 3 is even then 1 otherwise 0 steps moveRule: true move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Malomjatek5 (Reconstructed)" (id "2702"))
-        (useFor "Ruleset/Malomjatek6 (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and for all surrounded pieces on Vertexes starting from the to location of the last move with Orthogonal direction if the target is there is an enemy Player at between and between is in the corner sites of the board if the friend is is a friend except if 0remove pieces at between.
-                Players take turns moving.
-                Rules: 
-                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
-                Aim: 
-                If a player places 5 of their pieces in an adjacent direction line, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Malomjatek6 (Reconstructed)" (id "2703"))
-        (useFor "Ruleset/Malomjatek7 (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step all.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Malomjatek7 (Reconstructed)" (id "2704"))
-        (useFor "Ruleset/Malomjatek8 (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Malomjatek8 (Reconstructed)" (id "2705"))
-        (useFor "Ruleset/Malomjatek9 (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal or hop adjacent then move again.
-                Players take turns moving.
-                Rules: 
-                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
-                Aim: 
-                If a player places 3 of their pieces in an adjacent direction line, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Malomjatek9 (Reconstructed)" (id "2706"))
-        (useFor "Ruleset/Malomjatek10 (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal then if a player places 2 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
-                Aim: 
-                If a player places 5 of their pieces in an adjacent direction line, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Malomjatek10 (Reconstructed)" (id "2707"))
-        (source "Murray 1951: 47.")
-        (version "1.3.8")
-        (classification "board/space/line/reconstruction/done")
-        (credit "Eric Piette")
-        (origin "This game was played in Hungary, around 1905.")
-        }
-    )
+(info
+{
+(description "Malomjatek is an alignment game played in Hungary.")
+(aliases {"Malmosdi"})
+(useFor "Ruleset/Historical Information (Incomplete)" (rules "Large merels game."))
+(useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+(useFor "Ruleset/Historical Information (Incomplete)" (id "1372"))
+(useFor "Ruleset/Malomjatek (Ludii 1) (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and for all surrounded pieces on Vertexes starting from the to location of the last move with Orthogonal direction if the target is there is an enemy Player at between and between is in the corner sites of the board if the friend is is a friend except if 0remove pieces at between.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Malomjatek (Ludii 1) (Reconstructed)" (id "3219"))
+(useFor "Ruleset/Malomjatek (Ludii 2) (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and for all surrounded pieces on Vertexes starting from the to location of the last move with Orthogonal direction if the target is there is an enemy Player at between and between is in the corner sites of the board if the friend is is a friend except if 0remove pieces at between.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Malomjatek (Ludii 2) (Reconstructed)" (id "3220"))
+(useFor "Ruleset/Malomjatek (Ludii 3) (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between then if can move step orthogonal, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Malomjatek (Ludii 3) (Reconstructed)" (id "3221"))
+(useFor "Ruleset/Malomjatek (Ludii 4) (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Malomjatek (Ludii 4) (Reconstructed)" (id "3222"))
+(useFor "Ruleset/Malomjatek (Ludii 5) (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Malomjatek (Ludii 5) (Reconstructed)" (id "3223"))
+(useFor "Ruleset/Malomjatek (Ludii 6) (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Malomjatek (Ludii 6) (Reconstructed)" (id "3224"))
+(useFor "Ruleset/Malomjatek (Ludii 7) (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Malomjatek (Ludii 7) (Reconstructed)" (id "3225"))
+(useFor "Ruleset/Malomjatek (Ludii 8) (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between then if can move step orthogonal, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Malomjatek (Ludii 8) (Reconstructed)" (id "3226"))
+(useFor "Ruleset/Malomjatek (Ludii 9) (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between then if can move step orthogonal, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 4, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Malomjatek (Ludii 9) (Reconstructed)" (id "3227"))
+(useFor "Ruleset/Malomjatek (Ludii 10) (Reconstructed)" (rules "The game Malomjatek is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 4, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Malomjatek (Ludii 10) (Reconstructed)" (id "3228"))
+(source "Murray 1951: 47.")
+(version "1.3.9")
+(classification "board/space/line/reconstruction/done")
+(credit "Eric Piette")
+(origin "This game was played in Hungary, around 1905.")
+}
+)
     
     (recon {
         (concept "NumStartComponents" minValue:6 maxValue:36)

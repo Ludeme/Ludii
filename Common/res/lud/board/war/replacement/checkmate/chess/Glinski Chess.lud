@@ -244,32 +244,32 @@
 
 (metadata
     
-    (info
-        {
-        (description "A chess variant played on a board made of hexagons. invented in 1936 by Władysław Gliński, and first launched in 1949. It is the most popular variant of hexagonal chess.")
-        (aliases {"Gliński's Chess" "Glinski's Chess" "Hexagonal Chess"})
-        (rules "Glinski Chess is played on a hexagonal board with each side having length 6, and each space oriented horizontally. The board has 91 spaces.
-            
-            Piece Movement:
-            * Kings can move one space in any of the 12 directions from the current space. There is no castling.
-            * Rooks can slide in any of the six 'adjacent' directions from their current space---North, South, or 60 degrees off either of those.
-            * Bishops can slide in the six 'diagonal' directions: West, East, or 30 degrees off due North or 30 degrees off due South. Note that, given the 3-colour colouring of the board, each of the three Bishops remains on the same colour that it started the game on.
-            * Queens can make any move that would be available to a Rook or a Bishop on the current space.
-            * Knights can leap to any space that is two spaces away in an adjacent direction (North, South, or 60 degrees off either of those), plus one more space 60 degrees off of that direction. Note that a Knight always moves to a space of a different colour than the space it moved from.
-            * Pawns can advance one space forward without capturing. They capture by moving to one of the two adjacent spaces 60 degrees left or right of forward. A Pawn on a Pawn start space can advance two spaces forward without capturing, even if it has previously moved (by capturing) to a different Pawn start space than it started the game on. A Pawn can capture an opponent Pawn 'en passant' if the opponent Pawn just advanced two spaces on its previous turn, and the capture direction of the current player's Pawn lands it on the space that the opponent Pawn just skipped over. On reaching the farthest rank in a given file, Pawns are promoted to a Queen, Rook, Bishop, or Knight, as the player chooses.
-            
-            The game ends on a checkmate or stalemate. By convention, the player that causes the stalemate is awarded 3/4 of a point, while the other player is awarded 1/4 of a point.
-            
-        Variations: Shift the innermost 3 or 5 Pawns toward the edge of the board by one space, as proposed in A Player's Guide to Table Games, by John Jackson, Stackpole Books, 1975.")
-        (id "855")
-        (source "For a comparison of popular versions of hexagonal chess, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For more details on other chess variants, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).")
-        (version "1.3.8")
-        (classification "board/war/replacement/checkmate/chess")
-        (author "Władysław Gliński")
-        (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
-        (date "1936")
-        }
-    )
+(info
+{
+(description "A chess variant played on a board made of hexagons. invented in 1936 by Władysław Gliński, and first launched in 1949. It is the most popular variant of hexagonal chess.")
+(aliases {"Gliński's Chess" "Glinski's Chess" "Hexagonal Chess"})
+(rules "Glinski Chess is played on a hexagonal board with each side having length 6, and each space oriented horizontally. The board has 91 spaces.
+
+Piece Movement:
+    * Kings can move one space in any of the 12 directions from the current space. There is no castling.
+    * Rooks can slide in any of the six 'adjacent' directions from their current space---North, South, or 60 degrees off either of those.
+    * Bishops can slide in the six 'diagonal' directions: West, East, or 30 degrees off due North or 30 degrees off due South. Note that, given the 3-colour colouring of the board, each of the three Bishops remains on the same colour that it started the game on.
+    * Queens can make any move that would be available to a Rook or a Bishop on the current space.
+    * Knights can leap to any space that is two spaces away in an adjacent direction (North, South, or 60 degrees off either of those), plus one more space 60 degrees off of that direction. Note that a Knight always moves to a space of a different colour than the space it moved from.
+    * Pawns can advance one space forward without capturing. They capture by moving to one of the two adjacent spaces 60 degrees left or right of forward. A Pawn on a Pawn start space can advance two spaces forward without capturing, even if it has previously moved (by capturing) to a different Pawn start space than it started the game on. A Pawn can capture an opponent Pawn 'en passant' if the opponent Pawn just advanced two spaces on its previous turn, and the capture direction of the current player's Pawn lands it on the space that the opponent Pawn just skipped over. On reaching the farthest rank in a given file, Pawns are promoted to a Queen, Rook, Bishop, or Knight, as the player chooses.
+
+The game ends on a checkmate or stalemate. By convention, the player that causes the stalemate is awarded 3/4 of a point, while the other player is awarded 1/4 of a point.
+
+Variations: Shift the innermost 3 or 5 Pawns toward the edge of the board by one space, as proposed in A Player's Guide to Table Games, by John Jackson, Stackpole Books, 1975.")
+(id "855")
+(source "For a comparison of popular versions of hexagonal chess, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For more details on other chess variants, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).")
+(version "1.3.9")
+(classification "board/war/replacement/checkmate/chess")
+(author "Władysław Gliński")
+(credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
+(date "1936")
+}
+)
     
     (graphics {
         (piece Scale "Pawn" 0.7)

@@ -388,50 +388,50 @@
 //----------------------------------------------------------
 
 (metadata
-    (info
-        {
-        (description "Equi-based games are games played on a hex grid that share the following properties:Each player has two kinds of pieces, one kind (Discs) move using steps and/or hops with flip-captures, the other kind (Hexes) are stationary. The stationary pieces have more score value, and they are limited to certain sites of placement. Identifying the placement sites for the stationary Hex pieces is based on their having an equal number of influencing neighbor pieces belonging to the player and to his (selected) enemy.Turns consist of either: placing any a piece, or moving a Disc. The Disc move may be followed by optionally placing a Hex piece. The game ends when in succession, none of the players adds a piece to the board. The winner is the player who has the highest score, with the first player not to place a piece winning in the case of a tiebreaker. In the original game of Equi, The influencing neighbor pieces were found along lines of sight, and included only those pieces that were at the same distance as the nearest of them. The original game also had special placement limitations not discussed here, to reduce cycling. These evolved into produce the version cited here.Areas of variation. The main families are: 1. Equi - Line of sight based rules, forced flip-hopping of enemy pieces, and optional friendly hops, piece values same magnitude, but opposite sign. Details are that moving Disc pieces can only be entered onto non-Equi sites and not to suicide sites. The game is intended as a 2 player strategy game.Equiversi - intended to be easier to play and more territorial and have less cycling issues.The first change was to replace line of sight influence with adjacent piece influence, that is easier to see. With the increase in hex placement opportunities thus available, friendly hops were disallowed.Then a second evolution, Equiversi-2, occurred with the concept of allowing players to decide a range of piece values for the Discs prior to play, -- represented here only by the selection of a zero value. Reduced value allowed for a relaxation of all placement restrictions on the Discs. An implementation side effect is that selecting a site gives a piece-choice pop-up for those sites where Hexes may be played. Pre-selecting the piece to play would be a better implementation.Evolution to Hops-a-Daisy            Nothing in the game prohibits a multi-player implementation, except that king-making could be an issue. Thus the idea of a small, light multi-player game based on Equi was born. To increase the chaotic experience, the hop changes both piece type and ownership leading to entirely different strategies. Hops-a-Daisy default rules allow hopping any piece, 'morphing' it (changing its type). Opponent's pieces are flipped to the mover's ownership as well. For ease of play, Disc placement is either to Non-Hex sites or unlimited. Hex placement considers all opponents as enemies. These settings can be changed to restrict hopping and/or Hex placement rules to either the preceding or following player's pieces. The game is strictly for fun and thus should be played on a small board.These games also inspired Refugia, with different placement restrictions, single piece types, and ownership changes taking place in stages, which has been implemented separately on Ludii.")
-        (rules "Equi is a game system played on a hex grid, for 2 or more players, using 2 types of reversable pieces.
+(info
+{
+(description "Equi-based games are games played on a hex grid that share the following properties:Each player has two kinds of pieces, one kind (Discs) move using steps and/or hops with flip-captures, the other kind (Hexes) are stationary. The stationary pieces have more score value, and they are limited to certain sites of placement. Identifying the placement sites for the stationary Hex pieces is based on their having an equal number of influencing neighbor pieces belonging to the player and to his (selected) enemy.Turns consist of either: placing any a piece, or moving a Disc. The Disc move may be followed by optionally placing a Hex piece. The game ends when in succession, none of the players adds a piece to the board. The winner is the player who has the highest score, with the first player not to place a piece winning in the case of a tiebreaker. In the original game of Equi, The influencing neighbor pieces were found along lines of sight, and included only those pieces that were at the same distance as the nearest of them. The original game also had special placement limitations not discussed here, to reduce cycling. These evolved into produce the version cited here.Areas of variation. The main families are: 1. Equi - Line of sight based rules, forced flip-hopping of enemy pieces, and optional friendly hops, piece values same magnitude, but opposite sign. Details are that moving Disc pieces can only be entered onto non-Equi sites and not to suicide sites. The game is intended as a 2 player strategy game.Equiversi - intended to be easier to play and more territorial and have less cycling issues.The first change was to replace line of sight influence with adjacent piece influence, that is easier to see. With the increase in hex placement opportunities thus available, friendly hops were disallowed.Then a second evolution, Equiversi-2, occurred with the concept of allowing players to decide a range of piece values for the Discs prior to play, -- represented here only by the selection of a zero value. Reduced value allowed for a relaxation of all placement restrictions on the Discs. An implementation side effect is that selecting a site gives a piece-choice pop-up for those sites where Hexes may be played. Pre-selecting the piece to play would be a better implementation.Evolution to Hops-a-Daisy            Nothing in the game prohibits a multi-player implementation, except that king-making could be an issue. Thus the idea of a small, light multi-player game based on Equi was born. To increase the chaotic experience, the hop changes both piece type and ownership leading to entirely different strategies. Hops-a-Daisy default rules allow hopping any piece, 'morphing' it (changing its type). Opponent's pieces are flipped to the mover's ownership as well. For ease of play, Disc placement is either to Non-Hex sites or unlimited. Hex placement considers all opponents as enemies. These settings can be changed to restrict hopping and/or Hex placement rules to either the preceding or following player's pieces. The game is strictly for fun and thus should be played on a small board.These games also inspired Refugia, with different placement restrictions, single piece types, and ownership changes taking place in stages, which has been implemented separately on Ludii.")
+(rules "Equi is a game system played on a hex grid, for 2 or more players, using 2 types of reversable pieces.
+   
+Each player has: 
+-- Hexes that are stationary. The Hexes score 10 points at the end of the game, but are limited to certain sites of placement. 
+-- Discs that move using steps and/or hops with flip-captures,  Discs score according to the value selected in the (Options) normally -10.
+Note: look in the drop-down (Options) tab to see what Option are selected. 
+
+Equi gets its name from the Hex placement rules: The neighborhood of the chosen location for a Hex must contain equal numbers of your own and your opponent's pieces.  This neighborhood could be defined either as adjacent locations, or as locations in each direction of travel that are at the same distance as the closest relevant piece. (See the (Options) for your game.) The (Options) also determine who you can hop and who is your enemy in a multi-player seting.
             
-            Each player has: 
-            -- Hexes that are stationary. The Hexes score 10 points at the end of the game, but are limited to certain sites of placement. 
-            -- Discs that move using steps and/or hops with flip-captures,  Discs score according to the value selected in the (Options) normally -10.
-            Note: look in the drop-down (Options) tab to see what Option are selected. 
+Turns: Each turn offers a choice, either place any a piece, or move a Disc. 
+In addition, the Disc move may be followed by optionally placing a Hex.
+Any placement ends the turn.
+
+The standard options make Disc 'flip-captures' mandatory: This means that if a Disc is next to an opponent's piece which it can hop, then it must do so. The ownership of the hopped piece flips immediately. 
+
+The same Disc may hop any number of available pieces, but may not, in any case, hop over the same location twice in the same turn. 
+
+Depending on the (Options) chosen the Disc may, or may not, hop friendly pieces. Hopping friendly pieces is never required.
+
+In some (Options) the hopped pieces also 'morph' between Disc and Hex. The (Options) also determine whose pieces morph and whose don't.
+
+Except for Enemy flip-captures, all parts of a turn are optional and passing is allowed. But be careful about not making a placement during a turn, as this is an offer to end the game.
+
+Placements:
+Sites for placing Hexes have already been explained.
+Sites for placing a Disc at the beginning of a turn, are given in the (Options). 
+-- 'Non-Hex' means sites where Hexes are not allowed to be placed.
+-- 'Safe' means not on sites where the next player's first action could be to hop-flip the Disc.
+-- 'Any' means any empty site
+
+The game ends when all the players have consecutively taken their turn without making a placement.
             
-            Equi gets its name from the Hex placement rules: The neighborhood of the chosen location for a Hex must contain equal numbers of your own and your opponent's pieces.  This neighborhood could be defined either as adjacent locations, or as locations in each direction of travel that are at the same distance as the closest relevant piece. (See the (Options) for your game.) The (Options) also determine who you can hop and who is your enemy in a multi-player seting.
-            
-            Turns: Each turn offers a choice, either place any a piece, or move a Disc. 
-            In addition, the Disc move may be followed by optionally placing a Hex.
-            Any placement ends the turn.
-            
-            The standard options make Disc 'flip-captures' mandatory: This means that if a Disc is next to an opponent's piece which it can hop, then it must do so. The ownership of the hopped piece flips immediately. 
-            
-            The same Disc may hop any number of available pieces, but may not, in any case, hop over the same location twice in the same turn. 
-            
-            Depending on the (Options) chosen the Disc may, or may not, hop friendly pieces. Hopping friendly pieces is never required.
-            
-            In some (Options) the hopped pieces also 'morph' between Disc and Hex. The (Options) also determine whose pieces morph and whose don't.
-            
-            Except for Enemy flip-captures, all parts of a turn are optional and passing is allowed. But be careful about not making a placement during a turn, as this is an offer to end the game.
-            
-            Placements:
-            Sites for placing Hexes have already been explained.
-            Sites for placing a Disc at the beginning of a turn, are given in the (Options). 
-            -- 'Non-Hex' means sites where Hexes are not allowed to be placed.
-            -- 'Safe' means not on sites where the next player's first action could be to hop-flip the Disc.
-            -- 'Any' means any empty site
-            
-            The game ends when all the players have consecutively taken their turn without making a placement.
-            
-        Please have fun with this playground, and let me, the author, know which are your favorite game options...")
-        (id "1159")
-        (version "1.3.8")
-        (classification "experimental")
-        (author "Dale W. Walton")
-        (credit "Dale W. Walton")
-        (date "26-12-2020")
-        }
-    )
+Please have fun with this playground, and let me, the author, know which are your favorite game options...")
+(id "1159")
+(version "1.3.9")
+(classification "experimental")
+(author "Dale W. Walton")
+(credit "Dale W. Walton")
+(date "26-12-2020")
+}
+)
     (ai
         "Hops-a-Daisy Generalized_ai"
     )

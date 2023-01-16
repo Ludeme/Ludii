@@ -141,24 +141,24 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Owasokotz is a race game played by the Kawalka people of New Mexico. It can be played two ways, one which requires the player to pass the starting point, and another which requires the player to land exactly on the starting point, which also allows players to send each other back to start.")
-        (aliases {"Wasokuts"})
-        (useFor "Ruleset/Owasokotz Pass (Observed)" (rules "Forty stones arranged in a circle, with a larger gap after every tenth stone. These gaps are known as doors. Any number of players, each player begins with one piece, which begins at the east door. Three sticks used as dice, black on one side, white on the other, with one stick notched on the white side. The throws are as follows: two black with one notched white side up = 15; three white sides up = 10; two black and one white, not notched = 3, two white and one black = 2, three black = 5. Throws of 10 and 15 grant the player another throw. Players may move in either direction around the circle. To win, the player must complete a circuit of the board and pass the east door."))
-        (useFor "Ruleset/Owasokotz Pass (Observed)" (source "Culin 1907: 121-122."))
-        (useFor "Ruleset/Owasokotz Pass (Observed)" (id "836"))
-        (useFor "Ruleset/Owasokotz Enter (Observed)" (rules "When a player's piece lands on a space occupied by an opponent's piece, the opponent's piece is sent back to the east door. The first player to reach the east door after making a circuit, whether passing it or landing exactly on it, the player wins."))
-        (useFor "Ruleset/Owasokotz Enter (Observed)" (source "Culin 1907: 122."))
-        (useFor "Ruleset/Owasokotz Enter (Observed)" (id "837"))
-        (source "Murray 1951: 153.")
-        (id "836")
-        (version "1.3.8")
-        (classification "board/race/reach")
-        (credit "Eric Piette")
-        (origin "This game was played in New Mexico, around 1907.")
-        }
-    )
+(info
+{
+(description "Owasokotz is a race game played by the Kawalka people of New Mexico. It can be played two ways, one which requires the player to pass the starting point, and another which requires the player to land exactly on the starting point, which also allows players to send each other back to start.")
+(aliases {"Wasokuts"})
+(useFor "Ruleset/Owasokotz Pass (Observed)" (rules "Forty stones arranged in a circle, with a larger gap after every tenth stone. These gaps are known as doors. Any number of players, each player begins with one piece, which begins at the east door. Three sticks used as dice, black on one side, white on the other, with one stick notched on the white side. The throws are as follows: two black with one notched white side up = 15; three white sides up = 10; two black and one white, not notched = 3, two white and one black = 2, three black = 5. Throws of 10 and 15 grant the player another throw. Players may move in either direction around the circle. To win, the player must complete a circuit of the board and pass the east door."))
+(useFor "Ruleset/Owasokotz Pass (Observed)" (source "Culin 1907: 121-122."))
+(useFor "Ruleset/Owasokotz Pass (Observed)" (id "836"))
+(useFor "Ruleset/Owasokotz Enter (Observed)" (rules "When a player's piece lands on a space occupied by an opponent's piece, the opponent's piece is sent back to the east door. The first player to reach the east door after making a circuit, whether passing it or landing exactly on it, the player wins."))
+(useFor "Ruleset/Owasokotz Enter (Observed)" (source "Culin 1907: 122."))
+(useFor "Ruleset/Owasokotz Enter (Observed)" (id "837"))
+(source "Murray 1951: 153.")
+(id "836")
+(version "1.3.9")
+(classification "board/race/reach")
+(credit "Eric Piette")
+(origin "This game was played in New Mexico, around 1907.")
+}
+)
     
     (graphics {
         (piece Scale "Marker" 0.5)

@@ -6,7 +6,7 @@
 
 (option "Variant" <Variant> args:{ <variant> }
     {
-    (item "Four-Fang1" <
+    (item "Four-Fang (Ludii 1)" <
         
         (players 2)
         
@@ -307,7 +307,7 @@
         
         (rules 
             (start 
-                (place "Marker" "Hand" count:7)
+                (place "Marker" "Hand" count:24)
             )
             phases:{ 
             (phase "FirstPlacement" P1 
@@ -396,9 +396,549 @@
             )
         )
         
-    > "The Four-Fang1 ruleset.")
+    > "The Four-Fang (Ludii 1) ruleset.")
     
-    (item "Four-Fang2" <
+    (item "Four-Fang (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 4)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (> 
+                                (count Sites in:
+                                    (forEach 
+                                        (sites Around 
+                                            (last To)
+                                        )
+                                        if:
+                                        (if 
+                                            (is Empty 
+                                                (site)
+                                            )
+                                            
+                                            (or 
+                                                (and { 
+                                                    (is In 
+                                                        (last To)
+                                                        
+                                                        (sites { 
+                                                            (ahead 
+                                                                (site)
+                                                            N )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            S )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            W )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            E )
+                                                            }
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            N )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            S )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            W )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            E )
+                                                        )
+                                                    )
+                                                    }
+                                                )
+                                                
+                                                (and { 
+                                                    (is In 
+                                                        (last To)
+                                                        
+                                                        (sites { 
+                                                            (ahead 
+                                                                (site)
+                                                            NE )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            SE )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            SW )
+                                                            
+                                                            (ahead 
+                                                                (site)
+                                                            NW )
+                                                            }
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            NE )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            SE )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            SW )
+                                                        )
+                                                    )
+                                                    
+                                                    (is Mover 
+                                                        (who at:
+                                                            (ahead 
+                                                                (site)
+                                                            NW )
+                                                        )
+                                                    )
+                                                    }
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            0 )
+                            
+                            (and 
+                                (set Value Mover 
+                                    (count Sites in:
+                                        (forEach 
+                                            (sites Around 
+                                                (last To)
+                                            )
+                                            if:
+                                            (if 
+                                                (is Empty 
+                                                    (site)
+                                                )
+                                                
+                                                (or 
+                                                    (and { 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites { 
+                                                                (ahead 
+                                                                    (site )
+                                                                N )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                S )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                W )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                E )
+                                                                }
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                N )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                S )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                W )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                E )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                    
+                                                    (and { 
+                                                        (is In 
+                                                            (last To)
+                                                            
+                                                            (sites { 
+                                                                (ahead 
+                                                                    (site )
+                                                                NE )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                SE )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                SW )
+                                                                
+                                                                (ahead 
+                                                                    (site )
+                                                                NW )
+                                                                }
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                NE )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                SE )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                SW )
+                                                            )
+                                                        )
+                                                        
+                                                        (is Mover 
+                                                            (who at:
+                                                                (ahead 
+                                                                    (site)
+                                                                NW )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:40)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (forEach 
+                                (sites Occupied by:Next container:"Board")
+                                if:
+                                (and 
+                                    (not 
+                                        (is Line 3 All through:
+                                            (site)
+                                        )
+                                    )
+                                    
+                                    (not 
+                                        (is Pattern { F R F R F R F }
+                                            from:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (or 
+                                        (is Line 3 All)
+                                        
+                                        (is Pattern { F R F R F R F }
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (forEach 
+                                (sites Occupied by:Next container:"Board")
+                                if:
+                                (and 
+                                    (not 
+                                        (is Line 3 All through:
+                                            (site)
+                                        )
+                                    )
+                                    
+                                    (not 
+                                        (is Pattern { F R F R F R F }
+                                            from:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Four-Fang (Ludii 2) ruleset.")
+    
+    (item "Four-Fang (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 4)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (or 
+                                (is Line 3 All)
+                                
+                                (is Pattern { F R F R F R F }
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:24)
+            )
+            phases:{ 
+            (phase "FirstPlacement" P1 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Centre)
+                        )
+                    )
+                )
+                
+                (nextPhase "Placement")
+            )
+            
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Playing" )
+            )
+            
+            (phase "Playing" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Next)
+                            
+                            (then 
+                                (if 
+                                    (> 
+                                        (value Player Mover)
+                                    1)
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Value Mover 
+                                            (- 
+                                                (value Player Mover)
+                                            1)
+                                        )
+                                    )
+                                    
+                                    (set Value Mover 0)
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Four-Fang (Ludii 3) ruleset.")
+    
+    (item "Four-Fang (Ludii 4)" <
         
         (players 2)
         
@@ -699,386 +1239,253 @@
         
         (rules 
             (start { 
-                (place "Marker" "Hand" count:16)
+                (place Stack "Marker1" 
+                    (handSite P1)
+                count:12)
                 
-                (place "Marker1" 
-                    (union 
-                        (sites Top)
-                        
-                        (difference 
-                            (sites Right)
-                            
-                            (sites Bottom)
-                        )
-                    )
-                )
-                
-                (place "Marker2" 
-                    (union 
-                        (sites Bottom)
-                        
-                        (difference 
-                            (sites Left)
-                            
-                            (sites Top)
-                        )
-                    )
-                )
+                (place Stack "Marker2" 
+                    (handSite P2)
+                count:12)
                 }
             )
-            
-            (play 
-                (forEach Piece)
-            )
-            
-            (end 
-                (if 
-                    (no Moves Next)
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Four-Fang2 ruleset.")
-    
-    (item "Four-Fang3" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (square 4)
-            use:Vertex)
-            
-            (piece "Marker" Each 
-                (or 
+            phases:{ 
+            (phase "Placement" 
+                (play 
                     (if 
-                        (= 1 
-                            (+ 
-                                (count Cell at:
+                        (is Prev Mover)
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (forEach 
+                                    (sites Occupied by:Next container:"Board")
+                                    if:
+                                    (= 
+                                        (size Stack at:
+                                            (site)
+                                        )
+                                    1)
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (not 
+                                (all Sites 
+                                    (sites Hand Mover)
+                                    if:
+                                    (= 0 
+                                        (count Cell at:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from 
                                     (handSite Mover)
                                 )
                                 
-                                (count Pieces Mover)
+                                (to 
+                                    (sites Empty)
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (is Line 3 if:
+                                            (= 1 
+                                                (size Stack at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
                             )
                         )
                         
-                        (move Hop 
-                            (between if:
-                                (is Enemy 
-                                    (who at:
-                                        (between)
+                        (then 
+                            (if 
+                                (and 
+                                    (not 
+                                        (is Next Mover)
+                                    )
+                                    
+                                    (and 
+                                        (all Sites 
+                                            (sites Hand P1)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (all Sites 
+                                            (sites Hand P2)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
                                     )
                                 )
                                 
-                                (apply 
-                                    (remove 
-                                        (between)
+                                (and 
+                                    (forEach Site 
+                                        (forEach 
+                                            (sites Occupied by:P1 container:"Board" )
+                                            if:
+                                            (= 
+                                                (size Stack at:
+                                                    (site)
+                                                )
+                                            2)
+                                        )
+                                        
+                                        (and { 
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (add 
+                                                (piece 
+                                                    (id "Marker" P1)
+                                                )
+                                                
+                                                (to 
+                                                    (site)
+                                                )
+                                            )
+                                            }
+                                        )
+                                    )
+                                    
+                                    (forEach Site 
+                                        (forEach 
+                                            (sites Occupied by:P2 container:"Board" )
+                                            if:
+                                            (= 
+                                                (size Stack at:
+                                                    (site)
+                                                )
+                                            2)
+                                        )
+                                        
+                                        (and { 
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (add 
+                                                (piece 
+                                                    (id "Marker" P2)
+                                                )
+                                                
+                                                (to 
+                                                    (site)
+                                                )
+                                            )
+                                            }
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (not 
+                            (is Next Mover)
+                        )
+                        
+                        (and 
+                            (all Sites 
+                                (sites Hand P1)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
                                     )
                                 )
                             )
                             
-                            (to if:
-                                (is Empty 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                    
-                    (move Slide 
-                        (then 
-                            (custodial 
-                                (from 
-                                    (last To)
-                                )
-                                
-                                (between 
-                                    (range 1 
-                                        (count Rows)
-                                    )
-                                    if:
-                                    (is Enemy 
-                                        (who at:
-                                            (between)
-                                        )
-                                    )
-                                    
-                                    (apply 
-                                        (and 
-                                            (remove 
-                                                (between)
-                                            )
-                                            
-                                            (fromTo 
-                                                (from 
-                                                    (handSite Mover)
-                                                )
-                                                
-                                                (to 
-                                                    (between)
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                                
-                                (to if:
-                                    (is Friend 
-                                        (who at:
-                                            (to)
-                                        )
+                            (all Sites 
+                                (sites Hand P2)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
                                     )
                                 )
                             )
                         )
                     )
-                )
+                "Movement" )
             )
             
-            (hand Each)
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:7)
-            )
-            phases:{ 
-            (phase "FirstPlacement" P1 
-                (play 
-                    (move 
-                        (from 
-                            (handSite Mover)
-                        )
-                        
-                        (to 
-                            (sites Centre)
-                        )
-                    )
-                )
-                
-                (nextPhase "Placement")
-            )
-            
-            (phase "Placement" 
-                (play 
-                    (move 
-                        (from 
-                            (handSite Mover)
-                        )
-                        
-                        (to 
-                            (sites Empty)
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Playing" )
-            )
-            
-            (phase "Playing" 
+            (phase "Movement" 
                 (play 
                     (if 
                         (is Prev Mover)
                         
                         (move Remove 
-                            (sites Occupied by:Next)
-                            
-                            (then 
-                                (if 
-                                    (> 
-                                        (value Player Mover)
-                                    1)
-                                    
-                                    (and 
-                                        (moveAgain)
-                                        
-                                        (set Value Mover 
-                                            (- 
-                                                (value Player Mover)
-                                            1)
-                                        )
-                                    )
-                                    
-                                    (set Value Mover 0)
-                                )
-                            )
+                            (sites Occupied by:Enemy container:"Board")
                         )
                         
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (no Pieces Next)
-                    
-                    (result Next Loss)
-                )
-            )
-        )
-        
-    > "The Four-Fang3 ruleset.")
-    
-    (item "Four-Fang4" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (square 4)
-            use:Vertex)
-            
-            (piece "Marker" Each 
-                (or 
-                    (if 
-                        (= 1 
-                            (+ 
-                                (count Cell at:
-                                    (handSite Mover)
-                                )
-                                
+                        (if 
+                            (> 
                                 (count Pieces Mover)
-                            )
-                        )
-                        
-                        (move Hop 
-                            (between if:
-                                (is Enemy 
-                                    (who at:
-                                        (between)
-                                    )
-                                )
-                                
-                                (apply 
-                                    (remove 
-                                        (between)
-                                    )
-                                )
-                            )
+                            3)
                             
-                            (to if:
-                                (is Empty 
-                                    (to)
-                                )
-                            )
-                        )
-                    )
-                    
-                    (move Slide 
-                        (then 
-                            (custodial 
+                            (forEach Piece)
+                            
+                            (move 
                                 (from 
-                                    (last To)
+                                    (sites Occupied by:Mover)
                                 )
                                 
-                                (between 
-                                    (range 1 
-                                        (count Rows)
-                                    )
-                                    if:
-                                    (is Enemy 
-                                        (who at:
-                                            (between)
-                                        )
-                                    )
-                                    
-                                    (apply 
-                                        (and 
-                                            (remove 
-                                                (between)
-                                            )
-                                            
-                                            (fromTo 
-                                                (from 
-                                                    (handSite Mover)
-                                                )
-                                                
-                                                (to 
-                                                    (between)
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                                
-                                (to if:
-                                    (is Friend 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
+                                (to 
+                                    (sites Empty)
                                 )
                             )
                         )
                     )
                 )
+                
+                (end 
+                    (if 
+                        (no Moves Next)
+                        
+                        (result Mover Win)
+                    )
+                )
             )
-            
-            (hand Each)
             }
         )
         
-        (rules 
-            (start { 
-                (place "Marker" "Hand" count:16)
-                
-                (place "Marker1" 
-                    (union 
-                        (sites Top)
-                        
-                        (difference 
-                            (sites Right)
-                            
-                            (sites Bottom)
-                        )
-                    )
-                )
-                
-                (place "Marker2" 
-                    (union 
-                        (sites Bottom)
-                        
-                        (difference 
-                            (sites Left)
-                            
-                            (sites Top)
-                        )
-                    )
-                )
-                }
-            )
-            
-            (play 
-                (forEach Piece)
-            )
-            
-            (end 
-                (if 
-                    (no Moves Next)
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Four-Fang4 ruleset.")
+    > "The Four-Fang (Ludii 4) ruleset.")
     
-    (item "Four-Fang5" <
+    (item "Four-Fang (Ludii 5)" <
         
         (players 2)
         
@@ -1094,6 +1501,20 @@
                             (to)
                         )
                     )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 if:
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
                 )
             )
             
@@ -1103,7 +1524,7 @@
         
         (rules 
             (start 
-                (place "Marker" "Hand" count:7)
+                (place "Marker" "Hand" count:24)
             )
             phases:{ 
             (phase "FirstPlacement" P1 
@@ -1192,9 +1613,9 @@
             )
         )
         
-    > "The Four-Fang5 ruleset.")
+    > "The Four-Fang (Ludii 5) ruleset.")
     
-    (item "Four-Fang6" <
+    (item "Four-Fang (Ludii 6)" <
         
         (players 2)
         
@@ -1495,54 +1916,386 @@
         
         (rules 
             (start 
-                (place "Marker" "Hand" count:3)
+                (place "Marker" "Hand" count:12)
             )
             phases:{ 
             (phase "Placement" 
                 (play 
-                    (move 
-                        (from 
-                            (handSite Mover)
-                        )
+                    (if 
+                        (= 
+                            (count Moves)
+                        24)
                         
-                        (to 
-                            (sites Empty)
+                        (forEach Piece)
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (difference 
+                                    (sites Empty)
+                                    
+                                    (centrePoint)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (or 
+                                        (= 
+                                            (count Moves)
+                                        24)
+                                        
+                                        (not 
+                                            (is Prev Mover)
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
                         )
                     )
                 )
                 
                 (nextPhase 
-                    (all Sites 
-                        (sites Hand P2)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement" )
+                    (= 
+                        (count Moves)
+                    25)
+                "Movement")
             )
             
             (phase "Movement" 
                 (play 
-                    (forEach Piece)
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Step 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (to if:
+                                (and 
+                                    (is Empty 
+                                        (to)
+                                    )
+                                    
+                                    (or { 
+                                        (and 
+                                            (is Enemy 
+                                                (who at:
+                                                    (ahead 
+                                                        (to)
+                                                    W)
+                                                )
+                                            )
+                                            
+                                            (is Friend 
+                                                (who at:
+                                                    (ahead 
+                                                        (ahead 
+                                                            (to)
+                                                        W)
+                                                    W )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (and 
+                                            (is Enemy 
+                                                (who at:
+                                                    (ahead 
+                                                        (to)
+                                                    E)
+                                                )
+                                            )
+                                            
+                                            (is Friend 
+                                                (who at:
+                                                    (ahead 
+                                                        (ahead 
+                                                            (to)
+                                                        E)
+                                                    E )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (and 
+                                            (is Enemy 
+                                                (who at:
+                                                    (ahead 
+                                                        (to)
+                                                    N)
+                                                )
+                                            )
+                                            
+                                            (is Friend 
+                                                (who at:
+                                                    (ahead 
+                                                        (ahead 
+                                                            (to)
+                                                        N)
+                                                    N )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (and 
+                                            (is Enemy 
+                                                (who at:
+                                                    (ahead 
+                                                        (to)
+                                                    S)
+                                                )
+                                            )
+                                            
+                                            (is Friend 
+                                                (who at:
+                                                    (ahead 
+                                                        (ahead 
+                                                            (to)
+                                                        S)
+                                                    S )
+                                                )
+                                            )
+                                        )
+                                        }
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (custodial 
+                                    (from 
+                                        (last To)
+                                    )
+                                    Orthogonal 
+                                    (between 
+                                        (max 1)
+                                        if:
+                                        (and 
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                            
+                                            (!= 
+                                                (centrePoint)
+                                                
+                                                (between)
+                                            )
+                                        )
+                                        
+                                        (apply 
+                                            (and 
+                                                (remove 
+                                                    (between)
+                                                )
+                                                
+                                                (if 
+                                                    (or { 
+                                                        (can Move 
+                                                            (custodial 
+                                                                (from 
+                                                                    (ahead 
+                                                                        (last To )
+                                                                    N )
+                                                                )
+                                                                Orthogonal 
+                                                                (between 
+                                                                    (max 1 )
+                                                                    if:
+                                                                    (and 
+                                                                        (is Enemy 
+                                                                            (who at:
+                                                                                (between )
+                                                                            )
+                                                                        )
+                                                                        
+                                                                        (!= 
+                                                                            (centrePoint )
+                                                                            
+                                                                            (between )
+                                                                        )
+                                                                    )
+                                                                )
+                                                                
+                                                                (to if:
+                                                                    (is Friend 
+                                                                        (who at:
+                                                                            (to )
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (can Move 
+                                                            (custodial 
+                                                                (from 
+                                                                    (ahead 
+                                                                        (last To )
+                                                                    E )
+                                                                )
+                                                                Orthogonal 
+                                                                (between 
+                                                                    (max 1 )
+                                                                    if:
+                                                                    (and 
+                                                                        (is Enemy 
+                                                                            (who at:
+                                                                                (between )
+                                                                            )
+                                                                        )
+                                                                        
+                                                                        (!= 
+                                                                            (centrePoint )
+                                                                            
+                                                                            (between )
+                                                                        )
+                                                                    )
+                                                                )
+                                                                
+                                                                (to if:
+                                                                    (is Friend 
+                                                                        (who at:
+                                                                            (to )
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (can Move 
+                                                            (custodial 
+                                                                (from 
+                                                                    (ahead 
+                                                                        (last To )
+                                                                    W )
+                                                                )
+                                                                Orthogonal 
+                                                                (between 
+                                                                    (max 1 )
+                                                                    if:
+                                                                    (and 
+                                                                        (is Enemy 
+                                                                            (who at:
+                                                                                (between )
+                                                                            )
+                                                                        )
+                                                                        
+                                                                        (!= 
+                                                                            (centrePoint )
+                                                                            
+                                                                            (between )
+                                                                        )
+                                                                    )
+                                                                )
+                                                                
+                                                                (to if:
+                                                                    (is Friend 
+                                                                        (who at:
+                                                                            (to )
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (can Move 
+                                                            (custodial 
+                                                                (from 
+                                                                    (ahead 
+                                                                        (last To )
+                                                                    S )
+                                                                )
+                                                                Orthogonal 
+                                                                (between 
+                                                                    (max 1 )
+                                                                    if:
+                                                                    (and 
+                                                                        (is Enemy 
+                                                                            (who at:
+                                                                                (between )
+                                                                            )
+                                                                        )
+                                                                        
+                                                                        (!= 
+                                                                            (centrePoint )
+                                                                            
+                                                                            (between )
+                                                                        )
+                                                                    )
+                                                                )
+                                                                
+                                                                (to if:
+                                                                    (is Friend 
+                                                                        (who at:
+                                                                            (to )
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                        }
+                                                    )
+                                                    
+                                                    (moveAgain)
+                                                    
+                                                    (if 
+                                                        (no Moves Next)
+                                                        
+                                                        (and 
+                                                            (set Pending)
+                                                            
+                                                            (moveAgain)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Friend 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (do 
+                            (forEach Piece)
+                            ifAfterwards:
+                            (not 
+                                (no Moves Next)
+                            )
+                        )
+                    )
                 )
             )
             }
             
             (end 
                 (if 
-                    (is Line 3 Orthogonal)
+                    (no Pieces Next)
                     
-                    (result Mover Win)
+                    (result Next Loss)
                 )
             )
         )
         
-    > "The Four-Fang6 ruleset.")
+    > "The Four-Fang (Ludii 6) ruleset.")
     
-    (item "Four-Fang7" <
+    (item "Four-Fang (Ludii 7)" <
         
         (players 2)
         
@@ -1552,10 +2305,23 @@
             use:Vertex)
             
             (piece "Marker" Each 
-                (move Step All 
+                (move Step 
                     (to if:
                         (is Empty 
                             (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (or 
+                                (is Line 3 All)
+                                
+                                (is Pattern { F R F R F R F }
+                                )
+                            )
+                            
+                            (moveAgain)
                         )
                     )
                 )
@@ -1567,34 +2333,56 @@
         
         (rules 
             (start 
-                (place "Marker" "Hand" count:7)
+                (place "Marker" "Hand" count:40)
             )
             phases:{ 
-            (phase "FirstPlacement" P1 
-                (play 
-                    (move 
-                        (from 
-                            (handSite Mover)
-                        )
-                        
-                        (to 
-                            (sites Centre)
-                        )
-                    )
-                )
-                
-                (nextPhase "Placement")
-            )
-            
             (phase "Placement" 
                 (play 
-                    (move 
-                        (from 
-                            (handSite Mover)
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (forEach 
+                                (sites Occupied by:Next container:"Board")
+                                if:
+                                (and 
+                                    (not 
+                                        (is Line 3 All through:
+                                            (site)
+                                        )
+                                    )
+                                    
+                                    (not 
+                                        (is Pattern { F R F R F R F }
+                                            from:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
                         )
                         
-                        (to 
-                            (sites Empty)
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (or 
+                                        (is Line 3 All)
+                                        
+                                        (is Pattern { F R F R F R F }
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
                         )
                     )
                 )
@@ -1609,34 +2397,31 @@
                             )
                         )
                     )
-                "Playing" )
+                "Movement" )
             )
             
-            (phase "Playing" 
+            (phase "Movement" 
                 (play 
                     (if 
                         (is Prev Mover)
                         
                         (move Remove 
-                            (sites Occupied by:Next)
-                            
-                            (then 
-                                (if 
-                                    (> 
-                                        (value Player Mover)
-                                    1)
-                                    
-                                    (and 
-                                        (moveAgain)
-                                        
-                                        (set Value Mover 
-                                            (- 
-                                                (value Player Mover)
-                                            1)
+                            (forEach 
+                                (sites Occupied by:Next container:"Board")
+                                if:
+                                (and 
+                                    (not 
+                                        (is Line 3 All through:
+                                            (site)
                                         )
                                     )
                                     
-                                    (set Value Mover 0)
+                                    (not 
+                                        (is Pattern { F R F R F R F }
+                                            from:
+                                            (site)
+                                        )
+                                    )
                                 )
                             )
                         )
@@ -1656,105 +2441,9 @@
             )
         )
         
-    > "The Four-Fang7 ruleset.")
+    > "The Four-Fang (Ludii 7) ruleset.")
     
-    (item "Four-Fang8" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (square 4)
-            use:Vertex)
-            
-            (piece "Marker" Each 
-                (or 
-                    (move Step 
-                        (to if:
-                            (is Empty 
-                                (to)
-                            )
-                        )
-                    )
-                    
-                    (move Hop 
-                        (between if:
-                            (is Enemy 
-                                (who at:
-                                    (between)
-                                )
-                            )
-                            
-                            (apply 
-                                (remove 
-                                    (between)
-                                )
-                            )
-                        )
-                        
-                        (to if:
-                            (is Empty 
-                                (to)
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (hand Each)
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:3)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (move 
-                        (from 
-                            (handSite Mover)
-                        )
-                        
-                        (to 
-                            (sites Empty)
-                        )
-                    )
-                )
-                
-                (nextPhase 
-                    (all Sites 
-                        (sites Hand P2)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement" )
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (forEach Piece)
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (is Line 3)
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Four-Fang8 ruleset.")
-    
-    (item "Four-Fang9" <
+    (item "Four-Fang (Ludii 8)" <
         
         (players 2)
         
@@ -1770,6 +2459,304 @@
                             (to)
                         )
                     )
+                    
+                    (then 
+                        (if 
+                            (or 
+                                (is Line 3 All)
+                                
+                                (is Pattern { F R F R F R F }
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Marker1" 
+                    (handSite P1)
+                count:12)
+                
+                (place Stack "Marker2" 
+                    (handSite P2)
+                count:12)
+                }
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (forEach 
+                                    (sites Occupied by:Next container:"Board")
+                                    if:
+                                    (= 
+                                        (size Stack at:
+                                            (site)
+                                        )
+                                    1)
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (not 
+                                (all Sites 
+                                    (sites Hand Mover)
+                                    if:
+                                    (= 0 
+                                        (count Cell at:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (is Line 3 if:
+                                            (= 1 
+                                                (size Stack at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (and 
+                                    (not 
+                                        (is Next Mover)
+                                    )
+                                    
+                                    (and 
+                                        (all Sites 
+                                            (sites Hand P1)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (all Sites 
+                                            (sites Hand P2)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (and 
+                                    (forEach Site 
+                                        (forEach 
+                                            (sites Occupied by:P1 container:"Board" )
+                                            if:
+                                            (= 
+                                                (size Stack at:
+                                                    (site)
+                                                )
+                                            2)
+                                        )
+                                        
+                                        (and { 
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (add 
+                                                (piece 
+                                                    (id "Marker" P1)
+                                                )
+                                                
+                                                (to 
+                                                    (site)
+                                                )
+                                            )
+                                            }
+                                        )
+                                    )
+                                    
+                                    (forEach Site 
+                                        (forEach 
+                                            (sites Occupied by:P2 container:"Board" )
+                                            if:
+                                            (= 
+                                                (size Stack at:
+                                                    (site)
+                                                )
+                                            2)
+                                        )
+                                        
+                                        (and { 
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (add 
+                                                (piece 
+                                                    (id "Marker" P2)
+                                                )
+                                                
+                                                (to 
+                                                    (site)
+                                                )
+                                            )
+                                            }
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (and 
+                        (not 
+                            (is Next Mover)
+                        )
+                        
+                        (and 
+                            (all Sites 
+                                (sites Hand P1)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
+                            )
+                            
+                            (all Sites 
+                                (sites Hand P2)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            3)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (end 
+                    (if 
+                        (no Moves Next)
+                        
+                        (result Mover Win)
+                    )
+                )
+            )
+            }
+        )
+        
+    > "The Four-Fang (Ludii 8) ruleset.")
+    
+    (item "Four-Fang (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 4)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 if:
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
                 )
             )
             
@@ -1779,18 +2766,56 @@
         
         (rules 
             (start 
-                (place "Marker" "Hand" count:3)
+                (place "Marker" "Hand" count:40)
             )
             phases:{ 
             (phase "Placement" 
                 (play 
-                    (move 
-                        (from 
-                            (handSite Mover)
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (forEach 
+                                (sites Occupied by:Next container:"Board")
+                                if:
+                                (and 
+                                    (not 
+                                        (is Line 3 All through:
+                                            (site)
+                                        )
+                                    )
+                                    
+                                    (not 
+                                        (is Pattern { F R F R F R F }
+                                            from:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
                         )
                         
-                        (to 
-                            (sites Empty)
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (or 
+                                        (is Line 3 All)
+                                        
+                                        (is Pattern { F R F R F R F }
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
                         )
                     )
                 )
@@ -1810,23 +2835,48 @@
             
             (phase "Movement" 
                 (play 
-                    (forEach Piece)
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (forEach 
+                                (sites Occupied by:Next container:"Board")
+                                if:
+                                (and 
+                                    (not 
+                                        (is Line 3 All through:
+                                            (site)
+                                        )
+                                    )
+                                    
+                                    (not 
+                                        (is Pattern { F R F R F R F }
+                                            from:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                    )
                 )
             )
             }
             
             (end 
                 (if 
-                    (is Line 3)
+                    (no Pieces Next)
                     
-                    (result Mover Win)
+                    (result Next Loss)
                 )
             )
         )
         
-    > "The Four-Fang9 ruleset.")
+    > "The Four-Fang (Ludii 9) ruleset.")
     
-    (item "Four-Fang10" <
+    (item "Four-Fang (Ludii 10)" <
         
         (players 2)
         
@@ -1836,10 +2886,24 @@
             use:Vertex)
             
             (piece "Marker" Each 
-                (move Step All 
+                (move Step 
                     (to if:
                         (is Empty 
                             (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 if:
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
                         )
                     )
                 )
@@ -1850,30 +2914,205 @@
         )
         
         (rules 
-            (start 
-                (place "Marker" "Hand" count:3)
+            (start { 
+                (place Stack "Marker1" 
+                    (handSite P1)
+                count:12)
+                
+                (place Stack "Marker2" 
+                    (handSite P2)
+                count:12)
+                }
             )
             phases:{ 
             (phase "Placement" 
                 (play 
-                    (move 
-                        (from 
-                            (handSite Mover)
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (forEach 
+                                    (sites Occupied by:Next container:"Board")
+                                    if:
+                                    (= 
+                                        (size Stack at:
+                                            (site)
+                                        )
+                                    1)
+                                )
+                            )
                         )
                         
-                        (to 
-                            (sites Empty)
+                        (if 
+                            (not 
+                                (all Sites 
+                                    (sites Hand Mover)
+                                    if:
+                                    (= 0 
+                                        (count Cell at:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (is Line 3 if:
+                                            (= 1 
+                                                (size Stack at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (and 
+                                    (not 
+                                        (is Next Mover)
+                                    )
+                                    
+                                    (and 
+                                        (all Sites 
+                                            (sites Hand P1)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (all Sites 
+                                            (sites Hand P2)
+                                            if:
+                                            (= 0 
+                                                (count Cell at:
+                                                    (site)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (and 
+                                    (forEach Site 
+                                        (forEach 
+                                            (sites Occupied by:P1 container:"Board" )
+                                            if:
+                                            (= 
+                                                (size Stack at:
+                                                    (site)
+                                                )
+                                            2)
+                                        )
+                                        
+                                        (and { 
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (add 
+                                                (piece 
+                                                    (id "Marker" P1)
+                                                )
+                                                
+                                                (to 
+                                                    (site)
+                                                )
+                                            )
+                                            }
+                                        )
+                                    )
+                                    
+                                    (forEach Site 
+                                        (forEach 
+                                            (sites Occupied by:P2 container:"Board" )
+                                            if:
+                                            (= 
+                                                (size Stack at:
+                                                    (site)
+                                                )
+                                            2)
+                                        )
+                                        
+                                        (and { 
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (remove 
+                                                (site)
+                                            )
+                                            
+                                            (add 
+                                                (piece 
+                                                    (id "Marker" P2)
+                                                )
+                                                
+                                                (to 
+                                                    (site)
+                                                )
+                                            )
+                                            }
+                                        )
+                                    )
+                                )
+                            )
                         )
                     )
                 )
                 
                 (nextPhase 
-                    (all Sites 
-                        (sites Hand P2)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
+                    (and 
+                        (not 
+                            (is Next Mover)
+                        )
+                        
+                        (and 
+                            (all Sites 
+                                (sites Hand P1)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
+                            )
+                            
+                            (all Sites 
+                                (sites Hand P2)
+                                if:
+                                (= 0 
+                                    (count Cell at:
+                                        (site)
+                                    )
+                                )
                             )
                         )
                     )
@@ -1882,21 +3121,45 @@
             
             (phase "Movement" 
                 (play 
-                    (forEach Piece)
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            3)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (end 
+                    (if 
+                        (no Moves Next)
+                        
+                        (result Mover Win)
+                    )
                 )
             )
             }
-            
-            (end 
-                (if 
-                    (is Line 3 Orthogonal)
-                    
-                    (result Mover Win)
-                )
-            )
         )
         
-    > "The Four-Fang10 ruleset.")
+    > "The Four-Fang (Ludii 10) ruleset.")
     
     (item "Incomplete"
         <
@@ -1920,36 +3183,36 @@
 
 (rulesets {
     
-    (ruleset "Ruleset/Four-Fang1 (Reconstructed)" {
-        "Variant/Four-Fang1"
+    (ruleset "Ruleset/Four-Fang (Ludii 1) (Reconstructed)" {
+        "Variant/Four-Fang (Ludii 1)"
     })
-    (ruleset "Ruleset/Four-Fang2 (Reconstructed)" {
-        "Variant/Four-Fang2"
+    (ruleset "Ruleset/Four-Fang (Ludii 2) (Reconstructed)" {
+        "Variant/Four-Fang (Ludii 2)"
     })
-    (ruleset "Ruleset/Four-Fang3 (Reconstructed)" {
-        "Variant/Four-Fang3"
+    (ruleset "Ruleset/Four-Fang (Ludii 3) (Reconstructed)" {
+        "Variant/Four-Fang (Ludii 3)"
     })
-    (ruleset "Ruleset/Four-Fang4 (Reconstructed)" {
-        "Variant/Four-Fang4"
+    (ruleset "Ruleset/Four-Fang (Ludii 4) (Reconstructed)" {
+        "Variant/Four-Fang (Ludii 4)"
     })
-    (ruleset "Ruleset/Four-Fang5 (Reconstructed)" {
-        "Variant/Four-Fang5"
+    (ruleset "Ruleset/Four-Fang (Ludii 5) (Reconstructed)" {
+        "Variant/Four-Fang (Ludii 5)"
     })
-    (ruleset "Ruleset/Four-Fang6 (Reconstructed)" {
-        "Variant/Four-Fang6"
+    (ruleset "Ruleset/Four-Fang (Ludii 6) (Reconstructed)" {
+        "Variant/Four-Fang (Ludii 6)"
     })
-    (ruleset "Ruleset/Four-Fang7 (Reconstructed)" {
-        "Variant/Four-Fang7"
+    (ruleset "Ruleset/Four-Fang (Ludii 7) (Reconstructed)" {
+        "Variant/Four-Fang (Ludii 7)"
     })
-    (ruleset "Ruleset/Four-Fang8 (Reconstructed)" {
-        "Variant/Four-Fang8"
+    (ruleset "Ruleset/Four-Fang (Ludii 8) (Reconstructed)" {
+        "Variant/Four-Fang (Ludii 8)"
     })
-    (ruleset "Ruleset/Four-Fang9 (Reconstructed)" {
-        "Variant/Four-Fang9"
+    (ruleset "Ruleset/Four-Fang (Ludii 9) (Reconstructed)" {
+        "Variant/Four-Fang (Ludii 9)"
     })
-    (ruleset "Ruleset/Four-Fang10 (Reconstructed)" {
-        "Variant/Four-Fang10"
-    }) 
+    (ruleset "Ruleset/Four-Fang (Ludii 10) (Reconstructed)" {
+        "Variant/Four-Fang (Ludii 10)"
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -1961,144 +3224,141 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Four-Fang is a game that is played in China. It was played during the twentieth century, but graffiti at earlier sites suggest that it could be much older. Though it was observed, the rules were not documented, but it may be similar to the game Fang played by the Uighur people.")
-        (useFor "Ruleset/Historical Information (Incomplete)" (rules "4x4 intersecting lines."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (id "1135"))
-        (useFor "Ruleset/Four-Fang1 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false is greater than 0, set the value of Player the moving player to the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false and move again.
-                Players take turns moving.
-                Rules: 
-                From vertex in Player the moving player's hand site 0 to vertex in the centre sites of the board moveRule: true from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true if in the same turn, remove pieces at sites occupied by any component owned by Next then if the value of Player the moving player is greater than 1, move again and set the value of Player the moving player to the value of Player the moving player minus 1, else set the value of Player the moving player to 0, else move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Four-Fang1 (Reconstructed)" (id "2606"))
-        (useFor "Ruleset/Four-Fang2 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false is greater than 0, set the value of Player the moving player to the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false and move again.
-                Players take turns moving.
-                Setup:
-                Place a Marker for player one at the union of the top sites of the board and the difference between the right sites of the board and the bottom sites of the board.
-                Place a Marker for player two at the union of the bottom sites of the board and the difference between the left sites of the board and the top sites of the board..
-                Rules: 
-                Move one of your pieces.
-                Aim: 
-                If the next player cannot move, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Four-Fang2 (Reconstructed)" (id "2607"))
-        (useFor "Ruleset/Four-Fang3 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers if 1 is equal to add the following values: [the total number of cell in Player the moving player's hand site 0,the number of null owned by Player the moving player], hop adjacent or slide from the location of the piece in the adjacent direction through [between] is in the set of empty vertexs then for all flanked pieces on Vertexes starting from the to location of the last move with Adjacent direction with a limit of the number of Vertex rows pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and from vertex in Player the moving player's hand site 0 to vertex between moveRule: true.
-                Players take turns moving.
-                Rules: 
-                From vertex in Player the moving player's hand site 0 to vertex in the centre sites of the board moveRule: true from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true if in the same turn, remove pieces at sites occupied by any component owned by Next then if the value of Player the moving player is greater than 1, move again and set the value of Player the moving player to the value of Player the moving player minus 1, else set the value of Player the moving player to 0, else move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Four-Fang3 (Reconstructed)" (id "2608"))
-        (useFor "Ruleset/Four-Fang4 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers if 1 is equal to add the following values: [the total number of cell in Player the moving player's hand site 0,the number of null owned by Player the moving player], hop adjacent or slide from the location of the piece in the adjacent direction through [between] is in the set of empty vertexs then for all flanked pieces on Vertexes starting from the to location of the last move with Adjacent direction with a limit of the number of Vertex rows pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and from vertex in Player the moving player's hand site 0 to vertex between moveRule: true.
-                Players take turns moving.
-                Setup:
-                Place a Marker for player one at the union of the top sites of the board and the difference between the right sites of the board and the bottom sites of the board.
-                Place a Marker for player two at the union of the bottom sites of the board and the difference between the left sites of the board and the top sites of the board..
-                Rules: 
-                Move one of your pieces.
-                Aim: 
-                If the next player cannot move, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Four-Fang4 (Reconstructed)" (id "2609"))
-        (useFor "Ruleset/Four-Fang5 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent.
-                Players take turns moving.
-                Rules: 
-                From vertex in Player the moving player's hand site 0 to vertex in the centre sites of the board moveRule: true from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true if in the same turn, remove pieces at sites occupied by any component owned by Next then if the value of Player the moving player is greater than 1, move again and set the value of Player the moving player to the value of Player the moving player minus 1, else set the value of Player the moving player to 0, else move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Four-Fang5 (Reconstructed)" (id "2610"))
-        (useFor "Ruleset/Four-Fang6 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false is greater than 0, set the value of Player the moving player to the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false and move again.
-                Players take turns moving.
-                Rules: 
-                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
-                Aim: 
-                If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Four-Fang6 (Reconstructed)" (id "2611"))
-        (useFor "Ruleset/Four-Fang7 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step all.
-                Players take turns moving.
-                Rules: 
-                From vertex in Player the moving player's hand site 0 to vertex in the centre sites of the board moveRule: true from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true if in the same turn, remove pieces at sites occupied by any component owned by Next then if the value of Player the moving player is greater than 1, move again and set the value of Player the moving player to the value of Player the moving player minus 1, else set the value of Player the moving player to 0, else move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Four-Fang7 (Reconstructed)" (id "2612"))
-        (useFor "Ruleset/Four-Fang8 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent or hop adjacent.
-                Players take turns moving.
-                Rules: 
-                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
-                Aim: 
-                If a player places 3 of their pieces in an adjacent direction line, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Four-Fang8 (Reconstructed)" (id "2613"))
-        (useFor "Ruleset/Four-Fang9 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent.
-                Players take turns moving.
-                Rules: 
-                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
-                Aim: 
-                If a player places 3 of their pieces in an adjacent direction line, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Four-Fang9 (Reconstructed)" (id "2614"))
-        (useFor "Ruleset/Four-Fang10 (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step all.
-                Players take turns moving.
-                Rules: 
-                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
-                Aim: 
-                If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Four-Fang10 (Reconstructed)" (id "2615"))
-        (version "1.3.8")
-        (classification "board/war/reconstruction/done")
-        (credit "Eric Piette")
-        (origin "This game was played in China, from around 680 to 1999.")
-        }
-    )
+(info
+{
+(description "Four-Fang is a game that is played in China. It was played during the twentieth century, but graffiti at earlier sites suggest that it could be much older. Though it was observed, the rules were not documented, but it may be similar to the game Fang played by the Uighur people.")
+(useFor "Ruleset/Historical Information (Incomplete)" (rules "4x4 intersecting lines."))
+(useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+(useFor "Ruleset/Historical Information (Incomplete)" (id "1135"))
+(useFor "Ruleset/Four-Fang (Ludii 1) (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false is greater than 0, set the value of Player the moving player to the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false and move again.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in the centre sites of the board moveRule: true from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true if in the same turn, remove pieces at sites occupied by any component owned by Next then if the value of Player the moving player is greater than 1, move again and set the value of Player the moving player to the value of Player the moving player minus 1, else set the value of Player the moving player to 0, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Four-Fang (Ludii 1) (Reconstructed)" (id "3335"))
+(useFor "Ruleset/Four-Fang (Ludii 2) (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false is greater than 0, set the value of Player the moving player to the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false and move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at not a player places 3 of their pieces in an all direction line and not the walk [F,R,F,R,F,R,F] from vertex current site goes through any sites sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an all direction line or the walk [F,R,F,R,F,R,F] from vertex the to location of the last move goes through any sites, move again if in the same turn, remove pieces at not a player places 3 of their pieces in an all direction line and not the walk [F,R,F,R,F,R,F] from vertex current site goes through any sites sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Four-Fang (Ludii 2) (Reconstructed)" (id "3336"))
+(useFor "Ruleset/Four-Fang (Ludii 3) (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an all direction line or the walk [F,R,F,R,F,R,F] from vertex the to location of the last move goes through any sites, move again.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in the centre sites of the board moveRule: true from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true if in the same turn, remove pieces at sites occupied by any component owned by Next then if the value of Player the moving player is greater than 1, move again and set the value of Player the moving player to the value of Player the moving player minus 1, else set the value of Player the moving player to 0, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Four-Fang (Ludii 3) (Reconstructed)" (id "3337"))
+(useFor "Ruleset/Four-Fang (Ludii 4) (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false is greater than 0, set the value of Player the moving player to the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false and move again.
+Players take turns moving.
+Setup:
+     Place stack of [Marker1] at vertex Player 1's hand site 0
+     Place stack of [Marker2] at vertex Player 2's hand site 0.
+Rules: 
+     If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+
+"))
+(useFor "Ruleset/Four-Fang (Ludii 4) (Reconstructed)" (id "3338"))
+(useFor "Ruleset/Four-Fang (Ludii 5) (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Rules: 
+     From vertex in Player the moving player's hand site 0 to vertex in the centre sites of the board moveRule: true from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true if in the same turn, remove pieces at sites occupied by any component owned by Next then if the value of Player the moving player is greater than 1, move again and set the value of Player the moving player to the value of Player the moving player minus 1, else set the value of Player the moving player to 0, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Four-Fang (Ludii 5) (Reconstructed)" (id "3339"))
+(useFor "Ruleset/Four-Fang (Ludii 6) (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false is greater than 0, set the value of Player the moving player to the number of sites in if empty then the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction north, the Vertex 1 steps ahead of current site in the direction south, the Vertex 1 steps ahead of current site in the direction west, the Vertex 1 steps ahead of current site in the direction east], Player at  the Vertex 1 steps ahead of current site in the direction north is the mover, Player at  the Vertex 1 steps ahead of current site in the direction south is the mover, Player at  the Vertex 1 steps ahead of current site in the direction west is the mover and Player at  the Vertex 1 steps ahead of current site in the direction east is the mover or the to location of the last move is in sites [ the Vertex 1 steps ahead of current site in the direction ne, the Vertex 1 steps ahead of current site in the direction se, the Vertex 1 steps ahead of current site in the direction sw, the Vertex 1 steps ahead of current site in the direction nw], Player at  the Vertex 1 steps ahead of current site in the direction ne is the mover, Player at  the Vertex 1 steps ahead of current site in the direction se is the mover, Player at  the Vertex 1 steps ahead of current site in the direction sw is the mover and Player at  the Vertex 1 steps ahead of current site in the direction nw is the mover the number of sites within 1 spaces of the to location of the last move includeOrigin: false and move again.
+Players take turns moving.
+Rules: 
+     If the number of moves is equal to 24, move one of your pieces, else from vertex in Player the moving player's hand site 0 to vertex in the difference between the set of empty vertexs and site the centre point of the board moveRule: true then if the number of moves is equal to 24 or not in the same turn, move again if in the same turn, step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between and the centre point of the board is not equal to between if the friend is is a friendremove pieces at between and if can move for all flanked pieces on Vertexes starting from  the Vertex 1 steps ahead of the to location of the last move in the direction north with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between and the centre point of the board is not equal to between if the friend is is a friendremove pieces at between, can move for all flanked pieces on Vertexes starting from  the Vertex 1 steps ahead of the to location of the last move in the direction east with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between and the centre point of the board is not equal to between if the friend is is a friendremove pieces at between, can move for all flanked pieces on Vertexes starting from  the Vertex 1 steps ahead of the to location of the last move in the direction west with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between and the centre point of the board is not equal to between if the friend is is a friendremove pieces at between or can move for all flanked pieces on Vertexes starting from  the Vertex 1 steps ahead of the to location of the last move in the direction south with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between and the centre point of the board is not equal to between if the friend is is a friendremove pieces at between, move again, else if the next player cannot move, set pending and move again, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Four-Fang (Ludii 6) (Reconstructed)" (id "3340"))
+(useFor "Ruleset/Four-Fang (Ludii 7) (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an all direction line or the walk [F,R,F,R,F,R,F] from vertex the to location of the last move goes through any sites, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at not a player places 3 of their pieces in an all direction line and not the walk [F,R,F,R,F,R,F] from vertex current site goes through any sites sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an all direction line or the walk [F,R,F,R,F,R,F] from vertex the to location of the last move goes through any sites, move again if in the same turn, remove pieces at not a player places 3 of their pieces in an all direction line and not the walk [F,R,F,R,F,R,F] from vertex current site goes through any sites sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Four-Fang (Ludii 7) (Reconstructed)" (id "3341"))
+(useFor "Ruleset/Four-Fang (Ludii 8) (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an all direction line or the walk [F,R,F,R,F,R,F] from vertex the to location of the last move goes through any sites, move again.
+Players take turns moving.
+Setup:
+     Place stack of [Marker1] at vertex Player 1's hand site 0
+     Place stack of [Marker2] at vertex Player 2's hand site 0.
+Rules: 
+     If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+
+"))
+(useFor "Ruleset/Four-Fang (Ludii 8) (Reconstructed)" (id "3342"))
+(useFor "Ruleset/Four-Fang (Ludii 9) (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at not a player places 3 of their pieces in an all direction line and not the walk [F,R,F,R,F,R,F] from vertex current site goes through any sites sites occupied by any component owned by Next in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an all direction line or the walk [F,R,F,R,F,R,F] from vertex the to location of the last move goes through any sites, move again if in the same turn, remove pieces at not a player places 3 of their pieces in an all direction line and not the walk [F,R,F,R,F,R,F] from vertex current site goes through any sites sites occupied by any component owned by Next in Board, else move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+"))
+(useFor "Ruleset/Four-Fang (Ludii 9) (Reconstructed)" (id "3343"))
+(useFor "Ruleset/Four-Fang (Ludii 10) (Reconstructed)" (rules "The game Four-Fang is played by two players on a 4x4 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Setup:
+     Place stack of [Marker1] at vertex Player 1's hand site 0
+     Place stack of [Marker2] at vertex Player 2's hand site 0.
+Rules: 
+     If in the same turn, from vertex in Player the moving player's hand site 0 to vertex in the size of the stack on vertex current site is equal to 1 sites occupied by any component owned by Next in Board moveRule: true, else if not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+
+"))
+(useFor "Ruleset/Four-Fang (Ludii 10) (Reconstructed)" (id "3344"))
+(version "1.3.9")
+(classification "board/war/reconstruction/done")
+(credit "Eric Piette")
+(origin "This game was played in China, from around 680 to 1999.")
+}
+)
     
     (graphics {
         (show Edges Diagonal Hidden)

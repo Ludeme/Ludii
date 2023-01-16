@@ -56,13 +56,14 @@
     (info
         {
         
-        (useFor "Ruleset/Baghchal (Observed)" (rules "These rules were observed in Nepal in the 1930s. One player plays as four tigers, the other as twenty goats. Tigers can hop a goat to capture it. The goats try to block the tigers from moving. The tigers try to capture all the goats."))
+        (rules "These rules were observed in Nepal in the 1930s. >One player plays as four tigers, the other as twenty goats. Tigers can hop a goat to capture it. The goats try to block the tigers from moving. The tigers try to capture all the goats.​")
         
         }
     )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
+        (board Placement scale:0.8 offsetY:-0.2)
     })
     
     (ai 

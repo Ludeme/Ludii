@@ -56,13 +56,14 @@
     (info
         {
         
-        (useFor "Ruleset/Baghchal (Observed)" (rules "Dessa regler observerades i Nepal på 1930-talet. En spelare spelar som fyra tigrar, den andra som tjugo getter. Tigrar kan hoppa en get för att fånga den. Getterna försöker hindra tigrarna från att röra sig. Tigrarna försöker fånga alla getterna."))
+        (rules "Dessa regler observerades i Nepal på 1930-talet. >En spelare spelar som fyra tigrar, den andra som tjugo getter. Tigrar kan hoppa en get för att fånga den. Getterna försöker hindra tigrarna från att röra sig. Tigrarna försöker fånga alla getterna.")
         
         }
     )
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
+        (board Placement scale:0.8 offsetY:-0.2)
     })
     
     (ai 

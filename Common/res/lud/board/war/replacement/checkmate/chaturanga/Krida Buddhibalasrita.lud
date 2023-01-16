@@ -89,19 +89,19 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Krida Buddhibalasrita (\"Intellectual Game\") is a game with replacement captures played in southern India in the seventeenth of eighteenth century. It is a variation on Chaturanga, which is played throughout India in different ways.")
-        (rules "8x8 board, with markings in the four central squares, the four corner squares, and the two middle squares of each edge. The pieces have the following movement values: Raja (x1): moves one space in any direction; Mantri (x1): moves diagonally one space; Karabha (x2): jumps exactly two squares diagonally; Raji (x2): moves orthogonally one space and then diagonally another space, jumping over any intervening pieces; Kunjara (x2): moves orthogonally any distance; Patti (x8): move forward orthogonally one space, diagonally forward one space to capture. When a Patti reaches a marked space on the opposite edge of the board, it is promoted to Mantri if it is on a marked square. If it is on an unmarked square, the Patti must move back to the space from which it moved to the last row and is then promoted to Mantri. If the Raja can be taken on the opponent's next turn, it is in check. The Raja must not be in check at the end of the player's turn. If this is not possible, it is checkmate and the opponent wins.If a Raja is in stalemate, and no other pieces can move the player may remove one of the opponent's pieces causing the stalemate. If the opponent is reduced to only their Raja, it is also a victory, though considered a lesser one. Checking the opponent's Raja 64 consecutive times is a win.
-        ")
-        (source "Murray 1913: 63-65.")
-        (id "1446")
-        (version "1.3.8")
-        (classification "board/war/replacement/checkmate/chaturanga")
-        (credit "Eric Piette")
-        (origin "This game was played in India, from around 1600 to 1699.")
-        }
-    )
+(info
+{
+(description "Krida Buddhibalasrita (\"Intellectual Game\") is a game with replacement captures played in southern India in the seventeenth of eighteenth century. It is a variation on Chaturanga, which is played throughout India in different ways.")
+(rules "8x8 board, with markings in the four central squares, the four corner squares, and the two middle squares of each edge. The pieces have the following movement values: Raja (x1): moves one space in any direction; Mantri (x1): moves diagonally one space; Karabha (x2): jumps exactly two squares diagonally; Raji (x2): moves orthogonally one space and then diagonally another space, jumping over any intervening pieces; Kunjara (x2): moves orthogonally any distance; Patti (x8): move forward orthogonally one space, diagonally forward one space to capture. When a Patti reaches a marked space on the opposite edge of the board, it is promoted to Mantri if it is on a marked square. If it is on an unmarked square, the Patti must move back to the space from which it moved to the last row and is then promoted to Mantri. If the Raja can be taken on the opponent's next turn, it is in check. The Raja must not be in check at the end of the player's turn. If this is not possible, it is checkmate and the opponent wins.If a Raja is in stalemate, and no other pieces can move the player may remove one of the opponent's pieces causing the stalemate. If the opponent is reduced to only their Raja, it is also a victory, though considered a lesser one. Checking the opponent's Raja 64 consecutive times is a win.
+")
+(source "Murray 1913: 63-65.")
+(id "1446")
+(version "1.3.9")
+(classification "board/war/replacement/checkmate/chaturanga")
+(credit "Eric Piette")
+(origin "This game was played in India, from around 1600 to 1699.")
+}
+)
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

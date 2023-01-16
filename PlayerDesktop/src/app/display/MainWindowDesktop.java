@@ -27,6 +27,7 @@ import app.display.views.OverlayView;
 import app.display.views.tabs.TabView;
 import app.loading.FileLoading;
 import app.move.MouseHandler;
+import app.utils.AnimationVisualsType;
 import app.utils.GUIUtil;
 import app.utils.MVCSetup;
 import app.utils.SettingsExhibition;
@@ -127,7 +128,7 @@ public class MainWindowDesktop extends JPanel implements MouseListener, MouseMot
 		final boolean portraitMode = width < height;
 		
 		// Create board panel
-		boardPanel = new BoardView(app);
+		boardPanel = new BoardView(app, false);
 		panels.add(boardPanel);
 		
 		// create the player panel
@@ -148,6 +149,9 @@ public class MainWindowDesktop extends JPanel implements MouseListener, MouseMot
 		// Create overlay panel
 		overlayPanel = new OverlayView(app);
 		panels.add(overlayPanel());
+		
+		if (SettingsExhibition.exhibitionVersion)
+			app.settingsPlayer().setAnimationType(AnimationVisualsType.Single);
 	}
 
 	//-------------------------------------------------------------------------

@@ -14,12 +14,12 @@
                 use:Vertex
             )
             (piece "Seed" Each)
+            (hand Each)
+            (regions P1 [#]) // P1 home
+            (regions P2 [#])  // P2 home
+            (map [#])
         })
-        (rules
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
@@ -39,17 +39,17 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Arb'ata 'Ashara is a game known from medieval Islamic texts. It is mentioned with other known games such as Shatranj and Nard, but is not described in great detail. It is known to have had three rows, with pebbles placed in the holes as counters. Murray surmises it is a three-row mancala-style board game, but this is not confirmed.")
-        (rules "Board with three rows. Pebbles placed in holes.")
-        (source "DLP evidence.")
-        (id "253")
-        (version "1.3.8")
-        (classification "board/sow/three rows/reconstruction/pending")
-        (credit "Eric Piette")
-        }
-    )
+(info
+{
+(description "Arb'ata 'Ashara is a game known from medieval Islamic texts. It is mentioned with other known games such as Shatranj and Nard, but is not described in great detail. It is known to have had three rows, with pebbles placed in the holes as counters. Murray surmises it is a three-row mancala-style board game, but this is not confirmed.")
+(rules "Board with three rows. Pebbles placed in holes.")
+(source "DLP evidence.")
+(id "253")
+(version "1.3.9")
+(classification "board/sow/three rows/reconstruction/pending")
+(credit "Eric Piette")
+}
+)
     
     (graphics {
         (show Edges Hidden)

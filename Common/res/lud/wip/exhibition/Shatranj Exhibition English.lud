@@ -52,7 +52,7 @@
     
     (info
         {
-        (rules "These rules are documented in medieval Arabic manuscripts. Played similarly to Chess. The Queen (known as the Counselor in this game) can only move one square diagonally. The Bishop (here, an Elephant) jumps diagonally to the second square and cannot capture another Elephant.")
+        (rules "These rules are documented in medieval Arabic manuscripts. >Played similarly to Chess. The Queen (known as the Counselor in this game) can only move one square diagonally. The Bishop (here, an Elephant) jumps diagonally to the second square and cannot capture another Elephant.")
         }
     )
     
@@ -60,6 +60,7 @@
         (piece Scale "Pawn" 0.825)
         (show Check "King")
         (board Style Chess)
+        (board Placement scale:0.8 offsetY:-0.25)
     })
     
     (ai 

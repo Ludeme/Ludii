@@ -40,15 +40,18 @@ import utils.RandomAI;
 public class ReconstructionGenerator
 {
 	final static String defaultOutputPath        = "./res/recons/output/";
-	final static int    defaultNumReconsExpected = 100;
-	final static int    defaultNumAttempts       = 100000;
-	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/war/leaping/diagonal/Sahkku (Lujavv'r)";
+	final static int    defaultNumReconsExpected = 10;
+	final static int    defaultNumAttempts       = 20000;
+	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/war/leaping/diagonal/Ashanti Draughts";
+	//final static String defaultReconsPath        = "/lud/reconstruction/done/board/war/replacement/checkmate/chaturanga/Samantsy";
 	//final static String defaultReconsPath        = "/lud/reconstruction/validation/Canadian Draughts";
 	final static String defaultOptionName        = "Variant/Incomplete";
 	
-	final static double defaultConceptualWeight = 0.5;
-	final static double defaultHistoricalWeight = 0.5;
-	final static double defaultThreshold = 0.99;
+	final static double  defaultConceptualWeight = 0.0;
+	final static double  defaultHistoricalWeight = 0.5;
+	final static double  defaultGeographicalWeight = 0.5;
+	final static double  defaultThreshold = 0.99;
+	final static boolean geographicalOrder = true;
 	
 	final static boolean checkTimeoutRandomPlayout = false;
 	final static int     defaultPlayoutsAttempts = 100;
@@ -64,13 +67,14 @@ public class ReconstructionGenerator
 		int maxNumberAttempts = args.length < 2 ?                   defaultNumAttempts : Integer.parseInt(args[2]);
 		double conceptualWeight = args.length < 3 ?                 defaultConceptualWeight : Double.parseDouble(args[3]);
 		double historicalWeight = args.length < 4 ?                 defaultHistoricalWeight : Double.parseDouble(args[4]);
-		String reconsPath = args.length < 5 ?                       defaultReconsPath : args[5];
-		String optionName = args.length < 6 ?                       defaultOptionName : args[6];
+		double geoWeight = args.length < 5 ?                 	    defaultGeographicalWeight : Double.parseDouble(args[5]);
+		String reconsPath = args.length < 6 ?                       defaultReconsPath : args[6];
+		String optionName = args.length < 7 ?                       defaultOptionName : args[7];
 	
-		reconstruction(outputPath, numReconsNoWarningExpectedConcepts, maxNumberAttempts, conceptualWeight, historicalWeight, reconsPath, optionName);
+		reconstruction(outputPath, numReconsNoWarningExpectedConcepts, maxNumberAttempts, conceptualWeight, historicalWeight, geoWeight, reconsPath, optionName);
 	}
 	
-	/**
+/**
 	 * @param outputPath         The path of the folder to place the reconstructions.
 	 * @param numReconsExpected  The number of reconstruction expected to generate.
 	 * @param maxNumberAttempts  The number of attempts.
@@ -85,18 +89,19 @@ public class ReconstructionGenerator
 		int    maxNumberAttempts,
 		double conceptualWeight,
 		double historicalWeight,
+		double geographicalWeight,
 		String reconsPath,
 		String optionName
 	)
 	{
 		System.out.println("\n=========================================\nStart reconstruction:\n");
 		System.out.println("Output Path = " + outputPath);
-		System.out.println("Historical Weight = " + historicalWeight + " Conceptual Weight = " + conceptualWeight);
+		System.out.println("Historical Weight = " + historicalWeight + " Conceptual Weight = " + conceptualWeight + " Geographical Weight = " + geographicalWeight);
 		final long startAt = System.nanoTime();
 
 		// Load from memory
 		final String[] choices = FileHandling.listGames();
-		CompleterWithPrepro completer = new CompleterWithPrepro(conceptualWeight, historicalWeight, defaultThreshold);
+		CompleterWithPrepro completer = new CompleterWithPrepro(conceptualWeight, historicalWeight, geographicalWeight, defaultThreshold, (geographicalOrder ? 0.99 : -1));
 		for (final String fileName : choices)
 		{
 			if (!fileName.replaceAll(Pattern.quote("\\"), "/").contains(reconsPath))
@@ -268,17 +273,33 @@ public class ReconstructionGenerator
 										}
 										else
 										{
-											System.out.print( " and with at least a complete playout");
+											System.out.println( " and with at least a complete playout");
 										}
 										
 										// All good, add to the list of correct completions.
 										if(allGood)
 										{
-											correctCompletions.add(completion);
-											System.out.println("Score = " + completion.score() + " Cultural Score = " + completion.similarityScore() + " conceptual Score = " + completion.commonExpectedConceptsScore()) ; 
-											System.out.println("ids used = " + completion.idsUsed());
-											System.out.println(completion.raw());
-											System.out.println(correctCompletions.size() + " COMPLETIONS GENERATED.");
+											boolean descAlreadyObtained = false;
+											for(Completion correctCompletion: correctCompletions)
+											{
+												if(correctCompletion.raw().hashCode() == completion.raw().hashCode()) // We check if we already obtained this description.
+												{
+													correctCompletion.addOtherIds(completion.idsUsed());
+													System.out.println("FOUND ONE MORE COMBINATION OF A COMPLETION ALREADY REACHED");
+													System.out.println("Still " + correctCompletions.size() + " COMPLETIONS GENERATED.");
+													descAlreadyObtained = true;
+													break;
+												}
+											}
+											
+											if(!descAlreadyObtained)
+											{
+												correctCompletions.add(completion);
+												System.out.println("Score = " + completion.score() + " Cultural Score = " + completion.culturalScore() + " Conceptual Score = " + completion.conceptualScore() + " Geographical Score = " + completion.geographicalScore()) ; 
+												System.out.println("ids used = " + completion.idsUsed());
+												System.out.println(completion.raw());
+												System.out.println(correctCompletions.size() + " COMPLETIONS GENERATED.");
+											}
 										}
 									}
 								}
@@ -287,6 +308,8 @@ public class ReconstructionGenerator
 						}
 				}
 				numAttempts++;
+				System.out.println("Current Num Attempts = " + numAttempts);
+				System.out.println(correctCompletions.size() + " recons generated for now");
 			}
 
 			// We rank the completions.
@@ -294,8 +317,8 @@ public class ReconstructionGenerator
 			
 			for (int n = 1; n < correctCompletions.size() + 1; n++) 
 			{
-				System.out.println("Completion " + n  + " has a score of " + correctCompletions.get(n -1).score() + " similarity Score = " + correctCompletions.get(n -1).similarityScore() + " true concepts score = " + correctCompletions.get(n - 1).commonExpectedConceptsScore() + " IDS used = " + correctCompletions.get(n -1).idsUsed());
-				CompleterWithPrepro.saveCompletion(outputPath + gameName + "/", gameName + n, correctCompletions.get(n -1).raw());
+				System.out.println("Completion " + n  + " has a score of " + correctCompletions.get(n -1).score() + " Cultural Score = " + correctCompletions.get(n -1).culturalScore() + " conceptual score = " + correctCompletions.get(n - 1).conceptualScore() + " geographical score = " + correctCompletions.get(n - 1).geographicalScore() + " IDS used = " + correctCompletions.get(n -1).idsUsed() + (correctCompletions.get(n -1).otherIdsUsed().isEmpty() ? "" : " other possible IDS = " + correctCompletions.get(n -1).otherIdsUsed()));
+				CompleterWithPrepro.saveCompletion(outputPath + gameName + "/", gameName + " (Ludii " + n + ")", correctCompletions.get(n -1).raw());
 			}
 
 			System.out.println("Num Attempts = " + numAttempts);
@@ -307,12 +330,14 @@ public class ReconstructionGenerator
 				for (int n = 1; n < correctCompletions.size() + 1; n++) 
 				{
 					final List<String> lineToWrite = new ArrayList<String>();
-					lineToWrite.add(gameName + n);
+					lineToWrite.add(gameName + " (Ludii " + n + ")");
 					lineToWrite.add(idRulesetToRecons+"");
 					lineToWrite.add(correctCompletions.get(n-1).score() +"");
-					lineToWrite.add(correctCompletions.get(n-1).similarityScore() +"");
-					lineToWrite.add(correctCompletions.get(n-1).commonExpectedConceptsScore() +"");
+					lineToWrite.add(correctCompletions.get(n-1).culturalScore() +"");
+					lineToWrite.add(correctCompletions.get(n-1).conceptualScore() +"");
+					lineToWrite.add(correctCompletions.get(n-1).geographicalScore() +"");
 					lineToWrite.add(correctCompletions.get(n-1).idsUsed() +"");
+					lineToWrite.add(correctCompletions.get(n-1).otherIdsUsed() +"");
 					writer.println(StringRoutines.join(",", lineToWrite));
 				}
 			}

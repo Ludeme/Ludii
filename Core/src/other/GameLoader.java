@@ -452,18 +452,17 @@ public final class GameLoader
 			
 			if (!FileHandling.shouldIgnoreLudAnalysis(s))
 			{
-				final String gameName = s.split("\\/")[s.split("\\/").length-1];
-				final Game tempGame = GameLoader.loadGameFromName(gameName);
+				final Game tempGame = GameLoader.loadGameFromName(s);
 				final List<Ruleset> rulesets = tempGame.description().rulesets();
 				if (rulesets != null && !rulesets.isEmpty())
 				{
 					for (int rs = 0; rs < rulesets.size(); rs++)
 						if (!rulesets.get(rs).optionSettings().isEmpty())
-							allGameRulesetNames.add(new String[] {getFilePath(gameName), rulesets.get(rs).heading()});
+							allGameRulesetNames.add(new String[] {s, rulesets.get(rs).heading()});
 				}
 				else
 				{
-					allGameRulesetNames.add(new String[] {getFilePath(gameName), ""});
+					allGameRulesetNames.add(new String[] {s, ""});
 				}
 			}
 		}

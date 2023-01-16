@@ -263,6 +263,7 @@ public class TravisTest
 			excludedParallelPlayouts.add("Shisen-Sho");
 			excludedParallelPlayouts.add("Allemande");
 			excludedParallelPlayouts.add("Chains of Thought");
+			excludedParallelPlayouts.add("Nodal Chess");
 
 			if (!containsPartOf(excludedParallelPlayouts, game.name()))
 				testParallelPlayouts(true);

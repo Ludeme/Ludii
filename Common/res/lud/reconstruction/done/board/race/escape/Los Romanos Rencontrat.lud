@@ -21,7 +21,7 @@
 
 (option "Variant" <Variant> args:{ <variant> }
     {
-    (item "Los Romanos Rencontrat1" <
+    (item "Los Romanos Rencontrat (Ludii 1)" <
         
         (players 2)
         
@@ -177,9 +177,9 @@
         
         (rules 
             (start { 
-                (place Stack "Disc1" 23 count:14)
+                (place Stack "Disc1" 23 count:16)
                 
-                (place Stack "Disc2" 11 count:14)
+                (place Stack "Disc2" 11 count:16)
                 }
             )
             
@@ -222,9 +222,212 @@
             )
         )
         
-    > "The Los Romanos Rencontrat1 ruleset.")
+    > "The Los Romanos Rencontrat (Ludii 1) ruleset.")
     
-    (item "Los Romanos Rencontrat2" <
+    (item "Los Romanos Rencontrat (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11 End}
+                P1 directed:True)
+                
+                (track "Track2" { 11 10 9 8 7 6 5 4 3 2 1 0 12 13 14 15 16 17 18 19 20 21 22 23 End}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:3)
+            
+            (piece "Disc" Each 
+                (if 
+                    (= 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (pips)
+                        )
+                    End)
+                    
+                    (move Remove 
+                        (from)
+                    )
+                    
+                    (move 
+                        (from 
+                            (from)
+                            level:
+                            (level)
+                        )
+                        
+                        (to 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                            if:
+                            (if 
+                                (is In 
+                                    (to)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (or 
+                                    (is Empty 
+                                        (to)
+                                    )
+                                    
+                                    (and 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (= 1 
+                                            (size Stack at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (= 1 
+                                            (size Stack at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (if 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (mapEntry Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (map { 
+                (pair 1 23)
+                
+                (pair 2 11)
+                }
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 23 count:12)
+                
+                (place Stack "Disc2" 11 count:6)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (forEach Die if:
+                        (!= 
+                            (pips)
+                        0)
+                        
+                        (forEach Piece top:True 
+                            (then 
+                                (if 
+                                    (not 
+                                        (all DiceUsed)
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Los Romanos Rencontrat (Ludii 2) ruleset.")
+    
+    (item "Los Romanos Rencontrat (Ludii 3)" <
         
         (players 2)
         
@@ -382,819 +585,7 @@
             (start { 
                 (place Stack "Disc1" 23 count:5)
                 
-                (place Stack "Disc2" 11 count:5)
-                }
-            )
-            
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (forEach Piece top:True 
-                            (then 
-                                (if 
-                                    (not 
-                                        (all DiceUsed)
-                                    )
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (end 
-                (if 
-                    (no Pieces Mover)
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Los Romanos Rencontrat2 ruleset.")
-    
-    (item "Los Romanos Rencontrat3" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (merge { 
-                    (rectangle 1 6)
-                    
-                    (shift 7 0 
-                        (rectangle 1 6)
-                    )
-                    
-                    (shift 0 6 
-                        (rectangle 1 6)
-                    )
-                    
-                    (shift 7 6 
-                        (rectangle 1 6)
-                    )
-                    }
-                )
-                { 
-                (track "Track1" { 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11 End}
-                P1 directed:True)
-                
-                (track "Track2" { 11 10 9 8 7 6 5 4 3 2 1 0 12 13 14 15 16 17 18 19 20 21 22 23 End}
-                P2 directed:True)
-                }
-            use:Vertex)
-            
-            (dice d:6 num:3)
-            
-            (piece "Disc" Each 
-                (if 
-                    (= 
-                        (trackSite Move from:
-                            (from)
-                            steps:
-                            (pips)
-                        )
-                    End)
-                    
-                    (move Remove 
-                        (from)
-                    )
-                    
-                    (move 
-                        (from 
-                            (from)
-                            level:
-                            (level)
-                        )
-                        
-                        (to 
-                            (trackSite Move from:
-                                (from)
-                                steps:
-                                (pips)
-                            )
-                            if:
-                            (if 
-                                (is In 
-                                    (to)
-                                    
-                                    (sites Next)
-                                )
-                                
-                                (or 
-                                    (is Empty 
-                                        (to)
-                                    )
-                                    
-                                    (and 
-                                        (is Enemy 
-                                            (who at:
-                                                (to)
-                                            )
-                                        )
-                                        
-                                        (= 1 
-                                            (size Stack at:
-                                                (to)
-                                            )
-                                        )
-                                    )
-                                )
-                                
-                                (or 
-                                    (not 
-                                        (is Enemy 
-                                            (who at:
-                                                (to)
-                                            )
-                                        )
-                                    )
-                                    
-                                    (and 
-                                        (is Enemy 
-                                            (who at:
-                                                (to)
-                                            )
-                                        )
-                                        
-                                        (= 1 
-                                            (size Stack at:
-                                                (to)
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (apply 
-                                (if 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (fromTo 
-                                        (from 
-                                            (to)
-                                        )
-                                        
-                                        (to 
-                                            (mapEntry Next)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (regions P1 
-                (sites Bottom)
-            )
-            
-            (regions P2 
-                (sites Top)
-            )
-            
-            (map { 
-                (pair 1 23)
-                
-                (pair 2 11)
-                }
-            )
-            }
-        )
-        
-        (rules 
-            (start { 
-                (place Stack "Disc1" 23 count:3)
-                
-                (place Stack "Disc2" 11 count:3)
-                }
-            )
-            
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (forEach Piece top:True 
-                            (then 
-                                (if 
-                                    (not 
-                                        (all DiceUsed)
-                                    )
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (end 
-                (if 
-                    (no Pieces Mover)
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Los Romanos Rencontrat3 ruleset.")
-    
-    (item "Los Romanos Rencontrat4" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (merge { 
-                    (rectangle 1 6)
-                    
-                    (shift 7 0 
-                        (rectangle 1 6)
-                    )
-                    
-                    (shift 0 6 
-                        (rectangle 1 6)
-                    )
-                    
-                    (shift 7 6 
-                        (rectangle 1 6)
-                    )
-                    }
-                )
-                { 
-                (track "Track1" { 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11 End}
-                P1 directed:True)
-                
-                (track "Track2" { 11 10 9 8 7 6 5 4 3 2 1 0 12 13 14 15 16 17 18 19 20 21 22 23 End}
-                P2 directed:True)
-                }
-            use:Vertex)
-            
-            (dice d:6 num:3)
-            
-            (piece "Disc" Each 
-                (if 
-                    (= 
-                        (trackSite Move from:
-                            (from)
-                            steps:
-                            (pips)
-                        )
-                    End)
-                    
-                    (move Remove 
-                        (from)
-                    )
-                    
-                    (move 
-                        (from 
-                            (from)
-                            level:
-                            (level)
-                        )
-                        
-                        (to 
-                            (trackSite Move from:
-                                (from)
-                                steps:
-                                (pips)
-                            )
-                            if:
-                            (if 
-                                (is In 
-                                    (to)
-                                    
-                                    (sites Next)
-                                )
-                                
-                                (or 
-                                    (is Empty 
-                                        (to)
-                                    )
-                                    
-                                    (and 
-                                        (is Enemy 
-                                            (who at:
-                                                (to)
-                                            )
-                                        )
-                                        
-                                        (= 1 
-                                            (size Stack at:
-                                                (to)
-                                            )
-                                        )
-                                    )
-                                )
-                                
-                                (or 
-                                    (not 
-                                        (is Enemy 
-                                            (who at:
-                                                (to)
-                                            )
-                                        )
-                                    )
-                                    
-                                    (and 
-                                        (is Enemy 
-                                            (who at:
-                                                (to)
-                                            )
-                                        )
-                                        
-                                        (= 1 
-                                            (size Stack at:
-                                                (to)
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (apply 
-                                (if 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (fromTo 
-                                        (from 
-                                            (to)
-                                        )
-                                        
-                                        (to 
-                                            (mapEntry Next)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (regions P1 
-                (sites Bottom)
-            )
-            
-            (regions P2 
-                (sites Top)
-            )
-            
-            (map { 
-                (pair 1 23)
-                
-                (pair 2 11)
-                }
-            )
-            }
-        )
-        
-        (rules 
-            (start { 
-                (place Stack "Disc1" 23 count:2)
-                
-                (place Stack "Disc2" 11 count:2)
-                }
-            )
-            
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (forEach Piece top:True 
-                            (then 
-                                (if 
-                                    (not 
-                                        (all DiceUsed)
-                                    )
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (end 
-                (if 
-                    (no Pieces Mover)
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Los Romanos Rencontrat4 ruleset.")
-    
-    (item "Los Romanos Rencontrat5" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (merge { 
-                    (rectangle 1 6)
-                    
-                    (shift 7 0 
-                        (rectangle 1 6)
-                    )
-                    
-                    (shift 0 6 
-                        (rectangle 1 6)
-                    )
-                    
-                    (shift 7 6 
-                        (rectangle 1 6)
-                    )
-                    }
-                )
-                { 
-                (track "Track1" { 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11 End}
-                P1 directed:True)
-                
-                (track "Track2" { 11 10 9 8 7 6 5 4 3 2 1 0 12 13 14 15 16 17 18 19 20 21 22 23 End}
-                P2 directed:True)
-                }
-            use:Vertex)
-            
-            (dice d:6 num:3)
-            
-            (piece "Disc" Each 
-                (if 
-                    (= 
-                        (trackSite Move from:
-                            (from)
-                            steps:
-                            (pips)
-                        )
-                    End)
-                    
-                    (move Remove 
-                        (from)
-                    )
-                    
-                    (move 
-                        (from 
-                            (from)
-                            level:
-                            (level)
-                        )
-                        
-                        (to 
-                            (trackSite Move from:
-                                (from)
-                                steps:
-                                (pips)
-                            )
-                            if:
-                            (if 
-                                (is In 
-                                    (to)
-                                    
-                                    (sites Next)
-                                )
-                                
-                                (or 
-                                    (is Empty 
-                                        (to)
-                                    )
-                                    
-                                    (and 
-                                        (is Enemy 
-                                            (who at:
-                                                (to)
-                                            )
-                                        )
-                                        
-                                        (= 1 
-                                            (size Stack at:
-                                                (to)
-                                            )
-                                        )
-                                    )
-                                )
-                                
-                                (or 
-                                    (not 
-                                        (is Enemy 
-                                            (who at:
-                                                (to)
-                                            )
-                                        )
-                                    )
-                                    
-                                    (and 
-                                        (is Enemy 
-                                            (who at:
-                                                (to)
-                                            )
-                                        )
-                                        
-                                        (= 1 
-                                            (size Stack at:
-                                                (to)
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (apply 
-                                (if 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (fromTo 
-                                        (from 
-                                            (to)
-                                        )
-                                        
-                                        (to 
-                                            (mapEntry Next)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (regions P1 
-                (sites Bottom)
-            )
-            
-            (regions P2 
-                (sites Top)
-            )
-            
-            (map { 
-                (pair 1 23)
-                
-                (pair 2 11)
-                }
-            )
-            }
-        )
-        
-        (rules 
-            (start { 
-                (place Stack "Disc1" 23 count:13)
-                
-                (place Stack "Disc2" 11 count:13)
-                }
-            )
-            
-            (play 
-                (do 
-                    (if 
-                        (not 
-                            (is Prev Mover)
-                        )
-                        
-                        (roll)
-                    )
-                    next:
-                    (forEach Die if:
-                        (!= 
-                            (pips)
-                        0)
-                        
-                        (forEach Piece top:True 
-                            (then 
-                                (if 
-                                    (not 
-                                        (all DiceUsed)
-                                    )
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (end 
-                (if 
-                    (no Pieces Mover)
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Los Romanos Rencontrat5 ruleset.")
-    
-    (item "Los Romanos Rencontrat6" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (merge { 
-                    (rectangle 1 6)
-                    
-                    (shift 7 0 
-                        (rectangle 1 6)
-                    )
-                    
-                    (shift 0 6 
-                        (rectangle 1 6)
-                    )
-                    
-                    (shift 7 6 
-                        (rectangle 1 6)
-                    )
-                    }
-                )
-                { 
-                (track "Track1" { 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11 End}
-                P1 directed:True)
-                
-                (track "Track2" { 11 10 9 8 7 6 5 4 3 2 1 0 12 13 14 15 16 17 18 19 20 21 22 23 End}
-                P2 directed:True)
-                }
-            use:Vertex)
-            
-            (dice d:6 num:3)
-            
-            (piece "Disc" Each 
-                (if 
-                    (= 
-                        (trackSite Move from:
-                            (from)
-                            steps:
-                            (pips)
-                        )
-                    End)
-                    
-                    (move Remove 
-                        (from)
-                    )
-                    
-                    (move 
-                        (from 
-                            (from)
-                            level:
-                            (level)
-                        )
-                        
-                        (to 
-                            (trackSite Move from:
-                                (from)
-                                steps:
-                                (pips)
-                            )
-                            if:
-                            (if 
-                                (is In 
-                                    (to)
-                                    
-                                    (sites Next)
-                                )
-                                
-                                (or 
-                                    (is Empty 
-                                        (to)
-                                    )
-                                    
-                                    (and 
-                                        (is Enemy 
-                                            (who at:
-                                                (to)
-                                            )
-                                        )
-                                        
-                                        (= 1 
-                                            (size Stack at:
-                                                (to)
-                                            )
-                                        )
-                                    )
-                                )
-                                
-                                (or 
-                                    (not 
-                                        (is Enemy 
-                                            (who at:
-                                                (to)
-                                            )
-                                        )
-                                    )
-                                    
-                                    (and 
-                                        (is Enemy 
-                                            (who at:
-                                                (to)
-                                            )
-                                        )
-                                        
-                                        (= 1 
-                                            (size Stack at:
-                                                (to)
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                            
-                            (apply 
-                                (if 
-                                    (is Enemy 
-                                        (who at:
-                                            (to)
-                                        )
-                                    )
-                                    
-                                    (fromTo 
-                                        (from 
-                                            (to)
-                                        )
-                                        
-                                        (to 
-                                            (mapEntry Next)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-            
-            (regions P1 
-                (sites Bottom)
-            )
-            
-            (regions P2 
-                (sites Top)
-            )
-            
-            (map { 
-                (pair 1 23)
-                
-                (pair 2 11)
-                }
-            )
-            }
-        )
-        
-        (rules 
-            (start { 
-                (place Stack "Disc1" 23 count:13)
-                
-                (place Stack "Disc2" 11 count:13)
+                (place Stack "Disc2" 11 count:12)
                 }
             )
             
@@ -1248,9 +639,9 @@
             )
         )
         
-    > "The Los Romanos Rencontrat6 ruleset.")
+    > "The Los Romanos Rencontrat (Ludii 3) ruleset.")
     
-    (item "Los Romanos Rencontrat7" <
+    (item "Los Romanos Rencontrat (Ludii 4)" <
         
         (players 2)
         
@@ -1408,7 +799,7 @@
             (start { 
                 (place Stack "Disc1" 23 count:13)
                 
-                (place Stack "Disc2" 11 count:13)
+                (place Stack "Disc2" 11 count:9)
                 }
             )
             
@@ -1462,9 +853,9 @@
             )
         )
         
-    > "The Los Romanos Rencontrat7 ruleset.")
+    > "The Los Romanos Rencontrat (Ludii 4) ruleset.")
     
-    (item "Los Romanos Rencontrat8" <
+    (item "Los Romanos Rencontrat (Ludii 5)" <
         
         (players 2)
         
@@ -1620,9 +1011,9 @@
         
         (rules 
             (start { 
-                (place Stack "Disc1" 23 count:15)
+                (place Stack "Disc1" 23 count:11)
                 
-                (place Stack "Disc2" 11 count:15)
+                (place Stack "Disc2" 11 count:10)
                 }
             )
             
@@ -1658,67 +1049,41 @@
             
             (end { 
                 (if 
-                    (and { 
-                        (= 2 
-                            (size Stack at:18)
-                        )
-                        
-                        (= 2 
-                            (size Stack at:19)
-                        )
-                        
-                        (= 2 
-                            (size Stack at:20)
-                        )
-                        
-                        (= 2 
-                            (size Stack at:21)
-                        )
-                        
-                        (= 2 
-                            (size Stack at:22)
-                        )
-                        
-                        (= 2 
-                            (size Stack at:23)
-                        )
-                        
-                        (= 0 
-                            (count Sites in:
-                                (difference 
-                                    (sites Occupied by:Mover)
-                                    
-                                    (sites { 18 19 20 21 22 23}
-                                    )
-                                )
-                            )
-                        )
-                        }
-                    )
+                    (no Pieces Mover)
                     
                     (result Mover Win)
                 )
                 
                 (if 
+                    (is Triggered "StartQuadrantFull" P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (is Triggered "StartQuadrantFull" P2)
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
                     (and 
-                        (< 2 
-                            (size Stack at:12)
+                        (not 
+                            (is Prev Mover)
                         )
                         
-                        (< 2 
-                            (size Stack at:0)
-                        )
+                        (no Moves Mover)
                     )
                     
-                    (result Mover Draw)
+                    (result Mover Loss)
                 )
                 }
             )
         )
         
-    > "The Los Romanos Rencontrat8 ruleset.")
+    > "The Los Romanos Rencontrat (Ludii 5) ruleset.")
     
-    (item "Los Romanos Rencontrat9" <
+    (item "Los Romanos Rencontrat (Ludii 6)" <
         
         (players 2)
         
@@ -1876,7 +1241,7 @@
             (start { 
                 (place Stack "Disc1" 23 count:14)
                 
-                (place Stack "Disc2" 11 count:14)
+                (place Stack "Disc2" 11 count:4)
                 }
             )
             
@@ -1918,35 +1283,641 @@
                 )
                 
                 (if 
-                    (is Triggered "StartQuadrantFull" P1)
-                    
-                    (result P2 Win)
-                )
-                
-                (if 
-                    (is Triggered "StartQuadrantFull" P2)
-                    
-                    (result P1 Win)
-                )
-                
-                (if 
                     (and 
-                        (not 
-                            (is Prev Mover)
-                        )
+                        (no Moves P1)
                         
-                        (no Moves Mover)
+                        (no Moves P2)
                     )
                     
-                    (result Mover Loss)
+                    (result Mover Draw)
                 )
                 }
             )
         )
         
-    > "The Los Romanos Rencontrat9 ruleset.")
+    > "The Los Romanos Rencontrat (Ludii 6) ruleset.")
     
-    (item "Los Romanos Rencontrat10" <
+    (item "Los Romanos Rencontrat (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11 End}
+                P1 directed:True)
+                
+                (track "Track2" { 11 10 9 8 7 6 5 4 3 2 1 0 12 13 14 15 16 17 18 19 20 21 22 23 End}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:3)
+            
+            (piece "Disc" Each 
+                (if 
+                    (= 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (pips)
+                        )
+                    End)
+                    
+                    (move Remove 
+                        (from)
+                    )
+                    
+                    (move 
+                        (from 
+                            (from)
+                            level:
+                            (level)
+                        )
+                        
+                        (to 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                            if:
+                            (if 
+                                (is In 
+                                    (to)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (or 
+                                    (is Empty 
+                                        (to)
+                                    )
+                                    
+                                    (and 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (= 1 
+                                            (size Stack at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (= 1 
+                                            (size Stack at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (if 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (mapEntry Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (map { 
+                (pair 1 23)
+                
+                (pair 2 11)
+                }
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 23 count:1)
+                
+                (place Stack "Disc2" 11 count:5)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (forEach Die if:
+                        (!= 
+                            (pips)
+                        0)
+                        
+                        (forEach Piece top:True 
+                            (then 
+                                (if 
+                                    (not 
+                                        (all DiceUsed)
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (and 
+                        (no Moves P1)
+                        
+                        (no Moves P2)
+                    )
+                    
+                    (result Mover Draw)
+                )
+                }
+            )
+        )
+        
+    > "The Los Romanos Rencontrat (Ludii 7) ruleset.")
+    
+    (item "Los Romanos Rencontrat (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11 End}
+                P1 directed:True)
+                
+                (track "Track2" { 11 10 9 8 7 6 5 4 3 2 1 0 12 13 14 15 16 17 18 19 20 21 22 23 End}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:3)
+            
+            (piece "Disc" Each 
+                (if 
+                    (= 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (pips)
+                        )
+                    End)
+                    
+                    (move Remove 
+                        (from)
+                    )
+                    
+                    (move 
+                        (from 
+                            (from)
+                            level:
+                            (level)
+                        )
+                        
+                        (to 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                            if:
+                            (if 
+                                (is In 
+                                    (to)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (or 
+                                    (is Empty 
+                                        (to)
+                                    )
+                                    
+                                    (and 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (= 1 
+                                            (size Stack at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (= 1 
+                                            (size Stack at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (if 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (mapEntry Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (map { 
+                (pair 1 23)
+                
+                (pair 2 11)
+                }
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 23 count:16)
+                
+                (place Stack "Disc2" 11 count:1)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (forEach Die if:
+                        (!= 
+                            (pips)
+                        0)
+                        
+                        (forEach Piece top:True 
+                            (then 
+                                (if 
+                                    (not 
+                                        (all DiceUsed)
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Los Romanos Rencontrat (Ludii 8) ruleset.")
+    
+    (item "Los Romanos Rencontrat (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 6)
+                    
+                    (shift 7 0 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 0 6 
+                        (rectangle 1 6)
+                    )
+                    
+                    (shift 7 6 
+                        (rectangle 1 6)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" { 23 22 21 20 19 18 17 16 15 14 13 12 0 1 2 3 4 5 6 7 8 9 10 11 End}
+                P1 directed:True)
+                
+                (track "Track2" { 11 10 9 8 7 6 5 4 3 2 1 0 12 13 14 15 16 17 18 19 20 21 22 23 End}
+                P2 directed:True)
+                }
+            use:Vertex)
+            
+            (dice d:6 num:3)
+            
+            (piece "Disc" Each 
+                (if 
+                    (= 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (pips)
+                        )
+                    End)
+                    
+                    (move Remove 
+                        (from)
+                    )
+                    
+                    (move 
+                        (from 
+                            (from)
+                            level:
+                            (level)
+                        )
+                        
+                        (to 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                            if:
+                            (if 
+                                (is In 
+                                    (to)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (or 
+                                    (is Empty 
+                                        (to)
+                                    )
+                                    
+                                    (and 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (= 1 
+                                            (size Stack at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (= 1 
+                                            (size Stack at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (if 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (mapEntry Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (map { 
+                (pair 1 23)
+                
+                (pair 2 11)
+                }
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 23 count:12)
+                
+                (place Stack "Disc2" 11 count:5)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (forEach Die if:
+                        (!= 
+                            (pips)
+                        0)
+                        
+                        (forEach Piece top:True 
+                            (then 
+                                (if 
+                                    (not 
+                                        (all DiceUsed)
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Los Romanos Rencontrat (Ludii 9) ruleset.")
+    
+    (item "Los Romanos Rencontrat (Ludii 10)" <
         
         (players 2)
         
@@ -2104,7 +2075,7 @@
             (start { 
                 (place Stack "Disc1" 23 count:7)
                 
-                (place Stack "Disc2" 11 count:7)
+                (place Stack "Disc2" 11 count:16)
                 }
             )
             
@@ -2147,7 +2118,7 @@
             )
         )
         
-    > "The Los Romanos Rencontrat10 ruleset.")
+    > "The Los Romanos Rencontrat (Ludii 10) ruleset.")
     
     (item "Incomplete"
         <
@@ -2220,35 +2191,35 @@
 
 (rulesets {
     
-    (ruleset "Ruleset/Los Romanos Rencontrat1 (Reconstructed)" {
-        "Variant/Los Romanos Rencontrat1"
+    (ruleset "Ruleset/Los Romanos Rencontrat (Ludii 1) (Reconstructed)" {
+        "Variant/Los Romanos Rencontrat (Ludii 1)"
     })
-    (ruleset "Ruleset/Los Romanos Rencontrat2 (Reconstructed)" {
-        "Variant/Los Romanos Rencontrat2"
+    (ruleset "Ruleset/Los Romanos Rencontrat (Ludii 2) (Reconstructed)" {
+        "Variant/Los Romanos Rencontrat (Ludii 2)"
     })
-    (ruleset "Ruleset/Los Romanos Rencontrat3 (Reconstructed)" {
-        "Variant/Los Romanos Rencontrat3"
+    (ruleset "Ruleset/Los Romanos Rencontrat (Ludii 3) (Reconstructed)" {
+        "Variant/Los Romanos Rencontrat (Ludii 3)"
     })
-    (ruleset "Ruleset/Los Romanos Rencontrat4 (Reconstructed)" {
-        "Variant/Los Romanos Rencontrat4"
+    (ruleset "Ruleset/Los Romanos Rencontrat (Ludii 4) (Reconstructed)" {
+        "Variant/Los Romanos Rencontrat (Ludii 4)"
     })
-    (ruleset "Ruleset/Los Romanos Rencontrat5 (Reconstructed)" {
-        "Variant/Los Romanos Rencontrat5"
+    (ruleset "Ruleset/Los Romanos Rencontrat (Ludii 5) (Reconstructed)" {
+        "Variant/Los Romanos Rencontrat (Ludii 5)"
     })
-    (ruleset "Ruleset/Los Romanos Rencontrat6 (Reconstructed)" {
-        "Variant/Los Romanos Rencontrat6"
+    (ruleset "Ruleset/Los Romanos Rencontrat (Ludii 6) (Reconstructed)" {
+        "Variant/Los Romanos Rencontrat (Ludii 6)"
     })
-    (ruleset "Ruleset/Los Romanos Rencontrat7 (Reconstructed)" {
-        "Variant/Los Romanos Rencontrat7"
+    (ruleset "Ruleset/Los Romanos Rencontrat (Ludii 7) (Reconstructed)" {
+        "Variant/Los Romanos Rencontrat (Ludii 7)"
     })
-    (ruleset "Ruleset/Los Romanos Rencontrat8 (Reconstructed)" {
-        "Variant/Los Romanos Rencontrat8"
+    (ruleset "Ruleset/Los Romanos Rencontrat (Ludii 8) (Reconstructed)" {
+        "Variant/Los Romanos Rencontrat (Ludii 8)"
     })
-    (ruleset "Ruleset/Los Romanos Rencontrat9 (Reconstructed)" {
-        "Variant/Los Romanos Rencontrat9"
+    (ruleset "Ruleset/Los Romanos Rencontrat (Ludii 9) (Reconstructed)" {
+        "Variant/Los Romanos Rencontrat (Ludii 9)"
     })
-    (ruleset "Ruleset/Los Romanos Rencontrat10 (Reconstructed)" {
-        "Variant/Los Romanos Rencontrat10"
+    (ruleset "Ruleset/Los Romanos Rencontrat (Ludii 10) (Reconstructed)" {
+        "Variant/Los Romanos Rencontrat (Ludii 10)"
     })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
@@ -2261,200 +2232,200 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Los Romanos Rencontrat is a European Tables game played in medieval Spain. It may also have been known as Reencontrat. ")
-        (aliases {"Reencontrat"})
-        (useFor "Ruleset/Historical Information (Incomplete)" (rules "2x12 board, divided in half. Three dice. Pieces begin on the opponent's side of the board, on the rightmost point with respect to the player. Play proceeds from right to left on the opponent's side of the board, and then left to right on the player's side of the board. When a piece hits an opponent's piece, it is sent back to its starting point. Pieces cannot be doubled on the player's first half of the board."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (id "1513"))
-        (useFor "Ruleset/Los Romanos Rencontrat1 (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
-                Regions:
-                RegionP1: the bottom sites of the board for P1
-                RegionP2: the top sites of the board for P2 
-                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
-                Rules for Pieces:
-                Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
-                Players take turns moving.
-                Setup:
-                Place stack of [Disc1] at vertex 23
-                Place stack of [Disc2] at vertex 11.
-                Rules: 
-                If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the moving player, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Los Romanos Rencontrat1 (Reconstructed)" (id "2139"))
-        (useFor "Ruleset/Los Romanos Rencontrat2 (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
-                Regions:
-                RegionP1: the bottom sites of the board for P1
-                RegionP2: the top sites of the board for P2 
-                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
-                Rules for Pieces:
-                Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
-                Players take turns moving.
-                Setup:
-                Place stack of [Disc1] at vertex 23
-                Place stack of [Disc2] at vertex 11.
-                Rules: 
-                If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the moving player, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Los Romanos Rencontrat2 (Reconstructed)" (id "2140"))
-        (useFor "Ruleset/Los Romanos Rencontrat3 (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
-                Regions:
-                RegionP1: the bottom sites of the board for P1
-                RegionP2: the top sites of the board for P2 
-                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
-                Rules for Pieces:
-                Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
-                Players take turns moving.
-                Setup:
-                Place stack of [Disc1] at vertex 23
-                Place stack of [Disc2] at vertex 11.
-                Rules: 
-                If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the moving player, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Los Romanos Rencontrat3 (Reconstructed)" (id "2141"))
-        (useFor "Ruleset/Los Romanos Rencontrat4 (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
-                Regions:
-                RegionP1: the bottom sites of the board for P1
-                RegionP2: the top sites of the board for P2 
-                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
-                Rules for Pieces:
-                Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
-                Players take turns moving.
-                Setup:
-                Place stack of [Disc1] at vertex 23
-                Place stack of [Disc2] at vertex 11.
-                Rules: 
-                If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the moving player, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Los Romanos Rencontrat4 (Reconstructed)" (id "2142"))
-        (useFor "Ruleset/Los Romanos Rencontrat5 (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
-                Regions:
-                RegionP1: the bottom sites of the board for P1
-                RegionP2: the top sites of the board for P2 
-                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
-                Rules for Pieces:
-                Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
-                Players take turns moving.
-                Setup:
-                Place stack of [Disc1] at vertex 23
-                Place stack of [Disc2] at vertex 11.
-                Rules: 
-                If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the moving player, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Los Romanos Rencontrat5 (Reconstructed)" (id "2143"))
-        (useFor "Ruleset/Los Romanos Rencontrat6 (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
-                Regions:
-                RegionP1: the bottom sites of the board for P1
-                RegionP2: the top sites of the board for P2 
-                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
-                Rules for Pieces:
-                Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
-                Players take turns moving.
-                Setup:
-                Place stack of [Disc1] at vertex 23
-                Place stack of [Disc2] at vertex 11.
-                Rules: 
-                If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the moving player, the moving player wins If player one cannot move and player two cannot move, it's a draw.
-                
-        "))
-        (useFor "Ruleset/Los Romanos Rencontrat6 (Reconstructed)" (id "2144"))
-        (useFor "Ruleset/Los Romanos Rencontrat7 (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
-                Regions:
-                RegionP1: the bottom sites of the board for P1
-                RegionP2: the top sites of the board for P2 
-                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
-                Rules for Pieces:
-                Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
-                Players take turns moving.
-                Setup:
-                Place stack of [Disc1] at vertex 23
-                Place stack of [Disc2] at vertex 11.
-                Rules: 
-                If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the moving player, the moving player wins If player one cannot move and player two cannot move, it's a draw.
-                
-        "))
-        (useFor "Ruleset/Los Romanos Rencontrat7 (Reconstructed)" (id "2145"))
-        (useFor "Ruleset/Los Romanos Rencontrat8 (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
-                Regions:
-                RegionP1: the bottom sites of the board for P1
-                RegionP2: the top sites of the board for P2 
-                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
-                Rules for Pieces:
-                Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
-                Players take turns moving.
-                Setup:
-                Place stack of [Disc1] at vertex 23
-                Place stack of [Disc2] at vertex 11.
-                Rules: 
-                If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
-                Aim: 
-                If 2 is equal to the size of the stack on vertex 18, 2 is equal to the size of the stack on vertex 19, 2 is equal to the size of the stack on vertex 20, 2 is equal to the size of the stack on vertex 21, 2 is equal to the size of the stack on vertex 22, 2 is equal to the size of the stack on vertex 23 and 0 is equal to the number of sites in the difference between sites occupied by any component owned by Mover and sites [18,19,20,21,22,23], the moving player wins If 2 is less than the size of the stack on vertex 12 and 2 is less than the size of the stack on vertex 0, it's a draw.
-                
-        "))
-        (useFor "Ruleset/Los Romanos Rencontrat8 (Reconstructed)" (id "2146"))
-        (useFor "Ruleset/Los Romanos Rencontrat9 (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
-                Regions:
-                RegionP1: the bottom sites of the board for P1
-                RegionP2: the top sites of the board for P2 
-                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
-                Rules for Pieces:
-                Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
-                Players take turns moving.
-                Setup:
-                Place stack of [Disc1] at vertex 23
-                Place stack of [Disc2] at vertex 11.
-                Rules: 
-                If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the moving player, the moving player wins If 1 is StartQuadrantFull, player two wins If 2 is StartQuadrantFull, player one wins If not in the same turn and the moving player cannot move, the moving player loses.
-                
-        "))
-        (useFor "Ruleset/Los Romanos Rencontrat9 (Reconstructed)" (id "2147"))
-        (useFor "Ruleset/Los Romanos Rencontrat10 (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
-                Regions:
-                RegionP1: the bottom sites of the board for P1
-                RegionP2: the top sites of the board for P2 
-                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
-                Rules for Pieces:
-                Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
-                Players take turns moving.
-                Setup:
-                Place stack of [Disc1] at vertex 23
-                Place stack of [Disc2] at vertex 11.
-                Rules: 
-                If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the moving player, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Los Romanos Rencontrat10 (Reconstructed)" (id "2148"))
-        (source "Murray 1951: 128.")
-        (version "1.3.8")
-        (classification "board/race/escape/reconstruction/done")
-        (credit "Eric Piette")
-        (origin "This game was played in Spain, around 1283.")
-        }
-    )
+(info
+{
+(description "Los Romanos Rencontrat is a European Tables game played in medieval Spain. It may also have been known as Reencontrat. ")
+(aliases {"Reencontrat"})
+(useFor "Ruleset/Historical Information (Incomplete)" (rules "2x12 board, divided in half. Three dice. Pieces begin on the opponent's side of the board, on the rightmost point with respect to the player. Play proceeds from right to left on the opponent's side of the board, and then left to right on the player's side of the board. When a piece hits an opponent's piece, it is sent back to its starting point. Pieces cannot be doubled on the player's first half of the board."))
+(useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+(useFor "Ruleset/Historical Information (Incomplete)" (id "1513"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 1) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 1) (Reconstructed)" (id "3074"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 2) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 2) (Reconstructed)" (id "3075"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 3) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins If player one cannot move and player two cannot move, it's a draw.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 3) (Reconstructed)" (id "3076"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 4) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins If player one cannot move and player two cannot move, it's a draw.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 4) (Reconstructed)" (id "3077"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 5) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins If 1 is StartQuadrantFull, player two wins If 2 is StartQuadrantFull, player one wins If not in the same turn and the moving player cannot move, the moving player loses.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 5) (Reconstructed)" (id "3078"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 6) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins If player one cannot move and player two cannot move, it's a draw.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 6) (Reconstructed)" (id "3079"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 7) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins If player one cannot move and player two cannot move, it's a draw.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 7) (Reconstructed)" (id "3080"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 8) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 8) (Reconstructed)" (id "3081"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 9) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 9) (Reconstructed)" (id "3082"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 10) (Reconstructed)" (rules "The game Los Romanos Rencontrat is played by two players on a noshape board with nobasis tiling.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6], Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Discs if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from vertex in the location of the piece current level to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: if to is in RegionP1 or RegionP2 then empty or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to else not there is an enemy Player at to or there is an enemy Player at to and 1 is equal to the size of the stack on vertex to captureEffect: if there is an enemy Player at to, from vertex in to to vertex null of the next player moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Disc1] at vertex 23
+     Place stack of [Disc2] at vertex 11.
+Rules: 
+     If not in the same turn, roll the dice and afterwards according to the value of the dice, move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+"))
+(useFor "Ruleset/Los Romanos Rencontrat (Ludii 10) (Reconstructed)" (id "3083"))
+(source "Murray 1951: 128.")
+(version "1.3.9")
+(classification "board/race/escape/reconstruction/done")
+(credit "Eric Piette")
+(origin "This game was played in Spain, around 1283.")
+}
+)
     
     (graphics {
         (show Edges Hidden)

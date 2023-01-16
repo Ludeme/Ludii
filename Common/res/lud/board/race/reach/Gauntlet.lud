@@ -118,31 +118,31 @@
 
 (metadata
     
-    (info
-        {
-        (description "Gauntlet is a game of unequal forces that challenges players to run a gauntlet of blockers.")
-        (rules "Starting with the runner player, players alternate moving one of their checker tokens. Each token moves in one orthogonal direction only.
-            
-            Runner tokens move vertically from the first rank, either by moving into an adjacent empty space or by jumping over an adjacent opponent token into an empty space and capturing the jumped token.
-            
-            Blocker tokens move horizontally in a similar manner - the left tokens always move toward the right and the right tokens always move towards the left.
-            
-            In the standard/introductory game, played on an 8x8 board, captures are mandatory and multiple capture are possible with maximum capture sequences having priority. In tournament games, played on a 10 x 10 board, captures are optional.
-            
-            Blocker tokens may not jump over or capture other blocker tokens.
-            
-            The game ends when a runner token reaches the last rank or the runner player cannot move.
-            
-        Two games should be played, with players swapping roles. At the end of each game, the runner player scores the rank/row of each of his or her remaining tokens on the board. The player with the highest score after two games wins the match.")
-        (id "1021")
-        (version "1.3.8")
-        (classification "board/race/reach")
-        (author "Phil Leduc (used with permission)")
-        (publisher "Web published - The Owl's Nest")
-        (credit "Phil Leduc")
-        (origin "This game is from Rhode Island, USA, on 31-01-2001.")
-        }
-    )
+(info
+{
+(description "Gauntlet is a game of unequal forces that challenges players to run a gauntlet of blockers.")
+(rules "Starting with the runner player, players alternate moving one of their checker tokens. Each token moves in one orthogonal direction only.
+
+Runner tokens move vertically from the first rank, either by moving into an adjacent empty space or by jumping over an adjacent opponent token into an empty space and capturing the jumped token.
+
+Blocker tokens move horizontally in a similar manner - the left tokens always move toward the right and the right tokens always move towards the left.
+
+In the standard/introductory game, played on an 8x8 board, captures are mandatory and multiple capture are possible with maximum capture sequences having priority. In tournament games, played on a 10 x 10 board, captures are optional.
+
+Blocker tokens may not jump over or capture other blocker tokens.
+
+The game ends when a runner token reaches the last rank or the runner player cannot move.
+
+Two games should be played, with players swapping roles. At the end of each game, the runner player scores the rank/row of each of his or her remaining tokens on the board. The player with the highest score after two games wins the match.")
+(id "1021")
+(version "1.3.9")
+(classification "board/race/reach")
+(author "Phil Leduc (used with permission)")
+(publisher "Web published - The Owl's Nest")
+(credit "Phil Leduc")
+(origin "This game is from Rhode Island, USA, on 31-01-2001.")
+}
+)
     
     (graphics {
         (board Colour InnerEdges (colour GunMetal))

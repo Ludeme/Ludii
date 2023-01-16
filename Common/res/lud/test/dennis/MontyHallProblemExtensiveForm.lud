@@ -1,0 +1,894 @@
+(game "MontyHallProblemExtensiveForm"
+
+	//--------------------------------------------------------------------------
+	// Subsection 3.1 of the paper
+	//--------------------------------------------------------------------------
+    (players 1)
+	
+    //--------------------------------------------------------------------------
+	// Subsection 3.2 of the paper
+    //--------------------------------------------------------------------------
+    (equipment {
+        (piece "Marker" Neutral)
+        (piece "Marker" Each)
+		(board
+			(graph
+				// --------------------
+				// ROOT
+				// --------------------
+				// Vertex 0: initial empty state
+				//
+				// --------------------
+				// First ply
+				// --------------------
+				// Vertex 1: prize behind left door
+				// Vertex 2: prize behind middle door
+				// Vertex 3: prize behind right door
+				//
+				// --------------------
+				// Second ply
+				// --------------------
+				// Vertex 4: v1 (prize behind left door) --> player guesses left
+				// Vertex 5: v1 (prize behind left door) --> player guesses middle
+				// Vertex 6: v1 (prize behind left door) --> player guesses right
+				//
+				// Vertex 7: v2 (prize behind middle door) --> player guesses left
+				// Vertex 8: v2 (prize behind middle door) --> player guesses middle
+				// Vertex 9: v2 (prize behind middle door) --> player guesses right
+				//
+				// Vertex 10: v3 (prize behind right door) --> player guesses left
+				// Vertex 11: v3 (prize behind right door) --> player guesses middle
+				// Vertex 12: v3 (prize behind right door) --> player guesses right
+				//
+				// --------------------
+				// Third ply
+				// --------------------
+				// Vertex 13: v4 (prize left, guessed left) --> middle door opened
+				// Vertex 14: v4 (prize left, guessed left) --> right door opened
+				//
+				// Vertex 15: v5 (prize left, guessed middle) --> right door opened
+				//
+				// Vertex 16: v6 (prize left, guessed right) --> middle door opened
+				//
+				// Vertex 17: v7 (prize middle, guessed left) --> right door opened
+				//
+				// Vertex 18: v8 (prize middle, guessed middle) --> left door opened
+				// Vertex 19: v8 (prize middle, guessed middle) --> right door opened
+				//
+				// Vertex 20: v9 (prize middle, guessed right) --> left door opened
+				//
+				// Vertex 21: v10 (prize right, guessed left) --> middle door opened
+				//
+				// Vertex 22: v11 (prize right, guessed middle) --> left door opened
+				//
+				// Vertex 23: v12 (prize right, guessed right) --> left door opened
+				// Vertex 24: v12 (prize right, guessed right) --> middle door opened
+				//
+				// --------------------
+				// Fourth ply
+				// --------------------
+				// Vertex 25: v13 (prize left, guessed left, middle opened) --> stay left and WIN
+				// Vertex 26: v13 (prize left, guessed left, middle opened) --> switch to right and LOSE
+				//
+				// Vertex 27: v14 (prize left, guessed left, right opened) --> stay left and WIN
+				// Vertex 28: v14 (prize left, guessed left, right opened) --> switch to middle and LOSE
+				//
+				// Vertex 29: v15 (prize left, guessed middle, right opened) --> switch to left and WIN
+				// Vertex 30: v15 (prize left, guessed middle, right opened) --> stay middle and LOSE
+				//
+				// Vertex 31: v16 (prize left, guessed right, middle opened) --> switch to left and WIN
+				// Vertex 32: v16 (prize left, guessed right, middle opened) --> stay right and LOSE
+				//
+				// Vertex 33: v17 (prize middle, guessed left, right opened) --> stay left and LOSE
+				// Vertex 34: v17 (prize middle, guessed left, right opened) --> switch to middle and WIN
+				//
+				// Vertex 35: v18 (prize middle, guessed middle, left opened) --> stay middle and WIN
+				// Vertex 36: v18 (prize middle, guessed middle, left opened) --> switch to right and LOSE
+				//
+				// Vertex 37: v19 (prize middle, guessed middle, right opened) --> switch to left and LOSE
+				// Vertex 38: v19 (prize middle, guessed middle, right opened) --> stay middle and WIN
+				//
+				// Vertex 39: v20 (prize middle, guessed right, left opened) --> switch to middle and WIN
+				// Vertex 40: v20 (prize middle, guessed right, left opened) --> stay right and LOSE
+				//
+				// Vertex 41: v21 (prize right, guessed left, middle opened) --> stay left and LOSE
+				// Vertex 42: v21 (prize right, guessed left, middle opened) --> switch to right and WIN
+				//
+				// Vertex 43: v22 (prize right, guessed middle, left opened) --> stay middle and LOSE
+				// Vertex 44: v22 (prize right, guessed middle, left opened) --> switch to right and WIN
+				//
+				// Vertex 45: v23 (prize right, guessed right, left opened) --> switch to middle and LOSE
+				// Vertex 46: v23 (prize right, guessed right, left opened) --> stay right and WIN
+				//
+				// Vertex 47: v24 (prize right, guessed right, middle opened) --> switch to left and LOSE
+				// Vertex 48: v24 (prize right, guessed right, middle opened) --> stay right and WIN
+				
+				vertices:{
+					// Need 49 vertices in the "real" tree. For every vertex we specify an x- and y-coordinate,
+					// but their actual values don't matter (except for how it looks in GUI).
+					{0 0}
+					{0 -1} {1 -1} {2 -1}
+					{0 -2} {1 -2} {2 -2} {3 -2} {4 -2} {5 -2} {6 -2} {7 -2} {8 -2}
+					{0 -3} {1 -3} {2 -3} {3 -3} {4 -3} {5 -3} {6 -3} {7 -3} {8 -3} {9 -3} {10 -3} {11 -3}
+					{0 -4} {1 -4} {2 -4} {3 -4} {4 -4} {5 -4} {6 -4} {7 -4} {8 -4} {9 -4} {10 -4} {11 -4} {12 -4} {13 -4} {14 -4} {15 -4} {16 -4} {17 -4} {18 -4} {19 -4} {20 -4} {21 -4} {22 -4} {23 -4}
+					// And need a second set, again of 49 vertices, for a "copy" of the tree that tracks the information of Player 1.
+					// Again the numbers are x- and y-coordinates, the exact values of which do not matter except for how the game visually
+					// looks in the GUI of Ludii.
+					{30 0}
+					{30 -1} {31 -1} {32 -1}
+					{30 -2} {31 -2} {32 -2} {33 -2} {34 -2} {35 -2} {36 -2} {37 -2} {38 -2}
+					{30 -3} {31 -3} {32 -3} {33 -3} {34 -3} {35 -3} {36 -3} {37 -3} {38 -3} {39 -3} {40 -3} {41 -3}
+					{30 -4} {31 -4} {32 -4} {33 -4} {34 -4} {35 -4} {36 -4} {37 -4} {38 -4} {39 -4} {40 -4} {41 -4} {42 -4} {43 -4} {44 -4} {45 -4} {46 -4} {47 -4} {48 -4} {49 -4} {50 -4} {51 -4} {52 -4} {53 -4}
+				}
+			)
+			use:Vertex
+		)
+		// For every state and for every player (just one player here), we need to define the information set
+		// as a region
+		//
+		// Information Set {0}: root state
+		// Information Set {1, 2, 3}: prize has been randomly assigned to one door (hidden)
+		// Information Set {4, 7, 10}: player has selected left door
+		// Information Set {5, 8, 11}: player has selected middle door
+		// Information Set {6, 9, 12}: player has selected right door
+		// Information Set {13, 21}: player guessed left, middle door was opened
+		// Information Set {14, 17}: player guessed left, right door was opened
+		// Information Set {15, 19}: player guessed middle, right door was opened
+		// Information Set {16, 24}: player guessed right, middle door was opened
+		// Information Set {18, 22}: player guessed middle, left door was opened
+		// Information Set {20, 23}: player guessed right, left door was opened
+		// All other Information Sets just contain their own state, all info revealed.
+		//
+		(regions "InformationSet_0_1" {49})
+		(regions "InformationSet_1_1" {50 51 52})
+		(regions "InformationSet_2_1" {50 51 52})
+		(regions "InformationSet_3_1" {50 51 52})
+		(regions "InformationSet_4_1" {53 56 59})
+		(regions "InformationSet_5_1" {54 57 60})
+		(regions "InformationSet_6_1" {55 58 61})
+		(regions "InformationSet_7_1" {53 56 59})
+		(regions "InformationSet_8_1" {54 57 60})
+		(regions "InformationSet_9_1" {55 58 61})
+		(regions "InformationSet_10_1" {53 56 59})
+		(regions "InformationSet_11_1" {54 57 60})
+		(regions "InformationSet_12_1" {55 58 61})
+		(regions "InformationSet_13_1" {62 70})
+		(regions "InformationSet_14_1" {63 66})
+		(regions "InformationSet_15_1" {64 68})
+		(regions "InformationSet_16_1" {65 73})
+		(regions "InformationSet_17_1" {63 66})
+		(regions "InformationSet_18_1" {67 71})
+		(regions "InformationSet_19_1" {64 68})
+		(regions "InformationSet_20_1" {69 72})
+		(regions "InformationSet_21_1" {62 70})
+		(regions "InformationSet_22_1" {67 71})
+		(regions "InformationSet_23_1" {69 72})
+		(regions "InformationSet_24_1" {65 73})
+		(regions "InformationSet_25_1" {74})
+		(regions "InformationSet_26_1" {75})
+		(regions "InformationSet_27_1" {76})
+		(regions "InformationSet_28_1" {77})
+		(regions "InformationSet_29_1" {78})
+		(regions "InformationSet_30_1" {79})
+		(regions "InformationSet_31_1" {80})
+		(regions "InformationSet_32_1" {81})
+		(regions "InformationSet_33_1" {82})
+		(regions "InformationSet_34_1" {83})
+		(regions "InformationSet_35_1" {84})
+		(regions "InformationSet_36_1" {85})
+		(regions "InformationSet_37_1" {86})
+		(regions "InformationSet_38_1" {87})
+		(regions "InformationSet_39_1" {88})
+		(regions "InformationSet_40_1" {89})
+		(regions "InformationSet_41_1" {90})
+		(regions "InformationSet_42_1" {91})
+		(regions "InformationSet_43_1" {92})
+		(regions "InformationSet_44_1" {93})
+		(regions "InformationSet_45_1" {94})
+		(regions "InformationSet_46_1" {95})
+		(regions "InformationSet_47_1" {96})
+		(regions "InformationSet_48_1" {97})
+		
+		// For each player (including 0 as "nature player"), we have a region
+		// containing all the vertices of that player's copy of the game tree
+		(regions "Subgraph_0" {0..48})
+		(regions "Subgraph_1" {49..97})
+    })
+    
+    (rules
+    	//----------------------------------------------------------------------
+		// Subsection 3.3 of the paper
+    	//----------------------------------------------------------------------
+        (start {
+        	(place "Marker0" 0)		// Mark true game state
+        	(place "Marker" 49)		// Mark current information set P1
+        	(set Hidden (sites "Subgraph_0") to:All)		// True game tree hidden to all players
+        })
+        
+        //----------------------------------------------------------------------
+		// Subsection 3.4 of the paper
+        //----------------------------------------------------------------------
+        (play 
+        	// We have to enumerate all possible (non-terminal) game states for playing rules
+        	(if (= (where "Marker" Neutral) 0)
+        		// Root state: nature player can pick between vertices 1, 2, and 3
+	        	(random 
+	        		{0.33 0.33 0.33} 
+	        		{
+	        			(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 0) (to 1))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 2) (to (sites "InformationSet_1_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+	        			(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 0) (to 2))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 2) (to (sites "InformationSet_2_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+	        			(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 0) (to 3))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 2) (to (sites "InformationSet_3_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+	        		}
+	        	)
+        	(if (= (where "Marker" Neutral) 1)
+        		// Vertex 1: player can guess left/middle/right to go to vertex 4/5/6
+        		(or {
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 1) (to 4))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_4_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 1) (to 5))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_5_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 2)
+	       				(then (and {
+	       					(fromTo (from 1) (to 6))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_6_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+        		})
+	        (if (= (where "Marker" Neutral) 2)
+	        	// Vertex 2: player can guess left/middle/right to go to vertex 7/8/9
+	        	(or {
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 2) (to 7))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_7_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 2) (to 8))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_8_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 2)
+	       				(then (and {
+	       					(fromTo (from 2) (to 9))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_9_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+        		})
+		    (if (= (where "Marker" Neutral) 3)
+		    	// Vertex 3: player can guess left/middle/right to go to vertex 10/11/12
+		    	(or {
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 3) (to 10))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_10_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 3) (to 11))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_11_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 2)
+	       				(then (and {
+	       					(fromTo (from 3) (to 12))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_12_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+        		})
+			(if (= (where "Marker" Neutral) 4)
+				// Vertex 4: door getting opened may lead to vertex 13 or 14
+				(random
+					{0.5 0.5}
+					{
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 4) (to 13))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 2) (to (sites "InformationSet_13_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+	        			(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 4) (to 14))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 2) (to (sites "InformationSet_14_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+					}
+				)
+			(if (= (where "Marker" Neutral) 5)
+				// Vertex 5: door getting opened leads to vertex 15
+				(random
+					{1}
+					{
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 5) (to 15))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 2) (to (sites "InformationSet_15_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+					}
+				)
+			(if (= (where "Marker" Neutral) 6)
+				// Vertex 6: door getting opened leads to vertex 16
+				(random
+					{1}
+					{
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 6) (to 16))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 2) (to (sites "InformationSet_16_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+					}
+				)
+			(if (= (where "Marker" Neutral) 7)
+				// Vertex 7: door getting opened leads to vertex 17
+				(random
+					{1}
+					{
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 7) (to 17))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 2) (to (sites "InformationSet_17_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+					}
+				)
+			(if (= (where "Marker" Neutral) 8)
+				// Vertex 8: door getting opened may lead to vertex 18 or 19
+				(random
+					{0.5 0.5}
+					{
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 8) (to 18))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 2) (to (sites "InformationSet_18_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+	        			(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 8) (to 19))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 2) (to (sites "InformationSet_19_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+					}
+				)
+			(if (= (where "Marker" Neutral) 9)
+				// Vertex 9: door getting opened leads to vertex 20
+				(random
+					{1}
+					{
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 9) (to 20))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 2) (to (sites "InformationSet_20_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+					}
+				)
+			(if (= (where "Marker" Neutral) 10)
+				// Vertex 10: door getting opened leads to vertex 21
+				(random
+					{1}
+					{
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 10) (to 21))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 2) (to (sites "InformationSet_21_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+					}
+				)
+			(if (= (where "Marker" Neutral) 11)
+				// Vertex 11: door getting opened leads to vertex 22
+				(random
+					{1}
+					{
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 11) (to 22))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 2) (to (sites "InformationSet_22_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+					}
+				)
+			(if (= (where "Marker" Neutral) 12)
+				// Vertex 12: door getting opened leads to vertex 23 or 24
+				(random
+					{0.5 0.5}
+					{
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 12) (to 23))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 2) (to (sites "InformationSet_23_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+						(move Select (from 0)
+	        				(then (and {
+	        					(fromTo (from 12) (to 24))
+	        					(remove (sites Occupied by:P1))
+	        					(add (piece 2) (to (sites "InformationSet_24_1")))
+	        					(set Hidden (sites "Subgraph_0") to:All)
+	        					(set NextPlayer (player 1))
+	        				}))
+	        			)
+					}
+				)
+			(if (= (where "Marker" Neutral) 13)
+				// Vertex 13: final player choice leads to vertex 25 or 26
+				(or {
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 13) (to 25))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_25_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 13) (to 26))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_26_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+        		})
+			(if (= (where "Marker" Neutral) 14)
+				// Vertex 14: final player choice leads to vertex 27 or 28
+				(or {
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 14) (to 27))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_27_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 14) (to 28))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_28_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+        		})
+			(if (= (where "Marker" Neutral) 15)
+				// Vertex 15: final player choice leads to vertex 29 or 30
+				(or {
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 15) (to 29))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_29_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 15) (to 30))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_30_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+        		})
+			(if (= (where "Marker" Neutral) 16)
+				// Vertex 16: final player choice leads to vertex 31 or 32
+				(or {
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 16) (to 31))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_31_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 16) (to 32))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_32_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+        		})
+			(if (= (where "Marker" Neutral) 17)
+				// Vertex 17: final player choice leads to vertex 33 or 34
+				(or {
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 17) (to 33))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_33_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 17) (to 34))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_34_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+        		})
+			(if (= (where "Marker" Neutral) 18)
+				// Vertex 18: final player choice leads to vertex 35 or 36
+				(or {
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 18) (to 35))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_35_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 18) (to 36))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_36_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+        		})
+			(if (= (where "Marker" Neutral) 19)
+				// Vertex 19: final player choice leads to vertex 37 or 38
+				(or {
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 19) (to 37))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_37_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 19) (to 38))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_38_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+        		})
+			(if (= (where "Marker" Neutral) 20)
+				// Vertex 20: final player choice leads to vertex 39 or 40
+				(or {
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 20) (to 39))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_39_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 20) (to 40))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_40_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+        		})
+			(if (= (where "Marker" Neutral) 21)
+				// Vertex 21: final player choice leads to vertex 41 or 42
+				(or {
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 21) (to 41))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_41_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 21) (to 42))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_42_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+        		})
+			(if (= (where "Marker" Neutral) 22)
+				// Vertex 22: final player choice leads to vertex 43 or 44
+				(or {
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 22) (to 43))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_43_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 22) (to 44))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_44_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+        		})
+			(if (= (where "Marker" Neutral) 23)
+				// Vertex 23: final player choice leads to vertex 45 or 46
+				(or {
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 23) (to 45))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_45_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 23) (to 46))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_46_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+        		})
+			(if (= (where "Marker" Neutral) 24)
+				// Vertex 24: final player choice leads to vertex 47 or 48
+				(or {
+        			(move Select (from 0)
+	        			(then (and {
+	       					(fromTo (from 24) (to 47))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_47_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+	       			(move Select (from 1)
+	       				(then (and {
+	       					(fromTo (from 24) (to 48))
+	       					(remove (sites Occupied by:P1))
+	       					(add (piece 2) (to (sites "InformationSet_48_1")))
+	       					(set Hidden (sites "Subgraph_0") to:All)
+	       					(set NextPlayer (player 1))
+	       				}))
+	       			)
+        		})
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+			)
+		    )
+	        )
+        	)
+        )
+		
+        //----------------------------------------------------------------------
+		// Subsection 3.5 of the paper
+        //----------------------------------------------------------------------
+		(end {
+			(if (= (where "Marker" Neutral) 25)
+				(payoffs {(payoff P1 100)})
+			)
+			(if (= (where "Marker" Neutral) 26)
+				(payoffs {(payoff P1 0)})
+			)
+			(if (= (where "Marker" Neutral) 27)
+				(payoffs {(payoff P1 100)})
+			)
+			(if (= (where "Marker" Neutral) 28)
+				(payoffs {(payoff P1 0)})
+			)
+			(if (= (where "Marker" Neutral) 29)
+				(payoffs {(payoff P1 100)})
+			)
+			(if (= (where "Marker" Neutral) 30)
+				(payoffs {(payoff P1 0)})
+			)
+			(if (= (where "Marker" Neutral) 31)
+				(payoffs {(payoff P1 100)})
+			)
+			(if (= (where "Marker" Neutral) 32)
+				(payoffs {(payoff P1 0)})
+			)
+			(if (= (where "Marker" Neutral) 33)
+				(payoffs {(payoff P1 0)})
+			)
+			(if (= (where "Marker" Neutral) 34)
+				(payoffs {(payoff P1 100)})
+			)
+			(if (= (where "Marker" Neutral) 35)
+				(payoffs {(payoff P1 100)})
+			)
+			(if (= (where "Marker" Neutral) 36)
+				(payoffs {(payoff P1 0)})
+			)
+			(if (= (where "Marker" Neutral) 37)
+				(payoffs {(payoff P1 0)})
+			)
+			(if (= (where "Marker" Neutral) 38)
+				(payoffs {(payoff P1 100)})
+			)
+			(if (= (where "Marker" Neutral) 39)
+				(payoffs {(payoff P1 100)})
+			)
+			(if (= (where "Marker" Neutral) 40)
+				(payoffs {(payoff P1 0)})
+			)
+			(if (= (where "Marker" Neutral) 41)
+				(payoffs {(payoff P1 0)})
+			)
+			(if (= (where "Marker" Neutral) 42)
+				(payoffs {(payoff P1 100)})
+			)
+			(if (= (where "Marker" Neutral) 43)
+				(payoffs {(payoff P1 0)})
+			)
+			(if (= (where "Marker" Neutral) 44)
+				(payoffs {(payoff P1 100)})
+			)
+			(if (= (where "Marker" Neutral) 45)
+				(payoffs {(payoff P1 0)})
+			)
+			(if (= (where "Marker" Neutral) 46)
+				(payoffs {(payoff P1 100)})
+			)
+			(if (= (where "Marker" Neutral) 47)
+				(payoffs {(payoff P1 0)})
+			)
+			(if (= (where "Marker" Neutral) 48)
+				(payoffs {(payoff P1 100)})
+			)
+		})
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "The Monty Hall problem, constructed to be equivalent to the game in extensive form as in the paper 'The Ludii Game Description Language is Universal'.")
+        }
+    )
+	(graphics {
+        (board Style PenAndPaper)	// This just makes the graphs visible in the GUI of Ludii: not strictly necessary
+    })
+)
+

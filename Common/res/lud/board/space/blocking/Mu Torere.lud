@@ -139,34 +139,54 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Mu Torere is a game played by the Maori of New Zealand. It is unknown how old the game is. The board takes the form of a circle divided into eighths, with eight points on the circumference (kewai) and the central point (putahi) being playing spaces.")
-        (useFor "Ruleset/Adjacent Enemy to Centre (Suggested)" (rules "Play begins with the pieces on the kewai, each player on half of the circle. Players move by moving one piece to an empty adjacent space. Players can only move to the putahi when the piece being moved is next to an opponent's piece. The player that blocks the other from moving is the winner."))
-        (useFor "Ruleset/Adjacent Enemy to Centre (Suggested)" (source "Jellis 1973"))
-        (useFor "Ruleset/Adjacent Enemy to Centre (Suggested)" (id "81"))
-        (useFor "Ruleset/No Restriction (Suggested)" (rules "The game is played with no constraint on the centre site."))
-        (useFor "Ruleset/No Restriction (Suggested)" (id "559"))
-        (useFor "Ruleset/First Move (Observed)" (rules "The board is arrayed with a centre point and eight points radiating from it, Each player has four pieces on four adjacent points of the rays. Pieces move to an empty point of an adjacent ray, or to the center point if it is unoccupied. There is no restriction on moving a piece to the center hole, except that the first move must allow the second player to move. the player who blocks their opponent from moving wins.
-        "))
-        (useFor "Ruleset/First Move (Observed)" (source "Best 1917: 15, Murray 1951: 93."))
-        (useFor "Ruleset/First Move (Observed)" (id "2017"))
-        (useFor "Ruleset/First Two Turns (Suggested)" (rules "Play begins with the pieces on the kewai, each player on half of the circle. Players move by moving one piece to an empty adjacent space. On the first two turns, players can only move to the putahi when the piece being moved is next to an opponent's piece. The player that blocks the other from moving is the winner."))
-        (useFor "Ruleset/First Two Turns (Suggested)" (source "Best 1925: 60-61."))
-        (useFor "Ruleset/First Two Turns (Suggested)" (id "2018"))
-        (useFor "Ruleset/Adjacent Enemy (Suggested)" (rules "The pieces can move only if they are adjacent to an enemy piece"))
-        (useFor "Ruleset/Adjacent Enemy (Suggested)" (id "2020"))
-        (source "Murray 1951: 93")
-        (id "2017")
-        (version "1.3.8")
-        (classification "board/space/blocking")
-        (credit "Eric Piette")
-        (origin "This game was played in New Zealand, around 1912.")
-        }
-    )
+(info
+{
+(description "Mu Torere is a game played by the Maori of New Zealand. It is unknown how old the game is. The board takes the form of a circle divided into eighths, with eight points on the circumference (kewai) and the central point (putahi) being playing spaces.")
+(useFor "Ruleset/Adjacent Enemy to Centre (Suggested)" (rules "Play begins with the pieces on the kewai, each player on half of the circle. Players move by moving one piece to an empty adjacent space. Players can only move to the putahi when the piece being moved is next to an opponent's piece. The player that blocks the other from moving is the winner."))
+(useFor "Ruleset/Adjacent Enemy to Centre (Suggested)" (source "Jellis 1973"))
+(useFor "Ruleset/Adjacent Enemy to Centre (Suggested)" (id "81"))
+(useFor "Ruleset/No Restriction (Suggested)" (rules "The game is played with no constraint on the centre site."))
+(useFor "Ruleset/No Restriction (Suggested)" (id "559"))
+(useFor "Ruleset/First Move (Observed)" (rules "The board is arrayed with a centre point and eight points radiating from it, Each player has four pieces on four adjacent points of the rays. Pieces move to an empty point of an adjacent ray, or to the center point if it is unoccupied. There is no restriction on moving a piece to the center hole, except that the first move must allow the second player to move. the player who blocks their opponent from moving wins.
+"))
+(useFor "Ruleset/First Move (Observed)" (source "Best 1917: 15, Murray 1951: 93."))
+(useFor "Ruleset/First Move (Observed)" (id "2017"))
+(useFor "Ruleset/First Two Turns (Suggested)" (rules "Play begins with the pieces on the kewai, each player on half of the circle. Players move by moving one piece to an empty adjacent space. On the first two turns, players can only move to the putahi when the piece being moved is next to an opponent's piece. The player that blocks the other from moving is the winner."))
+(useFor "Ruleset/First Two Turns (Suggested)" (source "Best 1925: 60-61."))
+(useFor "Ruleset/First Two Turns (Suggested)" (id "2018"))
+(useFor "Ruleset/Adjacent Enemy (Suggested)" (rules "The pieces can move only if they are adjacent to an enemy piece"))
+(useFor "Ruleset/Adjacent Enemy (Suggested)" (id "2020"))
+(source "Murray 1951: 93")
+(id "2017")
+(version "1.3.9")
+(classification "board/space/blocking")
+(credit "Eric Piette")
+(origin "This game was played in New Zealand, around 1912.")
+}
+)
     
     (graphics {
         (no Curves)
+        (show Edges Hidden)
+        (board Colour InnerVertices (colour Hidden))
+        (board Colour OuterVertices (colour Hidden))
+        (board Background image:"rectangle.svg" fillColour:(colour Grey) edgeColour:(colour Grey) scaleX:0.5 scaleY:0.008 rotation:185 offsetX:-0.24 offsetY:-0.47)
+        (board Background image:"rectangle.svg" fillColour:(colour Grey) edgeColour:(colour Grey) scaleX:0.5 scaleY:0.008 rotation:175 offsetX:-0.28 offsetY:-0.512)
+        (board Background image:"rectangle.svg" fillColour:(colour Grey) edgeColour:(colour Grey) scaleX:0.45 scaleY:0.008 rotation:50 offsetX:-0.39 offsetY:-0.27)
+        (board Background image:"rectangle.svg" fillColour:(colour Grey) edgeColour:(colour Grey) scaleX:0.45 scaleY:0.008 rotation:40 offsetX:-0.34 offsetY:-0.27)
+        (board Background image:"rectangle.svg" fillColour:(colour Grey) edgeColour:(colour Grey) scaleX:0.45 scaleY:0.008 rotation:95 offsetX:-0.24 offsetY:-0.53)
+        (board Background image:"rectangle.svg" fillColour:(colour Grey) edgeColour:(colour Grey) scaleX:0.45 scaleY:0.008 rotation:85 offsetX:-0.2 offsetY:-0.49)
+        (board Background image:"rectangle.svg" fillColour:(colour Grey) edgeColour:(colour Grey) scaleX:0.45 scaleY:0.008 rotation:140 offsetX:0.042 offsetY:-0.6)
+        (board Background image:"rectangle.svg" fillColour:(colour Grey) edgeColour:(colour Grey) scaleX:0.45 scaleY:0.008 rotation:130 offsetX:0.042 offsetY:-0.545)
+        (board Background image:"rectangle.svg" fillColour:(colour Grey) edgeColour:(colour Grey) scaleX:0.5 scaleY:0.008 rotation:185 offsetX:0.28 offsetY:-0.515)
+        (board Background image:"rectangle.svg" fillColour:(colour Grey) edgeColour:(colour Grey) scaleX:0.5 scaleY:0.008 rotation:175 offsetX:0.24 offsetY:-0.47)
+        (board Background image:"rectangle.svg" fillColour:(colour Grey) edgeColour:(colour Grey) scaleX:0.45 scaleY:0.008 rotation:50 offsetX:0.045 offsetY:0.11)
+        (board Background image:"rectangle.svg" fillColour:(colour Grey) edgeColour:(colour Grey) scaleX:0.45 scaleY:0.008 rotation:40 offsetX:0.045 offsetY:0.165)
+        (board Background image:"rectangle.svg" fillColour:(colour Grey) edgeColour:(colour Grey) scaleX:0.45 scaleY:0.008 rotation:95 offsetX:-0.2 offsetY:0.04)
+        (board Background image:"rectangle.svg" fillColour:(colour Grey) edgeColour:(colour Grey) scaleX:0.45 scaleY:0.008 rotation:85 offsetX:-0.24 offsetY:0.08)
+        (board Background image:"rectangle.svg" fillColour:(colour Grey) edgeColour:(colour Grey) scaleX:0.45 scaleY:0.008 rotation:140 offsetX:-0.32 offsetY:-0.185)
+        (board Background image:"rectangle.svg" fillColour:(colour Grey) edgeColour:(colour Grey) scaleX:0.45 scaleY:0.008 rotation:130 offsetX:-0.375 offsetY:-0.185)
+        (show Symbol "Disc" Vertex 0 fillColour:(colour White) scale:0.5)
     })
     
     (ai

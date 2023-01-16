@@ -6,7 +6,7 @@
 
 (option "Variant" <Variant> args:{ <variant> }
     {
-    (item "Che Lo1" <
+    (item "Che Lo (Ludii 1)" <
         
         (players 2)
         
@@ -15,11 +15,25 @@
                 (rectangle 3 3 diagonals:Alternating)
             use:Vertex)
             
-            (piece "Disc" Each 
+            (piece "Marker" Each 
                 (move Step 
                     (to if:
                         (is Empty 
                             (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 if:
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
                         )
                     )
                 )
@@ -29,32 +43,123 @@
         
         (rules 
             (start { 
-                (place "Disc1" 
+                (place "Marker1" 
                     (sites Bottom)
                 )
                 
-                (place "Disc2" 
+                (place "Marker2" 
                     (sites Top)
                 )
                 }
             )
             
             (play 
-                (forEach Piece)
+                (if 
+                    (is Prev Mover)
+                    
+                    (or 
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        
+                        (move Pass)
+                    )
+                    
+                    (forEach Piece)
+                )
             )
             
-            (end 
+            (end { 
                 (if 
                     (no Moves Next)
                     
                     (result Next Loss)
                 )
+                
+                (if 
+                    (<= 
+                        (count Pieces P1)
+                    15)
+                    
+                    (result P1 Loss)
+                )
+                }
             )
         )
         
-    > "The Che Lo1 ruleset.")
+    > "The Che Lo (Ludii 1) ruleset.")
     
-    (item "Che Lo2" <
+    (item "Che Lo (Ludii 2)" <
         
         (players 2)
         
@@ -63,11 +168,25 @@
                 (rectangle 3 3 diagonals:Alternating)
             use:Vertex)
             
-            (piece "Disc" Each 
+            (piece "Marker" Each 
                 (move Step 
                     (to if:
                         (is Empty 
                             (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 if:
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
                         )
                     )
                 )
@@ -77,32 +196,267 @@
         
         (rules 
             (start { 
-                (place "Disc1" 
+                (place "Marker1" 
                     (sites Bottom)
                 )
                 
-                (place "Disc2" 
+                (place "Marker2" 
                     (sites Top)
                 )
                 }
             )
             
             (play 
-                (forEach Piece)
+                (if 
+                    (is Prev Mover)
+                    
+                    (or 
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        
+                        (move Pass)
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+                
+                (if 
+                    (<= 
+                        (count Pieces P1)
+                    0)
+                    
+                    (result P1 Loss)
+                )
+                }
+            )
+        )
+        
+    > "The Che Lo (Ludii 2) ruleset.")
+    
+    (item "Che Lo (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 if:
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (sites Bottom)
+                )
+                
+                (place "Marker2" 
+                    (sites Top)
+                )
+                }
+            )
+            
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (or 
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        
+                        (move Pass)
+                    )
+                    
+                    (forEach Piece)
+                )
             )
             
             (end 
                 (if 
-                    (is Line 5)
+                    (no Moves Next)
                     
                     (result Mover Win)
                 )
             )
         )
         
-    > "The Che Lo2 ruleset.")
+    > "The Che Lo (Ludii 3) ruleset.")
     
-    (item "Che Lo3" <
+    (item "Che Lo (Ludii 4)" <
         
         (players 2)
         
@@ -111,11 +465,25 @@
                 (rectangle 3 3 diagonals:Alternating)
             use:Vertex)
             
-            (piece "Disc" Each 
+            (piece "Marker" Each 
                 (move Step 
                     (to if:
                         (is Empty 
                             (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 if:
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
                         )
                     )
                 )
@@ -125,66 +493,11 @@
         
         (rules 
             (start { 
-                (place "Disc1" 
+                (place "Marker1" 
                     (sites Bottom)
                 )
                 
-                (place "Disc2" 
-                    (sites Top)
-                )
-                }
-            )
-            
-            (play 
-                (forEach Piece)
-            )
-            
-            (end { 
-                (if 
-                    (no Moves P2)
-                    
-                    (result P1 Win)
-                )
-                
-                (if 
-                    (no Pieces P1)
-                    
-                    (result P2 Win)
-                )
-                }
-            )
-        )
-        
-    > "The Che Lo3 ruleset.")
-    
-    (item "Che Lo4" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (rectangle 3 3 diagonals:Alternating)
-            use:Vertex)
-            
-            (piece "Disc" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start { 
-                (place "Disc1" 
-                    (sites Bottom)
-                )
-                
-                (place "Disc2" 
+                (place "Marker2" 
                     (sites Top)
                 )
                 }
@@ -195,8 +508,6 @@
                     (is Prev Mover)
                     
                     (or 
-                        (move Pass)
-                        
                         (move Hop 
                             (from 
                                 (last To)
@@ -270,58 +581,12 @@
                                 )
                             )
                         )
+                        
+                        (move Pass)
                     )
                     
-                    (forEach Piece top:True)
+                    (forEach Piece)
                 )
-            )
-            
-            (end 
-                (if 
-                    (no Pieces Next)
-                    
-                    (result Next Loss)
-                )
-            )
-        )
-        
-    > "The Che Lo4 ruleset.")
-    
-    (item "Che Lo5" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (rectangle 3 3 diagonals:Alternating)
-            use:Vertex)
-            
-            (piece "Disc" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start { 
-                (place "Disc1" 
-                    (sites Bottom)
-                )
-                
-                (place "Disc2" 
-                    (sites Top)
-                )
-                }
-            )
-            
-            (play 
-                (forEach Piece)
             )
             
             (end 
@@ -333,9 +598,9 @@
             )
         )
         
-    > "The Che Lo5 ruleset.")
+    > "The Che Lo (Ludii 4) ruleset.")
     
-    (item "Che Lo6" <
+    (item "Che Lo (Ludii 5)" <
         
         (players 2)
         
@@ -344,11 +609,73 @@
                 (rectangle 3 3 diagonals:Alternating)
             use:Vertex)
             
-            (piece "Disc" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
+            (piece "Marker" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
                         )
                     )
                 )
@@ -358,11 +685,11 @@
         
         (rules 
             (start { 
-                (place "Disc1" 
+                (place "Marker1" 
                     (sites Bottom)
                 )
                 
-                (place "Disc2" 
+                (place "Marker2" 
                     (sites Top)
                 )
                 }
@@ -456,251 +783,25 @@
             
             (end { 
                 (if 
-                    (no Moves P1)
-                    
-                    (result P2 Win)
-                )
-                
-                (if 
-                    (no Pieces P2)
-                    
-                    (result P1 Win)
-                )
-                }
-            )
-        )
-        
-    > "The Che Lo6 ruleset.")
-    
-    (item "Che Lo7" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (rectangle 3 3 diagonals:Alternating)
-            use:Vertex)
-            
-            (piece "Disc" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start { 
-                (place "Disc1" 
-                    (sites Bottom)
-                )
-                
-                (place "Disc2" 
-                    (sites Top)
-                )
-                }
-            )
-            
-            (play 
-                (forEach Piece)
-            )
-            
-            (end 
-                (if 
-                    (no Pieces Next)
+                    (no Moves Next)
                     
                     (result Next Loss)
                 )
-            )
-        )
-        
-    > "The Che Lo7 ruleset.")
-    
-    (item "Che Lo8" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (rectangle 3 3 diagonals:Alternating)
-            use:Vertex)
-            
-            (piece "Disc" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start { 
-                (place "Disc1" 
-                    (sites Bottom)
-                )
                 
-                (place "Disc2" 
-                    (sites Top)
-                )
-                }
-            )
-            
-            (play 
-                (forEach Piece)
-            )
-            
-            (end 
-                (forEach Player if:
-                    (no Pieces Player)
-                    
-                    (result Player Loss)
-                )
-            )
-        )
-        
-    > "The Che Lo8 ruleset.")
-    
-    (item "Che Lo9" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (rectangle 3 3 diagonals:Alternating)
-            use:Vertex)
-            
-            (piece "Disc" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start { 
-                (place "Disc1" 
-                    (sites Bottom)
-                )
-                
-                (place "Disc2" 
-                    (sites Top)
-                )
-                }
-            )
-            
-            (play 
-                (if 
-                    (is Prev Mover)
-                    
-                    (or 
-                        (move Hop 
-                            (from 
-                                (last To)
-                            )
-                            
-                            (between if:
-                                (and 
-                                    (not 
-                                        (is In 
-                                            (between)
-                                            
-                                            (sites ToClear)
-                                        )
-                                    )
-                                    
-                                    (is Enemy 
-                                        (who at:
-                                            (between)
-                                        )
-                                    )
-                                )
-                                
-                                (apply 
-                                    (remove 
-                                        (between)
-                                    )
-                                )
-                            )
-                            
-                            (to if:
-                                (is Empty 
-                                    (to)
-                                )
-                            )
-                            
-                            (then 
-                                (if 
-                                    (can Move 
-                                        (hop 
-                                            (from 
-                                                (last To)
-                                            )
-                                            
-                                            (between if:
-                                                (and 
-                                                    (not 
-                                                        (is In 
-                                                            (between)
-                                                            
-                                                            (sites ToClear)
-                                                        )
-                                                    )
-                                                    
-                                                    (is Enemy 
-                                                        (who at:
-                                                            (between)
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                            
-                                            (to if:
-                                                (is Empty 
-                                                    (to)
-                                                )
-                                            )
-                                        )
-                                    )
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                        
-                        (move Pass)
-                    )
-                    
-                    (forEach Piece)
-                )
-            )
-            
-            (end 
                 (if 
                     (<= 
-                        (count Pieces Next)
-                    5)
+                        (count Pieces P1)
+                    0)
                     
-                    (result Next Loss)
+                    (result P1 Loss)
                 )
+                }
             )
         )
         
-    > "The Che Lo9 ruleset.")
+    > "The Che Lo (Ludii 5) ruleset.")
     
-    (item "Che Lo10" <
+    (item "Che Lo (Ludii 6)" <
         
         (players 2)
         
@@ -709,11 +810,73 @@
                 (rectangle 3 3 diagonals:Alternating)
             use:Vertex)
             
-            (piece "Disc" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
+            (piece "Marker" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
                         )
                     )
                 )
@@ -723,49 +886,865 @@
         
         (rules 
             (start { 
-                (place "Disc1" 
+                (place "Marker1" 
                     (sites Bottom)
                 )
                 
-                (place "Disc2" 
+                (place "Marker2" 
                     (sites Top)
                 )
                 }
             )
             
             (play 
-                (forEach Piece)
+                (if 
+                    (is Prev Mover)
+                    
+                    (or 
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        
+                        (move Pass)
+                    )
+                    
+                    (forEach Piece)
+                )
             )
             
             (end { 
                 (if 
-                    (no Moves P2)
+                    (no Moves Next)
                     
-                    (result P1 Win)
+                    (result Next Loss)
                 )
                 
                 (if 
-                    (no Pieces P1)
+                    (<= 
+                        (count Pieces P1)
+                    15)
                     
-                    (result P2 Win)
+                    (result P1 Loss)
                 )
                 }
             )
         )
         
-    > "The Che Lo10 ruleset.")
+    > "The Che Lo (Ludii 6) ruleset.")
+    
+    (item "Che Lo (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (sites Bottom)
+                )
+                
+                (place "Marker2" 
+                    (sites Top)
+                )
+                }
+            )
+            
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (or 
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        
+                        (move Pass)
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Che Lo (Ludii 7) ruleset.")
+    
+    (item "Che Lo (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 if:
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (sites Bottom)
+                )
+                
+                (place "Marker2" 
+                    (sites Top)
+                )
+                }
+            )
+            
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (or 
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        
+                        (move Pass)
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+            
+            (end 
+                (if 
+                    (and 
+                        (no Moves Next)
+                        
+                        (>= 1 
+                            (count Pieces Next)
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Che Lo (Ludii 8) ruleset.")
+    
+    (item "Che Lo (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (sites Bottom)
+                )
+                
+                (place "Marker2" 
+                    (sites Top)
+                )
+                }
+            )
+            
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (or 
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        
+                        (move Pass)
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Che Lo (Ludii 9) ruleset.")
+    
+    (item "Che Lo (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 3 3 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (sites Bottom)
+                )
+                
+                (place "Marker2" 
+                    (sites Top)
+                )
+                }
+            )
+            
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (or 
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        
+                        (move Pass)
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+            
+            (end 
+                (if 
+                    (and 
+                        (no Moves Next)
+                        
+                        (>= 1 
+                            (count Pieces Next)
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Che Lo (Ludii 10) ruleset.")
     
     (item "Incomplete"
         <
         (players 2) 
         (equipment { 
             ("AlquerqueBoard" 3 3)
-            (piece "Disc" Each (move [#])) 
+            (piece "Marker" Each [#]) 
         }) 
         (rules 
             (start {
-                (place "Disc1" (sites Bottom))
-                (place "Disc2" (sites Top))
+                (place "Marker1" (sites Bottom))
+                (place "Marker2" (sites Top))
             })
             (play [#])
             (end [#])
@@ -780,36 +1759,36 @@
 
 (rulesets {
     
-    (ruleset "Ruleset/Che Lo1 (Reconstructed)" {
-        "Variant/Che Lo1"
+    (ruleset "Ruleset/Che Lo (Ludii 1) (Reconstructed)" {
+        "Variant/Che Lo (Ludii 1)"
     })
-    (ruleset "Ruleset/Che Lo2 (Reconstructed)" {
-        "Variant/Che Lo2"
+    (ruleset "Ruleset/Che Lo (Ludii 2) (Reconstructed)" {
+        "Variant/Che Lo (Ludii 2)"
     })
-    (ruleset "Ruleset/Che Lo3 (Reconstructed)" {
-        "Variant/Che Lo3"
+    (ruleset "Ruleset/Che Lo (Ludii 3) (Reconstructed)" {
+        "Variant/Che Lo (Ludii 3)"
     })
-    (ruleset "Ruleset/Che Lo4 (Reconstructed)" {
-        "Variant/Che Lo4"
+    (ruleset "Ruleset/Che Lo (Ludii 4) (Reconstructed)" {
+        "Variant/Che Lo (Ludii 4)"
     })
-    (ruleset "Ruleset/Che Lo5 (Reconstructed)" {
-        "Variant/Che Lo5"
+    (ruleset "Ruleset/Che Lo (Ludii 5) (Reconstructed)" {
+        "Variant/Che Lo (Ludii 5)"
     })
-    (ruleset "Ruleset/Che Lo6 (Reconstructed)" {
-        "Variant/Che Lo6"
+    (ruleset "Ruleset/Che Lo (Ludii 6) (Reconstructed)" {
+        "Variant/Che Lo (Ludii 6)"
     })
-    (ruleset "Ruleset/Che Lo7 (Reconstructed)" {
-        "Variant/Che Lo7"
+    (ruleset "Ruleset/Che Lo (Ludii 7) (Reconstructed)" {
+        "Variant/Che Lo (Ludii 7)"
     })
-    (ruleset "Ruleset/Che Lo8 (Reconstructed)" {
-        "Variant/Che Lo8"
+    (ruleset "Ruleset/Che Lo (Ludii 8) (Reconstructed)" {
+        "Variant/Che Lo (Ludii 8)"
     })
-    (ruleset "Ruleset/Che Lo9 (Reconstructed)" {
-        "Variant/Che Lo9"
+    (ruleset "Ruleset/Che Lo (Ludii 9) (Reconstructed)" {
+        "Variant/Che Lo (Ludii 9)"
     })
-    (ruleset "Ruleset/Che Lo10 (Reconstructed)" {
-        "Variant/Che Lo10"
-    }) 
+    (ruleset "Ruleset/Che Lo (Ludii 10) (Reconstructed)" {
+        "Variant/Che Lo (Ludii 10)"
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -820,167 +1799,169 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-    (info
-        {
-        (description "Che Lo is a small alignment game played in early modern China.")
-        (useFor "Ruleset/Historical Information (Incomplete)" (rules "3x3 intersecting lines, with diagonals. Three pieces per player, which begin on opposite sides of the board."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (id "1393"))
-        (useFor "Ruleset/Che Lo1 (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
-                All players play with Discs.
-                Rules for Pieces:
-                Discs step adjacent.
-                Players take turns moving.
-                Setup:
-                Place a Disc for player one at the bottom sites of the board.
-                Place a Disc for player two at the top sites of the board..
-                Rules: 
-                Move one of your pieces.
-                Aim: 
-                If the next player cannot move, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Che Lo1 (Reconstructed)" (id "2838"))
-        (useFor "Ruleset/Che Lo2 (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
-                All players play with Discs.
-                Rules for Pieces:
-                Discs step adjacent.
-                Players take turns moving.
-                Setup:
-                Place a Disc for player one at the bottom sites of the board.
-                Place a Disc for player two at the top sites of the board..
-                Rules: 
-                Move one of your pieces.
-                Aim: 
-                If a player places 5 of their pieces in an adjacent direction line, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Che Lo2 (Reconstructed)" (id "2839"))
-        (useFor "Ruleset/Che Lo3 (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
-                All players play with Discs.
-                Rules for Pieces:
-                Discs step adjacent.
-                Players take turns moving.
-                Setup:
-                Place a Disc for player one at the bottom sites of the board.
-                Place a Disc for player two at the top sites of the board..
-                Rules: 
-                Move one of your pieces.
-                Aim: 
-                If player two cannot move, player one wins If there are no pieces owned by Player 1, player two wins.
-                
-        "))
-        (useFor "Ruleset/Che Lo3 (Reconstructed)" (id "2840"))
-        (useFor "Ruleset/Che Lo4 (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
-                All players play with Discs.
-                Rules for Pieces:
-                Discs step adjacent.
-                Players take turns moving.
-                Setup:
-                Place a Disc for player one at the bottom sites of the board.
-                Place a Disc for player two at the top sites of the board..
-                Rules: 
-                If in the same turn, pass or hop adjacent then if can move hop adjacent, move again, else move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Che Lo4 (Reconstructed)" (id "2841"))
-        (useFor "Ruleset/Che Lo5 (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
-                All players play with Discs.
-                Rules for Pieces:
-                Discs step adjacent.
-                Players take turns moving.
-                Setup:
-                Place a Disc for player one at the bottom sites of the board.
-                Place a Disc for player two at the top sites of the board..
-                Rules: 
-                Move one of your pieces.
-                Aim: 
-                If the next player cannot move, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Che Lo5 (Reconstructed)" (id "2842"))
-        (useFor "Ruleset/Che Lo6 (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
-                All players play with Discs.
-                Rules for Pieces:
-                Discs step adjacent.
-                Players take turns moving.
-                Setup:
-                Place a Disc for player one at the bottom sites of the board.
-                Place a Disc for player two at the top sites of the board..
-                Rules: 
-                If in the same turn, hop adjacent then if can move hop adjacent, move again or pass, else move one of your pieces.
-                Aim: 
-                If player one cannot move, player two wins If there are no pieces owned by Player 2, player one wins.
-                
-        "))
-        (useFor "Ruleset/Che Lo6 (Reconstructed)" (id "2843"))
-        (useFor "Ruleset/Che Lo7 (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
-                All players play with Discs.
-                Rules for Pieces:
-                Discs step adjacent.
-                Players take turns moving.
-                Setup:
-                Place a Disc for player one at the bottom sites of the board.
-                Place a Disc for player two at the top sites of the board..
-                Rules: 
-                Move one of your pieces.
-                Aim: 
-                If there are no pieces owned by Player the next player, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Che Lo7 (Reconstructed)" (id "2844"))
-        (useFor "Ruleset/Che Lo8 (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
-                All players play with Discs.
-                Rules for Pieces:
-                Discs step adjacent.
-                Players take turns moving.
-                Setup:
-                Place a Disc for player one at the bottom sites of the board.
-                Place a Disc for player two at the top sites of the board..
-                Rules: 
-                Move one of your pieces.
-                
-        "))
-        (useFor "Ruleset/Che Lo8 (Reconstructed)" (id "2845"))
-        (useFor "Ruleset/Che Lo9 (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
-                All players play with Discs.
-                Rules for Pieces:
-                Discs step adjacent.
-                Players take turns moving.
-                Setup:
-                Place a Disc for player one at the bottom sites of the board.
-                Place a Disc for player two at the top sites of the board..
-                Rules: 
-                If in the same turn, hop adjacent then if can move hop adjacent, move again or pass, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 5, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Che Lo9 (Reconstructed)" (id "2846"))
-        (useFor "Ruleset/Che Lo10 (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
-                All players play with Discs.
-                Rules for Pieces:
-                Discs step adjacent.
-                Players take turns moving.
-                Setup:
-                Place a Disc for player one at the bottom sites of the board.
-                Place a Disc for player two at the top sites of the board..
-                Rules: 
-                Move one of your pieces.
-                Aim: 
-                If player two cannot move, player one wins If there are no pieces owned by Player 1, player two wins.
-                
-        "))
-        (useFor "Ruleset/Che Lo10 (Reconstructed)" (id "2847"))
-        (source "Hyde 1694: 211.")
-        (version "1.3.8")
-        (classification "board/space/line/reconstruction/done")
-        (credit "Eric Piette")
-        (origin "This game was played in China, around 1694.")
-        }
-    )
+(info
+{
+(description "Che Lo is a small alignment game played in early modern China.")
+(useFor "Ruleset/Historical Information (Incomplete)" (rules "3x3 intersecting lines, with diagonals. Three pieces per player, which begin on opposite sides of the board."))
+(useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+(useFor "Ruleset/Historical Information (Incomplete)" (id "1393"))
+(useFor "Ruleset/Che Lo (Ludii 1) (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Setup:
+     Place a Marker for player one at the bottom sites of the board.
+     Place a Marker for player two at the top sites of the board..
+Rules: 
+     If in the same turn, hop adjacent then if can move hop adjacent, move again or pass, else move one of your pieces.
+Aim: 
+     If the next player cannot move, the next player loses If the number of pieces owned by Player 1 is less than or equal to 15, player one loses.
+
+"))
+(useFor "Ruleset/Che Lo (Ludii 1) (Reconstructed)" (id "3109"))
+(useFor "Ruleset/Che Lo (Ludii 2) (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Setup:
+     Place a Marker for player one at the bottom sites of the board.
+     Place a Marker for player two at the top sites of the board..
+Rules: 
+     If in the same turn, hop adjacent then if can move hop adjacent, move again or pass, else move one of your pieces.
+Aim: 
+     If the next player cannot move, the next player loses If the number of pieces owned by Player 1 is less than or equal to 0, player one loses.
+
+"))
+(useFor "Ruleset/Che Lo (Ludii 2) (Reconstructed)" (id "3110"))
+(useFor "Ruleset/Che Lo (Ludii 3) (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Setup:
+     Place a Marker for player one at the bottom sites of the board.
+     Place a Marker for player two at the top sites of the board..
+Rules: 
+     If in the same turn, hop adjacent then if can move hop adjacent, move again or pass, else move one of your pieces.
+Aim: 
+     If the next player cannot move, the moving player wins.
+
+"))
+(useFor "Ruleset/Che Lo (Ludii 3) (Reconstructed)" (id "3111"))
+(useFor "Ruleset/Che Lo (Ludii 4) (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Setup:
+     Place a Marker for player one at the bottom sites of the board.
+     Place a Marker for player two at the top sites of the board..
+Rules: 
+     If in the same turn, hop adjacent then if can move hop adjacent, move again or pass, else move one of your pieces.
+Aim: 
+     If the next player cannot move, the next player loses.
+
+"))
+(useFor "Ruleset/Che Lo (Ludii 4) (Reconstructed)" (id "3112"))
+(useFor "Ruleset/Che Lo (Ludii 5) (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers hop adjacent then if can move hop adjacent, move again or step adjacent.
+Players take turns moving.
+Setup:
+     Place a Marker for player one at the bottom sites of the board.
+     Place a Marker for player two at the top sites of the board..
+Rules: 
+     If in the same turn, hop adjacent then if can move hop adjacent, move again or pass, else move one of your pieces.
+Aim: 
+     If the next player cannot move, the next player loses If the number of pieces owned by Player 1 is less than or equal to 0, player one loses.
+
+"))
+(useFor "Ruleset/Che Lo (Ludii 5) (Reconstructed)" (id "3113"))
+(useFor "Ruleset/Che Lo (Ludii 6) (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers hop adjacent then if can move hop adjacent, move again or step adjacent.
+Players take turns moving.
+Setup:
+     Place a Marker for player one at the bottom sites of the board.
+     Place a Marker for player two at the top sites of the board..
+Rules: 
+     If in the same turn, hop adjacent then if can move hop adjacent, move again or pass, else move one of your pieces.
+Aim: 
+     If the next player cannot move, the next player loses If the number of pieces owned by Player 1 is less than or equal to 15, player one loses.
+
+"))
+(useFor "Ruleset/Che Lo (Ludii 6) (Reconstructed)" (id "3114"))
+(useFor "Ruleset/Che Lo (Ludii 7) (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers hop adjacent then if can move hop adjacent, move again or step adjacent.
+Players take turns moving.
+Setup:
+     Place a Marker for player one at the bottom sites of the board.
+     Place a Marker for player two at the top sites of the board..
+Rules: 
+     If in the same turn, hop adjacent then if can move hop adjacent, move again or pass, else move one of your pieces.
+Aim: 
+     If the next player cannot move, the moving player wins.
+
+"))
+(useFor "Ruleset/Che Lo (Ludii 7) (Reconstructed)" (id "3115"))
+(useFor "Ruleset/Che Lo (Ludii 8) (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an adjacent direction line, move again.
+Players take turns moving.
+Setup:
+     Place a Marker for player one at the bottom sites of the board.
+     Place a Marker for player two at the top sites of the board..
+Rules: 
+     If in the same turn, hop adjacent then if can move hop adjacent, move again or pass, else move one of your pieces.
+Aim: 
+     If the next player cannot move and 1 is greater than or equal to the number of pieces owned by Player the next player, the moving player wins.
+
+"))
+(useFor "Ruleset/Che Lo (Ludii 8) (Reconstructed)" (id "3116"))
+(useFor "Ruleset/Che Lo (Ludii 9) (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers hop adjacent then if can move hop adjacent, move again or step adjacent.
+Players take turns moving.
+Setup:
+     Place a Marker for player one at the bottom sites of the board.
+     Place a Marker for player two at the top sites of the board..
+Rules: 
+     If in the same turn, hop adjacent then if can move hop adjacent, move again or pass, else move one of your pieces.
+Aim: 
+     If the next player cannot move, the next player loses.
+
+"))
+(useFor "Ruleset/Che Lo (Ludii 9) (Reconstructed)" (id "3117"))
+(useFor "Ruleset/Che Lo (Ludii 10) (Reconstructed)" (rules "The game Che Lo is played by two players on a 3x3 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers hop adjacent then if can move hop adjacent, move again or step adjacent.
+Players take turns moving.
+Setup:
+     Place a Marker for player one at the bottom sites of the board.
+     Place a Marker for player two at the top sites of the board..
+Rules: 
+     If in the same turn, hop adjacent then if can move hop adjacent, move again or pass, else move one of your pieces.
+Aim: 
+     If the next player cannot move and 1 is greater than or equal to the number of pieces owned by Player the next player, the moving player wins.
+
+"))
+(useFor "Ruleset/Che Lo (Ludii 10) (Reconstructed)" (id "3118"))
+(source "Hyde 1694: 211.")
+(version "1.3.9")
+(classification "board/space/line/reconstruction/done")
+(credit "Eric Piette")
+(origin "This game was played in China, around 1694.")
+}
+)
     
     (recon {
         (concept "NumStartComponents" 6)

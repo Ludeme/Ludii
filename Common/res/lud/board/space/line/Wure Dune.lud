@@ -1,7 +1,7 @@
 (game "Wure Dune"
     (players 2)
     (equipment {
-        (board (square 3) use:Vertex)
+        ("ThreeMensMorrisBoard")
         (hand Each)
         (piece "Marker" Each ("StepToEmpty" All))
     })
@@ -24,18 +24,18 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    (info
-        {
-        (description "Wuré Duné (\"Devil's Game\") is a simple game of alignment played in many cultures in West Africa. ")
-        (aliases {"Wuré Duné" "Uri Jiné" "Wuhé Din'é"})
-        (rules "3x3 intersecting lines, with diagonals. Three pieces per player. Players alternate turns placing one of their pieces on the board. Once all of the pieces are placed, players take turns moving one of their pieces to an adjacent empty spot. The first player to make an orthogonal line with their pieces wins.")
-        (source "Béart 1955: 453-454.")
-        (id "780")
-        (version "1.3.8")
-        (classification "board/space/line")
-        (origin "This game was played in West Africa, around 1955.")
-        }
-    )
+(info
+{
+(description "Wuré Duné (\"Devil's Game\") is a simple game of alignment played in many cultures in West Africa. ")
+(aliases {"Wuré Duné" "Uri Jiné" "Wuhé Din'é"})
+(rules "3x3 intersecting lines, with diagonals. Three pieces per player. Players alternate turns placing one of their pieces on the board. Once all of the pieces are placed, players take turns moving one of their pieces to an adjacent empty spot. The first player to make an orthogonal line with their pieces wins.")
+(source "Béart 1955: 453-454.")
+(id "780")
+(version "1.3.9")
+(classification "board/space/line")
+(origin "This game was played in West Africa, around 1955.")
+}
+)
     (ai
         "Wure Dune_ai"
     )

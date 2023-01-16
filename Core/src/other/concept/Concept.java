@@ -16,7 +16,7 @@ import main.grammar.Description;
  * computed if that's leaf. If that's not a leaf, the concept is true if any
  * child is true.
  * 
- * Remarks: The next id in case of a new concept is the id 805.
+ * Remarks: The next id in case of a new concept is the id 810.
  * 
  * @author Eric.Piette
  */
@@ -4743,7 +4743,7 @@ public enum Concept
 	(
 		"3.3.2.8",
 		315, 
-		"Ccapture in surrounding.",
+		"Capture in surrounding.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
@@ -9686,6 +9686,76 @@ public enum Concept
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.ScoreDifference
+	),
+	
+	/** */
+	SkillTrace
+	(
+		"4.13",
+		805, 
+		"Skill Trace.",
+		ConceptType.Behaviour,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Behaviour
+	),
+	
+	/** Computed with playouts. */
+	SkillTraceScore
+	(
+		"4.13.1",
+		806, 
+		"Skill Trace Score.",
+		ConceptType.Behaviour,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.SkillTrace
+	),
+	
+	/** Computed with playouts. */
+	SkillTraceTrials
+	(
+		"4.13.2",
+		807, 
+		"Skill Trace Trials.",
+		ConceptType.Behaviour,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.SkillTrace
+	),
+	
+	/** Computed with playouts. */
+	SkillTraceErrorSlope
+	(
+		"4.13.3",
+		808, 
+		"Skill Trace Error Slope.",
+		ConceptType.Behaviour,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.SkillTrace
+	),
+	
+	/** Computed with playouts. */
+	SkillTraceErrorIntercept
+	(
+		"4.13.4",
+		809, 
+		"Skill Trace Error Intercept.",
+		ConceptType.Behaviour,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.SkillTrace
 	),
 	
 	//-------------------------------------------------------------------------

@@ -40,21 +40,21 @@
 
 (metadata 
     
-    (info
-        {
-        (description "Crusade can be played on a 8x8 square board. In the initial position, all squares are occupied by a stone: white stones on the white squares and black stones on the black squares.")
-        (rules "Each stone must move to any adjacent(orthogonal or diagonal) cell, which is occupied by an enemy stone. This stone is captured by replacement. After that, all adjacent enemy stones (orthogonal or diagonal) are converted to friendly ones. There are fewer and fewer stones on the board as the game proceeds, which is a major difference with Othello and Ataxx.
-            
-        The player which has more stones, after there is no valid move left, wins the game.")
-        (id "1817")
-        (source "<a href=\"https://boardgamegeek.com/boardgame/70926/crusade\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.8")
-        (classification "board/war/replacement/eliminate/all")
-        (author "Keith Carter")
-        (credit "Eric Piette")
-        (date "2002")
-        }
-    )
+(info
+{
+(description "Crusade can be played on a 8x8 square board. In the initial position, all squares are occupied by a stone: white stones on the white squares and black stones on the black squares.")
+(rules "Each stone must move to any adjacent(orthogonal or diagonal) cell, which is occupied by an enemy stone. This stone is captured by replacement. After that, all adjacent enemy stones (orthogonal or diagonal) are converted to friendly ones. There are fewer and fewer stones on the board as the game proceeds, which is a major difference with Othello and Ataxx.
+
+The player which has more stones, after there is no valid move left, wins the game.")
+(id "1817")
+(source "<a href=\"https://boardgamegeek.com/boardgame/70926/crusade\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+(version "1.3.9")
+(classification "board/war/replacement/eliminate/all")
+(author "Keith Carter")
+(credit "Eric Piette")
+(date "2002")
+}
+)
     
     (graphics {
         (board Style Chess)

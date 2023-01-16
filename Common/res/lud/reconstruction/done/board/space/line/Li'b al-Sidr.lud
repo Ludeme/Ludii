@@ -6,7 +6,7 @@
 
 (option "Variant" <Variant> args:{ <variant> }
     {
-    (item "Li'b al-Sidr1" <
+    (item "Li'b al-Sidr (Ludii 1)" <
         
         (players 2)
         
@@ -110,221 +110,9 @@
             )
         )
         
-    > "The Li'b al-Sidr1 ruleset.")
+    > "The Li'b al-Sidr (Ludii 1) ruleset.")
     
-    (item "Li'b al-Sidr2" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (is Line 3 Orthogonal exact:True)
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:9)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Enemy container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (if 
-                                    (is Line 3 Orthogonal exact:True)
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement" )
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Enemy container:"Board")
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (<= 
-                        (count Pieces Next)
-                    2)
-                    
-                    (result Next Loss)
-                )
-            )
-        )
-        
-    > "The Li'b al-Sidr2 ruleset.")
-    
-    (item "Li'b al-Sidr3" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (is Line 3 Orthogonal exact:True)
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:9)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Enemy container:"Board")
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (if 
-                                    (is Line 3 Orthogonal exact:True)
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement" )
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (sites Occupied by:Enemy container:"Board")
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (if 
-                    (<= 
-                        (count Pieces Next)
-                    2)
-                    
-                    (result Next Loss)
-                )
-            )
-        )
-        
-    > "The Li'b al-Sidr3 ruleset.")
-    
-    (item "Li'b al-Sidr4" <
+    (item "Li'b al-Sidr (Ludii 2)" <
         
         (players 2)
         
@@ -488,9 +276,9 @@
             )
         )
         
-    > "The Li'b al-Sidr4 ruleset.")
+    > "The Li'b al-Sidr (Ludii 2) ruleset.")
     
-    (item "Li'b al-Sidr5" <
+    (item "Li'b al-Sidr (Ludii 3)" <
         
         (players 2)
         
@@ -502,10 +290,336 @@
             (hand Each)
             
             (piece "Marker" Each 
-                (move Step Orthogonal 
+                (move Step 
                     (to if:
                         (is Empty 
                             (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (if 
+                            (can Move 
+                                (move Remove 
+                                    (forEach 
+                                        (sites Occupied by:Enemy container:"Board" )
+                                        if:
+                                        (not 
+                                            (is Line 3 Orthogonal through:
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (forEach 
+                                    (sites Occupied by:Enemy container:"Board" )
+                                    if:
+                                    (not 
+                                        (is Line 3 Orthogonal through:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (sites Occupied by:Enemy container:"Board")
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (if 
+                            (can Move 
+                                (move Remove 
+                                    (forEach 
+                                        (sites Occupied by:Enemy container:"Board" )
+                                        if:
+                                        (not 
+                                            (is Line 3 Orthogonal through:
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (forEach 
+                                    (sites Occupied by:Enemy container:"Board" )
+                                    if:
+                                    (not 
+                                        (is Line 3 Orthogonal through:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (sites Occupied by:Enemy container:"Board")
+                            )
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            3)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Li'b al-Sidr (Ludii 3) ruleset.")
+    
+    (item "Li'b al-Sidr (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (or { 
+                                        (is Line 3 N exact:True)
+                                        
+                                        (is Line 3 S exact:True)
+                                        
+                                        (is Line 3 E exact:True)
+                                        
+                                        (is Line 3 W exact:True)
+                                        }
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            4)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Li'b al-Sidr (Ludii 4) ruleset.")
+    
+    (item "Li'b al-Sidr (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (or { 
+                                (is Line 3 N exact:True)
+                                
+                                (is Line 3 S exact:True)
+                                
+                                (is Line 3 E exact:True)
+                                
+                                (is Line 3 W exact:True)
+                                }
+                            )
+                            
+                            (moveAgain)
                         )
                     )
                 )
@@ -586,217 +700,9 @@
             )
         )
         
-    > "The Li'b al-Sidr5 ruleset.")
+    > "The Li'b al-Sidr (Ludii 5) ruleset.")
     
-    (item "Li'b al-Sidr6" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (or { 
-                                (is Line 3 N exact:True)
-                                
-                                (is Line 3 S exact:True)
-                                
-                                (is Line 3 E exact:True)
-                                
-                                (is Line 3 W exact:True)
-                                }
-                            )
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:9)
-            )
-            
-            (play 
-                (or 
-                    (if 
-                        (not 
-                            (all Sites 
-                                (sites Hand Mover)
-                                if:
-                                (= 0 
-                                    (count Cell at:
-                                        (site)
-                                    )
-                                )
-                            )
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                        )
-                    )
-                    
-                    (forEach Piece)
-                )
-            )
-            
-            (end 
-                (if 
-                    (is Line 3 Orthogonal)
-                    
-                    (result Mover Win)
-                )
-            )
-        )
-        
-    > "The Li'b al-Sidr6 ruleset.")
-    
-    (item "Li'b al-Sidr7" <
-        
-        (players 2)
-        
-        (equipment { 
-            (board 
-                (concentric Square rings:3 joinCorners:True)
-            use:Vertex)
-            
-            (hand Each)
-            
-            (piece "Marker" Each 
-                (move Step Orthogonal 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                    
-                    (then 
-                        (if 
-                            (is Line 3 Orthogonal)
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            }
-        )
-        
-        (rules 
-            (start 
-                (place "Marker" "Hand" count:12)
-            )
-            phases:{ 
-            (phase "Placement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (forEach 
-                                (sites Occupied by:Enemy container:"Board")
-                                if:
-                                (not 
-                                    (is Line 3 Orthogonal through:
-                                        (site)
-                                    )
-                                )
-                            )
-                        )
-                        
-                        (move 
-                            (from 
-                                (handSite Mover)
-                            )
-                            
-                            (to 
-                                (sites Empty)
-                            )
-                            
-                            (then 
-                                (if 
-                                    (is Line 3 Orthogonal)
-                                    
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                    )
-                )
-                
-                (nextPhase Mover 
-                    (all Sites 
-                        (sites Hand Mover)
-                        if:
-                        (= 0 
-                            (count Cell at:
-                                (site)
-                            )
-                        )
-                    )
-                "Movement" )
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if 
-                        (is Prev Mover)
-                        
-                        (move Remove 
-                            (forEach 
-                                (sites Occupied by:Enemy container:"Board")
-                                if:
-                                (not 
-                                    (is Line 3 Orthogonal through:
-                                        (site)
-                                    )
-                                )
-                            )
-                        )
-                        
-                        (forEach Piece)
-                    )
-                )
-            )
-            }
-            
-            (end 
-                (forEach NonMover if:
-                    (= 2 
-                        (count Pieces Player)
-                    )
-                    
-                    (result Player Loss)
-                )
-            )
-        )
-        
-    > "The Li'b al-Sidr7 ruleset.")
-    
-    (item "Li'b al-Sidr8" <
+    (item "Li'b al-Sidr (Ludii 6)" <
         
         (players 2)
         
@@ -837,15 +743,35 @@
                     (if 
                         (is Prev Mover)
                         
-                        (move Remove 
-                            (forEach 
-                                (sites Occupied by:Enemy container:"Board")
-                                if:
-                                (not 
-                                    (is Line 3 Orthogonal through:
-                                        (site)
+                        (if 
+                            (can Move 
+                                (move Remove 
+                                    (forEach 
+                                        (sites Occupied by:Enemy container:"Board" )
+                                        if:
+                                        (not 
+                                            (is Line 3 Orthogonal through:
+                                                (site)
+                                            )
+                                        )
                                     )
                                 )
+                            )
+                            
+                            (move Remove 
+                                (forEach 
+                                    (sites Occupied by:Enemy container:"Board" )
+                                    if:
+                                    (not 
+                                        (is Line 3 Orthogonal through:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (sites Occupied by:Enemy container:"Board")
                             )
                         )
                         
@@ -860,7 +786,7 @@
                             
                             (then 
                                 (if 
-                                    (is Line 3 Orthogonal)
+                                    (is Line 3 Orthogonal exact:True)
                                     
                                     (moveAgain)
                                 )
@@ -887,38 +813,74 @@
                     (if 
                         (is Prev Mover)
                         
-                        (move Remove 
-                            (forEach 
-                                (sites Occupied by:Enemy container:"Board")
-                                if:
-                                (not 
-                                    (is Line 3 Orthogonal through:
-                                        (site)
+                        (if 
+                            (can Move 
+                                (move Remove 
+                                    (forEach 
+                                        (sites Occupied by:Enemy container:"Board" )
+                                        if:
+                                        (not 
+                                            (is Line 3 Orthogonal through:
+                                                (site)
+                                            )
+                                        )
                                     )
                                 )
                             )
+                            
+                            (move Remove 
+                                (forEach 
+                                    (sites Occupied by:Enemy container:"Board" )
+                                    if:
+                                    (not 
+                                        (is Line 3 Orthogonal through:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (sites Occupied by:Enemy container:"Board")
+                            )
                         )
                         
-                        (forEach Piece)
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            3)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
                     )
                 )
             )
             }
             
             (end 
-                (forEach NonMover if:
-                    (= 2 
-                        (count Pieces Player)
-                    )
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
                     
-                    (result Player Loss)
+                    (result Next Loss)
                 )
             )
         )
         
-    > "The Li'b al-Sidr8 ruleset.")
+    > "The Li'b al-Sidr (Ludii 6) ruleset.")
     
-    (item "Li'b al-Sidr9" <
+    (item "Li'b al-Sidr (Ludii 7)" <
         
         (players 2)
         
@@ -930,32 +892,16 @@
             (hand Each)
             
             (piece "Marker" Each 
-                (if 
-                    (= 3 
-                        (count Pieces Mover)
-                    )
-                    
-                    (move 
-                        (from 
-                            (from)
-                        )
-                        
-                        (to 
-                            (sites Empty)
-                        )
-                    )
-                    
-                    (move Step 
-                        (to if:
-                            (is Empty 
-                                (to)
-                            )
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
                         )
                     )
                     
                     (then 
                         (if 
-                            (is Line 3 Orthogonal)
+                            (is Line 3 Orthogonal exact:True)
                             
                             (moveAgain)
                         )
@@ -1038,9 +984,9 @@
             )
         )
         
-    > "The Li'b al-Sidr9 ruleset.")
+    > "The Li'b al-Sidr (Ludii 7) ruleset.")
     
-    (item "Li'b al-Sidr10" <
+    (item "Li'b al-Sidr (Ludii 8)" <
         
         (players 2)
         
@@ -1052,34 +998,25 @@
             (hand Each)
             
             (piece "Marker" Each 
-                (if 
-                    (is In 
-                        (from)
-                        
-                        (sites Corners)
-                    )
-                    
-                    (move 
-                        (from 
-                            (from)
-                        )
-                        
-                        (to 
-                            (sites Empty)
-                        )
-                    )
-                    
-                    (move Step 
-                        (to if:
-                            (is Empty 
-                                (to)
-                            )
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
                         )
                     )
                     
                     (then 
                         (if 
-                            (is Line 3)
+                            (or { 
+                                (is Line 3 N exact:True)
+                                
+                                (is Line 3 S exact:True)
+                                
+                                (is Line 3 E exact:True)
+                                
+                                (is Line 3 W exact:True)
+                                }
+                            )
                             
                             (moveAgain)
                         )
@@ -1091,7 +1028,194 @@
         
         (rules 
             (start 
-                (place "Marker" "Hand" count:12)
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (if 
+                            (can Move 
+                                (move Remove 
+                                    (forEach 
+                                        (sites Occupied by:Enemy container:"Board" )
+                                        if:
+                                        (not 
+                                            (is Line 3 Orthogonal through:
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (forEach 
+                                    (sites Occupied by:Enemy container:"Board" )
+                                    if:
+                                    (not 
+                                        (is Line 3 Orthogonal through:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (sites Occupied by:Enemy container:"Board")
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (if 
+                            (can Move 
+                                (move Remove 
+                                    (forEach 
+                                        (sites Occupied by:Enemy container:"Board" )
+                                        if:
+                                        (not 
+                                            (is Line 3 Orthogonal through:
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (forEach 
+                                    (sites Occupied by:Enemy container:"Board" )
+                                    if:
+                                    (not 
+                                        (is Line 3 Orthogonal through:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (sites Occupied by:Enemy container:"Board")
+                            )
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            3)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Li'b al-Sidr (Ludii 8) ruleset.")
+    
+    (item "Li'b al-Sidr (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (or { 
+                                (is Line 3 N exact:True)
+                                
+                                (is Line 3 S exact:True)
+                                
+                                (is Line 3 E exact:True)
+                                
+                                (is Line 3 W exact:True)
+                                }
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
             )
             phases:{ 
             (phase "Placement" 
@@ -1114,7 +1238,16 @@
                             
                             (then 
                                 (if 
-                                    (is Line 3)
+                                    (or { 
+                                        (is Line 3 N exact:True)
+                                        
+                                        (is Line 3 S exact:True)
+                                        
+                                        (is Line 3 E exact:True)
+                                        
+                                        (is Line 3 W exact:True)
+                                        }
+                                    )
                                     
                                     (moveAgain)
                                 )
@@ -1145,22 +1278,227 @@
                             (sites Occupied by:Enemy container:"Board")
                         )
                         
-                        (forEach Piece)
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            4)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
                     )
                 )
             )
             }
             
             (end 
-                (forEach NonMover if:
-                    (no Pieces Player)
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
                     
-                    (result Player Loss)
+                    (result Next Loss)
                 )
             )
         )
         
-    > "The Li'b al-Sidr10 ruleset.")
+    > "The Li'b al-Sidr (Ludii 9) ruleset.")
+    
+    (item "Li'b al-Sidr (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3 joinCorners:True)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (or { 
+                                (is Line 3 N exact:True)
+                                
+                                (is Line 3 S exact:True)
+                                
+                                (is Line 3 E exact:True)
+                                
+                                (is Line 3 W exact:True)
+                                }
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (if 
+                            (can Move 
+                                (move Remove 
+                                    (forEach 
+                                        (sites Occupied by:Enemy container:"Board" )
+                                        if:
+                                        (not 
+                                            (is Line 3 Orthogonal through:
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (forEach 
+                                    (sites Occupied by:Enemy container:"Board" )
+                                    if:
+                                    (not 
+                                        (is Line 3 Orthogonal through:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (sites Occupied by:Enemy container:"Board")
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (if 
+                            (can Move 
+                                (move Remove 
+                                    (forEach 
+                                        (sites Occupied by:Enemy container:"Board" )
+                                        if:
+                                        (not 
+                                            (is Line 3 Orthogonal through:
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (forEach 
+                                    (sites Occupied by:Enemy container:"Board" )
+                                    if:
+                                    (not 
+                                        (is Line 3 Orthogonal through:
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (move Remove 
+                                (sites Occupied by:Enemy container:"Board")
+                            )
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            3)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Li'b al-Sidr (Ludii 10) ruleset.")
     
     (item "Incomplete"
         <
@@ -1182,36 +1520,36 @@
 
 (rulesets {
     
-    (ruleset "Ruleset/Li'b al-Sidr1 (Reconstructed)" {
-        "Variant/Li'b al-Sidr1"
+    (ruleset "Ruleset/Li'b al-Sidr (Ludii 1) (Reconstructed)" {
+        "Variant/Li'b al-Sidr (Ludii 1)"
     })
-    (ruleset "Ruleset/Li'b al-Sidr2 (Reconstructed)" {
-        "Variant/Li'b al-Sidr2"
+    (ruleset "Ruleset/Li'b al-Sidr (Ludii 2) (Reconstructed)" {
+        "Variant/Li'b al-Sidr (Ludii 2)"
     })
-    (ruleset "Ruleset/Li'b al-Sidr3 (Reconstructed)" {
-        "Variant/Li'b al-Sidr3"
+    (ruleset "Ruleset/Li'b al-Sidr (Ludii 3) (Reconstructed)" {
+        "Variant/Li'b al-Sidr (Ludii 3)"
     })
-    (ruleset "Ruleset/Li'b al-Sidr4 (Reconstructed)" {
-        "Variant/Li'b al-Sidr4"
+    (ruleset "Ruleset/Li'b al-Sidr (Ludii 4) (Reconstructed)" {
+        "Variant/Li'b al-Sidr (Ludii 4)"
     })
-    (ruleset "Ruleset/Li'b al-Sidr5 (Reconstructed)" {
-        "Variant/Li'b al-Sidr5"
+    (ruleset "Ruleset/Li'b al-Sidr (Ludii 5) (Reconstructed)" {
+        "Variant/Li'b al-Sidr (Ludii 5)"
     })
-    (ruleset "Ruleset/Li'b al-Sidr6 (Reconstructed)" {
-        "Variant/Li'b al-Sidr6"
+    (ruleset "Ruleset/Li'b al-Sidr (Ludii 6) (Reconstructed)" {
+        "Variant/Li'b al-Sidr (Ludii 6)"
     })
-    (ruleset "Ruleset/Li'b al-Sidr7 (Reconstructed)" {
-        "Variant/Li'b al-Sidr7"
+    (ruleset "Ruleset/Li'b al-Sidr (Ludii 7) (Reconstructed)" {
+        "Variant/Li'b al-Sidr (Ludii 7)"
     })
-    (ruleset "Ruleset/Li'b al-Sidr8 (Reconstructed)" {
-        "Variant/Li'b al-Sidr8"
+    (ruleset "Ruleset/Li'b al-Sidr (Ludii 8) (Reconstructed)" {
+        "Variant/Li'b al-Sidr (Ludii 8)"
     })
-    (ruleset "Ruleset/Li'b al-Sidr9 (Reconstructed)" {
-        "Variant/Li'b al-Sidr9"
+    (ruleset "Ruleset/Li'b al-Sidr (Ludii 9) (Reconstructed)" {
+        "Variant/Li'b al-Sidr (Ludii 9)"
     })
-    (ruleset "Ruleset/Li'b al-Sidr10 (Reconstructed)" {
-        "Variant/Li'b al-Sidr10"
-    }) 
+    (ruleset "Ruleset/Li'b al-Sidr (Ludii 10) (Reconstructed)" {
+        "Variant/Li'b al-Sidr (Ludii 10)"
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -1223,132 +1561,138 @@
 
 (metadata 
     
-    (info
-        {
-        (description "L'ib al-Sidr is an alignment game played in West Asia during the Middle Ages. It was played on a typical merels board, with twelve pieces per player.")
-        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Three concentric circles with  lines connecting the corners and midpoints of the squares."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (id "2035"))
-        (useFor "Ruleset/Li'b al-Sidr1 (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Li'b al-Sidr1 (Reconstructed)" (id "2818"))
-        (useFor "Ruleset/Li'b al-Sidr2 (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Li'b al-Sidr2 (Reconstructed)" (id "2819"))
-        (useFor "Ruleset/Li'b al-Sidr3 (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Li'b al-Sidr3 (Reconstructed)" (id "2820"))
-        (useFor "Ruleset/Li'b al-Sidr4 (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
-                Aim: 
-                If the next player cannot move or the number of null owned by Player the next player is less than or equal to 2, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Li'b al-Sidr4 (Reconstructed)" (id "2821"))
-        (useFor "Ruleset/Li'b al-Sidr5 (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the next player loses.
-                
-        "))
-        (useFor "Ruleset/Li'b al-Sidr5 (Reconstructed)" (id "2822"))
-        (useFor "Ruleset/Li'b al-Sidr6 (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If not all sites in the sites in Player the moving player's hand satisfy the condition 0 is equal to the total number of cell in current site, from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true or move one of your pieces.
-                Aim: 
-                If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Li'b al-Sidr6 (Reconstructed)" (id "2823"))
-        (useFor "Ruleset/Li'b al-Sidr7 (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step orthogonal then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else move one of your pieces.
-                
-        "))
-        (useFor "Ruleset/Li'b al-Sidr7 (Reconstructed)" (id "2824"))
-        (useFor "Ruleset/Li'b al-Sidr8 (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else move one of your pieces.
-                
-        "))
-        (useFor "Ruleset/Li'b al-Sidr8 (Reconstructed)" (id "2825"))
-        (useFor "Ruleset/Li'b al-Sidr9 (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers if 3 is equal to the number of null owned by Player the moving player, from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true, else step adjacent.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
-                Aim: 
-                If the number of null owned by Player the next player is less than or equal to 2, the moving player wins.
-                
-        "))
-        (useFor "Ruleset/Li'b al-Sidr9 (Reconstructed)" (id "2826"))
-        (useFor "Ruleset/Li'b al-Sidr10 (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
-                All players play with Markers.
-                Rules for Pieces:
-                Markers if the location of the piece is in the corner sites of the board, from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true, else step adjacent.
-                Players take turns moving.
-                Rules: 
-                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
-                
-        "))
-        (useFor "Ruleset/Li'b al-Sidr10 (Reconstructed)" (id "2827"))
-        (version "1.3.8")
-        (classification "board/space/line/reconstruction/done")
-        (credit "Eric Piette")
-        (origin "This game was played in West Asia, from around 600 to 1410.")
-        }
-    )
+(info
+{
+(description "L'ib al-Sidr is an alignment game played in West Asia during the Middle Ages. It was played on a typical merels board, with twelve pieces per player.")
+(useFor "Ruleset/Historical Information (Incomplete)" (rules "Three concentric circles with  lines connecting the corners and midpoints of the squares."))
+(useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+(useFor "Ruleset/Historical Information (Incomplete)" (id "2035"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 1) (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 1) (Reconstructed)" (id "3119"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 2) (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the next player cannot move or the number of pieces owned by Player the next player is less than or equal to 2, the moving player wins.
+
+"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 2) (Reconstructed)" (id "3120"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 3) (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 3) (Reconstructed)" (id "3121"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 4) (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 4, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 4) (Reconstructed)" (id "3122"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 5) (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 5) (Reconstructed)" (id "3123"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 6) (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 6) (Reconstructed)" (id "3124"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 7) (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the moving player wins.
+
+"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 7) (Reconstructed)" (id "3125"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 8) (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 8) (Reconstructed)" (id "3126"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 9) (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 4, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 9) (Reconstructed)" (id "3127"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 10) (Reconstructed)" (rules "The game Lib al-Sidr is played by two players on a square board with concentric tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
+Players take turns moving.
+Rules: 
+     If in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, if can move remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 3, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+Aim: 
+     If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+
+"))
+(useFor "Ruleset/Li'b al-Sidr (Ludii 10) (Reconstructed)" (id "3128"))
+(version "1.3.9")
+(classification "board/space/line/reconstruction/done")
+(credit "Eric Piette")
+(origin "This game was played in West Asia, from around 600 to 1410.")
+}
+)
     
     (recon {
         (concept "NumStartComponents" minValue:6 maxValue:27)

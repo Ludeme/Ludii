@@ -107,7 +107,11 @@ public abstract class BaseComponentStyle implements ComponentStyle
 		SVGPath = hiddenWhatCheck(context, hiddenBitset, SVGPath);
 		hiddenWhoCheck(context, hiddenBitset);
 		
-		final int maxRotation = 360 / context.currentInstanceContext().game().maximalRotationStates();
+		int maxNumRotations = context.currentInstanceContext().game().maximalRotationStates();
+		if (maxNumRotations == 0)
+			maxNumRotations = 1;
+		
+		final int maxRotation = 360 / maxNumRotations;
 		final int degreesRotation = rotation * maxRotation + metadataRotation;
 		
 		while (imageSVG.size() <= localState)

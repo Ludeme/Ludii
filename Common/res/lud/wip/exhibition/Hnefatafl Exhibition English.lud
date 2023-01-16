@@ -113,7 +113,7 @@
     (info
         {
         
-        (useFor "Ruleset/Fetlar (Suggested)" (rules "These rules were proposed by a Scottish panel in 2007. Pieces move like a Chess Rook. Pieces are captured by surrounding them on opposite sides. The player with the King wins by getting it to a corner square. The other player wins by surrounding the King on four sides."))
+        (rules "These rules were proposed by a Scottish panel in 2007. >Pieces move like a Chess Rook. Pieces are captured by surrounding them on opposite sides. The player with the King wins by getting it to a corner square. The other player wins by surrounding the King on four sides.")
         }
     )
     
@@ -122,6 +122,7 @@
         (player Colour P2 (colour White))
         (board Style Tafl)
         (show Symbol "knotSquare" "Fortresses") 
+        (board Placement scale:0.8 offsetY:-0.25)
     })
     
     (ai 

@@ -116,9 +116,9 @@ public final class SetPending extends Effect
 	{
 		long gameFlags = GameType.PendingValues | super.gameFlags(game);
 		if (value != null)
-			gameFlags = value.gameFlags(game);
+			gameFlags |= value.gameFlags(game);
 		if (region != null)
-			gameFlags = region.gameFlags(game);
+			gameFlags |= region.gameFlags(game);
 
 		if (then() != null)
 			gameFlags |= then().gameFlags(game);

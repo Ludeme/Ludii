@@ -30,6 +30,7 @@ import app.utils.RemoteDialogFunctionsPublic;
 import app.utils.SVGUtil;
 import app.utils.SettingsExhibition;
 import app.utils.SettingsPlayer;
+import app.utils.Sound;
 import app.utils.UpdateTabMessages;
 import app.views.View;
 import bridge.Bridge;
@@ -436,6 +437,9 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		final Move move = moves.get(0);
 		moves.remove(0);
 		MoveAnimation.saveMoveAnimationDetails(this, move);
+		
+		if (SettingsExhibition.exhibitionVersion)
+			Sound.playSound("Ludemeljud5");
 		
 		final Timer animationTimer = new Timer();
 		final TimerTask animationTask = new TimerTask()

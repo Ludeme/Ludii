@@ -1221,7 +1221,7 @@
             )
         )
         
-    > "The Sahkku (Lujavv'r)2 ruleset.")
+    > "The Sahkku (Lujavv'r)2 ruleset.")**
     
     (item "Incomplete"
         <
@@ -1250,7 +1250,7 @@
     })
     (ruleset "Ruleset/Sahkku (Lujavv'r)2 (Reconstructed)" {
         "Variant/Sahkku (Lujavv'r)2"
-    }) 
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -1264,9 +1264,9 @@
     
     (info
         {
-
-        (rules "These rules were reconstructed by the Digital Ludeme Project using an automated process based on similar nearby games. Pieces move diagonally toward the opposite side of the board. Pieces capture by hopping over an opponent's piece. They can capture multiple pieces in a sequence, and must capture if possible. A piece is promoted when it reaches the opposite side of the board, then it can move forward or backward over any distance. The player who captures all of their opponent's pieces wins.")
-
+        
+        (rules "These rules were reconstructed by the Digital Ludeme Project using an automated process based on similar nearby games. >Pieces move diagonally toward the opposite side of the board. Pieces capture by hopping over an opponent's piece. They can capture multiple pieces in a sequence, must capture if possible, and must capture the maximum number of pieces in a turn. A piece is promoted when it reaches the opposite side of the board, then it can move forward or backward over any distance. The player who captures all of their opponent's pieces wins.​")
+        
         }
     )
     
@@ -1275,6 +1275,7 @@
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
+        (board Placement scale:0.8 offsetY:-0.25)
     })
     
 )
