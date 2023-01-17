@@ -10,15 +10,11 @@
         <
         (players 2) 
         (equipment { 
-            (board (square 9)) 
-            [?]
+            (board (square 8)) 
+            [#]
         })
         
-        (rules 
-            (start [#])
-            (play [(forEach Piece) | #])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
@@ -55,6 +51,10 @@
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
+    })
+    
+    (recon {
+        (concept "NumComponentsTypePerPlayer" minValue:4 maxValue:20)
     })
     
 )
