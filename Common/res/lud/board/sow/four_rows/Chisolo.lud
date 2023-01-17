@@ -292,30 +292,30 @@
 
 (metadata 
     
-(info
-{
-(description "Chisolo is a four-row mancala-style board game played by the Ba-ile people in the early twentieth century. ")
-(aliases {"Tshuba" "Mchombwa" "Msuo" "Natatu"})
-(useFor "Ruleset/Natatu (Observed)" (rules "4x7-10 board (seven most common). Three counters in each hole, except the leftmost four in the inner row which have, from right to left: 0-0-1-2. On the first turn, sowing occurs in a clockwise direction. On the second turn, the player may sow in either direction, but must continue in the chosen direction for the rest of the game. When the final counter lands in an empty hole in the inner row, the contents of the hole in the opponent's inner row are also captured. If there are also contents in the opponent's outer row hole opposite, these are also taken. When a capture is made, the player may then capture the counters in any one of the opponent's holes as well. If the final counter lands in an occupied hole, the player picks up these counters and continues sowing. The player who captures all of the opponent's counters wins."))
-(useFor "Ruleset/Natatu (Observed)" (source "Smith and Dale 1920: 232-237."))
-(useFor "Ruleset/Natatu (Observed)" (id "256"))
-(useFor "Ruleset/One counter (Observed)" (rules "One counter in each hole. The starting player immediately captures counters from two of the holes in the opponent's rows opposite one of the player's, and then another stone from any of the opponent's holes. The opponent then does the same."))
-(useFor "Ruleset/One counter (Observed)" (source "Smith and Dale 1920: 237."))
-(useFor "Ruleset/One counter (Observed)" (id "608"))
-(useFor "Ruleset/Namudilakunze (Observed)" (rules "One counter per hole, but with the leftmost hole in the outer row of each player empty. Capturing moves only capture stones in the opponent's outer row, and only when the inner row hole is empty. "))
-(useFor "Ruleset/Namudilakunze (Observed)" (source "Smith and Dae 1920: 237."))
-(useFor "Ruleset/Namudilakunze (Observed)" (id "609"))
-(useFor "Ruleset/Nambidi (Observed)" (rules "Two counters per hole. The starting player immediately captures the counters in two of the opponent's holes opposite one of the player's occupied holes, and then captures the counters in any one of the opponent's remaining holes. The opponent then does the same."))
-(useFor "Ruleset/Nambidi (Observed)" (source "Smith and Dale 1920: 237."))
-(useFor "Ruleset/Nambidi (Observed)" (id "610"))
-(source "Murray 1951: 210.")
-(id "256")
-(version "1.3.9")
-(classification "board/sow/four rows")
-(credit "Eric Piette")
-(origin "This game was played in Zambia, around 1920.")
-}
-)
+    (info
+        {
+        (description "Chisolo is a four-row mancala-style board game played by the Ba-ile people in the early twentieth century. ")
+        (aliases {"Tshuba" "Mchombwa" "Msuo" "Natatu"})
+        (useFor "Ruleset/Natatu (Observed)" (rules "4x7-10 board (seven most common). Three counters in each hole, except the leftmost four in the inner row which have, from right to left: 0-0-1-2. On the first turn, sowing occurs in a clockwise direction. On the second turn, the player may sow in either direction, but must continue in the chosen direction for the rest of the game. When the final counter lands in an empty hole in the inner row, the contents of the hole in the opponent's inner row are also captured. If there are also contents in the opponent's outer row hole opposite, these are also taken. When a capture is made, the player may then capture the counters in any one of the opponent's holes as well. If the final counter lands in an occupied hole, the player picks up these counters and continues sowing. The player who captures all of the opponent's counters wins."))
+        (useFor "Ruleset/Natatu (Observed)" (source "Smith and Dale 1920: 232-237."))
+        (useFor "Ruleset/Natatu (Observed)" (id "256"))
+        (useFor "Ruleset/One counter (Observed)" (rules "One counter in each hole. The starting player immediately captures counters from two of the holes in the opponent's rows opposite one of the player's, and then another stone from any of the opponent's holes. The opponent then does the same."))
+        (useFor "Ruleset/One counter (Observed)" (source "Smith and Dale 1920: 237."))
+        (useFor "Ruleset/One counter (Observed)" (id "608"))
+        (useFor "Ruleset/Namudilakunze (Observed)" (rules "One counter per hole, but with the leftmost hole in the outer row of each player empty. Capturing moves only capture stones in the opponent's outer row, and only when the inner row hole is empty. "))
+        (useFor "Ruleset/Namudilakunze (Observed)" (source "Smith and Dae 1920: 237."))
+        (useFor "Ruleset/Namudilakunze (Observed)" (id "609"))
+        (useFor "Ruleset/Nambidi (Observed)" (rules "Two counters per hole. The starting player immediately captures the counters in two of the opponent's holes opposite one of the player's occupied holes, and then captures the counters in any one of the opponent's remaining holes. The opponent then does the same."))
+        (useFor "Ruleset/Nambidi (Observed)" (source "Smith and Dale 1920: 237."))
+        (useFor "Ruleset/Nambidi (Observed)" (id "610"))
+        (source "Murray 1951: 210.")
+        (id "256")
+        (version "1.3.9")
+        (classification "board/sow/four rows")
+        (credit "Eric Piette")
+        (origin "This game was played in Zambia, around 1920.")
+        }
+    )
     
     (graphics {
         (board Style Mancala)

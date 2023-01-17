@@ -175,30 +175,30 @@
 
 (metadata 
     
-(info
-{
-(description "Main Chator is a replacement capture game played in Malaysia and Indonesia. This version was played in the Selangor region of Malaysia. ")
-(rules "Played on an 8x8 board with pieces with specialized moves. The pieces are as follows, and placed on the outer rank in the following order, starting from the left corner and moving in, with the placement mirrored on the right side (the Mantri is placed to the right of the Rajah): Tor (2): can move any number of spaces orthogonally; Kudah (2): moves in any direction, one space orthogonally with one space forward diagonally, jumping over any intervening pieces; Gajah (2): can move any number of spaces diagonally; Rajah (1): can move one space orthogonally or diagonally; Mantri (1): can move any number of spaces orthogonally or diagonally; Bidah (8), placed in front of the other pieces: can move one space forward, or one space diagonally to capture. A Bidah may move two squares on its first move. Bidahs may capture en passant only when it is blocked from moving forward by another of the opponent's Bidahs; the blocked Bidah has the option in this scenario of capturing with an en passant move, with the option of capturing either of the two Bidahs in question.
-The Rajah, for its first move may move like a Kudah as long as it has never been checked. 
-
-Players capture pieces by moving onto a space occupied by an opponent's piece. 
-
-Castling occurs by moving the Rajah to the left or the right two squares, regardless of any intervening pieces; the Tor is not moved as part of this move. 
-
-Promotion of Bidahs occur when they reach the opposite edge of the board, but only immediately if they reach the Tor's square. If it captures on the square next to the Tor's square, from the square in front of the Tor's square, it must move backward diagonally to the square in front of the Tor's square on a subsequent turn and continue before promotion. A Bidah reaching the Kudah's square must move backward diagonally once, to the right or left, before being promoted; a Bidah reaching the Gajah's square must move backward diagonally right or left two spaces, and a Bidah reaching the Raja or Mantri's square must move backward diagonally three squares before being promoted. Bidah's can be promoted to whatever piece the player wishes. 
-
-If the Rajah can be captured on the opponent's next turn, it is in check. The Rajah must not be in check at the end of the player's turn. If this is impossible, it is checkmate and the opponent wins. 
-
-If a player is reduced to only their Rajah, it can make the move of any piece. 
-")
-(source "Robinson 1904.")
-(id "1470")
-(version "1.3.9")
-(classification "board/war/replacement/checkmate/chaturanga")
-(credit "Eric Piette")
-(origin "This game was played in Malaysia, around 1904.")
-}
-)
+    (info
+        {
+        (description "Main Chator is a replacement capture game played in Malaysia and Indonesia. This version was played in the Selangor region of Malaysia. ")
+        (rules "Played on an 8x8 board with pieces with specialized moves. The pieces are as follows, and placed on the outer rank in the following order, starting from the left corner and moving in, with the placement mirrored on the right side (the Mantri is placed to the right of the Rajah): Tor (2): can move any number of spaces orthogonally; Kudah (2): moves in any direction, one space orthogonally with one space forward diagonally, jumping over any intervening pieces; Gajah (2): can move any number of spaces diagonally; Rajah (1): can move one space orthogonally or diagonally; Mantri (1): can move any number of spaces orthogonally or diagonally; Bidah (8), placed in front of the other pieces: can move one space forward, or one space diagonally to capture. A Bidah may move two squares on its first move. Bidahs may capture en passant only when it is blocked from moving forward by another of the opponent's Bidahs; the blocked Bidah has the option in this scenario of capturing with an en passant move, with the option of capturing either of the two Bidahs in question.
+            The Rajah, for its first move may move like a Kudah as long as it has never been checked. 
+            
+            Players capture pieces by moving onto a space occupied by an opponent's piece. 
+            
+            Castling occurs by moving the Rajah to the left or the right two squares, regardless of any intervening pieces; the Tor is not moved as part of this move. 
+            
+            Promotion of Bidahs occur when they reach the opposite edge of the board, but only immediately if they reach the Tor's square. If it captures on the square next to the Tor's square, from the square in front of the Tor's square, it must move backward diagonally to the square in front of the Tor's square on a subsequent turn and continue before promotion. A Bidah reaching the Kudah's square must move backward diagonally once, to the right or left, before being promoted; a Bidah reaching the Gajah's square must move backward diagonally right or left two spaces, and a Bidah reaching the Raja or Mantri's square must move backward diagonally three squares before being promoted. Bidah's can be promoted to whatever piece the player wishes. 
+            
+            If the Rajah can be captured on the opponent's next turn, it is in check. The Rajah must not be in check at the end of the player's turn. If this is impossible, it is checkmate and the opponent wins. 
+            
+            If a player is reduced to only their Rajah, it can make the move of any piece. 
+        ")
+        (source "Robinson 1904.")
+        (id "1470")
+        (version "1.3.9")
+        (classification "board/war/replacement/checkmate/chaturanga")
+        (credit "Eric Piette")
+        (origin "This game was played in Malaysia, around 1904.")
+        }
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

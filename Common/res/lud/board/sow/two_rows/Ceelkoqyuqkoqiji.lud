@@ -433,24 +433,24 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "Ceelkoqyuqkoqiji is a two-row mancala-style board game documented in Yunnan Province, China by Vernon Eagle. It was described to him by He Hao, Li Qiulan, and Wang Qiaoxin.")
-(useFor "Ruleset/Eagle (Observed)" (rules "2x5 board with one store on either end. The store to the right of the player belongs to the player. Play begins with five counters in each regular hole, with one larger stone in each store, but one is slightly smaller than the other. Game can be played with two or four players. With four players, two players control the larger stones, but cannot move the regular counters. Players throw out a finger (index, little, or thumb) to determine who plays first. Index beats thumb, thumb beats little finger, little finger beats index. This happens at the start of each round. Counters are taken from any of the holes in the player's row, sowing them in either direction, including the stores. When the last counter of a sowing is dropped in a hole, sowing continues by picking up the counters in the next hole and continuing to sow in that direction. If the hole following the last seed of a sowing is empty, the counters in the hole following this empty hole are captured. If there is an empty hole following the captured hole, and then an occupied hole immediately after it, the counters in the occupied hole are also captured, and so forth until there are two occupied or two empty holes in a row. Moves may not begin from stores. Both stores are sown into normally by both players. Stores are considered to be empty, except when its large stone remains in it, then the large stone only can be sown or captured and not any other counters that may have accumulated there. Large stones can be sown in any order a player chooses during a sowing. If a player has no counters in their holes, they may opt to place one counter in each of their holes, taking counters from their store and continue play (called huelshe). If they opt not to, the opponent takes all the remaining stones on the board. If one of the large stones remains in its original store, the player cannot opt out. If the player doesn't have enough stones for all of the holes, they may choose which holes in their row to place the counters, but they must form a continuous sequence of holes with counters. When the round ends, players must buy back their large stones if they no longer have them, at a price determined in the beginning of the game (usually seven for the larger stone and six for the smaller). Players then attempt to refill their holes with the original number of counters. The player that has fewer than the original number of counters must borrow counters from the opponent. Debt accumulates over subsequent rounds. When the debt reaches five, the player must sell one of their holes to the opponent. The selling player can choose which holes to sell. The seller then receives five counters to either repay debt or fill holes as long as debt does not exceed four. "))
-(useFor "Ruleset/Eagle (Observed)" (source "Eagle 1995: 53."))
-(useFor "Ruleset/Eagle (Observed)" (id "205"))
-(useFor "Ruleset/Fourteen holes (Observed)" (rules "2x7 board, seven counters per hole. Buying back one's holes between rounds costs seven counters."))
-(useFor "Ruleset/Fourteen holes (Observed)" (source "Eagle 1995: 54."))
-(useFor "Ruleset/Fourteen holes (Observed)" (id "606"))
-(useFor "Ruleset/Equal Cost (Observed)" (rules "Both the larger and smaller of the large stones cost five counters."))
-(useFor "Ruleset/Equal Cost (Observed)" (source "Eagle 1995: 54."))
-(useFor "Ruleset/Equal Cost (Observed)" (id "607"))
-(id "205")
-(version "1.3.9")
-(classification "board/sow/two rows")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "Ceelkoqyuqkoqiji is a two-row mancala-style board game documented in Yunnan Province, China by Vernon Eagle. It was described to him by He Hao, Li Qiulan, and Wang Qiaoxin.")
+        (useFor "Ruleset/Eagle (Observed)" (rules "2x5 board with one store on either end. The store to the right of the player belongs to the player. Play begins with five counters in each regular hole, with one larger stone in each store, but one is slightly smaller than the other. Game can be played with two or four players. With four players, two players control the larger stones, but cannot move the regular counters. Players throw out a finger (index, little, or thumb) to determine who plays first. Index beats thumb, thumb beats little finger, little finger beats index. This happens at the start of each round. Counters are taken from any of the holes in the player's row, sowing them in either direction, including the stores. When the last counter of a sowing is dropped in a hole, sowing continues by picking up the counters in the next hole and continuing to sow in that direction. If the hole following the last seed of a sowing is empty, the counters in the hole following this empty hole are captured. If there is an empty hole following the captured hole, and then an occupied hole immediately after it, the counters in the occupied hole are also captured, and so forth until there are two occupied or two empty holes in a row. Moves may not begin from stores. Both stores are sown into normally by both players. Stores are considered to be empty, except when its large stone remains in it, then the large stone only can be sown or captured and not any other counters that may have accumulated there. Large stones can be sown in any order a player chooses during a sowing. If a player has no counters in their holes, they may opt to place one counter in each of their holes, taking counters from their store and continue play (called huelshe). If they opt not to, the opponent takes all the remaining stones on the board. If one of the large stones remains in its original store, the player cannot opt out. If the player doesn't have enough stones for all of the holes, they may choose which holes in their row to place the counters, but they must form a continuous sequence of holes with counters. When the round ends, players must buy back their large stones if they no longer have them, at a price determined in the beginning of the game (usually seven for the larger stone and six for the smaller). Players then attempt to refill their holes with the original number of counters. The player that has fewer than the original number of counters must borrow counters from the opponent. Debt accumulates over subsequent rounds. When the debt reaches five, the player must sell one of their holes to the opponent. The selling player can choose which holes to sell. The seller then receives five counters to either repay debt or fill holes as long as debt does not exceed four. "))
+        (useFor "Ruleset/Eagle (Observed)" (source "Eagle 1995: 53."))
+        (useFor "Ruleset/Eagle (Observed)" (id "205"))
+        (useFor "Ruleset/Fourteen holes (Observed)" (rules "2x7 board, seven counters per hole. Buying back one's holes between rounds costs seven counters."))
+        (useFor "Ruleset/Fourteen holes (Observed)" (source "Eagle 1995: 54."))
+        (useFor "Ruleset/Fourteen holes (Observed)" (id "606"))
+        (useFor "Ruleset/Equal Cost (Observed)" (rules "Both the larger and smaller of the large stones cost five counters."))
+        (useFor "Ruleset/Equal Cost (Observed)" (source "Eagle 1995: 54."))
+        (useFor "Ruleset/Equal Cost (Observed)" (id "607"))
+        (id "205")
+        (version "1.3.9")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (board Style Mancala)

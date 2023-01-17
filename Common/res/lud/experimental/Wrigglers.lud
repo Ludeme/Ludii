@@ -115,33 +115,32 @@
 //---------------------------------------------
 
 (metadata
-(info
-{
-(description "Wrigglers is a Hex grid based placement game that allows a minimal amount of self-removal, and has a goal of maximizing the product of one's largest 2 groups.        The rules are very simple and the actions of the players highly independent, except for blocking by site occupation. However the goal and the difficulty of modifying one's groups make the game challenging and removals allow for end-game turnarounds.            Removal is only allowed where a player has committed to the removal on a previous turn by placing a stone that overcrouds an existing piece. This destroys the group's scoring potential, but allows the overcrouded piece to be removed, potetially dividing the group in a way the increases its potential to score.         With multiplicative scoring, two equal sized groups score far more than a single group with the same number of pieces. But if there is a 3rd group available, the benefit might be much less.")
-(rules "Goal:Score the product of the sizes of your two largest chains. Highest score wins. 
-    In case of a tie, the last to play wins.
-    
-    Chains are a series of adjacent like-colored stones with no branching.
-    
-    
-    Play:
-    Boards starts empty. The darker color starts.
-    
-    On a turn the moving player does one of these actions:
-- Place one of their stones onto an empty site adjacent to no more than 2 of their stones, or
-- Remove one of their stones that is adjacent to more than two of their stones.
-    
-    Otherwise he passes.
-    
-    The game ends when both players pass. ")
-(id "1969")
-(version "1.3.9")
-(classification "experimental")
-(author "Dale W. Walton")
-(credit "Dale W. Walton")
-(date "06-04-2022")
-}
-)
+    (info
+        {
+        (description "Wrigglers is a Hex grid based placement game that allows a minimal amount of self-removal, and has a goal of maximizing the product of one's largest 2 groups.        The rules are very simple and the actions of the players highly independent, except for blocking by site occupation. However the goal and the difficulty of modifying one's groups make the game challenging and removals allow for end-game turnarounds.            Removal is only allowed where a player has committed to the removal on a previous turn by placing a stone that overcrouds an existing piece. This destroys the group's scoring potential, but allows the overcrouded piece to be removed, potetially dividing the group in a way the increases its potential to score.         With multiplicative scoring, two equal sized groups score far more than a single group with the same number of pieces. But if there is a 3rd group available, the benefit might be much less.")
+        (rules "Goal:Score the product of the sizes of your two largest chains. Highest score wins. 
+            In case of a tie, the last to play wins.
+            
+            Chains are a series of adjacent like-colored stones with no branching.
+            
+            Play:
+            Boards starts empty. The darker color starts.
+            
+            On a turn the moving player does one of these actions:
+            - Place one of their stones onto an empty site adjacent to no more than 2 of their stones, or
+            - Remove one of their stones that is adjacent to more than two of their stones.
+            
+            Otherwise he passes.
+            
+        The game ends when both players pass. ")
+        (id "1969")
+        (version "1.3.9")
+        (classification "experimental")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "06-04-2022")
+        }
+    )
     (graphics 
         {
         (player Colour P1 (colour 229 92 0))

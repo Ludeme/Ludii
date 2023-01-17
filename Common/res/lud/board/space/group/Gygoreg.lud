@@ -53,23 +53,23 @@
 //-------------------------------------------------------------------------
 
 (metadata
-(info
-{
-(description "Gygoreg is a deceptively simple unification game invented by Mike Zapawa in 2020.")
-(rules "Each turn you must perform exactly one of the following two actions: 
-
-1. Add a friendly piece orthogonally adjacent to one of your pieces. 
-2. Remove an enemy group.
-
-As soon as one player only has 1 group, the game is over and that player is the winner.")
-(id "1654")
-(version "1.3.9")
-(classification "board/space/group")
-(author "Mike Zapawa")
-(credit "Michael Amundsen")
-(date "2020")
-}
-)
+    (info
+        {
+        (description "Gygoreg is a deceptively simple unification game invented by Mike Zapawa in 2020.")
+        (rules "Each turn you must perform exactly one of the following two actions: 
+            
+            1. Add a friendly piece orthogonally adjacent to one of your pieces. 
+            2. Remove an enemy group.
+            
+        As soon as one player only has 1 group, the game is over and that player is the winner.")
+        (id "1654")
+        (version "1.3.9")
+        (classification "board/space/group")
+        (author "Mike Zapawa")
+        (credit "Michael Amundsen")
+        (date "2020")
+        }
+    )
     
     (graphics {
         (player Colour P1 (colour Red))

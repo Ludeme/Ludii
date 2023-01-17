@@ -477,20 +477,20 @@
 
 (metadata 
     
-(info
-{
-(description "A variation of 4-player chess with levels.")
-(rules "All movement of chessman’s are the same, just if you want to go on higher level, you can just go on first reachable chess box of higher level. And on next move, go on that level or to lower levels without restrictions. Knight goes without any restrictions.
-
-Once a player is checkmated their king is removed, but all their other pieces remain on the board as neutral obstacles. Neutral pieces cannot help checkmate other players. If a player cannot make a move when there are more than two players remaining, they skip their turn rather than giving a stalemate.")
-(id "1318")
-(source "<a href=\"http://levelchess.eu/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />levelchess.eu</a>")
-(version "1.3.9")
-(classification "board/war/replacement/checkmate/chess")
-(author "Ignas Sladkevičius")
-(credit "Matthew Stephenson and Eric Piette")
-}
-)
+    (info
+        {
+        (description "A variation of 4-player chess with levels.")
+        (rules "All movement of chessman’s are the same, just if you want to go on higher level, you can just go on first reachable chess box of higher level. And on next move, go on that level or to lower levels without restrictions. Knight goes without any restrictions.
+            
+        Once a player is checkmated their king is removed, but all their other pieces remain on the board as neutral obstacles. Neutral pieces cannot help checkmate other players. If a player cannot make a move when there are more than two players remaining, they skip their turn rather than giving a stalemate.")
+        (id "1318")
+        (source "<a href=\"http://levelchess.eu/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />levelchess.eu</a>")
+        (version "1.3.9")
+        (classification "board/war/replacement/checkmate/chess")
+        (author "Ignas Sladkevičius")
+        (credit "Matthew Stephenson and Eric Piette")
+        }
+    )
     
     (graphics {
         (show Check "King")

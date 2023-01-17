@@ -253,64 +253,64 @@
     })
     
     (metadata
-(info
-{
-(description "Tennessee Waltz is a game of making and breaking couples.
-    It was designed as a tactical game that involves the whole board.
-    On large boards there are some territorial aspects.
-    
-    First presented for Hex grids. Later, a square grid version was added.")
-(useFor "Ruleset/Square (Described)" (rules "Choose a board of the desired size and grid. 
-    Play on the nodes of the grid.
-    
-    The board starts empty and the dark color plays first.
-    
-    Players alternate placing a stone of their color onto an empty node of the board. 
-    
-    When this placement forms an adjacent pair, the mover must choose a grid direction along which to move that pair one step, pushing all the stones in front of them.
-    
-    RESTRICTIONS: 
-    1) No opponent's stone may be pushed of the board.
-    2) Neither stone of the moving pair may leave the board.
-    Note that pushing off OTHER friendly stones IS allowed.
-    
-    Note: A pair may not be created unless it can move.
-    
-    After the move and/or push is completed, the mover receives the leader's token if he now has more pairs than the other player.
-    
-    Players may pass. 
-    
-    The game ends when either:
-    1) There is no place on the board for the player who doesn't have the token to be able to form a new pair in the future. - or -
+        (info
+            {
+            (description "Tennessee Waltz is a game of making and breaking couples.
+                It was designed as a tactical game that involves the whole board.
+                On large boards there are some territorial aspects.
+                
+            First presented for Hex grids. Later, a square grid version was added.")
+            (useFor "Ruleset/Square (Described)" (rules "Choose a board of the desired size and grid. 
+                    Play on the nodes of the grid.
+                    
+                    The board starts empty and the dark color plays first.
+                    
+                    Players alternate placing a stone of their color onto an empty node of the board. 
+                    
+                    When this placement forms an adjacent pair, the mover must choose a grid direction along which to move that pair one step, pushing all the stones in front of them.
+                    
+                    RESTRICTIONS: 
+                1) No opponent's stone may be pushed of the board.
+            2) Neither stone of the moving pair may leave the board.
+            Note that pushing off OTHER friendly stones IS allowed.
+            
+            Note: A pair may not be created unless it can move.
+            
+            After the move and/or push is completed, the mover receives the leader's token if he now has more pairs than the other player.
+            
+            Players may pass. 
+            
+            The game ends when either:
+        1) There is no place on the board for the player who doesn't have the token to be able to form a new pair in the future. - or -
     2) Both pass consecutively.
     
-    The player with the token wins."))
+The player with the token wins."))
 (useFor "Ruleset/Square (Described)" (id "1999"))
 (useFor "Ruleset/Hex (Described)" (rules "Choose a board of the desired size and grid. 
-    Play on the nodes of the grid.
-    
-    The board starts empty and the dark color plays first.
-    
-    Players alternate placing a stone of their color onto an empty node of the board. 
-    
-    When this placement forms an adjacent pair, the mover must choose a grid direction along which to move that pair one step, pushing all the stones in front of them.
-    
-    RESTRICTIONS: 
+        Play on the nodes of the grid.
+        
+        The board starts empty and the dark color plays first.
+        
+        Players alternate placing a stone of their color onto an empty node of the board. 
+        
+        When this placement forms an adjacent pair, the mover must choose a grid direction along which to move that pair one step, pushing all the stones in front of them.
+        
+        RESTRICTIONS: 
     1) No opponent's stone may be pushed of the board.
-    2) Neither stone of the moving pair may leave the board.
-    Note that pushing off OTHER friendly stones IS allowed.
-    
-    Note: A pair may not be created unless it can move.
-    
-    After the move and/or push is completed, the mover receives the leader's token if he now has more pairs than the other player.
-    
-    Players may pass. 
-    
-    The game ends when either:
-    1) There is no place on the board for the player who doesn't have the token to be able to form a new pair in the future. - or -
-    2) Both pass consecutively.
-    
-    The player with the token wins."))
+2) Neither stone of the moving pair may leave the board.
+Note that pushing off OTHER friendly stones IS allowed.
+
+Note: A pair may not be created unless it can move.
+
+After the move and/or push is completed, the mover receives the leader's token if he now has more pairs than the other player.
+
+Players may pass. 
+
+The game ends when either:
+1) There is no place on the board for the player who doesn't have the token to be able to form a new pair in the future. - or -
+2) Both pass consecutively.
+
+The player with the token wins."))
 (useFor "Ruleset/Hex (Described)" (id "2657"))
 (id "1999")
 (version "1.3.9")

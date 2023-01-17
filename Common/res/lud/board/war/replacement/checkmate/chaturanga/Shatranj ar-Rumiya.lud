@@ -195,23 +195,23 @@
 
 (metadata 
     
-(info
-{
-(description "Shatranj ar-Rumiya is a game known from Islamic manuscripts from the medieval period. It is similar to Shatranj but played on a circular board. The Name literally means \"Byzantine Chess,\" but there is no evidence it was played in the Byzantine Empire.")
-(aliases {"Byzantine Chess" "Circular Chess" "Shatranj al-Mudawara"})
-(useFor "Ruleset/Murray (Described)" (rules "Circular board. Empty central circle, with four concentric rows of spaces, sixteen spaces per circle. Pieces are as follows: Rukh (x2), placed on two adjacent squares in the outer circle, move any number of spaces orthogonally; Asb (x2), placed in the two spaces adjacent to the Rukh in the next circle, move as Chess knights; Pil (x2): Placed in the two spaces adjacent to the Asb in the next circle in, move two spaces diagonally, jumping over the first space; Fres (x1): placed on the inner circle adjacent to the left Pil, moves one space diagonally; Shah (x1), placed to the right of the Fers, moves one space in any direction, Baidaq (x8), placed in each space flanking the other pieces, those on the left move clockwise, those on the right anti-clockwise, one space forward or one space diagonally forward to capture. No en passant, no promotion. When two Baidaq meet and neither can move, the opponent captures them. The opponent who can checkmate the opponent's Shah wins."))
-(useFor "Ruleset/Murray (Described)" (source "Murray 1913: 342-343."))
-(useFor "Ruleset/Murray (Described)" (id "293"))
-(useFor "Ruleset/Al-Amuli (Described)" (rules "Four citadels in the center of the circle. Shah and Fers begin in the outer circle, Pil on the next squares toward the center, the Asb on the next, and the Rukh in the inner spaces of the circle. If a player moves their Shah into one of the citadels, the game is a draw."))
-(useFor "Ruleset/Al-Amuli (Described)" (source "Murray 1913: 342."))
-(useFor "Ruleset/Al-Amuli (Described)" (id "650"))
-(source "Murray 1913: 342-343.")
-(id "293")
-(version "1.3.9")
-(classification "board/war/replacement/checkmate/chaturanga")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "Shatranj ar-Rumiya is a game known from Islamic manuscripts from the medieval period. It is similar to Shatranj but played on a circular board. The Name literally means \"Byzantine Chess,\" but there is no evidence it was played in the Byzantine Empire.")
+        (aliases {"Byzantine Chess" "Circular Chess" "Shatranj al-Mudawara"})
+        (useFor "Ruleset/Murray (Described)" (rules "Circular board. Empty central circle, with four concentric rows of spaces, sixteen spaces per circle. Pieces are as follows: Rukh (x2), placed on two adjacent squares in the outer circle, move any number of spaces orthogonally; Asb (x2), placed in the two spaces adjacent to the Rukh in the next circle, move as Chess knights; Pil (x2): Placed in the two spaces adjacent to the Asb in the next circle in, move two spaces diagonally, jumping over the first space; Fres (x1): placed on the inner circle adjacent to the left Pil, moves one space diagonally; Shah (x1), placed to the right of the Fers, moves one space in any direction, Baidaq (x8), placed in each space flanking the other pieces, those on the left move clockwise, those on the right anti-clockwise, one space forward or one space diagonally forward to capture. No en passant, no promotion. When two Baidaq meet and neither can move, the opponent captures them. The opponent who can checkmate the opponent's Shah wins."))
+        (useFor "Ruleset/Murray (Described)" (source "Murray 1913: 342-343."))
+        (useFor "Ruleset/Murray (Described)" (id "293"))
+        (useFor "Ruleset/Al-Amuli (Described)" (rules "Four citadels in the center of the circle. Shah and Fers begin in the outer circle, Pil on the next squares toward the center, the Asb on the next, and the Rukh in the inner spaces of the circle. If a player moves their Shah into one of the citadels, the game is a draw."))
+        (useFor "Ruleset/Al-Amuli (Described)" (source "Murray 1913: 342."))
+        (useFor "Ruleset/Al-Amuli (Described)" (id "650"))
+        (source "Murray 1913: 342-343.")
+        (id "293")
+        (version "1.3.9")
+        (classification "board/war/replacement/checkmate/chaturanga")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

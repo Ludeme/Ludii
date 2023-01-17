@@ -3474,187 +3474,187 @@
 
 (metadata 
     
-(info
-{
-(description "Skak is the form of Chess played in Iceland. It maintains an old form of winning by the \"bare king.\"")
-(useFor "Ruleset/Skak (Incomplete)" (rules "8x8 board. The pieces move as follows, with the number per player: 1 x King: moves one space orthogonally or diagonally. 1 x Queen: moves any distance diagonally or orthogonally. 2 x Rook: Any number of spaces orthogonally. 2 x Bishop: moves any distance diagonally 2 x Knight: Moves as a chess knight. 8 x Pawn: Moves one space forward orthogonally; one space forward diagonally to capture. Promoted when reaching the eighth rank. Castling and en passant are allowed. An opponent's piece is captured by moving a player's own piece onto a space occupied by the opponent's piece. When a King can be captured on the next turn by an opponent's piece, it is in check. The King must not be in check at the end of the player's turn. If this is not possible, it is checkmate and the opponent wins. Stalemate is a draw. When a player captures all of their opponent's pieces except the King are captured, the opponent loses, though this is considered a lesser win.
-"))
-(useFor "Ruleset/Skak (Incomplete)" (source "Murray 1913: 468-469."))
-(useFor "Ruleset/Skak (Incomplete)" (id "1334"))
-(useFor "Ruleset/Skak (Ludii 1) (Reconstructed)" (rules "The game Skak is played by two players on a 8x8 rectangle board with square tiling.
-Regions:
-    Promotion: the top sites of the board for P1
-    Promotion: the bottom sites of the board for P2 
-All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
-Rules for Pieces:
-     Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
-     Kings if there is an enemy Player at to, remove pieces at to then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
-     Knights leap a piece to not is a friend.
-     Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward or remove pieces at to then step forward-right or forward-left or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again.
-     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
-     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
-Players take turns moving.
-Setup:
-     Place a Pawn for player one at each cell of the 1 row.
-     Place a Pawn for player two at each cell of the 6 row.
-     Place a Rook for player one on sites: A1 and H1.
-     Place a Knight for player one on sites: B1 and G1.
-     Place a Bishop for player one on sites: C1 and F1.
-     Place a Queen for player one on site D1.
-     Place a King for player one on site E1.
-     Place a Rook for player two on sites: A8 and H8.
-     Place a Knight for player two on sites: B8 and G8.
-     Place a Bishop for player two on sites: C8 and F8.
-     Place a Queen for player two on site D8.
-     Place a King for player two on site E8..
-Rules: 
-     If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into Queen, Knight, Bishop or Rook, else move one of your pieces or if State at King of current moving player is equal to 1 and not King of the moving player is threatened, if State at RookLeft of current moving player is equal to 1 and can move slide from RookLeft of current moving player in the east direction through empty, slide from King of current moving player in the west direction through empty and not King of the moving player is threatened then slide from RookLeft of current moving player in the east direction through true or if State at RookRight of current moving player is equal to 1 and can move slide from RookRight of current moving player in the west direction through empty, slide from King of current moving player in the east direction through empty and not King of the moving player is threatened then slide from RookRight of current moving player in the west direction through true.
-Aim: 
-     If King of the next player is threatened and not can move move one of your pieces, the moving player wins If 1 is equal to the number of pieces owned by Player the next player, the moving player wins If the moving player cannot move, it's a draw.
-
-"))
-(useFor "Ruleset/Skak (Ludii 1) (Reconstructed)" (id "3084"))
-(useFor "Ruleset/Skak (Ludii 2) (Reconstructed)" (rules "The game Skak is played by two players on a 8x8 rectangle board with square tiling.
-Regions:
-    Promotion: the top sites of the board for P1
-    Promotion: the bottom sites of the board for P2 
-All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
-Rules for Pieces:
-     Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
-     Kings if there is an enemy Player at to, remove pieces at to then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
-     Knights leap a piece to not is a friend.
-     Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward or remove pieces at to then step forward-right or forward-left or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again.
-     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
-     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
-Players take turns moving.
-Setup:
-     Place a Pawn for player one at each cell of the 1 row.
-     Place a Pawn for player two at each cell of the 6 row.
-     Place a Rook for player one on sites: A1 and H1.
-     Place a Knight for player one on sites: B1 and G1.
-     Place a Bishop for player one on sites: C1 and F1.
-     Place a Queen for player one on site D1.
-     Place a King for player one on site E1.
-     Place a Rook for player two on sites: A8 and H8.
-     Place a Knight for player two on sites: B8 and G8.
-     Place a Bishop for player two on sites: C8 and F8.
-     Place a Queen for player two on site D8.
-     Place a King for player two on site E8..
-Rules: 
-     If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into Queen, Knight, Bishop or Rook, else move one of your pieces or if State at King of current moving player is equal to 1 and not King of the moving player is threatened, if State at RookLeft of current moving player is equal to 1 and can move slide from RookLeft of current moving player in the east direction through empty, slide from King of current moving player in the west direction through empty and not King of the moving player is threatened then slide from RookLeft of current moving player in the east direction through true or if State at RookRight of current moving player is equal to 1 and can move slide from RookRight of current moving player in the west direction through empty, slide from King of current moving player in the east direction through empty and not King of the moving player is threatened then slide from RookRight of current moving player in the west direction through true.
-Aim: 
-     If King of the next player is threatened and not can move move one of your pieces, the moving player wins If 1 is equal to the number of pieces owned by Player the next player, the moving player wins If the moving player cannot move, it's a draw.
-
-"))
-(useFor "Ruleset/Skak (Ludii 2) (Reconstructed)" (id "3085"))
-(useFor "Ruleset/Skak (Ludii 3) (Reconstructed)" (rules "The game Skak is played by two players on a 8x8 rectangle board with square tiling.
-Regions:
-    Promotion: the top sites of the board for P1
-    Promotion: the bottom sites of the board for P2 
-All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
-Rules for Pieces:
-     Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
-     Kings if there is an enemy Player at to, remove pieces at to then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
-     Knights leap a piece to not is a friend.
-     Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward or remove pieces at to then step forward-right or forward-left or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again.
-     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
-     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
-Players take turns moving.
-Setup:
-     Place a Bishop for player one at the cells with coordinates [C1, F1].
-     Place a Rook for player one at the cells with coordinates [C2, F2].
-     Place a Knight for player one at the cells with coordinates [D2, E2].
-     Place a King for player one on site E1.
-     Place stack of [Pawn1] at cell each cell of the 2 row
-     Place stack of [Queen1] at cell the cells with coordinates [D3]
-     Place a Bishop for player two at the cells with coordinates [C8, F8].
-     Place a Rook for player two at the cells with coordinates [C7, F7].
-     Place a Knight for player two at the cells with coordinates [D7, E7].
-     Place a King for player two on site E8.
-     Place stack of [Pawn2] at cell each cell of the 5 row
-     Place stack of [Queen2] at cell the cells with coordinates [D6].
-Rules: 
-     If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into Queen, Knight, Bishop or Rook, else move one of your pieces or if State at King of current moving player is equal to 1 and not King of the moving player is threatened, if State at RookLeft of current moving player is equal to 1 and can move slide from RookLeft of current moving player in the east direction through empty, slide from King of current moving player in the west direction through empty and not King of the moving player is threatened then slide from RookLeft of current moving player in the east direction through true or if State at RookRight of current moving player is equal to 1 and can move slide from RookRight of current moving player in the west direction through empty, slide from King of current moving player in the east direction through empty and not King of the moving player is threatened then slide from RookRight of current moving player in the west direction through true.
-Aim: 
-     If King of the next player is threatened and not can move move one of your pieces, the moving player wins If 1 is equal to the number of pieces owned by Player the next player, the moving player wins If the moving player cannot move, it's a draw.
-
-"))
-(useFor "Ruleset/Skak (Ludii 3) (Reconstructed)" (id "3086"))
-(useFor "Ruleset/Skak (Ludii 4) (Reconstructed)" (rules "The game Skak is played by two players on a 8x8 rectangle board with square tiling.
-Regions:
-    Promotion: the top sites of the board for P1
-    Promotion: the bottom sites of the board for P2 
-All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
-Rules for Pieces:
-     Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
-     Kings if there is an enemy Player at to, remove pieces at to then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
-     Knights leap a piece to not is a friend.
-     Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward or remove pieces at to then step forward-right or forward-left or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again.
-     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
-     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
-Players take turns moving.
-Setup:
-     Place a Pawn for player one at each cell of the 1 row.
-     Place a Pawn for player two at each cell of the 6 row.
-     Place a Rook for player one on sites: A1 and H1.
-     Place a Knight for player one on sites: B1 and G1.
-     Place a Bishop for player one on sites: C1 and F1.
-     Place a Queen for player one on site D1.
-     Place a King for player one on site E1.
-     Place a Rook for player two on sites: A8 and H8.
-     Place a Knight for player two on sites: B8 and G8.
-     Place a Bishop for player two on sites: C8 and F8.
-     Place a Queen for player two on site D8.
-     Place a King for player two on site E8..
-Rules: 
-     If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into Queen, Knight, Bishop or Rook, else move one of your pieces or if State at King of current moving player is equal to 1 and not King of the moving player is threatened, if State at RookLeft of current moving player is equal to 1 and can move slide from RookLeft of current moving player in the east direction through empty, slide from King of current moving player in the west direction through empty and not King of the moving player is threatened then slide from RookLeft of current moving player in the east direction through true or if State at RookRight of current moving player is equal to 1 and can move slide from RookRight of current moving player in the west direction through empty, slide from King of current moving player in the east direction through empty and not King of the moving player is threatened then slide from RookRight of current moving player in the west direction through true.
-Aim: 
-     If King of the next player is threatened and not can move move one of your pieces, the moving player wins If 1 is equal to the number of pieces owned by Player the next player, the moving player wins If the moving player cannot move, it's a draw.
-
-"))
-(useFor "Ruleset/Skak (Ludii 4) (Reconstructed)" (id "3087"))
-(useFor "Ruleset/Skak (Ludii 5) (Reconstructed)" (rules "The game Skak is played by two players on a 8x8 rectangle board with square tiling.
-Regions:
-    Promotion: the top sites of the board for P1
-    Promotion: the bottom sites of the board for P2 
-All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
-Rules for Pieces:
-     Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
-     Kings if there is an enemy Player at to, remove pieces at to then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
-     Knights leap a piece to not is a friend.
-     Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward or remove pieces at to then step forward-right or forward-left or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again.
-     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
-     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
-Players take turns moving.
-Setup:
-     Place a Pawn for player one at the cells with coordinates [A2, D2, E2, H2].
-     Place a Pawn for player two at the cells with coordinates [A7, D7, E7, H7].
-     Place a Pawn for player one at the cells with coordinates [B2, C2, F2, G2].
-     Place a Pawn for player two at the cells with coordinates [B7, C7, F7, G7].
-     Place a Rook for player one on sites: A1 and H1.
-     Place a Knight for player one on sites: B1 and G1.
-     Place a Bishop for player one on sites: C1 and F1.
-     Place a Queen for player one on site D1.
-     Place a King for player one on site E1.
-     Place a Rook for player two on sites: A8 and H8.
-     Place a Knight for player two on sites: B8 and G8.
-     Place a Bishop for player two on sites: C8 and F8.
-     Place a Queen for player two on site D8.
-     Place a King for player two on site E8..
-Rules: 
-     If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into Queen, Knight, Bishop or Rook, else move one of your pieces or if State at King of current moving player is equal to 1 and not King of the moving player is threatened, if State at RookLeft of current moving player is equal to 1 and can move slide from RookLeft of current moving player in the east direction through empty, slide from King of current moving player in the west direction through empty and not King of the moving player is threatened then slide from RookLeft of current moving player in the east direction through true or if State at RookRight of current moving player is equal to 1 and can move slide from RookRight of current moving player in the west direction through empty, slide from King of current moving player in the east direction through empty and not King of the moving player is threatened then slide from RookRight of current moving player in the west direction through true.
-Aim: 
-     If King of the next player is threatened and not can move move one of your pieces, the moving player wins If 1 is equal to the number of pieces owned by Player the next player, the moving player wins If the moving player cannot move, it's a draw.
-
-"))
-(useFor "Ruleset/Skak (Ludii 5) (Reconstructed)" (id "3088"))
-(source "Murray 1913: 468-469.")
-(version "1.3.9")
-(classification "board/war/replacement/checkmate/chaturanga/reconstruction/done")
-(credit "Eric Piette")
-(origin "This game was played in Iceland, around 1892.")
-}
-)
+    (info
+        {
+        (description "Skak is the form of Chess played in Iceland. It maintains an old form of winning by the \"bare king.\"")
+        (useFor "Ruleset/Skak (Incomplete)" (rules "8x8 board. The pieces move as follows, with the number per player: 1 x King: moves one space orthogonally or diagonally. 1 x Queen: moves any distance diagonally or orthogonally. 2 x Rook: Any number of spaces orthogonally. 2 x Bishop: moves any distance diagonally 2 x Knight: Moves as a chess knight. 8 x Pawn: Moves one space forward orthogonally; one space forward diagonally to capture. Promoted when reaching the eighth rank. Castling and en passant are allowed. An opponent's piece is captured by moving a player's own piece onto a space occupied by the opponent's piece. When a King can be captured on the next turn by an opponent's piece, it is in check. The King must not be in check at the end of the player's turn. If this is not possible, it is checkmate and the opponent wins. Stalemate is a draw. When a player captures all of their opponent's pieces except the King are captured, the opponent loses, though this is considered a lesser win.
+        "))
+        (useFor "Ruleset/Skak (Incomplete)" (source "Murray 1913: 468-469."))
+        (useFor "Ruleset/Skak (Incomplete)" (id "1334"))
+        (useFor "Ruleset/Skak (Ludii 1) (Reconstructed)" (rules "The game Skak is played by two players on a 8x8 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2 
+                All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+                Rules for Pieces:
+                Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+                Kings if there is an enemy Player at to, remove pieces at to then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Knights leap a piece to not is a friend.
+                Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward or remove pieces at to then step forward-right or forward-left or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again.
+                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 1 row.
+                Place a Pawn for player two at each cell of the 6 row.
+                Place a Rook for player one on sites: A1 and H1.
+                Place a Knight for player one on sites: B1 and G1.
+                Place a Bishop for player one on sites: C1 and F1.
+                Place a Queen for player one on site D1.
+                Place a King for player one on site E1.
+                Place a Rook for player two on sites: A8 and H8.
+                Place a Knight for player two on sites: B8 and G8.
+                Place a Bishop for player two on sites: C8 and F8.
+                Place a Queen for player two on site D8.
+                Place a King for player two on site E8..
+                Rules: 
+                If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into Queen, Knight, Bishop or Rook, else move one of your pieces or if State at King of current moving player is equal to 1 and not King of the moving player is threatened, if State at RookLeft of current moving player is equal to 1 and can move slide from RookLeft of current moving player in the east direction through empty, slide from King of current moving player in the west direction through empty and not King of the moving player is threatened then slide from RookLeft of current moving player in the east direction through true or if State at RookRight of current moving player is equal to 1 and can move slide from RookRight of current moving player in the west direction through empty, slide from King of current moving player in the east direction through empty and not King of the moving player is threatened then slide from RookRight of current moving player in the west direction through true.
+                Aim: 
+                If King of the next player is threatened and not can move move one of your pieces, the moving player wins If 1 is equal to the number of pieces owned by Player the next player, the moving player wins If the moving player cannot move, it's a draw.
+                
+        "))
+        (useFor "Ruleset/Skak (Ludii 1) (Reconstructed)" (id "3084"))
+        (useFor "Ruleset/Skak (Ludii 2) (Reconstructed)" (rules "The game Skak is played by two players on a 8x8 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2 
+                All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+                Rules for Pieces:
+                Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+                Kings if there is an enemy Player at to, remove pieces at to then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Knights leap a piece to not is a friend.
+                Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward or remove pieces at to then step forward-right or forward-left or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again.
+                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 1 row.
+                Place a Pawn for player two at each cell of the 6 row.
+                Place a Rook for player one on sites: A1 and H1.
+                Place a Knight for player one on sites: B1 and G1.
+                Place a Bishop for player one on sites: C1 and F1.
+                Place a Queen for player one on site D1.
+                Place a King for player one on site E1.
+                Place a Rook for player two on sites: A8 and H8.
+                Place a Knight for player two on sites: B8 and G8.
+                Place a Bishop for player two on sites: C8 and F8.
+                Place a Queen for player two on site D8.
+                Place a King for player two on site E8..
+                Rules: 
+                If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into Queen, Knight, Bishop or Rook, else move one of your pieces or if State at King of current moving player is equal to 1 and not King of the moving player is threatened, if State at RookLeft of current moving player is equal to 1 and can move slide from RookLeft of current moving player in the east direction through empty, slide from King of current moving player in the west direction through empty and not King of the moving player is threatened then slide from RookLeft of current moving player in the east direction through true or if State at RookRight of current moving player is equal to 1 and can move slide from RookRight of current moving player in the west direction through empty, slide from King of current moving player in the east direction through empty and not King of the moving player is threatened then slide from RookRight of current moving player in the west direction through true.
+                Aim: 
+                If King of the next player is threatened and not can move move one of your pieces, the moving player wins If 1 is equal to the number of pieces owned by Player the next player, the moving player wins If the moving player cannot move, it's a draw.
+                
+        "))
+        (useFor "Ruleset/Skak (Ludii 2) (Reconstructed)" (id "3085"))
+        (useFor "Ruleset/Skak (Ludii 3) (Reconstructed)" (rules "The game Skak is played by two players on a 8x8 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2 
+                All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+                Rules for Pieces:
+                Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+                Kings if there is an enemy Player at to, remove pieces at to then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Knights leap a piece to not is a friend.
+                Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward or remove pieces at to then step forward-right or forward-left or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again.
+                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Players take turns moving.
+                Setup:
+                Place a Bishop for player one at the cells with coordinates [C1, F1].
+                Place a Rook for player one at the cells with coordinates [C2, F2].
+                Place a Knight for player one at the cells with coordinates [D2, E2].
+                Place a King for player one on site E1.
+                Place stack of [Pawn1] at cell each cell of the 2 row
+                Place stack of [Queen1] at cell the cells with coordinates [D3]
+                Place a Bishop for player two at the cells with coordinates [C8, F8].
+                Place a Rook for player two at the cells with coordinates [C7, F7].
+                Place a Knight for player two at the cells with coordinates [D7, E7].
+                Place a King for player two on site E8.
+                Place stack of [Pawn2] at cell each cell of the 5 row
+                Place stack of [Queen2] at cell the cells with coordinates [D6].
+                Rules: 
+                If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into Queen, Knight, Bishop or Rook, else move one of your pieces or if State at King of current moving player is equal to 1 and not King of the moving player is threatened, if State at RookLeft of current moving player is equal to 1 and can move slide from RookLeft of current moving player in the east direction through empty, slide from King of current moving player in the west direction through empty and not King of the moving player is threatened then slide from RookLeft of current moving player in the east direction through true or if State at RookRight of current moving player is equal to 1 and can move slide from RookRight of current moving player in the west direction through empty, slide from King of current moving player in the east direction through empty and not King of the moving player is threatened then slide from RookRight of current moving player in the west direction through true.
+                Aim: 
+                If King of the next player is threatened and not can move move one of your pieces, the moving player wins If 1 is equal to the number of pieces owned by Player the next player, the moving player wins If the moving player cannot move, it's a draw.
+                
+        "))
+        (useFor "Ruleset/Skak (Ludii 3) (Reconstructed)" (id "3086"))
+        (useFor "Ruleset/Skak (Ludii 4) (Reconstructed)" (rules "The game Skak is played by two players on a 8x8 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2 
+                All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+                Rules for Pieces:
+                Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+                Kings if there is an enemy Player at to, remove pieces at to then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Knights leap a piece to not is a friend.
+                Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward or remove pieces at to then step forward-right or forward-left or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again.
+                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 1 row.
+                Place a Pawn for player two at each cell of the 6 row.
+                Place a Rook for player one on sites: A1 and H1.
+                Place a Knight for player one on sites: B1 and G1.
+                Place a Bishop for player one on sites: C1 and F1.
+                Place a Queen for player one on site D1.
+                Place a King for player one on site E1.
+                Place a Rook for player two on sites: A8 and H8.
+                Place a Knight for player two on sites: B8 and G8.
+                Place a Bishop for player two on sites: C8 and F8.
+                Place a Queen for player two on site D8.
+                Place a King for player two on site E8..
+                Rules: 
+                If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into Queen, Knight, Bishop or Rook, else move one of your pieces or if State at King of current moving player is equal to 1 and not King of the moving player is threatened, if State at RookLeft of current moving player is equal to 1 and can move slide from RookLeft of current moving player in the east direction through empty, slide from King of current moving player in the west direction through empty and not King of the moving player is threatened then slide from RookLeft of current moving player in the east direction through true or if State at RookRight of current moving player is equal to 1 and can move slide from RookRight of current moving player in the west direction through empty, slide from King of current moving player in the east direction through empty and not King of the moving player is threatened then slide from RookRight of current moving player in the west direction through true.
+                Aim: 
+                If King of the next player is threatened and not can move move one of your pieces, the moving player wins If 1 is equal to the number of pieces owned by Player the next player, the moving player wins If the moving player cannot move, it's a draw.
+                
+        "))
+        (useFor "Ruleset/Skak (Ludii 4) (Reconstructed)" (id "3087"))
+        (useFor "Ruleset/Skak (Ludii 5) (Reconstructed)" (rules "The game Skak is played by two players on a 8x8 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2 
+                All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+                Rules for Pieces:
+                Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+                Kings if there is an enemy Player at to, remove pieces at to then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Knights leap a piece to not is a friend.
+                Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward or remove pieces at to then step forward-right or forward-left or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again.
+                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at the cells with coordinates [A2, D2, E2, H2].
+                Place a Pawn for player two at the cells with coordinates [A7, D7, E7, H7].
+                Place a Pawn for player one at the cells with coordinates [B2, C2, F2, G2].
+                Place a Pawn for player two at the cells with coordinates [B7, C7, F7, G7].
+                Place a Rook for player one on sites: A1 and H1.
+                Place a Knight for player one on sites: B1 and G1.
+                Place a Bishop for player one on sites: C1 and F1.
+                Place a Queen for player one on site D1.
+                Place a King for player one on site E1.
+                Place a Rook for player two on sites: A8 and H8.
+                Place a Knight for player two on sites: B8 and G8.
+                Place a Bishop for player two on sites: C8 and F8.
+                Place a Queen for player two on site D8.
+                Place a King for player two on site E8..
+                Rules: 
+                If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into Queen, Knight, Bishop or Rook, else move one of your pieces or if State at King of current moving player is equal to 1 and not King of the moving player is threatened, if State at RookLeft of current moving player is equal to 1 and can move slide from RookLeft of current moving player in the east direction through empty, slide from King of current moving player in the west direction through empty and not King of the moving player is threatened then slide from RookLeft of current moving player in the east direction through true or if State at RookRight of current moving player is equal to 1 and can move slide from RookRight of current moving player in the west direction through empty, slide from King of current moving player in the east direction through empty and not King of the moving player is threatened then slide from RookRight of current moving player in the west direction through true.
+                Aim: 
+                If King of the next player is threatened and not can move move one of your pieces, the moving player wins If 1 is equal to the number of pieces owned by Player the next player, the moving player wins If the moving player cannot move, it's a draw.
+                
+        "))
+        (useFor "Ruleset/Skak (Ludii 5) (Reconstructed)" (id "3088"))
+        (source "Murray 1913: 468-469.")
+        (version "1.3.9")
+        (classification "board/war/replacement/checkmate/chaturanga/reconstruction/done")
+        (credit "Eric Piette")
+        (origin "This game was played in Iceland, around 1892.")
+        }
+    )
     
     (graphics {
         (show Check "King")

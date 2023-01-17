@@ -169,20 +169,20 @@
 //------------------------------------------------------------------------------
 
 (metadata
-(info
-{
-(description "Omny is a system of connection games that originated as a generalization of Mark Steere's Gyre. It includes Y as one of its many variations. Luis Bolaños Mures invented Omny in 2017.")
-(rules "Omny is played on the cells of any hexagonal grid where some or all of the cells are designated star cells. Players take turns placing a stone of one's own color on an empty cell. A group is a set of connected stones of the same color. A cut of a group X is any set of connected cells (empty or occupied by either player) including no stones in X. You win by making a group such that none of its cuts include more than half the cells of the board. For serious play it is advised to play with a balance rule in force.
+    (info
+        {
+        (description "Omny is a system of connection games that originated as a generalization of Mark Steere's Gyre. It includes Y as one of its many variations. Luis Bolaños Mures invented Omny in 2017.")
+        (rules "Omny is played on the cells of any hexagonal grid where some or all of the cells are designated star cells. Players take turns placing a stone of one's own color on an empty cell. A group is a set of connected stones of the same color. A cut of a group X is any set of connected cells (empty or occupied by either player) including no stones in X. You win by making a group such that none of its cuts include more than half the cells of the board. For serious play it is advised to play with a balance rule in force.
             
-            In Misère Omny you lose if you make a group whose cuts each contain no more than half of the star cells.")
-(id "1529")
-(version "1.3.9")
-(classification "board/space/group")
-(author "Luis Bolaños Mures (used with permission)")
-(credit "Michael Amundsen")
-(date "2017")
-}
-)
+        In Misère Omny you lose if you make a group whose cuts each contain no more than half of the star cells.")
+        (id "1529")
+        (version "1.3.9")
+        (classification "board/space/group")
+        (author "Luis Bolaños Mures (used with permission)")
+        (credit "Michael Amundsen")
+        (date "2017")
+        }
+    )
     (graphics {
         (show Symbol "StarOutline"
             ("StarCells")

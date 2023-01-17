@@ -429,42 +429,42 @@
 
 (metadata 
     
-(info
-{
-(description "A chess variant played on the intersections of the chess board. The key feature is that only the dark squares may be crossed diagonally.    To make up for this limitation, all of the pieces are more powerful than in standard chess and the width of the board is reduced to eliminate the rooks, and keep the game from becoming too complex.     The power of the King is enhanced by giving it double moves. -- And the other pieces are enhanced enough to checkmate with only the support of a king.    Tactical differences:  -- Pawns are more mobile and easier to promote. They can form mutually suportive chains like in chess, but only in crossing formations that don't lead to the obstruction of major pieces. Alternatively, they can be supported by other pieces and placed so as to attack in front and defend in back. They can open and close columns.  -- The queen-like Bishops can be released along their own columns by 2 pawn moves, or on the Knight column by a pawn and Bishop move after the Knight has been moved; or they can be opened to their own diagonal by a single pawn move.  -- The Queen is not the most powerful piece: It has the capacity to attack almost half the board from protected locations in the mid-game, but is easily blocked. -- Tightly surrounding the King is bad defense as it restricts its movement options. The Knights are good King defenders, and paired Knights are mutually supporting in many positions.-- Attacks can be lead by a brave King advancing into the board.")
-(rules "Played on an 8x6 board with pieces with specialized moves. White moves first:
-     
-    Pawns (6): can move one space forwards (orthogonally or diagonally across dark squares) and can capture an enemy located diagonally across either of the adjacent dark squares (diagonal forwards and diagonal backwards). Upon reaching the last rank, Pawns promote to any major piece except a king.
-    -- There are no initial double moves, nor enpassant.
-    
-    Bishops (2): Can move like chess queens - any orthogonal direction or allowed diagonal direction (but not across light squares).
-    
-    Knights (2) move one space orthogonally and one space diagonally, in either order to reach a non-adjacent destination. The intermediate position may be occupied. Knights capture at their destination, but if the destination is empty, they capture an enemy along their path.
-    
-     Queen (1): can move any number of spaces diagonally only, but once per turn, may change direction while crossing a dark square. They capture an enemy at the destination.
-     
-     Kings (1): can move one space orthogonally or diagonally. The King can move twice per turn, but not in the same direction nor back to the same place. A King may capture on both parts of its turn, but only if the piece(s) captured is not defended. 
-     
-     Checks:  A check is a threat to take a king, or a threat on a site that the king passes through.
-     -- The King may not move across- nor to- a position that remains in check at the completion of its full turn. Nor may a king be put into check by the movement of another friendly piece, including by the opening of a space that allows a knight to jump across the king, or opening a space between opposing kings.
-     
-     Note: While a king may not move across an open site under check, it may still threaten check across it, thus preventing the opposing king from occupying those sites -- because if the opposing king were captured at those sites, the game would be over and all checks would be null, including those on the intervening site. 
-     A king does not threaten check across an occupied site.
-     
-     In no case may a King put the other king directly into check, because in all such cases both the kings would be put into check, and movement into check is forbidden.
-     
-     A King must move when in check.
-     
-     The game is won when the ememy king must move, but cannot. 
-     
-     Not implemented yet and still under consideration: 13 continuous ckeck moves is also a win. the last player to move a pawn or capture a piece loses after 20 moves per player: Note that bare kings will normally end in a stalemate win before this limit is reached.")
-(id "2019")
-(version "1.3.9")
-(classification "board/war/replacement/checkmate/chess")
-(author "Dale Walton")
-(credit "Dale Walton")
-}
-)
+    (info
+        {
+        (description "A chess variant played on the intersections of the chess board. The key feature is that only the dark squares may be crossed diagonally.    To make up for this limitation, all of the pieces are more powerful than in standard chess and the width of the board is reduced to eliminate the rooks, and keep the game from becoming too complex.     The power of the King is enhanced by giving it double moves. -- And the other pieces are enhanced enough to checkmate with only the support of a king.    Tactical differences:  -- Pawns are more mobile and easier to promote. They can form mutually suportive chains like in chess, but only in crossing formations that don't lead to the obstruction of major pieces. Alternatively, they can be supported by other pieces and placed so as to attack in front and defend in back. They can open and close columns.  -- The queen-like Bishops can be released along their own columns by 2 pawn moves, or on the Knight column by a pawn and Bishop move after the Knight has been moved; or they can be opened to their own diagonal by a single pawn move.  -- The Queen is not the most powerful piece: It has the capacity to attack almost half the board from protected locations in the mid-game, but is easily blocked. -- Tightly surrounding the King is bad defense as it restricts its movement options. The Knights are good King defenders, and paired Knights are mutually supporting in many positions.-- Attacks can be lead by a brave King advancing into the board.")
+        (rules "Played on an 8x6 board with pieces with specialized moves. White moves first:
+            
+            Pawns (6): can move one space forwards (orthogonally or diagonally across dark squares) and can capture an enemy located diagonally across either of the adjacent dark squares (diagonal forwards and diagonal backwards). Upon reaching the last rank, Pawns promote to any major piece except a king.
+            -- There are no initial double moves, nor enpassant.
+            
+            Bishops (2): Can move like chess queens - any orthogonal direction or allowed diagonal direction (but not across light squares).
+            
+            Knights (2) move one space orthogonally and one space diagonally, in either order to reach a non-adjacent destination. The intermediate position may be occupied. Knights capture at their destination, but if the destination is empty, they capture an enemy along their path.
+            
+            Queen (1): can move any number of spaces diagonally only, but once per turn, may change direction while crossing a dark square. They capture an enemy at the destination.
+            
+            Kings (1): can move one space orthogonally or diagonally. The King can move twice per turn, but not in the same direction nor back to the same place. A King may capture on both parts of its turn, but only if the piece(s) captured is not defended. 
+            
+            Checks:  A check is a threat to take a king, or a threat on a site that the king passes through.
+            -- The King may not move across- nor to- a position that remains in check at the completion of its full turn. Nor may a king be put into check by the movement of another friendly piece, including by the opening of a space that allows a knight to jump across the king, or opening a space between opposing kings.
+            
+            Note: While a king may not move across an open site under check, it may still threaten check across it, thus preventing the opposing king from occupying those sites -- because if the opposing king were captured at those sites, the game would be over and all checks would be null, including those on the intervening site. 
+            A king does not threaten check across an occupied site.
+            
+            In no case may a King put the other king directly into check, because in all such cases both the kings would be put into check, and movement into check is forbidden.
+            
+            A King must move when in check.
+            
+            The game is won when the ememy king must move, but cannot. 
+            
+        Not implemented yet and still under consideration: 13 continuous ckeck moves is also a win. the last player to move a pawn or capture a piece loses after 20 moves per player: Note that bare kings will normally end in a stalemate win before this limit is reached.")
+        (id "2019")
+        (version "1.3.9")
+        (classification "board/war/replacement/checkmate/chess")
+        (author "Dale Walton")
+        (credit "Dale Walton")
+        }
+    )
     
     (graphics {
         (show Check "King")

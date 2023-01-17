@@ -110,18 +110,18 @@
 
 (metadata 
     
-(info
-{
-(description "Sanyou Qi is a three-player version of Xiangqi which dates to the late seventeenth century in China. ")
-(rules "Three players. Eighteen pieces per player. The pieces have special moves, as follows: Jiang(General) x1: may move one space orthogonally and cannot leave the 3x3 square in which it begins (the gong); Shi(Guard) x2: moves one space diagonally and cannot leave the gong; Xiang(Elephant/minister) x2: move two places diagonally. Ma(Horse) x2: move orthogonally one and then diagonally one space. Can be blocked by a piece next to it orthogonally. Ju(Chariot x2: moves any number of spaces orthogonally; Pao (Catapult/cannon) x2: can move orthogonally any number of spaces, captures by jumping one piece (of either player); Flag x2: moves orthogonally two spaces, but in an opponent's home rectangle can move orthogonally any distance. Fire x2: moves diagonally one space forward. Zu(Private/soldier) x3: can move one space forward. Once they move into an enemy's home rectangle, they can also move one space horizontally. Ma and Ju cannot cross the sea; Pao cannot cross. city wall or mountain. When a Jiang can be taken on the next turn, the player must move the Jiang so that it cannot be taken on the next turn. The goal is to checkmate the opponent's Jiang. ")
-(source "Lo 2007: 126.")
-(id "798")
-(version "1.3.9")
-(classification "war/replacement/WishlistDLP")
-(credit "Eric Piette")
-(origin "This game was played in China, around 1697.")
-}
-)
+    (info
+        {
+        (description "Sanyou Qi is a three-player version of Xiangqi which dates to the late seventeenth century in China. ")
+        (rules "Three players. Eighteen pieces per player. The pieces have special moves, as follows: Jiang(General) x1: may move one space orthogonally and cannot leave the 3x3 square in which it begins (the gong); Shi(Guard) x2: moves one space diagonally and cannot leave the gong; Xiang(Elephant/minister) x2: move two places diagonally. Ma(Horse) x2: move orthogonally one and then diagonally one space. Can be blocked by a piece next to it orthogonally. Ju(Chariot x2: moves any number of spaces orthogonally; Pao (Catapult/cannon) x2: can move orthogonally any number of spaces, captures by jumping one piece (of either player); Flag x2: moves orthogonally two spaces, but in an opponent's home rectangle can move orthogonally any distance. Fire x2: moves diagonally one space forward. Zu(Private/soldier) x3: can move one space forward. Once they move into an enemy's home rectangle, they can also move one space horizontally. Ma and Ju cannot cross the sea; Pao cannot cross. city wall or mountain. When a Jiang can be taken on the next turn, the player must move the Jiang so that it cannot be taken on the next turn. The goal is to checkmate the opponent's Jiang. ")
+            (source "Lo 2007: 126.")
+            (id "798")
+            (version "1.3.9")
+            (classification "war/replacement/WishlistDLP")
+            (credit "Eric Piette")
+            (origin "This game was played in China, around 1697.")
+            }
+        )
         
         (graphics {
             (show Edges Diagonal Hidden)

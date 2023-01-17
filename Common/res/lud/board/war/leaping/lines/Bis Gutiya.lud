@@ -21,18 +21,18 @@
 
 (metadata
     
-(info
-{
-(description "Bis Gutiya is a game with leaping captures played in the Bihar region of India. ")
-(rules "5x5 intersecting lines, with diagonals in each square formed by the lines. Twenty pieces per player, which each player places on the points on their side of the board, as well as the two points to the left of the central space. The central spot remains empty. Players alternate turns by moving a piece to an adjacent empty spot along the lines on the board. A player may capture an opponent's piece by hopping over one adjacent piece if there is an empty spot behind it along a line on the board. The player who captures all of the opponent's pieces wins.")
-(source "Das Gupta 1935: 413-414.")
-(id "911")
-(version "1.3.9")
-(classification "board/war/leaping/lines")
-(credit "Eric Piette")
-(origin "This game was played in India, around 1935.")
-}
-)
+    (info
+        {
+        (description "Bis Gutiya is a game with leaping captures played in the Bihar region of India. ")
+        (rules "5x5 intersecting lines, with diagonals in each square formed by the lines. Twenty pieces per player, which each player places on the points on their side of the board, as well as the two points to the left of the central space. The central spot remains empty. Players alternate turns by moving a piece to an adjacent empty spot along the lines on the board. A player may capture an opponent's piece by hopping over one adjacent piece if there is an empty spot behind it along a line on the board. The player who captures all of the opponent's pieces wins.")
+        (source "Das Gupta 1935: 413-414.")
+        (id "911")
+        (version "1.3.9")
+        (classification "board/war/leaping/lines")
+        (credit "Eric Piette")
+        (origin "This game was played in India, around 1935.")
+        }
+    )
     
     (ai
         "Bis Gutiya_ai"

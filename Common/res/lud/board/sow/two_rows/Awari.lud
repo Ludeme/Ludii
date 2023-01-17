@@ -55,18 +55,18 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "Awari is a two-row mancala-style board game played by the Ndyuka people of Suriname. It is closely similar to other games found throughout West Africa and the Caribbean.")
-(aliases {"Adji-Pre" "Langa-Holo"})
-(rules "2x6 board. Four counters in each hole. Sowing occurs in an anti-clockwise direction. The hole from which sowing begins must remain empty throughout the player's turn. Captures are made when the last counter of a sowing fall into the opponent's row in a hole containing one or two counters (thus making two or three), capturing all of the counters in that hole. A continuous series of holes holding two or three counters behind it are also captured, provided the player's sowing caused them to contain this number. If a player has no counters in their holes, the opponent must play to place seeds in their row, if possible. The game ends when players have holes with only empty and single counters. The player who captured the most counters wins. ")
-(source "Herskovits 1932: 29-30.")
-(id "251")
-(version "1.3.9")
-(classification "board/sow/two rows")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "Awari is a two-row mancala-style board game played by the Ndyuka people of Suriname. It is closely similar to other games found throughout West Africa and the Caribbean.")
+        (aliases {"Adji-Pre" "Langa-Holo"})
+        (rules "2x6 board. Four counters in each hole. Sowing occurs in an anti-clockwise direction. The hole from which sowing begins must remain empty throughout the player's turn. Captures are made when the last counter of a sowing fall into the opponent's row in a hole containing one or two counters (thus making two or three), capturing all of the counters in that hole. A continuous series of holes holding two or three counters behind it are also captured, provided the player's sowing caused them to contain this number. If a player has no counters in their holes, the opponent must play to place seeds in their row, if possible. The game ends when players have holes with only empty and single counters. The player who captured the most counters wins. ")
+        (source "Herskovits 1932: 29-30.")
+        (id "251")
+        (version "1.3.9")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (board Style Mancala)

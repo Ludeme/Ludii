@@ -437,23 +437,23 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "Walak-Pussa is a two-row mancala-style board game played in Sri Lanka. ")
-(rules "2x7 board with two stores. Four counters in each hole. Sowing occurs in either a clockwise or anti-clockwise direction; the first player chooses the direction and all subsequent moves are made in that direction. Players sow beginning from holes in their row. If the last counter falls into a hole with counters, the counters in the next hole are picked up and sowing continues, and if this hole is empty, the counters in the hole following the empty hole are captured. If there is an unbroken sequence of alternating empty and occupied holes, the counters in the occupied holes are captured until there are two empty or two occupied holes. If the final counter falls into an empty hole the turn ends. Throughout the game, singletons cannot be moved is a player has a hole with multiple counters, and a singleton in the front hole cannot be moved if there are other singletons in the player's row. The round ends when one player's holes are empty. 
-
-A second round begins with the winner of the first round placing four counters in each of their holes, leaving any surplus in the store. The loser of round one places four counters in as many consecutive holes on their side of the board as possible, and any remaining counters in the next hole. If this hole contains one, it is called puta, if two, naga, if three, wala. Holes with no counters are excluded from play for this round. If the loser has a puta hole, the opponent removes three counters from their hole opposite; if a naga, the opponent removes two from the opposite hole, if a wala, the opponent removes one. The removed counters go into their store. Puta and naga holes are marked with a piece of paper or straw in them. Empty holes are excluded from play in this round. The losing player begins the round, moving in the direction of the excluded holes, and played in the same way as the first round. The player with empty holes begins play in the direction of the empty hole. Counters cannot be captured or sowed from puta or naga holes. Play continues as before.
-
-When one player has fewer than twelve counters at the beginning of a round, they may arrange them differently at the beginning. They may put one or two counters in one end hole and not more than four in the other end hole, and one or two counters in the intermediate holes, leaving some empty and, thus, excluded. The opponent then puts four counters in each of their holes. There are no puta, naga, or wala holes in this round. The player with more counters plays as before, but the one with less has captures that are determined by the number of counters placed in the first end hole. If there were two in the end hole, the player captures when dropping the final counter into a hole to make it three; or when it makes two if there was one counter in the first end hole. Otherwise, the player does not sow in holes with one or two counters.
-
-Play continues until one player cannot sow at the beginning of a round.")
-(source "Parker 1909: 597-598.")
-(id "217")
-(version "1.3.9")
-(classification "board/sow/two rows")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "Walak-Pussa is a two-row mancala-style board game played in Sri Lanka. ")
+        (rules "2x7 board with two stores. Four counters in each hole. Sowing occurs in either a clockwise or anti-clockwise direction; the first player chooses the direction and all subsequent moves are made in that direction. Players sow beginning from holes in their row. If the last counter falls into a hole with counters, the counters in the next hole are picked up and sowing continues, and if this hole is empty, the counters in the hole following the empty hole are captured. If there is an unbroken sequence of alternating empty and occupied holes, the counters in the occupied holes are captured until there are two empty or two occupied holes. If the final counter falls into an empty hole the turn ends. Throughout the game, singletons cannot be moved is a player has a hole with multiple counters, and a singleton in the front hole cannot be moved if there are other singletons in the player's row. The round ends when one player's holes are empty. 
+            
+            A second round begins with the winner of the first round placing four counters in each of their holes, leaving any surplus in the store. The loser of round one places four counters in as many consecutive holes on their side of the board as possible, and any remaining counters in the next hole. If this hole contains one, it is called puta, if two, naga, if three, wala. Holes with no counters are excluded from play for this round. If the loser has a puta hole, the opponent removes three counters from their hole opposite; if a naga, the opponent removes two from the opposite hole, if a wala, the opponent removes one. The removed counters go into their store. Puta and naga holes are marked with a piece of paper or straw in them. Empty holes are excluded from play in this round. The losing player begins the round, moving in the direction of the excluded holes, and played in the same way as the first round. The player with empty holes begins play in the direction of the empty hole. Counters cannot be captured or sowed from puta or naga holes. Play continues as before.
+            
+            When one player has fewer than twelve counters at the beginning of a round, they may arrange them differently at the beginning. They may put one or two counters in one end hole and not more than four in the other end hole, and one or two counters in the intermediate holes, leaving some empty and, thus, excluded. The opponent then puts four counters in each of their holes. There are no puta, naga, or wala holes in this round. The player with more counters plays as before, but the one with less has captures that are determined by the number of counters placed in the first end hole. If there were two in the end hole, the player captures when dropping the final counter into a hole to make it three; or when it makes two if there was one counter in the first end hole. Otherwise, the player does not sow in holes with one or two counters.
+            
+        Play continues until one player cannot sow at the beginning of a round.")
+        (source "Parker 1909: 597-598.")
+        (id "217")
+        (version "1.3.9")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (board Style Mancala)

@@ -71,29 +71,29 @@
 
 (metadata 
     
-(info
-{
-(description "Annuvin is played on a hexagonal board (4 hexagons on a side) with 6 pieces per player arranged in opposite corners.")
-(rules "MOVE - A stone can move up to N spaces in any combination of directions (it may even move over intervening stones), where N varies depending on the number of stones he has remaining:
-- Six pieces: one space per turn
-- Five pieces: two spaces per turn
-- Four pieces: three spaces per turn
-- Three pieces: four spaces per turn
-- Two pieces: five spaces per turn
-- One piece: six spaces per turn.
-
-CAPTURE - A stone captures an opposing piece by moving onto it. If a stone makes a capture before it has used all of the spaces available to it that move, it may continue to make additional captures until it has moved its limit.
-
-GOAL - Wins the player who captures all of his opponent's stones, or, if he reduces his opponent to a single stone without losing any of his own.")
-(id "1798")
-(source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/annuvin.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.di.fc.ul.pt</a>")
-(version "1.3.9")
-(classification "board/war/replacement/eliminate/all")
-(author "Jeff Roy")
-(credit "Eric Piette")
-(date "2001")
-}
-)
+    (info
+        {
+        (description "Annuvin is played on a hexagonal board (4 hexagons on a side) with 6 pieces per player arranged in opposite corners.")
+        (rules "MOVE - A stone can move up to N spaces in any combination of directions (it may even move over intervening stones), where N varies depending on the number of stones he has remaining:
+            - Six pieces: one space per turn
+            - Five pieces: two spaces per turn
+            - Four pieces: three spaces per turn
+            - Three pieces: four spaces per turn
+            - Two pieces: five spaces per turn
+            - One piece: six spaces per turn.
+            
+            CAPTURE - A stone captures an opposing piece by moving onto it. If a stone makes a capture before it has used all of the spaces available to it that move, it may continue to make additional captures until it has moved its limit.
+            
+        GOAL - Wins the player who captures all of his opponent's stones, or, if he reduces his opponent to a single stone without losing any of his own.")
+        (id "1798")
+        (source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/annuvin.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.di.fc.ul.pt</a>")
+        (version "1.3.9")
+        (classification "board/war/replacement/eliminate/all")
+        (author "Jeff Roy")
+        (credit "Eric Piette")
+        (date "2001")
+        }
+    )
     
     (ai
         "Annuvin_ai"

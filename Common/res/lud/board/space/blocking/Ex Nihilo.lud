@@ -327,45 +327,45 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "A highly tactical game of battling stacks growing into existence.")
-(rules "Ex nihilo is a game for 2 players played with stackable pieces of two colors on the cells of a hexagonal arrangement of hexagons (a hexhex board). The board starts out empty. The game is over as soon as one player is unable to make a move. The other player is then the winner.
-
-Even though the goal is technically stalemate, out of the interlocking mechanics emerges a territorial goal with a constant threat of a clever check mate turning the tide or ending the game before territory is settled.
-
-The novelty of this game lies in its central gimmick: Every move consists in moving a stack. In this sense it is a pure movement game. Yet, the game features both placement and captures.
-
-Movement – overview:
-Stacks move along straight open lines and grow when they move away from the center cell. This game is unusual in allowing movement of stacks containing 0 pieces. It is by growing these that pieces get onto the board in the first place.
-
-Movement – details:
-On your turn, you must move a stack not topped by an enemy piece to an empty cell reachable through an unbroken line of empty cells. By convention, a single piece is considered a stack of size 1 and an empty cell is considered to contain a stack of size 0.
-
-If, after you have moved a stack, it is farther away from the center cell than before it was moved (measured in number of steps), its size is increased by 1 per step further away from the center it now is. This happens automatically in Ludii.
-
-You may move a proper part of a stack by splitting it. To move a part of a stack, drag the piece that will be the bottom piece of the new stack to its destination, or click it, then the destination.
-
-You may also move a whole stack, but only on the condition that you move it farther away from the center cell. A consequence is that moving a whole stack always results in its size increasing. Together with the convention that empty cells contain stacks of size 0, this also has the consequence that you can effectively place a new stack on the board by moving a stack of size 0. In Ludii a 0-stack is represented by a grey disc. You move it by dragging it to where you want to go, or click it, then the destination.
-
-Note that nothing special happens to the cell you moved the 0-stack from – it still contains a 0-stack.
-
-Capturing - overview:
-Flanked enemy stacks are captured by being taken hostage for a move. Capturing is obligatory: If a capturing move is available, a capturing move must be made.
-
-Capturing - details:
-If (and only if) the top piece of a stack is of your color, it is said to partake in flanking an enemy stack if (i) this enemy stack is exactly in the middle of a line of otherwise empty cells going from the flanking stack to another one of your stacks, and (ii) all three of these stacks are of the same size.
-
-If, after you have moved a stack, it partakes in flanking one or more enemy stacks, you must immediately move one of these enemy stacks. Except for the obvious difference that you are moving an enemy stack, all normal rules apply to this move. For example: If the captured stack grows (if you move it farther away from the center cell, that is), it grows by the addition of pieces of your color, so situations where this hostage move must itself be a capturing move are possible. Such chaining of captures must continue until you capture a stack that is not in a position to continue the chain. Growing captured stacks is the only way to take ownership of them more permanently.")
-(id "1185")
-(version "1.3.9")
-(classification "board/space/blocking")
-(author "Michael Amundsen")
-(publisher "Michael Amundsen")
-(credit "Designed and implemented by Michael Amundsen.")
-(date "2020")
-}
-)
+    (info
+        {
+        (description "A highly tactical game of battling stacks growing into existence.")
+        (rules "Ex nihilo is a game for 2 players played with stackable pieces of two colors on the cells of a hexagonal arrangement of hexagons (a hexhex board). The board starts out empty. The game is over as soon as one player is unable to make a move. The other player is then the winner.
+            
+            Even though the goal is technically stalemate, out of the interlocking mechanics emerges a territorial goal with a constant threat of a clever check mate turning the tide or ending the game before territory is settled.
+            
+            The novelty of this game lies in its central gimmick: Every move consists in moving a stack. In this sense it is a pure movement game. Yet, the game features both placement and captures.
+            
+            Movement – overview:
+            Stacks move along straight open lines and grow when they move away from the center cell. This game is unusual in allowing movement of stacks containing 0 pieces. It is by growing these that pieces get onto the board in the first place.
+            
+            Movement – details:
+            On your turn, you must move a stack not topped by an enemy piece to an empty cell reachable through an unbroken line of empty cells. By convention, a single piece is considered a stack of size 1 and an empty cell is considered to contain a stack of size 0.
+            
+            If, after you have moved a stack, it is farther away from the center cell than before it was moved (measured in number of steps), its size is increased by 1 per step further away from the center it now is. This happens automatically in Ludii.
+            
+            You may move a proper part of a stack by splitting it. To move a part of a stack, drag the piece that will be the bottom piece of the new stack to its destination, or click it, then the destination.
+            
+            You may also move a whole stack, but only on the condition that you move it farther away from the center cell. A consequence is that moving a whole stack always results in its size increasing. Together with the convention that empty cells contain stacks of size 0, this also has the consequence that you can effectively place a new stack on the board by moving a stack of size 0. In Ludii a 0-stack is represented by a grey disc. You move it by dragging it to where you want to go, or click it, then the destination.
+            
+            Note that nothing special happens to the cell you moved the 0-stack from – it still contains a 0-stack.
+            
+            Capturing - overview:
+            Flanked enemy stacks are captured by being taken hostage for a move. Capturing is obligatory: If a capturing move is available, a capturing move must be made.
+            
+            Capturing - details:
+            If (and only if) the top piece of a stack is of your color, it is said to partake in flanking an enemy stack if (i) this enemy stack is exactly in the middle of a line of otherwise empty cells going from the flanking stack to another one of your stacks, and (ii) all three of these stacks are of the same size.
+            
+        If, after you have moved a stack, it partakes in flanking one or more enemy stacks, you must immediately move one of these enemy stacks. Except for the obvious difference that you are moving an enemy stack, all normal rules apply to this move. For example: If the captured stack grows (if you move it farther away from the center cell, that is), it grows by the addition of pieces of your color, so situations where this hostage move must itself be a capturing move are possible. Such chaining of captures must continue until you capture a stack that is not in a position to continue the chain. Growing captured stacks is the only way to take ownership of them more permanently.")
+        (id "1185")
+        (version "1.3.9")
+        (classification "board/space/blocking")
+        (author "Michael Amundsen")
+        (publisher "Michael Amundsen")
+        (credit "Designed and implemented by Michael Amundsen.")
+        (date "2020")
+        }
+    )
     
     (graphics {
         (piece Colour Neutral

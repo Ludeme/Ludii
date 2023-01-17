@@ -172,39 +172,39 @@
 //-------------------------------------------------------------------------
 
 (metadata
-(info
-{
-(description "Paintscape is a colorful territory game played on a Chess board with colored tiles and black and white stones. It was invented by Michael Amundsen fall 2022.")
-(rules "Paintscape is a game for two players – Black and White – played on the squares (cells/faces) of a square grid with 8 squares per side (e.g. a Chess board). 
-You also need a large supply of black and white stones and 5 distinguishable (e.g. by color) shared sets of 12 tiles. That is, each of the 5 sets contain 12 tiles, for 60 tiles in total.
-
-Setup:
-Before play begins, all 60 tiles and 2 white and 2 black stones are distributed randomly on the 64 squares of the board.
-A short balancing phase then ensues:
-
-One player swaps the position of any number of stones with a tile. That is, for 0, 1, 2, 3, or 4 of the stones, swap its position with any tile.
-When all stones have been swapped, or the swapping player passes, indicating that they do not wish to swap any more stones, the other player choses to play first as Black or second as White in the proper playing phase.
-(To show the button for swapping in Ludii, you might have to click the three dots next to the pass button.)
-
-The balancing phase can be skipped by new players, or you can agree on a fixed setup for the 4 initial stones.
-
-Play:
-In this phase (the proper playing phase), players take turns, starting with Black, placing stones of their own color.
-On your turn, place a stone of your color on a square adjacent to one of your stones already on the board.
-You may not place a stone on a square occupied by a stone. I.e. the square you place at must be empty or only occupied by a tile.
-Stones placed on tiles normally just stack on top of them, however:
-If a placement makes you have a stone on half of the tiles of a certain color, remove all tiles of that color along with the stones stacked on top of them (regardless of whether they're friendly or enemy).
-
-The goal:
-You win if you remove 3 of the 5 colors.")
-(id "2040")
-(version "1.3.9")
-(classification "board/space/territory")
-(author "Michael Amundsen")
-(credit "Michael Amundsen")
-(date "2022")
-}
-)
+    (info
+        {
+        (description "Paintscape is a colorful territory game played on a Chess board with colored tiles and black and white stones. It was invented by Michael Amundsen fall 2022.")
+        (rules "Paintscape is a game for two players – Black and White – played on the squares (cells/faces) of a square grid with 8 squares per side (e.g. a Chess board). 
+            You also need a large supply of black and white stones and 5 distinguishable (e.g. by color) shared sets of 12 tiles. That is, each of the 5 sets contain 12 tiles, for 60 tiles in total.
+            
+            Setup:
+            Before play begins, all 60 tiles and 2 white and 2 black stones are distributed randomly on the 64 squares of the board.
+            A short balancing phase then ensues:
+            
+            One player swaps the position of any number of stones with a tile. That is, for 0, 1, 2, 3, or 4 of the stones, swap its position with any tile.
+            When all stones have been swapped, or the swapping player passes, indicating that they do not wish to swap any more stones, the other player choses to play first as Black or second as White in the proper playing phase.
+            (To show the button for swapping in Ludii, you might have to click the three dots next to the pass button.)
+            
+            The balancing phase can be skipped by new players, or you can agree on a fixed setup for the 4 initial stones.
+            
+            Play:
+            In this phase (the proper playing phase), players take turns, starting with Black, placing stones of their own color.
+            On your turn, place a stone of your color on a square adjacent to one of your stones already on the board.
+            You may not place a stone on a square occupied by a stone. I.e. the square you place at must be empty or only occupied by a tile.
+            Stones placed on tiles normally just stack on top of them, however:
+            If a placement makes you have a stone on half of the tiles of a certain color, remove all tiles of that color along with the stones stacked on top of them (regardless of whether they're friendly or enemy).
+            
+            The goal:
+        You win if you remove 3 of the 5 colors.")
+        (id "2040")
+        (version "1.3.9")
+        (classification "board/space/territory")
+        (author "Michael Amundsen")
+        (credit "Michael Amundsen")
+        (date "2022")
+        }
+    )
     
     (graphics {
         (player Colour P1 (colour Dark))

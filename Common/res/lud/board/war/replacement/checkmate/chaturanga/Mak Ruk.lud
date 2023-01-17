@@ -50,18 +50,18 @@
 
 (metadata 
     
-(info
-{
-(description "Mak Ruk is a capturing game played in Thailand. It is similar to other games derived from Chaturanga, with different moves for some pieces and the pawns starting on the third rank of the board, rather than the second.")
-(rules "8x8 board. Each player begins with sixteen pieces with special moves: Khoon (x1): moves orthogonally in any direction; Met (x1): placed to the right of the Khoon, moves one square orthogonally or diagonally forward, or one square diagonally backward, may move two squares orthogonally forward on the first move; Khon (x2): moves one square forward orthogonally or diagonally, may move backward diagonally but not to capture; Maa (x2): moves as a Chess knight; Rooa (x2): moves orthogonally any distance; Bea (x8): move forward one space, but capture diagonally. When they reach the opposite edge of the board, they are promoted to Met. They begin on the third row of the board with respect to each player. When the Khoon is threatened, it is in check and the player's next move must be to remove the check. If the player cannot, it is checkmate and the player loses. If there are no legal moves, the game is a draw. If one player has only a king left, the opponent must checkmate it within a set number of turns, based on the highest ranking piece left on the board, minus the total number of pieces on the board. The values are: two Rooa: eight; one Rooa, sixteen, two Khon, 22; one Khon, 44; two Maa, 33; one Maa, 66; Met and two Bea, 88; one each of Met, Rooa, Maa, Khon, sixteen. With only a Met, the game is a draw.")
-(source "Low 1839: 374-379.")
-(id "301")
-(version "1.3.9")
-(classification "board/war/replacement/checkmate/chaturanga")
-(credit "Eric Piette")
-(origin "This game was played in Thailand, around 1839.")
-}
-)
+    (info
+        {
+        (description "Mak Ruk is a capturing game played in Thailand. It is similar to other games derived from Chaturanga, with different moves for some pieces and the pawns starting on the third rank of the board, rather than the second.")
+        (rules "8x8 board. Each player begins with sixteen pieces with special moves: Khoon (x1): moves orthogonally in any direction; Met (x1): placed to the right of the Khoon, moves one square orthogonally or diagonally forward, or one square diagonally backward, may move two squares orthogonally forward on the first move; Khon (x2): moves one square forward orthogonally or diagonally, may move backward diagonally but not to capture; Maa (x2): moves as a Chess knight; Rooa (x2): moves orthogonally any distance; Bea (x8): move forward one space, but capture diagonally. When they reach the opposite edge of the board, they are promoted to Met. They begin on the third row of the board with respect to each player. When the Khoon is threatened, it is in check and the player's next move must be to remove the check. If the player cannot, it is checkmate and the player loses. If there are no legal moves, the game is a draw. If one player has only a king left, the opponent must checkmate it within a set number of turns, based on the highest ranking piece left on the board, minus the total number of pieces on the board. The values are: two Rooa: eight; one Rooa, sixteen, two Khon, 22; one Khon, 44; two Maa, 33; one Maa, 66; Met and two Bea, 88; one each of Met, Rooa, Maa, Khon, sixteen. With only a Met, the game is a draw.")
+        (source "Low 1839: 374-379.")
+        (id "301")
+        (version "1.3.9")
+        (classification "board/war/replacement/checkmate/chaturanga")
+        (credit "Eric Piette")
+        (origin "This game was played in Thailand, around 1839.")
+        }
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

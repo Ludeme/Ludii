@@ -484,120 +484,120 @@
 //----------------------------------------------------------
 
 (metadata
-(info
-{
-(description "Equi-based games are games that share the following properties:
-- Scoring based on 2 kinds of pieces:
--- Mobile pieces (discs) that can move and jump, and that penalise one's score.
--- Territory pieces (cell shaped - hexes or squares) are stationary and give you points, but can only be placed at locations surrounded by equal numbers of one's own pieces and enemy pieces. 
-- Turns based on the sequence of disc movement, followed by piece placement. 
- (This allows the player to move to create an environment for placing a Territory piece.)
-- Game ends when neither player has placed a piece, or when neither can take a turn. 
-
-This creates a lot of complexity in a small board, but retains simple to understand tactical elements and emergent strategies.
-The game trials tend to fill the board, but some variants have traps that can end the game sooner.
-
-Mutators:
-- how 'surrounding' is defined,
-- where the Discs can be placed,
-- the pieces' relative values,
-- what pieces can be jumped and whether jumps are forced,
-- what happens to each kind of piece when jumped, (including removal, transformation of type and/or ownership),
-- whether placement is mandatory,
-- what restrictions are placed on disc placement, 
-- how the game ends, (no move available / no player has made a placement on their preceding turn)
-- number of players.
-
-These yield Equi, Equiversi, and multiplayer Hops-a-Daisy which is different enough to be considered an entirely separate game.
+    (info
+        {
+        (description "Equi-based games are games that share the following properties:
+            - Scoring based on 2 kinds of pieces:
+            -- Mobile pieces (discs) that can move and jump, and that penalise one's score.
+            -- Territory pieces (cell shaped - hexes or squares) are stationary and give you points, but can only be placed at locations surrounded by equal numbers of one's own pieces and enemy pieces. 
+            - Turns based on the sequence of disc movement, followed by piece placement. 
+            (This allows the player to move to create an environment for placing a Territory piece.)
+            - Game ends when neither player has placed a piece, or when neither can take a turn. 
+            
+            This creates a lot of complexity in a small board, but retains simple to understand tactical elements and emergent strategies.
+            The game trials tend to fill the board, but some variants have traps that can end the game sooner.
+            
+            Mutators:
+            - how 'surrounding' is defined,
+            - where the Discs can be placed,
+            - the pieces' relative values,
+            - what pieces can be jumped and whether jumps are forced,
+            - what happens to each kind of piece when jumped, (including removal, transformation of type and/or ownership),
+            - whether placement is mandatory,
+            - what restrictions are placed on disc placement, 
+            - how the game ends, (no move available / no player has made a placement on their preceding turn)
+            - number of players.
+            
+            These yield Equi, Equiversi, and multiplayer Hops-a-Daisy which is different enough to be considered an entirely separate game.
             
             In the work-in-progress (WIP) version of Equi (Dec 2020), the influencing neighbor pieces were found along 'lines of sight', and included only those pieces that were at the same distance as the nearest of them. This had a high perceptual cost in play, and proved unnecessary because it only makes a difference in the opening stages of the game, which already has a high degree of chaos. Thus the current implementation is limited to using a comparison of directly adjacent piece counts.
             
-           The WIP version also had otional placement with special limitations not discussed here, to reduce cycling. 
-           
-           Equiversi - an evolution of the WIP (Jan 2021) intended to be easier to play and have less cycling issues.
-           It has forced opponent hops, but no friendly hops, hopped enemies change ownership but not type, optional placement (game ends if neither player places, last to place loses in a tie), Hex placement based on 'adjacent neighbor' counts, Discs placed at non-Hex locations that don't force jumps, but only if there was no previous Disc movement in the same turn. Game ends when no preceding player has placed on their last turn.
-           
-           A second evolution, (Jan 2021) was to explore the concept of allowing a choice of Disc values. A value of 0 is the simplest, leading to Equiversi-2, which additionally allows freindly hops again, and relaxes Disc placements to made be anywhere, but only if there was no previous Disc movement in the same turn. This creates a territorial game, as narrow blocked-in areas will not be fillable, and playing a Disc into larger blocked in areas will usually be advantageous for the owner of the walls.
-           
-           Both these frequently feature tactical endings in which a player times a favorable score ocsillation with a depletion of placement oprtunities for the opponent after forcing him to jump.
-                      
-           The latest Equi, (Nov 2022) implemented here, eliminates such suprise endings and focuses on the tactical trade-off of mobility vs score found in the original while avoiding the possibility of ties and playing with fewer moves on the same sized board. The capture-conversion applies to all pieces converting every type to freindly Territory. Forced placemnt can force adding Discs, and new scoring values incentivise sacrificing the Discs for points or trapping the opponent's Discs. In general it gives a spread of values to different capture combos, similar in effect to the (1, -1) piece value system without type change found in the WIP version. It has 'adjacent neighbor' based placement rules, forced hopping of enemy pieces and optional friendly hops, all hopped pieces become friendly Territory pieces, Territory value +1, Discs penalise (-3), No passing, Mandatory placement every turn, Hex placement based on neighbor counts, discs only where Hexes are not allowed, suicide placements are OK, Game ends when placement cannot be made. 
-           
-           Since this version ends with a full board and all pieces have odd values; on a board with odd cells there cannot be a tied score.
-           
-           The game can also be played with the same rules on orthogonal square grids and square+diagonal grids.
+            The WIP version also had otional placement with special limitations not discussed here, to reduce cycling. 
             
-           Evolution to Hops-a-Daisy:            
-           Nothing in the game prohibits a multi-player implementation, except that king-making could be an issue, and the definition for the Hex placement must be refined as to whose pieces are being compared.  Since the Multiplayer game is a totally different experience aimed at casual, chaotic play, it is implemented separately as an entirely different game on the site. The defaults for that game involve more elaborate piece mutations as a result of the jumps, as well.
-           
+            Equiversi - an evolution of the WIP (Jan 2021) intended to be easier to play and have less cycling issues.
+            It has forced opponent hops, but no friendly hops, hopped enemies change ownership but not type, optional placement (game ends if neither player places, last to place loses in a tie), Hex placement based on 'adjacent neighbor' counts, Discs placed at non-Hex locations that don't force jumps, but only if there was no previous Disc movement in the same turn. Game ends when no preceding player has placed on their last turn.
+            
+            A second evolution, (Jan 2021) was to explore the concept of allowing a choice of Disc values. A value of 0 is the simplest, leading to Equiversi-2, which additionally allows freindly hops again, and relaxes Disc placements to made be anywhere, but only if there was no previous Disc movement in the same turn. This creates a territorial game, as narrow blocked-in areas will not be fillable, and playing a Disc into larger blocked in areas will usually be advantageous for the owner of the walls.
+            
+            Both these frequently feature tactical endings in which a player times a favorable score ocsillation with a depletion of placement oprtunities for the opponent after forcing him to jump.
+            
+            The latest Equi, (Nov 2022) implemented here, eliminates such suprise endings and focuses on the tactical trade-off of mobility vs score found in the original while avoiding the possibility of ties and playing with fewer moves on the same sized board. The capture-conversion applies to all pieces converting every type to freindly Territory. Forced placemnt can force adding Discs, and new scoring values incentivise sacrificing the Discs for points or trapping the opponent's Discs. In general it gives a spread of values to different capture combos, similar in effect to the (1, -1) piece value system without type change found in the WIP version. It has 'adjacent neighbor' based placement rules, forced hopping of enemy pieces and optional friendly hops, all hopped pieces become friendly Territory pieces, Territory value +1, Discs penalise (-3), No passing, Mandatory placement every turn, Hex placement based on neighbor counts, discs only where Hexes are not allowed, suicide placements are OK, Game ends when placement cannot be made. 
+            
+            Since this version ends with a full board and all pieces have odd values; on a board with odd cells there cannot be a tied score.
+            
+            The game can also be played with the same rules on orthogonal square grids and square+diagonal grids.
+            
+            Evolution to Hops-a-Daisy:            
+            Nothing in the game prohibits a multi-player implementation, except that king-making could be an issue, and the definition for the Hex placement must be refined as to whose pieces are being compared.  Since the Multiplayer game is a totally different experience aimed at casual, chaotic play, it is implemented separately as an entirely different game on the site. The defaults for that game involve more elaborate piece mutations as a result of the jumps, as well.
+            
         These games also inspired Refugia, with different placement restrictions, single piece types, and ownership changes taking place in stages, which has been implemented separately on Ludii.")
-(useFor "Ruleset/Equi (Described)" (rules "Equi is a 2-player strategy game in the Equi game system.
-It may be played:
--- on a hex grid using hexagonal Territory pieces or
--- on a square grid using square Territory pieces or 
--- on a square plus diagonal grid using square Territory pieces.
-
-It also uses Discs or counters as mobile pieces. 
+        (useFor "Ruleset/Equi (Described)" (rules "Equi is a 2-player strategy game in the Equi game system.
+                It may be played:
+                -- on a hex grid using hexagonal Territory pieces or
+                -- on a square grid using square Territory pieces or 
+                -- on a square plus diagonal grid using square Territory pieces.
+                
+                It also uses Discs or counters as mobile pieces. 
+                
+                The goal is to maximize your score when the board is full. 
+                
+                Black starts by placing a black hex anywhere on the empty board, except for a corner. Turns then alternate.
+                
+                A turn has two parts: first 'The Move', and then 'The Required Placement'.
+                
+                The Move:
+                Only Discs may move. 
+                
+                A Disc may either:
+            - A) move one step to an empty adjacent space, or 
+        - B) jump across a single piece belonging to either player onto the empty space directly behind it. 
+        -- As soon as any piece is jumped, the jumped piece is converted into a friendly Territory piece.
+        -- Multiple consecutive jumps using the same piece are allowed, but no piece can be jumped more than once on the same turn.
+        -- If the active Disc lands next to any enemy pieces which it can jump, it must immediately jump one of them.
         
-The goal is to maximize your score when the board is full. 
-
-Black starts by placing a black hex anywhere on the empty board, except for a corner. Turns then alternate.
-
-A turn has two parts: first 'The Move', and then 'The Required Placement'.
-
-The Move:
-Only Discs may move. 
-
-A Disc may either:
-- A) move one step to an empty adjacent space, or 
-- B) jump across a single piece belonging to either player onto the empty space directly behind it. 
- -- As soon as any piece is jumped, the jumped piece is converted into a friendly Territory piece.
- -- Multiple consecutive jumps using the same piece are allowed, but no piece can be jumped more than once on the same turn.
- -- If the active Disc lands next to any enemy pieces which it can jump, it must immediately jump one of them.
- 
-Forced Movement: 
-If at the beginning of the turn, any enemy pieces can be jumped, the turn must start by jumping one.
-Otherwise, choosing to move a Disc is optional.
-
-The Required Placement:
-Placement is mandatory, may use either type, depending on location, (and is separate from the conversions due to jumping.)
-
-The placement must be made to an empty space on the board (possibly the place that Disc moved from.)
-The type of piece that gets placed depends on the number of pieces on the adjacent locations at the time of placement:
- -- If there are no adjacent pieces, or if the number of adjacent pieces is the same for each player, then a Territory piece is placed. 
- -- Otherwise, a Disc must be placed there.
- 
-The game ends when neither player has placed a piece on their previous turn.
-You score 1 point for each of your Territory pieces and deduct 3 points for each Disc.
-
+        Forced Movement: 
+        If at the beginning of the turn, any enemy pieces can be jumped, the turn must start by jumping one.
+        Otherwise, choosing to move a Disc is optional.
+        
+        The Required Placement:
+        Placement is mandatory, may use either type, depending on location, (and is separate from the conversions due to jumping.)
+        
+        The placement must be made to an empty space on the board (possibly the place that Disc moved from.)
+        The type of piece that gets placed depends on the number of pieces on the adjacent locations at the time of placement:
+        -- If there are no adjacent pieces, or if the number of adjacent pieces is the same for each player, then a Territory piece is placed. 
+        -- Otherwise, a Disc must be placed there.
+        
+        The game ends when neither player has placed a piece on their previous turn.
+        You score 1 point for each of your Territory pieces and deduct 3 points for each Disc.
+        
 On a board with an odd number of cells there are no ties."))
 (useFor "Ruleset/Equi (Described)" (id "2878"))
 (useFor "Ruleset/Equiversi (Described)" (rules "Equi is a 2-player strategy game in the Equi game system.
-It may be played:
--- on a hex grid using hexagonal Territory pieces or
--- on a square grid using square Territory pieces or 
--- on a square plus diagonal grid using square Territory pieces.
-
-It also uses Discs or counters as mobile pieces. 
+        It may be played:
+        -- on a hex grid using hexagonal Territory pieces or
+        -- on a square grid using square Territory pieces or 
+        -- on a square plus diagonal grid using square Territory pieces.
         
-The goal is to maximize your score when the board is full. 
-
-Black starts by placing a black hex anywhere on the empty board, except for a corner. Turns then alternate.
-
-A turn has two parts: first 'The Move', and then 'The Required Placement'.
-
-Passing a turn is not allowed, but passing one part of a turn is allowed.
-
-The Move:
-Only Discs may move. 
-
-A Disc may either:
-- A) move one step to an empty adjacent space, or 
+        It also uses Discs or counters as mobile pieces. 
+        
+        The goal is to maximize your score when the board is full. 
+        
+        Black starts by placing a black hex anywhere on the empty board, except for a corner. Turns then alternate.
+        
+        A turn has two parts: first 'The Move', and then 'The Required Placement'.
+        
+        Passing a turn is not allowed, but passing one part of a turn is allowed.
+        
+        The Move:
+        Only Discs may move. 
+        
+        A Disc may either:
+    - A) move one step to an empty adjacent space, or 
 - B) jump across a single piece belonging to either player onto the empty space directly behind it. 
- -- As soon as any piece is jumped, the jumped piece is converted into a friendly piece of the same type.
- -- Multiple consecutive jumps using the same piece are allowed, but no piece can be jumped more than once on the same turn.
- -- If the active Disc lands next to any enemy pieces which it can jump, it must immediately jump one of them.
- 
+-- As soon as any piece is jumped, the jumped piece is converted into a friendly piece of the same type.
+-- Multiple consecutive jumps using the same piece are allowed, but no piece can be jumped more than once on the same turn.
+-- If the active Disc lands next to any enemy pieces which it can jump, it must immediately jump one of them.
+
 Forced Movement: 
 If at the beginning of the turn, any enemy pieces can be jumped, the turn must start by jumping one.
 Otherwise, choosing to move a Disc is optional.
@@ -608,40 +608,40 @@ Disc placement is not allowed if Disc movement has occured.
 
 The placement must be made to an empty space on the board (possibly the place that Disc moved from.)
 The type of piece that gets placed depends on the number of pieces on the adjacent locations at the time of placement:
- -- If a Disc may be placed, it may be placed anywhere.
- -- On locations where there are no adjacent pieces, or where the number of adjacent pieces is the same for each player, a Territory piece may be placed, instead. 
- 
+-- If a Disc may be placed, it may be placed anywhere.
+-- On locations where there are no adjacent pieces, or where the number of adjacent pieces is the same for each player, a Territory piece may be placed, instead. 
+
 The game ends when neither player has placed a piece on their previous turn.
 You score 1 point for each of your Territory pieces and deduct 1 point for each Disc.
 
 Ties go to the last player to make a placement."))
 (useFor "Ruleset/Equiversi (Described)" (id "2879"))
 (useFor "Ruleset/Equiversi 2 (Described)" (rules "Equi is a 2-player strategy game in the Equi game system.
-It may be played:
--- on a hex grid using hexagonal Territory pieces or
--- on a square grid using square Territory pieces or 
--- on a square plus diagonal grid using square Territory pieces.
-
-It also uses Discs or counters as mobile pieces. 
+        It may be played:
+        -- on a hex grid using hexagonal Territory pieces or
+        -- on a square grid using square Territory pieces or 
+        -- on a square plus diagonal grid using square Territory pieces.
         
-The goal is to maximize your score when the board is full. 
-
-Black starts by placing a black hex anywhere on the empty board, except for a corner. Turns then alternate.
-
-A turn has two parts: first 'The Move', and then 'The Required Placement'.
-
-Passing a turn is not allowed, but passing one part of a turn is allowed.
-
-The Move:
-Only Discs may move. 
-
-A Disc may either:
-- A) move one step to an empty adjacent space, or 
+        It also uses Discs or counters as mobile pieces. 
+        
+        The goal is to maximize your score when the board is full. 
+        
+        Black starts by placing a black hex anywhere on the empty board, except for a corner. Turns then alternate.
+        
+        A turn has two parts: first 'The Move', and then 'The Required Placement'.
+        
+        Passing a turn is not allowed, but passing one part of a turn is allowed.
+        
+        The Move:
+        Only Discs may move. 
+        
+        A Disc may either:
+    - A) move one step to an empty adjacent space, or 
 - B) jump across a single piece belonging to the opponent onto the empty space directly behind it. 
- -- As soon as any piece is jumped, the jumped piece is converted into a friendly piece of the same type.
- -- Multiple consecutive jumps using the same piece are allowed, but no piece can be jumped more than once on the same turn.
- -- If the active Disc lands next to any enemy pieces which it can jump, it must immediately jump one of them.
- 
+-- As soon as any piece is jumped, the jumped piece is converted into a friendly piece of the same type.
+-- Multiple consecutive jumps using the same piece are allowed, but no piece can be jumped more than once on the same turn.
+-- If the active Disc lands next to any enemy pieces which it can jump, it must immediately jump one of them.
+
 Forced Movement: 
 If at the beginning of the turn, any enemy pieces can be jumped, the turn must start by jumping one.
 Otherwise, choosing to move a Disc is optional.
@@ -652,9 +652,9 @@ Disc placement is not allowed if Disc movement has occured
 
 The placement must be made to an empty space on the board (possibly the place that Disc moved from.)
 The type of piece that gets placed depends on the number of pieces on the adjacent locations at the time of placement:
- -- If there are no adjacent pieces, or if the number of adjacent pieces is the same for each player, then a Territory piece is placed. 
- -- Otherwise, a Disc may be placed there - as long as the placed Disc cannot be immediately jumped.
- 
+-- If there are no adjacent pieces, or if the number of adjacent pieces is the same for each player, then a Territory piece is placed. 
+-- Otherwise, a Disc may be placed there - as long as the placed Disc cannot be immediately jumped.
+
 The game ends when the board is full.
 You score 1 point for each of your Territory pieces, Discs have no score value.
 

@@ -70,24 +70,24 @@
 
 //------------------------------------------------------
 (metadata
-(info
-{
-(description "Make Muster is one of several unification games that can be played on the Muster board. The Muster board is a rotated square board with ragged edges and 8 directions of connectivity. Standard sizes are order 2 through order 6. Each order board has 5 x the order squared playing positions.")
-(rules "On your turn, place a single piece of your color on an empty position that is not next to another friendly piece. This is compulsory whenever it is possible to do so.
-        
-        When it is not possible to place a piece; then instead, step one of your pieces to an adjacent empty position. 
-        
-        You win either:
-        -- when all your pieces become connected, or
+    (info
+        {
+        (description "Make Muster is one of several unification games that can be played on the Muster board. The Muster board is a rotated square board with ragged edges and 8 directions of connectivity. Standard sizes are order 2 through order 6. Each order board has 5 x the order squared playing positions.")
+        (rules "On your turn, place a single piece of your color on an empty position that is not next to another friendly piece. This is compulsory whenever it is possible to do so.
+            
+            When it is not possible to place a piece; then instead, step one of your pieces to an adjacent empty position. 
+            
+            You win either:
+            -- when all your pieces become connected, or
         -- when you cut-off your opponent from being able to connect theirs.")
-(id "1669")
-(version "1.3.9")
-(classification "board/space/group")
-(author "Dale W. Walton")
-(credit "Dale W. Walton")
-(date "13-01-2020")
-}
-)
+        (id "1669")
+        (version "1.3.9")
+        (classification "board/space/group")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "13-01-2020")
+        }
+    )
     (graphics 
         {
         (board Colour Phase0 (colour 232 229 212))

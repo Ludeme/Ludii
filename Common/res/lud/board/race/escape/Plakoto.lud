@@ -154,33 +154,32 @@
 
 (metadata 
     
-(info
-{
-(description "Plakoto is a game related to Backgammon that is typically played as part of Tavli, along with Fevga and Portes, in the eastern Mediterranean.")
-(aliases {"Tsiliton" "Mahbooseh"})
-(rules "Played on a standard Backgammon board. Each player starts with fifteen pieces on the starting point of their track. Two six-sided dice. The pieces move around the board in opposite directions in a horseshoe-shaped track.
-
-Each player rolls one die. The player who rolls highest goes first. The player then rolls two die to begin play.  The numbers on the two dice constitute separate moves; i.e. a piece must move the full value of an individual die. One piece may move the combined total of the two die. Doubles are played twice. A player must use both numbers of a roll if possible, or all four numbers in the case of doubles. 
-
-If a player lands on a point occupied by a single opposing piece, the opponent’s piece is trapped until the trapping player removes their piece.
-
-A piece may not be moved to a point occupied by two or more of the opponent's pieces. The player cannot move a piece to a point where the opponent has trapped another of the player's pieces. 
-
-
-Once a player has moved all fifteen of their pieces into the their home section of the board (that is, the six points at the end of the player's track), the player may begin bearing off. A player cannot bear off when the player has one or more pieces trapped inside the their home section. A player bears off by rolling a number equal to the number of points left in the track of a piece, plus one. If there is no piece on the point indicated by the roll, then the player must make a legal move using a piece that will not remove it from the board. If there are no pieces available to fulfill this condition, the player must remove a piece that is furthest from the goal. The first player to bear off all fifteen pieces wins the game.
-
-If the last piece belonging to player remains in the starting position is trapped by the opponent before it has left the starting position, the player loses. The only exception is if the opponent still has pieces on their starting position. A game in which both players' respective pieces in the starting position are trapped is a draw.
-
-In Tavli, in subsequent rounds, the winner of the previous round plays first.
-
-The game is also typically played with a point system, where points are lost based on the winning conditions. Players lose two points by losing if they haven't yet borne off any of their pieces, or one point if they have borne off at least one piece. A player who loses because their final piece in the starting position was trapped loses two points.")
-(source "<a href=\"https://bkgm.com/articles/Mamoun/PlakotoBoardGameStrategy.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />bkgm.com</a>")
-(id "176")
-(version "1.3.9")
-(classification "board/race/escape")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "Plakoto is a game related to Backgammon that is typically played as part of Tavli, along with Fevga and Portes, in the eastern Mediterranean.")
+        (aliases {"Tsiliton" "Mahbooseh"})
+        (rules "Played on a standard Backgammon board. Each player starts with fifteen pieces on the starting point of their track. Two six-sided dice. The pieces move around the board in opposite directions in a horseshoe-shaped track.
+            
+            Each player rolls one die. The player who rolls highest goes first. The player then rolls two die to begin play.  The numbers on the two dice constitute separate moves; i.e. a piece must move the full value of an individual die. One piece may move the combined total of the two die. Doubles are played twice. A player must use both numbers of a roll if possible, or all four numbers in the case of doubles. 
+            
+            If a player lands on a point occupied by a single opposing piece, the opponent’s piece is trapped until the trapping player removes their piece.
+            
+            A piece may not be moved to a point occupied by two or more of the opponent's pieces. The player cannot move a piece to a point where the opponent has trapped another of the player's pieces. 
+            
+            Once a player has moved all fifteen of their pieces into the their home section of the board (that is, the six points at the end of the player's track), the player may begin bearing off. A player cannot bear off when the player has one or more pieces trapped inside the their home section. A player bears off by rolling a number equal to the number of points left in the track of a piece, plus one. If there is no piece on the point indicated by the roll, then the player must make a legal move using a piece that will not remove it from the board. If there are no pieces available to fulfill this condition, the player must remove a piece that is furthest from the goal. The first player to bear off all fifteen pieces wins the game.
+            
+            If the last piece belonging to player remains in the starting position is trapped by the opponent before it has left the starting position, the player loses. The only exception is if the opponent still has pieces on their starting position. A game in which both players' respective pieces in the starting position are trapped is a draw.
+            
+            In Tavli, in subsequent rounds, the winner of the previous round plays first.
+            
+        The game is also typically played with a point system, where points are lost based on the winning conditions. Players lose two points by losing if they haven't yet borne off any of their pieces, or one point if they have borne off at least one piece. A player who loses because their final piece in the starting position was trapped loses two points.")
+        (source "<a href=\"https://bkgm.com/articles/Mamoun/PlakotoBoardGameStrategy.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />bkgm.com</a>")
+        (id "176")
+        (version "1.3.9")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (board Style backgammon)

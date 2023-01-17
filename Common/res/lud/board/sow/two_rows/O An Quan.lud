@@ -398,28 +398,28 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "O An Quan is a two-row mancala-style board game played by children in Vietnam.")
-(useFor "Ruleset/Mancala World (Described)" (rules "Oval board. Two semi-circles on the ends are stores, the middle section divided into two rows of five squares. Five counters in each of the rows of squares and one large stone in each end space. Sowing begins in any of the squares on the player's side of the board, and proceeds in either direction. Sowing also includes both end spaces. When the final counter is sown, the contents of the next square are picked up and sowing continues. If the end space is the next space, the turn ends. When the space after the one in which the final counter fell is empty, the contents of the hole after the empty hole are captured, including the end spaces. If there is an unbroken sequence of alternating empty and occupied squares, the contents of the occupied squares are captured. If there are two or more empty squares, the turn ends. If at any time the squares in a player's rows are empty, the player must place one of their captured counters into each of their squares. The game ends when both of the large stones in the end spaces are captured. The remaining counters belong to the player on whose row they are placed. The player with the most counters wins, with the large stones counting as ten. A new game begins. Players fill their holes with their captured stones. The player with fewer counters must then \"sell\" holes on their side to the opponent to have enough counters to fill the holes. If the difference in the number of captured counters is less than ten, the opponent is given half-ownership of a space, and the contents of it at the end of the game are split between the two players. If the difference is ten, the opponent then may take all of the stones from a sold space at the end of the game. The player may regain sold spaces on subsequent rounds by capturing ten counters more than their opponent. The game is then played as before. Games are played until three or four squares in the same row have been sold."))
-(useFor "Ruleset/Mancala World (Described)" (source "<a href=\"https://mancala.fandom.com/wiki/%C3%94_%C4%82n_Quan\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mancala World</a>"))
-(useFor "Ruleset/Mancala World (Described)" (id "434"))
-(useFor "Ruleset/Tonkin (Observed)" (rules "2x5 board, with two large spaces on either end. Ten counters in each large space, with five in each smaller space. Sowing occurs in an anti-clockwise direction. When a counter falls in an occupied space, the contents of the following space are picked up and sowing continues. If the following space is one of the large spaces, one of the counters from the large space is picked up and sown into the next space. When the following space is empty, if there is another space following the empty space the turn ends. If the space following the empty space contains counters, these are captured. If the next space after the one in which the capture was made is also empty, followed by a space with counters, these are also captured, continuing with any unbroken sequence of empty and occupied spaces.
-
-When one player has no counters in their spaces, they place five of their captured counters, one in each of their spaces, and continue to play.
-
-Play ends when both of the large spaces are empty. The players evenly split any remaining counters on the board.
-
-A new round begins. Players fill their spaces with their captured stones. The player with fewer counters must then \"sell\" spaces on their side to the opponent to have enough counters to fill the holes. If the difference in the number of captured counters is less than ten, the opponent is given half-ownership of a space, and the contents of it at the end of the game are split between the two players. If the difference is ten, the opponent then may take all of the stones from a sold space at the end of the game. The player may regain sold spaces on subsequent rounds by capturing ten counters more than their opponent. The game is then played as before. Games are played until three or four squares in the same row have been sold. The winner is the player who has captured the three or four spaces.
- "))
-(useFor "Ruleset/Tonkin (Observed)" (source "Son 1985: 31-32"))
-(useFor "Ruleset/Tonkin (Observed)" (id "1928"))
-(id "434")
-(version "1.3.9")
-(classification "board/sow/two rows")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "O An Quan is a two-row mancala-style board game played by children in Vietnam.")
+        (useFor "Ruleset/Mancala World (Described)" (rules "Oval board. Two semi-circles on the ends are stores, the middle section divided into two rows of five squares. Five counters in each of the rows of squares and one large stone in each end space. Sowing begins in any of the squares on the player's side of the board, and proceeds in either direction. Sowing also includes both end spaces. When the final counter is sown, the contents of the next square are picked up and sowing continues. If the end space is the next space, the turn ends. When the space after the one in which the final counter fell is empty, the contents of the hole after the empty hole are captured, including the end spaces. If there is an unbroken sequence of alternating empty and occupied squares, the contents of the occupied squares are captured. If there are two or more empty squares, the turn ends. If at any time the squares in a player's rows are empty, the player must place one of their captured counters into each of their squares. The game ends when both of the large stones in the end spaces are captured. The remaining counters belong to the player on whose row they are placed. The player with the most counters wins, with the large stones counting as ten. A new game begins. Players fill their holes with their captured stones. The player with fewer counters must then \"sell\" holes on their side to the opponent to have enough counters to fill the holes. If the difference in the number of captured counters is less than ten, the opponent is given half-ownership of a space, and the contents of it at the end of the game are split between the two players. If the difference is ten, the opponent then may take all of the stones from a sold space at the end of the game. The player may regain sold spaces on subsequent rounds by capturing ten counters more than their opponent. The game is then played as before. Games are played until three or four squares in the same row have been sold."))
+        (useFor "Ruleset/Mancala World (Described)" (source "<a href=\"https://mancala.fandom.com/wiki/%C3%94_%C4%82n_Quan\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mancala World</a>"))
+        (useFor "Ruleset/Mancala World (Described)" (id "434"))
+        (useFor "Ruleset/Tonkin (Observed)" (rules "2x5 board, with two large spaces on either end. Ten counters in each large space, with five in each smaller space. Sowing occurs in an anti-clockwise direction. When a counter falls in an occupied space, the contents of the following space are picked up and sowing continues. If the following space is one of the large spaces, one of the counters from the large space is picked up and sown into the next space. When the following space is empty, if there is another space following the empty space the turn ends. If the space following the empty space contains counters, these are captured. If the next space after the one in which the capture was made is also empty, followed by a space with counters, these are also captured, continuing with any unbroken sequence of empty and occupied spaces.
+                
+                When one player has no counters in their spaces, they place five of their captured counters, one in each of their spaces, and continue to play.
+                
+                Play ends when both of the large spaces are empty. The players evenly split any remaining counters on the board.
+                
+                A new round begins. Players fill their spaces with their captured stones. The player with fewer counters must then \"sell\" spaces on their side to the opponent to have enough counters to fill the holes. If the difference in the number of captured counters is less than ten, the opponent is given half-ownership of a space, and the contents of it at the end of the game are split between the two players. If the difference is ten, the opponent then may take all of the stones from a sold space at the end of the game. The player may regain sold spaces on subsequent rounds by capturing ten counters more than their opponent. The game is then played as before. Games are played until three or four squares in the same row have been sold. The winner is the player who has captured the three or four spaces.
+        "))
+        (useFor "Ruleset/Tonkin (Observed)" (source "Son 1985: 31-32"))
+        (useFor "Ruleset/Tonkin (Observed)" (id "1928"))
+        (id "434")
+        (version "1.3.9")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (board Style Mancala)

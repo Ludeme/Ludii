@@ -83,18 +83,18 @@
 
 (metadata 
     
-(info
-{
-(description "Rumi Shatranj is a variation of Shatranj played in India. \"Rumi\" is a term referring to the belief that this game originated in Western Asia. The Counselor has a special opening move, and the kings are placed facing each other.")
-(rules "8x8 board. The pieces move as follows, with the number per player: King (x1): moves one space orthogonally or diagonally; Counselor (x1): One square diagonally, but may move two spaces forward orthogonally on the first move, jumping over the Soldier in front of it on the first move of the game; Rook (x2): Any number of spaces orthogonally; Elephant (x2): Two squares diagonally, jumping over the first, cannot capture another Elephant; Horse (x2): Moves as a chess knight. Soldier (x8): Moves one space forward orthogonally; one space forward diagonally to capture. The Soldier in front of the Counselor may jump to the space in front of the Counselor when it has used its special move on the first turn, this must be done as the second move of the game, i.e. on the next turn after the Counselor had made its special move. No en passant. Soldiers promote to Counselor when reaching the eighth rank. No castling. Stalemate results in a win for player causing it. The player who checkmates the king wins.
-")
-(source "Murray 1913: 362.")
-(id "298")
-(version "1.3.9")
-(classification "board/war/replacement/checkmate/chaturanga")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "Rumi Shatranj is a variation of Shatranj played in India. \"Rumi\" is a term referring to the belief that this game originated in Western Asia. The Counselor has a special opening move, and the kings are placed facing each other.")
+        (rules "8x8 board. The pieces move as follows, with the number per player: King (x1): moves one space orthogonally or diagonally; Counselor (x1): One square diagonally, but may move two spaces forward orthogonally on the first move, jumping over the Soldier in front of it on the first move of the game; Rook (x2): Any number of spaces orthogonally; Elephant (x2): Two squares diagonally, jumping over the first, cannot capture another Elephant; Horse (x2): Moves as a chess knight. Soldier (x8): Moves one space forward orthogonally; one space forward diagonally to capture. The Soldier in front of the Counselor may jump to the space in front of the Counselor when it has used its special move on the first turn, this must be done as the second move of the game, i.e. on the next turn after the Counselor had made its special move. No en passant. Soldiers promote to Counselor when reaching the eighth rank. No castling. Stalemate results in a win for player causing it. The player who checkmates the king wins.
+        ")
+        (source "Murray 1913: 362.")
+        (id "298")
+        (version "1.3.9")
+        (classification "board/war/replacement/checkmate/chaturanga")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

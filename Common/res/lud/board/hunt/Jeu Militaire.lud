@@ -194,25 +194,25 @@
 
 (metadata 
     
-(info
-{
-(description "The Jeu Militaire is a game documented since the nineteenth century in France. It was reported by several sources as being played in the French military.")
-(aliases {"French Military Game" "Hare and Hounds"})
-(useFor "Ruleset/Lucas (Described)" (rules "The board consists of three instersecting lines, with diagonals drawn in the square formed. On opposite ends of the square, the central line is extended beyond the square and lines drawn from the adjacent corners to the end of this line, forming two triangles at opposite ends. One player takes the part of three white towers, the other the part of a single black army piece. First the army moves their piece, then the towers move one of their pieces, play alternating thereafter until the game is ended. A tower piece may move one step along a marked line in any forward or sideways direction. Tower pieces cannot move backwards, diagonally or otherwise, towards the end of the board from which they started. The army may move one step in any direction along a marked line. The army wins by passing the towers and reaching the end of the board from which they started. The towers win by trapping the army so that it cannot move in its turn."))
-(useFor "Ruleset/Lucas (Described)" (source "Lucas 1887: 402-404."))
-(useFor "Ruleset/Lucas (Described)" (id "387"))
-(useFor "Ruleset/Gardner (Suggested)" (rules "The player with the single piece may place their piece on any empty spot at the beginning of the game. "))
-(useFor "Ruleset/Gardner (Suggested)" (source "Garnder, Martin. 1963. \"Mathermatical Games.\" Scientific American 209(4): 125-126."))
-(useFor "Ruleset/Gardner (Suggested)" (id "591"))
-(useFor "Ruleset/Schuh (Suggested)" (rules "The game is played according to the rules of Lucas, except that Schuh suggested that White has to move his 3 pieces (in any order) at each turn."))
-(useFor "Ruleset/Schuh (Suggested)" (id "2881"))
-(source "Lucas 1887: 402-404.")
-(id "387")
-(version "1.3.9")
-(classification "board/hunt")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "The Jeu Militaire is a game documented since the nineteenth century in France. It was reported by several sources as being played in the French military.")
+        (aliases {"French Military Game" "Hare and Hounds"})
+        (useFor "Ruleset/Lucas (Described)" (rules "The board consists of three instersecting lines, with diagonals drawn in the square formed. On opposite ends of the square, the central line is extended beyond the square and lines drawn from the adjacent corners to the end of this line, forming two triangles at opposite ends. One player takes the part of three white towers, the other the part of a single black army piece. First the army moves their piece, then the towers move one of their pieces, play alternating thereafter until the game is ended. A tower piece may move one step along a marked line in any forward or sideways direction. Tower pieces cannot move backwards, diagonally or otherwise, towards the end of the board from which they started. The army may move one step in any direction along a marked line. The army wins by passing the towers and reaching the end of the board from which they started. The towers win by trapping the army so that it cannot move in its turn."))
+        (useFor "Ruleset/Lucas (Described)" (source "Lucas 1887: 402-404."))
+        (useFor "Ruleset/Lucas (Described)" (id "387"))
+        (useFor "Ruleset/Gardner (Suggested)" (rules "The player with the single piece may place their piece on any empty spot at the beginning of the game. "))
+        (useFor "Ruleset/Gardner (Suggested)" (source "Garnder, Martin. 1963. \"Mathermatical Games.\" Scientific American 209(4): 125-126."))
+        (useFor "Ruleset/Gardner (Suggested)" (id "591"))
+        (useFor "Ruleset/Schuh (Suggested)" (rules "The game is played according to the rules of Lucas, except that Schuh suggested that White has to move his 3 pieces (in any order) at each turn."))
+        (useFor "Ruleset/Schuh (Suggested)" (id "2881"))
+        (source "Lucas 1887: 402-404.")
+        (id "387")
+        (version "1.3.9")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (player Colour P1 (colour Black))

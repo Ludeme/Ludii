@@ -183,38 +183,38 @@
 
 (metadata 
     
-(info
-{
-(description "In Fenix, two armies fight against each other. The battle of the two kings, their generals and soldiers is a matter of life and death — but Fenix is different from other strategy games: Here, the battle is not automatically lost when one of the kings has been defeated. Why? The phoenix-bird is immortal; if he loses his life, he rises again from the ashes. The cycle starts all over. The king is dead? Long live the king!—description from the publisher")
-(rules "Each player, on their first five turns, uses some of their own pieces to create one King and three Generals, in any preferred order. A General is made by placing any single piece on top of an orthogonally adjacent piece, and a King is made by placing any single piece on top of an orthogonally adjacent General. 
-
-- Soldiers move orthogonally one step to an adjacent square.
-- Generals move any distance in a straight line orthogonally, like a Chess Rook.
-- The King moves one step to any adjacent square, like a Chess King
-
-Capture is compulsory if possible.
-
-- A Soldier or King captures by jumping over an enemy piece occupying a square to which it can legally move and landing on the square immediately beyond it in the same direction, provided that the landing square is vacant.
-- A General captures in the same way, but may move any number of vacant squares before the captured piece, and  may land on any successive vacant square in line of travel beyond the captured piece.
-
-If the capturing piece can then make another capture, it must, and it must continue doing so until all possible consecutive captures have been made. An enemy piece can only be jumped once in a single turn. If it is reached a second time it forms a block and ends the turn. At the end of a capturing turn all captured pieces must be removed from the board before the next player moves.
-
-If more than one capture is possible you must choose that which captures the greatest number of pieces, counting a King as three, a General as two, and a Soldier as one. If two possible capturing moves offer an equal number of pieces, you may freely choose between them.
-
-If one or more of your Generals is captured in one turn, you may create just one General (not more) from two orthogonally adjacent Soldiers anywhere on the board.
-
-If your King is captured you must, if possible, use your next turn to create another King by placing a Soldier on top of an adjacent General. 
-
-If you are unable to create another King, when your King is captured, you lose the game.")
-(id "1662")
-(source "<a href=\"https://boardgamegeek.com/boardgame/244080/fenix\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-(version "1.3.9")
-(classification "board/war/leaping/orthogonal")
-(author "Fred Horn")
-(credit "Eric Piette")
-(date "2019")
-}
-)
+    (info
+        {
+        (description "In Fenix, two armies fight against each other. The battle of the two kings, their generals and soldiers is a matter of life and death — but Fenix is different from other strategy games: Here, the battle is not automatically lost when one of the kings has been defeated. Why? The phoenix-bird is immortal; if he loses his life, he rises again from the ashes. The cycle starts all over. The king is dead? Long live the king!—description from the publisher")
+        (rules "Each player, on their first five turns, uses some of their own pieces to create one King and three Generals, in any preferred order. A General is made by placing any single piece on top of an orthogonally adjacent piece, and a King is made by placing any single piece on top of an orthogonally adjacent General. 
+            
+            - Soldiers move orthogonally one step to an adjacent square.
+            - Generals move any distance in a straight line orthogonally, like a Chess Rook.
+            - The King moves one step to any adjacent square, like a Chess King
+            
+            Capture is compulsory if possible.
+            
+            - A Soldier or King captures by jumping over an enemy piece occupying a square to which it can legally move and landing on the square immediately beyond it in the same direction, provided that the landing square is vacant.
+            - A General captures in the same way, but may move any number of vacant squares before the captured piece, and  may land on any successive vacant square in line of travel beyond the captured piece.
+            
+            If the capturing piece can then make another capture, it must, and it must continue doing so until all possible consecutive captures have been made. An enemy piece can only be jumped once in a single turn. If it is reached a second time it forms a block and ends the turn. At the end of a capturing turn all captured pieces must be removed from the board before the next player moves.
+            
+            If more than one capture is possible you must choose that which captures the greatest number of pieces, counting a King as three, a General as two, and a Soldier as one. If two possible capturing moves offer an equal number of pieces, you may freely choose between them.
+            
+            If one or more of your Generals is captured in one turn, you may create just one General (not more) from two orthogonally adjacent Soldiers anywhere on the board.
+            
+            If your King is captured you must, if possible, use your next turn to create another King by placing a Soldier on top of an adjacent General. 
+            
+        If you are unable to create another King, when your King is captured, you lose the game.")
+        (id "1662")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/244080/fenix\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.9")
+        (classification "board/war/leaping/orthogonal")
+        (author "Fred Horn")
+        (credit "Eric Piette")
+        (date "2019")
+        }
+    )
     
     (graphics {
         (player Colour P1 (colour VeryDarkGrey))

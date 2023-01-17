@@ -329,18 +329,18 @@
 
 (metadata 
     
-(info
-{
-(description "Russian Fortress Chess is a game that was played in Russia during the eighteenth and nineteenth centuries.")
-(rules "12x12 board, with yellow and green squares, with four 4x4 extensions overlapping the 2x2 squares in each corner of the board. There are two walls next to each fortress, one on the outer side of the bottom two squares of the left hand side of each fortress and one on the top edge of the two top left squares. Pieces cannot move across the wall or diagonally across the end of the wall. Four players, white and red play as a team, and black and blue as a team. Players are are arranged as follows, clockwise from the top: red, blue, white, black. Each team has the usual complement of Chess pieces, with an extra Knight, Rook, and Bishop, The pieces are as in chess, with the Kings on the players' right, on the central eight squares of each side of the board. The three extra pieces begin in the 4x4 extension at the player's right, placed anywhere they please. Kings move one square orthogonally or diagonally; Queens move any distance orthogonally or diagonally; Bishops move any distance diagonally; Knights move orthogonally one square and then diagonally another square or diagonally one square and then orthogonally one square (this is important for calculating moves near walls), jumping over any intervening pieces; Rooks move orthogonally any distance; Pawns move forward one space orthogonally, or diagonally one space forward to capture. Pawns may move two spaces on their first turn. When a pawn reaches the back row of one of the other players' sides, it is promoted to any piece. When a player moves a piece onto a space occupied by an opponent's piece, the opponent's piece is captured. When a King can be captured on the next turn, it is in check. The King must not be in check at the end of the player's next turn. If this is impossible, it is checkmate and that player's pieces are removed from the game. The team who checkmates both of their opponents wins.")
-(source "Markov 2015.")
-(id "1206")
-(version "1.3.9")
-(classification "board/war/replacement/checkmate/chess")
-(credit "Eric Piette")
-(origin "This game was played in Russia, from around 1800 to 1850.")
-}
-)
+    (info
+        {
+        (description "Russian Fortress Chess is a game that was played in Russia during the eighteenth and nineteenth centuries.")
+        (rules "12x12 board, with yellow and green squares, with four 4x4 extensions overlapping the 2x2 squares in each corner of the board. There are two walls next to each fortress, one on the outer side of the bottom two squares of the left hand side of each fortress and one on the top edge of the two top left squares. Pieces cannot move across the wall or diagonally across the end of the wall. Four players, white and red play as a team, and black and blue as a team. Players are are arranged as follows, clockwise from the top: red, blue, white, black. Each team has the usual complement of Chess pieces, with an extra Knight, Rook, and Bishop, The pieces are as in chess, with the Kings on the players' right, on the central eight squares of each side of the board. The three extra pieces begin in the 4x4 extension at the player's right, placed anywhere they please. Kings move one square orthogonally or diagonally; Queens move any distance orthogonally or diagonally; Bishops move any distance diagonally; Knights move orthogonally one square and then diagonally another square or diagonally one square and then orthogonally one square (this is important for calculating moves near walls), jumping over any intervening pieces; Rooks move orthogonally any distance; Pawns move forward one space orthogonally, or diagonally one space forward to capture. Pawns may move two spaces on their first turn. When a pawn reaches the back row of one of the other players' sides, it is promoted to any piece. When a player moves a piece onto a space occupied by an opponent's piece, the opponent's piece is captured. When a King can be captured on the next turn, it is in check. The King must not be in check at the end of the player's next turn. If this is impossible, it is checkmate and that player's pieces are removed from the game. The team who checkmates both of their opponents wins.")
+        (source "Markov 2015.")
+        (id "1206")
+        (version "1.3.9")
+        (classification "board/war/replacement/checkmate/chess")
+        (credit "Eric Piette")
+        (origin "This game was played in Russia, from around 1800 to 1850.")
+        }
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

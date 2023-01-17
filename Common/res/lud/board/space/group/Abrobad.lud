@@ -129,33 +129,33 @@
 //---------------------------------------
 
 (metadata
-(info
-{
-(description "Abrobad is arabic, for \"Windswept Clouds\" refering to the art of making swirled patterns by adding pigments on the surface of a liquid and blowing on them, e.g. to make fancy \"marblized\" book end papers. The game is a race to connect one's pieces into the fewest possible groups, and as large gaps are impossible, it results in an abrobad visual effect. It may be played on any size hexagonal \"limping\" board grid.")
-(aliases {"Abr-Bad" "Clouds and Wind"})
-(rules "Goal: 
-You try to both reduce the number of your own groups as much as possible, and also to block your opponent's ability to reduce his groups down to fewer than yours. Whoever decides to end the game must fill the empty spaces with opponent's pieces, and only then, wins by having equal or fewer groups.
+    (info
+        {
+        (description "Abrobad is arabic, for \"Windswept Clouds\" refering to the art of making swirled patterns by adding pigments on the surface of a liquid and blowing on them, e.g. to make fancy \"marblized\" book end papers. The game is a race to connect one's pieces into the fewest possible groups, and as large gaps are impossible, it results in an abrobad visual effect. It may be played on any size hexagonal \"limping\" board grid.")
+        (aliases {"Abr-Bad" "Clouds and Wind"})
+        (rules "Goal: 
+            You try to both reduce the number of your own groups as much as possible, and also to block your opponent's ability to reduce his groups down to fewer than yours. Whoever decides to end the game must fill the empty spaces with opponent's pieces, and only then, wins by having equal or fewer groups.
             
-Play:
-Starting with the board empty, player's take turns placing a piece of their color on an empty position that does not abut any friendly piece. If it is impossible to place a piece, the player, instead, moves a piece to the first empty position in any direction. But whenever a new opportunity for placement is available, the turn must be used for placement.
+            Play:
+            Starting with the board empty, player's take turns placing a piece of their color on an empty position that does not abut any friendly piece. If it is impossible to place a piece, the player, instead, moves a piece to the first empty position in any direction. But whenever a new opportunity for placement is available, the turn must be used for placement.
             
-Ending the Game:
+            Ending the Game:
             
-The game ends at the choice of the player about to move, but only at the beginning of a turn in which there is no forced placement. 
+            The game ends at the choice of the player about to move, but only at the beginning of a turn in which there is no forced placement. 
             
-Before scoring, the empty spaces are filled with the opponent's pieces. The player who ended the game wins unless the opponent has fewer groups. Because the empty spaces are filled with opponent's pieces, a player who ends the game too soon will lose. On the other hand, since ties go to the player who ends the game, it is important to end the game as soon as you can actually win.
+            Before scoring, the empty spaces are filled with the opponent's pieces. The player who ended the game wins unless the opponent has fewer groups. Because the empty spaces are filled with opponent's pieces, a player who ends the game too soon will lose. On the other hand, since ties go to the player who ends the game, it is important to end the game as soon as you can actually win.
             
-Variations: 
-Options are available to select the board size, and also to use other movement rules, instead of the standard one.")
-(id "851")
-(source "<a href=\"https://boardgamegeek.com/thread/2308167/new-game-now-abrobad\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-(version "1.3.9")
-(classification "board/space/group")
-(author "Dale W. Walton")
-(credit "Dale W. Walton")
-(date "18-11-2019")
-}
-)
+            Variations: 
+        Options are available to select the board size, and also to use other movement rules, instead of the standard one.")
+        (id "851")
+        (source "<a href=\"https://boardgamegeek.com/thread/2308167/new-game-now-abrobad\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.9")
+        (classification "board/space/group")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "18-11-2019")
+        }
+    )
     (graphics 
         {
         (piece Scale "Hex" 1.05)

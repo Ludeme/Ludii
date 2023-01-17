@@ -110,23 +110,23 @@
 //--------------------------------------
 
 (metadata 
-(info
-{
-(description "Khamousiyya is the larger form of Kharbga played in the northern part of Tunisia. It is typically played in the sand, with date pits, shells, pebbles, or camel droppings as pieces. Normally it is played in several rounds, with the winner playing first in subsequent rounds.")
-(aliases {"Kharbga"})
-(rules "7x7 board. 24 pieces per player. Players alternate turns placing two pieces on the board. The first piece of each player must be placed on a spot adjacent to the central spot. The central spot cannot be filled. When both players have placed their pieces, they move their pieces orthogonally to an empty adjacent space. When an opponent's piece is surrounded on two opposite sides by pieces belonging to the player, the opponent's piece is captured. The player who made the capture may move the same piece they moved to make a capture another time if another capture is possible by doing so. 
-
-The player who captures all of their opponent's pieces, or which blocks the opponent from being able to move, wins. 
-
-In a case where the second player has created a blockade of their pieces containing one or more of only their own pieces which can move infinitely without possibility of being taken, the second player player may declare H'ajeb in order to regain the possibility of winning. The second player declares H'ajeb on their turn, and then the first player gains the ability to move any distance orthogonally or diagonally. The first player may also make multiple captures not just with the same piece, but with more than one. The second player may rescind the H'ajeb declaration at any time and the captures must stop. If the second player allows the first player to continue until the first player cannot capture, the second player captures any two of the first player's pieces, and the first player captures one of the second player's pieces that is able to move infinitely. ")
-(source "Quemeneur 1944: 463-468.")
-(id "1939")
-(version "1.3.9")
-(classification "board/war/custodial")
-(credit "Eric Piette")
-(origin "This game was played in Tunisia, around 1944.")
-}
-)
+    (info
+        {
+        (description "Khamousiyya is the larger form of Kharbga played in the northern part of Tunisia. It is typically played in the sand, with date pits, shells, pebbles, or camel droppings as pieces. Normally it is played in several rounds, with the winner playing first in subsequent rounds.")
+        (aliases {"Kharbga"})
+        (rules "7x7 board. 24 pieces per player. Players alternate turns placing two pieces on the board. The first piece of each player must be placed on a spot adjacent to the central spot. The central spot cannot be filled. When both players have placed their pieces, they move their pieces orthogonally to an empty adjacent space. When an opponent's piece is surrounded on two opposite sides by pieces belonging to the player, the opponent's piece is captured. The player who made the capture may move the same piece they moved to make a capture another time if another capture is possible by doing so. 
+            
+            The player who captures all of their opponent's pieces, or which blocks the opponent from being able to move, wins. 
+            
+        In a case where the second player has created a blockade of their pieces containing one or more of only their own pieces which can move infinitely without possibility of being taken, the second player player may declare H'ajeb in order to regain the possibility of winning. The second player declares H'ajeb on their turn, and then the first player gains the ability to move any distance orthogonally or diagonally. The first player may also make multiple captures not just with the same piece, but with more than one. The second player may rescind the H'ajeb declaration at any time and the captures must stop. If the second player allows the first player to continue until the first player cannot capture, the second player captures any two of the first player's pieces, and the first player captures one of the second player's pieces that is able to move infinitely. ")
+        (source "Quemeneur 1944: 463-468.")
+        (id "1939")
+        (version "1.3.9")
+        (classification "board/war/custodial")
+        (credit "Eric Piette")
+        (origin "This game was played in Tunisia, around 1944.")
+        }
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

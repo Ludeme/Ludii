@@ -175,21 +175,21 @@
 
 (metadata 
     
-(info
-{
-(description "Dice Chess is a variant of Chess involving a die.")
-(rules "This game is a variant of classic Chess, which adds a random factor to the strategy. The following list describes all differences of the rules:
-There is no check or checkmate, it is allowed to move the king to a square attacked by opponent's piece. The goal is to capture opponent's king.
-
-A die is rolled for every move. The number determines which piece can be used to make the move. 1 - pawn, 2 - knight, 3 - bishop, 4 - rook, 5 - queen, 6 - king.
-If a pawn is to be promoted (would advance to the last row), the player can move it even if the die does not show 1. However, he can only promote it to the piece chosen by the die roll - for example, if 3 is rolled, the pawn can be promoted to a bishop only. If 1 is rolled, the pawn can be promoted to any piece.")
-(id "1152")
-(source "<a href=\"https://brainking.com/en/GameRules?tp=95\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />brainking.com</a>")
-(version "1.3.9")
-(classification "board/war/replacement/checkmate/chess")
-(credit "Michael Taktikos and Eric Piette")
-}
-)
+    (info
+        {
+        (description "Dice Chess is a variant of Chess involving a die.")
+        (rules "This game is a variant of classic Chess, which adds a random factor to the strategy. The following list describes all differences of the rules:
+            There is no check or checkmate, it is allowed to move the king to a square attacked by opponent's piece. The goal is to capture opponent's king.
+            
+            A die is rolled for every move. The number determines which piece can be used to make the move. 1 - pawn, 2 - knight, 3 - bishop, 4 - rook, 5 - queen, 6 - king.
+        If a pawn is to be promoted (would advance to the last row), the player can move it even if the die does not show 1. However, he can only promote it to the piece chosen by the die roll - for example, if 3 is rolled, the pawn can be promoted to a bishop only. If 1 is rolled, the pawn can be promoted to any piece.")
+        (id "1152")
+        (source "<a href=\"https://brainking.com/en/GameRules?tp=95\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />brainking.com</a>")
+        (version "1.3.9")
+        (classification "board/war/replacement/checkmate/chess")
+        (credit "Michael Taktikos and Eric Piette")
+        }
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

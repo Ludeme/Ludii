@@ -58,24 +58,24 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "This game, called Terhüchü, is played on a smaller board than the same game which is also played by the Angami Naga people of India.")
-(aliases {"Terhüchü (Small)"})
-(useFor "Ruleset/Terhuchu (Small) (Observed)" (rules "5x5 intersecting lines, with diagonals drawn in each quadrant. Ten pieces per player, which begin on the two rows closes to the player. Players alternate turns moving a piece to an empty adjacent spot along the lines. A piece may capture an opponent's piece by hopping over it along the lines of the board to an empty spot immediately on the opposite side of the opponent's piece. The player who captures all of the opponent's pieces wins."))
-(useFor "Ruleset/Terhuchu (Small) (Observed)" (source "Hutton 1921: 101-102."))
-(useFor "Ruleset/Terhuchu (Small) (Observed)" (id "972"))
-(useFor "Ruleset/Eight pieces (Observed)" (rules "Eight pieces per player, five arranged on the row closest to the player and the remaining three in the central three spots of the second row."))
-(useFor "Ruleset/Eight pieces (Observed)" (source "Hutton 1921: 102."))
-(useFor "Ruleset/Eight pieces (Observed)" (id "973"))
-(source "Murray 1951: 66.")
-(id "972")
-(version "1.3.9")
-(classification "board/war/leaping/lines")
-(credit "Eric Piette")
-(origin "This game was played in India, around 1921.")
-}
-)
+    (info
+        {
+        (description "This game, called Terhüchü, is played on a smaller board than the same game which is also played by the Angami Naga people of India.")
+        (aliases {"Terhüchü (Small)"})
+        (useFor "Ruleset/Terhuchu (Small) (Observed)" (rules "5x5 intersecting lines, with diagonals drawn in each quadrant. Ten pieces per player, which begin on the two rows closes to the player. Players alternate turns moving a piece to an empty adjacent spot along the lines. A piece may capture an opponent's piece by hopping over it along the lines of the board to an empty spot immediately on the opposite side of the opponent's piece. The player who captures all of the opponent's pieces wins."))
+        (useFor "Ruleset/Terhuchu (Small) (Observed)" (source "Hutton 1921: 101-102."))
+        (useFor "Ruleset/Terhuchu (Small) (Observed)" (id "972"))
+        (useFor "Ruleset/Eight pieces (Observed)" (rules "Eight pieces per player, five arranged on the row closest to the player and the remaining three in the central three spots of the second row."))
+        (useFor "Ruleset/Eight pieces (Observed)" (source "Hutton 1921: 102."))
+        (useFor "Ruleset/Eight pieces (Observed)" (id "973"))
+        (source "Murray 1951: 66.")
+        (id "972")
+        (version "1.3.9")
+        (classification "board/war/leaping/lines")
+        (credit "Eric Piette")
+        (origin "This game was played in India, around 1921.")
+        }
+    )
     
     (ai
         "Terhuchu (Small)_ai"

@@ -98,21 +98,21 @@
 //---------------------------------------------
 
 (metadata
-(info
-{
-(description "Claustro is a proximity restricted pure placement game in which a player loses as soon as one of there pieces is fully surrounded on their turn. The game is 'cold' and can work on multiple types of grids with the same principle.")
-(rules "Board starts empty. 
+    (info
+        {
+        (description "Claustro is a proximity restricted pure placement game in which a player loses as soon as one of there pieces is fully surrounded on their turn. The game is 'cold' and can work on multiple types of grids with the same principle.")
+        (rules "Board starts empty. 
             Place on an empty location, unless it is next to more of your own pieces. 
             Passing is not allowed.
         You lose if at the end of your turn, one of your stones is surrounded.")
-(id "1532")
-(version "1.3.9")
-(classification "board/space/blocking")
-(author "Dale W. Walton")
-(credit "Dale W. Walton")
-(date "26-03-2021")
-}
-)
+        (id "1532")
+        (version "1.3.9")
+        (classification "board/space/blocking")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "26-03-2021")
+        }
+    )
     (graphics 
         {
         (player Colour P1 (colour 229 92 0))

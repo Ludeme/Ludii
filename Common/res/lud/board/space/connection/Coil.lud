@@ -126,20 +126,20 @@
 
 (metadata 
     
-(info
-{
-(description "Coil is an asymmetrical but balanced 2-player connection game on a hexhex7 (or larger) board, where one player tries to form a loop of stones in his color, and the other tries to stop him.  There's a chicken ballot at the start to ensure that the two sides are balanced. Because loops come in a wide range of sizes and shapes, and have many degrees of freedom, the game has rich tactics and strategy.  Small loops threats force players to focus on local battles while large loop threats force them to think globally, and to consider how the local battles fit into the global war. Wise stone placements can contribute to the creation of multiple loops or to defense against multiple loops, leading to layered, multi-dimensional consequences for each turn.")
-(rules "This game is played on a hexagonal board made up of hexagonal cells, usually 7 cells per side, although bigger sizes may also be used. Initially the board is empty except for the six corner cells, upon which black stones are placed.  Then the players take it in turns to place 1-3 black stones each turn until one decides to pass; that player then becomes Black, and the other becomes White.  After that, players take it in turns to place one stone of their colour on the board on any empty hex.  If Black forms a continuous loop composed of their pieces, they win; if the board fills up with no loop of Black pieces being formed, White wins.
-        
-During the initial chicken ballot phase, you may add stones by clicking on available spaces, or skip the rest of your placements (by choosing the Next Player action).  Alternatively, you may Pass at the start of your turn to take Black.  After that, you and your opponent will alternate playing one stone of your colour per turn, until the board is full or Black forms a loop.")
-(id "1390")
-(version "1.3.9")
-(classification "board/space/connection")
-(author "Nick Bentley (used with permission)")
-(credit "Eric Silverman")
-(date "2009")
-}
-)
+    (info
+        {
+        (description "Coil is an asymmetrical but balanced 2-player connection game on a hexhex7 (or larger) board, where one player tries to form a loop of stones in his color, and the other tries to stop him.  There's a chicken ballot at the start to ensure that the two sides are balanced. Because loops come in a wide range of sizes and shapes, and have many degrees of freedom, the game has rich tactics and strategy.  Small loops threats force players to focus on local battles while large loop threats force them to think globally, and to consider how the local battles fit into the global war. Wise stone placements can contribute to the creation of multiple loops or to defense against multiple loops, leading to layered, multi-dimensional consequences for each turn.")
+        (rules "This game is played on a hexagonal board made up of hexagonal cells, usually 7 cells per side, although bigger sizes may also be used. Initially the board is empty except for the six corner cells, upon which black stones are placed.  Then the players take it in turns to place 1-3 black stones each turn until one decides to pass; that player then becomes Black, and the other becomes White.  After that, players take it in turns to place one stone of their colour on the board on any empty hex.  If Black forms a continuous loop composed of their pieces, they win; if the board fills up with no loop of Black pieces being formed, White wins.
+            
+        During the initial chicken ballot phase, you may add stones by clicking on available spaces, or skip the rest of your placements (by choosing the Next Player action).  Alternatively, you may Pass at the start of your turn to take Black.  After that, you and your opponent will alternate playing one stone of your colour per turn, until the board is full or Black forms a loop.")
+        (id "1390")
+        (version "1.3.9")
+        (classification "board/space/connection")
+        (author "Nick Bentley (used with permission)")
+        (credit "Eric Silverman")
+        (date "2009")
+        }
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

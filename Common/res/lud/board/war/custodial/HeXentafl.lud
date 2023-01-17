@@ -124,34 +124,34 @@
 //-----------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "HeXentafl is an asymmetric abstract strategy game based on the ancient viking game Hnefatafl. One side (white) plays the attackers, and one side (black) plays the defenders.")
-(rules "HeXentafl can be played on a 4x4 or 5x5 hex grid.
-
-For the 4x4 version:
-The King sits on the central space, the throne, surrounded by three defenders. Six attackers sit on the outer corners of the grid.
-The attackers must capture the King in order to win. The defenders must escort the King to any of the six corners of the board in order to win.
-
-All pieces except the King move in a
-straight line, as many spaces as they like to an unoccupied space (like a rook in Chess). Only one piece at a time can occupy a space. A piece cannot jump over another piece.
-The King can move into any vacant adjacent space, moving one space at a time (similar to the king in Chess).
-
-Pieces are captured by surrounding them on two sides. Except for the corners, the pieces can be captured by surrounding them with two pieces which are not adjacents. You cannot \"capture\" your own piece by moving between two enemy pieces.
-
-The central space of the board is the throne. Only the King may occupy the throne. When the King is on the throne, he is harder to capture. He must be surrounded on three sides which are not adjacents each other.
-
-HeXentafl on a 5x5 grid is almost identical to a 4x4 grid, except there are more attackers and defenders, and the King moves just like the other pieces. It is not limited to one space at a time.")
-(id "718")
-(source "<a href=\"https://nxsgame.wordpress.com/2019/09/26/hexentafl/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nxsgame.wordpress.com</a>")
-(version "1.3.9")
-(classification "board/war/custodial")
-(author "Kevin R. Kane")
-(publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a> (used with permission)")
-(credit "Eric Piette")
-(date "2019")
-}
-)
+    (info
+        {
+        (description "HeXentafl is an asymmetric abstract strategy game based on the ancient viking game Hnefatafl. One side (white) plays the attackers, and one side (black) plays the defenders.")
+        (rules "HeXentafl can be played on a 4x4 or 5x5 hex grid.
+            
+            For the 4x4 version:
+            The King sits on the central space, the throne, surrounded by three defenders. Six attackers sit on the outer corners of the grid.
+            The attackers must capture the King in order to win. The defenders must escort the King to any of the six corners of the board in order to win.
+            
+            All pieces except the King move in a
+            straight line, as many spaces as they like to an unoccupied space (like a rook in Chess). Only one piece at a time can occupy a space. A piece cannot jump over another piece.
+            The King can move into any vacant adjacent space, moving one space at a time (similar to the king in Chess).
+            
+            Pieces are captured by surrounding them on two sides. Except for the corners, the pieces can be captured by surrounding them with two pieces which are not adjacents. You cannot \"capture\" your own piece by moving between two enemy pieces.
+            
+            The central space of the board is the throne. Only the King may occupy the throne. When the King is on the throne, he is harder to capture. He must be surrounded on three sides which are not adjacents each other.
+            
+        HeXentafl on a 5x5 grid is almost identical to a 4x4 grid, except there are more attackers and defenders, and the King moves just like the other pieces. It is not limited to one space at a time.")
+        (id "718")
+        (source "<a href=\"https://nxsgame.wordpress.com/2019/09/26/hexentafl/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nxsgame.wordpress.com</a>")
+        (version "1.3.9")
+        (classification "board/war/custodial")
+        (author "Kevin R. Kane")
+        (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a> (used with permission)")
+        (credit "Eric Piette")
+        (date "2019")
+        }
+    )
     
     (graphics {
         (player Colour P1 (colour Black))

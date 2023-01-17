@@ -67,19 +67,19 @@
 
 (metadata 
     
-(info
-{
-(description "BlooGo is a Go variant inspired by the game Blooms by Nick Bentley.  In BlooGo, suicide is allowed, no passing is allowed, and the first player to capture a certain number of enemy stones wins.")
-(rules "Played on a square grid. The board begins empty. One player plays as Black, the other as White. Players alternate turns placing a piece of their colour on the board; Black plays first. Passing is not allowed. After a move, all opposing pieces without liberties are captured (a stone or group of stones has no liberties if all adjacent points to that stone are occupied).  Stones cannot be placed to recreate a previous position. The game ends when one player captures a number of stones equal to a winning threshold agreed upon at the start of the game.  Despite not having an explicit territorial goal, this variant produces final positions quite reminiscent of standard Go.")
-(id "1425")
-(source "<a href=\"https://www.lifein19x19.com/forum/viewtopic.php?f=45&t=17869\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Life in 19x19 Forums</a>")
-(version "1.3.9")
-(classification "board/space/territory")
-(author "Nick Bentley and Luis Bolaños Mures")
-(credit "Eric Silverman")
-(date "2021")
-}
-)
+    (info
+        {
+        (description "BlooGo is a Go variant inspired by the game Blooms by Nick Bentley.  In BlooGo, suicide is allowed, no passing is allowed, and the first player to capture a certain number of enemy stones wins.")
+        (rules "Played on a square grid. The board begins empty. One player plays as Black, the other as White. Players alternate turns placing a piece of their colour on the board; Black plays first. Passing is not allowed. After a move, all opposing pieces without liberties are captured (a stone or group of stones has no liberties if all adjacent points to that stone are occupied).  Stones cannot be placed to recreate a previous position. The game ends when one player captures a number of stones equal to a winning threshold agreed upon at the start of the game.  Despite not having an explicit territorial goal, this variant produces final positions quite reminiscent of standard Go.")
+        (id "1425")
+        (source "<a href=\"https://www.lifein19x19.com/forum/viewtopic.php?f=45&t=17869\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Life in 19x19 Forums</a>")
+        (version "1.3.9")
+        (classification "board/space/territory")
+        (author "Nick Bentley and Luis Bolaños Mures")
+        (credit "Eric Silverman")
+        (date "2021")
+        }
+    )
     
     (graphics {
         (board Style Go)

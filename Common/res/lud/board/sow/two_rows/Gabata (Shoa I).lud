@@ -283,29 +283,29 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "Gabata is a name applied to many two-or three-row mancala-style board games played in the Horn of Africa. This one is the most commonly played, and has been attested in Ethiopia since the early twentieth century, but is likely to be much older.")
-(aliases {"Uugg" "Weg" "Waladach"})
-(useFor "Ruleset/Gabata I (Observed)" (rules "2x6 board. Four counters in each hole. Players draw lots to see who goes first. Players pick up the counters in any of the holes in their row and sow them in an anti-clockwise direction. If the last counter falls into a hole that is occupied, the player picks up the contents of this hole and continues to sow. When the last counter falls into an empty hole, the play ends. Capturing occurs when the last counter falls into a hole on the opponent's side of the board containing three counters, increasing it to four. This hole then belongs to the player who captured it. A player cannot pick up counters from this hole, and the opponent can only do so if the last counter of their sowing falls there, in which case the opponent takes one counter from it, along with the final counter. The captured hole remains in the ownership of the person who captured it. If it remains empty and the opponent drops their last counter into this hole, the last counter is removed. If a player cannot move, they pass, but the opponent may continue to make moves. The player could then resume play if the opponent's moves create a possibility for a move. Play ends when there are no more counters available to move. Each player owns the counters in their captured holes or which they have removed from the board. A second round is played, each player placing four counters into each hole starting from the rightmost hole in their row. The player with more counters gains a hole from their opponent for every four extra balls they've captured. If an opponent has three extra after counting in such a way, they also gain a hole, but not if there are one or two extra. Play continues in several rounds like this until one player takes all the counters."))
-(useFor "Ruleset/Gabata I (Observed)" (source "Pankhurst 1971: 174-176."))
-(useFor "Ruleset/Gabata I (Observed)" (id "354"))
-(useFor "Ruleset/Five holes (Observed)" (rules "2x5 board."))
-(useFor "Ruleset/Five holes (Observed)" (source "Pankhurst 1971: 174-176."))
-(useFor "Ruleset/Five holes (Observed)" (id "611"))
-(useFor "Ruleset/Seven holes (Observed)" (rules "2x7 board."))
-(useFor "Ruleset/Seven holes (Observed)" (source "Pankhurst 1971: 174-176."))
-(useFor "Ruleset/Seven holes (Observed)" (id "612"))
-(useFor "Ruleset/Gabata 3 (Observed)" (rules "The game begins with a stylized move. One player takes all of the coutners from the rightmost hole and places them in the next hole. This hole becomes that player's weg. The player then takes the counters from the next hole and places them all in the hole after it, continuing around the board until all holes have either eight or zero counters. The player then takes all of the counters from the final hole that have eight counters and sows them in the regular way."))
-(useFor "Ruleset/Gabata 3 (Observed)" (source "Pankhurst 1971: 177."))
-(useFor "Ruleset/Gabata 3 (Observed)" (id "651"))
-(source "Cohen 1911: 491-495 Variant: Gabata II (Wuqro), Pankhurst 1971: 173 ")
-(id "354")
-(version "1.3.9")
-(classification "board/sow/two rows")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "Gabata is a name applied to many two-or three-row mancala-style board games played in the Horn of Africa. This one is the most commonly played, and has been attested in Ethiopia since the early twentieth century, but is likely to be much older.")
+        (aliases {"Uugg" "Weg" "Waladach"})
+        (useFor "Ruleset/Gabata I (Observed)" (rules "2x6 board. Four counters in each hole. Players draw lots to see who goes first. Players pick up the counters in any of the holes in their row and sow them in an anti-clockwise direction. If the last counter falls into a hole that is occupied, the player picks up the contents of this hole and continues to sow. When the last counter falls into an empty hole, the play ends. Capturing occurs when the last counter falls into a hole on the opponent's side of the board containing three counters, increasing it to four. This hole then belongs to the player who captured it. A player cannot pick up counters from this hole, and the opponent can only do so if the last counter of their sowing falls there, in which case the opponent takes one counter from it, along with the final counter. The captured hole remains in the ownership of the person who captured it. If it remains empty and the opponent drops their last counter into this hole, the last counter is removed. If a player cannot move, they pass, but the opponent may continue to make moves. The player could then resume play if the opponent's moves create a possibility for a move. Play ends when there are no more counters available to move. Each player owns the counters in their captured holes or which they have removed from the board. A second round is played, each player placing four counters into each hole starting from the rightmost hole in their row. The player with more counters gains a hole from their opponent for every four extra balls they've captured. If an opponent has three extra after counting in such a way, they also gain a hole, but not if there are one or two extra. Play continues in several rounds like this until one player takes all the counters."))
+        (useFor "Ruleset/Gabata I (Observed)" (source "Pankhurst 1971: 174-176."))
+        (useFor "Ruleset/Gabata I (Observed)" (id "354"))
+        (useFor "Ruleset/Five holes (Observed)" (rules "2x5 board."))
+        (useFor "Ruleset/Five holes (Observed)" (source "Pankhurst 1971: 174-176."))
+        (useFor "Ruleset/Five holes (Observed)" (id "611"))
+        (useFor "Ruleset/Seven holes (Observed)" (rules "2x7 board."))
+        (useFor "Ruleset/Seven holes (Observed)" (source "Pankhurst 1971: 174-176."))
+        (useFor "Ruleset/Seven holes (Observed)" (id "612"))
+        (useFor "Ruleset/Gabata 3 (Observed)" (rules "The game begins with a stylized move. One player takes all of the coutners from the rightmost hole and places them in the next hole. This hole becomes that player's weg. The player then takes the counters from the next hole and places them all in the hole after it, continuing around the board until all holes have either eight or zero counters. The player then takes all of the counters from the final hole that have eight counters and sows them in the regular way."))
+        (useFor "Ruleset/Gabata 3 (Observed)" (source "Pankhurst 1971: 177."))
+        (useFor "Ruleset/Gabata 3 (Observed)" (id "651"))
+        (source "Cohen 1911: 491-495 Variant: Gabata II (Wuqro), Pankhurst 1971: 173 ")
+        (id "354")
+        (version "1.3.9")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (board Style Mancala)

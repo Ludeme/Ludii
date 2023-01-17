@@ -146,22 +146,22 @@
 
 (metadata 
     
-(info
-{
-(description "On  the  Isle  of  Lewis  (Outer  Hebrides,  Scotland)  are located   some   of   the   most   impressive   prehistoric megalithic  structures  in  Europe.  The  most  important sites  are  around  the  area  of Callanish,  and  include stone circles, cairns, and stone alignments.The  goal  of Callanish  is  to  create  an  alignment  of  a certain  number  of  stones  or  stacks  of  your  colour orthogonally along any file or rank of the board.")
-(rules "The board is initially empty. Each player chooses a colour: White or Black. White starts by placing a stone on a vacant square. Black does the same.
-
-Players continue taking turns; however, your turn goes as follows: 1. Mark one of your exposed stones for removal from the board (i.e. it cannot be under an enemy stone). 2. Add one of your stones to the board. 3. Add another one of your stones to the board, at which point the marked stone is removed. The following rules constrain where you can add each stone: It must be a “knight’s move” away from the marked stone. That is to say, either 2 spaces vertically and 1 horizontally, or 2 spaces horizontally, and 1 vertically away from the marked stone. The space on which you place it must have none of your stones, and either: be vacant, or have an enemy stone, in which case you will place yours on top, creating a stack that you control.")
-(id "1213")
-(source "<a href=\"https://nestorgames.com/rulebooks/CALLANISH_EN.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>")
-(version "1.3.9")
-(classification "board/space/line")
-(author "José Manuel Astilleros García-Monge")
-(publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a> (used with permission)")
-(credit "Nicholas Bamber")
-(date "2014")
-}
-)
+    (info
+        {
+        (description "On  the  Isle  of  Lewis  (Outer  Hebrides,  Scotland)  are located   some   of   the   most   impressive   prehistoric megalithic  structures  in  Europe.  The  most  important sites  are  around  the  area  of Callanish,  and  include stone circles, cairns, and stone alignments.The  goal  of Callanish  is  to  create  an  alignment  of  a certain  number  of  stones  or  stacks  of  your  colour orthogonally along any file or rank of the board.")
+        (rules "The board is initially empty. Each player chooses a colour: White or Black. White starts by placing a stone on a vacant square. Black does the same.
+            
+        Players continue taking turns; however, your turn goes as follows: 1. Mark one of your exposed stones for removal from the board (i.e. it cannot be under an enemy stone). 2. Add one of your stones to the board. 3. Add another one of your stones to the board, at which point the marked stone is removed. The following rules constrain where you can add each stone: It must be a “knight’s move” away from the marked stone. That is to say, either 2 spaces vertically and 1 horizontally, or 2 spaces horizontally, and 1 vertically away from the marked stone. The space on which you place it must have none of your stones, and either: be vacant, or have an enemy stone, in which case you will place yours on top, creating a stack that you control.")
+        (id "1213")
+        (source "<a href=\"https://nestorgames.com/rulebooks/CALLANISH_EN.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>")
+        (version "1.3.9")
+        (classification "board/space/line")
+        (author "José Manuel Astilleros García-Monge")
+        (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a> (used with permission)")
+        (credit "Nicholas Bamber")
+        (date "2014")
+        }
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

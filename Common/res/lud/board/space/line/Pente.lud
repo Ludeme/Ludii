@@ -97,19 +97,19 @@
 
 (metadata 
     
-(info
-{
-(description "Pente was invented by Gary Gabriel in 1983, and was inspired by Ninuki-Renju.  In Pente, players compete to be the first to form an orthogonal or diagonal line of five stones, or to capture ten opposing stones.  Pente does not have the complex opening protocol or specific positional restrictions of Ninuki-Renju.  The first player has a strong advantage, but the Pro Pente opening variation gives Black more even winning chances.")
-(rules "Pente is played on a 19x19 Go board.  White goes first, and plays their first move on the centre point (unless playing Freestyle).  In the Pro Pente variation, White's second move must be at least 3 points away from the centre.  After the opening, players alternate playing one stone of their colour onto any empty point.  If their placement results in a pair of enemy stones being sandwiched between two of their own stones, those enemy stones are captured.  The first player to form an orthogonal or diagonal line of five (or more) of their stones, or to capture 10 enemy stones, wins the game.")
-(id "1412")
-(source "<a href=\"https://pente.org/help/helpWindow.jsp?file=playGameRules\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Pente.org</a>")
-(version "1.3.9")
-(classification "board/space/line")
-(author "Gary Gabriel")
-(credit "Eric Silverman")
-(date "1977")
-}
-)
+    (info
+        {
+        (description "Pente was invented by Gary Gabriel in 1983, and was inspired by Ninuki-Renju.  In Pente, players compete to be the first to form an orthogonal or diagonal line of five stones, or to capture ten opposing stones.  Pente does not have the complex opening protocol or specific positional restrictions of Ninuki-Renju.  The first player has a strong advantage, but the Pro Pente opening variation gives Black more even winning chances.")
+        (rules "Pente is played on a 19x19 Go board.  White goes first, and plays their first move on the centre point (unless playing Freestyle).  In the Pro Pente variation, White's second move must be at least 3 points away from the centre.  After the opening, players alternate playing one stone of their colour onto any empty point.  If their placement results in a pair of enemy stones being sandwiched between two of their own stones, those enemy stones are captured.  The first player to form an orthogonal or diagonal line of five (or more) of their stones, or to capture 10 enemy stones, wins the game.")
+        (id "1412")
+        (source "<a href=\"https://pente.org/help/helpWindow.jsp?file=playGameRules\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Pente.org</a>")
+        (version "1.3.9")
+        (classification "board/space/line")
+        (author "Gary Gabriel")
+        (credit "Eric Silverman")
+        (date "1977")
+        }
+    )
     
     (graphics {
         (board Style Go)

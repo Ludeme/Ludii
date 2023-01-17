@@ -47,19 +47,19 @@
 
 (metadata 
     
-(info
-{
-(description "Chaturanga is a capturing game from India which is the ancestor of many similar replacement capture games worldwide. This version is reported from the Shatranj scholar al-Adli.")
-(rules "8x8 board. 8 Bhata (or Padati; move like Chess pawns but without being able to move two on the first turn); 2 Ashva (horses; move like Chess knights); 2 Gaja (elephants; two spaces in any orthogonal direction, jumping over the first square); 2 Ratha (chariots; moves like a rook in chess); 1 Mantri (counselor; moves one square diagonally in any direction); 1 Raja (king; moves one square in any direction). These are set up along one edge of the board: Gaja-Ratha-Ashva-Mantri-Raja-Ashva-Ratha-Gaja, with the eight Bhata lined up in the row in front of these. Players take turns moving. When one piece lands on the space occupied by another piece, it is captured. When a Raja can be captured by an opponent's piece on the next turn, it is in check. The Raja must not be in check at the end of the player's turn. When this is unavoidable, it is checkmate and the opponent wins. A Raja that is stalemated wins. A player who reduces their opponent to only the Raja wins.
-")
-(source "Murray 1913: 57-61.")
-(id "1445")
-(version "1.3.9")
-(classification "board/war/replacement/checkmate/chaturanga")
-(credit "Eric Piette")
-(origin "This game was played in India, from around 840 to 1140.")
-}
-)
+    (info
+        {
+        (description "Chaturanga is a capturing game from India which is the ancestor of many similar replacement capture games worldwide. This version is reported from the Shatranj scholar al-Adli.")
+        (rules "8x8 board. 8 Bhata (or Padati; move like Chess pawns but without being able to move two on the first turn); 2 Ashva (horses; move like Chess knights); 2 Gaja (elephants; two spaces in any orthogonal direction, jumping over the first square); 2 Ratha (chariots; moves like a rook in chess); 1 Mantri (counselor; moves one square diagonally in any direction); 1 Raja (king; moves one square in any direction). These are set up along one edge of the board: Gaja-Ratha-Ashva-Mantri-Raja-Ashva-Ratha-Gaja, with the eight Bhata lined up in the row in front of these. Players take turns moving. When one piece lands on the space occupied by another piece, it is captured. When a Raja can be captured by an opponent's piece on the next turn, it is in check. The Raja must not be in check at the end of the player's turn. When this is unavoidable, it is checkmate and the opponent wins. A Raja that is stalemated wins. A player who reduces their opponent to only the Raja wins.
+        ")
+        (source "Murray 1913: 57-61.")
+        (id "1445")
+        (version "1.3.9")
+        (classification "board/war/replacement/checkmate/chaturanga")
+        (credit "Eric Piette")
+        (origin "This game was played in India, from around 840 to 1140.")
+        }
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

@@ -54,18 +54,18 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "Tablo is a game that was played among the Sámi people of Sweden.  The board was usually scratched into a  wooden board with a  knife, and sticks were used as pieces, one player keeping the bark on the sticks and the other stripping them. It was usually played by children, but was played by people of all ages.")
-(rules "7x7 lines, forming a grid. 21 pieces per player. The pieces begin on the three rows  closest to the player.  Pieces move forward orthogonally or sideways, never backwards. A piece may capture an adjacent opponent's piece by hopping over it to an empty adjacent spot immediately on the opposite side of it along the lines of the board. Multiple captures are allowed. Captures can only be made in the forward orthogonal or sideways directions also. The player who captures all of their opponent's pieces or who blocks them from being able to move wins.")
-(source "Grundström 1933: 17-18.")
-(id "1233")
-(version "1.3.9")
-(classification "board/war/leaping/orthogonal")
-(credit "Eric Piette")
-(origin "This game was played in Sweden, from around 1873 to 1933.")
-}
-)
+    (info
+        {
+        (description "Tablo is a game that was played among the Sámi people of Sweden.  The board was usually scratched into a  wooden board with a  knife, and sticks were used as pieces, one player keeping the bark on the sticks and the other stripping them. It was usually played by children, but was played by people of all ages.")
+        (rules "7x7 lines, forming a grid. 21 pieces per player. The pieces begin on the three rows  closest to the player.  Pieces move forward orthogonally or sideways, never backwards. A piece may capture an adjacent opponent's piece by hopping over it to an empty adjacent spot immediately on the opposite side of it along the lines of the board. Multiple captures are allowed. Captures can only be made in the forward orthogonal or sideways directions also. The player who captures all of their opponent's pieces or who blocks them from being able to move wins.")
+        (source "Grundström 1933: 17-18.")
+        (id "1233")
+        (version "1.3.9")
+        (classification "board/war/leaping/orthogonal")
+        (credit "Eric Piette")
+        (origin "This game was played in Sweden, from around 1873 to 1933.")
+        }
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)

@@ -56,27 +56,27 @@
 
 (metadata 
     
-(info
-{
-(description "Troll is a two-player game played on an empty 8x8 square board:")
-(rules "EDGES - Each player owns two opposite edges, say, the first player has top and bottom edges, while the second player has left and right edges.
-
-DROP - Each player drops one of his stones on an empty cell.
-- If at least one opponent stone is between that stone and another friendly stone (orthogonal or diagonal), then all opponent stones that were between those stones flip their colour.
-- Stones cannot be dropped on the opponent's edges (including corners).
-
-GOAL - Wins the first player who manages to do a path connecting his two opposite edges.
-- Two tiles diagonally aside are not continuous in a path.
-- The corners belong to both edges.")
-(id "1814")
-(source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/troll.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.di.fc.ul.pt</a>")
-(version "1.3.9")
-(classification "board/space/connection")
-(author "Jean-Claude Rosa")
-(credit "Eric Piette")
-(date "1993")
-}
-)
+    (info
+        {
+        (description "Troll is a two-player game played on an empty 8x8 square board:")
+        (rules "EDGES - Each player owns two opposite edges, say, the first player has top and bottom edges, while the second player has left and right edges.
+            
+            DROP - Each player drops one of his stones on an empty cell.
+            - If at least one opponent stone is between that stone and another friendly stone (orthogonal or diagonal), then all opponent stones that were between those stones flip their colour.
+            - Stones cannot be dropped on the opponent's edges (including corners).
+            
+            GOAL - Wins the first player who manages to do a path connecting his two opposite edges.
+            - Two tiles diagonally aside are not continuous in a path.
+        - The corners belong to both edges.")
+        (id "1814")
+        (source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/troll.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.di.fc.ul.pt</a>")
+        (version "1.3.9")
+        (classification "board/space/connection")
+        (author "Jean-Claude Rosa")
+        (credit "Eric Piette")
+        (date "1993")
+        }
+    )
     
     (graphics {
         (board Colour Phase0 (colour 254 194 17))

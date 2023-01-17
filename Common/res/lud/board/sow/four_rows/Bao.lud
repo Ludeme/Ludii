@@ -443,29 +443,28 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "Bao is a four-row mancala-style board game played in Zanzibar and Swahili-speaking areas of coastal East Africa.")
-(rules "4x8 board. One hole, the Nyumba, is square, and is the hole immediately to the right of center in the player's inner row. The holes on both ends of both players' inner rows are Kichwa, and the next holes in from those are the Kimbi. Players sow from one of their holes in either direction on the board. When the final counter lands in an occupied hole, these counters are picked up and sowing continues, when a capture is not possible. When the final counter lands in an empty hole, the turn ends.  Play begins with six counters in the Nyumba, two in each of the holes to its right, and 22 counters to be entered on the board.
-
-Namua is the stage of the game where there are still counters to be placed on the board. During Namua, the Nyumba is the house, as long as it has at least six counters in it and it has not been emptied. Players place counters into an occupied hole in their front row. If this hole is opposite one of the opponent's occupied holes, the opponent's counters in that hole are captured. Captures must be made if possible. If a capture is not possible, the counter is placed into a hole and the contents of that hole are sown. The house cannot be emptied, but if it is the only occupied hole, the counter placed into it, and only that one counter, can be sown to one of the adjacent holes.  Sowing from a Kichwa in the direction of the back row is not allowed unless it is the only occupied hole in the front row. Players cannot place a counter in holes with single counters  unless only holes in the front row with single counters exist or the house is still present. If the final counter of a sowing lands in the house, the turn ends. Once all of the counters are placed on the board for both players, Namua ends.
-
-The next stage begins. The rules for the house mentioned above during the Namua stage no longer apply, but the rules below remain in effect until the first capture in this phase of the game has been made.  Players alternate turns taking the counters from one of their holes that has more than one and less than sixteen counters and sowing them. When the final counter lands in an occupied hole in the front row opposite one of the opponent's occupied holes, the opponent's counters are captured, unless the hole from which sowing began contained sixteen or more counters. Captures must be made if possible. Single counters cannot be sown. Sowing must occur from an inner row hole when possible. A Kichwa cannot be sown toward the back row if it is the only occupied hole in the front row. 
-
-
-Capturing rules:  The counters captured from the opponent's hole are captured and sown on the player's front row. If they were captured from a Kimbi or Kichwa, they must be sown from the nearest Kichwa. If they were not captured from one of these holes, they must be sown from the Kichwa in the direction toward which the sowing was proceeding when the capture was made. If the capture was not made from a Kimbi or Kichwa and it was not made while sowing, the player can choose which Kichwa to sow from. Further captures in the same turn must be made with this sowing if possible, and are made if the final counter lands in an occupied hole in the inner row which is opposite an occupied hole in the opponent's inner row. If a capture is not possible, the sowing must end in the house. When the final counter lands in the house, the player may choose to continue sowing from the house or to end their turn. If the player cannot capture and cannot drop the final counter in the house, they must sow into an occupied hole, and continue sowing from that hole. The player may sow such that the final counter lands in an empty hole only when none of the other options are possible.
-
-When a player sows in such a way that they do not capture and the opponent is unable to capture on their next turn but the player will be able to capture on their own following move, the opponent cannot sow from this hole. The opponent is able to sow from such a hole if they can capture from this hole; if the hole in question is the house (this remains true for all phases of the game); if it is the only occupied hole in the front row; or if it is the only hole in the front row with greater than one counter. This rule does not apply during the Namua phase.
-
-A player wins when their opponent's inner row holes are empty. This includes in the middle of sowing (e.g., sowing into the outer row directly from a Kichwa when it is the only occupied hole in the front row). A player may also lose if they only  have single counters in their holes. ")
-(source "de Voogt 1995: 35-51.")
-(id "1567")
-(version "1.3.9")
-(classification "board/sow/four rows")
-(credit "Eric Piette")
-(origin "This game was played in East Africa, from around 1990 to 1994.")
-}
-)
+    (info
+        {
+        (description "Bao is a four-row mancala-style board game played in Zanzibar and Swahili-speaking areas of coastal East Africa.")
+        (rules "4x8 board. One hole, the Nyumba, is square, and is the hole immediately to the right of center in the player's inner row. The holes on both ends of both players' inner rows are Kichwa, and the next holes in from those are the Kimbi. Players sow from one of their holes in either direction on the board. When the final counter lands in an occupied hole, these counters are picked up and sowing continues, when a capture is not possible. When the final counter lands in an empty hole, the turn ends.  Play begins with six counters in the Nyumba, two in each of the holes to its right, and 22 counters to be entered on the board.
+            
+            Namua is the stage of the game where there are still counters to be placed on the board. During Namua, the Nyumba is the house, as long as it has at least six counters in it and it has not been emptied. Players place counters into an occupied hole in their front row. If this hole is opposite one of the opponent's occupied holes, the opponent's counters in that hole are captured. Captures must be made if possible. If a capture is not possible, the counter is placed into a hole and the contents of that hole are sown. The house cannot be emptied, but if it is the only occupied hole, the counter placed into it, and only that one counter, can be sown to one of the adjacent holes.  Sowing from a Kichwa in the direction of the back row is not allowed unless it is the only occupied hole in the front row. Players cannot place a counter in holes with single counters  unless only holes in the front row with single counters exist or the house is still present. If the final counter of a sowing lands in the house, the turn ends. Once all of the counters are placed on the board for both players, Namua ends.
+            
+            The next stage begins. The rules for the house mentioned above during the Namua stage no longer apply, but the rules below remain in effect until the first capture in this phase of the game has been made.  Players alternate turns taking the counters from one of their holes that has more than one and less than sixteen counters and sowing them. When the final counter lands in an occupied hole in the front row opposite one of the opponent's occupied holes, the opponent's counters are captured, unless the hole from which sowing began contained sixteen or more counters. Captures must be made if possible. Single counters cannot be sown. Sowing must occur from an inner row hole when possible. A Kichwa cannot be sown toward the back row if it is the only occupied hole in the front row. 
+            
+            Capturing rules:  The counters captured from the opponent's hole are captured and sown on the player's front row. If they were captured from a Kimbi or Kichwa, they must be sown from the nearest Kichwa. If they were not captured from one of these holes, they must be sown from the Kichwa in the direction toward which the sowing was proceeding when the capture was made. If the capture was not made from a Kimbi or Kichwa and it was not made while sowing, the player can choose which Kichwa to sow from. Further captures in the same turn must be made with this sowing if possible, and are made if the final counter lands in an occupied hole in the inner row which is opposite an occupied hole in the opponent's inner row. If a capture is not possible, the sowing must end in the house. When the final counter lands in the house, the player may choose to continue sowing from the house or to end their turn. If the player cannot capture and cannot drop the final counter in the house, they must sow into an occupied hole, and continue sowing from that hole. The player may sow such that the final counter lands in an empty hole only when none of the other options are possible.
+            
+            When a player sows in such a way that they do not capture and the opponent is unable to capture on their next turn but the player will be able to capture on their own following move, the opponent cannot sow from this hole. The opponent is able to sow from such a hole if they can capture from this hole; if the hole in question is the house (this remains true for all phases of the game); if it is the only occupied hole in the front row; or if it is the only hole in the front row with greater than one counter. This rule does not apply during the Namua phase.
+            
+        A player wins when their opponent's inner row holes are empty. This includes in the middle of sowing (e.g., sowing into the outer row directly from a Kichwa when it is the only occupied hole in the front row). A player may also lose if they only  have single counters in their holes. ")
+        (source "de Voogt 1995: 35-51.")
+        (id "1567")
+        (version "1.3.9")
+        (classification "board/sow/four rows")
+        (credit "Eric Piette")
+        (origin "This game was played in East Africa, from around 1990 to 1994.")
+        }
+    )
     
     (graphics {
         (board Style Mancala)

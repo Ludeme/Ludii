@@ -85,19 +85,19 @@
 //------------------------------------------------------------------------------
 
 (metadata
-(info
-{
-(description "Futoshiki is a numerical deduction puzzle invented by Tamaki Seto in 2001.")
-(rules "Futoshiki is played on a square grid. The starting state may have numbers placed in the squares of the grid. The goal is to place numbers in the squares so that each row and each column has only one instance of a particular number. The \"lesser than\" and \"greater than\" constraints have to be satisfied.")
-(id "108")
-(source "<a href=\"https://en.wikipedia.org/wiki/Futoshiki\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-(version "1.3.9")
-(classification "puzzle/deduction")
-(author "Tamaki Seto")
-(credit "Eric Piette")
-(date "2001")
-}
-)
+    (info
+        {
+        (description "Futoshiki is a numerical deduction puzzle invented by Tamaki Seto in 2001.")
+        (rules "Futoshiki is played on a square grid. The starting state may have numbers placed in the squares of the grid. The goal is to place numbers in the squares so that each row and each column has only one instance of a particular number. The \"lesser than\" and \"greater than\" constraints have to be satisfied.")
+        (id "108")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Futoshiki\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.3.9")
+        (classification "puzzle/deduction")
+        (author "Tamaki Seto")
+        (credit "Eric Piette")
+        (date "2001")
+        }
+    )
     (graphics {
         (board Style Futoshiki)
         (no Sunken)

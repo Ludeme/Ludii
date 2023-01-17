@@ -478,29 +478,29 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "Lontu-Holo is a two-row mancala-style board game played by the Ndyuka people of Suriname. It is one of the only recorded games of this type where the goal is to capture the fewest number of counters.")
-(useFor "Ruleset/Lontu Holo (Observed)" (rules "2x6 board, with a store hole on either end. Four counters in each hole. Each player owns the six holes, three holes in each row, to their right. Sowing occurs in an anti-clockwise direction, and only in the holes belonging to the player. Play begins with a stylized opening move. The first player takes the counters from the holes in each of the row of holes closest to them, and places them in the central row of their holes in the further row. The counters from the hole next in the direction of sowing are then sown. The counters from the central hole in the further of the player's rows are then sown. When this is completed, the player takes the counters from the holes in the row closest to them, and holds them until the opponent performs the same sequence of moves on their side of the board. At this point, each player places the counters they are holding into any hole on the opponent's side of the board which contains more than one counter. Players then alternate turns sowing pieces around their holes of the board. Sowing always skips the hole from which sowing began. When the final counter of a sowing causes a hole to contain four counters, these counters are placed on any hole on the opponent's side of the board that contains more than one counter. When a player has only single seeds in their holes, and the opponent is about to place counters in the player's holes, the opponent moves one of the player's counters into another hole containing one counter, thus making two, and places the counters from the opponent's side are placed there. The player who is able to place all of their counters on the opponent's side of the board wins."))
-(useFor "Ruleset/Lontu Holo (Observed)" (source "Herskovits 1932: 27-28."))
-(useFor "Ruleset/Lontu Holo (Observed)" (id "965"))
-(useFor "Ruleset/Alternate Opening 1 (Observed)" (rules "The player takes two counters each for the left and right holes in the row closest to them, and places them in the central hole in that row. The player does the same in the further row. The player then sows from one of the central holes. The player then takes the counters from the leftmost holes in each row and holds them until after the opponent performs the same stylized move. Then the players place the counters they are holding into one of the holes containing one or more counters on the opponent's side of the board."))
-(useFor "Ruleset/Alternate Opening 1 (Observed)" (source "Herskovits 1932: 27."))
-(useFor "Ruleset/Alternate Opening 1 (Observed)" (id "966"))
-(useFor "Ruleset/Alternate Opening 2 (Observed)" (rules "The player takes two counters from the central and right holes in both rows, and places them in the left hole in the further row. The player then takes the counters in the left hole in the closest row and sows them. Then the player takes the counters in the central hole in the closest row and sows them. The player then takes all of the counters from the holes which contain four counters, and holds them until after the opponent performs the same moves. Then, the player takes two counters from the opponent's hole with twelve counters, and places these two along with the counters the player is holding into any hole on the opponent's side of the board. The opponent does the same."))
-(useFor "Ruleset/Alternate Opening 2 (Observed)" (source "Herskovits 1932: 27-28."))
-(useFor "Ruleset/Alternate Opening 2 (Observed)" (id "967"))
-(useFor "Ruleset/Alternate Opening 3 (Observed)" (rules "The player takes three counters from the rightmost hole in the closest row, one counter from the rightmost hole in the further row, and places them in the central hole of the further row. The player then takes three from the leftmost hole in the further row, one from the leftmost hole in the closest row, and places them in the central hole of the closest row. The player then sows the single counters into the next holes. The player then takes the contents of the holes with four counters, and holds them until after the opponent performs the same moves. The player then places the counters into one of the holes on the opponent's side of the board which contains counters. The opponent does the same."))
-(useFor "Ruleset/Alternate Opening 3 (Observed)" (source "Herskovits 1932: 28."))
-(useFor "Ruleset/Alternate Opening 3 (Observed)" (id "968"))
-(source "Murray 1951: 203-204.")
-(id "965")
-(version "1.3.9")
-(classification "board/sow/two rows")
-(credit "Eric Piette")
-(origin "This game was played in Suriname, around 1930.")
-}
-)
+    (info
+        {
+        (description "Lontu-Holo is a two-row mancala-style board game played by the Ndyuka people of Suriname. It is one of the only recorded games of this type where the goal is to capture the fewest number of counters.")
+        (useFor "Ruleset/Lontu Holo (Observed)" (rules "2x6 board, with a store hole on either end. Four counters in each hole. Each player owns the six holes, three holes in each row, to their right. Sowing occurs in an anti-clockwise direction, and only in the holes belonging to the player. Play begins with a stylized opening move. The first player takes the counters from the holes in each of the row of holes closest to them, and places them in the central row of their holes in the further row. The counters from the hole next in the direction of sowing are then sown. The counters from the central hole in the further of the player's rows are then sown. When this is completed, the player takes the counters from the holes in the row closest to them, and holds them until the opponent performs the same sequence of moves on their side of the board. At this point, each player places the counters they are holding into any hole on the opponent's side of the board which contains more than one counter. Players then alternate turns sowing pieces around their holes of the board. Sowing always skips the hole from which sowing began. When the final counter of a sowing causes a hole to contain four counters, these counters are placed on any hole on the opponent's side of the board that contains more than one counter. When a player has only single seeds in their holes, and the opponent is about to place counters in the player's holes, the opponent moves one of the player's counters into another hole containing one counter, thus making two, and places the counters from the opponent's side are placed there. The player who is able to place all of their counters on the opponent's side of the board wins."))
+        (useFor "Ruleset/Lontu Holo (Observed)" (source "Herskovits 1932: 27-28."))
+        (useFor "Ruleset/Lontu Holo (Observed)" (id "965"))
+        (useFor "Ruleset/Alternate Opening 1 (Observed)" (rules "The player takes two counters each for the left and right holes in the row closest to them, and places them in the central hole in that row. The player does the same in the further row. The player then sows from one of the central holes. The player then takes the counters from the leftmost holes in each row and holds them until after the opponent performs the same stylized move. Then the players place the counters they are holding into one of the holes containing one or more counters on the opponent's side of the board."))
+        (useFor "Ruleset/Alternate Opening 1 (Observed)" (source "Herskovits 1932: 27."))
+        (useFor "Ruleset/Alternate Opening 1 (Observed)" (id "966"))
+        (useFor "Ruleset/Alternate Opening 2 (Observed)" (rules "The player takes two counters from the central and right holes in both rows, and places them in the left hole in the further row. The player then takes the counters in the left hole in the closest row and sows them. Then the player takes the counters in the central hole in the closest row and sows them. The player then takes all of the counters from the holes which contain four counters, and holds them until after the opponent performs the same moves. Then, the player takes two counters from the opponent's hole with twelve counters, and places these two along with the counters the player is holding into any hole on the opponent's side of the board. The opponent does the same."))
+        (useFor "Ruleset/Alternate Opening 2 (Observed)" (source "Herskovits 1932: 27-28."))
+        (useFor "Ruleset/Alternate Opening 2 (Observed)" (id "967"))
+        (useFor "Ruleset/Alternate Opening 3 (Observed)" (rules "The player takes three counters from the rightmost hole in the closest row, one counter from the rightmost hole in the further row, and places them in the central hole of the further row. The player then takes three from the leftmost hole in the further row, one from the leftmost hole in the closest row, and places them in the central hole of the closest row. The player then sows the single counters into the next holes. The player then takes the contents of the holes with four counters, and holds them until after the opponent performs the same moves. The player then places the counters into one of the holes on the opponent's side of the board which contains counters. The opponent does the same."))
+        (useFor "Ruleset/Alternate Opening 3 (Observed)" (source "Herskovits 1932: 28."))
+        (useFor "Ruleset/Alternate Opening 3 (Observed)" (id "968"))
+        (source "Murray 1951: 203-204.")
+        (id "965")
+        (version "1.3.9")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin "This game was played in Suriname, around 1930.")
+        }
+    )
     
     (graphics {
         (board Style Mancala)

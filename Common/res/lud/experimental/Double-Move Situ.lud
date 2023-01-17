@@ -169,33 +169,33 @@
 (define "ColourBackground" (colour 135 170 130)) 
 
 (metadata
-(info
-{
-(description "Double-move Situ is based on 'Situ' a finite, Line-of-Sight game with the goal of being the last player able to complete their turn. The game is based on the choice of placing one's own piece or removing an opponent's piece.It can be played on hex grids, square grids or square grids with diagonals.The original Situ was played on a Hex grid with N, N+1 edges and a single stone pie-rule as an option.In contrast, 'Double-move Situ' starts with a single placement followed by double moves thereafter. Therefore centerless boards with an even number of nodes are used, and a Hex with edges N, N+2 assures this. However there is a changing parameter that determines which sites are controlled, and this parameter affects balance. So, the first player has the option of removing upto 2 nodes from the board, before the 2nd player starts with the single piece placement.Placement must be on empty nodes that are not controlled by the opponent, while removals are taken from nodes that the mover controls.Control is determined by the difference in count between the two player's pieces in line-of-sight of the given node. This difference is the  parameter for the game.  When the its value is met or exceeded, the player with the excess LoS pieces controls the site.In the original Situ this parameter is fixed at 2. In Double-move Situ it can be set from 1 to 4. The lower the number, the larger number of restricted nodes and possible captures, so the more tactical the game is. With higher numbers the game becomes more strategic. In any case, the game is finite, ending with one player running out of nodes to play upon.History:Situ is a descendant of my game Shaka that was designed as an exploration of line-of-sight. Shaka triggered the creation of Michał Zapała's 'Tore' and a flurry of LoS games on BGG Abstract Forum. While Situ may have helped stimulate Michał Zapała's 'Tumbleweed' As Alek Erikson tested Situ with me before assisting Michał with Tumbleweed's development.Steve Metzger and Luis Bolaños Mures 'Stigmergy' is a similar game, a simplification of 'Tumbleweed', that uses a majority of friendly LoS cells rather than a majority of the players pieces for control, and capture in that game is a flip whereas in 'Situ' it is a simple removal.A recent BGG thread proposing a game 'InSight' stimulated me to script my original game and create this new version. ")
-(rules "Structure of Play:
-There is no passing.
-Maroon chooses to remove up to two nodes of the board before passing to White. 
-Then White places an initial stone onto a remaining node on the board.
-
-After this play alternates, two turns per player, until one player cannot complete both turns. That player loses
-
-On each of the turns, the current player must either:
-- - place a stone on an empty node that the opponent does not control, or
-- - remove an opponent's stone that the current player controls.
-
-A player controls a node and any stone on it when the count of his stones in line-of-sight of the node, exceed those of his opponent by the node-control value chosen for the game, or more. (default is 3)
-
-('in line-of-site of the node' refers to the first stone in each radial grid direction.) 
-       
-    There are options for the board size and type, and the number of surplus stones needed to control a node.")
-(id "1734")
-(version "1.3.9")
-(classification "experimental")
-(author "Dale W. Walton")
-(credit "Dale W. Walton")
-(date "14-10-2021")
-}
-)
+    (info
+        {
+        (description "Double-move Situ is based on 'Situ' a finite, Line-of-Sight game with the goal of being the last player able to complete their turn. The game is based on the choice of placing one's own piece or removing an opponent's piece.It can be played on hex grids, square grids or square grids with diagonals.The original Situ was played on a Hex grid with N, N+1 edges and a single stone pie-rule as an option.In contrast, 'Double-move Situ' starts with a single placement followed by double moves thereafter. Therefore centerless boards with an even number of nodes are used, and a Hex with edges N, N+2 assures this. However there is a changing parameter that determines which sites are controlled, and this parameter affects balance. So, the first player has the option of removing upto 2 nodes from the board, before the 2nd player starts with the single piece placement.Placement must be on empty nodes that are not controlled by the opponent, while removals are taken from nodes that the mover controls.Control is determined by the difference in count between the two player's pieces in line-of-sight of the given node. This difference is the  parameter for the game.  When the its value is met or exceeded, the player with the excess LoS pieces controls the site.In the original Situ this parameter is fixed at 2. In Double-move Situ it can be set from 1 to 4. The lower the number, the larger number of restricted nodes and possible captures, so the more tactical the game is. With higher numbers the game becomes more strategic. In any case, the game is finite, ending with one player running out of nodes to play upon.History:Situ is a descendant of my game Shaka that was designed as an exploration of line-of-sight. Shaka triggered the creation of Michał Zapała's 'Tore' and a flurry of LoS games on BGG Abstract Forum. While Situ may have helped stimulate Michał Zapała's 'Tumbleweed' As Alek Erikson tested Situ with me before assisting Michał with Tumbleweed's development.Steve Metzger and Luis Bolaños Mures 'Stigmergy' is a similar game, a simplification of 'Tumbleweed', that uses a majority of friendly LoS cells rather than a majority of the players pieces for control, and capture in that game is a flip whereas in 'Situ' it is a simple removal.A recent BGG thread proposing a game 'InSight' stimulated me to script my original game and create this new version. ")
+        (rules "Structure of Play:
+            There is no passing.
+            Maroon chooses to remove up to two nodes of the board before passing to White. 
+            Then White places an initial stone onto a remaining node on the board.
+            
+            After this play alternates, two turns per player, until one player cannot complete both turns. That player loses
+            
+            On each of the turns, the current player must either:
+            - - place a stone on an empty node that the opponent does not control, or
+            - - remove an opponent's stone that the current player controls.
+            
+            A player controls a node and any stone on it when the count of his stones in line-of-sight of the node, exceed those of his opponent by the node-control value chosen for the game, or more. (default is 3)
+            
+            ('in line-of-site of the node' refers to the first stone in each radial grid direction.) 
+            
+        There are options for the board size and type, and the number of surplus stones needed to control a node.")
+        (id "1734")
+        (version "1.3.9")
+        (classification "experimental")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "14-10-2021")
+        }
+    )
     (graphics 
         {
         (player Colour P1 (colour 120 36 0))

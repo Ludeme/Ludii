@@ -61,18 +61,18 @@
 
 (metadata 
     
-(info
-{
-(description "Coc-Inbert is a Draughts game from early modern France. In it, the goal is reversed: The player who wins is the one who successfully forces the opponent to take all of the player's pieces.")
-(rules "8x8 Draughts board. Twelve pieces per player, arranged on the three rows closest to the players. Players alternate turns moving a piece forward diagonally to an adjacent empty space. Pieces capture an opponent's piece by hopping over it to an empty space on the opposite side of it, in a forward direction only. Captures are mandatory, and the maximum number of captures is required. Kings are made when a piece reaches the opposite edge of the board from where it started. Kings may move one space diagonally in either direction, and capture rules are the same as for pieces, except when different capturing routes are available with the same number of captures, the one which takes the most kings must be taken. In addition, if a sequence of captures can be made by a king or a regular piece, it must be made with the king. Kings cannot be captured by regular pieces. The first player to force the opponent to capture all of their pieces wins.")
-(source "Mallet 1668: 438-442.")
-(id "891")
-(version "1.3.9")
-(classification "board/war/leaping/diagonal")
-(credit "Eric Piette")
-(origin "This game was played in France, around 1668.")
-}
-)
+    (info
+        {
+        (description "Coc-Inbert is a Draughts game from early modern France. In it, the goal is reversed: The player who wins is the one who successfully forces the opponent to take all of the player's pieces.")
+        (rules "8x8 Draughts board. Twelve pieces per player, arranged on the three rows closest to the players. Players alternate turns moving a piece forward diagonally to an adjacent empty space. Pieces capture an opponent's piece by hopping over it to an empty space on the opposite side of it, in a forward direction only. Captures are mandatory, and the maximum number of captures is required. Kings are made when a piece reaches the opposite edge of the board from where it started. Kings may move one space diagonally in either direction, and capture rules are the same as for pieces, except when different capturing routes are available with the same number of captures, the one which takes the most kings must be taken. In addition, if a sequence of captures can be made by a king or a regular piece, it must be made with the king. Kings cannot be captured by regular pieces. The first player to force the opponent to capture all of their pieces wins.")
+        (source "Mallet 1668: 438-442.")
+        (id "891")
+        (version "1.3.9")
+        (classification "board/war/leaping/diagonal")
+        (credit "Eric Piette")
+        (origin "This game was played in France, around 1668.")
+        }
+    )
     
     (graphics {
         (board Style Chess)
