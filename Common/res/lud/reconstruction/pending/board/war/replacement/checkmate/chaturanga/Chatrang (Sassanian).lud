@@ -10,20 +10,11 @@
         <
         (players 2) 
         (equipment { 
-            (board (square 8)) 
-            (piece "King" Each [#]) // Shah
-            (piece "Queen" Each [#]) // Ferz
-            (piece "Rook" Each [#]) // Rukh
-            (piece "Elephant" Each [#])
-            (piece "Knight" Each [#]) // Asp
-            (piece "Pawn" Each [#]) // Piyadak
+            (board (square 8))
+            [#]
         })
         
-        (rules 
-            (start [#])
-            (play [(forEach Piece) | #])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
@@ -64,6 +55,8 @@
     
     (recon {
         (concept "ReplacementCapture" True)
+        (concept "NumComponentsTypePerPlayer" minValue:4 maxValue:20)
+        (concept "Repetition" False)
     })
     
 )

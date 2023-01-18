@@ -20,10 +20,10 @@
     {
     (item "Incomplete"
         <
-        (players 2) 
+        ("TwoPlayersNorthSouth")
         (equipment { // Each player has one king, one queen, two bishops, two knights, two rooks, and eight pawns.
             (board (square 8))
-            (piece "King" Each (move [#])) 
+            (piece "King" Each [#])
             (piece "Queen" Each 
                 (or
                     (move
@@ -43,16 +43,17 @@
                     )
                 )
             )
-            (piece "Knight" Each (move [#]))
-            (piece "Pawn" Each (move [#]))
-            (piece "Rook" Each (move [#]))
-            (piece "Bishop" Each (move [#]))
+            (piece "Knight" Each [#])
+            (piece "Pawn" Each [#])
+            (piece "Rook" Each [#])
+            (piece "Bishop" Each [#])
+            (map [#])
+            (map [#])
+            (map [#])
+            (regions [#])
+            (regions [#])
         })
-        (rules
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
