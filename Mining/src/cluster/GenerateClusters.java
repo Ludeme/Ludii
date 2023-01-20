@@ -178,26 +178,29 @@ public class GenerateClusters
 					break;
 				}
 			}
-			gameName = gameNameWithUnderscore;
-			if(!gameName.contains("_")) // If this is reached, the game name is never found.
+			if(!found)
 			{
-				for(int j = 0; j < gameNames.size(); j++)
+				gameName = gameNameWithUnderscore;
+				if(!gameName.contains("_")) // If this is reached, the game name is never found.
 				{
-					if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+					for(int j = 0; j < gameNames.size(); j++)
 					{
-						found = true;
-						gameName = gameNames.get(j);
-						SQLRequestCluster1 += "Games.Name = \\\"" + gameName + "\\\")";
-						break;
+						if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+						{
+							found = true;
+							gameName = gameNames.get(j);
+							SQLRequestCluster1 += "Games.Name = \\\"" + gameName + "\\\")";
+							break;
+						}
 					}
+					
+					if(!found)
+					{
+						System.err.println(clusters[0].get(clusters[0].size()-1) + " is never found in the list of game names.");
+						System.exit(1);
+					}
+					
 				}
-				
-				if(!found)
-				{
-					System.err.println(clusters[0].get(clusters[0].size()-1) + " is never found in the list of game names.");
-					System.exit(1);
-				}
-				
 			}
 		}
 		
@@ -267,26 +270,28 @@ public class GenerateClusters
 					break;
 				}
 			}
-			gameName = gameNameWithUnderscore;
-			if(!gameName.contains("_")) // If this is reached, the game name is never found.
+			if(!found)
 			{
-				for(int j = 0; j < gameNames.size(); j++)
+				gameName = gameNameWithUnderscore;
+				if(!gameName.contains("_")) // If this is reached, the game name is never found.
 				{
-					if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+					for(int j = 0; j < gameNames.size(); j++)
 					{
-						found = true;
-						gameName = gameNames.get(j);
-						SQLRequestCluster2 += "Games.Name = \\\"" + gameName + "\\\")";
-						break;
+						if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+						{
+							found = true;
+							gameName = gameNames.get(j);
+							SQLRequestCluster2 += "Games.Name = \\\"" + gameName + "\\\")";
+							break;
+						}
+					}
+					
+					if(!found)
+					{
+						System.err.println(clusters[1].get(clusters[1].size()-1) + " is never found in the list of game names.");
+						System.exit(1);
 					}
 				}
-				
-				if(!found)
-				{
-					System.err.println(clusters[1].get(clusters[1].size()-1) + " is never found in the list of game names.");
-					System.exit(1);
-				}
-				
 			}
 		}
 		
@@ -354,26 +359,29 @@ public class GenerateClusters
 					break;
 				}
 			}
-			gameName = gameNameWithUnderscore;
-			if(!gameName.contains("_")) // If this is reached, the game name is never found.
+			if(!found)
 			{
-				for(int j = 0; j < gameNames.size(); j++)
+				gameName = gameNameWithUnderscore;
+				if(!gameName.contains("_")) // If this is reached, the game name is never found.
 				{
-					if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+					for(int j = 0; j < gameNames.size(); j++)
 					{
-						found = true;
-						gameName = gameNames.get(j);
-						SQLRequestCluster3 += "Games.Name = \\\"" + gameName + "\\\")";
-						break;
+						if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+						{
+							found = true;
+							gameName = gameNames.get(j);
+							SQLRequestCluster3 += "Games.Name = \\\"" + gameName + "\\\")";
+							break;
+						}
 					}
+					
+					if(!found)
+					{
+						System.err.println(clusters[2].get(clusters[2].size()-1) + " is never found in the list of game names.");
+						System.exit(1);
+					}
+					
 				}
-				
-				if(!found)
-				{
-					System.err.println(clusters[2].get(clusters[2].size()-1) + " is never found in the list of game names.");
-					System.exit(1);
-				}
-				
 			}
 		}
 		
@@ -441,26 +449,29 @@ public class GenerateClusters
 					break;
 				}
 			}
-			gameName = gameNameWithUnderscore;
-			if(!gameName.contains("_")) // If this is reached, the game name is never found.
+			if(!found)
 			{
-				for(int j = 0; j < gameNames.size(); j++)
+				gameName = gameNameWithUnderscore;
+				if(!gameName.contains("_")) // If this is reached, the game name is never found.
 				{
-					if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+					for(int j = 0; j < gameNames.size(); j++)
 					{
-						found = true;
-						gameName = gameNames.get(j);
-						SQLRequestCluster4 += "Games.Name = \\\"" + gameName + "\\\")";
-						break;
+						if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+						{
+							found = true;
+							gameName = gameNames.get(j);
+							SQLRequestCluster4 += "Games.Name = \\\"" + gameName + "\\\")";
+							break;
+						}
 					}
+					
+					if(!found)
+					{
+						System.err.println(clusters[3].get(clusters[3].size()-1) + " is never found in the list of game names.");
+						System.exit(1);
+					}
+					
 				}
-				
-				if(!found)
-				{
-					System.err.println(clusters[3].get(clusters[3].size()-1) + " is never found in the list of game names.");
-					System.exit(1);
-				}
-				
 			}
 		}
 		
