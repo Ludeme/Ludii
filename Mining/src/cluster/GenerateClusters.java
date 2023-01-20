@@ -41,6 +41,7 @@ public class GenerateClusters
 	final static int    yMaxCluster4 = -10;
 	
 	final static String coordinatesPath        = "./res/cluster/input/coordinates.csv";
+	final static String gamePath        	   = "./res/cluster/input/Games.csv";
 	
 	/**
 	 * Main method to call the reconstruction with command lines.
@@ -51,11 +52,24 @@ public class GenerateClusters
 	@SuppressWarnings("unchecked")
 	public static void main(final String[] args) throws FileNotFoundException, IOException
 	{
+		// init game names list
+		final List<String> gameNames = new ArrayList<String>();
+		try (BufferedReader br = new BufferedReader(new FileReader(gamePath))) 
+		{
+			String line = br.readLine();
+			while (line != null)
+			{
+				gameNames.add(line.substring(1, line.length()-1)); // we remove the quotes.
+				line = br.readLine();
+			}
+		}
+		
+		
 		// init the clusters results;
 		final List<String>[] clusters = new ArrayList[numClusters];
 		for(int i = 0; i < numClusters; i++)
 			clusters[i] = new ArrayList<String>();
-		
+
 		// Read the CSV line by line.
 		final List<String> coordinates = new ArrayList<String>();
 		try (BufferedReader br = new BufferedReader(new FileReader(coordinatesPath))) 
@@ -103,21 +117,353 @@ public class GenerateClusters
 		String SQLRequestCluster3 = SQLRequest;
 		String SQLRequestCluster4 = SQLRequest;
 		
+		// Request for Cluster 1.
 		for(int i = 0; i < clusters[0].size() - 1; i++)
-			SQLRequestCluster1 += "Games.Name = \"" + clusters[0].get(i) + "\" OR ";
-		SQLRequestCluster1 += "Games.Name = \"" + clusters[0].get(clusters[0].size()-1) + "\")";
+		{
+			String gameName = clusters[0].get(i);
+			//System.out.println("test for " + fullGameName);
+			boolean found = false;
+			while(!found)
+			{
+				String gameNameWithUnderscore = gameName.substring(0, gameName.lastIndexOf('_'));
+				gameName = gameNameWithUnderscore.replace('_', ' ');
+				//System.out.println("Test: " + possibleGameName);
+				for(int j = 0; j < gameNames.size(); j++)
+				{
+					if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+					{
+						found = true;
+						gameName = gameNames.get(j);
+						SQLRequestCluster1 += "Games.Name = \\\"" + gameName + "\\\" OR ";
+						break;
+					}
+				}
+				gameName = gameNameWithUnderscore;
+				if(!gameName.contains("_")) // If this is reached, the game name is never found.
+				{
+					for(int j = 0; j < gameNames.size(); j++)
+					{
+						if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+						{
+							found = true;
+							gameName = gameNames.get(j);
+							SQLRequestCluster1 += "Games.Name = \\\"" + gameName + "\\\" OR ";
+							break;
+						}
+					}
+					
+					if(!found)
+					{
+						System.err.println(clusters[0].get(i) + " is never found in the list of game names.");
+						System.exit(1);
+					}
+				}
+			}
+		}
+		String gameName = clusters[0].get(clusters[0].size()-1);
+		//System.out.println("test for " + fullGameName);
+		boolean found = false;
+		while(!found)
+		{
+			String gameNameWithUnderscore = gameName.substring(0, gameName.lastIndexOf('_'));
+			gameName = gameNameWithUnderscore.replace('_', ' ');
+			//System.out.println("Test: " + possibleGameName);
+			for(int j = 0; j < gameNames.size(); j++)
+			{
+				if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+				{
+					found = true;
+					gameName = gameNames.get(j);
+					SQLRequestCluster1 += "Games.Name = \\\"" + gameName + "\\\")";
+					break;
+				}
+			}
+			gameName = gameNameWithUnderscore;
+			if(!gameName.contains("_")) // If this is reached, the game name is never found.
+			{
+				for(int j = 0; j < gameNames.size(); j++)
+				{
+					if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+					{
+						found = true;
+						gameName = gameNames.get(j);
+						SQLRequestCluster1 += "Games.Name = \\\"" + gameName + "\\\")";
+						break;
+					}
+				}
+				
+				if(!found)
+				{
+					System.err.println(clusters[0].get(clusters[0].size()-1) + " is never found in the list of game names.");
+					System.exit(1);
+				}
+				
+			}
+		}
 		
+		
+		
+		
+		
+		
+		// Request for Cluster 2.
 		for(int i = 0; i < clusters[1].size() - 1; i++)
-			SQLRequestCluster2 += "Games.Name = \"" + clusters[1].get(i) + "\" OR ";
-		SQLRequestCluster2 += "Games.Name = \"" + clusters[1].get(clusters[1].size()-1) + "\")";
+		{
+			gameName = clusters[1].get(i);
+			//System.out.println("test for " + fullGameName);
+			found = false;
+			while(!found)
+			{
+				String gameNameWithUnderscore = gameName.substring(0, gameName.lastIndexOf('_'));
+				gameName = gameNameWithUnderscore.replace('_', ' ');
+				//System.out.println("Test: " + possibleGameName);
+				for(int j = 0; j < gameNames.size(); j++)
+				{
+					if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+					{
+						found = true;
+						gameName = gameNames.get(j);
+						SQLRequestCluster2 += "Games.Name = \\\"" + gameName + "\\\" OR ";
+						break;
+					}
+				}
+				gameName = gameNameWithUnderscore;
+				if(!gameName.contains("_")) // If this is reached, the game name is never found.
+				{
+					for(int j = 0; j < gameNames.size(); j++)
+					{
+						if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+						{
+							found = true;
+							gameName = gameNames.get(j);
+							SQLRequestCluster2 += "Games.Name = \\\"" + gameName + "\\\" OR ";
+							break;
+						}
+					}
+					
+					if(!found)
+					{
+						System.err.println(clusters[1].get(i) + " is never found in the list of game names.");
+						System.exit(1);
+					}
+				}
+			}
+		}
+		gameName = clusters[1].get(clusters[1].size()-1);
+		//System.out.println("test for " + fullGameName);
+		found = false;
+		while(!found)
+		{
+			String gameNameWithUnderscore = gameName.substring(0, gameName.lastIndexOf('_'));
+			gameName = gameNameWithUnderscore.replace('_', ' ');
+			//System.out.println("Test: " + possibleGameName);
+			for(int j = 0; j < gameNames.size(); j++)
+			{
+				if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+				{
+					found = true;
+					gameName = gameNames.get(j);
+					SQLRequestCluster2 += "Games.Name = \\\"" + gameName + "\\\")";
+					break;
+				}
+			}
+			gameName = gameNameWithUnderscore;
+			if(!gameName.contains("_")) // If this is reached, the game name is never found.
+			{
+				for(int j = 0; j < gameNames.size(); j++)
+				{
+					if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+					{
+						found = true;
+						gameName = gameNames.get(j);
+						SQLRequestCluster2 += "Games.Name = \\\"" + gameName + "\\\")";
+						break;
+					}
+				}
+				
+				if(!found)
+				{
+					System.err.println(clusters[1].get(clusters[1].size()-1) + " is never found in the list of game names.");
+					System.exit(1);
+				}
+				
+			}
+		}
 		
+		
+		
+		
+
+		// Request for Cluster 3.
 		for(int i = 0; i < clusters[2].size() - 1; i++)
-			SQLRequestCluster3 += "Games.Name = \"" + clusters[2].get(i) + "\" OR ";
-		SQLRequestCluster3 += "Games.Name = \"" + clusters[2].get(clusters[2].size()-1) + "\")";
+		{
+			gameName = clusters[2].get(i);
+			//System.out.println("test for " + fullGameName);
+			found = false;
+			while(!found)
+			{
+				String gameNameWithUnderscore = gameName.substring(0, gameName.lastIndexOf('_'));
+				gameName = gameNameWithUnderscore.replace('_', ' ');
+				for(int j = 0; j < gameNames.size(); j++)
+				{
+					if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+					{
+						found = true;
+						gameName = gameNames.get(j);
+						SQLRequestCluster3 += "Games.Name = \\\"" + gameName + "\\\" OR ";
+						break;
+					}
+				}
+				gameName = gameNameWithUnderscore;
+				if(!gameName.contains("_")) // If this is reached, the game name is never found.
+				{
+					for(int j = 0; j < gameNames.size(); j++)
+					{
+						if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+						{
+							found = true;
+							gameName = gameNames.get(j);
+							SQLRequestCluster3 += "Games.Name = \\\"" + gameName + "\\\" OR ";
+							break;
+						}
+					}
+					
+					if(!found)
+					{
+						System.err.println(clusters[2].get(i) + " is never found in the list of game names.");
+						System.exit(1);
+					}
+				}
+			}
+		}
+		gameName = clusters[2].get(clusters[2].size()-1);
+		//System.out.println("test for " + fullGameName);
+		found = false;
+		while(!found)
+		{
+			String gameNameWithUnderscore = gameName.substring(0, gameName.lastIndexOf('_'));
+			gameName = gameNameWithUnderscore.replace('_', ' ');
+			//System.out.println("Test: " + possibleGameName);
+			for(int j = 0; j < gameNames.size(); j++)
+			{
+				if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+				{
+					found = true;
+					gameName = gameNames.get(j);
+					SQLRequestCluster3 += "Games.Name = \\\"" + gameName + "\\\")";
+					break;
+				}
+			}
+			gameName = gameNameWithUnderscore;
+			if(!gameName.contains("_")) // If this is reached, the game name is never found.
+			{
+				for(int j = 0; j < gameNames.size(); j++)
+				{
+					if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+					{
+						found = true;
+						gameName = gameNames.get(j);
+						SQLRequestCluster3 += "Games.Name = \\\"" + gameName + "\\\")";
+						break;
+					}
+				}
+				
+				if(!found)
+				{
+					System.err.println(clusters[2].get(clusters[2].size()-1) + " is never found in the list of game names.");
+					System.exit(1);
+				}
+				
+			}
+		}
 		
+
+		
+		
+		// Request for Cluster 4.
 		for(int i = 0; i < clusters[3].size() - 1; i++)
-			SQLRequestCluster4 += "Games.Name = \"" + clusters[3].get(i) + "\" OR ";
-		SQLRequestCluster4 += "Games.Name = \"" + clusters[3].get(clusters[3].size()-1) + "\")";
+		{
+			gameName = clusters[3].get(i);
+			//System.out.println("test for " + fullGameName);
+			found = false;
+			while(!found)
+			{
+				String gameNameWithUnderscore = gameName.substring(0, gameName.lastIndexOf('_'));
+				gameName = gameNameWithUnderscore.replace('_', ' ');
+				//System.out.println("Test: " + possibleGameName);
+				for(int j = 0; j < gameNames.size(); j++)
+				{
+					if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+					{
+						found = true;
+						gameName = gameNames.get(j);
+						SQLRequestCluster4 += "Games.Name = \\\"" + gameName + "\\\" OR ";
+						break;
+					}
+				}
+				gameName = gameNameWithUnderscore;
+				if(!gameName.contains("_")) // If this is reached, the game name is never found.
+				{
+					for(int j = 0; j < gameNames.size(); j++)
+					{
+						if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+						{
+							found = true;
+							gameName = gameNames.get(j);
+							SQLRequestCluster4 += "Games.Name = \\\"" + gameName + "\\\" OR ";
+							break;
+						}
+					}
+					
+					if(!found)
+					{
+						System.err.println(clusters[3].get(i) + " is never found in the list of game names.");
+						System.exit(1);
+					}
+				}
+			}
+		}
+		gameName = clusters[3].get(clusters[3].size()-1);
+		//System.out.println("test for " + fullGameName);
+		found = false;
+		while(!found)
+		{
+			String gameNameWithUnderscore = gameName.substring(0, gameName.lastIndexOf('_'));
+			gameName = gameNameWithUnderscore.replace('_', ' ');
+			//System.out.println("Test: " + possibleGameName);
+			for(int j = 0; j < gameNames.size(); j++)
+			{
+				if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+				{
+					found = true;
+					gameName = gameNames.get(j);
+					SQLRequestCluster4 += "Games.Name = \\\"" + gameName + "\\\")";
+					break;
+				}
+			}
+			gameName = gameNameWithUnderscore;
+			if(!gameName.contains("_")) // If this is reached, the game name is never found.
+			{
+				for(int j = 0; j < gameNames.size(); j++)
+				{
+					if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
+					{
+						found = true;
+						gameName = gameNames.get(j);
+						SQLRequestCluster4 += "Games.Name = \\\"" + gameName + "\\\")";
+						break;
+					}
+				}
+				
+				if(!found)
+				{
+					System.err.println(clusters[3].get(clusters[3].size()-1) + " is never found in the list of game names.");
+					System.exit(1);
+				}
+				
+			}
+		}
+		
 		
 		System.out.println(SQLRequestCluster1);
 		System.out.println("********************");
