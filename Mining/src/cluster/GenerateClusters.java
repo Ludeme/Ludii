@@ -97,5 +97,35 @@ public class GenerateClusters
 			System.out.println();
 		}
 		
+		final String SQLRequest = "SELECT DISTINCT GameRulesets.Id AS GameRulesetsId, GameRulesets.Name AS GameRulesetsName, Games.Id AS GamesId, Games.Name AS GamesName FROM GameRulesets, Games, RulesetConcepts WHERE Games.Id = GameRulesets.GameId AND RulesetConcepts.RulesetId = GameRulesets.Id AND (GameRulesets.Type = 1 OR GameRulesets.Type = 3) AND Games.DLPGame = 1 AND (";
+		String SQLRequestCluster1 = SQLRequest;
+		String SQLRequestCluster2 = SQLRequest;
+		String SQLRequestCluster3 = SQLRequest;
+		String SQLRequestCluster4 = SQLRequest;
+		
+		for(int i = 0; i < clusters[0].size() - 1; i++)
+			SQLRequestCluster1 += "Games.Name = \"" + clusters[0].get(i) + "\" OR ";
+		SQLRequestCluster1 += "Games.Name = \"" + clusters[0].get(clusters[0].size()-1) + "\")";
+		
+		for(int i = 0; i < clusters[1].size() - 1; i++)
+			SQLRequestCluster2 += "Games.Name = \"" + clusters[1].get(i) + "\" OR ";
+		SQLRequestCluster2 += "Games.Name = \"" + clusters[1].get(clusters[1].size()-1) + "\")";
+		
+		for(int i = 0; i < clusters[2].size() - 1; i++)
+			SQLRequestCluster3 += "Games.Name = \"" + clusters[2].get(i) + "\" OR ";
+		SQLRequestCluster3 += "Games.Name = \"" + clusters[2].get(clusters[2].size()-1) + "\")";
+		
+		for(int i = 0; i < clusters[3].size() - 1; i++)
+			SQLRequestCluster4 += "Games.Name = \"" + clusters[3].get(i) + "\" OR ";
+		SQLRequestCluster4 += "Games.Name = \"" + clusters[3].get(clusters[3].size()-1) + "\")";
+		
+		System.out.println(SQLRequestCluster1);
+		System.out.println("********************");
+		System.out.println(SQLRequestCluster2);
+		System.out.println("********************");
+		System.out.println(SQLRequestCluster3);
+		System.out.println("********************");
+		System.out.println(SQLRequestCluster4);
+		
 	}
 }
