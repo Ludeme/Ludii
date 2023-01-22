@@ -1,0 +1,958 @@
+(define "NextCanNotMove"
+    (not
+        (can Move
+            (do
+                (forEach Piece Next)
+                ifAfterwards:(not ("KingInCheck" (next)(mover)))
+            )
+        )
+    )
+)
+
+(define "HasNeverMoved"
+    (= (state at:(mapEntry #1 (mover))) 1)
+)
+
+(define "PieceHasMoved"
+    (set State at:#1 0)
+)
+
+(define "NoteCapture"
+    (and {
+        (if (and (= (#1)(coord:"A1")) (<= (#2) 2)) (note "Pawn at A1 captured"))
+        (if (and (= (#1)(coord:"A1")) (> (#2) 2)) (note "Piece at A1 captured"))
+        (if (and (= (#1)(coord:"A2")) (<= (#2) 2)) (note "Pawn at A2 captured"))
+        (if (and (= (#1)(coord:"A2")) (> (#2) 2)) (note "Piece at A2 captured"))
+        (if (and (= (#1)(coord:"A3")) (<= (#2) 2)) (note "Pawn at A3 captured"))
+        (if (and (= (#1)(coord:"A3")) (> (#2) 2)) (note "Piece at A3 captured"))
+        (if (and (= (#1)(coord:"A4")) (<= (#2) 2)) (note "Pawn at A4 captured"))
+        (if (and (= (#1)(coord:"A4")) (> (#2) 2)) (note "Piece at A4 captured"))
+        (if (and (= (#1)(coord:"A5")) (<= (#2) 2)) (note "Pawn at A5 captured"))
+        (if (and (= (#1)(coord:"A5")) (> (#2) 2)) (note "Piece at A5 captured"))
+        (if (and (= (#1)(coord:"A6")) (<= (#2) 2)) (note "Pawn at A6 captured"))
+        (if (and (= (#1)(coord:"A6")) (> (#2) 2)) (note "Piece at A6 captured"))
+        (if (and (= (#1)(coord:"A7")) (<= (#2) 2)) (note "Pawn at A7 captured"))
+        (if (and (= (#1)(coord:"A7")) (> (#2) 2)) (note "Piece at A7 captured"))
+        (if (and (= (#1)(coord:"A8")) (<= (#2) 2)) (note "Pawn at A8 captured"))
+        (if (and (= (#1)(coord:"A8")) (> (#2) 2)) (note "Piece at A8 captured"))
+
+        (if (and (= (#1)(coord:"B1")) (<= (#2) 2)) (note "Pawn at B1 captured"))
+        (if (and (= (#1)(coord:"B1")) (> (#2) 2)) (note "Piece at B1 captured"))
+        (if (and (= (#1)(coord:"B2")) (<= (#2) 2)) (note "Pawn at B2 captured"))
+        (if (and (= (#1)(coord:"B2")) (> (#2) 2)) (note "Piece at B2 captured"))
+        (if (and (= (#1)(coord:"B3")) (<= (#2) 2)) (note "Pawn at B3 captured"))
+        (if (and (= (#1)(coord:"B3")) (> (#2) 2)) (note "Piece at B3 captured"))
+        (if (and (= (#1)(coord:"B4")) (<= (#2) 2)) (note "Pawn at B4 captured"))
+        (if (and (= (#1)(coord:"B4")) (> (#2) 2)) (note "Piece at B4 captured"))
+        (if (and (= (#1)(coord:"B5")) (<= (#2) 2)) (note "Pawn at B5 captured"))
+        (if (and (= (#1)(coord:"B5")) (> (#2) 2)) (note "Piece at B5 captured"))
+        (if (and (= (#1)(coord:"B6")) (<= (#2) 2)) (note "Pawn at B6 captured"))
+        (if (and (= (#1)(coord:"B6")) (> (#2) 2)) (note "Piece at B6 captured"))
+        (if (and (= (#1)(coord:"B7")) (<= (#2) 2)) (note "Pawn at B7 captured"))
+        (if (and (= (#1)(coord:"B7")) (> (#2) 2)) (note "Piece at B7 captured"))
+        (if (and (= (#1)(coord:"B8")) (<= (#2) 2)) (note "Pawn at B8 captured"))
+        (if (and (= (#1)(coord:"B8")) (> (#2) 2)) (note "Piece at B8 captured"))
+
+        (if (and (= (#1)(coord:"C1")) (<= (#2) 2)) (note "Pawn at C1 captured"))
+        (if (and (= (#1)(coord:"C1")) (> (#2) 2)) (note "Piece at C1 captured"))
+        (if (and (= (#1)(coord:"C2")) (<= (#2) 2)) (note "Pawn at C2 captured"))
+        (if (and (= (#1)(coord:"C2")) (> (#2) 2)) (note "Piece at C2 captured"))
+        (if (and (= (#1)(coord:"C3")) (<= (#2) 2)) (note "Pawn at C3 captured"))
+        (if (and (= (#1)(coord:"C3")) (> (#2) 2)) (note "Piece at C3 captured"))
+        (if (and (= (#1)(coord:"C4")) (<= (#2) 2)) (note "Pawn at C4 captured"))
+        (if (and (= (#1)(coord:"C4")) (> (#2) 2)) (note "Piece at C4 captured"))
+        (if (and (= (#1)(coord:"C5")) (<= (#2) 2)) (note "Pawn at C5 captured"))
+        (if (and (= (#1)(coord:"C5")) (> (#2) 2)) (note "Piece at C5 captured"))
+        (if (and (= (#1)(coord:"C6")) (<= (#2) 2)) (note "Pawn at C6 captured"))
+        (if (and (= (#1)(coord:"C6")) (> (#2) 2)) (note "Piece at C6 captured"))
+        (if (and (= (#1)(coord:"C7")) (<= (#2) 2)) (note "Pawn at C7 captured"))
+        (if (and (= (#1)(coord:"C7")) (> (#2) 2)) (note "Piece at C7 captured"))
+        (if (and (= (#1)(coord:"C8")) (<= (#2) 2)) (note "Pawn at C8 captured"))
+        (if (and (= (#1)(coord:"C8")) (> (#2) 2)) (note "Piece at C8 captured"))
+
+        (if (and (= (#1)(coord:"D1")) (<= (#2) 2)) (note "Pawn at D1 captured"))
+        (if (and (= (#1)(coord:"D1")) (> (#2) 2)) (note "Piece at D1 captured"))
+        (if (and (= (#1)(coord:"D2")) (<= (#2) 2)) (note "Pawn at D2 captured"))
+        (if (and (= (#1)(coord:"D2")) (> (#2) 2)) (note "Piece at D2 captured"))
+        (if (and (= (#1)(coord:"D3")) (<= (#2) 2)) (note "Pawn at D3 captured"))
+        (if (and (= (#1)(coord:"D3")) (> (#2) 2)) (note "Piece at D3 captured"))
+        (if (and (= (#1)(coord:"D4")) (<= (#2) 2)) (note "Pawn at D4 captured"))
+        (if (and (= (#1)(coord:"D4")) (> (#2) 2)) (note "Piece at D4 captured"))
+        (if (and (= (#1)(coord:"D5")) (<= (#2) 2)) (note "Pawn at D5 captured"))
+        (if (and (= (#1)(coord:"D5")) (> (#2) 2)) (note "Piece at D5 captured"))
+        (if (and (= (#1)(coord:"D6")) (<= (#2) 2)) (note "Pawn at D6 captured"))
+        (if (and (= (#1)(coord:"D6")) (> (#2) 2)) (note "Piece at D6 captured"))
+        (if (and (= (#1)(coord:"D7")) (<= (#2) 2)) (note "Pawn at D7 captured"))
+        (if (and (= (#1)(coord:"D7")) (> (#2) 2)) (note "Piece at D7 captured"))
+        (if (and (= (#1)(coord:"D8")) (<= (#2) 2)) (note "Pawn at D8 captured"))
+        (if (and (= (#1)(coord:"D8")) (> (#2) 2)) (note "Piece at D8 captured"))
+
+        (if (and (= (#1)(coord:"E1")) (<= (#2) 2)) (note "Pawn at E1 captured"))
+        (if (and (= (#1)(coord:"E1")) (> (#2) 2)) (note "Piece at E1 captured"))
+        (if (and (= (#1)(coord:"E2")) (<= (#2) 2)) (note "Pawn at E2 captured"))
+        (if (and (= (#1)(coord:"E2")) (> (#2) 2)) (note "Piece at E2 captured"))
+        (if (and (= (#1)(coord:"E3")) (<= (#2) 2)) (note "Pawn at E3 captured"))
+        (if (and (= (#1)(coord:"E3")) (> (#2) 2)) (note "Piece at E3 captured"))
+        (if (and (= (#1)(coord:"E4")) (<= (#2) 2)) (note "Pawn at E4 captured"))
+        (if (and (= (#1)(coord:"E4")) (> (#2) 2)) (note "Piece at E4 captured"))
+        (if (and (= (#1)(coord:"E5")) (<= (#2) 2)) (note "Pawn at E5 captured"))
+        (if (and (= (#1)(coord:"E5")) (> (#2) 2)) (note "Piece at E5 captured"))
+        (if (and (= (#1)(coord:"E6")) (<= (#2) 2)) (note "Pawn at E6 captured"))
+        (if (and (= (#1)(coord:"E6")) (> (#2) 2)) (note "Piece at E6 captured"))
+        (if (and (= (#1)(coord:"E7")) (<= (#2) 2)) (note "Pawn at E7 captured"))
+        (if (and (= (#1)(coord:"E7")) (> (#2) 2)) (note "Piece at E7 captured"))
+        (if (and (= (#1)(coord:"E8")) (<= (#2) 2)) (note "Pawn at E8 captured"))
+        (if (and (= (#1)(coord:"E8")) (> (#2) 2)) (note "Piece at E8 captured"))
+
+        (if (and (= (#1)(coord:"F1")) (<= (#2) 2)) (note "Pawn at F1 captured"))
+        (if (and (= (#1)(coord:"F1")) (> (#2) 2)) (note "Piece at F1 captured"))
+        (if (and (= (#1)(coord:"F2")) (<= (#2) 2)) (note "Pawn at F2 captured"))
+        (if (and (= (#1)(coord:"F2")) (> (#2) 2)) (note "Piece at F2 captured"))
+        (if (and (= (#1)(coord:"F3")) (<= (#2) 2)) (note "Pawn at F3 captured"))
+        (if (and (= (#1)(coord:"F3")) (> (#2) 2)) (note "Piece at F3 captured"))
+        (if (and (= (#1)(coord:"F4")) (<= (#2) 2)) (note "Pawn at F4 captured"))
+        (if (and (= (#1)(coord:"F4")) (> (#2) 2)) (note "Piece at F4 captured"))
+        (if (and (= (#1)(coord:"F5")) (<= (#2) 2)) (note "Pawn at F5 captured"))
+        (if (and (= (#1)(coord:"F5")) (> (#2) 2)) (note "Piece at F5 captured"))
+        (if (and (= (#1)(coord:"F6")) (<= (#2) 2)) (note "Pawn at F6 captured"))
+        (if (and (= (#1)(coord:"F6")) (> (#2) 2)) (note "Piece at F6 captured"))
+        (if (and (= (#1)(coord:"F7")) (<= (#2) 2)) (note "Pawn at F7 captured"))
+        (if (and (= (#1)(coord:"F7")) (> (#2) 2)) (note "Piece at F7 captured"))
+        (if (and (= (#1)(coord:"F8")) (<= (#2) 2)) (note "Pawn at F8 captured"))
+        (if (and (= (#1)(coord:"F8")) (> (#2) 2)) (note "Piece at F8 captured"))
+
+        (if (and (= (#1)(coord:"G1")) (<= (#2) 2)) (note "Pawn at G1 captured"))
+        (if (and (= (#1)(coord:"G1")) (> (#2) 2)) (note "Piece at G1 captured"))
+        (if (and (= (#1)(coord:"G2")) (<= (#2) 2)) (note "Pawn at G2 captured"))
+        (if (and (= (#1)(coord:"G2")) (> (#2) 2)) (note "Piece at G2 captured"))
+        (if (and (= (#1)(coord:"G3")) (<= (#2) 2)) (note "Pawn at G3 captured"))
+        (if (and (= (#1)(coord:"G3")) (> (#2) 2)) (note "Piece at G3 captured"))
+        (if (and (= (#1)(coord:"G4")) (<= (#2) 2)) (note "Pawn at G4 captured"))
+        (if (and (= (#1)(coord:"G4")) (> (#2) 2)) (note "Piece at G4 captured"))
+        (if (and (= (#1)(coord:"G5")) (<= (#2) 2)) (note "Pawn at G5 captured"))
+        (if (and (= (#1)(coord:"G5")) (> (#2) 2)) (note "Piece at G5 captured"))
+        (if (and (= (#1)(coord:"G6")) (<= (#2) 2)) (note "Pawn at G6 captured"))
+        (if (and (= (#1)(coord:"G6")) (> (#2) 2)) (note "Piece at G6 captured"))
+        (if (and (= (#1)(coord:"G7")) (<= (#2) 2)) (note "Pawn at G7 captured"))
+        (if (and (= (#1)(coord:"G7")) (> (#2) 2)) (note "Piece at G7 captured"))
+        (if (and (= (#1)(coord:"G8")) (<= (#2) 2)) (note "Pawn at G8 captured"))
+        (if (and (= (#1)(coord:"G8")) (> (#2) 2)) (note "Piece at G8 captured"))
+
+        (if (and (= (#1)(coord:"H1")) (<= (#2) 2)) (note "Pawn at H1 captured"))
+        (if (and (= (#1)(coord:"H1")) (> (#2) 2)) (note "Piece at H1 captured"))
+        (if (and (= (#1)(coord:"H2")) (<= (#2) 2)) (note "Pawn at H2 captured"))
+        (if (and (= (#1)(coord:"H2")) (> (#2) 2)) (note "Piece at H2 captured"))
+        (if (and (= (#1)(coord:"H3")) (<= (#2) 2)) (note "Pawn at H3 captured"))
+        (if (and (= (#1)(coord:"H3")) (> (#2) 2)) (note "Piece at H3 captured"))
+        (if (and (= (#1)(coord:"H4")) (<= (#2) 2)) (note "Pawn at H4 captured"))
+        (if (and (= (#1)(coord:"H4")) (> (#2) 2)) (note "Piece at H4 captured"))
+        (if (and (= (#1)(coord:"H5")) (<= (#2) 2)) (note "Pawn at H5 captured"))
+        (if (and (= (#1)(coord:"H5")) (> (#2) 2)) (note "Piece at H5 captured"))
+        (if (and (= (#1)(coord:"H6")) (<= (#2) 2)) (note "Pawn at H6 captured"))
+        (if (and (= (#1)(coord:"H6")) (> (#2) 2)) (note "Piece at H6 captured"))
+        (if (and (= (#1)(coord:"H7")) (<= (#2) 2)) (note "Pawn at H7 captured"))
+        (if (and (= (#1)(coord:"H7")) (> (#2) 2)) (note "Piece at H7 captured"))
+        (if (and (= (#1)(coord:"H8")) (<= (#2) 2)) (note "Pawn at H8 captured"))
+        (if (and (= (#1)(coord:"H8")) (> (#2) 2)) (note "Piece at H8 captured"))
+    })
+)
+
+(define "KingGravitatesToMainDiagonal"
+    (or
+        (and (< (row of:(where "King" Next)) 4) (< (column of:(where "King" Next)) 4))
+        (and (>= (row of:(where "King" Next)) 4) (>= (column of:(where "King" Next)) 4))
+    )
+)
+
+(define "KingGravitatesToAntiDiagonal"
+    (or
+        (and (< (row of:(where "King" Next)) 4) (>= (column of:(where "King" Next)) 4))
+        (and (>= (row of:(where "King" Next)) 4) (< (column of:(where "King" Next)) 4))
+    )
+)
+
+(define "PawnDiagonalCheck"
+    (= (what at: (ahead (where "King" #1) steps:1 #3)) (mapEntry "Pawn" #2))
+)
+
+(define "DiagonalCheck"
+    (or
+        (= (what at:(regionSite (sites LineOfSight Piece at:(where "King" #1) #3) index: 0)) (mapEntry "Queen" #2))
+        (= (what at:(regionSite (sites LineOfSight Piece at:(where "King" #1) #3) index: 0)) (mapEntry "Bishop" #2))
+    )
+)
+
+(define "FileCheck"
+    (or {
+        (= (what at:(regionSite (sites LineOfSight Piece at:(where "King" #1) N) index: 0)) (mapEntry "Queen" #2))
+        (= (what at:(regionSite (sites LineOfSight Piece at:(where "King" #1) S) index: 0)) (mapEntry "Queen" #2))
+        (= (what at:(regionSite (sites LineOfSight Piece at:(where "King" #1) N) index: 0)) (mapEntry "Rook" #2))
+        (= (what at:(regionSite (sites LineOfSight Piece at:(where "King" #1) S) index: 0)) (mapEntry "Rook" #2))
+    })
+)
+
+(define "RankCheck"
+    (or {
+        (= (what at:(regionSite (sites LineOfSight Piece at:(where "King" #1) E) index: 0)) (mapEntry "Queen" #2))
+        (= (what at:(regionSite (sites LineOfSight Piece at:(where "King" #1) W) index: 0)) (mapEntry "Queen" #2))
+        (= (what at:(regionSite (sites LineOfSight Piece at:(where "King" #1) E) index: 0)) (mapEntry "Rook" #2))
+        (= (what at:(regionSite (sites LineOfSight Piece at:(where "King" #1) W) index: 0)) (mapEntry "Rook" #2))
+    })
+)
+
+(define "KnightCheck"
+    (and {
+        (= (mapEntry "Knight" #2) (what at:(ahead (ahead (where "King" #1) steps:2 #3) steps:1 #4)))
+        (!= (ahead (where "King" #1) steps:2 #3) (ahead (ahead (where "King" #1) steps:2 #3) steps:1 #4))
+        (!= (where "King" #1) (ahead (where "King" #1) steps:2 #3))
+    })
+)
+
+(define "CheckType"
+    (and {
+
+        (if
+            (or
+                ("DiagonalCheck" (next) (mover) SE)
+                (and
+                     (= (next) 2)
+                     ("PawnDiagonalCheck" (next) (mover) SE)
+                )
+            )
+            (and {
+                (if "KingGravitatesToMainDiagonal" (note "Short diagonal check"))
+                (if "KingGravitatesToAntiDiagonal" (note "Long diagonal check"))
+            })
+        )
+
+        (if
+            (or
+                ("DiagonalCheck" (next) (mover) SW)
+                (and
+                    (= (next) 2)
+                    ("PawnDiagonalCheck" (next) (mover) SW)
+                )
+            )
+            (and {
+                (if "KingGravitatesToMainDiagonal" (note "Long diagonal check"))
+                (if "KingGravitatesToAntiDiagonal" (note "Short diagonal check"))
+            })
+        )
+
+        (if
+            (or
+                ("DiagonalCheck" (next) (mover) NE)
+                (and
+                     (= (next) 1)
+                     ("PawnDiagonalCheck" (next) (mover) NE)
+                )
+            )
+            (and {
+                (if "KingGravitatesToMainDiagonal" (note "Long diagonal check"))
+                (if "KingGravitatesToAntiDiagonal" (note "Short diagonal check"))
+            })
+        )
+
+        (if
+            (or
+                ("DiagonalCheck" (next) (mover) NW)
+                (and
+                     (= (next) 1)
+                     ("PawnDiagonalCheck" (next) (mover) NW)
+                )
+            )
+            (and {
+                (if "KingGravitatesToMainDiagonal" (note "Short diagonal check"))
+                (if "KingGravitatesToAntiDiagonal" (note "Long diagonal check"))
+            })
+        )
+
+        (if ("FileCheck" (next) (mover)) (note "File check"))
+
+        (if ("RankCheck" (next) (mover)) (note "Rank check"))
+
+        (if
+            (or {
+                ("KnightCheck" (next) (mover) N E)
+                ("KnightCheck" (next) (mover) N W)
+                ("KnightCheck" (next) (mover) W N)
+                ("KnightCheck" (next) (mover) W S)
+                ("KnightCheck" (next) (mover) S W)
+                ("KnightCheck" (next) (mover) S E)
+                ("KnightCheck" (next) (mover) E S)
+                ("KnightCheck" (next) (mover) E N)
+
+            })
+            (note "Knight Check")
+        )
+    })
+)
+
+
+(define "KingNextToOpposingKing"
+    (or {
+        (= (ahead (where "King" #1) steps:1 N) (where "King" #2))
+        (= (ahead (where "King" #1) steps:1 S) (where "King" #2))
+        (= (ahead (where "King" #1) steps:1 E) (where "King" #2))
+        (= (ahead (where "King" #1) steps:1 W) (where "King" #2))
+        (= (ahead (where "King" #1) steps:1 NE) (where "King" #2))
+        (= (ahead (where "King" #1) steps:1 NW) (where "King" #2))
+        (= (ahead (where "King" #1) steps:1 SE) (where "King" #2))
+        (= (ahead (where "King" #1) steps:1 SW) (where "King" #2))
+    })
+)
+
+
+(define "KingInCheck"
+    (or {
+
+        (or
+            ("DiagonalCheck" #1 #2 SE)
+            (and
+                (= #1 2)
+                ("PawnDiagonalCheck" #1 #2 SE)
+            )
+        )
+
+        (or
+            ("DiagonalCheck" #1 #2 SW)
+            (and
+                (= #1 2)
+                ("PawnDiagonalCheck" #1 #2 SW)
+            )
+        )
+
+        (or
+            ("DiagonalCheck" #1 #2 NE)
+            (and
+                (= #1 1)
+                ("PawnDiagonalCheck" #1 #2 NE)
+            )
+        )
+
+        (or
+            ("DiagonalCheck" #1 #2 NW)
+            (and
+                (= #1 1)
+                ("PawnDiagonalCheck" #1 #2 NW)
+            )
+        )
+
+        ("FileCheck" #1 #2)
+
+        ("RankCheck" #1 #2)
+
+        ("KnightCheck" #1 #2 N E)
+        ("KnightCheck" #1 #2 N W)
+        ("KnightCheck" #1 #2 W N)
+        ("KnightCheck" #1 #2 W S)
+        ("KnightCheck" #1 #2 S W)
+        ("KnightCheck" #1 #2 S E)
+        ("KnightCheck" #1 #2 E S)
+        ("KnightCheck" #1 #2 E N)
+
+        ("KingNextToOpposingKing" #1 #2)
+    })
+)
+
+(define "CanPawnCapture"
+    (and {
+        (is Friend (who at:(ahead (value) #1)))
+        (can Move
+            (do
+                (move (from: (value)) (to: (ahead (value) #1)))
+                ifAfterwards:(not ("KingInCheck" (next) (mover)))
+            )
+        )
+    })
+)
+
+(define "CountTries"
+    (and {
+        (set Score Next 0)
+        (forEach Value min:1 max:63
+            (if (= (what at: (value)) (next))
+                (and {
+                    (if
+                        ("CanPawnCapture" FR)
+                        (addScore Next 1)
+                    )
+                    (if
+                        ("CanPawnCapture" FL)
+                        (addScore Next 1)
+                    )
+                })
+            )
+        )
+    })
+)
+
+(define "SafePassingLocation"
+    (and
+        (is Empty (#1))
+        (can Move
+            (do
+                (move
+                    (from (where "King" Mover))
+                    (to (#1))
+                )
+                ifAfterwards:(not ("KingInCheck" (mover) (next)))
+            )
+        )
+    )
+)
+
+(define "KnightMovement"
+    (and {
+        (= (last To) (ahead (ahead (last From) steps:2 #1) steps:1 #2))
+        (!= (ahead (last From) steps:2 #1) (ahead (ahead (last From) steps:2 #1) steps:1 #2))
+        (!= (last From) (ahead (last From) steps:2 #1))
+    })
+)
+
+(define "OrthogonalMovement"
+    (= (regionSite (sites LineOfSight Piece at:(last To) N) index: 0) (last From))
+    (= (regionSite (sites LineOfSight Piece at:(last To) S) index: 0) (last From))
+    (= (regionSite (sites LineOfSight Piece at:(last To) W) index: 0) (last From))
+    (= (regionSite (sites LineOfSight Piece at:(last To) E) index: 0) (last From))
+)
+
+(define "DiagonalMovement"
+    (= (regionSite (sites LineOfSight Piece at:(last To) NE) index: 0) (last From))
+    (= (regionSite (sites LineOfSight Piece at:(last To) NW) index: 0) (last From))
+    (= (regionSite (sites LineOfSight Piece at:(last To) SE) index: 0) (last From))
+    (= (regionSite (sites LineOfSight Piece at:(last To) SW) index: 0) (last From))
+)
+
+(define "KingMovement"
+    (= (ahead (last From) steps:1 N) (last To))
+    (= (ahead (last From) steps:1 S) (last To))
+    (= (ahead (last From) steps:1 E) (last To))
+    (= (ahead (last From) steps:1 W) (last To))
+    (= (ahead (last From) steps:1 NE) (last To))
+    (= (ahead (last From) steps:1 NW) (last To))
+    (= (ahead (last From) steps:1 SE) (last To))
+    (= (ahead (last From) steps:1 SW) (last To))
+)
+
+(define "DecideToCastle"
+    (and {
+        (= (ahead (last From) steps:#1 #2) (last To))
+        (not ("KingInCheck" (mover) (next)))
+        ("HasNeverMoved" "King")
+        ("HasNeverMoved" #3)
+        (is Empty (last To))
+    })
+)
+
+(define "PawnStep"
+    (and
+        (= (last To) (ahead (last From) steps: 1 Forward))
+        (is Empty (last To))
+    )
+)
+
+(define "InitialPawnMove"
+    (and {
+        (= (last To) (ahead (last From) steps: 2 Forward))
+        (is Empty (last To))
+        (is In (last From) (sites Start (piece (what at:(last From)))))
+        (or
+            (= (regionSite (sites LineOfSight Piece at:(last To) N) index: 0) (last From))
+            (= (regionSite (sites LineOfSight Piece at:(last To) S) index: 0) (last From))
+        )
+    })
+)
+
+(define "MoveForwardDiagonal"
+    (and {
+        (or
+            (= (last To) (ahead (last From) steps: 1 FR))
+            (= (last To) (ahead (last From) steps: 1 FL))
+        )
+        (or
+            (is Enemy (who at:(last To)))
+            (= (last To) (var "EnPassantLocation"))
+        )
+    })
+)
+
+(define "IsMovingPiece"
+    (= (what at: (last From)) (mapEntry #1 Mover))
+)
+
+(define "MovingTheKing"
+    (= (last From) (where "King" Mover))
+)
+
+(define "LegalMove"
+    (and
+        (can Move
+            (do
+                (move (from (last From)) (to (last To)))
+                ifAfterwards:(not ("KingInCheck" (mover) (next)))
+            )
+        )
+        (or {
+            (and
+                ("IsMovingPiece" "Pawn")
+                (or {
+                    "PawnStep"
+                    "InitialPawnMove"
+                    "MoveForwardDiagonal"
+                })
+            )
+            (and
+                ("IsMovingPiece" "Knight")
+                (or {
+                    ("KnightMovement" N E)
+                    ("KnightMovement" N W)
+                    ("KnightMovement" W N)
+                    ("KnightMovement" W S)
+                    ("KnightMovement" S E)
+                    ("KnightMovement" S W)
+                    ("KnightMovement" E N)
+                    ("KnightMovement" E S)
+                })
+            )
+            (and
+                ("IsMovingPiece" "Queen")
+                (or {
+                    ("DiagonalMovement")
+                    ("OrthogonalMovement")
+                })
+            )
+            (and
+                ("IsMovingPiece" "Rook")
+                (or {
+                    ("OrthogonalMovement")
+                })
+            )
+            (and
+                ("IsMovingPiece" "Bishop")
+                (or {
+                    ("DiagonalMovement")
+                })
+            )
+            (and
+                ("MovingTheKing")
+                (or {
+                    ("KingMovement")
+                    (and {
+                        ("DecideToCastle" 2 E "RookRight")
+                        ("SafePassingLocation" (ahead (last From) steps: 1 E))
+                    })
+                    (and {
+                        ("DecideToCastle" 3 W "RookLeft")
+                        ("SafePassingLocation" (ahead (last From) steps: 1 W))
+                        ("SafePassingLocation" (ahead (last From) steps: 2 W))
+                    })
+                })
+            )
+        })
+    )
+)
+
+(define "CommonPostMoveActions"
+
+    (if ("KingInCheck" (next) (mover))
+        "CheckType"
+    )
+
+    (if (and ("KingInCheck" (next) (mover)) ("NextCanNotMove"))
+        (set Var "NextLost" 1)
+    )
+
+    (if (or (and (not ("KingInCheck" (next) (mover))) ("NextCanNotMove")) (= (counter) 99))
+        (set Var "DrawCondition" 1)
+    )
+
+    "CountTries"
+)
+
+(define "SetEnPassantLocation"
+    (set Var "EnPassantLocation" (ahead (last To) Backward))
+    (set Pending (ahead (last To) Backward))
+)
+
+(define "CountEnPassantTries"
+    (if (= (what at: (ahead (last To) Rightward)) (next))
+        (addScore Next 1)
+    )
+    (if (= (what at: (ahead (last To) Leftward)) (next))
+        (addScore Next 1)
+    )
+)
+
+(define "PerformLegalMove"
+    (or {
+        (if (and ("IsMovingPiece" "Pawn") ("PawnStep"))
+            (move
+                (from (last From))
+                (to (last To))
+                (then
+                    (and {
+                        (if (is In (last To) (sites Mover "Promotion"))
+                            (moveAgain)
+                        )
+                        "CommonPostMoveActions"
+                        (set Counter)
+                    })
+                )
+            )
+        )
+        (if (and ("IsMovingPiece" "Pawn") (is Enemy (who at:(last To))))
+            (and
+                (set Var "CapturedPiece" (what at:(last To)))
+                (move
+                    (from (last From))
+                    (to (last To))
+                    (then
+                        (and {
+                            ("NoteCapture" (last To) (var "CapturedPiece"))
+                            (if (is In (last To) (sites Mover "Promotion"))
+                                (moveAgain)
+                            )
+                            "CommonPostMoveActions"
+                            (set Counter)
+                        })
+                    )
+                )
+            )
+        )
+        (if (and ("IsMovingPiece" "Pawn") (= (last To) (var "EnPassantLocation")))
+            (move
+                (from (last From))
+                (to (last To))
+                (then
+                    (and {
+                        (set Var "CapturedPiece"(what at:(ahead (last To) Backward)))
+                        (set Var "CaptureLocation" (ahead (last To) Backward))
+                        (remove
+                            (ahead (last To) Backward)
+                            (then
+                                (and {
+                                    ("NoteCapture" (var "CaptureLocation") (var "CapturedPiece"))
+                                    "CommonPostMoveActions"
+                                    (set Counter)
+                                })
+                            )
+                        )
+                    })
+                )
+            )
+        )
+        (set Var "EnPassantLocation" -1)
+        (if (and ("IsMovingPiece" "Pawn") ("InitialPawnMove"))
+            (move
+                (from (last From))
+                (to (last To))
+                (then
+                    (and {
+                        "SetEnPassantLocation"
+                        "CommonPostMoveActions"
+                        "CountEnPassantTries"
+                        (set Counter)
+                    })
+                )
+            )
+        )
+        (if (and
+                (or {
+                    ("IsMovingPiece" "Knight")
+                    ("IsMovingPiece" "Queen")
+                    ("IsMovingPiece" "Rook")
+                    ("IsMovingPiece" "Bishop")
+                })
+                (is Enemy (who at:(last To)))
+            )
+            (and
+                (set Var "CapturedPiece" (what at:(last To)))
+                (move
+                    (from (last From))
+                    (to (last To))
+                    (then
+                        (and {
+                            ("NoteCapture" (last To) (var "CapturedPiece"))
+                            "CommonPostMoveActions"
+                            ("PieceHasMoved" (last To))
+                            (set Counter)
+                        })
+                    )
+                )
+            )
+        )
+        (if (and
+                (or {
+                    ("IsMovingPiece" "Knight")
+                    ("IsMovingPiece" "Queen")
+                    ("IsMovingPiece" "Rook")
+                    ("IsMovingPiece" "Bishop")
+                })
+                (is Empty (last To))
+            )
+            (move
+                (from (last From))
+                (to (last To))
+                (then
+                    (and {
+                        "CommonPostMoveActions"
+                        ("PieceHasMoved" (last To))
+                    })
+                )
+            )
+        )
+        (if (and ("MovingTheKing") (is Enemy (who at:(last To))))
+            (and
+                (set Var "CapturedPiece" (what at:(last To)))
+                (move
+                    (from (last From))
+                    (to (last To))
+                    (then
+                        (and {
+                            ("NoteCapture" (last To) (var "CapturedPiece"))
+                            "CommonPostMoveActions"
+                            ("PieceHasMoved" (last To))
+                            (set Counter)
+                        })
+                    )
+                )
+            )
+        )
+        (if (and ("MovingTheKing") (is Empty (last To)))
+            (move
+                (from (last From))
+                (to (last To))
+                (then
+                    (and {
+                        "CommonPostMoveActions"
+                        ("PieceHasMoved" (last To))
+                    })
+                )
+            )
+        )
+        (if (and ("MovingTheKing") ("DecideToCastle" 2 E "RookRight"))
+            (and
+                (move
+                    (from (last From))
+                    (to (last To))
+                    (then
+                        ("PieceHasMoved" (last To))
+                    )
+                )
+                (move
+                    (from (mapEntry "RookRight" (mover)))
+                    (to (ahead (mapEntry "RookRight" (mover)) steps: 2 W))
+                    (then
+                        (and {
+                            "CommonPostMoveActions"
+                            ("PieceHasMoved" (ahead (mapEntry "RookRight" (mover)) steps: 2 W))
+                        })
+                    )
+                )
+            )
+        )
+        (if (and ("MovingTheKing") ("DecideToCastle" 3 W "RookLeft"))
+            (and
+                (move
+                    (from (last From))
+                    (to (last To))
+                    (then
+                        ("PieceHasMoved" (last To))
+                    )
+                )
+                (move
+                    (from (mapEntry "RookLeft" (mover)))
+                    (to (ahead (mapEntry "RookLeft" (mover)) steps: 2 E))
+                    (then
+                        (and {
+                            "CommonPostMoveActions"
+                            ("PieceHasMoved" (ahead (mapEntry "RookLeft" (mover)) steps: 2 E))
+                        })
+                    )
+                )
+            )
+        )
+    })
+)
+
+(define "DoubleStep"
+    (move
+        Slide
+        Forward
+        (between (exact 2) if:(is Empty (between)))
+        (to if:(is Empty (to)))
+    )
+)
+
+(define "InLocationEnPassant"
+    (and
+        (is Pending)
+        (= (to) (value Pending))
+    )
+)
+
+(define "EnPassant"
+    (move
+        Step
+        (directions {FR FL})
+        (to if:"InLocationEnPassant")
+        (then
+            (remove
+                (ahead (last To) Backward)
+            )
+        )
+    )
+)
+
+(define "CaptureForwardDiagonal"
+    (move
+        Step
+        (directions {FR FL})
+        (to
+            if:(is Enemy (who at:(to)))
+            (apply
+                (remove (to))
+            )
+        )
+    )
+)
+
+(define "PromotionCondition"
+    (and
+        (is In (last To) (sites Mover "Promotion"))
+        (= (what at: (last To)) (mapEntry "Pawn" Mover))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Kriegspiel"
+    (players {(player N) (player S)})
+    (equipment {
+        (board (square 8))
+
+        (piece "Pawn" Each
+            (or {
+                (if (is In (from) (sites Start (piece (what at:(from)))))
+                    "DoubleStep"
+                )
+                "StepForwardToEmpty"
+                "CaptureForwardDiagonal"
+                "EnPassant"
+                }
+            )
+        )
+
+        ("ChessRook" "Rook")
+        ("ChessKing" "King")
+        ("ChessBishop" "Bishop")
+        ("ChessKnight" "Knight")
+        ("ChessQueen" "Queen")
+
+        (map "King" {(pair 1 "E1") (pair 2 "E8")})
+        (map "Queen" {(pair 1 11) (pair 2 12)})
+        (map "Rook" {(pair 1 3) (pair 2 4)})
+        (map "Bishop" {(pair 1 7) (pair 2 8)})
+        (map "Knight" {(pair 1 9) (pair 2 10)})
+        (map "Pawn" {(pair 1 1) (pair 2 2)})
+        (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
+        (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
+    })
+    (rules
+        (start {
+            (place "Pawn1" (sites Row 1))
+            (place "Pawn2" (sites Row 6))
+            (place "Rook1" {"A1" "H1"} state:1) (place "Knight1" {"B1" "G1"}) (place "Bishop1" {"C1" "F1"}) (place "Queen1" coord:"D1") (place "King1" coord:"E1" state:1)
+            (place "Rook2" {"A8" "H8"} state:1) (place "Knight2" {"B8" "G8"}) (place "Bishop2" {"C8" "F8"}) (place "Queen2" coord:"D8") (place "King2" coord:"E8" state:1)
+
+            (set Hidden (sites Occupied by: Mover) to:Next)
+            (set Hidden (sites Occupied by: Next) to:Mover)
+        })
+
+        (play
+            (and
+                (if "PromotionCondition"
+                    (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover
+                        (then
+                            (and {
+                                "CommonPostMoveActions"
+                            })
+                        )
+                    )
+                )
+                (if
+                    (or
+                        ("NewTurn")
+                        (not "PromotionCondition")
+                    )
+                    (move Select (from (sites Occupied by:Mover)) (to (union (sites Empty) (sites Occupied by: Next)))
+                        (then
+                            (and {
+                                (set Var "NextLost" 0)
+                                (set Var "DrawCondition" 0)
+                                (priority
+                                    (if "LegalMove"
+                                        "PerformLegalMove"
+                                    )
+
+                                    (and {
+                                        (note "Illegal move")
+                                        (moveAgain)
+                                    })
+                                )
+                            })
+                        )
+                    )
+                )
+            )
+        )
+
+        (end {
+            (if (= (var "NextLost") 1) (result Mover Win))
+            (if (= (var "DrawCondition") 1) (result Mover Draw))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+
+    (info
+        {
+        (description "In this game each player can see their own pieces, but not those of their opponent. For this reason, it is necessary to have a third person (or computer) act as an umpire, with full information about the progress of the game. Players attempt to move on their turns, and the umpire declares their attempts 'legal' or 'illegal'. If the move is illegal, the player tries again; if it is legal, that move stands. Each player is given information about checks and captures. Since the position of the opponent's pieces is unknown, Kriegspiel is a game of imperfect information.")
+        (aliases {"Blind Chess" "Wild 16"})
+        (rules "The game is played with three boards, one for each player; the third is for the umpire (and spectators). Each opponent knows the exact position of just their own pieces, and does not know where the opponent's pieces are (but can keep track of how many there are). Only the umpire knows the position of the game. The game proceeds in the following way:
+          The umpire announces:
+          -'White's [or Black's] turn'.
+          -'Pawn at (square) captured', when a pawn is captured. The square of the capture is announced, e.g. Pawn gone on d4, or Pawn captured on d4. (En passant captures are specifically announced as such.)
+          -'Piece at (square) captured', when a piece is captured. The square of the capture is announced.
+          -'Illegal move' when the attempted move is illegal, given the opponent's position. For example: moving the king into check; moving a queen, rook, bishop, or pawn through squares occupied by the opponent's pieces; advancing a pawn into a square occupied by the opponent's pieces; moving a piece under an absolute pin.
+          -'Rank check'.
+          -'File check'.
+          -'Long-diagonal check' (the longer of the two diagonals, from the king's point of view).
+          -'Short-diagonal check'.
+          -'Knight check'.
+          -'(number)  tries' (number of legal capturing moves using pawns).
+          -'Checkmate', 'stalemate', 'draw by repetition', 'draw by insufficient force', '50-move draw'.
+          Pawn promotions are not announced. The precise location of the checking piece is not announced (although it may be deduced).
+          Illegal move attempts are not announced to the opponent.
+        ")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Kriegspiel_(chess)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.3.9")
+        (classification "board/war/replacement/checkmate/chess")
+        (credit "Nikola Novarlic")
+        (origin "Kriegspiel is a chess variant invented by Henry Michael Temple in 1899 and based upon the original Kriegsspiel (German for war game) developed by Georg von Reiswitz in 1812.")
+        }
+    )
+
+    (graphics {
+        (show Score Always " tries")
+        (piece Scale "Pawn" 0.825)
+        (piece Families {"Defined" "Microsoft" "Pragmata" "Symbola"})
+        (board Style Chess)
+    })
+)
