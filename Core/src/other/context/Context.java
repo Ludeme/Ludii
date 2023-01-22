@@ -32,6 +32,7 @@ import main.math.BitTwiddling;
 import metadata.Metadata;
 import other.GameLoader;
 import other.UndoData;
+import other.action.Action;
 import other.model.MatchModel;
 import other.model.Model;
 import other.move.Move;
@@ -697,7 +698,32 @@ public class Context
 	{
 		return game.players().players();
 	}
-
+	
+	/**
+	   * @param player The index of the player.
+	   * 
+	   * @return Note sent to a player at a last move.
+	*/
+	public List<String> getNotes(final int player)
+	{
+		List <String> notes = new ArrayList <String>(); 
+			
+		if(trial().lastMove(player) == null) 
+		  return notes;
+			
+		List <Action> actions = trial().lastMove(player).actions();
+			
+		for (Action action: actions) {
+			if(action.getDescription().contentEquals("Note"))
+				notes.add(action.message());
+		}
+		
+		for(int i = notes.size() - 1;  i >= 0; i -= 2) {
+			notes.remove(i);
+		}
+		return notes;
+	}
+	  
 	/**
 	 * @return Trial.
 	 */
