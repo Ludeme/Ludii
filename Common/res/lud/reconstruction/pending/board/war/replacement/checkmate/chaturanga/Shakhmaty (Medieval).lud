@@ -10,19 +10,20 @@
         <
         (players 2) 
         (equipment { 
-            (board [#]) 
-            (piece "King" Each (move [#])) // 2
-            (piece "Queen" Each (move [#])) // 2
-            (piece "Bishop" Each (move [#])) // 2
-            (piece "Knight" Each (move [#])) // 2
-            (piece "Rook" Each (move [#])) // 2
-            (piece "Pawn" Each (move [#])) // 8 per player
+            (board (square 8))
+            (piece "King" Each [#])
+            (piece "Queen" Each [#])
+            (piece "Knight" Each [#])
+            (piece "Pawn" Each [#])
+            (piece "Rook" Each [#])
+            (piece "Bishop" Each [#])
+            (map [#])
+            (map [#])
+            (map [#])
+            (regions [#])
+            (regions [#])
         })
-        (rules
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
