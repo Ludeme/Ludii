@@ -10,19 +10,10 @@
         <
         (players 2) 
         (equipment { 
-            (board (rectangle 8 7)) 		
-            (piece "Mouth" Each (move [#]))
-            (piece "Eye" Each (move [#]))
-            (piece "Ear" Each (move [#]))
-            (piece "Hand" Each (move [#]))
-            (piece "Foot" Each (move [#]))
-            (piece "Heart" Each (move [#]))
+            (board (square 8)) // Should be 8x7
+            [#]
         })
-        (rules 
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
@@ -61,6 +52,8 @@
     
     (recon {
         (concept "NumStartComponents" 12)
+        (concept "ReplacementCapture" True)
+        (concept "NumComponentsTypePerPlayer" minValue:4 maxValue:20)
     })
     
 )
