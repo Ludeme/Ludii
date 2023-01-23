@@ -21,14 +21,14 @@
                 )
                 use:Vertex
             )
-            (piece "Marker" Each [#])
+            (piece "Counter" Each [#])
         })
         (rules
             (start {
-                (place "Marker1" 
+                (place "Counter1" 
                     (expand (intersection (sites Bottom) (sites Left)) steps:9)
                 )
-                (place "Marker2" 
+                (place "Counter2" 
                     (expand (intersection (sites Top) (sites Right)) steps:9)
                 )
             })
