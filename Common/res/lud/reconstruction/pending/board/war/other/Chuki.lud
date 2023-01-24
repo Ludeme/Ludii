@@ -42,7 +42,7 @@
                     )
                 )
             })
-            (play [#]) // Dice is supposed to be roll to remove piece?
+            (play [#])
             (end [#])
         )
         >
@@ -82,10 +82,6 @@
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
-    })
-    
-    (recon {
-        (concept "ReplacementCapture" True)
     })
     
 )
