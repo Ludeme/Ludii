@@ -10,11 +10,7 @@
         <
         (players 2)
         (equipment [#]) 
-        (rules 
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
@@ -46,5 +42,13 @@
         (origin "This game was played in Persia, around 1694.")
         }
     )
+    
+    (recon {
+        (concept "Dice" True)
+        (concept "DiceD2" True)
+        (concept "Region" True)
+        (concept "Roll" True)
+        (concept "Score" True)
+    })
     
 )
