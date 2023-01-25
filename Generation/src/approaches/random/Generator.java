@@ -1166,6 +1166,7 @@ public class Generator
 	
 	//-------------------------------------------------------------------------
 
+	@SuppressWarnings("static-method")
 	void test()
 	{
 		Grammar.grammar().ebnf();  // trigger grammar and EBNF structure to be created
