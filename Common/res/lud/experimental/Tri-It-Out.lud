@@ -1,0 +1,210 @@
+// Tri-It-Out!
+
+// {Leap type}; (sites Empty) (Sites Occupied by:Mover) ...; < P1 P2 > <Mover Mover> <Next Next>     
+(define "Due2Step" 
+ (intersection
+  (sites Board)
+  (sites
+   (results 
+    from:#2 
+    to:(intersection (sites (from) { #1 } rotations:True) #3) 
+    (if
+     (!= 0
+      (size Array
+       (intersection
+        (intersection
+         (array (sites (from) { #1 } rotations:True))
+         (array (sites (to) { #1 } rotations:True))
+        )
+        (array #4) // P2 could be a single site - Then intersection fails to work properly...
+     )))
+     (from)
+     -1
+)))))  
+
+(define "TriangleSites"
+ (union
+  {
+   ("Due2Step" {F} #1 #2 #3)
+   ("Due2Step" {F R F} #1 #2 #3)
+   ("Due2Step" {F F} #1 #2 #3)
+   ("Due2Step" {F R F F} #1 #2 #3)
+   ("Due2Step" {F F R F} #1 #2 #3)
+   ("Due2Step" {F F R F F} #1 #2 #3)
+   ("Due2Step" {F F F} #1 #2 #3)
+   ("Due2Step" {F R F F F} #1 #2 #3)
+   ("Due2Step" {F F F R F} #1 #2 #3)
+   ("Due2Step" {F F R F F F} #1 #2 #3)
+   ("Due2Step" {F F F R F F} #1 #2 #3)
+   ("Due2Step" {F F F F} #1 #2 #3)
+   ("Due2Step" {F F F R F F F} #1 #2 #3)
+   ("Due2Step" {F R F F F F} #1 #2 #3)
+   ("Due2Step" {F F F F R F} #1 #2 #3)
+   ("Due2Step" {F F F F R F F} #1 #2 #3)
+   ("Due2Step" {F F R F F F F} #1 #2 #3)
+   ("Due2Step" {F F F F F} #1 #2 #3)
+   ("Due2Step" {F F F R F F F F} #1 #2 #3)
+   ("Due2Step" {F F F F R F F F} #1 #2 #3)
+   ("Due2Step" {F F F F F R F} #1 #2 #3)
+   ("Due2Step" {F R F F F F F} #1 #2 #3)
+  }
+))  
+
+
+//---------------------------------------
+// Main routine
+//---------------------------------------
+  
+(game "Tri-It-Out"
+    (players 2)
+    (equipment
+     {
+      (board <Board:size> use:Vertex)
+      (piece "Counter" Each)
+     }
+    )
+    (rules 
+        (meta (no Repeat PositionalInTurn)) // Positional)) 
+        (start
+         {
+          (set Score Each 0)
+         }   
+        ) 
+        (play
+         (if
+          (is Pending)
+          (move Remove
+           (sites Pending)
+           (then
+            (and
+             (set Value Mover Infinity)
+             (moveAgain)
+          )))
+          (move Add
+           (to
+            (difference
+             (sites Empty) 
+             ("TriangleSites"
+              (sites Empty)  // sites to return
+              (sites Occupied by:P1) 
+              (sites Occupied by:P2) 
+            )) // Dead sites
+            (apply (set Value Mover (to)))
+           )
+           (then
+            (if
+             "OutstandingCaptures"
+             (and
+              (set Pending "Sites2Capture")
+              (moveAgain)
+          ))))
+          (then
+           (set Score  P1 (- (count Pieces  P1))
+            (then
+             (set Score P2 (- (count Pieces P2)))
+          )))
+        )) 
+        (end 
+            {
+             (if
+              (and
+               {
+                (no Moves Next)
+                <Variant:outsandingCaptures>
+               }
+              )
+              (result Mover Loss)
+             )
+             
+             (if
+              (and
+                (no Moves Next)
+                (= (count Pieces P1) (count Pieces P2))
+              )
+              (result Mover Loss)
+             )
+             
+             (if 
+              (and
+                (no Moves Next)
+                (!= (count Pieces P1) (count Pieces P2))
+              )
+              (byScore)
+             )
+            }
+        )
+    )
+)
+
+(define "OutstandingCaptures" 
+ (< 0
+  (size Array
+   (array
+    "Sites2Capture"
+))))
+
+(define "Sites2Capture"
+ ("TriangleSites"
+  (sites Occupied by:Next) // sites to return
+  (sites Occupied by:Next)
+  <Variant:capture>
+))
+
+(define "EndCondition" (no Moves Mover)) 
+
+//---------------------------------------
+(option "Capture" <Variant> args:{ <capture> <outsandingCaptures>}
+ {
+  (item "Current Mixed Triangle" <{ (value Player (mover)) }> <False> "Standard Rules")* //lots of other ways didn't compile...
+  (item "Any Mixed Triangle" <(sites Occupied by:Mover)> <"OutstandingCaptures" > "Variant: Capture from any Mixed triangle, and continue taking bonus placements until no mixed triangles remain. Lose if the game ends on your turn while there are mixed triangles on the board.")
+ }
+)
+
+ 
+(define "Tri46Bug"  (tri {4 6 4 7 4}))
+(define "Tri56Bug"  (tri {5 6 5 7 5}))
+(define "Tri57Bug"  (tri {5 7 5 8 5}))
+(define "Tri78Bug"  (tri {7 8 7 10 6}))
+(option "Board Size" <Board> args:{ <size> <adj> <diag> }
+    {
+    (item "Hex 2-3 (12)"         <(tri {2 3 2 3 2})>   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 2 and 4")
+    (item "Equiversi 2-4 (18)"   <(tri {2 4 2 4 2})>    <Orthogonal> <Hidden>  "Board & size: Equiversi Hexhex with edges alternating 2 and 4")
+    (item "Equiversi 3-5 (36)"   <(tri {3 5 3 5 3})>    <Orthogonal> <Hidden>  "Board & size: Equiversi Hexhex with edges alternating 3 and 5")**
+    (item "Hex 4-5 (48)"         <(tri {4 5 4 5 4})>   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 4 and 5")**
+    (item "Tri 5 (15)"           <(tri Triangle 5)>    <Orthogonal> <Hidden>  "Board & size: Triangle order 5")
+    (item "Hex 3 (19)"           <(tri Hexagon 3)>     <Orthogonal> <Hidden>  "Board & size: Hexhex 3")
+    (item "Tri 6 (21)"           <(tri Triangle 6)>    <Orthogonal> <Hidden>  "Board & size: Triangle order 6")
+    (item "Hex 3-4 (27)"         <(tri {3 4 3 4 3})>   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 3 and 4")***
+    (item "Hex 4 (37)"           <(tri Hexagon 4)>     <Orthogonal> <Hidden>  "Board & size: Hexhex 4")
+    }
+)
+
+//----------------------------------------------------------
+
+(metadata
+    (info 
+       {
+
+    }
+ )
+
+
+ (graphics 
+    {
+    (board Style Graph)
+    (board Colour InnerEdges (colour 62 72 55))
+    (board Colour OuterEdges (colour 62 72 55))
+    (board StyleThickness OuterEdges .25)
+    (board StyleThickness InnerEdges .25)
+    (show Edges Diagonal <Board:diag> (colour 62 72 55))
+    (piece Scale P1 "Counter" 0.75)
+    (piece Scale P2 "Counter" 0.75)
+    (piece Scale P3 "Counter" 0.75)
+    (piece Scale P4 "Counter" 0.75)
+    (piece Scale P5 "Counter" 0.75)
+    (piece Scale P6 "Counter" 0.75)
+    }
+ )
+)
+
+
