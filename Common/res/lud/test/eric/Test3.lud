@@ -1,140 +1,23 @@
-(define "CaptureToPiece"
-    (apply 
-        (remove 
-            (to) 
-        )
-    ) 
-)
-
-(define "CaptureForwardDiagonal"
-    (move Step 
-        (directions {FR FL}) 
-        (to 
-            if:("IsEnemyAt" (to)) 
-            (apply (remove (to)))
-        )
-    )
-)
+(define "SquarePattern" (is Pattern {F F R F F R F F R F F} whats:{(mover) 0 (mover) 0 (mover) 0 (mover) 0}))
 
 //------------------------------------------------------------------------------
 
-(game "Chaturanga (Payagunda)"
-    <Variant>
-)
-
-//------------------------------------------------------------------------------
-
-(option "Variant" <Variant> args:{ <variant> }
-    {
-    (item "Incomplete"
-        <
-        (players 2) 
-        (equipment { 
-            (board (square 8)) 
-            (piece "Pawn" Each // Padati 
-                (or 
-                    "StepForwardToEmpty" 
-                    "CaptureForwardDiagonal"
-                    (then
-                        (if (is In (last To) (sites Mover "Promotion")) 
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-            (piece "Rook" Each // Dvipa 
-                (move
-                    Slide 
-                    Orthogonal 
-                    (to 
-                        if:("IsEnemyAt" (to)) 
-                        "CaptureToPiece"
-                    ) 
-                )
-            )
-            (piece "King_noCross" Each // Raja 
-                (move
-                    Step 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece" 
-                    )
-                )
-            )
-            (piece "Elephant" Each // Mantri
-                (move
-                    Slide 
-                    Diagonal 
-                    (to 
-                        if:("IsEnemyAt" (to)) 
-                        "CaptureToPiece"
-                    ) 
-                )		
-            ) 
-            (piece "Knight" Each // Turaja 
-                (move
-                    Leap 
-                    "KnightWalk" 
-                    (to 
-                        if:(not ("IsFriendAt" (to))) 
-                        "CaptureToPiece"
-                    ) 
-                )
-            )
-            (piece "Ferz_noCross" Each // Ratha 
-                (move Hop Diagonal 
-                    (between if:True) 
-                    (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))) 
-                )
-            )
-        })
+(game "Test3"
+    (players 2) 
+    
+    (equipment { 
+        (board (square 5))
+        (hand Each)
+        (piece "Ball" Each) 
+    })  
+    (rules 
+        (play (move Add (to (sites Empty))))
         
-        (rules 
-            (start { 
-                (place "Pawn1" (sites Row 1))
-                (place "Pawn2" (sites Row 6))
-                (place "Ferz_noCross1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Rook1" {"C1" "F1"}) (place "King_noCross1" coord:"D1") (place "Elephant1" coord:"E1") 
-                (place "Ferz_noCross2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Rook2" {"C8" "F8"}) (place "King_noCross2" coord:"E8") (place "Elephant2" coord:"D8") 
-            })
-            (play (forEach Piece))
-            (end (if (no Moves Next) (result Mover Win)))
+        (end 
+            (if 
+                ("SquarePattern") 
+                (result Mover Win)
+            )
         )
-        >
-        "The incomplete ruleset."
     )
-})
-
-//------------------------------------------------------------------------------
-
-(rulesets { 
-    
-    (ruleset "Ruleset/Historical Information" {
-        "Variant/Incomplete"
-    })
-    
-})
-
-//------------------------------------------------------------------------------
-
-(metadata 
-    
-    (info
-        {
-        (description "Chaturanga is the name of a replacement capture game from India. This particular version was played in the early eighteenth century, and shows movement from the older version of the game toward the modern version.")
-        (rules "8x8 board. Ratha start on the corers, with the Turaja next to them and the Dvipa next to the Horses. The Raja and Mantri are in the center. Ratha jump diagonally to the second space; Turaja move orthogonally one space and then diagonally another space, jumping over any intervening pieces; Dvipa moves orthogonally any distance; Mantri moves diagonally any distance; Raja moves one space orthogonally or diagonally, Padati move forward orthogonally one square or forward diagonally to capture.")
-        (source "DLP evidence.")
-        (id "1447")
-        (version "1.3.7")
-        (classification "board/war/replacement/checkmate/chaturanga/reconstruction")
-        (credit "Eric Piette")
-        (origin "This game was played in India, from around 1700 to 1750.")
-        }
-    )
-    
-    (graphics {
-        (board Colour Phase0 (colour 223 178 110))
-        (board Colour InnerEdges (colour Black))
-        (board Colour OuterEdges (colour Black))
-    })
-    
 )
