@@ -1,4 +1,4 @@
-(game "Puma" // Involves a lion
+(game "Puma"
     <Variant>
 )
 
@@ -6,23 +6,1248 @@
 
 (option "Variant" <Variant> args:{ <variant> }
     {
+    (item "Puma (Ludii 1)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (rotate 180 
+                        (merge 
+                            (shift 0 2 
+                                (square 5 diagonals:Alternating)
+                            )
+                            
+                            (wedge 3)
+                        )
+                    )
+                    edges:{ { 27 29}
+                    { 29 25 }
+                    }
+                )
+            use:Vertex )
+            
+            (piece "Jaguar" P1 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Dog2" 
+                    (union 
+                        (expand 
+                            (sites Bottom)
+                        steps:1)
+                        
+                        (sites { "A3" "E3"}
+                        )
+                    )
+                )
+                
+                (place "Jaguar1" coord:"C7")
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+                
+                (if 
+                    (<= 
+                        (count Pieces P2)
+                    6)
+                    
+                    (result P2 Loss)
+                )
+                }
+            )
+        )
+        
+    > "The Puma (Ludii 1) ruleset.")
+    
+    (item "Puma (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (rotate 180 
+                        (merge 
+                            (shift 0 2 
+                                (square 5 diagonals:Alternating)
+                            )
+                            
+                            (wedge 3)
+                        )
+                    )
+                    edges:{ { 27 29}
+                    { 29 25 }
+                    }
+                )
+            use:Vertex )
+            
+            (piece "Jaguar" P1 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Dog2" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:2)
+                        
+                        (sites { "C5"}
+                        )
+                    )
+                )
+                
+                (place "Jaguar1" coord:"C5")
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+                
+                (if 
+                    (<= 
+                        (count Pieces P2)
+                    0)
+                    
+                    (result P2 Loss)
+                )
+                }
+            )
+        )
+        
+    > "The Puma (Ludii 2) ruleset.")
+    
+    (item "Puma (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge 
+                    (shift 0 2 
+                        (square 5 diagonals:Alternating)
+                    )
+                    
+                    (wedge 3)
+                )
+            use:Vertex )
+            
+            (piece "Jaguar" P1 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Dog2" 
+                    (union 
+                        (expand 
+                            (sites Bottom)
+                        steps:1)
+                        
+                        (sites { "A3" "E3"}
+                        )
+                    )
+                )
+                
+                (place "Jaguar1" coord:"C7")
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+                
+                (if 
+                    (<= 
+                        (count Pieces P2)
+                    6)
+                    
+                    (result P2 Loss)
+                )
+                }
+            )
+        )
+        
+    > "The Puma (Ludii 3) ruleset.")
+    
+    (item "Puma (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge 
+                    (shift 0 2 
+                        (square 5 diagonals:Alternating)
+                    )
+                    
+                    (wedge 3)
+                )
+            use:Vertex )
+            
+            (piece "Jaguar" P1 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Dog2" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:2)
+                        
+                        (sites { "C5"}
+                        )
+                    )
+                )
+                
+                (place "Jaguar1" coord:"C5")
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+                
+                (if 
+                    (<= 
+                        (count Pieces P2)
+                    0)
+                    
+                    (result P2 Loss)
+                )
+                }
+            )
+        )
+        
+    > "The Puma (Ludii 4) ruleset.")
+    
+    (item "Puma (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (rotate 180 
+                        (merge 
+                            (shift 0 2 
+                                (square 5 diagonals:Alternating)
+                            )
+                            
+                            (wedge 3)
+                        )
+                    )
+                    edges:{ { 27 29}
+                    { 29 25 }
+                    }
+                )
+            use:Vertex )
+            
+            (piece "Jaguar" P1 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Jaguar1" coord:"C6")
+                
+                (place "Dog2" 
+                    (expand 
+                        (sites Bottom)
+                    steps:2)
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P1 Loss)
+                )
+                
+                (if 
+                    (<= 
+                        (count Pieces P2)
+                    6)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Puma (Ludii 5) ruleset.")
+    
+    (item "Puma (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rotate 180 
+                    (merge 
+                        (shift 0 2 
+                            (square 5 diagonals:Alternating)
+                        )
+                        
+                        (wedge 3)
+                    )
+                )
+            use:Vertex )
+            
+            (piece "Jaguar" P1 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Dog2" 
+                    (union 
+                        (expand 
+                            (sites Bottom)
+                        steps:1)
+                        
+                        (sites { "A3" "E3"}
+                        )
+                    )
+                )
+                
+                (place "Jaguar1" coord:"C7")
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+                
+                (if 
+                    (<= 
+                        (count Pieces P2)
+                    6)
+                    
+                    (result P2 Loss)
+                )
+                }
+            )
+        )
+        
+    > "The Puma (Ludii 6) ruleset.")
+    
+    (item "Puma (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge 
+                    (shift 0 2 
+                        (square 5 diagonals:Alternating)
+                    )
+                    
+                    (wedge 3)
+                )
+            use:Vertex )
+            
+            (piece "Jaguar" P1 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Jaguar1" coord:"C6")
+                
+                (place "Dog2" 
+                    (expand 
+                        (sites Bottom)
+                    steps:2)
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P1 Loss)
+                )
+                
+                (if 
+                    (<= 
+                        (count Pieces P2)
+                    6)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Puma (Ludii 7) ruleset.")
+    
+    (item "Puma (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rotate 180 
+                    (merge 
+                        (shift 0 2 
+                            (square 5 diagonals:Alternating)
+                        )
+                        
+                        (wedge 3)
+                    )
+                )
+            use:Vertex )
+            
+            (piece "Jaguar" P1 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Dog2" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:2)
+                        
+                        (sites { "C5"}
+                        )
+                    )
+                )
+                
+                (place "Jaguar1" coord:"C5")
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+                
+                (if 
+                    (<= 
+                        (count Pieces P2)
+                    0)
+                    
+                    (result P2 Loss)
+                )
+                }
+            )
+        )
+        
+    > "The Puma (Ludii 8) ruleset.")
+    
+    (item "Puma (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rotate 180 
+                    (merge 
+                        (shift 0 2 
+                            (square 5 diagonals:Alternating)
+                        )
+                        
+                        (wedge 3)
+                    )
+                )
+            use:Vertex )
+            
+            (piece "Jaguar" P1 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Jaguar1" coord:"C6")
+                
+                (place "Dog2" 
+                    (expand 
+                        (sites Bottom)
+                    steps:2)
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P1 Loss)
+                )
+                
+                (if 
+                    (<= 
+                        (count Pieces P2)
+                    6)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Puma (Ludii 9) ruleset.")
+    
+    (item "Puma (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge 
+                    (scale 2 
+                        (square 5 diagonals:Alternating)
+                    )
+                    
+                    (graph vertices:{ { 4 8}
+                        { 3 9}
+                        { 4 9}
+                        { 5 9}
+                        { 2 10}
+                        { 3 10}
+                        { 4 10}
+                        { 5 10}
+                        { 6 10}
+                        { 1 11}
+                        { 3 11}
+                        { 4 11}
+                        { 5 11}
+                        { 7 11}
+                        }
+                        edges:{ { 0 1}
+                        { 0 2}
+                        { 0 3}
+                        { 1 4}
+                        { 1 5}
+                        { 1 2}
+                        { 2 6}
+                        { 2 3}
+                        { 3 7}
+                        { 3 8}
+                        { 4 9}
+                        { 4 5}
+                        { 5 10}
+                        { 5 6}
+                        { 6 11}
+                        { 6 7}
+                        { 7 12}
+                        { 7 8}
+                        { 8 13}
+                        { 9 10}
+                        { 10 11}
+                        { 11 12}
+                        { 12 13}
+                        }
+                    )
+                )
+            use:Vertex )
+            
+            (piece "MountainLion" P1 
+                (if 
+                    (is Prev Mover)
+                    
+                    (or 
+                        (move Pass)
+                        
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (or 
+                        (move Hop 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        
+                        (move Step 
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Dog" P2 N 
+                (move Step Forward 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Dog2" 
+                    (union 
+                        (expand 
+                            (sites Bottom)
+                        )
+                        
+                        (sites { "A3" "I3"}
+                        )
+                    )
+                )
+                
+                (place "MountainLion1" 
+                    (coord "E7")
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Moves P2)
+                    
+                    (result Mover Draw)
+                )
+                }
+            )
+        )
+        
+    > "The Puma (Ludii 10) ruleset.")
+    
     (item "Incomplete"
         <
         (players 2) 
         (equipment [#])
-        (rules
-            (start [#])
-            (play [#]) 
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
+    
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
+(rulesets {
+    
+    (ruleset "Ruleset/Puma (Ludii 1) (Reconstructed)" {
+        "Variant/Puma (Ludii 1)"
+    })
+    (ruleset "Ruleset/Puma (Ludii 2) (Reconstructed)" {
+        "Variant/Puma (Ludii 2)"
+    })
+    (ruleset "Ruleset/Puma (Ludii 3) (Reconstructed)" {
+        "Variant/Puma (Ludii 3)"
+    })
+    (ruleset "Ruleset/Puma (Ludii 4) (Reconstructed)" {
+        "Variant/Puma (Ludii 4)"
+    })
+    (ruleset "Ruleset/Puma (Ludii 5) (Reconstructed)" {
+        "Variant/Puma (Ludii 5)"
+    })
+    (ruleset "Ruleset/Puma (Ludii 6) (Reconstructed)" {
+        "Variant/Puma (Ludii 6)"
+    })
+    (ruleset "Ruleset/Puma (Ludii 7) (Reconstructed)" {
+        "Variant/Puma (Ludii 7)"
+    })
+    (ruleset "Ruleset/Puma (Ludii 8) (Reconstructed)" {
+        "Variant/Puma (Ludii 8)"
+    })
+    (ruleset "Ruleset/Puma (Ludii 9) (Reconstructed)" {
+        "Variant/Puma (Ludii 9)"
+    })
+    (ruleset "Ruleset/Puma (Ludii 10) (Reconstructed)" {
+        "Variant/Puma (Ludii 10)"
+    }) 
     
     (ruleset "Ruleset/Hsitorical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -47,4 +1272,9 @@
         }
     )
     
+    (graphics {
+        (show Edges Diagonal Hidden)
+    })
+    
 )
+
