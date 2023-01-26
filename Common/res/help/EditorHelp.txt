@@ -2611,8 +2611,9 @@ EXAMPLE: (rules (start (place "Ball" "Hand" count:3)) phases:{ (phase "Placement
 TYPE: game.rules.end.ByScore
 TYPE JAVADOC: Is used to end a game based on the score of each player.
 NEW CTOR
-(byScore [{<score>}])
+(byScore [{<score>}] [misere:<boolean>])
 PARAM JAVADOC: [{<score>}]: The final score of each player.
+PARAM JAVADOC: [misere:<boolean>]: Misere version of the ludeme [False].
 EXAMPLE: (byScore)
 TYPE: game.rules.end.End
 TYPE JAVADOC: Defines the rules for ending a game.
