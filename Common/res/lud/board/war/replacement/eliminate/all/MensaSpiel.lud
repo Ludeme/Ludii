@@ -10,11 +10,11 @@
 (define "Captured" (>  (size Stack at:(last To)) (value Piece at:(last To)) ))
 (define "StartAttack" (move (from (sites Mover "Base"))(to (intersection (sites #1 #2) (sites Empty))) "StartThen" )  )
 (define "PrisTrans" (add (piece (id #1 Mover))(to (sites Mover #2 ))
-                          count:(count Stack at:(last To) if:(= (id "Cone" #3)(what at:(to) level:(level)))) stack:True ))
+count:(count Stack at:(last To) if:(= (id "Cone" #3)(what at:(to) level:(level)))) stack:True ))
 (define "Extinction" (and { (no Moves Next)
-                            (= 0 (count Sites in:(intersection (sites Occupied by:Next) (sites "RingsplusBase") )) )
-                            (< (count Sites in:(sites Occupied by:Next)) 2)
-                          })
+        (= 0 (count Sites in:(intersection (sites Occupied by:Next) (sites "RingsplusBase") )) )
+        (< (count Sites in:(sites Occupied by:Next)) 2)
+    })
 )
 (define "StartMove" (if (= 1 (var "StartS")) (move (from (sites Mover "Base"))
         (to (difference (sites Mover "HomeRing") (mapEntry "SameColor" (last To)))) "StartThen")
@@ -29,21 +29,21 @@
         (and {
             (promote (last To) (piece {"Cone"}) Mover)
             (set Var "StartS" (+ 1 (var "StartS")))
-
+            
             (if (= 0 (var "StartS")) (set Var "St1Pos" (last To)))
             (if (and (= 1 (var "StartS"))
-                     (or (= (mapEntry "Attacks1" (last To)) (var "St1Pos"))
-                         (= (mapEntry "Attacks2" (last To)) (var "St1Pos")) )
+                    (or (= (mapEntry "Attacks1" (last To)) (var "St1Pos"))
+                    (= (mapEntry "Attacks2" (last To)) (var "St1Pos")) )
                 )
                 (set Var "CntrAttack" 1)
             )
             (if (> (var "StartS") 2) (set Var "CntrAttack" 0))
             (if (and {(is Friend (who at:(mapEntry "SameColor" (last To))))
-                      (!= 1 (var "CntrAttack"))
-                      "PlayerHasReserve"
+                    (!= 1 (var "CntrAttack"))
+                    "PlayerHasReserve"
                 })
                 (and (add (piece (id "Starter" Mover))(to (sites Mover "Base")) stack:True)
-                     (remove (sites Mover "Reserve"))
+                    (remove (sites Mover "Reserve"))
                 )
             )
             (set Value at:(last To) 1)
@@ -54,20 +54,20 @@
 (define "MoveThen" (then (and { (set Var "StartS" 3) (set Var "CntrAttack" 0 )
             (if (= 15 (last To))
                 (and {("PrisTrans" "Starter" "Base" Mover)
-                      ("PrisTrans" "Prisoner" "Prison" Next)
-                      (remove 15 count:(count Stack at:(last To)))
+                    ("PrisTrans" "Prisoner" "Prison" Next)
+                    (remove 15 count:(count Stack at:(last To)))
                 })
-
-            (if (and (is Friend (who at:(mapEntry "SameColor" (last To))))
-                      "PlayerHasReserve"
-                )
-                (and (remove (sites Mover "Reserve"))
-                     (add (piece (id "Starter" Mover))(to (sites Mover "Base")) stack:True)
+                
+                (if (and (is Friend (who at:(mapEntry "SameColor" (last To))))
+                        "PlayerHasReserve"
+                    )
+                    (and (remove (sites Mover "Reserve"))
+                        (add (piece (id "Starter" Mover))(to (sites Mover "Base")) stack:True)
+                    )
                 )
             )
-           )
             (set Value at:(last To) (count Stack at:(last To)))
-
+            
             (addScore Mover (- ("Pips+-" (last To)) ("Pips+-" (last From)) ) )
             (if "Captured"(addScore Next (- 0 "PipsCap"  )))
         })
@@ -76,15 +76,15 @@
 
 (define "PrisonerExchange"
     (if (and (no Pieces in:(sites Mover "Base"))
-              "PlayerHasReserve"
-         )
+            "PlayerHasReserve"
+        )
         (move (from ) (to (sites Mover "Base")) )
-
+        
         (then 
             (and {(promote (last To) (piece "Starter") Mover )
-                  (remove (sites Mover "Reserve"))
-                  (add (piece (id "Reserve" Next))(to (sites Next "Reserve")) stack:True)
-                  (moveAgain)
+                (remove (sites Mover "Reserve"))
+                (add (piece (id "Reserve" Next))(to (sites Next "Reserve")) stack:True)
+                (moveAgain)
             })
         )
     )
@@ -92,17 +92,17 @@
 
 (define "IsSelfStaleLastManLoop"
     (and { (no Moves Next)
-           (no Pieces in:(sites Mover "Reserve"))
-           (no Pieces in:(sites Mover "Base"))
-           (= 1 (count Pieces Mover in:(intersection (sites "Rings")(sites Occupied by:Mover )) ) )
-          })
+        (no Pieces in:(sites Mover "Reserve"))
+        (no Pieces in:(sites Mover "Base"))
+        (= 1 (count Pieces Mover in:(intersection (sites "Rings")(sites Occupied by:Mover )) ) )
+    })
 )
 
 (define "IsLastMan"
     (and { (no Pieces in:(sites Mover "Base") )
-           (= 1 (count Pieces in:(intersection (sites "Rings") (sites Occupied by:Mover))  ))
-           (= 1 (size Stack at:(regionSite (intersection (sites Occupied by:Mover)(sites Mover "SitesLastMan")) index:0)) )
-           "PlayerHasReserve"
+        (= 1 (count Pieces in:(intersection (sites "Rings") (sites Occupied by:Mover))  ))
+        (= 1 (size Stack at:(regionSite (intersection (sites Occupied by:Mover)(sites Mover "SitesLastMan")) index:0)) )
+        "PlayerHasReserve"
     })
 )
 (define "LastMan"
@@ -110,10 +110,10 @@
         (from ) (to 15)
         (then
             (and {(set Var "CntrAttack" 0)
-                  (set Score Mover 0)
-                  (remove 15 )
-                  (remove (sites Mover "Reserve"))
-                  (add (piece (id "Starter" Mover))(to (sites Mover "Base")) count:2 stack:True)
+                (set Score Mover 0)
+                (remove 15 )
+                (remove (sites Mover "Reserve"))
+                (add (piece (id "Starter" Mover))(to (sites Mover "Base")) count:2 stack:True)
             })
     ))
 )
@@ -142,7 +142,7 @@
                 (intersection {
                     (sites "Rings")(sites Occupied by:Next)
                     (sites { ("CaptPos" #1) ("CaptPos" #2)("CaptPos" #3) ("CaptPos" #4)
-                             ("CaptPos" #5) ("CaptPos" #6)("CaptPos" #7) ("CaptPos" #8) (mapEntry #9 (from))
+                        ("CaptPos" #5) ("CaptPos" #6)("CaptPos" #7) ("CaptPos" #8) (mapEntry #9 (from))
                     })
                 })
             })
@@ -280,7 +280,7 @@
         (map "Step18e" {6 19 8 21 22 9 11 24} {24 24 19 15 15 21 22 19 })
         (map "Step18f" {8 21 22 9} {22 22 21 24 })
         (map "Step18g" {6 19 11 24} {23 16 14 7 })
-
+        
         (piece "Prisoner" Each  "PrisonerExchange" )
         (piece "Starter"  Each  "StartMove" ) (piece "Reserve"  Each )
         (piece "Cone"  Each (if "IsLastMan" (or "LastMan" "ConeMove" ) "ConeMove" ))
@@ -296,15 +296,15 @@
         })
         
         (play   (do   (if "RingsAreEmpty" (and {(set Var "StartS" 0 ) (set Var "CntrAttack"  0 )   }))
-                 next:(if ( "SameTurn") "StartMove"
-                      (forEach Piece top:True )
+                next:(if ( "SameTurn") "StartMove"
+                    (forEach Piece top:True )
                 )
             )
         )
         
         (end  { (if "Extinction" (result Mover Win) )
-                (if (>= (count Pieces Mover in:(sites "Prison")) <Num:pris>) (result Mover Win) )
-                (if "IsSelfStaleLastManLoop" (result Mover Draw) )
+            (if (>= (count Pieces Mover in:(sites "Prison")) <Num:pris>) (result Mover Win) )
+            (if "IsSelfStaleLastManLoop" (result Mover Draw) )
         })
     )
 )
@@ -317,11 +317,11 @@
 
 (option "End Rules" <Num> args:{ <pris> }
     { (item "Get 1 Prisoner"   <1>  "Sudden Death Match: 1 Prisoner ends it all.")
-      (item "Get 2 Prisoners"  <2>  "Transfer 2 enemy-pieces to your prison-cell.")
-      (item "Get 3 Prisoners"  <3>  "Transfer 3 enemy-pieces to your prison-cell.")*
-      (item "Get 4 Prisoners"  <4>  "Transfer 4 enemy-pieces to your prison-cell.")
-      (item "Get 5 Prisoners"  <5>  "Transfer 5 enemy-pieces to your prison-cell.")
-      (item "Get 6 Prisoners"  <6>  "Transfer 6 enemy-pieces to your prison-cell.")
+    (item "Get 2 Prisoners"  <2>  "Transfer 2 enemy-pieces to your prison-cell.")
+    (item "Get 3 Prisoners"  <3>  "Transfer 3 enemy-pieces to your prison-cell.")*
+    (item "Get 4 Prisoners"  <4>  "Transfer 4 enemy-pieces to your prison-cell.")
+    (item "Get 5 Prisoners"  <5>  "Transfer 5 enemy-pieces to your prison-cell.")
+    (item "Get 6 Prisoners"  <6>  "Transfer 6 enemy-pieces to your prison-cell.")
 } )
 //-------------
 (metadata
