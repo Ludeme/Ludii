@@ -1,0 +1,112 @@
+(game "Cumisitha" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (rotate 180 
+                (merge 
+                    (shift 0 2 
+                        (square 5 diagonals:Alternating)
+                    )
+                    
+                    (wedge 3)
+                )
+            )
+        use:Vertex )
+        
+        (piece "Jaguar" P1 
+            (or 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Dog" P2 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Dog2" 
+                (union 
+                    (expand 
+                        (sites Bottom)
+                    steps:1)
+                    
+                    (sites { "A3" "E3"}
+                    )
+                )
+            )
+            
+            (place "Jaguar1" coord:"C7")
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end { 
+            (if 
+                (no Moves Next)
+                
+                (result Next Loss)
+            )
+            
+            (if 
+                (<= 
+                    (count Pieces P2)
+                6)
+                
+                (result P2 Loss)
+            )
+            }
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Sow" False)
+    })
+    )

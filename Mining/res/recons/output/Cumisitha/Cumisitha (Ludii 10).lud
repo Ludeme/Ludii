@@ -1,0 +1,62 @@
+(game "Cumisitha" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (rectangle 10 2)
+        )
+        
+        (piece "Disc" Each)
+        
+        (dice d:7 from:0 num:1)
+        
+        (map { 
+            (pair 0 -10)
+            
+            (pair 1 1)
+            
+            (pair 2 2)
+            
+            (pair 3 3)
+            
+            (pair 4 4)
+            
+            (pair 5 5)
+            
+            (pair 6 6)
+            
+            (pair 7 10)
+            }
+        )
+        }
+    )
+    
+    (rules 
+        (play 
+            (move Add 
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Sow" False)
+    })
+    )

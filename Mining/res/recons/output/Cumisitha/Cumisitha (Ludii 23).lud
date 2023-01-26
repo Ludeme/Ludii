@@ -1,0 +1,353 @@
+(game "Cumisitha" 
+    (players { 
+        (player N)
+        
+        (player S)
+        }
+    )
+    
+    (equipment { 
+        (board 
+            (square 5)
+        use:Vertex)
+        
+        (piece "Disc" Each 
+            (or 
+                (move Hop 
+                    (directions { Rightward Leftward Forwards }
+                    of:All)
+                    
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (and 
+                            (if 
+                                (is In 
+                                    (last To)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (promote 
+                                    (last To)
+                                    
+                                    (piece "DiscDouble")
+                                Mover )
+                            )
+                            
+                            (set Value Mover 0)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (directions { Rightward Leftward Forwards }
+                    of:All)
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (set Value Mover 1)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is In 
+                            (last To)
+                            
+                            (sites Next)
+                        )
+                        
+                        (promote 
+                            (last To)
+                            
+                            (piece "DiscDouble")
+                        Mover)
+                    )
+                )
+            )
+        )
+        
+        (piece "DiscDouble" Each 
+            (or 
+                (move Hop All 
+                    (between before:
+                        (count Rows)
+                        after:
+                        (count Rows)
+                        if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (set Value Mover 0)
+                    )
+                )
+                
+                (move Slide All 
+                    (then 
+                        (set Value Mover 1)
+                    )
+                )
+            )
+        )
+        
+        (regions P1 
+            (intersection 
+                (sites Corners)
+                
+                (sites Bottom)
+            )
+        )
+        
+        (regions P2 
+            (intersection 
+                (sites Corners)
+                
+                (sites Top)
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Disc1" 
+                (union { 
+                    (expand 
+                        (sites Bottom)
+                    )
+                    
+                    (sites { "D3" "E3"}
+                    )
+                    }
+                )
+            )
+            
+            (place "Disc2" 
+                (union { 
+                    (sites { "A3" "B3"}
+                    )
+                    
+                    (expand 
+                        (sites Top)
+                    )
+                    }
+                )
+            )
+            }
+        )
+        
+        (play 
+            (or 
+                (if 
+                    (= 
+                        (value Player Prev)
+                    1)
+                    
+                    (or 
+                        (if 
+                            (and 
+                                (is In 
+                                    (last From)
+                                    
+                                    (sites Pending)
+                                )
+                                
+                                (is In 
+                                    (last From)
+                                    
+                                    (sites Empty)
+                                )
+                            )
+                            
+                            (move Select 
+                                (from 
+                                    (last To)
+                                    if:
+                                    (is Occupied 
+                                        (from)
+                                    )
+                                )
+                                
+                                (then 
+                                    (and { 
+                                        (remove 
+                                            (last To)
+                                        )
+                                        
+                                        (moveAgain)
+                                        
+                                        (set Value Prev 0)
+                                        }
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move Select 
+                            (from 
+                                (sites Pending)
+                                if:
+                                (is Occupied 
+                                    (from)
+                                )
+                            )
+                            
+                            (then 
+                                (and { 
+                                    (remove 
+                                        (last To)
+                                    )
+                                    
+                                    (moveAgain)
+                                    
+                                    (set Value Prev 0)
+                                    }
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (do 
+                    (set Pending 
+                        (sites From 
+                            (or 
+                                (forEach Piece "Disc" 
+                                    (move Hop 
+                                        (directions { Rightward Leftward Forwards }
+                                        of:All )
+                                        
+                                        (between if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                            
+                                            (apply 
+                                                (remove 
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (then 
+                                            (and 
+                                                (if 
+                                                    (is In 
+                                                        (last To)
+                                                        
+                                                        (sites Next)
+                                                    )
+                                                    
+                                                    (promote 
+                                                        (last To)
+                                                        
+                                                        (piece "DiscDouble")
+                                                    Mover )
+                                                )
+                                                
+                                                (set Value Mover 0)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (forEach Piece "DiscDouble" 
+                                    (move Hop All 
+                                        (between before:
+                                            (count Rows)
+                                            after:
+                                            (count Rows)
+                                            if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                            
+                                            (apply 
+                                                (remove 
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    next:
+                    (forEach Piece)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (no Pieces Mover)
+                
+                (result Mover Loss)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Sow" False)
+    })
+    )
