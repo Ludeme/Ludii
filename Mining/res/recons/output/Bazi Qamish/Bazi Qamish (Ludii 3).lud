@@ -1,0 +1,231 @@
+(game "Bazi Qamish" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (rectangle 1 11)
+                
+                (shift 0 5 
+                    (rotate 90 
+                        (rectangle 1 11)
+                    )
+                )
+                
+                (shift 0 5 
+                    (rectangle 1 11)
+                )
+                
+                (shift -5 10 
+                    (rotate 90 
+                        (rectangle 1 11)
+                    )
+                )
+                
+                (shift 5 10 
+                    (rotate 90 
+                        (rectangle 1 11)
+                    )
+                )
+                
+                (shift 0 15 
+                    (rectangle 1 11)
+                )
+                }
+            )
+            { 
+            (track "Track1" "0,E5,N5,W,N,E,S,W5,N,End" P1 directed:True )
+            
+            (track "Track2" "10,W5,N5,E,N,W,S,E5,N,End" P2 directed:True )
+            }
+        )
+        
+        (piece "Pawn" Each 
+            (if 
+                (= 
+                    (trackSite Move steps:
+                        (count Pips)
+                    )
+                End)
+                
+                (move Remove 
+                    (from)
+                )
+                
+                (if 
+                    (!= 
+                        (trackSite Move steps:
+                            (count Pips)
+                        )
+                    Off)
+                    
+                    (if 
+                        (if 
+                            (not 
+                                (is Enemy 
+                                    (who at:
+                                        (trackSite Move steps:
+                                            (count Pips)
+                                        )
+                                    )
+                                )
+                            )
+                            True 
+                            (not 
+                                (is In 
+                                    (trackSite Move steps:
+                                        (count Pips)
+                                    )
+                                    
+                                    (sites "Protect")
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                                level:
+                                (level)
+                            )
+                            
+                            (to 
+                                (trackSite Move steps:
+                                    (count Pips)
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                        count:
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (dice d:2 from:0 num:7)
+        
+        (hand Each)
+        
+        (regions "Protect" 
+            (sites { 0 10 5 16 21 23 30 36 46 56 51 42}
+            )
+        )
+        
+        (map { 
+            (pair P1 0)
+            
+            (pair P2 10)
+            }
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place Stack "Pawn1" 
+                (handSite P1)
+            count:4)
+            
+            (place Stack "Pawn2" 
+                (handSite P2)
+            count:4)
+            }
+        )
+        
+        (play 
+            (do 
+                (roll)
+                next:
+                (or 
+                    (if 
+                        (is Occupied 
+                            (handSite Mover)
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (mapEntry "Entry" Mover)
+                                    "Track" steps:
+                                    (- 
+                                        (mapEntry "ThrowDiceValue" 
+                                            (count Pips)
+                                        )
+                                    1 )
+                                )
+                                
+                                (apply 
+                                    (if 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (forEach Level 
+                                            (to)
+                                            FromTop 
+                                            (remove 
+                                                (to)
+                                                level:
+                                                (level)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Dice" True)
+        (concept "DiceD2" True)
+        (concept "Region" True)
+        (concept "Roll" True)
+        (concept "Score" True)
+    })
+    )
