@@ -95,6 +95,7 @@ public class ToolView extends View
 	
 	//-------------------------------------------------------------------------
 	
+	@SuppressWarnings("unused")
 	public void drawButtons(final int toolHeight)
 	{
 		int cx = placement.x;
