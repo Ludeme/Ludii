@@ -1,0 +1,417 @@
+(game "Bazi Qamish" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 2 13)
+            { 
+            (track "Track1" { 6 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 }
+            P1 directed:True )
+            
+            (track "Track2" { 19 0 1 2 3 4 5 7 8 9 10 11 12 25 24 23 22 21 20 18 17 16 15 14 13 }
+            P2 directed:True )
+            }
+        use:Vertex )
+        
+        (dice d:6 num:2)
+        
+        (piece "Disc" Each 
+            (if 
+                (or 
+                    (!= 
+                        (from)
+                        
+                        (mapEntry "StartTrack" Mover)
+                    )
+                    
+                    (and 
+                        (= 
+                            (from)
+                            
+                            (mapEntry "StartTrack" Mover)
+                        )
+                        
+                        (all Sites 
+                            (sites Hand Mover)
+                            if:
+                            (= 0 
+                                (count Cell at:
+                                    (site)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (forEach Die if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from)
+                            
+                            (to 
+                                (trackSite Move steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (or 
+                                        (and 
+                                            (is Empty 
+                                                (to)
+                                            )
+                                            
+                                            (is In 
+                                                (to)
+                                                
+                                                (sites Mover "OnePieceMax" )
+                                            )
+                                        )
+                                        
+                                        (and 
+                                            (not 
+                                                (is In 
+                                                    (to)
+                                                    
+                                                    (sites Mover "OnePieceMax" )
+                                                )
+                                            )
+                                            
+                                            (or 
+                                                (is Friend 
+                                                    (who at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (= 1 
+                                            (size Stack at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (if 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (move 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (mapEntry "Bar" Next)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (hand Each)
+        
+        (map "Bar" { 
+            (pair P1 6)
+            
+            (pair P2 19)
+            }
+        )
+        
+        (map "StartTrack" { 
+            (pair P1 25)
+            
+            (pair P2 0)
+            }
+        )
+        
+        (regions "OnePieceMax" P1 
+            (sites { 14 15 16 17 18 20 21 22 23 24}
+            )
+        )
+        
+        (regions "OnePieceMax" P2 
+            (sites { 1 2 3 4 5 7 8 9 10 11}
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place Stack "Disc1" 
+                (sites { 7 8 9}
+                )
+            count:2)
+            
+            (place Stack "Disc1" 
+                (sites { 10 11 12}
+                )
+            count:3)
+            
+            (place Stack "Disc2" 
+                (sites { 13 14 15}
+                )
+            count:3)
+            
+            (place Stack "Disc2" 
+                (sites { 16 17 18}
+                )
+            count:2)
+            }
+        )
+        phases:{ 
+        (phase "UnStacking" 
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (forEach Die if:
+                        (!= 
+                            (pips)
+                        0)
+                        
+                        (or 
+                            (if 
+                                (= 
+                                    (state at:
+                                        (trackSite Move from:
+                                            (mapEntry "StartTrack" 
+                                                (mover)
+                                            )
+                                            steps:
+                                            (- 
+                                                (pips)
+                                            1)
+                                        )
+                                    )
+                                0 )
+                                
+                                (move Select 
+                                    (from 
+                                        (trackSite Move from:
+                                            (mapEntry "StartTrack" 
+                                                (mover)
+                                            )
+                                            steps:
+                                            (- 
+                                                (pips)
+                                            1)
+                                        )
+                                    )
+                                    
+                                    (then 
+                                        (and 
+                                            (if 
+                                                (= 3 
+                                                    (size Stack at:
+                                                        (last To)
+                                                    )
+                                                )
+                                                
+                                                (forEach Level 
+                                                    (last To)
+                                                    
+                                                    (set State at:
+                                                        (last To)
+                                                        level:
+                                                        (level)
+                                                    1 )
+                                                )
+                                                
+                                                (forEach Level 
+                                                    (last To)
+                                                    
+                                                    (set State at:
+                                                        (last To)
+                                                        level:
+                                                        (level)
+                                                    2 )
+                                                )
+                                            )
+                                            
+                                            (if 
+                                                (not 
+                                                    (all DiceUsed)
+                                                )
+                                                
+                                                (moveAgain)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (= 
+                                    (state at:
+                                        (trackSite Move from:
+                                            (mapEntry "StartTrack" 
+                                                (mover)
+                                            )
+                                            steps:
+                                            (- 
+                                                (pips)
+                                            1)
+                                        )
+                                    )
+                                1 )
+                                
+                                (move Select 
+                                    (from 
+                                        (trackSite Move from:
+                                            (mapEntry "StartTrack" 
+                                                (mover)
+                                            )
+                                            steps:
+                                            (- 
+                                                (pips)
+                                            1)
+                                        )
+                                    )
+                                    
+                                    (then 
+                                        (and 
+                                            (forEach Level 
+                                                (last To)
+                                                
+                                                (set State at:
+                                                    (last To)
+                                                    level:
+                                                    (level)
+                                                2 )
+                                            )
+                                            
+                                            (if 
+                                                (not 
+                                                    (all DiceUsed)
+                                                )
+                                                
+                                                (moveAgain)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Occupied by:Mover)
+                    if:
+                    (not 
+                        (or 
+                            (= 
+                                (state at:
+                                    (site)
+                                )
+                            0)
+                            
+                            (= 
+                                (state at:
+                                    (site)
+                                )
+                            1)
+                        )
+                    )
+                )
+            "BearingOff" )
+        )
+        
+        (phase "BearingOff" 
+            (play 
+                (do 
+                    (if 
+                        (or 
+                            (all DiceEqual)
+                            
+                            (not 
+                                (is Prev Mover)
+                            )
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (forEach Piece top:True)
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        }
+    )
+)
+
+
+(metadata (recon {
+        (concept "Dice" True)
+        (concept "Roll" True)
+        (concept "Track" True)
+        (concept "RectangleShape" True)
+        (concept "SquareTiling" True)
+        (concept "RegularShape" True)
+        (concept "NoOwnPiecesWin" True)
+    })
+    )
