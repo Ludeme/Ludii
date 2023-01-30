@@ -11,14 +11,11 @@
         (players 2) 
         (equipment { 
             ("StarBoard" 5)
-            (piece "Disc" P1 (move [#])) 
-            (piece "Disc" P2 (move [#])) 
+            (hand Each)
+            (piece "Marker" P1 (or [#]))
+            (piece "Marker" P1 (move [#]))
         }) 
-        (rules 
-            (start [#]) 
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
