@@ -130,7 +130,8 @@ public final class IsOccupied extends BaseBooleanFunction
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return type.name().toLowerCase() + " " + siteFn.toEnglish(game) + " is occupied" ;
+		final SiteType realSiteType = (type == null) ? game.board().defaultSite() : type;
+		return realSiteType.name().toLowerCase() + " " + siteFn.toEnglish(game) + " is occupied" ;
 	}
 	
 	//-------------------------------------------------------------------------
