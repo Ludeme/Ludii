@@ -32,6 +32,7 @@ public class CreateSneliusClusterConceptScript
 		final String mainScriptName = "Concepts.sh";
 		final String folderName = "Concepts"+agentName;
 		final String jobName = agentName + "Concept";
+		final String clusterLogin = "cbrowne";
 
 		final ArrayList<String> rulesetNames = new ArrayList<String>();
 		try (final PrintWriter mainWriter = new UnixPrintWriter(new File(mainScriptName), "UTF-8"))
@@ -115,8 +116,8 @@ public class CreateSneliusClusterConceptScript
 					writer.println("#!/bin/bash");
 					writer.println("#SBATCH -J GenConcepts" + jobName + "Script" + scriptId);
 					writer.println("#SBATCH -p thin");
-					writer.println("#SBATCH -o /home/piettee/Out/Out_%J.out");
-					writer.println("#SBATCH -e /home/piettee/Out/Err_%J.err");
+					writer.println("#SBATCH -o /home/"+clusterLogin+"/Out/Out_%J.out");
+					writer.println("#SBATCH -e /home/"+clusterLogin+"/Out/Err_%J.err");
 					writer.println("#SBATCH -t 6000");
 					writer.println("#SBATCH -N 1");
 					writer.println("#SBATCH --cpus-per-task=128");
@@ -134,7 +135,7 @@ public class CreateSneliusClusterConceptScript
 							jobLine += "java -Xms5120M -Xmx5120M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/piettee/ludii/" + folderName + "/Ludii.jar\" --export-moveconcept-db ";
 							jobLine += numPlayout + " " + maxTime + " " + thinkingTime + " " + maxMove + " "  + "\"" + agentName + "\"" + " " + "\"" + folder  + "\"" + " " + "\"";
 							jobLine += rulesetNames.get(i*42+j);
-							jobLine += " " + "> /home/piettee/Out/Out_${SLURM_JOB_ID}_"+ j +".out &";
+							jobLine += " " + "> /home/"+ clusterLogin +"/Out/Out_${SLURM_JOB_ID}_"+ j +".out &";
 							writer.println(jobLine);
 						}
 					}
