@@ -1,4 +1,4 @@
-(game "Bakkis" // Played similarly to Pachisi.
+(game "Bakkis"
     <Variant>
 )
 
@@ -8,13 +8,9 @@
     {
     (item "Incomplete"
         <
-        (players 2) 
+        (players 4) 
         (equipment [#])
-        (rules
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
@@ -46,5 +42,13 @@
         (origin "This game was played in Somaliland, around 1856.")
         }
     )
+    
+    (recon {
+        (concept "EliminatePiecesEnd" True)
+        (concept "StackState" True)
+        (concept "PachisiBoard" True)
+        (concept "Track" True)
+        (concept "Dice" True)
+    })
     
 )
