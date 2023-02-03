@@ -1,0 +1,246 @@
+(game "Bakkis" 
+    (players 4)
+    
+    (equipment { 
+        (board 
+            (add 
+                (hole 
+                    (merge 
+                        (shift 0 
+                            (/ 
+                                (- 19 3)
+                            2)
+                            
+                            (rectangle 3 19)
+                        )
+                        
+                        (shift 
+                            (/ 
+                                (- 19 3)
+                            2)
+                            0 
+                            (rectangle 19 3)
+                        )
+                    )
+                    
+                    (poly { { 8 8}
+                        { 8 11 }
+                        { 11 11 }
+                        { 11 8 }
+                        }
+                    )
+                )
+                cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9}
+                }
+            )
+            { 
+            (track "Track1" "96,9,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,S,E1,N7,End" P1 directed:True )
+            
+            (track "Track2" "96,26,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E7,End" P2 directed:True )
+            
+            (track "Track3" "96,52,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S7,End" P3 directed:True )
+            
+            (track "Track4" "96,27,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W7,End" P4 directed:True )
+            }
+        )
+        
+        (hand Each)
+        
+        (dice d:4 faces:{ 0 1 2 4}
+        num:2)
+        
+        (piece "Pawn" Each 
+            (if 
+                (= 
+                    (trackSite Move from:
+                        (from)
+                        steps:
+                        (count Pips)
+                    )
+                End)
+                
+                (move Remove 
+                    (from)
+                    level:
+                    (level)
+                )
+                
+                (move 
+                    (from 
+                        (from)
+                        level:
+                        (level)
+                    )
+                    
+                    (to 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (count Pips)
+                        )
+                        if:True 
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (if 
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (forEach Level 
+                                        (to)
+                                        FromTop 
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                                level:
+                                                (level)
+                                            )
+                                            
+                                            (to 
+                                                (centrePoint)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (forEach Level 
+                                        (to)
+                                        FromTop 
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                                level:
+                                                (level)
+                                            )
+                                            
+                                            (to 
+                                                (handSite 
+                                                    (who at:
+                                                        (to)
+                                                        level:
+                                                        (level)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (map "Start" { 
+            (pair P1 9)
+            
+            (pair P2 26)
+            
+            (pair P3 52)
+            
+            (pair P4 27)
+            }
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place Stack "Pawn1" 
+                (handSite P1)
+            count:4)
+            
+            (place Stack "Pawn2" 
+                (handSite P2)
+            count:4)
+			
+			            (place Stack "Pawn3" 
+                (handSite P3)
+            count:4)
+			
+			            (place Stack "Pawn4" 
+                (handSite P4)
+            count:4)
+            }
+        )
+        
+        (play 
+            (do 
+                (roll)
+                next:
+                (or 
+                    (if 
+                        (is Occupied 
+                            (handSite Mover)
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (mapEntry "Entry" Mover)
+                                    "Track" steps:
+                                    (- 
+                                        (mapEntry "ThrowDiceValue" 
+                                            (count Pips)
+                                        )
+                                    1 )
+                                )
+                                
+                                (apply 
+                                    (if 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (forEach Level 
+                                            (to)
+                                            FromTop 
+                                            (remove 
+                                                (to)
+                                                level:
+                                                (level)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "EliminatePiecesEnd" True)
+        (concept "StackState" True)
+        (concept "Track" True)
+        (concept "Dice" True)
+    })
+    )

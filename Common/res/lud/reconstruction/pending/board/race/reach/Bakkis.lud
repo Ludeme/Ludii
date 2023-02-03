@@ -43,6 +43,19 @@
         }
     )
     
+    (graphics {
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Colour Symbols (colour Black))
+        (board Colour Phase0 (colour 222 173 123))
+        (stackType 0 Ground)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (stackType 3 Count)
+        (stackType 4 Count)
+        (piece Scale "Pawn" 0.5)
+    })
+    
     (recon {
         (concept "EliminatePiecesEnd" True)
         (concept "StackState" True)
