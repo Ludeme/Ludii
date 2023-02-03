@@ -1,0 +1,264 @@
+(game "Tavlej" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 2 13)
+            { 
+            (track "Track1" { 6 12 11 10 9 8 7 5 4 3 2 1 0 13 14 15 16 17 18 20 21 22 23 24 25 End }
+            P1 directed:True )
+            
+            (track "Track2" { 19 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 End }
+            P2 directed:True )
+            }
+        use:Vertex )
+        
+        (dice d:6 num:2)
+        
+        (map "Bar" { 
+            (pair P1 6)
+            
+            (pair P2 19)
+            }
+        )
+        
+        (regions "FinalQuadrant" P1 
+            (sites { 20 21 22 23 24 25}
+            )
+        )
+        
+        (regions "FinalQuadrant" P2 
+            (sites { 7 8 9 10 11 12}
+            )
+        )
+        
+        (piece "Disc" Each 
+            (forEach Die if:
+                (!= 
+                    (pips)
+                0)
+                
+                (if 
+                    (= 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (pips)
+                        )
+                    End)
+                    
+                    (if 
+                        (all Sites 
+                            (sites Occupied by:Mover)
+                            if:
+                            (is In 
+                                (site)
+                                
+                                (sites Mover "FinalQuadrant")
+                            )
+                        )
+                        
+                        (move Remove 
+                            (from)
+                        )
+                    )
+                    
+                    (move 
+                        (from 
+                            (from)
+                        )
+                        
+                        (to 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                            if:
+                            (or 
+                                (not 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (= 1 
+                                    (size Stack at:
+                                        (to)
+                                    )
+                                )
+                            )
+                            
+                            (apply if:
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (mapEntry "Bar" Next)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (not 
+                            (all DiceUsed)
+                        )
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place Stack "Disc1" 7 count:5)
+            
+            (place Stack "Disc1" 4 count:3)
+            
+            (place Stack "Disc1" 13 count:5)
+            
+            (place Stack "Disc1" 25 count:2)
+            
+            (place Stack "Disc2" 20 count:5)
+            
+            (place Stack "Disc2" 17 count:3)
+            
+            (place Stack "Disc2" 0 count:5)
+            
+            (place Stack "Disc2" 12 count:2)
+            }
+        )
+        
+        (play 
+            (do 
+                (if 
+                    (not 
+                        (is Prev Mover)
+                    )
+                    
+                    (roll)
+                )
+                next:
+                (priority { 
+                    (if 
+                        (is Occupied 
+                            (mapEntry "Bar" Mover)
+                        )
+                        
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (move 
+                                (from 
+                                    (mapEntry "Bar" Mover)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (mapEntry "Bar" Mover)
+                                        steps:
+                                        (pips)
+                                    )
+                                    if:
+                                    (< 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    2)
+                                    
+                                    (apply if:
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (mapEntry "Bar" Next)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (not 
+                                        (all DiceUsed)
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (is Empty 
+                            (mapEntry "Bar" Mover)
+                        )
+                        
+                        (max Distance 
+                            (forEach Piece top:True)
+                        )
+                    )
+                    }
+                )
+                
+                (then 
+                    (if 
+                        (no Pieces Mover)
+                        
+                        (if 
+                            (no Pieces Enemy in:
+                                (sites Mover "FinalQuadrant")
+                            )
+                            
+                            (addScore Mover 1)
+                            
+                            (addScore Mover 2)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (no Pieces Mover)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Dice" True)
+    })
+    )
