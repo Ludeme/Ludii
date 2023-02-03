@@ -1,0 +1,97 @@
+(game "Aucai" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (merge { 
+                (rectangle 1 6)
+                
+                (shift 7 0 
+                    (rectangle 1 6)
+                )
+                
+                (shift 0 6 
+                    (rectangle 1 6)
+                )
+                
+                (shift 7 6 
+                    (rectangle 1 6)
+                )
+                }
+            )
+            
+            (track "Track1" { 11 10 9 8 7 6 5 4 3 2 1 0 12 13 14 15 16 17 18 19 20 21 22 23 }
+            directed:True )
+        use:Vertex )
+        
+        (dice d:6 num:2)
+        
+        (piece "Disc" Each 
+            (forEach Die if:
+                (!= 
+                    (pips)
+                0)
+                
+                (if 
+                    (= 
+                        (trackSite Move steps:
+                            (pips)
+                        )
+                    Off)
+                    
+                    (move Remove 
+                        (from)
+                    )
+                    
+                    (if 
+                        (not 
+                            (is Enemy 
+                                (who at:
+                                    (trackSite Move steps:
+                                        (pips)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from)
+                            
+                            (to 
+                                (trackSite Move steps:
+                                    (pips)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (play 
+            (move Add 
+                (to 
+                    (sites Empty)
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Dice" True)
+        (concept "DiceD6" True)
+    })
+    )
