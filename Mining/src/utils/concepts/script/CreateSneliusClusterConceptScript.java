@@ -132,7 +132,7 @@ public class CreateSneliusClusterConceptScript
 						{
 							String jobLine = "taskset -c ";
 							jobLine += (3*j) + "," + (3*j + 1) + "," +  (3*j + 2) + " "; 
-							jobLine += "java -Xms5120M -Xmx5120M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/piettee/ludii/" + folderName + "/Ludii.jar\" --export-moveconcept-db ";
+							jobLine += "java -Xms5120M -Xmx5120M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/"+ clusterLogin +"/ludii/" + folderName + "/Ludii.jar\" --export-moveconcept-db ";
 							jobLine += numPlayout + " " + maxTime + " " + thinkingTime + " " + maxMove + " "  + "\"" + agentName + "\"" + " " + "\"" + folder  + "\"" + " " + "\"";
 							jobLine += rulesetNames.get(i*42+j);
 							jobLine += " " + "> /home/"+ clusterLogin +"/Out/Out_${SLURM_JOB_ID}_"+ j +".out &";
