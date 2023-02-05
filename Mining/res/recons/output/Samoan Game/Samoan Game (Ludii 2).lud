@@ -1,0 +1,89 @@
+(game "Samoan Game" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 12 6)
+        )
+        
+        (piece "Marker" Each 
+            (or 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (expand 
+                    (sites Left)
+                )
+            )
+            
+            (place "Marker2" 
+                (expand 
+                    (sites Right)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end { 
+            (if 
+                (no Moves Next)
+                
+                (result Next Loss)
+            )
+            
+            (if 
+                (no Pieces P2)
+                
+                (result P2 Win)
+            )
+            }
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "StepDecision" True)
+        (concept "Hop" False)
+        (concept "Slide" False)
+        (concept "Capture" True)
+    })
+    )
