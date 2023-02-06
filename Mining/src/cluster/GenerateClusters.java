@@ -32,13 +32,13 @@ public class GenerateClusters
 	final static int    xMinCluster3 = 0;
 	final static int    xMaxCluster3 = 40;
 	final static int    yMinCluster3 = -30;
-	final static int    yMaxCluster3 = 40;
+	final static int    yMaxCluster3 = 20;
 	
 	// Cluster 4 area
 	final static int    xMinCluster4 = 40;
 	final static int    xMaxCluster4 = 70;
 	final static int    yMinCluster4 = -40;
-	final static int    yMaxCluster4 = -10;
+	final static int    yMaxCluster4 = 10;
 	
 	final static String coordinatesPath        = "./res/cluster/input/coordinates.csv";
 	final static String gamePath        	   = "./res/cluster/input/Games.csv";
@@ -84,7 +84,7 @@ public class GenerateClusters
 		
 		for(int i = 0; i < coordinates.size(); i++)
 		{
-			String[] gameAndCoordinates = coordinates.get(i).split(",");
+			String[] gameAndCoordinates = coordinates.get(i).split(";");
 			final String gameName = gameAndCoordinates[0];
 			final double x = Double.parseDouble(gameAndCoordinates[1]);
 			final double y = Double.parseDouble(gameAndCoordinates[2]);
