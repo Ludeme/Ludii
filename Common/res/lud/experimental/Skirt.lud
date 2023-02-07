@@ -1,0 +1,183 @@
+(define "SameTurn" (is Prev Mover))
+
+(define "CanSkirtByFrom" // (mover) (next) ; location ; origin 
+    (>=
+        (+ 1 (count Pieces of:(mover) in:(difference (sites Around #1 Orthogonal) #2)))
+        (count Pieces of:(next) in:(sites Around #1 Orthogonal))
+))
+
+(define "IsTerritoryOfAt" // (mover) (next)
+    (> 
+        (count Pieces of:#1 in:(sites Around #2 Orthogonal))
+        (count Pieces of:(- 3 #1) in:(sites Around #2 Orthogonal))
+))
+
+(define "TerritoryOf" // (mover) (next)
+    (forEach (sites Empty)
+        if:(> 
+            (count Pieces of:#1 in:(sites Around (site) Orthogonal))
+            (count Pieces of:(- 3 #1) in:(sites Around (site) Orthogonal))
+)))
+
+(define "Placement"
+    (move Add 
+        (piece (id "Disc" Mover))
+        (to ("TerritoryOf" (mover)))
+))
+
+(define "PieOffer"
+    (move Select 
+        (from (sites Empty))
+        (to (sites Around (from) Orthogonal))
+        (then
+            (and
+                (add (piece (next)) (to (last To)))
+                (add (piece (mover)) (to (last From)))
+))))
+
+(define "PieRefusal"
+    (do
+        (set Var "LF" (last From)
+            (then 
+                (set Var "LT" (last To))
+        ))
+        next:(move Propose "SwapPieceLocations"
+            (then
+                (if
+                    (is Proposed "SwapPieceLocations")
+                    (and
+                        (add (piece (mover))
+                            (to (var "LF")
+                                (apply (remove (to)))
+                        ))
+                        (add (piece (next))
+                            (to (var "LT")
+                                (apply (remove (to)))
+))))))))
+
+(define "Skirt"
+    (forEach Piece
+        (do
+            (set Var "LF" (from))
+            next:(move (from)
+                (to (sites Empty)
+                    if:(!= Infinity
+                        (count Steps Orthogonal
+                            (step Orthogonal
+                                (to
+                                    if:(and
+                                        {
+                                        (is Empty (to))
+                                        // the moving piece should dynamically affect the territory count.
+                                        ("CanSkirtByFrom" (to) (var "LF"))
+                                        (not
+                                            (no Pieces
+                                                in:(difference
+                                                    (intersection
+                                                        (sites Around (from) Orthogonal)
+                                                        (sites Around (to) Orthogonal)
+                                                    )
+                                                    (var "LF")
+                                                )
+                                        ))
+                                        }
+                            )))
+                            (from)
+                            (to)
+            ))))
+            (then (moveAgain))
+)))       
+
+//---------------------------------------
+// Main routine
+//---------------------------------------
+
+(game "Skirt"
+    (players 2)
+    (equipment
+        {
+        (board <Board:size> use:Vertex)
+        (piece "Disc" Each)
+        }
+    )
+    (rules 
+        (play
+            (if
+                (> 0 (counter))
+                ("PieOffer")
+                (if
+                    ("SameTurn")
+                    ("Placement")
+                    (or
+                        (if
+                            (= 0 (counter))
+                            ("PieRefusal")
+                        )
+                        (or
+                            ("Skirt")
+                            ("Placement")
+        ))))) 
+        (end 
+            {
+            (if
+                "EndCondition"
+                (result Mover Loss)
+            )
+            
+            }  
+)))
+
+(define "EndCondition"(no Moves Mover)) 
+
+//---------------------------------------
+
+(define "Tri46Bug"  (tri {4 6 4 7 4}))
+(define "Tri56Bug"  (tri {5 6 5 7 5}))
+(define "Tri57Bug"  (tri {5 7 5 8 5}))
+(define "Tri78Bug"  (tri {7 8 7 10 6}))
+(option "Board Size" <Board> args:{ <size> <adj> <diag> }
+    {   
+    (item "Hex 2-3 (12)"         <(tri {2 3 2 3 2})>   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 2 and 4")
+    (item "Equiversi 2-4 (18)"   <(tri {2 4 2 4 2})>    <Orthogonal> <Hidden>  "Board & size: Equiversi Hexhex with edges alternating 2 and 4")
+    (item "Equiversi 3-5 (36)"   <(tri {3 5 3 5 3})>    <Orthogonal> <Hidden>  "Board & size: Equiversi Hexhex with edges alternating 3 and 5")***
+    (item "Hex 4-5 (48)"         <(tri {4 5 4 5 4})>   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 4 and 5")**
+    (item "Equiversi 4-6 (60)"   <"Tri46Bug">    <Orthogonal> <Hidden>  "Board & size: Equiversi Hexhex with edges alternating 4 and 6")
+    (item "Equiversi 5-7 (90)"   <"Tri57Bug">    <Orthogonal> <Hidden>  "Board & size: Equiversi Hexhex with edges alternating 5 and 7")**
+    (item "Hex 6-7 (108)"        <(tri {6 7 6 7 6})>   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 6 and 7")
+    (item "Equiversi 6-8 (126)"  <(tri {6 8 6 8 6})>    <Orthogonal> <Hidden>  "Board & size: Equiversi Hexhex with edges alternating 6 and 8") 
+    (item "Hex 3 (19)"           <(tri Hexagon 3)>     <Orthogonal> <Hidden>  "Board & size: Hexhex 3")
+    (item "Hex 3-4 (27)"         <(tri {3 4 3 4 3})>   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 3 and 4")
+    (item "Hex 4 (37)"           <(tri Hexagon 4)>     <Orthogonal> <Hidden>  "Board & size: Hexhex 4")
+    (item "Hex 5 (61)"           <(tri Hexagon 5)>     <Orthogonal> <Hidden>  "Board & size: Hexhex 5") 
+    (item "Hex 5-6 (75)"         <"Tri56Bug">   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 5 and 6") // standard strategy
+    (item "Hex 6 (91)"           <(tri Hexagon 6)>     <Orthogonal> <Hidden>  "Board & size: Hexhex 6") 
+    (item "Hex 7 (127)"          <(tri Hexagon 7)>     <Orthogonal> <Hidden>  "Board & size: Hexhex 7")
+    (item "Hex 7-8 (147)"        <"Tri78Bug">  <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 7 and 8")
+    }
+)
+
+//----------------------------------------------------------
+
+(metadata
+    (info 
+        {
+        
+        }
+    )
+    
+    (graphics 
+        {
+        (board Style Graph)
+        (board Colour InnerEdges (colour 62 72 55))
+        (board Colour OuterEdges (colour 62 72 55))
+        (board StyleThickness OuterEdges .25)
+        (board StyleThickness InnerEdges .25)
+        (show Edges Diagonal <Board:diag> (colour 62 72 55))
+        (piece Scale P1 "Disc" 0.65)
+        (piece Scale P2 "Disc" 0.65)
+        (piece Scale P3 "Disc" 0.65)
+        (piece Scale P4 "Disc" 0.65)
+        (piece Scale P5 "Disc" 0.65)
+        }
+))
+
