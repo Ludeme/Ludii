@@ -16,12 +16,19 @@
     (players 2) 
     
     (equipment { 
-        (mancalaBoard 2 "Columns"
-            (track "Track" "1,E,N,W" loop:True)
-        )
-        (regions P1 (sites Bottom))      // P1 home
+        (board 
+                (merge {
+                    (rectangle 1 9)
+                    (shift 2.5 1 (rectangle 1 1))
+                    (shift 5.5 1 (rectangle 1 1))
+                    (shift 0 2 (rectangle 1 9))
+                })
+               (track "Track" "0,E,19,W" loop:True)
+                use:Vertex
+            )
+        (regions P1 (sites Bottom))    // P1 home
         (regions P2 (sites Top))       // P2 home
-        (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
+        (map {(pair P1 9) (pair P2 10)}) // kalahs (storage pits)
         (piece "Seed" Shared)
     }) 
     (rules 
@@ -102,6 +109,7 @@
     (graphics {
         (show PlayerHoles)
         (board Style Mancala)
+        (show AsHoles {9 10} Oval)
     })
     
     (ai 
