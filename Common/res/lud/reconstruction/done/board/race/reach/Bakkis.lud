@@ -1,0 +1,1243 @@
+(game "Bakkis"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Bakkis (Ludii 1)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (add 
+                        (hole 
+                            (merge 
+                                (shift 0 8 
+                                    (rectangle 4 20)
+                                )
+                                
+                                (shift 8 0 
+                                    (rectangle 20 4)
+                                )
+                            )
+                            
+                            (poly { { 8 8}
+                                { 8 11 }
+                                { 11 11 }
+                                { 11 8 }
+                                }
+                            )
+                        )
+                        cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9}
+                        }
+                    )
+                    vertices:{ { 9.5 4}
+                    { 15 4}
+                    { 15 9.5}
+                    { 15 15}
+                    { 9.5 15}
+                    { 4 15}
+                    { 4 9.5}
+                    { 4 4}
+                    }
+                )
+                { 
+                (track "Track" { 144 145 146 147 148 149 150 151}
+                loop:True )
+                }
+            use:Vertex )
+            
+            (dice d:2 from:0 num:7)
+            
+            (piece "Pawn" Each 
+                (move 
+                    (from 
+                        (from)
+                        level:
+                        (level)
+                    )
+                    
+                    (to 
+                        (trackSite Move from:
+                            (from)
+                            "Track" steps:
+                            (mapEntry "ThrowDiceValue" 
+                                (count Pips)
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (forEach Level 
+                                    (to)
+                                    FromTop 
+                                    (remove 
+                                        (to)
+                                        level:
+                                        (level)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            
+            (map "Throw" { 
+                (pair 0 7)
+                
+                (pair 1 10)
+                
+                (pair 2 2)
+                
+                (pair 3 3)
+                
+                (pair 4 4)
+                
+                (pair 5 25)
+                
+                (pair 6 36)
+                
+                (pair 7 14)
+                }
+            )
+            
+            (map "Entry" { 
+                (pair P1 144)
+                
+                (pair P2 148)
+                }
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Pawn1" 
+                    (handSite P1)
+                count:4)
+                
+                (place Stack "Pawn2" 
+                    (handSite P2)
+                count:4)
+                }
+            )
+            
+            (play 
+                (do 
+                    (roll)
+                    next:
+                    (or 
+                        (if 
+                            (is Occupied 
+                                (handSite Mover)
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (mapEntry "Entry" Mover)
+                                        "Track" steps:
+                                        (- 
+                                            (mapEntry "ThrowDiceValue" 
+                                                (count Pips)
+                                            )
+                                        1 )
+                                    )
+                                    
+                                    (apply 
+                                        (if 
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (forEach Level 
+                                                (to)
+                                                FromTop 
+                                                (remove 
+                                                    (to)
+                                                    level:
+                                                    (level)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Bakkis (Ludii 1) ruleset.")
+    
+    (item "Bakkis (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (add 
+                        (hole 
+                            (merge 
+                                (shift 0 8 
+                                    (rectangle 4 20)
+                                )
+                                
+                                (shift 8 0 
+                                    (rectangle 20 4)
+                                )
+                            )
+                            
+                            (poly { { 8 8}
+                                { 8 11 }
+                                { 11 11 }
+                                { 11 8 }
+                                }
+                            )
+                        )
+                        cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9}
+                        }
+                    )
+                    vertices:{ { 9.5 4}
+                    { 15 4}
+                    { 15 9.5}
+                    { 15 15}
+                    { 9.5 15}
+                    { 4 15}
+                    { 4 9.5}
+                    { 4 4}
+                    }
+                )
+                { 
+                (track "Track" { 144 145 146 147 148 149 150 151}
+                loop:True )
+                }
+            use:Vertex )
+            
+            (dice d:2 from:0 num:7)
+            
+            (piece "Pawn" Each 
+                (move 
+                    (from 
+                        (from)
+                        level:
+                        (level)
+                    )
+                    
+                    (to 
+                        (trackSite Move from:
+                            (from)
+                            "Track" steps:
+                            (mapEntry "ThrowDiceValue" 
+                                (count Pips)
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (forEach Level 
+                                    (to)
+                                    FromTop 
+                                    (remove 
+                                        (to)
+                                        level:
+                                        (level)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            
+            (map "Throw" { 
+                (pair 0 7)
+                
+                (pair 1 10)
+                
+                (pair 2 2)
+                
+                (pair 3 3)
+                
+                (pair 4 4)
+                
+                (pair 5 25)
+                
+                (pair 6 30)
+                
+                (pair 7 14)
+                }
+            )
+            
+            (map "Entry" { 
+                (pair P1 144)
+                
+                (pair P2 148)
+                }
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Pawn1" 
+                    (handSite P1)
+                count:4)
+                
+                (place Stack "Pawn2" 
+                    (handSite P2)
+                count:4)
+                }
+            )
+            
+            (play 
+                (do 
+                    (roll)
+                    next:
+                    (or 
+                        (if 
+                            (is Occupied 
+                                (handSite Mover)
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (mapEntry "Entry" Mover)
+                                        "Track" steps:
+                                        (- 
+                                            (mapEntry "ThrowDiceValue" 
+                                                (count Pips)
+                                            )
+                                        1 )
+                                    )
+                                    
+                                    (apply 
+                                        (if 
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (forEach Level 
+                                                (to)
+                                                FromTop 
+                                                (remove 
+                                                    (to)
+                                                    level:
+                                                    (level)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Bakkis (Ludii 2) ruleset.")
+    
+    (item "Bakkis (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (hole 
+                        (merge 
+                            (shift 0 
+                                (/ 
+                                    (- 19 3)
+                                2)
+                                
+                                (rectangle 3 19)
+                            )
+                            
+                            (shift 
+                                (/ 
+                                    (- 19 3)
+                                2)
+                                0 
+                                (rectangle 19 3)
+                            )
+                        )
+                        
+                        (poly { { 8 8}
+                            { 8 11 }
+                            { 11 11 }
+                            { 11 8 }
+                            }
+                        )
+                    )
+                    cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9}
+                    }
+                )
+                { 
+                (track "Track1" "97,68,N,11,E,N,W,53,N,W,S,42,W,S,E,8,S,55,N8" P1 directed:True )
+                
+                (track "Track2" "98,46,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,34,W8" P2 directed:True )
+                
+                (track "Track3" "99,81,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,94,S8" P3 directed:True )
+                
+                (track "Track4" "100,4,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,19,E8" P4 directed:True )
+                }
+            )
+            
+            (hand Each)
+            
+            (dice d:2 from:0 num:6)
+            
+            (map "Die" { 
+                (pair 0 25)
+                
+                (pair 1 10)
+                
+                (pair 2 2)
+                
+                (pair 3 3)
+                
+                (pair 4 4)
+                
+                (pair 5 5)
+                
+                (pair 6 6)
+                }
+            )
+            
+            (map "Entry" { 
+                (pair 1 68)
+                
+                (pair 2 46)
+                
+                (pair 3 81)
+                
+                (pair 4 4)
+                }
+            )
+            
+            (map "PreviousGoal" { 
+                (pair 1 9)
+                
+                (pair 2 27)
+                
+                (pair 3 52)
+                
+                (pair 4 26)
+                }
+            )
+            
+            (regions "Castle" { 61 63 65 32 47 15 80 84 86 21 38 3}
+            )
+            
+            (regions "Grace" { 0 1 6}
+            )
+            
+            (piece "Pawn" Each 
+                (if 
+                    (or 
+                        (= 
+                            (trackSite Move steps:
+                                (count Pips)
+                            )
+                        96)
+                        
+                        (and 
+                            (is In 
+                                (count Pips)
+                                
+                                (sites "Grace")
+                            )
+                            
+                            (= 
+                                (from)
+                                
+                                (mapEntry "PreviousGoal" 
+                                    (mover)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Select 
+                        (from)
+                        
+                        (to 96)
+                        
+                        (then 
+                            (remove 
+                                (last From)
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (and 
+                            (not 
+                                (= 
+                                    (trackSite Move steps:
+                                        (mapEntry "Die" 
+                                            (count Pips)
+                                        )
+                                    )
+                                96 )
+                            )
+                            
+                            (not 
+                                (= 
+                                    (trackSite Move steps:
+                                        (mapEntry "Die" 
+                                            (count Pips)
+                                        )
+                                    )
+                                Off )
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                                level:
+                                (level)
+                            )
+                            
+                            (to 
+                                (trackSite Move steps:
+                                    (mapEntry "Die" 
+                                        (count Pips)
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (or 
+                                        (not 
+                                            (is In 
+                                                (trackSite Move steps:
+                                                    (mapEntry "Die" 
+                                                        (count Pips)
+                                                    )
+                                                )
+                                                
+                                                (sites "castle")
+                                            )
+                                        )
+                                        
+                                        (and 
+                                            (is In 
+                                                (trackSite Move steps:
+                                                    (mapEntry "Die" 
+                                                        (count Pips)
+                                                    )
+                                                )
+                                                
+                                                (sites "Castle")
+                                            )
+                                            
+                                            (is Friend 
+                                                (who at:
+                                                    (trackSite Move steps:
+                                                        (mapEntry "Die" 
+                                                            (count Pips)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (handSite 
+                                                    (who at:
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Pawn1" 
+                    (handSite P1)
+                count:4)
+                
+                (place Stack "Pawn2" 
+                    (handSite P2)
+                count:4)
+                }
+            )
+            
+            (play 
+                (do 
+                    (roll)
+                    next:
+                    (or 
+                        (if 
+                            (is Occupied 
+                                (handSite Mover)
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (mapEntry "Entry" Mover)
+                                        "Track" steps:
+                                        (- 
+                                            (mapEntry "ThrowDiceValue" 
+                                                (count Pips)
+                                            )
+                                        1 )
+                                    )
+                                    
+                                    (apply 
+                                        (if 
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (forEach Level 
+                                                (to)
+                                                FromTop 
+                                                (remove 
+                                                    (to)
+                                                    level:
+                                                    (level)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Bakkis (Ludii 3) ruleset.")
+    
+    (item "Bakkis (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (rectangle 1 11)
+                    
+                    (shift 0 5 
+                        (rotate 90 
+                            (rectangle 1 11)
+                        )
+                    )
+                    
+                    (shift 0 5 
+                        (rectangle 1 11)
+                    )
+                    
+                    (shift -5 10 
+                        (rotate 90 
+                            (rectangle 1 11)
+                        )
+                    )
+                    
+                    (shift 5 10 
+                        (rotate 90 
+                            (rectangle 1 11)
+                        )
+                    )
+                    
+                    (shift 0 15 
+                        (rectangle 1 11)
+                    )
+                    }
+                )
+                { 
+                (track "Track1" "0,E5,N5,W,N,E,S,W5,N,End" P1 directed:True )
+                
+                (track "Track2" "10,W5,N5,E,N,W,S,E5,N,End" P2 directed:True )
+                }
+            )
+            
+            (piece "Pawn" Each 
+                (if 
+                    (= 
+                        (trackSite Move steps:
+                            (count Pips)
+                        )
+                    End)
+                    
+                    (move Remove 
+                        (from)
+                    )
+                    
+                    (if 
+                        (!= 
+                            (trackSite Move steps:
+                                (count Pips)
+                            )
+                        Off)
+                        
+                        (if 
+                            (if 
+                                (not 
+                                    (is Enemy 
+                                        (who at:
+                                            (trackSite Move steps:
+                                                (count Pips)
+                                            )
+                                        )
+                                    )
+                                )
+                                True 
+                                (not 
+                                    (is In 
+                                        (trackSite Move steps:
+                                            (count Pips)
+                                        )
+                                        
+                                        (sites "Protect")
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (from)
+                                    level:
+                                    (level)
+                                )
+                                
+                                (to 
+                                    (trackSite Move steps:
+                                        (count Pips)
+                                    )
+                                    
+                                    (apply if:
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (handSite 
+                                                    (who at:
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                            count:
+                                            (count at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (dice d:2 from:0 num:7)
+            
+            (hand Each)
+            
+            (regions "Protect" 
+                (sites { 0 10 5 16 21 23 30 36 46 56 51 42}
+                )
+            )
+            
+            (map { 
+                (pair P1 0)
+                
+                (pair P2 10)
+                }
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Pawn1" 
+                    (handSite P1)
+                count:4)
+                
+                (place Stack "Pawn2" 
+                    (handSite P2)
+                count:4)
+                }
+            )
+            
+            (play 
+                (do 
+                    (roll)
+                    next:
+                    (or 
+                        (if 
+                            (is Occupied 
+                                (handSite Mover)
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (mapEntry "Entry" Mover)
+                                        "Track" steps:
+                                        (- 
+                                            (mapEntry "ThrowDiceValue" 
+                                                (count Pips)
+                                            )
+                                        1 )
+                                    )
+                                    
+                                    (apply 
+                                        (if 
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (forEach Level 
+                                                (to)
+                                                FromTop 
+                                                (remove 
+                                                    (to)
+                                                    level:
+                                                    (level)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Bakkis (Ludii 4) ruleset.")
+    
+    (item "Bakkis (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (add 
+                    (hole 
+                        (merge 
+                            (shift 0 
+                                (/ 
+                                    (- 19 3)
+                                2)
+                                
+                                (rectangle 3 19)
+                            )
+                            
+                            (shift 
+                                (/ 
+                                    (- 19 3)
+                                2)
+                                0 
+                                (rectangle 19 3)
+                            )
+                        )
+                        
+                        (poly { { 8 8}
+                            { 8 11 }
+                            { 11 11 }
+                            { 11 8 }
+                            }
+                        )
+                    )
+                    cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9}
+                    }
+                )
+                { 
+                (track "Track1" "96,9,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,S,E1,N7,End" P1 directed:True )
+                
+                (track "Track2" "96,26,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E7,End" P2 directed:True )
+                
+                (track "Track3" "96,52,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S7,End" P3 directed:True )
+                
+                (track "Track4" "96,27,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W7,End" P4 directed:True )
+                }
+            )
+            
+            (hand Each)
+            
+            (dice d:4 faces:{ 0 1 2 4}
+            num:2)
+            
+            (piece "Pawn" Each 
+                (if 
+                    (= 
+                        (trackSite Move from:
+                            (from)
+                            steps:
+                            (count Pips)
+                        )
+                    End)
+                    
+                    (move Remove 
+                        (from)
+                        level:
+                        (level)
+                    )
+                    
+                    (move 
+                        (from 
+                            (from)
+                            level:
+                            (level)
+                        )
+                        
+                        (to 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (count Pips)
+                            )
+                            if:True 
+                            (apply 
+                                (if 
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (= 1 
+                                            (size Stack at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (forEach Level 
+                                            (to)
+                                            FromTop 
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                    level:
+                                                    (level)
+                                                )
+                                                
+                                                (to 
+                                                    (centrePoint)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (forEach Level 
+                                            (to)
+                                            FromTop 
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                    level:
+                                                    (level)
+                                                )
+                                                
+                                                (to 
+                                                    (handSite 
+                                                        (who at:
+                                                            (to)
+                                                            level:
+                                                            (level)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (map "Start" { 
+                (pair P1 9)
+                
+                (pair P2 26)
+                
+                (pair P3 52)
+                
+                (pair P4 27)
+                }
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Pawn1" 
+                    (handSite P1)
+                count:4)
+                
+                (place Stack "Pawn2" 
+                    (handSite P2)
+                count:4)
+                }
+            )
+            
+            (play 
+                (do 
+                    (roll)
+                    next:
+                    (or 
+                        (if 
+                            (is Occupied 
+                                (handSite Mover)
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (trackSite Move from:
+                                        (mapEntry "Entry" Mover)
+                                        "Track" steps:
+                                        (- 
+                                            (mapEntry "ThrowDiceValue" 
+                                                (count Pips)
+                                            )
+                                        1 )
+                                    )
+                                    
+                                    (apply 
+                                        (if 
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (forEach Level 
+                                                (to)
+                                                FromTop 
+                                                (remove 
+                                                    (to)
+                                                    level:
+                                                    (level)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Bakkis (Ludii 5) ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment [#])
+        (rules [#])
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Bakkis (Ludii 1) (Reconstructed)" {
+        "Variant/Bakkis (Ludii 1)"
+    })
+    (ruleset "Ruleset/Bakkis (Ludii 2) (Reconstructed)" {
+        "Variant/Bakkis (Ludii 2)"
+    })
+    (ruleset "Ruleset/Bakkis (Ludii 3) (Reconstructed)" {
+        "Variant/Bakkis (Ludii 3)"
+    })
+    (ruleset "Ruleset/Bakkis (Ludii 4) (Reconstructed)" {
+        "Variant/Bakkis (Ludii 4)"
+    })
+    (ruleset "Ruleset/Bakkis (Ludii 5) (Reconstructed)" {
+        "Variant/Bakkis (Ludii 5)"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Bakkis is a race game played in Somaliland in the nineteenth century. It was said to be the same game as Pachisi, but no rules were given.")
+        (rules "Name of the game. Played similarly to Pachisi.")
+        (source "DLP eviednce.")
+        (id "1124")
+        (version "1.3.9")
+        (classification "board/race/reach/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Somaliland, around 1856.")
+        }
+    )
+    
+    (graphics {
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Colour Symbols (colour Black))
+        (board Colour Phase0 (colour 222 173 123))
+        (stackType 0 Ground)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (stackType 3 Count)
+        (stackType 4 Count)
+        (piece Scale "Pawn" 0.5)
+    })
+    
+    (recon {
+        (concept "EliminatePiecesEnd" True)
+        (concept "StackState" True)
+        (concept "Track" True)
+        (concept "Dice" True)
+    })
+    
+)
+
