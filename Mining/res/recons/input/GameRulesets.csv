@@ -21724,3 +21724,78 @@ Aim:
      If there are no pieces owned by Player the next player, the next player loses.
 
 ",NULL,NULL,NULL,NULL,NULL,"18°25'33.37""S, 67°19'55.68""W","5081,5112","0",NULL,"0","0","0.771","0.818","0.385","0.723","779, 779","[]"
+"3925","962","Bakkis (Ludii 1)",NULL,"Reconstructed with Ludii","2",NULL,"The game Bakkis is played by two players on a noshape board with nobasis tiling. 
+All players play with Pawns. The following pieces are shared by all players: Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1] and Dies with 2 faces valued [0, 1].
+Rules for Pieces:
+     Pawns from vertex in the location of the piece current level to vertex ThrowDiceValue of the number of pips owned by Player Shared steps forward from site the location of the piece on track Track moveRule: true captureEffect: if there is an enemy Player at to, for each level at Vertex to (FromTop) remove pieces at to.
+Players take turns moving.
+Setup:
+     Place stack of [Pawn1] at vertex Player 1's hand site 0
+     Place stack of [Pawn2] at vertex Player 2's hand site 0.
+Rules: 
+     Roll the dice and afterwards if vertex Player the moving player's hand site 0 is occupied, from vertex in Player the moving player's hand site 0 to vertex ThrowDiceValue of the number of pips owned by Player Shared minus 1 steps forward from site Entry of the moving player on track Track moveRule: true captureEffect: if there is an enemy Player at to, for each level at Vertex to (FromTop) remove pieces at to or move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.925","0.96","0.462","0.89","1177, 1564","[]"
+"3926","962","Bakkis (Ludii 2)",NULL,"Reconstructed with Ludii","2",NULL,"The game Bakkis is played by two players on a noshape board with nobasis tiling. 
+All players play with Pawns. The following pieces are shared by all players: Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1] and Dies with 2 faces valued [0, 1].
+Rules for Pieces:
+     Pawns from vertex in the location of the piece current level to vertex ThrowDiceValue of the number of pips owned by Player Shared steps forward from site the location of the piece on track Track moveRule: true captureEffect: if there is an enemy Player at to, for each level at Vertex to (FromTop) remove pieces at to.
+Players take turns moving.
+Setup:
+     Place stack of [Pawn1] at vertex Player 1's hand site 0
+     Place stack of [Pawn2] at vertex Player 2's hand site 0.
+Rules: 
+     Roll the dice and afterwards if vertex Player the moving player's hand site 0 is occupied, from vertex in Player the moving player's hand site 0 to vertex ThrowDiceValue of the number of pips owned by Player Shared minus 1 steps forward from site Entry of the moving player on track Track moveRule: true captureEffect: if there is an enemy Player at to, for each level at Vertex to (FromTop) remove pieces at to or move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.925","0.96","0.462","0.89","1564, 1177","[]"
+"3927","962","Bakkis (Ludii 3)",NULL,"Reconstructed with Ludii","2",NULL,"The game Bakkis is played by two players on a noshape board with nobasis tiling.
+Regions:
+    Castle: contains the sites [61, 63, 65, 32, 47, 15, 80, 84, 86, 21, 38, 3]
+    Grace: contains the sites [0, 1, 6] 
+All players play with Pawns. The following pieces are shared by all players: Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1] and Dies with 2 faces valued [0, 1].
+Rules for Pieces:
+     Pawns if the number of pips owned by Player Shared steps forward from site the location of the piece on track null is equal to 96 or the number of pips owned by Player Shared is in [0,1,6] and the location of the piece is equal to PreviousGoal of current moving player, select Cell in the location of the piece if true and select Cell in 96 if true then remove pieces at the from location of the last move, else if not Die of the number of pips owned by Player Shared steps forward from site the location of the piece on track null is equal to 96 and not Die of the number of pips owned by Player Shared steps forward from site the location of the piece on track null is equal to -1, from cell in the location of the piece current level to cell Die of the number of pips owned by Player Shared steps forward from site the location of the piece on track null moveRule: true captureRule: not Die of the number of pips owned by Player Shared steps forward from site the location of the piece on track null is in [] or Die of the number of pips owned by Player Shared steps forward from site the location of the piece on track null is in [3,15,21,32,38,47,61,63,65,80,84,86] and is a friend captureEffect: if there is an enemy Player at to, from cell in to to cell Player Player at to's hand site 0 moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Pawn1] at cell Player 1's hand site 0
+     Place stack of [Pawn2] at cell Player 2's hand site 0.
+Rules: 
+     Roll the dice and afterwards if cell Player the moving player's hand site 0 is occupied, from cell in Player the moving player's hand site 0 to cell ThrowDiceValue of the number of pips owned by Player Shared minus 1 steps forward from site Entry of the moving player on track Track moveRule: true captureEffect: if there is an enemy Player at to, for each level at Cell to (FromTop) remove pieces at to or move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.923","0.958","0.461","0.889","147, 1564","[]"
+"3928","962","Bakkis (Ludii 4)",NULL,"Reconstructed with Ludii","2",NULL,"The game Bakkis is played by two players on a noshape board with nobasis tiling.
+Regions:
+    Protect: sites [0,10,5,16,21,23,30,36,46,56,51,42] for Neutral 
+All players play with Pawns. The following pieces are shared by all players: Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1] and Dies with 2 faces valued [0, 1].
+Rules for Pieces:
+     Pawns if the number of pips owned by Player Shared steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else if the number of pips owned by Player Shared steps forward from site the location of the piece on track null is not equal to -1, if if not there is an enemy Player at the number of pips owned by Player Shared steps forward from site the location of the piece on track null then true else not the number of pips owned by Player Shared steps forward from site the location of the piece on track null is in [0,5,10,16,21,23,30,36,42,46,51,56], from cell in the location of the piece current level to cell the number of pips owned by Player Shared steps forward from site the location of the piece on track null moveRule: true captureRule: there is an enemy Player at to captureEffect: from cell in to to cell Player Player at to's hand site 0 moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Pawn1] at cell Player 1's hand site 0
+     Place stack of [Pawn2] at cell Player 2's hand site 0.
+Rules: 
+     Roll the dice and afterwards if cell Player the moving player's hand site 0 is occupied, from cell in Player the moving player's hand site 0 to cell ThrowDiceValue of the number of pips owned by Player Shared minus 1 steps forward from site Entry of the moving player on track Track moveRule: true captureEffect: if there is an enemy Player at to, for each level at Cell to (FromTop) remove pieces at to or move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.922","0.957","0.459","0.887","1125, 1177","[]"
+"3929","962","Bakkis (Ludii 5)",NULL,"Reconstructed with Ludii","2",NULL,"The game Bakkis is played by two players on a noshape board with nobasis tiling. 
+All players play with Pawns. The following pieces are shared by all players: Dies with 4 faces valued [0, 1, 2, 4] and Dies with 4 faces valued [0, 1, 2, 4].
+Rules for Pieces:
+     Pawns if the number of pips owned by Player Shared steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from cell in the location of the piece current level to cell the number of pips owned by Player Shared steps forward from site the location of the piece on track null moveRule: true captureEffect: if there is an enemy Player at to, if 1 is equal to the size of the stack on cell to, for each level at Cell to (FromTop) from cell in to current level to cell the centre point of the board moveRule: true, else for each level at Cell to (FromTop) from cell in to current level to cell Player Player at to's hand site 0 moveRule: true.
+Players take turns moving.
+Setup:
+     Place stack of [Pawn1] at cell Player 1's hand site 0
+     Place stack of [Pawn2] at cell Player 2's hand site 0.
+Rules: 
+     Roll the dice and afterwards if cell Player the moving player's hand site 0 is occupied, from cell in Player the moving player's hand site 0 to cell ThrowDiceValue of the number of pips owned by Player Shared minus 1 steps forward from site Entry of the moving player on track Track moveRule: true captureEffect: if there is an enemy Player at to, for each level at Cell to (FromTop) remove pieces at to or move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the next player, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.917","0.952","0.454","0.882","750, 1177","[]"
