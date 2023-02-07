@@ -1,0 +1,36 @@
+(game "Snailtrail"
+    (players 2)
+    (equipment {
+        (board (rectangle <Board:size>))
+        (piece "Pawn" Each (move Step (to if:(is Empty (to))) (then (moveAgain))))
+        (piece "Square" Neutral)
+    })
+    (rules
+        (start {
+            <Board:placement>
+        })
+        (play 
+            (if (is Even (count Moves))
+                (forEach Piece)
+                (move Add (piece "Square0") (to (last From)))
+            )
+        )
+        (end ("BlockWin"))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> <placement> } {
+    (item "7x7" <7 7> <(place "Pawn1" {"A1"}) (place "Pawn2" {"G7"})> "The game is played on a 7x7 board.")*
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+)
