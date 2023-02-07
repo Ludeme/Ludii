@@ -1062,6 +1062,49 @@ public class MainMenuFunctions extends JMenuBar
 				// Probably just closed the dialog.
 			}
 		}
+		else if (source.getText().startsWith("Serialise Game Object"))
+		{
+			System.out.println("Game object not serialisable yet.");
+			app.addTextToStatusPanel("Game object not serialisable yet.");
+			
+//			// Choose a default file path
+//			String tempFilePath = DesktopApp.lastSelectedJsonPath();
+//			if (tempFilePath == null)
+//				tempFilePath = System.getProperty("user.dir");
+//			final String defaultFilePath = tempFilePath;
+//			
+//			// Get the destination folder
+//			final JFileChooser fileChooser = FileLoading.createFileChooser(defaultFilePath, ".*", "All files");  //".txt", "TXT files (.txt)");
+//			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//			fileChooser.setDialogTitle("Select output directory.");
+//
+//			final int choice = fileChooser.showOpenDialog(DesktopApp.frame());
+//			final File directory = (choice == JFileChooser.APPROVE_OPTION) ? fileChooser.getSelectedFile() : null;
+//
+//			if (directory != null && directory.exists())
+//			{
+//				System.out.println("Storing to folder: " + directory);
+//				
+//				final String outFileName = "game.ser";
+//				try 
+//				(
+//					final FileOutputStream file = new FileOutputStream(outFileName); 
+//					final ObjectOutputStream out = new ObjectOutputStream(file)
+//				)
+//				{
+//					out.writeObject(game);
+//				}
+//				catch(final Exception e1)
+//				{
+//					e1.printStackTrace();
+//				}
+//				System.out.println("Game has been serialised.");
+//			}
+//			else
+//			{
+//				System.out.println("Something went wrong.");
+//			}
+		}
 		else if (source.getText().startsWith("Print Working Directory"))
 		{
 			final File file = new File(".");
