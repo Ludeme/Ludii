@@ -148,7 +148,8 @@ public final class SizeStack extends BaseIntFunction
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "the size of the stack on " + type.name().toLowerCase() + " " + region.toEnglish(game);
+		final SiteType realType = (type == null) ? game.board().defaultSite() : type;
+		return "the size of the stack on " + realType.name().toLowerCase() + " " + region.toEnglish(game);
 	}
 	
 	//-------------------------------------------------------------------------
