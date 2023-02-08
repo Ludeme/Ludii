@@ -6,6 +6,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
+
+import game.Game;
+import main.FileHandling;
+import main.options.Ruleset;
+import other.GameLoader;
+import other.concept.Concept;
+import other.concept.ConceptDataType;
+import other.concept.ConceptType;
+import utils.RulesetNames;
 
 /**
  * Generate the percentage of concepts from a list of rulesets.
@@ -14,7 +24,8 @@ import java.util.List;
  */
 public class ConceptsFromCluster
 {
-	final static String listRulesets        = "./res/cluster/input/Cluster.csv";
+	final static String listRulesets        = "./res/cluster/input/clusters/Cluster1.4.csv";
+	final static String nameCluster         = "Cluster 1.4";
 	
 	/**
 	 * Main method to call the reconstruction with command lines.
@@ -22,172 +33,145 @@ public class ConceptsFromCluster
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("boxing")
 	public static void main(final String[] args) throws FileNotFoundException, IOException
 	{
-		// Read the CSV line by line.
-		final List<String> coordinates = new ArrayList<String>();
+		// Get the list of ruleset names.
+		final List<String> rulesetNames = new ArrayList<String>();
 		try (BufferedReader br = new BufferedReader(new FileReader(listRulesets))) 
 		{
 			String line = br.readLine();
 			while (line != null)
 			{
-				coordinates.add(line);
+				rulesetNames.add(line);
 				line = br.readLine();
 			}
 		}
 		
-//		
-//		// init game names list
-//		final List<String> gameNames = new ArrayList<String>();
-//		try (BufferedReader br = new BufferedReader(new FileReader(gamePath))) 
-//		{
-//			String line = br.readLine();
-//			while (line != null)
-//			{
-//				gameNames.add(line.substring(1, line.length()-1)); // we remove the quotes.
-//				line = br.readLine();
-//			}
-//		}
-//		
-//		
-//		// init the clusters results;
-//		final List<String>[] clusters = new ArrayList[numClusters];
-//		for(int i = 0; i < numClusters; i++)
-//			clusters[i] = new ArrayList<String>();
-//
-//
-//		
-//		for(int i = 0; i < coordinates.size(); i++)
-//		{
-//			String[] gameAndCoordinates = coordinates.get(i).split(";");
-//			final String gameName = gameAndCoordinates[0];
-//			final double x = Double.parseDouble(gameAndCoordinates[1]);
-//			final double y = Double.parseDouble(gameAndCoordinates[2]);
-//			
-//			if(x >= xMinCluster1 && x <= xMaxCluster1 && y >= yMinCluster1 && y <= yMaxCluster1)
-//				clusters[0].add(gameName);
-//			else if(x >= xMinCluster2 && x <= xMaxCluster2 && y >= yMinCluster2 && y <= yMaxCluster2)
-//				clusters[1].add(gameName);
-//			else if(x >= xMinCluster3 && x <= xMaxCluster3 && y >= yMinCluster3 && y <= yMaxCluster3)
-//				clusters[2].add(gameName);
-//			else if(x >= xMinCluster4 && x <= xMaxCluster4 && y >= yMinCluster4 && y <= yMaxCluster4)
-//				clusters[3].add(gameName);
-//			else if(x >= xMinCluster5 && x <= xMaxCluster5 && y >= yMinCluster5 && y <= yMaxCluster5)
-//				clusters[4].add(gameName);
-//			else if(x >= xMinCluster6 && x <= xMaxCluster6 && y >= yMinCluster6 && y <= yMaxCluster6)
-//				clusters[5].add(gameName);
-////			else if(x >= xMinCluster7 && x <= xMaxCluster7 && y >= yMinCluster7 && y <= yMaxCluster7)
-////				clusters[6].add(gameName);
-////			else if(x >= xMinCluster8 && x <= xMaxCluster8 && y >= yMinCluster8 && y <= yMaxCluster8)
-////				clusters[7].add(gameName);
-////			else if(x >= xMinCluster9 && x <= xMaxCluster9 && y >= yMinCluster9 && y <= yMaxCluster9)
-////				clusters[8].add(gameName);
-//			else
-//				System.err.println(gameName + " does not go to any cluster");
-//		}
-//
-//		for(int i = 0; i < numClusters; i++)
-//		{
-//			System.out.println("****************** Cluster " + (i + 1) + "  **************************");
-//			for(int j = 0; j < clusters[i].size(); j++)
-//				System.out.println(clusters[i].get(j));
-//			System.out.println("*****Size = " + clusters[i].size());
-//			
-//			System.out.println();
-//		}
-//		
-//		final String SQLRequest = "SELECT DISTINCT GameRulesets.Id AS GameRulesetsId, GameRulesets.Name AS GameRulesetsName, Games.Id AS GamesId, Games.Name AS GamesName FROM GameRulesets, Games, RulesetConcepts WHERE Games.Id = GameRulesets.GameId AND RulesetConcepts.RulesetId = GameRulesets.Id AND (GameRulesets.Type = 1 OR GameRulesets.Type = 3) AND Games.DLPGame = 1 AND (";
-//		String SQLRequestCluster1 = SQLRequest;
-//		String SQLRequestCluster2 = SQLRequest;
-//		String SQLRequestCluster3 = SQLRequest;
-//		String SQLRequestCluster4 = SQLRequest;
-//		
-//		// Request for Cluster 1.
-//		for(int i = 0; i < clusters[0].size() - 1; i++)
-//		{
-//			String gameName = clusters[0].get(i);
-//			//System.out.println("test for " + fullGameName);
-//			boolean found = false;
-//			while(!found)
-//			{
-//				String gameNameWithUnderscore = gameName.substring(0, gameName.lastIndexOf('_'));
-//				gameName = gameNameWithUnderscore.replace('_', ' ');
-//				//System.out.println("Test: " + possibleGameName);
-//				for(int j = 0; j < gameNames.size(); j++)
-//				{
-//					if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
-//					{
-//						found = true;
-//						gameName = gameNames.get(j);
-//						SQLRequestCluster1 += "Games.Name = \\\"" + gameName + "\\\" OR ";
-//						break;
-//					}
-//				}
-//				gameName = gameNameWithUnderscore;
-//				if(!gameName.contains("_")) // If this is reached, the game name is never found.
-//				{
-//					for(int j = 0; j < gameNames.size(); j++)
-//					{
-//						if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
-//						{
-//							found = true;
-//							gameName = gameNames.get(j);
-//							SQLRequestCluster1 += "Games.Name = \\\"" + gameName + "\\\" OR ";
-//							break;
-//						}
-//					}
-//					
-//					if(!found)
-//					{
-//						System.err.println(clusters[0].get(i) + " is never found in the list of game names.");
-//						System.exit(1);
-//					}
-//				}
-//			}
-//		}
-//		String gameName = clusters[0].get(clusters[0].size()-1);
-//		//System.out.println("test for " + fullGameName);
-//		boolean found = false;
-//		while(!found)
-//		{
-//			String gameNameWithUnderscore = gameName.substring(0, gameName.lastIndexOf('_'));
-//			gameName = gameNameWithUnderscore.replace('_', ' ');
-//			//System.out.println("Test: " + possibleGameName);
-//			for(int j = 0; j < gameNames.size(); j++)
-//			{
-//				if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
-//				{
-//					found = true;
-//					gameName = gameNames.get(j);
-//					SQLRequestCluster1 += "Games.Name = \\\"" + gameName + "\\\")";
-//					break;
-//				}
-//			}
-//			if(!found)
-//			{
-//				gameName = gameNameWithUnderscore;
-//				if(!gameName.contains("_")) // If this is reached, the game name is never found.
-//				{
-//					for(int j = 0; j < gameNames.size(); j++)
-//					{
-//						if(gameNames.get(j).replace("'","").replace("(","").replace(")","").equals(gameName))
-//						{
-//							found = true;
-//							gameName = gameNames.get(j);
-//							SQLRequestCluster1 += "Games.Name = \\\"" + gameName + "\\\")";
-//							break;
-//						}
-//					}
-//					
-//					if(!found)
-//					{
-//						System.err.println(clusters[0].get(clusters[0].size()-1) + " is never found in the list of game names.");
-//						System.exit(1);
-//					}
-//					
-//				}
-//			}
-//		}
+		// Conversion to Game object
+		final List<Game> rulesetsCompiled = new ArrayList<Game>();
+		final String[] gameNames = FileHandling.listGames();
+		for (int index = 0; index < gameNames.length; index++)
+		{
+			final String gameName = gameNames[index];
+			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/bad/"))
+				continue;
+
+			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wip/"))
+				continue;
+
+			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/WishlistDLP/"))
+				continue;
+
+			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/"))
+				continue;
+
+			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("subgame"))
+				continue;
+
+			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction"))
+				continue;
+
+			final Game game = GameLoader.loadGameFromName(gameName);
+			
+			final List<Ruleset> rulesetsInGame = game.description().rulesets();
+			
+			// Get all the rulesets of the game if it has some.
+			if (rulesetsInGame != null && !rulesetsInGame.isEmpty())
+			{
+				for (int rs = 0; rs < rulesetsInGame.size(); rs++)
+				{
+					final Ruleset ruleset = rulesetsInGame.get(rs);
+					if (!ruleset.optionSettings().isEmpty() && !ruleset.heading().contains("Incomplete")) 
+					{
+						final Game gameRuleset = GameLoader.loadGameFromName(gameName, ruleset.heading());
+						final String rulesetName = RulesetNames.gameRulesetName(gameRuleset);
+						if(rulesetNames.contains(rulesetName))
+							rulesetsCompiled.add(gameRuleset);
+					}
+				}
+			}
+			else
+			{
+				final String rulesetName = RulesetNames.gameRulesetName(game);
+				if(rulesetNames.contains(rulesetName))
+					rulesetsCompiled.add(game);
+			}
+		}
+		
+		System.out.println(nameCluster);
+		System.out.println("Num compiled rulesets is " + rulesetsCompiled.size());
+		System.out.println("*****************************");
+		
+//		for(Game gameRuleset: rulesetsCompiled)
+//			System.out.println(RulesetNames.gameRulesetName(gameRuleset));
+
+		final List<Concept> concepts = new ArrayList<Concept>();
+		for(Concept concept: Concept.values())
+		{
+			if(concept.type().equals(ConceptType.Start) || concept.type().equals(ConceptType.End) || concept.type().equals(ConceptType.Play)
+					|| concept.type().equals(ConceptType.Meta)|| concept.type().equals(ConceptType.Container)|| concept.type().equals(ConceptType.Component)
+			)
+			{
+				concepts.add(concept);
+			}
+		}
+		
+		System.out.println("\n\n***Boolean concepts in average***\n");
+		final List<ConceptAverageValue> booleanConceptAverageValues = new ArrayList<ConceptAverageValue>();
+		// Check boolean concepts
+		for(Concept concept: concepts)
+		{
+			if(concept.dataType().equals(ConceptDataType.BooleanData))
+			{
+				int count = 0;
+				for(Game gameRuleset: rulesetsCompiled)
+					if(gameRuleset.booleanConcepts().get(concept.id()))
+						count++;
+				
+				final double average = ((double) count * 100) / rulesetsCompiled.size();
+				final ConceptAverageValue conceptAverageValue = new ConceptAverageValue(concept, average);
+				booleanConceptAverageValues.add(conceptAverageValue);
+			}
+		}
+		booleanConceptAverageValues.sort((c1, c2) -> { return (c2.value - c1.value) > 0 ? 1 : (c2.value - c1.value) < 0 ? -1 : 0;});
+		for(ConceptAverageValue concept : booleanConceptAverageValues)
+			System.out.println(concept.concept.name() + "," + concept.value);
+
+		
+		
+		
+		System.out.println("\n\n***Numerical concepts in average***\n");
+		final List<ConceptAverageValue> numericalConceptAverageValues = new ArrayList<ConceptAverageValue>();
+		// Check numerical concepts
+		for(Concept concept: concepts)
+		{
+			if(concept.dataType().equals(ConceptDataType.IntegerData))
+			{
+				int count = 0;
+				for(Game gameRuleset: rulesetsCompiled)
+					if(gameRuleset.nonBooleanConcepts().get(concept.id()) != null)
+						count += Integer.parseInt(gameRuleset.nonBooleanConcepts().get(concept.id()));
+				final double average = (double) count / (double) rulesetsCompiled.size();
+				final ConceptAverageValue conceptAverageValue = new ConceptAverageValue(concept, average);
+				numericalConceptAverageValues.add(conceptAverageValue);
+			}
+			
+			if(concept.dataType().equals(ConceptDataType.DoubleData))
+			{
+				double count = 0;
+				for(Game gameRuleset: rulesetsCompiled)
+					if(gameRuleset.nonBooleanConcepts().get(concept.id()) != null)
+						count += Double.parseDouble(gameRuleset.nonBooleanConcepts().get(concept.id()));
+				final double average = count / rulesetsCompiled.size();
+				final ConceptAverageValue conceptAverageValue = new ConceptAverageValue(concept, average);
+				numericalConceptAverageValues.add(conceptAverageValue);
+			}
+		}
+		
+		numericalConceptAverageValues.sort((c1, c2) -> { return (c2.value - c1.value) > 0 ? 1 : (c2.value - c1.value) < 0 ? -1 : 0;});
+		for(ConceptAverageValue concept : numericalConceptAverageValues)
+			System.out.println(concept.concept.name() + "," + concept.value);
+		
 	}
 }
