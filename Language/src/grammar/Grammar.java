@@ -288,7 +288,7 @@ public class Grammar
 		findAncestors();
 		tidyUpFormat();
 
-		final boolean debug = true;  //FileHandling.isCambolbro() && false;
+		final boolean debug = FileHandling.isCambolbro() && false;
 		if (debug)
 		{
 			System.out.println(symbolDetails());

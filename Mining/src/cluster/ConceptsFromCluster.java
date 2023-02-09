@@ -24,8 +24,8 @@ import utils.RulesetNames;
  */
 public class ConceptsFromCluster
 {
-	final static String listRulesets        = "./res/cluster/input/clusters/Cluster1.6.csv";
-	final static String nameCluster         = "Cluster 1.6";
+	final static String listRulesets        = "./res/cluster/input/clusters/Cluster3.9.csv";
+	final static String nameCluster         = "Cluster 3.9";
 	
 	/**
 	 * Main method to call the reconstruction with command lines.
@@ -151,7 +151,7 @@ public class ConceptsFromCluster
 				int count = 0;
 				for(Game gameRuleset: rulesetsCompiled)
 					if(gameRuleset.nonBooleanConcepts().get(concept.id()) != null)
-						count += Integer.parseInt(gameRuleset.nonBooleanConcepts().get(concept.id()));
+						count += Double.parseDouble(gameRuleset.nonBooleanConcepts().get(concept.id()));
 				final double average = (double) count / (double) rulesetsCompiled.size();
 				final ConceptAverageValue conceptAverageValue = new ConceptAverageValue(concept, average);
 				numericalConceptAverageValues.add(conceptAverageValue);
