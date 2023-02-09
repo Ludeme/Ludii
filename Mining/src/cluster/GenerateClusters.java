@@ -85,97 +85,125 @@ public class GenerateClusters
 	
 	// Coordinates of the 5 sub-clusters of Cluster 2
 
-//	final static String coordinatesPath        = "./res/cluster/input/coordinatesCluster2.csv";
-//	final static int    numClusters = 5;
-//	
-//	// Cluster 2.1 area
-//	final static int    xMinCluster1 = -10;
-//	final static int    xMaxCluster1 = -3;
-//	final static int    yMinCluster1 = -8;
-//	final static int    yMaxCluster1 = -2;
-//	
-//	// Cluster 2.2 area
-//	final static int    xMinCluster2 = -15;
-//	final static int    xMaxCluster2 = -7;
-//	final static int    yMinCluster2 = -2;
-//	final static int    yMaxCluster2 = 4;
-//	
-//	// Cluster 2.3 area
-//	final static int    xMinCluster3 = -3;
-//	final static int    xMaxCluster3 = 10;
-//	final static int    yMinCluster3 = -8;
-//	final static int    yMaxCluster3 = -1;
-//	
-//	// Cluster 2.4 area
-//	final static int    xMinCluster4 = -7;
-//	final static double xMaxCluster4 = -0.85;
-//	final static int    yMinCluster4 = 2;
-//	final static int    yMaxCluster4 = 8;
-//	
-//	// Cluster 2.5 area
-//	final static double xMinCluster5 = -0.85;
-//	final static int    xMaxCluster5 = 10;
-//	final static int    yMinCluster5 = -1;
-//	final static int    yMaxCluster5 = 10;
+	final static String coordinatesPath        = "./res/cluster/input/coordinatesCluster2.csv";
+	final static int    numClusters = 8;
+	
+	// Cluster 2.1 area
+	final static int    xMinCluster1 = -10;
+	final static int    xMaxCluster1 = -6;
+	final static double yMinCluster1 = -7.5;
+	final static double yMaxCluster1 = -3.6;
+	
+	// Cluster 2.2 area
+	final static int    xMinCluster2 = -14;
+	final static int    xMaxCluster2 = -8;
+	final static double yMinCluster2 = -0.75;
+	final static int    yMaxCluster2 = 4;
+	
+	final static double secondxMinCluster2 = -8.2;
+	final static double secondxMaxCluster2 = -6.8;
+	final static double secondyMinCluster2 = 2.2;
+	final static int    secondyMaxCluster2 = 3;
+	
+	// Cluster 2.3 area
+	final static double xMinCluster3 = -1.2;
+	final static int    xMaxCluster3 = 5;
+	final static int    yMinCluster3 = -7;
+	final static double yMaxCluster3 = -2.8;
+	
+	final static double secondxMinCluster3 = 5.3;
+	final static double secondxMaxCluster3 = 7;
+	final static double secondyMinCluster3 = -2.75;
+	final static int    secondyMaxCluster3 = -1;
+	
+	// Cluster 2.4 area
+	final static double xMinCluster4 = -5.8;
+	final static double xMaxCluster4 = -0.94;
+	final static int    yMinCluster4 = 2;
+	final static double yMaxCluster4 = 5.5;
+	
+	// Cluster 2.5 area
+	final static double xMinCluster5 = -0.77;
+	final static int    xMaxCluster5 = 2;
+	final static double yMinCluster5 = 1.75;
+	final static double yMaxCluster5 = 4.5;
+	
+	// Cluster 2.6 area
+	final static double xMinCluster6 = 4.25;
+	final static int    xMaxCluster6 = 6;
+	final static double yMinCluster6 = 5.5;
+	final static double yMaxCluster6 = 7.0;
+	
+	// Cluster 2.7 area
+	final static double xMinCluster7 = 1;
+	final static double xMaxCluster7 = 4.5;
+	final static double yMinCluster7 = 0;
+	final static double yMaxCluster7 = 1.25;
+	
+	// Cluster 2.8 area
+	final static double xMinCluster8 = -1.7;
+	final static double xMaxCluster8 = 0;
+	final static double yMinCluster8 = -2.5;
+	final static double yMaxCluster8 = 0.8;
 	
 	// Coordinates of the 9 sub-clusters of Cluster 3
 
-	final static String coordinatesPath        = "./res/cluster/input/coordinatesCluster3.csv";
-	final static int    numClusters = 9;
-	
-	// Cluster 3.1 area
-	final static int    xMinCluster1 = -20;
-	final static double xMaxCluster1 = -10.5;
-	final static int    yMinCluster1 = -3;
-	final static int    yMaxCluster1 = 2;
-	
-	// Cluster 3.2 area
-	final static int    xMinCluster2 = -4;
-	final static int    xMaxCluster2 = 6;
-	final static int    yMinCluster2 = 11;
-	final static int    yMaxCluster2 = 20;
-	
-	// Cluster 3.3 area
-	final static double xMinCluster3 = 5.4;
-	final static int    xMaxCluster3 = 13;
-	final static double yMinCluster3 = -2.2;
-	final static int    yMaxCluster3 = 12;
-	
-	// Cluster 3.4 area
-	final static int    xMinCluster4 = -3;
-	final static double xMaxCluster4 = 2;
-	final static double yMinCluster4 = 0.5;
-	final static int    yMaxCluster4 = 10;
-	
-	// Cluster 3.5 area
-	final static double xMinCluster5 = -12;
-	final static double xMaxCluster5 = -1.5;
-	final static double yMinCluster5 = -6.5;
-	final static double yMaxCluster5 = -3.8;
-	
-	// Cluster 3.6 area
-	final static double xMinCluster6 = -4;
-	final static int    xMaxCluster6 = 8;
-	final static int    yMinCluster6 = -17;
-	final static double yMaxCluster6 = -7.25;
-	
-	// Cluster 3.7 area
-	final static double xMinCluster7 = 6.5;
-	final static int    xMaxCluster7 = 11;
-	final static double yMinCluster7 = -6.7;
-	final static double yMaxCluster7 = -3.5;
-	
-	// Cluster 3.8 area
-	final static double xMinCluster8 = -10.5;
-	final static double xMaxCluster8 = -3.1;
-	final static double yMinCluster8 = -0.45;
-	final static int    yMaxCluster8 = 10;
-	
-	// Cluster 3.9 area
-	final static double xMinCluster9 = -10.4;
-	final static int    xMaxCluster9 = 3;
-	final static double yMinCluster9 = -3.3;
-	final static double yMaxCluster9 = -0.5;
+//	final static String coordinatesPath        = "./res/cluster/input/coordinatesCluster3.csv";
+//	final static int    numClusters = 9;
+//	
+//	// Cluster 3.1 area
+//	final static int    xMinCluster1 = -20;
+//	final static double xMaxCluster1 = -10.5;
+//	final static int    yMinCluster1 = -3;
+//	final static int    yMaxCluster1 = 2;
+//	
+//	// Cluster 3.2 area
+//	final static int    xMinCluster2 = -4;
+//	final static int    xMaxCluster2 = 6;
+//	final static int    yMinCluster2 = 11;
+//	final static int    yMaxCluster2 = 20;
+//	
+//	// Cluster 3.3 area
+//	final static double xMinCluster3 = 5.4;
+//	final static int    xMaxCluster3 = 13;
+//	final static double yMinCluster3 = -2.2;
+//	final static int    yMaxCluster3 = 12;
+//	
+//	// Cluster 3.4 area
+//	final static int    xMinCluster4 = -3;
+//	final static double xMaxCluster4 = 2;
+//	final static double yMinCluster4 = 0.5;
+//	final static int    yMaxCluster4 = 10;
+//	
+//	// Cluster 3.5 area
+//	final static double xMinCluster5 = -12;
+//	final static double xMaxCluster5 = -1.5;
+//	final static double yMinCluster5 = -6.5;
+//	final static double yMaxCluster5 = -3.8;
+//	
+//	// Cluster 3.6 area
+//	final static double xMinCluster6 = -4;
+//	final static int    xMaxCluster6 = 8;
+//	final static int    yMinCluster6 = -17;
+//	final static double yMaxCluster6 = -7.25;
+//	
+//	// Cluster 3.7 area
+//	final static double xMinCluster7 = 6.5;
+//	final static int    xMaxCluster7 = 11;
+//	final static double yMinCluster7 = -6.7;
+//	final static double yMaxCluster7 = -3.5;
+//	
+//	// Cluster 3.8 area
+//	final static double xMinCluster8 = -10.5;
+//	final static double xMaxCluster8 = -3.1;
+//	final static double yMinCluster8 = -0.45;
+//	final static int    yMaxCluster8 = 10;
+//	
+//	// Cluster 3.9 area
+//	final static double xMinCluster9 = -10.4;
+//	final static int    xMaxCluster9 = 3;
+//	final static double yMinCluster9 = -3.3;
+//	final static double yMaxCluster9 = -0.5;
 	
 	final static String gamePath        	   = "./res/cluster/input/Games.csv";
 	
@@ -229,7 +257,11 @@ public class GenerateClusters
 				clusters[0].add(gameName);
 			else if(x >= xMinCluster2 && x <= xMaxCluster2 && y >= yMinCluster2 && y <= yMaxCluster2)
 				clusters[1].add(gameName);
+			else if(x >= secondxMinCluster2 && x <= secondxMaxCluster2 && y >= secondyMinCluster2 && y <= secondyMaxCluster2)
+				clusters[1].add(gameName);
 			else if(x >= xMinCluster3 && x <= xMaxCluster3 && y >= yMinCluster3 && y <= yMaxCluster3)
+				clusters[2].add(gameName);
+			else if(x >= secondxMinCluster3 && x <= secondxMaxCluster3 && y >= secondyMinCluster3 && y <= secondyMaxCluster3)
 				clusters[2].add(gameName);
 			else if(x >= xMinCluster4 && x <= xMaxCluster4 && y >= yMinCluster4 && y <= yMaxCluster4)
 				clusters[3].add(gameName);
@@ -241,8 +273,8 @@ public class GenerateClusters
 				clusters[6].add(gameName);
 			else if(x >= xMinCluster8 && x <= xMaxCluster8 && y >= yMinCluster8 && y <= yMaxCluster8)
 				clusters[7].add(gameName);
-			else if(x >= xMinCluster9 && x <= xMaxCluster9 && y >= yMinCluster9 && y <= yMaxCluster9)
-				clusters[8].add(gameName);
+//			else if(x >= xMinCluster9 && x <= xMaxCluster9 && y >= yMinCluster9 && y <= yMaxCluster9)
+//				clusters[8].add(gameName);
 			else
 				System.err.println(gameName + " does not go to any cluster");
 		}
