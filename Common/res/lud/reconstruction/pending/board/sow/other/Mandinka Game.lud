@@ -9,15 +9,8 @@
     (item "Incomplete"
         <
         (players 2) 
-        (equipment { 
-            (mancalaBoard [#]) // Large holes in the board
-            (piece "Seed" Each) // around 30 counters
-        })
-        (rules
-            (start [#])
-            (play [#]) // Capture involved
-            (end [#]) // The player who capture the most wins.
-        )
+        (equipment [#])
+        (rules [#])
         >
         "The incomplete ruleset."
     )
@@ -53,6 +46,7 @@
     (recon {
         (concept "SowCapture" True)   
         (concept "Sow" True)
+        (concept "MancalaBoard" True)
     })
     
 )
