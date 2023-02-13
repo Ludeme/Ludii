@@ -24,8 +24,8 @@ import utils.RulesetNames;
  */
 public class ConceptsFromCluster
 {
-	final static String listRulesets        = "./res/cluster/input/clusters/Cluster2.8.csv";
-	final static String nameCluster         = "Cluster 2.8";
+	final static String listRulesets        = "./res/cluster/input/clusters/Cluster4.csv";
+	final static String nameCluster         = "Cluster 4";
 	
 	/**
 	 * Main method to call the reconstruction with command lines.
