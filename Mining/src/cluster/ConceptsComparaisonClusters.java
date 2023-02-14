@@ -67,6 +67,7 @@ public class ConceptsComparaisonClusters
 		try (final PrintWriter writer = new UnixPrintWriter(new File(outputConcept), "UTF-8"))
 		{
 			final List<String> lineToWrite = new ArrayList<String>();
+			lineToWrite.add("");
 			for(String clusterName : clusters)
 				lineToWrite.add(clusterName);
 			writer.println(StringRoutines.join(",", lineToWrite));
