@@ -17,7 +17,7 @@ Working with Ludii's source code requires Java Development Kit (JDK) version 8 o
 
 ### Eclipse (recommended)
 1. Clone (and optionally fork) this repository.
-2. Import the whole `Ludii/` folder to your workspace..
+2. Import the whole `Ludii/` folder to your workspace.
 3. To start the GUI, right click on `/Ludii/PlayerDesktop/src/app/StartDesktopApp` and launch it as a Java Application
 
 Eclipse should recognize each folder as a separate project and automatically apply the `-parameters` compiler flag.
