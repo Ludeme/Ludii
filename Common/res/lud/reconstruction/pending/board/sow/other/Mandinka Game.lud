@@ -43,8 +43,13 @@
         }
     )
     
+    (graphics {
+        (board Style Mancala)
+    })
+    
     (recon {
         (concept "Sow" True)
+        (concept "NumStartComponents" minValue:20 maxValue:80)
     })
     
 )
