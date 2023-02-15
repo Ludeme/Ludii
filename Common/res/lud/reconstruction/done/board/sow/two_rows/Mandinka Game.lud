@@ -1,0 +1,1836 @@
+(game "Mandinka Game"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Mandinka Game (Ludii 1)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 6 store:None 
+                (track "Track" "5,W,N,E" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 6 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (if 
+                    (is Proposed "End")
+                    
+                    (or 
+                        (move Vote "End")
+                        
+                        (move Vote "No")
+                    )
+                    
+                    (or 
+                        (if 
+                            (is Cycle)
+                            
+                            (move Propose "End")
+                        )
+                        
+                        (do 
+                            (move Select 
+                                (from 
+                                    (sites Mover)
+                                    if:
+                                    (< 0 
+                                        (count at:
+                                            (from)
+                                        )
+                                    )
+                                )
+                                
+                                (then 
+                                    (sow if:
+                                        (and 
+                                            (is In 
+                                                (to)
+                                                
+                                                (sites Next)
+                                            )
+                                            
+                                            (or 
+                                                (= 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                2)
+                                                
+                                                (= 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                3)
+                                            )
+                                        )
+                                        apply:
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (handSite Mover)
+                                            )
+                                            count:
+                                            (count at:
+                                                (to)
+                                            )
+                                        )
+                                    includeSelf:False backtracking:True )
+                                )
+                            )
+                            ifAfterwards:
+                            (< 0 
+                                (count in:
+                                    (sites Next)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (or 
+                        (no Moves Mover)
+                        
+                        (is Decided "End")
+                    )
+                    
+                    (byScore { 
+                        (score P1 
+                            (+ 
+                                (count Cell at:
+                                    (handSite P1)
+                                )
+                                
+                                (count in:
+                                    (sites P1)
+                                )
+                            )
+                        )
+                        
+                        (score P2 
+                            (+ 
+                                (count Cell at:
+                                    (handSite P2)
+                                )
+                                
+                                (count in:
+                                    (sites P2)
+                                )
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Mandinka Game (Ludii 1) ruleset.")
+    
+    (item "Mandinka Game (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 4 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (regions "Home" P1 
+                (sites Bottom)
+            )
+            
+            (regions "Home" P2 
+                (sites Top)
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 6 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (if 
+                    (is Proposed "End")
+                    
+                    (or 
+                        (move Vote "End")
+                        
+                        (move Vote "No")
+                    )
+                    
+                    (or 
+                        (if 
+                            (is Cycle)
+                            
+                            (move Propose "End")
+                        )
+                        
+                        (do 
+                            (move Select 
+                                (from 
+                                    (sites Mover)
+                                    if:
+                                    (< 0 
+                                        (count at:
+                                            (from)
+                                        )
+                                    )
+                                )
+                                
+                                (then 
+                                    (sow if:
+                                        (and 
+                                            (is In 
+                                                (to)
+                                                
+                                                (sites Next)
+                                            )
+                                            
+                                            (or 
+                                                (= 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                2)
+                                                
+                                                (= 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                3)
+                                            )
+                                        )
+                                        apply:
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (handSite Mover)
+                                            )
+                                            count:
+                                            (count at:
+                                                (to)
+                                            )
+                                        )
+                                    includeSelf:False backtracking:True )
+                                )
+                            )
+                            ifAfterwards:
+                            (< 0 
+                                (count in:
+                                    (sites Next)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (or 
+                        (no Moves Mover)
+                        
+                        (is Decided "End")
+                    )
+                    
+                    (byScore { 
+                        (score P1 
+                            (+ 
+                                (count Cell at:
+                                    (handSite P1)
+                                )
+                                
+                                (count in:
+                                    (sites P1)
+                                )
+                            )
+                        )
+                        
+                        (score P2 
+                            (+ 
+                                (count Cell at:
+                                    (handSite P2)
+                                )
+                                
+                                (count in:
+                                    (sites P2)
+                                )
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Mandinka Game (Ludii 2) ruleset.")
+    
+    (item "Mandinka Game (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 6 store:None 
+                (track "Track" "5,W,N,E" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 6 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover)
+                        if:
+                        (< 0 
+                            (count at:
+                                (from)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (sow if:
+                            (or { 
+                                (= 
+                                    (count at:
+                                        (to)
+                                    )
+                                2)
+                                
+                                (= 
+                                    (count at:
+                                        (to)
+                                    )
+                                4)
+                                
+                                (= 
+                                    (count at:
+                                        (to)
+                                    )
+                                6)
+                                }
+                            )
+                            apply:
+                            (fromTo 
+                                (from 
+                                    (to)
+                                )
+                                
+                                (to 
+                                    (handSite Mover)
+                                )
+                                count:
+                                (count at:
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Mover)
+                    
+                    (byScore { 
+                        (score P1 
+                            (count Cell at:
+                                (handSite P1)
+                            )
+                        )
+                        
+                        (score P2 
+                            (count Cell at:
+                                (handSite P2)
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Mandinka Game (Ludii 3) ruleset.")
+    
+    (item "Mandinka Game (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 4 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 6 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (if 
+                    (is Proposed "End")
+                    
+                    (or 
+                        (move Vote "End")
+                        
+                        (move Vote "No")
+                    )
+                    
+                    (or 
+                        (if 
+                            (is Cycle)
+                            
+                            (move Propose "End")
+                        )
+                        
+                        (do 
+                            (move Select 
+                                (from 
+                                    (sites Mover)
+                                    if:
+                                    (< 0 
+                                        (count at:
+                                            (from)
+                                        )
+                                    )
+                                )
+                                
+                                (then 
+                                    (sow if:
+                                        (and 
+                                            (is In 
+                                                (to)
+                                                
+                                                (sites Next)
+                                            )
+                                            
+                                            (or 
+                                                (= 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                2)
+                                                
+                                                (= 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                3)
+                                            )
+                                        )
+                                        apply:
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (handSite Mover)
+                                            )
+                                            count:
+                                            (count at:
+                                                (to)
+                                            )
+                                        )
+                                    includeSelf:False backtracking:True )
+                                )
+                            )
+                            ifAfterwards:
+                            (< 0 
+                                (count in:
+                                    (sites Next)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (or 
+                        (no Moves Mover)
+                        
+                        (is Decided "End")
+                    )
+                    
+                    (byScore { 
+                        (score P1 
+                            (+ 
+                                (count Cell at:
+                                    (handSite P1)
+                                )
+                                
+                                (count in:
+                                    (sites P1)
+                                )
+                            )
+                        )
+                        
+                        (score P2 
+                            (+ 
+                                (count Cell at:
+                                    (handSite P2)
+                                )
+                                
+                                (count in:
+                                    (sites P2)
+                                )
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Mandinka Game (Ludii 4) ruleset.")
+    
+    (item "Mandinka Game (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 4 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (regions "Home" P1 
+                (sites Bottom)
+            )
+            
+            (regions "Home" P2 
+                (sites Top)
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 6 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover "Home")
+                        if:
+                        (> 
+                            (count at:
+                                (from)
+                            )
+                        0)
+                    )
+                    
+                    (then 
+                        (sow origin:True 
+                            (then 
+                                (forEach Site 
+                                    (sites Track)
+                                    
+                                    (if 
+                                        (is In 
+                                            (count at:
+                                                (site)
+                                            )
+                                            
+                                            (sites { 2 4 6}
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (site)
+                                            )
+                                            
+                                            (to 
+                                                (handSite Mover)
+                                            )
+                                            count:
+                                            (count at:
+                                                (site)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (= 0 
+                        (count in:
+                            (sites Track)
+                        )
+                    )
+                    
+                    (byScore { 
+                        (score P1 
+                            (count Cell at:
+                                (handSite P1)
+                            )
+                        )
+                        
+                        (score P2 
+                            (count Cell at:
+                                (handSite P2)
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Mandinka Game (Ludii 5) ruleset.")
+    
+    (item "Mandinka Game (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 4 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (regions "Home" P1 
+                (sites Bottom)
+            )
+            
+            (regions "Home" P2 
+                (sites Top)
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 6 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover)
+                        if:
+                        (< 0 
+                            (count at:
+                                (from)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (sow if:
+                            (or { 
+                                (= 
+                                    (count at:
+                                        (to)
+                                    )
+                                2)
+                                
+                                (= 
+                                    (count at:
+                                        (to)
+                                    )
+                                4)
+                                
+                                (= 
+                                    (count at:
+                                        (to)
+                                    )
+                                6)
+                                }
+                            )
+                            apply:
+                            (fromTo 
+                                (from 
+                                    (to)
+                                )
+                                
+                                (to 
+                                    (handSite Mover)
+                                )
+                                count:
+                                (count at:
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Mover)
+                    
+                    (byScore { 
+                        (score P1 
+                            (count Cell at:
+                                (handSite P1)
+                            )
+                        )
+                        
+                        (score P2 
+                            (count Cell at:
+                                (handSite P2)
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Mandinka Game (Ludii 6) ruleset.")
+    
+    (item "Mandinka Game (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 4 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 6 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover)
+                        if:
+                        (< 0 
+                            (count at:
+                                (from)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (sow if:
+                            (or { 
+                                (= 
+                                    (count at:
+                                        (to)
+                                    )
+                                2)
+                                
+                                (= 
+                                    (count at:
+                                        (to)
+                                    )
+                                4)
+                                
+                                (= 
+                                    (count at:
+                                        (to)
+                                    )
+                                6)
+                                }
+                            )
+                            apply:
+                            (fromTo 
+                                (from 
+                                    (to)
+                                )
+                                
+                                (to 
+                                    (handSite Mover)
+                                )
+                                count:
+                                (count at:
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Mover)
+                    
+                    (byScore { 
+                        (score P1 
+                            (count Cell at:
+                                (handSite P1)
+                            )
+                        )
+                        
+                        (score P2 
+                            (count Cell at:
+                                (handSite P2)
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Mandinka Game (Ludii 7) ruleset.")
+    
+    (item "Mandinka Game (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 6 store:None 
+                (track "Track" "5,W,N,E" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (set Count 4 to:
+                    (sites Track)
+                )
+                
+                (set RememberValue "Playable" 
+                    (union 
+                        (sites Top)
+                        
+                        (sites Bottom)
+                    )
+                )
+                }
+            )
+            phases:{ 
+            (phase "Sowing" 
+                (play 
+                    (or { 
+                        (move Select 
+                            (from 
+                                (sites Mover)
+                                if:
+                                (and 
+                                    (is Occupied 
+                                        (from)
+                                    )
+                                    
+                                    (is In 
+                                        (from)
+                                        
+                                        (sites 
+                                            (values Remembered "Playable")
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (sow apply:
+                                    (if 
+                                        (and 
+                                            (or { 
+                                                (= 2 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (= 4 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (= 6 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (= 8 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                )
+                                                }
+                                            )
+                                            
+                                            (is In 
+                                                (to)
+                                                
+                                                (sites 
+                                                    (values Remembered "Playable" )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (handSite Mover)
+                                            )
+                                            count:
+                                            (count at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        }
+                        
+                        (then 
+                            (if 
+                                (all Sites 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                    if:
+                                    (= 0 
+                                        (count at:
+                                            (site)
+                                        )
+                                    )
+                                )
+                                
+                                (forget Value "Playable" All)
+                                
+                                (forEach Site 
+                                    (difference 
+                                        (sites Board)
+                                        
+                                        (sites 
+                                            (values Remembered "Playable")
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (<= 4 
+                                            (count at:
+                                                (site)
+                                            )
+                                        )
+                                        
+                                        (remember Value "Playable" 
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (end 
+                    (if 
+                        (all Sites 
+                            (union 
+                                (sites Top)
+                                
+                                (sites Bottom)
+                            )
+                            if:
+                            (= 0 
+                                (count at:
+                                    (site)
+                                )
+                            )
+                        )
+                        { 
+                        (if 
+                            (= 0 
+                                (count Cell at:
+                                    (handSite P1)
+                                )
+                            )
+                            
+                            (result P2 Win)
+                        )
+                        
+                        (if 
+                            (= 0 
+                                (count Cell at:
+                                    (handSite P2)
+                                )
+                            )
+                            
+                            (result P1 Win)
+                        )
+                        }
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (union 
+                            (sites Top)
+                            
+                            (sites Bottom)
+                        )
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                "BetweenRounds" )
+            )
+            
+            (phase "BetweenRounds" 
+                (play 
+                    (if 
+                        (not 
+                            (all Sites 
+                                (sites Mover)
+                                if:
+                                (is Occupied 
+                                    (site)
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (<= 4 
+                                (count Cell at:
+                                    (handSite Mover)
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (sites Mover)
+                                    if:
+                                    (is Empty 
+                                        (to)
+                                    )
+                                )
+                                count:4 
+                                (then 
+                                    (remember Value "Playable" 
+                                        (last To)
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (sites Mover)
+                                    if:
+                                    (is Empty 
+                                        (to)
+                                    )
+                                )
+                                count:
+                                (count Cell at:
+                                    (handSite Mover)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Passed)
+                "Sowing")
+            )
+            }
+        )
+        
+    > "The Mandinka Game (Ludii 8) ruleset.")
+    
+    (item "Mandinka Game (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 4 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (regions "Home" P1 
+                (sites Bottom)
+            )
+            
+            (regions "Home" P2 
+                (sites Top)
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (set Count 4 to:
+                    (sites Track)
+                )
+                
+                (set RememberValue "Playable" 
+                    (union 
+                        (sites Top)
+                        
+                        (sites Bottom)
+                    )
+                )
+                }
+            )
+            phases:{ 
+            (phase "Sowing" 
+                (play 
+                    (or { 
+                        (move Select 
+                            (from 
+                                (sites Mover)
+                                if:
+                                (and 
+                                    (is Occupied 
+                                        (from)
+                                    )
+                                    
+                                    (is In 
+                                        (from)
+                                        
+                                        (sites 
+                                            (values Remembered "Playable")
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (sow apply:
+                                    (if 
+                                        (and 
+                                            (or { 
+                                                (= 2 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (= 4 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (= 6 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (= 8 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                )
+                                                }
+                                            )
+                                            
+                                            (is In 
+                                                (to)
+                                                
+                                                (sites 
+                                                    (values Remembered "Playable" )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (handSite Mover)
+                                            )
+                                            count:
+                                            (count at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        }
+                        
+                        (then 
+                            (if 
+                                (all Sites 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                    if:
+                                    (= 0 
+                                        (count at:
+                                            (site)
+                                        )
+                                    )
+                                )
+                                
+                                (forget Value "Playable" All)
+                                
+                                (forEach Site 
+                                    (difference 
+                                        (sites Board)
+                                        
+                                        (sites 
+                                            (values Remembered "Playable")
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (<= 4 
+                                            (count at:
+                                                (site)
+                                            )
+                                        )
+                                        
+                                        (remember Value "Playable" 
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (end 
+                    (if 
+                        (all Sites 
+                            (union 
+                                (sites Top)
+                                
+                                (sites Bottom)
+                            )
+                            if:
+                            (= 0 
+                                (count at:
+                                    (site)
+                                )
+                            )
+                        )
+                        { 
+                        (if 
+                            (= 0 
+                                (count Cell at:
+                                    (handSite P1)
+                                )
+                            )
+                            
+                            (result P2 Win)
+                        )
+                        
+                        (if 
+                            (= 0 
+                                (count Cell at:
+                                    (handSite P2)
+                                )
+                            )
+                            
+                            (result P1 Win)
+                        )
+                        }
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (union 
+                            (sites Top)
+                            
+                            (sites Bottom)
+                        )
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                "BetweenRounds" )
+            )
+            
+            (phase "BetweenRounds" 
+                (play 
+                    (if 
+                        (not 
+                            (all Sites 
+                                (sites Mover)
+                                if:
+                                (is Occupied 
+                                    (site)
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (<= 4 
+                                (count Cell at:
+                                    (handSite Mover)
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (sites Mover)
+                                    if:
+                                    (is Empty 
+                                        (to)
+                                    )
+                                )
+                                count:4 
+                                (then 
+                                    (remember Value "Playable" 
+                                        (last To)
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (sites Mover)
+                                    if:
+                                    (is Empty 
+                                        (to)
+                                    )
+                                )
+                                count:
+                                (count Cell at:
+                                    (handSite Mover)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Passed)
+                "Sowing")
+            )
+            }
+        )
+        
+    > "The Mandinka Game (Ludii 9) ruleset.")
+    
+    (item "Mandinka Game (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 4 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (set Count 4 to:
+                    (sites Track)
+                )
+                
+                (set RememberValue "Playable" 
+                    (union 
+                        (sites Top)
+                        
+                        (sites Bottom)
+                    )
+                )
+                }
+            )
+            phases:{ 
+            (phase "Sowing" 
+                (play 
+                    (or { 
+                        (move Select 
+                            (from 
+                                (sites Mover)
+                                if:
+                                (and 
+                                    (is Occupied 
+                                        (from)
+                                    )
+                                    
+                                    (is In 
+                                        (from)
+                                        
+                                        (sites 
+                                            (values Remembered "Playable")
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (sow apply:
+                                    (if 
+                                        (and 
+                                            (or { 
+                                                (= 2 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (= 4 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (= 6 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (= 8 
+                                                    (count at:
+                                                        (to)
+                                                    )
+                                                )
+                                                }
+                                            )
+                                            
+                                            (is In 
+                                                (to)
+                                                
+                                                (sites 
+                                                    (values Remembered "Playable" )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (handSite Mover)
+                                            )
+                                            count:
+                                            (count at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        }
+                        
+                        (then 
+                            (if 
+                                (all Sites 
+                                    (union 
+                                        (sites Top)
+                                        
+                                        (sites Bottom)
+                                    )
+                                    if:
+                                    (= 0 
+                                        (count at:
+                                            (site)
+                                        )
+                                    )
+                                )
+                                
+                                (forget Value "Playable" All)
+                                
+                                (forEach Site 
+                                    (difference 
+                                        (sites Board)
+                                        
+                                        (sites 
+                                            (values Remembered "Playable")
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (<= 4 
+                                            (count at:
+                                                (site)
+                                            )
+                                        )
+                                        
+                                        (remember Value "Playable" 
+                                            (site)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (end 
+                    (if 
+                        (all Sites 
+                            (union 
+                                (sites Top)
+                                
+                                (sites Bottom)
+                            )
+                            if:
+                            (= 0 
+                                (count at:
+                                    (site)
+                                )
+                            )
+                        )
+                        { 
+                        (if 
+                            (= 0 
+                                (count Cell at:
+                                    (handSite P1)
+                                )
+                            )
+                            
+                            (result P2 Win)
+                        )
+                        
+                        (if 
+                            (= 0 
+                                (count Cell at:
+                                    (handSite P2)
+                                )
+                            )
+                            
+                            (result P1 Win)
+                        )
+                        }
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (union 
+                            (sites Top)
+                            
+                            (sites Bottom)
+                        )
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                "BetweenRounds" )
+            )
+            
+            (phase "BetweenRounds" 
+                (play 
+                    (if 
+                        (not 
+                            (all Sites 
+                                (sites Mover)
+                                if:
+                                (is Occupied 
+                                    (site)
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (<= 4 
+                                (count Cell at:
+                                    (handSite Mover)
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (sites Mover)
+                                    if:
+                                    (is Empty 
+                                        (to)
+                                    )
+                                )
+                                count:4 
+                                (then 
+                                    (remember Value "Playable" 
+                                        (last To)
+                                    )
+                                )
+                            )
+                            
+                            (move 
+                                (from 
+                                    (handSite Mover)
+                                )
+                                
+                                (to 
+                                    (sites Mover)
+                                    if:
+                                    (is Empty 
+                                        (to)
+                                    )
+                                )
+                                count:
+                                (count Cell at:
+                                    (handSite Mover)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Passed)
+                "Sowing")
+            )
+            }
+        )
+        
+    > "The Mandinka Game (Ludii 10) ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment [#])
+        (rules [#])
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Mandinka Game (Ludii 1) (Reconstructed)" {
+        "Variant/Mandinka Game (Ludii 1)"
+    })
+    (ruleset "Ruleset/Mandinka Game (Ludii 2) (Reconstructed)" {
+        "Variant/Mandinka Game (Ludii 2)"
+    })
+    (ruleset "Ruleset/Mandinka Game (Ludii 3) (Reconstructed)" {
+        "Variant/Mandinka Game (Ludii 3)"
+    })
+    (ruleset "Ruleset/Mandinka Game (Ludii 4) (Reconstructed)" {
+        "Variant/Mandinka Game (Ludii 4)"
+    })
+    (ruleset "Ruleset/Mandinka Game (Ludii 5) (Reconstructed)" {
+        "Variant/Mandinka Game (Ludii 5)"
+    })
+    (ruleset "Ruleset/Mandinka Game (Ludii 6) (Reconstructed)" {
+        "Variant/Mandinka Game (Ludii 6)"
+    })
+    (ruleset "Ruleset/Mandinka Game (Ludii 7) (Reconstructed)" {
+        "Variant/Mandinka Game (Ludii 7)"
+    })
+    (ruleset "Ruleset/Mandinka Game (Ludii 8) (Reconstructed)" {
+        "Variant/Mandinka Game (Ludii 8)"
+    })
+    (ruleset "Ruleset/Mandinka Game (Ludii 9) (Reconstructed)" {
+        "Variant/Mandinka Game (Ludii 9)"
+    })
+    (ruleset "Ruleset/Mandinka Game (Ludii 10) (Reconstructed)" {
+        "Variant/Mandinka Game (Ludii 10)"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "This game was played on the River Gambia in the early seventeenth century. It is one of the earliest documented mancala-style board games. It was played outside, under shady trees, by men of the Mandinka people.")
+        (rules "Board with large holes. Around thirty counters. Counters are captured. The player who captures the most counters wins.")
+        (source "DLP evidence.")
+        (id "1265")
+        (version "1.3.9")
+        (classification "board/sow/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Gambia, from around 1620 to 1621.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+    (recon {
+        (concept "Sow" True)
+        (concept "NumStartComponents" minValue:20 maxValue:80)
+    })
+    
+)
+
