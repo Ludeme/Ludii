@@ -712,7 +712,14 @@ public class Expander
 					didExpandAny = true;
 			} while (didExpand[0]);
 	
-			// Secondly, expand all predefined defines as thoroughly as possible
+			// Secondly, expand all predefined defines as thoroughly as possible except in the metadata
+			String metadata = "";
+			final int c = str.indexOf("(metadata");
+			if (c >= 0)
+			{
+				metadata = str.substring(c, StringRoutines.matchingBracketAt(str, c) + 1);
+				str = str.substring(0, c);
+			}
 			do 
 			{
 				didExpand[0] = false;
@@ -729,6 +736,7 @@ public class Expander
 				if (didExpand[0])
 					didExpandAny = true;
 			} while (didExpand[0]);
+			str = str + metadata;
 
 			// Thirdly, expand known game AI metadata define (if found)
 			if (knownAIDefine != null)
