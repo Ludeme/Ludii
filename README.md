@@ -20,12 +20,12 @@ Working with Ludii's source code requires Java Development Kit (JDK) version 8 o
 2. Import the whole `Ludii/` folder to your workspace.
 3. To start the GUI, right click on `/Ludii/PlayerDesktop/src/app/StartDesktopApp` and launch it as a Java Application
 
-Eclipse should recognize each folder as a separate project and automatically apply the `-parameters` compiler flag.
+Eclipse should recognise each folder as a separate project and automatically apply the `-parameters` compiler flag.
 
 ### IntelliJ IDEA
 1. Clone (and optionally fork) this repository.
 2. Import the whole `Ludii/` folder as an Eclipse project. We recommend following the [official instructions on importing Eclipse projects](https://www.jetbrains.com/help/idea/import-project-from-eclipse-page-1.html). 
-Make sure to import each capitalized folder (`AI/`, ..., `View Controller/`) as a separate module.
+Make sure to import each capitalised folder (`AI/`, ..., `View Controller/`) as a separate module.
 3. In `Settings | Build, Execution, Deployment | Compiler | Java Compiler`, under `Additional command line parameters`, type `-parameters`. 
 4. To start the GUI, create a new run configuration under `Run | Edit Configurations | + | Application`.
    1. Set the module to `PlayerDesktop` and use java 1.8 or above.
@@ -35,7 +35,7 @@ Make sure to import each capitalized folder (`AI/`, ..., `View Controller/`) as 
 Every time you want to run a class, edit the run configuration such that the working directory is `.../Ludii/%Module%/` as opposed to `.../Ludii/`.
 
 ### Other IDEs
-1. Keep in mind that each capitalized folder is meant to be a different module/project.
+1. Keep in mind that each capitalised folder is meant to be a different module/project.
 2. The Core module needs to be compiled using the `-parameters` flag. It's also okay to compile all the modules with it.
 3. When executing a main method, set the working directory to the class's module, not the Ludii folder or the file location. 
 For example `StartDesktopApp` should have as working directory `.../Ludii/PlayerDesktop`.
