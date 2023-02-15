@@ -1,14 +1,14 @@
-(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
+(define "Columns" 6)
 
 //------------------------------------------------------------------------------
 
-(game "Alitev" 
+(game "Altiev" 
     (players 2) 
     (equipment { 
-        (mancalaBoard 2 6 store:None
+        (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)
         )
-        (regions P1 (sites Bottom))      // P1 home
+        (regions P1 (sites Bottom))   // P1 home
         (regions P2 (sites Top))      // P2 home
         (piece "Seed" Shared)
         (hand Each)
@@ -18,25 +18,35 @@
         (start (set Count 3 to:(sites Track)))
         
         (play 
-            (move Select 
-                (from 
-                    (sites Mover) 
-                    if:(> (count at:(from)) 0)
-                )
-                (then 
-                    (sow
-                        if:(or (= (count at:(to)) 1) (= (count at:(to)) 3))
-                        apply:(fromTo (from (to)) 
-                            (to (handSite Mover)) 
-                            count:(count at:(to))
+                (move Select 
+                        (from 
+                            (if ("SameTurn") 
+                                "LastHoleSowed" 
+                                (sites Mover) 
+                            ) 
+                            if:(> (count at:(from)) 0)
                         )
-                        backtracking:True
-                    )
-                )
-            )
+                        (then 
+                            (sow
+                                apply:(if (> (count at:(to)) 1)
+                                        (moveAgain)
+                                        	(if (is In (to) (sites Mover))
+	                                            (fromTo 
+	                                                (from ("OppositePitTwoRows" (to))) 
+	                                                (to (handSite Mover)) 
+	                                                count:(count at:("OppositePitTwoRows" (to)))
+	                                            ) 
+                                            )
+                                    )
+                            )
+                        )
+                    )	
         )
         
-        (end ("MancalaByScoreWhen" ("NoPieceOnBoard")))
+        (end {
+        	(if (all Sites (sites P1) if:(= 0 (count at:(site)))) (result P2 Win))
+        	(if (all Sites (sites P2) if:(= 0 (count at:(site)))) (result P1 Win))
+        })
     )
 )
 

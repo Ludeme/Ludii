@@ -27,8 +27,7 @@
         (play 
             (move Select 
                 (from 
-                    (if 
-                        ("SameTurn") 
+                    (if ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover) 
                     ) 
