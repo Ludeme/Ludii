@@ -272,20 +272,20 @@
 
 (metadata 
     
-(info
-{
-(description "Atomic chess is a chess variant. Standard rules of chess apply, but all captures result in an \"explosion\" through which all surrounding white and black pieces other than pawns are removed from play.")
-(rules "In standard chess, the captured piece is removed from the board and the capturing piece takes its place. In atomic chess, a capture causes an \"explosion\" through which both pieces are removed from the board as well as all non-pawn pieces in the eight squares immediately surrounding the capture. Pawns are removed only when capturing, captured directly, or promoted. In case of en passant, the capture is considered to take place on the sixth rank square where the capturing pawn would have landed. Captures that result in the explosion of a player's own king are illegal, and therefore a king can never capture any other piece.
-
-To win, a checkmate or an explosion of the opponent king is necessary.")
-(id "1781")
-(source "<a href=\"https://en.wikipedia.org/wiki/Atomic_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-(version "1.3.9")
-(classification "board/war/replacement/checkmate/chess")
-(credit "Eric Piette")
-(date "1995")
-}
-)
+    (info
+        {
+        (description "Atomic chess is a chess variant. Standard rules of chess apply, but all captures result in an \"explosion\" through which all surrounding white and black pieces other than pawns are removed from play.")
+        (rules "In standard chess, the captured piece is removed from the board and the capturing piece takes its place. In atomic chess, a capture causes an \"explosion\" through which both pieces are removed from the board as well as all non-pawn pieces in the eight squares immediately surrounding the capture. Pawns are removed only when capturing, captured directly, or promoted. In case of en passant, the capture is considered to take place on the sixth rank square where the capturing pawn would have landed. Captures that result in the explosion of a player's own king are illegal, and therefore a king can never capture any other piece.
+            
+        To win, a checkmate or an explosion of the opponent king is necessary.")
+        (id "1781")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Atomic_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.3.10")
+        (classification "board/war/replacement/checkmate/chess")
+        (credit "Eric Piette")
+        (date "1995")
+        }
+    )
     
     (graphics {
         (show Check "King")

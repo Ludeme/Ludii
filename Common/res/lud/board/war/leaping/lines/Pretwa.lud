@@ -42,18 +42,18 @@
 
 (metadata 
     
-(info
-{
-(description "Pretwa is a game played in India by the same rules of Alquerque, but with a circular board.")
-(rules "Each player begins with nine pieces. Pieces moves along the lines to the next intersection point. Players may hop an opponent's piece to capture it. Captures can be made in sequence if another capture is available after the previous one is made. The player who captures all of their opponent's pieces wins.")
-(source "Murray 1951: 71.")
-(id "162")
-(version "1.3.9")
-(classification "board/war/leaping/lines")
-(credit "Eric Piette")
-(origin "This game was played in South Asia, around 1951.")
-}
-)
+    (info
+        {
+        (description "Pretwa is a game played in India by the same rules of Alquerque, but with a circular board.")
+        (rules "Each player begins with nine pieces. Pieces moves along the lines to the next intersection point. Players may hop an opponent's piece to capture it. Captures can be made in sequence if another capture is available after the previous one is made. The player who captures all of their opponent's pieces wins.")
+        (source "Murray 1951: 71.")
+        (id "162")
+        (version "1.3.10")
+        (classification "board/war/leaping/lines")
+        (credit "Eric Piette")
+        (origin "This game was played in South Asia, around 1951.")
+        }
+    )
     
     (ai 
         "Pretwa_ai"

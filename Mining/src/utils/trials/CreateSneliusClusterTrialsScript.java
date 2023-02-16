@@ -28,7 +28,7 @@ public class CreateSneliusClusterTrialsScript
 		//final int allocatedMemoryJava = 4096;
 		final int thinkingTime = 1;
 		final String agentName = "Alpha-Beta"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
-		//final String clusterLogin = "piettee";
+		final String clusterLogin = "cbrowne";
 		final String mainScriptName = "GenTrials.sh";
 		
 		final ArrayList<String> rulesetNames = new ArrayList<String>();
@@ -108,8 +108,8 @@ public class CreateSneliusClusterTrialsScript
 					writer.println("#!/bin/bash");
 					writer.println("#SBATCH -J GenTrials"+agentName+"Script" + scriptId);
 					writer.println("#SBATCH -p thin");
-					writer.println("#SBATCH -o /home/piettee/Out/Out_%J.out");
-					writer.println("#SBATCH -e /home/piettee/Out/Err_%J.err");
+					writer.println("#SBATCH -o /home/" + clusterLogin + "/Out/Out_%J.out");
+					writer.println("#SBATCH -e /home/" + clusterLogin + "/Out/Err_%J.err");
 					writer.println("#SBATCH -t 6000");
 					writer.println("#SBATCH -N 1");
 					writer.println("#SBATCH --cpus-per-task=128");
@@ -124,10 +124,10 @@ public class CreateSneliusClusterTrialsScript
 						{
 							String jobLine = "taskset -c ";
 							jobLine += (3*j) + "," + (3*j + 1) + "," +  (3*j + 2) + " "; 
-							jobLine += "java -Xms5120M -Xmx5120M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/piettee/ludii/Trials/Ludii.jar\" --generate-trials-parallel ";
+							jobLine += "java -Xms5120M -Xmx5120M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/" + clusterLogin + "/ludii/Trials/Ludii.jar\" --generate-trials-parallel ";
 							jobLine += maxMove + " " + thinkingTime + " " + numPlayout + " "  + "\"" + agentName + "\"" + " " + "\"";
 							jobLine += rulesetNames.get(i*42+j);
-							jobLine += " " + "> /home/piettee/Out/Out_${SLURM_JOB_ID}_"+ j +".out &";
+							jobLine += " " + "> /home/" + clusterLogin + "/Out/Out_${SLURM_JOB_ID}_"+ j +".out &";
 							writer.println(jobLine);
 						}
 					}

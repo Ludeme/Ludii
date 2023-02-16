@@ -115,24 +115,24 @@
 //------------------------------------------------------------------------------
 
 (metadata
-(info
-{
-(description "Signum is a drawless connection game for the hexhex board in the vein of Global Connection, but without markings on the board or an initial position. Signum was invented by Michael Amundsen in May 2022.")
-(rules "Play: Players take turns placing one stone of their color on any empty hex.
-
-Goal: When the board is full, the game is over and the player with the higher score is the winner.
-
-Scoring: Each stone is worth 1 point for its owner if it is part of a group connecting opposite sides of the board, and -1 point otherwise.
-
-The scoring trick that gave the game its name – namely that each stone is worth either +1 point or -1 point – was (unbeknownst to the inventor of Signum) discovered by Brian Wittmann (the inventor of Loops) 9 years earlier.")
-(id "1981")
-(version "1.3.9")
-(classification "board/space/group")
-(author "Michael Amundsen")
-(credit "Michael Amundsen")
-(date "2022")
-}
-)
+    (info
+        {
+        (description "Signum is a drawless connection game for the hexhex board in the vein of Global Connection, but without markings on the board or an initial position. Signum was invented by Michael Amundsen in May 2022.")
+        (rules "Play: Players take turns placing one stone of their color on any empty hex.
+            
+            Goal: When the board is full, the game is over and the player with the higher score is the winner.
+            
+            Scoring: Each stone is worth 1 point for its owner if it is part of a group connecting opposite sides of the board, and -1 point otherwise.
+            
+        The scoring trick that gave the game its name – namely that each stone is worth either +1 point or -1 point – was (unbeknownst to the inventor of Signum) discovered by Brian Wittmann (the inventor of Loops) 9 years earlier.")
+        (id "1981")
+        (version "1.3.10")
+        (classification "board/space/group")
+        (author "Michael Amundsen")
+        (credit "Michael Amundsen")
+        (date "2022")
+        }
+    )
     
     (graphics {
         (player Colour P1 (colour Black))

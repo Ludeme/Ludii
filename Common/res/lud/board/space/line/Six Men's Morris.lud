@@ -95,26 +95,26 @@
 
 (metadata 
     
-(info
-{
-(description "Six Men's Morris was popular in Medieval Europe until about 1600 CE. It is an alignment game based on Nine Men's Morris, with similar rules.")
-(useFor "Ruleset/Cyningstan (Suggested)" (rules "Same rules as Murray, except a player cannot remove an opponent's piece that is in a three in a row formation unless there are no other options."))
-(useFor "Ruleset/Cyningstan (Suggested)" (source "http://www.cyningstan.com/game/109/six-mens-morris."))
-(useFor "Ruleset/Cyningstan (Suggested)" (id "96"))
-(useFor "Ruleset/Murray (Suggested)" (rules "Each player has six pieces. Play begins with each player placing pieces on empty points. If they make three in a row along the lines, they can remove one of the opponent's pieces. Once all pieces are place, players take turns moving pieces one spot to an adjacent point along the lines. If a player makes three in a row, an opponent's piece is removed as in the first phase of the game. The game is won when the opponent is reduced to two pieces."))
-(useFor "Ruleset/Murray (Suggested)" (source "Murray 1951: 42-43."))
-(useFor "Ruleset/Murray (Suggested)" (id "568"))
-(useFor "Ruleset/Historical Information (Incomplete)" (rules "None. It is assumed they are similar to Nine Men's Morris and other similar games. "))
-(useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence. "))
-(useFor "Ruleset/Historical Information (Incomplete)" (id "569"))
-(source "Murray 1951: 42")
-(id "96")
-(version "1.3.9")
-(classification "board/space/line")
-(credit "Eric Piette")
-(origin "This game was played in Europe, around 1412.")
-}
-)
+    (info
+        {
+        (description "Six Men's Morris was popular in Medieval Europe until about 1600 CE. It is an alignment game based on Nine Men's Morris, with similar rules.")
+        (useFor "Ruleset/Cyningstan (Suggested)" (rules "Same rules as Murray, except a player cannot remove an opponent's piece that is in a three in a row formation unless there are no other options."))
+        (useFor "Ruleset/Cyningstan (Suggested)" (source "http://www.cyningstan.com/game/109/six-mens-morris."))
+        (useFor "Ruleset/Cyningstan (Suggested)" (id "96"))
+        (useFor "Ruleset/Murray (Suggested)" (rules "Each player has six pieces. Play begins with each player placing pieces on empty points. If they make three in a row along the lines, they can remove one of the opponent's pieces. Once all pieces are place, players take turns moving pieces one spot to an adjacent point along the lines. If a player makes three in a row, an opponent's piece is removed as in the first phase of the game. The game is won when the opponent is reduced to two pieces."))
+        (useFor "Ruleset/Murray (Suggested)" (source "Murray 1951: 42-43."))
+        (useFor "Ruleset/Murray (Suggested)" (id "568"))
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "None. It is assumed they are similar to Nine Men's Morris and other similar games. "))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence. "))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "569"))
+        (source "Murray 1951: 42")
+        (id "96")
+        (version "1.3.10")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin "This game was played in Europe, around 1412.")
+        }
+    )
     
     (ai
         "Six Men's Morris_ai"

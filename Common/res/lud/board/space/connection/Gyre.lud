@@ -65,20 +65,20 @@
 //-------------------------------------------------------------------------
 
 (metadata
-(info
-{
-(description "Gyre is a connection game for a hexhex board designed by Mark Steere.")
-(rules "Players take turns placing a stone on an empty cell. A player wins as soon as some or all of their stones form a group with the following property: If all the cells of that group where removed (imagined away) from the board, none of the resulting partitions of the board would contain a majority of the set of cells comprising both the center cell and the perimeter cells (a majority relative to the entire intact board, that is, not of the imagined result of partitioning it).")
-(id "1556")
-(source "<a href=\"http://www.marksteeregames.com/Gyre_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a>")
-(version "1.3.9")
-(classification "board/space/connection")
-(author "Mark Steere")
-(publisher "<a href=\"http://www.marksteeregames.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a>")
-(credit "Michael Amundsen")
-(date "2015")
-}
-)
+    (info
+        {
+        (description "Gyre is a connection game for a hexhex board designed by Mark Steere.")
+        (rules "Players take turns placing a stone on an empty cell. A player wins as soon as some or all of their stones form a group with the following property: If all the cells of that group where removed (imagined away) from the board, none of the resulting partitions of the board would contain a majority of the set of cells comprising both the center cell and the perimeter cells (a majority relative to the entire intact board, that is, not of the imagined result of partitioning it).")
+        (id "1556")
+        (source "<a href=\"http://www.marksteeregames.com/Gyre_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a>")
+        (version "1.3.10")
+        (classification "board/space/connection")
+        (author "Mark Steere")
+        (publisher "<a href=\"http://www.marksteeregames.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a>")
+        (credit "Michael Amundsen")
+        (date "2015")
+        }
+    )
     (ai
         "Gyre_ai"
     )

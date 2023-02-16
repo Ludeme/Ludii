@@ -93,17 +93,17 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "Sungka is a two-row mancala-style board game from the Philippines. It is similar to many other games throughout Southeast Asia, which have similar playing mechanisms and similar names.")
-(rules "2x7 board, with two stores. Each player owns the store to their left. Seven counters per hole. Players take counters from one hole and sow them in a clockwise direction starting in the next hole from which the counters were taken. Players include their own store when sowing but ignore their opponent's store. If last counter falls into an empty hole, move ends. If it is on the player's side, the counters in the opponent's hole opposite are taken and added to the player's store. If the last counter falls into the player's store, the player may sow counters from another hole on their side. If the last counter drops into an occupied hole on either side of the board, the counters are picked up and sowing continues until the last counter drops into an empty hole. When all of the counters are in the players' stores, a new round begins. Players fill their holes with the counters in their store. Any holes which cannot be filled with seven counters are out of play for this round; any extra counters go back in the store. Play continues until one player cannot fill any holes, and the opponent wins.")
-(source "Bernardo 1937: 1-36.")
-(id "143")
-(version "1.3.9")
-(classification "board/sow/two rows")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "Sungka is a two-row mancala-style board game from the Philippines. It is similar to many other games throughout Southeast Asia, which have similar playing mechanisms and similar names.")
+        (rules "2x7 board, with two stores. Each player owns the store to their left. Seven counters per hole. Players take counters from one hole and sow them in a clockwise direction starting in the next hole from which the counters were taken. Players include their own store when sowing but ignore their opponent's store. If last counter falls into an empty hole, move ends. If it is on the player's side, the counters in the opponent's hole opposite are taken and added to the player's store. If the last counter falls into the player's store, the player may sow counters from another hole on their side. If the last counter drops into an occupied hole on either side of the board, the counters are picked up and sowing continues until the last counter drops into an empty hole. When all of the counters are in the players' stores, a new round begins. Players fill their holes with the counters in their store. Any holes which cannot be filled with seven counters are out of play for this round; any extra counters go back in the store. Play continues until one player cannot fill any holes, and the opponent wins.")
+        (source "Bernardo 1937: 1-36.")
+        (id "143")
+        (version "1.3.10")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (board Style Mancala)

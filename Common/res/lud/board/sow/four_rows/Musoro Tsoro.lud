@@ -134,19 +134,19 @@
 
 (metadata 
     
-(info
-{
-(description "Tsoro is a term used for several two-row mancala-style board games played in Zimbabwe. In this version, players choose a special hole, \"musoro,\" from which they may choose to end their turn when they would normally continue sowing, allowing them to accumulate counters there.")
-(rules "4x6-21 board; 8 is most common, 12, 15, and 18 are also popular. Each player's rightmost hole is the musoro. Two counters in each hole in the players' outer rows, except each musoro which has three. Sowing occurs in an anti-clockwise direction. When the final counter lands in an occupied hole, these are picked up and sowing continues. If this final hole is one of the musoro, the player may choose to end their turn instead of continuing to sow. When the final counter lands in an empty hole in the inner row, any counters in the opposite hole in the opponent's inner row are captured. If there also are counters in the opposite hole in the opponent's outer row, these are also captured, but only if there was first a capture from the inner row hole. Players cannot sow from a hole with a single counter unless there are no holes with multiple counters. Single counters can only be sown into an empty hole. Play continues until one player has captured all of the opponent's counters, thus winning the game.
-")
-(source "Matthews 1964: 65-66.")
-(id "1294")
-(version "1.3.9")
-(classification "board/sow/four rows")
-(credit "Eric Piette")
-(origin "This game was played in Zimbabwe, around 1964.")
-}
-)
+    (info
+        {
+        (description "Tsoro is a term used for several two-row mancala-style board games played in Zimbabwe. In this version, players choose a special hole, \"musoro,\" from which they may choose to end their turn when they would normally continue sowing, allowing them to accumulate counters there.")
+        (rules "4x6-21 board; 8 is most common, 12, 15, and 18 are also popular. Each player's rightmost hole is the musoro. Two counters in each hole in the players' outer rows, except each musoro which has three. Sowing occurs in an anti-clockwise direction. When the final counter lands in an occupied hole, these are picked up and sowing continues. If this final hole is one of the musoro, the player may choose to end their turn instead of continuing to sow. When the final counter lands in an empty hole in the inner row, any counters in the opposite hole in the opponent's inner row are captured. If there also are counters in the opposite hole in the opponent's outer row, these are also captured, but only if there was first a capture from the inner row hole. Players cannot sow from a hole with a single counter unless there are no holes with multiple counters. Single counters can only be sown into an empty hole. Play continues until one player has captured all of the opponent's counters, thus winning the game.
+        ")
+        (source "Matthews 1964: 65-66.")
+        (id "1294")
+        (version "1.3.10")
+        (classification "board/sow/four rows")
+        (credit "Eric Piette")
+        (origin "This game was played in Zimbabwe, around 1964.")
+        }
+    )
     
     (graphics {
         (board Style Mancala)

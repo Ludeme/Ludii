@@ -152,23 +152,23 @@
 
 (metadata 
     
-(info
-{
-(aliases {"Chess Cards"})
-(rules "The 32 pieces in Chex represent the 16 chess pieces on each side of a normal chess game. Each player shuffles his own 16 tiles and places them face down, then white draws his top tile and places it, with the piece oriented so it looks upright to him. Black then draws the top tile in his pile and places it so that it touches white's piece, either orthogonally or diagonally, and oriented so that it looks upright to him.
-
-At that point, white can either add another piece or move his piece on the board. A move must be a legal chess move and may not separate any element of the board; all pieces much remain touching, even if just diagonally, when a move has ended. Thus you can \"pin\" a piece by placing a new piece on the far corner of a piece already in play.
-
-The game ends in checkmate or stalemate, with a stalemate occurring when you must place your king into check when you draw it.")
-(id "551")
-(version "1.3.9")
-(classification "board/war/replacement/checkmate/chess")
-(author "David L. Smith")
-(publisher "IQ Products")
-(credit "Eric Piette")
-(date "1982")
-}
-)
+    (info
+        {
+        (aliases {"Chess Cards"})
+        (rules "The 32 pieces in Chex represent the 16 chess pieces on each side of a normal chess game. Each player shuffles his own 16 tiles and places them face down, then white draws his top tile and places it, with the piece oriented so it looks upright to him. Black then draws the top tile in his pile and places it so that it touches white's piece, either orthogonally or diagonally, and oriented so that it looks upright to him.
+            
+            At that point, white can either add another piece or move his piece on the board. A move must be a legal chess move and may not separate any element of the board; all pieces much remain touching, even if just diagonally, when a move has ended. Thus you can \"pin\" a piece by placing a new piece on the far corner of a piece already in play.
+            
+        The game ends in checkmate or stalemate, with a stalemate occurring when you must place your king into check when you draw it.")
+        (id "551")
+        (version "1.3.10")
+        (classification "board/war/replacement/checkmate/chess")
+        (author "David L. Smith")
+        (publisher "IQ Products")
+        (credit "Eric Piette")
+        (date "1982")
+        }
+    )
     
     (graphics {
         (show Check "King")

@@ -158,25 +158,25 @@
 
 (metadata 
     
-(info
-{
-(description "Kisolo is a four-row mancala-style game board played by the Luba, Lulua and Songye people in the Democratic Republic of Congo. The game is often played multiple times, the score being kept with a handful of feathers. The loser is given one of the feathers, who gives them back to the opponent upon winning a subsequent game.")
-(aliases {"Cisolo"})
-(useFor "Ruleset/Kisolo (Observed)" (rules "4x7 board. Play begins with three counters in each hole of the outer rows. Players pick up all of the counters in one hole and sow them anti-clockwise. Holes with single counters can be chosen for sowing. When the final counter is sown, the counters in the following hole are picked up and sowing continues with those counters. If this hole is empty, play ends. Captures are made from the player's inner row at the beginning of a turn or a subsequent sowing within a turn. Counters are captured when a player's inner row has occupied holes. Counters in the opponent's holes opposite a player's occupied holes are captured: either from both of the opponent's rows or only the inner row if the corresponding hole in the outer row is empty. If the inner row is empty but the outer row is occupied, there is no capture, and when both rows are occupied they both must be captured. Captures are also made on a subsequent sowing within a turn, in the same manner as above but from the hole the next sowing begins, i.e., the one following the hole in which the last seed of the previous sowing is made. Captured counters are placed in the player's outer row opposite the hole from which the capture was made. Game is won when the opponent's outer row is emptied."))
-(useFor "Ruleset/Kisolo (Observed)" (source "Townshend 1977a: 45-47."))
-(useFor "Ruleset/Kisolo (Observed)" (id "248"))
-(useFor "Ruleset/Starting Position 1 (Observed)" (rules "Number of counters in each hole, starting from the rightmost hole in a player's outer row and proceeding in an anti-clockwise direction: 15-0-1-0-1-0-1-0-1-0-1-0-1-0."))
-(useFor "Ruleset/Starting Position 1 (Observed)" (source "Townshend 1977: 45."))
-(useFor "Ruleset/Starting Position 1 (Observed)" (id "622"))
-(useFor "Ruleset/Starting Position 2 (Observed)" (rules "Number of counters in each hole, starting from the rightmost hole in a player's outer row and proceeding in an anti-clockwise direction: 9-0-0-0-0-0-9-0-1-0-1-0-1-0."))
-(useFor "Ruleset/Starting Position 2 (Observed)" (source "Townshend 1977: 45."))
-(useFor "Ruleset/Starting Position 2 (Observed)" (id "623"))
-(id "248")
-(version "1.3.9")
-(classification "board/sow/four rows")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "Kisolo is a four-row mancala-style game board played by the Luba, Lulua and Songye people in the Democratic Republic of Congo. The game is often played multiple times, the score being kept with a handful of feathers. The loser is given one of the feathers, who gives them back to the opponent upon winning a subsequent game.")
+        (aliases {"Cisolo"})
+        (useFor "Ruleset/Kisolo (Observed)" (rules "4x7 board. Play begins with three counters in each hole of the outer rows. Players pick up all of the counters in one hole and sow them anti-clockwise. Holes with single counters can be chosen for sowing. When the final counter is sown, the counters in the following hole are picked up and sowing continues with those counters. If this hole is empty, play ends. Captures are made from the player's inner row at the beginning of a turn or a subsequent sowing within a turn. Counters are captured when a player's inner row has occupied holes. Counters in the opponent's holes opposite a player's occupied holes are captured: either from both of the opponent's rows or only the inner row if the corresponding hole in the outer row is empty. If the inner row is empty but the outer row is occupied, there is no capture, and when both rows are occupied they both must be captured. Captures are also made on a subsequent sowing within a turn, in the same manner as above but from the hole the next sowing begins, i.e., the one following the hole in which the last seed of the previous sowing is made. Captured counters are placed in the player's outer row opposite the hole from which the capture was made. Game is won when the opponent's outer row is emptied."))
+        (useFor "Ruleset/Kisolo (Observed)" (source "Townshend 1977a: 45-47."))
+        (useFor "Ruleset/Kisolo (Observed)" (id "248"))
+        (useFor "Ruleset/Starting Position 1 (Observed)" (rules "Number of counters in each hole, starting from the rightmost hole in a player's outer row and proceeding in an anti-clockwise direction: 15-0-1-0-1-0-1-0-1-0-1-0-1-0."))
+        (useFor "Ruleset/Starting Position 1 (Observed)" (source "Townshend 1977: 45."))
+        (useFor "Ruleset/Starting Position 1 (Observed)" (id "622"))
+        (useFor "Ruleset/Starting Position 2 (Observed)" (rules "Number of counters in each hole, starting from the rightmost hole in a player's outer row and proceeding in an anti-clockwise direction: 9-0-0-0-0-0-9-0-1-0-1-0-1-0."))
+        (useFor "Ruleset/Starting Position 2 (Observed)" (source "Townshend 1977: 45."))
+        (useFor "Ruleset/Starting Position 2 (Observed)" (id "623"))
+        (id "248")
+        (version "1.3.10")
+        (classification "board/sow/four rows")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (board Style Mancala)

@@ -89,19 +89,19 @@
 
 (metadata 
     
-(info
-{
-(description "Unlur is a game between two people taking turns placing tiles on a hexagonal board. Each player has a different objective to achieve victory. It is classified as an abstract, connecting and unequal forces board game.This game was the winner of the second Annual Game Design Competition in 2002, whose theme that year was the design of games of unequal forces (organized by Abstract Games magazine, About Board Games, and the Strategy Gaming Society). The name came from a symmetric ancestor game called 'Lur'. When the game was supported on Ludoteka, the Edge rule was added because placing on the edge is usually bad for Black. More information about the origins of the game can be found in Spanish on the designer's blog:<a href=\"http://mesadejuegos.blogspot.com/2005/12/unlur.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />mesadejuegos.blogspot.com</a> ")
-(rules "This game is played on a hexagonal board made up of hexagonal squares, usually 6 squares per side, although other sizes are possible. Initially the board is empty and black pieces are placed in turns until one player passes. The player who passed becomes Black. The other player becomes White and takes the next turn. Play continues, with each player in turn placing pieces of their colour on unoccupied squares on the board. White wins if they manage to connect two opposite sides of the board. Black wins if they manage to connect three non-adjacent sides of the board. To avoid ties, if a player meets the opponent's goal with their pieces, they lose the game.")
-(id "1226")
-(source "<a href=\"https://fr.wikipedia.org/wiki/Unlur\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-(version "1.3.9")
-(classification "board/space/connection")
-(author "Jorge Gómez Arrausi")
-(credit "Nicholas Bamber")
-(date "2002")
-}
-)
+    (info
+        {
+        (description "Unlur is a game between two people taking turns placing tiles on a hexagonal board. Each player has a different objective to achieve victory. It is classified as an abstract, connecting and unequal forces board game.This game was the winner of the second Annual Game Design Competition in 2002, whose theme that year was the design of games of unequal forces (organized by Abstract Games magazine, About Board Games, and the Strategy Gaming Society). The name came from a symmetric ancestor game called 'Lur'. When the game was supported on Ludoteka, the Edge rule was added because placing on the edge is usually bad for Black. More information about the origins of the game can be found in Spanish on the designer's blog:<a href=\"http://mesadejuegos.blogspot.com/2005/12/unlur.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />mesadejuegos.blogspot.com</a> ")
+        (rules "This game is played on a hexagonal board made up of hexagonal squares, usually 6 squares per side, although other sizes are possible. Initially the board is empty and black pieces are placed in turns until one player passes. The player who passed becomes Black. The other player becomes White and takes the next turn. Play continues, with each player in turn placing pieces of their colour on unoccupied squares on the board. White wins if they manage to connect two opposite sides of the board. Black wins if they manage to connect three non-adjacent sides of the board. To avoid ties, if a player meets the opponent's goal with their pieces, they lose the game.")
+        (id "1226")
+        (source "<a href=\"https://fr.wikipedia.org/wiki/Unlur\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.3.10")
+        (classification "board/space/connection")
+        (author "Jorge Gómez Arrausi")
+        (credit "Nicholas Bamber")
+        (date "2002")
+        }
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

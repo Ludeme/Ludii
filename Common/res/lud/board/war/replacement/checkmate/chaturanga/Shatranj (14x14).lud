@@ -37,19 +37,19 @@
 
 (metadata 
     
-(info
-{
-(description "Shatranj is the name of a game played in West and South Asia for centuries. This version was played in the nineteenth and early twentieth century in Punjab, and was played on a board with 14x14 squares.")
-(rules "14x14 board. 28 pieces per player. Pieces begin on the board in the following arrangement, and with the following movements: Outer row, from left corner: Rukh: moves orthogonally any distance; Ghora: moves orthogonally one space and then diagonally another space, jumping over the first space; Dahja: moves orthogonally any distance; Ratha: moves orthogonally any distance; Fil: moves diagonally any distance; Shahzada: moves diagonally or orthogonally any distance; Wazir: moves diagonally or orthogonally any distance; Raja: moves one space in any direction; Rani: moves one square in any direction; Fil, Ratha, Dahja, Ghora, Rukh. In the second row are fourteen Paidal: moves one square forward orthogonally or one diagonally to capture. Players alternate turns moving a piece to a space on the board. If one of the opponent's pieces is on the space to which a player moves their piece, the opponent's piece is captured. If the Raja can be captured on the opponent's next turn, it is in check. The Raja cannot remain in check at the end of the player's turn. If this is not possible, it is checkmate and the opponent wins.
-")
-(source "Murray 1913: 347.")
-(id "1628")
-(version "1.3.9")
-(classification "board/war/replacement/checkmate/chaturanga")
-(credit "Eric Piette")
-(origin "This game was played in India, around 1901.")
-}
-)
+    (info
+        {
+        (description "Shatranj is the name of a game played in West and South Asia for centuries. This version was played in the nineteenth and early twentieth century in Punjab, and was played on a board with 14x14 squares.")
+        (rules "14x14 board. 28 pieces per player. Pieces begin on the board in the following arrangement, and with the following movements: Outer row, from left corner: Rukh: moves orthogonally any distance; Ghora: moves orthogonally one space and then diagonally another space, jumping over the first space; Dahja: moves orthogonally any distance; Ratha: moves orthogonally any distance; Fil: moves diagonally any distance; Shahzada: moves diagonally or orthogonally any distance; Wazir: moves diagonally or orthogonally any distance; Raja: moves one space in any direction; Rani: moves one square in any direction; Fil, Ratha, Dahja, Ghora, Rukh. In the second row are fourteen Paidal: moves one square forward orthogonally or one diagonally to capture. Players alternate turns moving a piece to a space on the board. If one of the opponent's pieces is on the space to which a player moves their piece, the opponent's piece is captured. If the Raja can be captured on the opponent's next turn, it is in check. The Raja cannot remain in check at the end of the player's turn. If this is not possible, it is checkmate and the opponent wins.
+        ")
+        (source "Murray 1913: 347.")
+        (id "1628")
+        (version "1.3.10")
+        (classification "board/war/replacement/checkmate/chaturanga")
+        (credit "Eric Piette")
+        (origin "This game was played in India, around 1901.")
+        }
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

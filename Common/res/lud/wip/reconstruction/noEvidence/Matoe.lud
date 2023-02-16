@@ -1,0 +1,69 @@
+(game "Matoe"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (mancalaBoard 2 [3..40] store:None
+                {
+                (track [#])
+                (track [#])
+                }
+            )
+            (piece "Seed" Shared)
+        }) 
+        (rules 
+            (start [#])
+            (play 
+                (move Select 
+                    (from [#])
+                    (then (sow [#]))
+                )
+            )
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Matoe is a two-row mancala-style board game played on the Indonesian island of Sumba.")
+        (rules "Two-row mancala board.")
+        (source "DLP evidence.")
+        (id "1261")
+        (version "1.3.9")
+        (classification "board/sow/two rows/reconstruction/pending")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+    (recon {
+        (concept "Sow" True)
+    })
+)
+

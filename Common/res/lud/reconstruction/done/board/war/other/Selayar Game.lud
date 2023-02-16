@@ -1,0 +1,1740 @@
+(game "Selayar Game"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Selayar Game (Ludii 1)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (square 5 diagonals:Alternating)
+                    
+                    (shift 0 4 
+                        (rotate 180 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (shift 0 -2 
+                        (wedge 3)
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (and 
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between 
+                                    (max 1)
+                                    if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (surround 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (and 
+                                        (is Enemy 
+                                            (who at:
+                                                (between)
+                                            )
+                                        )
+                                        
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites Corners)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union 
+                        (sites Bottom)
+                        
+                        (expand 
+                            (sites Row 2)
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (sites Top)
+                        
+                        (expand 
+                            (sites Row 6)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece top:True)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P2)
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (< 
+                        (count Pieces P1)
+                    2)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Selayar Game (Ludii 1) ruleset.")
+    
+    (item "Selayar Game (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (square 5 diagonals:Alternating)
+                    
+                    (shift 0 4 
+                        (rotate 180 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (shift 0 -2 
+                        (wedge 3)
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union 
+                        (sites Bottom)
+                        
+                        (expand 
+                            (sites Row 2)
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (sites Top)
+                        
+                        (expand 
+                            (sites Row 6)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece top:True)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P2)
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (< 
+                        (count Pieces P1)
+                    2)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Selayar Game (Ludii 2) ruleset.")
+    
+    (item "Selayar Game (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (square 5 diagonals:Alternating)
+                    
+                    (shift 0 4 
+                        (rotate 180 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (shift 0 -2 
+                        (wedge 3)
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union 
+                        (sites Bottom)
+                        
+                        (expand 
+                            (sites Row 2)
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (sites Top)
+                        
+                        (expand 
+                            (sites Row 6)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (or 
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        
+                        (move Pass)
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P2)
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (< 
+                        (count Pieces P1)
+                    2)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Selayar Game (Ludii 3) ruleset.")
+    
+    (item "Selayar Game (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (square 5 diagonals:Alternating)
+                    
+                    (shift 0 4 
+                        (rotate 180 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (shift 0 -2 
+                        (wedge 3)
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (and 
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between 
+                                    (max 1)
+                                    if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (surround 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (and 
+                                        (is Enemy 
+                                            (who at:
+                                                (between)
+                                            )
+                                        )
+                                        
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites Corners)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union 
+                        (sites Bottom)
+                        
+                        (expand 
+                            (sites Row 2)
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (sites Top)
+                        
+                        (expand 
+                            (sites Row 6)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece top:True)
+            )
+            
+            (end 
+                (forEach Player if:
+                    (no Pieces Player)
+                    
+                    (result Player Loss)
+                )
+            )
+        )
+        
+    > "The Selayar Game (Ludii 4) ruleset.")
+    
+    (item "Selayar Game (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (square 5 diagonals:Alternating)
+                    
+                    (shift 0 4 
+                        (rotate 180 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (shift 0 -2 
+                        (wedge 3)
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (and 
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between 
+                                    (max 1)
+                                    if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (surround 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (and 
+                                        (is Enemy 
+                                            (who at:
+                                                (between)
+                                            )
+                                        )
+                                        
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites Corners)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union 
+                        (sites Bottom)
+                        
+                        (expand 
+                            (sites Row 2)
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (sites Top)
+                        
+                        (expand 
+                            (sites Row 6)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (or 
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        
+                        (move Pass)
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Mover)
+                    
+                    (byScore { 
+                        (score P1 
+                            (+ 
+                                (count at:
+                                    (mapEntry P1)
+                                )
+                                
+                                (count in:
+                                    (sites P1)
+                                )
+                            )
+                        )
+                        
+                        (score P2 
+                            (+ 
+                                (count at:
+                                    (mapEntry P2)
+                                )
+                                
+                                (count in:
+                                    (sites P2)
+                                )
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Selayar Game (Ludii 5) ruleset.")
+    
+    (item "Selayar Game (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (square 5 diagonals:Alternating)
+                    
+                    (shift 0 4 
+                        (rotate 180 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (shift 0 -2 
+                        (wedge 3)
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union 
+                        (sites Bottom)
+                        
+                        (expand 
+                            (sites Row 2)
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (sites Top)
+                        
+                        (expand 
+                            (sites Row 6)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (or 
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            
+                            (between if:
+                                (and 
+                                    (not 
+                                        (is In 
+                                            (between)
+                                            
+                                            (sites ToClear)
+                                        )
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            
+                                            (between if:
+                                                (and 
+                                                    (not 
+                                                        (is In 
+                                                            (between)
+                                                            
+                                                            (sites ToClear)
+                                                        )
+                                                    )
+                                                    
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        
+                        (move Pass)
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Selayar Game (Ludii 6) ruleset.")
+    
+    (item "Selayar Game (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (square 5 diagonals:Alternating)
+                    
+                    (shift 0 4 
+                        (rotate 180 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (shift 0 -2 
+                        (wedge 3)
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union 
+                        (sites Bottom)
+                        
+                        (expand 
+                            (sites Row 2)
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (sites Top)
+                        
+                        (expand 
+                            (sites Row 6)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece top:True)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P1)
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Selayar Game (Ludii 7) ruleset.")
+    
+    (item "Selayar Game (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (square 5 diagonals:Alternating)
+                    
+                    (shift 0 4 
+                        (rotate 180 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (shift 0 -2 
+                        (wedge 3)
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union 
+                        (sites Bottom)
+                        
+                        (expand 
+                            (sites Row 2)
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (sites Top)
+                        
+                        (expand 
+                            (sites Row 6)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece top:True)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Selayar Game (Ludii 8) ruleset.")
+    
+    (item "Selayar Game (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (square 5 diagonals:Alternating)
+                    
+                    (shift 0 4 
+                        (rotate 180 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (shift 0 -2 
+                        (wedge 3)
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union 
+                        (sites Bottom)
+                        
+                        (expand 
+                            (sites Row 2)
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (sites Top)
+                        
+                        (expand 
+                            (sites Row 6)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece top:True)
+            )
+            
+            (end 
+                (if 
+                    (all Sites 
+                        (sites Board)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    { 
+                    (if 
+                        (> 4 
+                            (count Cell at:
+                                (handSite P1)
+                            )
+                        )
+                        
+                        (result P2 Win)
+                    )
+                    
+                    (if 
+                        (> 4 
+                            (count Cell at:
+                                (handSite P2)
+                            )
+                        )
+                        
+                        (result P1 Win)
+                    )
+                    }
+                )
+            )
+        )
+        
+    > "The Selayar Game (Ludii 9) ruleset.")
+    
+    (item "Selayar Game (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (merge { 
+                    (square 5 diagonals:Alternating)
+                    
+                    (shift 0 4 
+                        (rotate 180 
+                            (wedge 3)
+                        )
+                    )
+                    
+                    (shift 0 -2 
+                        (wedge 3)
+                    )
+                    }
+                )
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (union 
+                        (sites Bottom)
+                        
+                        (expand 
+                            (sites Row 2)
+                        )
+                    )
+                )
+                
+                (place "Marker2" 
+                    (union 
+                        (sites Top)
+                        
+                        (expand 
+                            (sites Row 6)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece top:True)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Selayar Game (Ludii 10) ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2)
+        
+        (equipment 
+            { 
+            ("AlquerqueBoardWithBottomAndTopTriangles") 
+            (hand Each)
+            (piece "Marker" Each [#]) 
+        }) 
+        (rules 
+            (start {
+                (place "Marker1" (union (sites Bottom) (expand (sites Row 2))))
+                (place "Marker2" (union (sites Top) (expand (sites Row 6))))
+            })
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Selayar Game (Ludii 1) (Reconstructed)" {
+        "Variant/Selayar Game (Ludii 1)"
+    })
+    (ruleset "Ruleset/Selayar Game (Ludii 2) (Reconstructed)" {
+        "Variant/Selayar Game (Ludii 2)"
+    })
+    (ruleset "Ruleset/Selayar Game (Ludii 3) (Reconstructed)" {
+        "Variant/Selayar Game (Ludii 3)"
+    })
+    (ruleset "Ruleset/Selayar Game (Ludii 4) (Reconstructed)" {
+        "Variant/Selayar Game (Ludii 4)"
+    })
+    (ruleset "Ruleset/Selayar Game (Ludii 5) (Reconstructed)" {
+        "Variant/Selayar Game (Ludii 5)"
+    })
+    (ruleset "Ruleset/Selayar Game (Ludii 6) (Reconstructed)" {
+        "Variant/Selayar Game (Ludii 6)"
+    })
+    (ruleset "Ruleset/Selayar Game (Ludii 7) (Reconstructed)" {
+        "Variant/Selayar Game (Ludii 7)"
+    })
+    (ruleset "Ruleset/Selayar Game (Ludii 8) (Reconstructed)" {
+        "Variant/Selayar Game (Ludii 8)"
+    })
+    (ruleset "Ruleset/Selayar Game (Ludii 9) (Reconstructed)" {
+        "Variant/Selayar Game (Ludii 9)"
+    })
+    (ruleset "Ruleset/Selayar Game (Ludii 10) (Reconstructed)" {
+        "Variant/Selayar Game (Ludii 10)"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "This game was played on the island of Selayar, Indonesia during the nineteenth century.")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "5x5 intersecting lines, with diagonals in each quadrant. Two triangles, the apexes of which intersect with the square at the midpoint of opposite sides. One line bisecting the base of the triangle, and another bisecting this line. Sixteen pieces per player, each side arranged on one side of the board."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1102"))
+        (useFor "Ruleset/Selayar Game (Ludii 1) (Reconstructed)" (rules "The game Selayar Game is played by two players on a noshape board with nobasis tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and for all surrounded pieces on Vertexes starting from the to location of the last move with Orthogonal direction if the target is there is an enemy Player at between and between is in the corner sites of the board if the friend is is a friend except if 0remove pieces at between.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the union of the bottom sites of the board and each vertex of the 2 row expanded by 1 steps.
+                Place a Marker for player two at the union of the top sites of the board and each vertex of the 6 row expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If player two cannot move, player one wins If the number of pieces owned by Player 1 is less than 2, player two wins.
+                
+        "))
+        (useFor "Ruleset/Selayar Game (Ludii 1) (Reconstructed)" (id "3950"))
+        (useFor "Ruleset/Selayar Game (Ludii 2) (Reconstructed)" (rules "The game Selayar Game is played by two players on a noshape board with nobasis tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step orthogonal.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the union of the bottom sites of the board and each vertex of the 2 row expanded by 1 steps.
+                Place a Marker for player two at the union of the top sites of the board and each vertex of the 6 row expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If player two cannot move, player one wins If the number of pieces owned by Player 1 is less than 2, player two wins.
+                
+        "))
+        (useFor "Ruleset/Selayar Game (Ludii 2) (Reconstructed)" (id "3951"))
+        (useFor "Ruleset/Selayar Game (Ludii 3) (Reconstructed)" (rules "The game Selayar Game is played by two players on a noshape board with nobasis tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers hop adjacent then if can move hop adjacent, move again or step adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the union of the bottom sites of the board and each vertex of the 2 row expanded by 1 steps.
+                Place a Marker for player two at the union of the top sites of the board and each vertex of the 6 row expanded by 1 steps..
+                Rules: 
+                If in the same turn, hop adjacent then if can move hop adjacent, move again or pass, else move one of your pieces.
+                Aim: 
+                If player two cannot move, player one wins If the number of pieces owned by Player 1 is less than 2, player two wins.
+                
+        "))
+        (useFor "Ruleset/Selayar Game (Ludii 3) (Reconstructed)" (id "3952"))
+        (useFor "Ruleset/Selayar Game (Ludii 4) (Reconstructed)" (rules "The game Selayar Game is played by two players on a noshape board with nobasis tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and for all surrounded pieces on Vertexes starting from the to location of the last move with Orthogonal direction if the target is there is an enemy Player at between and between is in the corner sites of the board if the friend is is a friend except if 0remove pieces at between.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the union of the bottom sites of the board and each vertex of the 2 row expanded by 1 steps.
+                Place a Marker for player two at the union of the top sites of the board and each vertex of the 6 row expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                
+        "))
+        (useFor "Ruleset/Selayar Game (Ludii 4) (Reconstructed)" (id "3953"))
+        (useFor "Ruleset/Selayar Game (Ludii 5) (Reconstructed)" (rules "The game Selayar Game is played by two players on a noshape board with nobasis tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step orthogonal then for all flanked pieces on Vertexes starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and for all surrounded pieces on Vertexes starting from the to location of the last move with Orthogonal direction if the target is there is an enemy Player at between and between is in the corner sites of the board if the friend is is a friend except if 0remove pieces at between.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the union of the bottom sites of the board and each vertex of the 2 row expanded by 1 steps.
+                Place a Marker for player two at the union of the top sites of the board and each vertex of the 6 row expanded by 1 steps..
+                Rules: 
+                If in the same turn, hop adjacent then if can move hop adjacent, move again or pass, else move one of your pieces.
+                Aim: 
+                If the moving player cannot move, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Selayar Game (Ludii 5) (Reconstructed)" (id "3954"))
+        (useFor "Ruleset/Selayar Game (Ludii 6) (Reconstructed)" (rules "The game Selayar Game is played by two players on a noshape board with nobasis tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step orthogonal.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the union of the bottom sites of the board and each vertex of the 2 row expanded by 1 steps.
+                Place a Marker for player two at the union of the top sites of the board and each vertex of the 6 row expanded by 1 steps..
+                Rules: 
+                If in the same turn, hop adjacent then if can move hop adjacent, move again or pass, else move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the moving player, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Selayar Game (Ludii 6) (Reconstructed)" (id "3955"))
+        (useFor "Ruleset/Selayar Game (Ludii 7) (Reconstructed)" (rules "The game Selayar Game is played by two players on a noshape board with nobasis tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step orthogonal.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the union of the bottom sites of the board and each vertex of the 2 row expanded by 1 steps.
+                Place a Marker for player two at the union of the top sites of the board and each vertex of the 6 row expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If player one cannot move, player two wins If there are no pieces owned by Player 2, player one wins.
+                
+        "))
+        (useFor "Ruleset/Selayar Game (Ludii 7) (Reconstructed)" (id "3956"))
+        (useFor "Ruleset/Selayar Game (Ludii 8) (Reconstructed)" (rules "The game Selayar Game is played by two players on a noshape board with nobasis tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step orthogonal.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the union of the bottom sites of the board and each vertex of the 2 row expanded by 1 steps.
+                Place a Marker for player two at the union of the top sites of the board and each vertex of the 6 row expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If the next player cannot move, the next player loses If there are no pieces owned by Player 2, player two wins.
+                
+        "))
+        (useFor "Ruleset/Selayar Game (Ludii 8) (Reconstructed)" (id "3957"))
+        (useFor "Ruleset/Selayar Game (Ludii 9) (Reconstructed)" (rules "The game Selayar Game is played by two players on a noshape board with nobasis tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers hop adjacent then if can move hop adjacent, move again or step adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the union of the bottom sites of the board and each vertex of the 2 row expanded by 1 steps.
+                Place a Marker for player two at the union of the top sites of the board and each vertex of the 6 row expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If all sites in the sites of the board satisfy the condition 0 is equal to the total number of vertex in current site.
+                
+        "))
+        (useFor "Ruleset/Selayar Game (Ludii 9) (Reconstructed)" (id "3958"))
+        (useFor "Ruleset/Selayar Game (Ludii 10) (Reconstructed)" (rules "The game Selayar Game is played by two players on a noshape board with nobasis tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers hop adjacent then if can move hop adjacent, move again or step adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the union of the bottom sites of the board and each vertex of the 2 row expanded by 1 steps.
+                Place a Marker for player two at the union of the top sites of the board and each vertex of the 6 row expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If the next player cannot move, the next player loses If there are no pieces owned by Player 2, player two wins.
+                
+        "))
+        (useFor "Ruleset/Selayar Game (Ludii 10) (Reconstructed)" (id "3959"))
+        (source "Murray 1951: 68.")
+        (version "1.3.10")
+        (classification "board/war/reconstruction/done")
+        (credit "Eric Piette")
+        (origin "This game was played in Indonesia, around 1884.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal (colour Hidden))
+    })
+    
+    (recon {
+        (concept "NumStartComponents" 32)
+    })
+)
+

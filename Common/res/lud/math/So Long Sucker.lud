@@ -243,48 +243,48 @@
 //-------------------------------------------------------------------------
 
 (metadata
-(info
-{
-(description "So Long Sucker is a board game invented in 1950 by John Forbes Nash, Mel Hausner, Lloyd S. Shapley and Martin Shubik. It is a four-person bargaining/economic strategy game. Each player begins the game with 7 chips, and in the course of play, attempts to acquire all the other players' chips.")
-(aliases {"Fuck You Buddy"})
-(rules "The rules are as follows:
-
-1. Starting a game:
-- Each player takes 7 chips of one color.
-- No two players may start with the same color chips.
-- This player places a chip onto the playing area, and selects any other player to be the next person to move.
-
-2. Playing the game:
-- Move by playing a chip of any color onto the playing area (starting a new pile), or on top of any existing chip(s) in the playing area.
-- If no chips are captured (see below), the player selects the next person to move, so long as that person's starting chip color is not in the stack just played on (this may be the same person, if that person used a captured chip). However, if all four colors are in the stack just played on, the next person must be the player whose most-recently played chip (by color) is furthest down in the stack
-- Chips are captured by playing two chips of the same color consecutively on one pile. The player designated by that color must kill one chip of their choice out of that pile, and take the rest. Then they get the next move. Killed chips are taken out of the game.
-- A chip is a prisoner when held by a player other than the original owner.
-- Any prisoner in a player's possession may be killed or transferred to another player at any time. Such transfers are unconditional and cannot be retracted. A player may not transfer or kill chips of their own color.
-- A player is defeated when given the move, but has no chips in their possession (and hence is unable to play).
-  a. Defeat is not final until every player holding prisoners has refused to rescue the defeated player by transferring chips.
-  b. After defeat, the move returns to the player who gave the defeated player the move.
-  c. The defeated player's chips remain in play as prisoners, but are ignored in determining the order of play.
-  d. If a pile is captured by the chips of a defeated player, the entire pile is killed, and the move rebounds to the capturing player.
-
-3. Order of play:
-- If a capture occurs: the player whose color made the capture gets the next move.
-- If a player is defeated: move returns to the player who gave the defeated player the move. If this should also defeat that player in turn, whoever gave that player the move will get the next turn, etc.
-- Otherwise, the next player to move is decided by last player to have moved as follows:
-  a. They may give the move to any player (including themselves) whose color is not represented in the pile just played upon.
-  b. If all players are represented in that pile, the move goes to the player whose most-recently played chip is furthest down in the pile.
-
-4.Winning the game:
-- The winner is the last surviving player (after the others have been defeated).
-- A player can win even if they hold no chips and all of their chips have been killed.")
-(id "1772")
-(source "<a href=\"https://en.wikipedia.org/wiki/So_Long_Sucker\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-(version "1.3.9")
-(classification "math")
-(author "John Forbes Nash, Mel Hausner, Lloyd S. Shapley and Martin Shubik")
-(credit "Eric Piette")
-(date "1950")
-}
-)
+    (info
+        {
+        (description "So Long Sucker is a board game invented in 1950 by John Forbes Nash, Mel Hausner, Lloyd S. Shapley and Martin Shubik. It is a four-person bargaining/economic strategy game. Each player begins the game with 7 chips, and in the course of play, attempts to acquire all the other players' chips.")
+        (aliases {"Fuck You Buddy"})
+        (rules "The rules are as follows:
+            
+            1. Starting a game:
+            - Each player takes 7 chips of one color.
+            - No two players may start with the same color chips.
+            - This player places a chip onto the playing area, and selects any other player to be the next person to move.
+            
+            2. Playing the game:
+            - Move by playing a chip of any color onto the playing area (starting a new pile), or on top of any existing chip(s) in the playing area.
+            - If no chips are captured (see below), the player selects the next person to move, so long as that person's starting chip color is not in the stack just played on (this may be the same person, if that person used a captured chip). However, if all four colors are in the stack just played on, the next person must be the player whose most-recently played chip (by color) is furthest down in the stack
+            - Chips are captured by playing two chips of the same color consecutively on one pile. The player designated by that color must kill one chip of their choice out of that pile, and take the rest. Then they get the next move. Killed chips are taken out of the game.
+            - A chip is a prisoner when held by a player other than the original owner.
+            - Any prisoner in a player's possession may be killed or transferred to another player at any time. Such transfers are unconditional and cannot be retracted. A player may not transfer or kill chips of their own color.
+            - A player is defeated when given the move, but has no chips in their possession (and hence is unable to play).
+            a. Defeat is not final until every player holding prisoners has refused to rescue the defeated player by transferring chips.
+            b. After defeat, the move returns to the player who gave the defeated player the move.
+            c. The defeated player's chips remain in play as prisoners, but are ignored in determining the order of play.
+            d. If a pile is captured by the chips of a defeated player, the entire pile is killed, and the move rebounds to the capturing player.
+            
+            3. Order of play:
+            - If a capture occurs: the player whose color made the capture gets the next move.
+            - If a player is defeated: move returns to the player who gave the defeated player the move. If this should also defeat that player in turn, whoever gave that player the move will get the next turn, etc.
+            - Otherwise, the next player to move is decided by last player to have moved as follows:
+            a. They may give the move to any player (including themselves) whose color is not represented in the pile just played upon.
+            b. If all players are represented in that pile, the move goes to the player whose most-recently played chip is furthest down in the pile.
+            
+            4.Winning the game:
+            - The winner is the last surviving player (after the others have been defeated).
+        - A player can win even if they hold no chips and all of their chips have been killed.")
+        (id "1772")
+        (source "<a href=\"https://en.wikipedia.org/wiki/So_Long_Sucker\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.3.10")
+        (classification "math")
+        (author "John Forbes Nash, Mel Hausner, Lloyd S. Shapley and Martin Shubik")
+        (credit "Eric Piette")
+        (date "1950")
+        }
+    )
     
     (graphics {
         (no Board)

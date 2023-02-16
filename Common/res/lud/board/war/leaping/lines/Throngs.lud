@@ -666,10 +666,10 @@
 // -------------------------------------
 
 (metadata
-(info
-{
-(description "Throngs a highly abstracted wargame (territorial invasion game) for two players. It is typically played on the intersections of a triangular grid, using Go stones. It is a double-move game: each player takes 2 full turns in succession before the next player takes control.                         Movement: The game is distinguished by the way the power of a moving piece is determined according to the pieces around it: A piece can move as far as the difference in count of the friends and enemies in its immediate vicinity.                         Removing an enemy and adding one's own piece take one power unit each. Remaining power goes into a series of steps or hops that may change direction at empty locations.                         Strategy: Power to travel up to seven units per move can be developed during the game. As the offensive capacity develops, defensive measures are needed, first starting with limiting the mobility of enemy stones by approaching them, then by building walls, and thickening them along the axes of the opponent's catapulting sites (empty locations surrounded by many of that player's own stones.) These sites allow adding a stone and catapulting it up to a distance of 5, and are re-useable. In addition to these methods, defense is by scattering stones behind one's own lines to immobilise enemy stones that invade.                        The majority of turns naturally involve placement as well as movement, due to the benefit of gaining material; even though newly placed stones travel a reduced distance due to the cost of their placement. Occasional moves without placement are used mainly to initiate difficult invasions, as they risk simultaneously opening up positional weaknesses.                          Individual stones may be captured by replacement when they are sufficiently out-numbered at a location, which means that towards the end of the game, chains of stones not anchored to a triangle, loop, or board edge will be consumed one-by-one by captures. Thus the shape and nature of territorial walls is worth contesting.                        Boards: The standard board is centerless, designed to allow maximal distance moves from the center, while minimizing the size of the board. The hexagonal corner regions help to stabilize invasions in outlying areas. The reverse angles along the edge are slightly less defensible than the other parts, breaking the edges into stategic zones.                        The game is easily adapted not only to to different size and shape boards, but also to different grid topologies, while remaining interesting and playable. A 'perforated' grid is included to demonstrate this, but there are many other possibilities as well.                         The center of the board is very advantageous, and a pie rule or balanced starting positions are needed. The standard starting position places the initial pieces near the edges to allow players a wider variety of strategies. Placing multiple starting stones, and or playing on torus boards, leads to finer grained, denser, highly tactical games, while using few starting pieces and larger boards or boards with less connectivity (e.g. boards with holes, and boards on semi-regular grids) lead to a more territorial game.                    Play on a torus also eliminates the advantage of a board center, but requires a larger board because invasion is no longer from a single direction.")
-(rules "Objective
+    (info
+        {
+        (description "Throngs a highly abstracted wargame (territorial invasion game) for two players. It is typically played on the intersections of a triangular grid, using Go stones. It is a double-move game: each player takes 2 full turns in succession before the next player takes control.                         Movement: The game is distinguished by the way the power of a moving piece is determined according to the pieces around it: A piece can move as far as the difference in count of the friends and enemies in its immediate vicinity.                         Removing an enemy and adding one's own piece take one power unit each. Remaining power goes into a series of steps or hops that may change direction at empty locations.                         Strategy: Power to travel up to seven units per move can be developed during the game. As the offensive capacity develops, defensive measures are needed, first starting with limiting the mobility of enemy stones by approaching them, then by building walls, and thickening them along the axes of the opponent's catapulting sites (empty locations surrounded by many of that player's own stones.) These sites allow adding a stone and catapulting it up to a distance of 5, and are re-useable. In addition to these methods, defense is by scattering stones behind one's own lines to immobilise enemy stones that invade.                        The majority of turns naturally involve placement as well as movement, due to the benefit of gaining material; even though newly placed stones travel a reduced distance due to the cost of their placement. Occasional moves without placement are used mainly to initiate difficult invasions, as they risk simultaneously opening up positional weaknesses.                          Individual stones may be captured by replacement when they are sufficiently out-numbered at a location, which means that towards the end of the game, chains of stones not anchored to a triangle, loop, or board edge will be consumed one-by-one by captures. Thus the shape and nature of territorial walls is worth contesting.                        Boards: The standard board is centerless, designed to allow maximal distance moves from the center, while minimizing the size of the board. The hexagonal corner regions help to stabilize invasions in outlying areas. The reverse angles along the edge are slightly less defensible than the other parts, breaking the edges into stategic zones.                        The game is easily adapted not only to to different size and shape boards, but also to different grid topologies, while remaining interesting and playable. A 'perforated' grid is included to demonstrate this, but there are many other possibilities as well.                         The center of the board is very advantageous, and a pie rule or balanced starting positions are needed. The standard starting position places the initial pieces near the edges to allow players a wider variety of strategies. Placing multiple starting stones, and or playing on torus boards, leads to finer grained, denser, highly tactical games, while using few starting pieces and larger boards or boards with less connectivity (e.g. boards with holes, and boards on semi-regular grids) lead to a more territorial game.                    Play on a torus also eliminates the advantage of a board center, but requires a larger board because invasion is no longer from a single direction.")
+        (rules "Objective
             Each player tries to achieve a majority of territory.
             Objectively, territory means a player's pieces on a filled board when no captures are left to be made. 
             
@@ -686,7 +686,7 @@
             The structure of the game:
             Before play begins, one player places a Black stone and two White stones on three different sites. 
             Then the other player decides to play either as Black or as White. 
-                       
+            
             A standard setup is provided by default. To choose other positions, select the Pie option from the menu.
             
             After the player's colors are determined, player alternate turns with each taking two moves in succession on their turn, beginning with Black.  
@@ -699,7 +699,7 @@
             -- If the site is occupied by the enemy, you deduct 2 actions to remove and replace it with your stone.
             -- If the site is empty, you deduct one action to add one of your own stones, with the following exception:
             ---- The empty-site deduction is waived if there is no other empty site next to the chosen site and the action-potential at that site is zero.
-                        
+            
             When you select a site, the application will calculate these deductions for you, and if there is any remaining action potential, it will be shown on the transparent stone.
             
             You may use this leftover actions potential, to move the stone at that site, in a sequence of steps and jumps; spending one action for each space moved during the sequence.
@@ -717,27 +717,27 @@
             Ending the game:
             The game ends when the two scores add up to the size of the board, or when the score of one player exceeds half the board plus a safety factor of 3. 
             The score is based on:
-             1 point for each friendly piece unless: 
-             A. It could be captured by the opponent if an opponent's piece were added next to it, or 
-             B. It could not be defended against capture by adding a friendly piece after 2 opponent's pieces were added next to it.
-             
-             1 point for each opponent's piece that can be captured, even if all the rest of the empty sites around it are filled with opponent's pieces
-             (this purposely underestimates the territory)
-             
-             1 point for each empty space where both A: and B: below are true,
-             A: if a friendly piece were placed there, it would be secure no matter how many additional opponent's pieces were placed next to it. 
-             B: if an opponent's piece were placed there and on an adjacent empty site, one of them could be captured if the remaining sites around them were filled with friendly pieces.
-             
-             This method ends the game when one player has a clear advantage.")
-(id "1224")
-(source "<a href=\"https://boardgamegeek.com/thread/2452882/throngs-new-attempt-describe-how-play\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG Forum</a>")
-(version "1.3.9")
-(classification "board/war/leaping/lines")
-(author "Dale W. Walton")
-(credit "Dale W. Walton 2020-11-11")
-(date "18-11-2019")
-}
-)
+            1 point for each friendly piece unless: 
+            A. It could be captured by the opponent if an opponent's piece were added next to it, or 
+            B. It could not be defended against capture by adding a friendly piece after 2 opponent's pieces were added next to it.
+            
+            1 point for each opponent's piece that can be captured, even if all the rest of the empty sites around it are filled with opponent's pieces
+            (this purposely underestimates the territory)
+            
+            1 point for each empty space where both A: and B: below are true,
+            A: if a friendly piece were placed there, it would be secure no matter how many additional opponent's pieces were placed next to it. 
+            B: if an opponent's piece were placed there and on an adjacent empty site, one of them could be captured if the remaining sites around them were filled with friendly pieces.
+            
+        This method ends the game when one player has a clear advantage.")
+        (id "1224")
+        (source "<a href=\"https://boardgamegeek.com/thread/2452882/throngs-new-attempt-describe-how-play\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG Forum</a>")
+        (version "1.3.10")
+        (classification "board/war/leaping/lines")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton 2020-11-11")
+        (date "18-11-2019")
+        }
+    )
     
     (graphics {
         (board Style Graph)

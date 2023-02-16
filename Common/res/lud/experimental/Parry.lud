@@ -1,0 +1,385 @@
+// Parry
+
+(define "SameTurn" (is Prev Mover))
+
+(define "SitePowerPlayerAt"
+    (-
+        (* 2 (count Pieces of:#1 in:(sites Around #2 <Board:adj> includeSelf:True)))
+        (count Pieces All in:(sites Around #2 <Board:adj> includeSelf:True))
+))
+
+(define "PlacementSites"  // any neutral.
+    (forEach
+        (sites Empty) 
+        if:(< 0 ("SitePowerPlayerAt" (mover) (site))) 
+))
+
+(define "SitesUncontrolledEmpty"
+    (difference 
+        (sites Empty)
+        (sites
+            (results
+                from:(difference (sites Board) (sites Empty))
+                to:(sites Around (from)
+                    if:(and
+                        (is Empty (to))
+                        (< 0 ("SitePowerPlayerAt" (who at:(from)) (to)))
+                ))
+                (to)
+))))
+
+(define "SiteUntontrolledOccupiedBy"
+    (difference
+        (sites Occupied by:(player #1))
+        (sites
+            (results
+                from:(difference (sites Occupied by:All) (sites Occupied by:(player #1)))
+                to:(sites Around (from)
+                    if:(and
+                        (= #1 (who at:(to)))
+                        (< 0 ("SitePowerPlayerAt" (who at:(from)) (to)))
+                ))
+                (to)
+))))
+
+(define "PlayerTerritory"
+    (forEach
+        (sites Board)
+        if:(or
+            (< 0 ("SitePowerPlayerAt" #1 (site)))
+            (and
+                {
+                
+                //     (< 0 ("SitePowerPlayerAt" #1 (site)))  // optimization - after removing some options this no longer optimises - instead it causes a logic error...
+                
+                (= #1 (who at:(site)))  // helps optimize
+                (is In (site) ("SiteUntontrolledOccupiedBy" #1)) // heavy processing on small number of cases
+                }
+))))
+
+(define "SetScores"
+    (forEach Player
+        (set Score
+            (player (player)) 
+            (max 0 
+                (size Array (array ("PlayerTerritory" (player))))
+))))
+
+(define "MoveAddPriority"
+    (priority
+        //  {
+        (move Add
+            (to
+                (#1)
+                (apply (set Var "PlacedPiece" (to)))
+        ))
+        (move Add
+            (to
+                (#2)
+                (apply (set Var "PlacedPiece" (to)))
+        ))
+        //  }
+        (then
+            (set Value Mover (max 0 (- ("SitePowerPlayerAt" (mover) (last To)) 1)) // -1  because of the includeSelf in the power at Site.
+                (then
+                    (if
+                        (>= 0 (value Player Mover))
+                        ("SetScores")
+                        (and
+                            ("SetScores")
+                            (moveAgain)
+)))))))
+
+(define "MoveUntilDone"
+    (or
+        (move Pass
+            (then ("SetScores"))
+        ) 
+        (do
+            (set Value Mover (- (value Player Mover) 1))
+            next:(forEach Piece
+                (move Step 
+                    (from if:(!= (from) (var "PlacedPiece")))
+                    <Board:adj>
+                    (to if:(is Empty (to))) 
+                    (then
+                        (if
+                            (>= 0 (value Player Mover))
+                            ("SetScores")
+                            (moveAgain)
+)))))))
+
+//---------------------------------------
+// Main routine
+//---------------------------------------
+
+(game "Parry"
+    (players <PlayerCount:option>)
+    (equipment
+        {
+        (board <Board:size> use:Vertex)
+        (piece "Ball" Each)
+        }
+    )
+    (rules 
+(meta (no Repeat PositionalInTurn)) // Positional)) 
+(start
+    {
+(set Score Each 1) //(max (array (sites Board))))
+}   
+) 
+
+(play
+    (if "SameTurn"
+        ("MoveUntilDone")
+        ("MoveAddPriority"
+            "PlacementSites" 
+            "SitesUncontrolledEmpty" // fairly rare, but heavy.
+)))
+(end 
+    {
+    (if
+        (and
+            {
+            "EndCondition"
+            (= 2 <PlayerCount:option>)
+            (= (score P1) (score P2))
+            (= (id P1) (what at:(var "PlacedPiece")))
+            }
+        )
+        (result P1 Win)
+    )
+    
+    (if
+        (and
+            {
+            "EndCondition"
+            (= 2 <PlayerCount:option>)
+            (= (score P1) (score P2))
+            (!= (id P1) (what at:(var "PlacedPiece")))
+            }
+        )
+        (result P2 Win)
+    )
+    
+    (if
+        "EndCondition"
+        (byScore)
+    )
+    
+    }
+    
+)
+)
+)
+
+(define "EndCondition"
+    (or
+        (no Moves Next)
+        (all Passed)
+)) 
+
+//---------------------------------------
+(option "Number of players" <PlayerCount> args:{ <option> <graphics>}
+    {
+    (item "Two" <2> < > "Two Players")***
+    (item "Three" <3> <("Show3")> "Three Players")****
+    (item "Four" <4>  <("Show34")> "Four Players")
+    (item "Five" <5>  <("Show345")> "Five Players")
+    (item "Six" <6>  <("Show3456")> "Six Players")*
+    }
+)
+
+(define "Tri46Bug"  (tri {4 6 4 7 4}))
+(define "Tri56Bug"  (tri {5 6 5 7 5}))
+(define "Tri57Bug"  (tri {5 7 5 8 5}))
+(define "Tri78Bug"  (tri {7 8 7 10 6}))
+(option "Board Size" <Board> args:{ <size> <adj> <diag> }
+    {
+    //    (item "Hex 2-3 (12)"         <(tri {2 3 2 3 2})>   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 2 and 4")
+    //    (item "Square 3 omni (13)" 
+        //     <(add
+            //       (remove (square 5) vertices:{
+                //        0  1     3  4
+                //        5           9 
+                //        
+                //       15          19
+            //       20 21    23 24})
+            //         edges:{{0 1} {0 3} {3 8} {1 4} {4 9} {8 11} {9 12} {11 12}}
+        //      )> 
+    //     <All> <Thin> "Board & size: Orthogonal 3")
+    //    (item "Square 4 ortho (16)"  <(square 4)>          <Orthogonal> <Hidden>  "Board & size: Orthogonal 5") 
+    (item "Equiversi 2-4 (18)"   <(tri {2 4 2 4 2})>    <Orthogonal> <Hidden>  "Board & size: //Equiversi Hexhex with edges alternating 2 and 4")
+    (item "Hex 3 (19)"           <(tri Hexagon 3)>     <Orthogonal> <Hidden>  "Board & size: Hexhex 3")
+    (item "Square 5 ortho (25)" <(square 5)>          <Orthogonal> <Hidden>  "Board & size: Orthogonal 5") 
+    (item "Square 4 omni (25)" 
+        <(add
+            (remove (square 7) vertices:{ 0 1 2 4 5 6 7 8 12 13 14 20 28 34 35 36 40 41 42 43 44 46 47 48})
+            edges:{{0 1} {0 3} {3 8} {1 4} {4 9} {8 15} {9 16} {15 20} {16 21} {20 23} {21 24} {23 24}}
+        )> 
+    <All> <Thin> "Board & size: Orthogonal 4")
+    (item "Hex 3-4 (27)"         <(tri {3 4 3 4 3})>   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 3 and 4")
+    (item "Equiversi 3-5 (36)"   <(tri {3 5 3 5 3})>    <Orthogonal> <Hidden>  "Board & size: Equiversi Hexhex with edges alternating 3 and 5")****
+    (item "Square 6 ortho (36)"  <(square 6)>          <Orthogonal> <Hidden>  "Board & size: Orthogonal 7") 
+    (item "Hex 4 (37)"           <(tri Hexagon 4)>     <Orthogonal> <Hidden>  "Board & size: Hexhex 4")
+    (item "Square 5 omni (41)" 
+        <(add
+            (remove (square 9) vertices:{
+                0  1  2  3     5  6  7  8
+                9 10 11          15 16 17
+                18 19                25 26
+                27                      35
+                
+                45                      53
+                54 55                61 62 
+                63 64 65          69 70 71
+            72 73 74 75    77 78 79 80 })
+            
+        edges:{{0 1} {0 3} {3 8} {1 4} {4 9} {8 15} {9 16} {15 24} {16 25} {24 31} {25 32} {31 36} {32 37} {36 39} {37 40} {39 40}} )> 
+        
+    <All> <Thin> "Board & size: Orthogonal 5")
+    (item "Hex 4-5 (48)"         <(tri {4 5 4 5 4})>   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 4 and 5")**
+    (item "Cairo 1 (dual 48)" 
+        <(trim (remove (tiling T33434 4) vertices:{0 1 2 3 4 7 8 11 19 20 23 27 33 34 35 39 44 45 51 52 53 57 58 61 62 63 69 70 73 74 77 78 79 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97}))>
+        <Orthogonal> <Hidden>  
+        "Using a dual of a Cairo board with 48 cells"
+    )
+    (item "Square 7 ortho (49)" <(square 7)>          <Orthogonal> <Hidden>  "Board & size: Orthogonal 7") 
+    (item "Equiversi 4-6 (60)"   <"Tri46Bug">    <Orthogonal> <Hidden>  "Board & size: Equiversi Hexhex with edges alternating 4 and 6")
+    (item "Hex 5 (61)"           <(tri Hexagon 5)>     <Orthogonal> <Hidden>  "Board & size: Hexhex 5") 
+    (item "Square 6 omni (61)" 
+        <(add 
+            (remove (square 11) vertices:{
+                0   1   2   3   4       6   7   8   9  10 
+                11  12  13  14              18  19  20  21 
+                22  23  24                      30  31  32  
+                33  34                              42  43  
+                44                                      54  
+                
+                66                                      76  
+                77  78                              86  87  
+                88  89  90                      96  97  98  
+                99 100 101 102             106 107 108 109 
+            110 111 112 113 114     116 117 118 119 120 }) 
+            
+        edges:{{0 1} {0 3} {3 8} {1 4} {4 9} {8 15} {9 16} {15 24} {16 25} {24 35} {25 36} {35 44} {36 45} {44 51} {45 52} {51 56} {52 57} {56 59} {57 60} {59 60}} )>
+        
+    <All> <Thin> "Board & size: Orthogonal 6") 
+    (item "Square 8 ortho (64)"  <(square 8)>          <Orthogonal> <Hidden>  "Board & size: Orthogonal 9") 
+    (item "Hex 5-6 (75)"         <"Tri56Bug">   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 5 and 6") // standard strategy
+    (item "Square 9 ortho (81)" <(square 9)>          <Orthogonal> <Hidden>  "Board & size: Orthogonal 9") 
+    
+    (item "Square 7 omni (85)" 
+        <(add
+            (remove (square 13) vertices:{
+                0   1   2   3   4   5       7   8   9  10  11  12  
+                13  14  15  16  17              21  22  23  24  25  
+                26  27  28  29                      35  36  37  38  
+                39  40  41                              49  50  51  
+                52  53                                      63  64  
+                65                                              77  
+                
+                91                                             103 
+                104 105                                     115 116 
+                117 118 119                             127 128 129 
+                130 131 132 133                     139 140 141 142 
+                143 144 145 146 147             151 152 153 154 155 
+            156 157 158 159 160 161     163 164 165 166 167 168 })
+            
+        edges:{{0 1} {0 3} {3 8} {1 4} {4 9} {8 15} {9 16} {15 24} {16 25} {24 35} {25 36} {35 48} {36 49} {48 59} {49 60} {59 68} {60 69} {68 75} {69 76} {75 80} {76 81} {80 83} {81 84} {83 84}} )>
+        
+    <All> <Thin> "Board & size: Orthogonal 7") 
+    (item "Equiversi 5-7 (90)"   <"Tri57Bug">    <Orthogonal> <Hidden>  "Board & size: Equiversi Hexhex with edges alternating 5 and 7")***
+    (item "Hex 6 (91)"           <(tri Hexagon 6)>     <Orthogonal> <Hidden>  "Board & size: Hexhex 6") 
+    (item "Square 10 ortho (100)" <(square 10)>          <Orthogonal> <Hidden>  "Board & size: Orthogonal 10") 
+    (item "Hex 6-7 (108)"        <(tri {6 7 6 7 6})>   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 6 and 7")
+    (item "Equiversi 6-8 (126)"  <(tri {6 8 6 8 6})>    <Orthogonal> <Hidden>  "Board & size: Equiversi Hexhex with edges alternating 6 and 8") 
+    (item "Hex 7 (127)"          <(tri Hexagon 7)>     <Orthogonal> <Hidden>  "Board & size: Hexhex 7")
+    (item "Hex 7-8 (147)"        <"Tri78Bug">  <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 7 and 8")
+    }
+)
+
+//----------------------------------------------------------
+
+(define "Show3"
+    (show Symbol "Disc.svg" P3 Vertex ("PlayerTerritory" 3) edgeColour:(colour Red) scale:1.0)
+)
+
+(define "Show34"
+    "Show3"
+    (show Symbol "Disc.svg" P4 Vertex ("PlayerTerritory" 4) edgeColour:(colour Green) scale:1.0)
+)
+
+(define "Show345"
+    "Show34"
+    (show Symbol "Disc.svg" P5 Vertex ("PlayerTerritory" 5) edgeColour:(colour Blue) scale:1.0)
+)
+
+(define "Show3456"
+    "Show345"
+    (show Symbol "Disc.svg" P6 Vertex ("PlayerTerritory" 6) edgeColour:(colour Magenta) scale:1.0)
+)
+
+(metadata
+    (info
+        {
+        (description "Parry is a game created on the same trip as Skirt, with a similar dynamic, but the sequence of placement and movement is opposite  (forced placement then optional move) and the restriction on movement is based on the strength of the placement rather than the groupings of the pieces, so the tactics are somewhat diffectent even if the overall strategies are similar.
+            The movement based on placement is adapted from Throngs, but instead of being restricted to a single piece, the actions granted by the placement can be applied to any piece. Also there is no capture nor the possibility to jump over the opponent that exists in Throngs, thus, like in Skirt, the game consists of slipping in between pieces so as to retain the ability to grow in as many regions as possible.
+            This system is more easily adapted to other board geometries than Skirt, and several additional board options have been included.
+        The game can also be played with more than 2 players, but is less territorial and more chaotic in those modes.")
+        (rules "Goal: Most territory, counted when one player cannot make a required placement.
+            
+            Definitions:
+            -- Site Power: For a given player, each site's power is equal to the amount by which the adjacent friendly pieces exceed the amount of all the rest of the adjacent pieces. If a site is occupied, the piece at the site is also counted as an adjacent piece.
+            -- Territory: A player's 'Territory' is all the sites where he has positive power, plus all the sites he occupies where no other player has positive power.
+            -- Uncontrolled site: An empty site which is not part of any player's territory is called an 'uncontrolled site'.
+            
+            Play:
+            Turns alternate starting with White.
+            To begin the turn, a player places a piece on an empty site.
+            -- The piece must be placed on a site the mover controls, if possible.
+            -- If this placement is not possible, the piece is placed onto an uncontrolled site.
+            -- If placement is still not possible, the game ends.
+            
+            After the initial placement, the player is allowed to make bonus step moves using any combination of his pieces in any order, other than the one just placed. 
+            -- The total number of steps must not exceed the power of the placement site before placement. 
+            -- These step moves are all optional. 
+            -- Unused bonus moves may not be saved for use in future turns.
+            
+            Jumping over other pieces is not allowed.
+            ------------------------------------------
+            The game can optionally be played with multiple players.
+        This application shows the territories with player-coloured rings.")
+        (id "3963")
+        (version "1.3.10")
+        (classification "experimental")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "04-01-2023")
+        }
+    )
+    
+    (graphics 
+        {
+        (board Style Graph)
+        (board Colour InnerEdges (colour 62 72 55))
+        (board Colour OuterEdges (colour 62 72 55))
+        (board StyleThickness OuterEdges .25)
+        (board StyleThickness InnerEdges .25)
+        (show Edges Diagonal <Board:diag> (colour 62 72 55))
+        (board Background
+            //    image:"Disc.svg" 
+        fillColour:(colour Cream) edgeColour:(colour Grey) scale:1.4)
+        (piece Scale P1 "Ball" 0.8)
+        (piece Scale P2 "Ball" 0.8)
+        (piece Scale P3 "Ball" 0.8)
+        (piece Scale P4 "Ball" 0.8)
+        (piece Scale P5 "Ball" 0.8)
+        (piece Scale P6 "Ball" 0.8)
+        (show Symbol "Disc.svg" P1 Vertex ("PlayerTerritory" 1) edgeColour:(colour LightGrey) scale:1.0)
+        (show Symbol "Disc.svg" P2 Vertex ("PlayerTerritory" 2) edgeColour:(colour Black) scale:1.0)
+        <PlayerCount:graphics>
+        }
+    )
+)
+

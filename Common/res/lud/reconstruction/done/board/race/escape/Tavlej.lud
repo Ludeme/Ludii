@@ -1,0 +1,4118 @@
+(game "Tavlej"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Tavlej (Ludii 1)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track1" { 6 12 11 10 9 8 7 5 4 3 2 1 0 13 14 15 16 17 18 20 21 22 23 24 25 End }
+                P1 directed:True )
+                
+                (track "Track2" { 19 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 End }
+                P2 directed:True )
+                }
+            use:Vertex )
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (forEach Die if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        End)
+                        
+                        (if 
+                            (all Sites 
+                                (sites Occupied by:Mover)
+                                if:
+                                (is In 
+                                    (site)
+                                    
+                                    (sites Mover "FinalQuadrant")
+                                )
+                            )
+                            
+                            (move Remove 
+                                (from)
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (and { 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (not 
+                                            (is In 
+                                                (to)
+                                                
+                                                (sites Mover "OppositeSide" )
+                                            )
+                                        )
+                                        
+                                        (= 
+                                            (topLevel at:
+                                                (to)
+                                            )
+                                        0)
+                                        }
+                                    )
+                                    
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (mapEntry "Bar" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (and 
+                            (if 
+                                (not 
+                                    (all DiceUsed)
+                                )
+                                
+                                (moveAgain)
+                            )
+                            
+                            (if 
+                                (if 
+                                    (is Mover P1)
+                                    
+                                    (and { 
+                                        (= 15 
+                                            (count Pieces Mover in:
+                                                (sites { 0 1 2 3 4 5}
+                                                )
+                                            )
+                                        )
+                                        
+                                        (is Friend 
+                                            (who at:3)
+                                        )
+                                        
+                                        (is Friend 
+                                            (who at:4)
+                                        )
+                                        
+                                        (is Friend 
+                                            (who at:5)
+                                        )
+                                        
+                                        (= 3 
+                                            (size Stack at:0)
+                                        )
+                                        
+                                        (= 3 
+                                            (size Stack at:1)
+                                        )
+                                        
+                                        (= 3 
+                                            (size Stack at:2)
+                                        )
+                                        }
+                                    )
+                                    
+                                    (and { 
+                                        (= 15 
+                                            (count Pieces Mover in:
+                                                (sites { 13 14 15 16 17 18}
+                                                )
+                                            )
+                                        )
+                                        
+                                        (is Friend 
+                                            (who at:16)
+                                        )
+                                        
+                                        (is Friend 
+                                            (who at:17)
+                                        )
+                                        
+                                        (is Friend 
+                                            (who at:18)
+                                        )
+                                        
+                                        (= 3 
+                                            (size Stack at:13)
+                                        )
+                                        
+                                        (= 3 
+                                            (size Stack at:14)
+                                        )
+                                        
+                                        (= 3 
+                                            (size Stack at:15)
+                                        )
+                                        }
+                                    )
+                                )
+                                
+                                (addScore Mover 2)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "FinalQuadrant" P1 
+                (sites { 20 21 22 23 24 25}
+                )
+            )
+            
+            (regions "FinalQuadrant" P2 
+                (sites { 7 8 9 10 11 12}
+                )
+            )
+            
+            (regions "OppositeSide" P1 
+                (sites { 25 24 23 22 21 20 18 17 16 15 14 13}
+                )
+            )
+            
+            (regions "OppositeSide" P2 
+                (sites { 0 1 2 3 4 5 7 8 9 10 11 12}
+                )
+            )
+            
+            (map "Bar" { 
+                (pair P1 6)
+                
+                (pair P2 19)
+                }
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 12 count:15)
+                
+                (place Stack "Disc2" 25 count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (forEach Piece top:True)
+                )
+            )
+            
+            (end { 
+                (if 
+                    (if 
+                        (is Mover P1)
+                        
+                        (and { 
+                            (= 15 
+                                (count Pieces Mover in:
+                                    (sites { 0 1 2 3 4 5}
+                                    )
+                                )
+                            )
+                            
+                            (is Friend 
+                                (who at:3)
+                            )
+                            
+                            (is Friend 
+                                (who at:4)
+                            )
+                            
+                            (is Friend 
+                                (who at:5)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:0)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:1)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:2)
+                            )
+                            }
+                        )
+                        
+                        (and { 
+                            (= 15 
+                                (count Pieces Mover in:
+                                    (sites { 13 14 15 16 17 18}
+                                    )
+                                )
+                            )
+                            
+                            (is Friend 
+                                (who at:16)
+                            )
+                            
+                            (is Friend 
+                                (who at:17)
+                            )
+                            
+                            (is Friend 
+                                (who at:18)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:13)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:14)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:15)
+                            )
+                            }
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+                }
+            )
+        )
+        
+    > "The Tavlej (Ludii 1) ruleset.")
+    
+    (item "Tavlej (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track1" { 6 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 End }
+                P1 directed:True )
+                
+                (track "Track2" { 19 0 1 2 3 4 5 7 8 9 10 11 12 25 24 23 22 21 20 18 17 16 15 14 13 End }
+                P2 directed:True )
+                }
+            use:Vertex )
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:True if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        End)
+                        
+                        (if 
+                            (all Sites 
+                                (sites Occupied by:Mover)
+                                if:
+                                (is In 
+                                    (site)
+                                    
+                                    (sites Mover "FinalQuadrant")
+                                )
+                            )
+                            
+                            (move Remove 
+                                (from)
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (and 
+                                    (or 
+                                        (not 
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (= 1 
+                                            (size Stack at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (not 
+                                            (is In 
+                                                (to)
+                                                
+                                                (sites Mover "StartingSide")
+                                            )
+                                        )
+                                        True 
+                                        (if 
+                                            (= 
+                                                (value Player Mover)
+                                            1)
+                                            True 
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (if 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (mapEntry "Bar" Next)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (and 
+                            (if 
+                                (not 
+                                    (all DiceUsed)
+                                )
+                                
+                                (moveAgain)
+                            )
+                            
+                            (if 
+                                (and 
+                                    (= 
+                                        (last To)
+                                        
+                                        (mapEntry "12thPoint" Mover)
+                                    )
+                                    
+                                    (!= 1 
+                                        (value Player Mover)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "FinalQuadrant" P1 
+                (sites { 7 8 9 10 11 12}
+                )
+            )
+            
+            (regions "FinalQuadrant" P2 
+                (sites { 13 14 15 16 17 18}
+                )
+            )
+            
+            (regions "StartingSide" P1 
+                (sites { 25 24 23 22 21 20 18 17 16 15 14}
+                )
+            )
+            
+            (regions "StartingSide" P2 
+                (sites { 0 1 2 3 4 5 7 8 9 10 11}
+                )
+            )
+            
+            (map "12thPoint" { 
+                (pair P1 13)
+                
+                (pair P2 12)
+                }
+            )
+            
+            (map "Bar" { 
+                (pair P1 6)
+                
+                (pair P2 19)
+                }
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 12 count:15)
+                
+                (place Stack "Disc2" 25 count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (forEach Piece top:True)
+                )
+            )
+            
+            (end { 
+                (if 
+                    (if 
+                        (is Mover P1)
+                        
+                        (and { 
+                            (= 15 
+                                (count Pieces Mover in:
+                                    (sites { 0 1 2 3 4 5}
+                                    )
+                                )
+                            )
+                            
+                            (is Friend 
+                                (who at:3)
+                            )
+                            
+                            (is Friend 
+                                (who at:4)
+                            )
+                            
+                            (is Friend 
+                                (who at:5)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:0)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:1)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:2)
+                            )
+                            }
+                        )
+                        
+                        (and { 
+                            (= 15 
+                                (count Pieces Mover in:
+                                    (sites { 13 14 15 16 17 18}
+                                    )
+                                )
+                            )
+                            
+                            (is Friend 
+                                (who at:16)
+                            )
+                            
+                            (is Friend 
+                                (who at:17)
+                            )
+                            
+                            (is Friend 
+                                (who at:18)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:13)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:14)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:15)
+                            )
+                            }
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+                }
+            )
+        )
+        
+    > "The Tavlej (Ludii 2) ruleset.")
+    
+    (item "Tavlej (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track1" { 6 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 End }
+                P1 directed:True )
+                
+                (track "Track2" { 19 0 1 2 3 4 5 7 8 9 10 11 12 25 24 23 22 21 20 18 17 16 15 14 13 End }
+                P2 directed:True )
+                }
+            use:Vertex )
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:True if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        End)
+                        
+                        (if 
+                            (all Sites 
+                                (sites Occupied by:Mover)
+                                if:
+                                (is In 
+                                    (site)
+                                    
+                                    (sites Mover "FinalQuadrant")
+                                )
+                            )
+                            
+                            (move Remove 
+                                (from)
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (and 
+                                    (or 
+                                        (not 
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (= 1 
+                                            (size Stack at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (not 
+                                            (is In 
+                                                (to)
+                                                
+                                                (sites Mover "StartingSide")
+                                            )
+                                        )
+                                        True 
+                                        (if 
+                                            (= 
+                                                (value Player Mover)
+                                            1)
+                                            True 
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (if 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (mapEntry "Bar" Next)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (and 
+                            (if 
+                                (not 
+                                    (all DiceUsed)
+                                )
+                                
+                                (moveAgain)
+                            )
+                            
+                            (if 
+                                (and 
+                                    (= 
+                                        (last To)
+                                        
+                                        (mapEntry "12thPoint" Mover)
+                                    )
+                                    
+                                    (!= 1 
+                                        (value Player Mover)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "FinalQuadrant" P1 
+                (sites { 7 8 9 10 11 12}
+                )
+            )
+            
+            (regions "FinalQuadrant" P2 
+                (sites { 13 14 15 16 17 18}
+                )
+            )
+            
+            (regions "StartingSide" P1 
+                (sites { 25 24 23 22 21 20 18 17 16 15 14}
+                )
+            )
+            
+            (regions "StartingSide" P2 
+                (sites { 0 1 2 3 4 5 7 8 9 10 11}
+                )
+            )
+            
+            (map "12thPoint" { 
+                (pair P1 13)
+                
+                (pair P2 12)
+                }
+            )
+            
+            (map "Bar" { 
+                (pair P1 6)
+                
+                (pair P2 19)
+                }
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 25 count:15)
+                
+                (place Stack "Disc2" 0 count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (forEach Piece top:True)
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (if 
+                        (is Mover P1)
+                        
+                        (and { 
+                            (is Friend 
+                                (who at:10)
+                            )
+                            
+                            (is Friend 
+                                (who at:11)
+                            )
+                            
+                            (is Friend 
+                                (who at:12)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:10)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:11)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:12)
+                            )
+                            }
+                        )
+                        
+                        (and { 
+                            (is Friend 
+                                (who at:13)
+                            )
+                            
+                            (is Friend 
+                                (who at:14)
+                            )
+                            
+                            (is Friend 
+                                (who at:15)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:13)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:14)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:15)
+                            )
+                            }
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (if 
+                        (is Mover P1)
+                        
+                        (and { 
+                            (is Friend 
+                                (who at:8)
+                            )
+                            
+                            (is Friend 
+                                (who at:9)
+                            )
+                            
+                            (is Friend 
+                                (who at:10)
+                            )
+                            
+                            (is Friend 
+                                (who at:11)
+                            )
+                            
+                            (is Friend 
+                                (who at:12)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:8)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:9)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:10)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:11)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:12)
+                            )
+                            }
+                        )
+                        
+                        (and { 
+                            (is Friend 
+                                (who at:13)
+                            )
+                            
+                            (is Friend 
+                                (who at:14)
+                            )
+                            
+                            (is Friend 
+                                (who at:15)
+                            )
+                            
+                            (is Friend 
+                                (who at:17)
+                            )
+                            
+                            (is Friend 
+                                (who at:18)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:13)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:14)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:15)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:17)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:18)
+                            )
+                            }
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (if 
+                        (is Mover P1)
+                        
+                        (and { 
+                            (is Friend 
+                                (who at:10)
+                            )
+                            
+                            (is Friend 
+                                (who at:11)
+                            )
+                            
+                            (is Friend 
+                                (who at:12)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:10)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:11)
+                            )
+                            
+                            (= 7 
+                                (size Stack at:12)
+                            )
+                            }
+                        )
+                        
+                        (and { 
+                            (is Friend 
+                                (who at:13)
+                            )
+                            
+                            (is Friend 
+                                (who at:14)
+                            )
+                            
+                            (is Friend 
+                                (who at:15)
+                            )
+                            
+                            (= 7 
+                                (size Stack at:13)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:14)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:15)
+                            )
+                            }
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (if 
+                        (is Mover P1)
+                        
+                        (and 
+                            (is Friend 
+                                (who at:12)
+                            )
+                            
+                            (= 15 
+                                (size Stack at:12)
+                            )
+                        )
+                        
+                        (and 
+                            (is Friend 
+                                (who at:13)
+                            )
+                            
+                            (= 15 
+                                (size Stack at:13)
+                            )
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                }
+            )
+        )
+        
+    > "The Tavlej (Ludii 3) ruleset.")
+    
+    (item "Tavlej (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track1" { 26 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 }
+                P1 directed:True )
+                
+                (track "Track2" { 27 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 }
+                P2 directed:True )
+                }
+            use:Vertex )
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 12 count:15)
+                
+                (place Stack "Disc2" 25 count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (forEach Piece top:True)
+                )
+            )
+            
+            (end { 
+                (if 
+                    (if 
+                        (is Mover P1)
+                        
+                        (and { 
+                            (= 15 
+                                (count Pieces Mover in:
+                                    (sites { 0 1 2 3 4 5}
+                                    )
+                                )
+                            )
+                            
+                            (is Friend 
+                                (who at:3)
+                            )
+                            
+                            (is Friend 
+                                (who at:4)
+                            )
+                            
+                            (is Friend 
+                                (who at:5)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:0)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:1)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:2)
+                            )
+                            }
+                        )
+                        
+                        (and { 
+                            (= 15 
+                                (count Pieces Mover in:
+                                    (sites { 13 14 15 16 17 18}
+                                    )
+                                )
+                            )
+                            
+                            (is Friend 
+                                (who at:16)
+                            )
+                            
+                            (is Friend 
+                                (who at:17)
+                            )
+                            
+                            (is Friend 
+                                (who at:18)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:13)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:14)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:15)
+                            )
+                            }
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+                }
+            )
+        )
+        
+    > "The Tavlej (Ludii 4) ruleset.")
+    
+    (item "Tavlej (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track1" { 12 11 10 9 8 7 5 4 3 2 1 0 13 14 15 16 17 18 20 21 22 23 24 25 }
+                P1 directed:True )
+                
+                (track "Track2" { 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 }
+                P2 directed:True )
+                
+                (track "ReverseHuckeTrack1" { 0 1 2 3 4 5 7}
+                P1 directed:True )
+                
+                (track "ReverseHuckeTrack2" { 13 14 15 16 17 18 20}
+                P2 directed:True )
+                }
+            use:Vertex )
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (if 
+                    (is In 
+                        (from)
+                        
+                        (sites Mover "BeforeHucke")
+                    )
+                    
+                    (forEach Die if:
+                        (!= 
+                            (pips)
+                        0)
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    "Track" steps:
+                                    (pips)
+                                )
+                                if:
+                                (and 
+                                    (is In 
+                                        (to)
+                                        
+                                        (sites Mover "BeforeHucke")
+                                    )
+                                    
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (not 
+                                    (all DiceUsed)
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (!= 
+                            (from)
+                            
+                            (mapEntry "Hucke" 
+                                (mover)
+                            )
+                        )
+                        
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (if 
+                                (= 
+                                    (trackSite Move from:
+                                        (from)
+                                        "Track" steps:
+                                        (pips)
+                                    )
+                                Off )
+                                
+                                (move Remove 
+                                    (from)
+                                )
+                                
+                                (move 
+                                    (from 
+                                        (from)
+                                    )
+                                    
+                                    (to 
+                                        (trackSite Move from:
+                                            (from)
+                                            "Track" steps:
+                                            (pips)
+                                        )
+                                        if:
+                                        (not 
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (not 
+                                        (all DiceUsed)
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "BeforeHucke" P1 
+                (sites { 12 11 10 9 8 7 5 4 3 2 1}
+                )
+            )
+            
+            (regions "BeforeHucke" P2 
+                (sites { 25 24 23 22 21 20 18 17 16 15 14}
+                )
+            )
+            
+            (map "Hucke" { 
+                (pair P1 0)
+                
+                (pair P2 13)
+                }
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 12 count:15)
+                
+                (place Stack "Disc2" 25 count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (forEach Piece top:True)
+                )
+            )
+            
+            (end { 
+                (if 
+                    (if 
+                        (is Mover P1)
+                        
+                        (and { 
+                            (= 15 
+                                (count Pieces Mover in:
+                                    (sites { 0 1 2 3 4 5}
+                                    )
+                                )
+                            )
+                            
+                            (is Friend 
+                                (who at:3)
+                            )
+                            
+                            (is Friend 
+                                (who at:4)
+                            )
+                            
+                            (is Friend 
+                                (who at:5)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:0)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:1)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:2)
+                            )
+                            }
+                        )
+                        
+                        (and { 
+                            (= 15 
+                                (count Pieces Mover in:
+                                    (sites { 13 14 15 16 17 18}
+                                    )
+                                )
+                            )
+                            
+                            (is Friend 
+                                (who at:16)
+                            )
+                            
+                            (is Friend 
+                                (who at:17)
+                            )
+                            
+                            (is Friend 
+                                (who at:18)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:13)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:14)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:15)
+                            )
+                            }
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+                }
+            )
+        )
+        
+    > "The Tavlej (Ludii 5) ruleset.")
+    
+    (item "Tavlej (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track1" { 26 12 11 10 9 8 7 5 4 3 2 1 0 13 14 15 16 17 18 20 21 22 23 24 25 }
+                P1 directed:True )
+                
+                (track "Track2" { 27 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 }
+                P2 directed:True )
+                }
+            use:Vertex )
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:
+                    (= 1 
+                        (value Player Mover)
+                    )
+                    if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        Off)
+                        
+                        (move Remove 
+                            (from)
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (handSite 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                            
+                            (if 
+                                (= 1 
+                                    (value Player Mover)
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (all DiceEqual)
+                                        
+                                        (= 0 
+                                            (size Array 
+                                                (values Remembered)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (and 
+                                        (moveAgain)
+                                        
+                                        (set Var "PlayOpposite" 1)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 25 count:15)
+                
+                (place Stack "Disc2" 0 count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (forEach Piece top:True)
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (if 
+                        (is Mover P1)
+                        
+                        (and { 
+                            (is Friend 
+                                (who at:10)
+                            )
+                            
+                            (is Friend 
+                                (who at:11)
+                            )
+                            
+                            (is Friend 
+                                (who at:12)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:10)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:11)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:12)
+                            )
+                            }
+                        )
+                        
+                        (and { 
+                            (is Friend 
+                                (who at:13)
+                            )
+                            
+                            (is Friend 
+                                (who at:14)
+                            )
+                            
+                            (is Friend 
+                                (who at:15)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:13)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:14)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:15)
+                            )
+                            }
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (if 
+                        (is Mover P1)
+                        
+                        (and { 
+                            (is Friend 
+                                (who at:8)
+                            )
+                            
+                            (is Friend 
+                                (who at:9)
+                            )
+                            
+                            (is Friend 
+                                (who at:10)
+                            )
+                            
+                            (is Friend 
+                                (who at:11)
+                            )
+                            
+                            (is Friend 
+                                (who at:12)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:8)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:9)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:10)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:11)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:12)
+                            )
+                            }
+                        )
+                        
+                        (and { 
+                            (is Friend 
+                                (who at:13)
+                            )
+                            
+                            (is Friend 
+                                (who at:14)
+                            )
+                            
+                            (is Friend 
+                                (who at:15)
+                            )
+                            
+                            (is Friend 
+                                (who at:17)
+                            )
+                            
+                            (is Friend 
+                                (who at:18)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:13)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:14)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:15)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:17)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:18)
+                            )
+                            }
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (if 
+                        (is Mover P1)
+                        
+                        (and { 
+                            (is Friend 
+                                (who at:10)
+                            )
+                            
+                            (is Friend 
+                                (who at:11)
+                            )
+                            
+                            (is Friend 
+                                (who at:12)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:10)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:11)
+                            )
+                            
+                            (= 7 
+                                (size Stack at:12)
+                            )
+                            }
+                        )
+                        
+                        (and { 
+                            (is Friend 
+                                (who at:13)
+                            )
+                            
+                            (is Friend 
+                                (who at:14)
+                            )
+                            
+                            (is Friend 
+                                (who at:15)
+                            )
+                            
+                            (= 7 
+                                (size Stack at:13)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:14)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:15)
+                            )
+                            }
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (if 
+                        (is Mover P1)
+                        
+                        (and 
+                            (is Friend 
+                                (who at:12)
+                            )
+                            
+                            (= 15 
+                                (size Stack at:12)
+                            )
+                        )
+                        
+                        (and 
+                            (is Friend 
+                                (who at:13)
+                            )
+                            
+                            (= 15 
+                                (size Stack at:13)
+                            )
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                }
+            )
+        )
+        
+    > "The Tavlej (Ludii 6) ruleset.")
+    
+    (item "Tavlej (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track1" { 6 12 11 10 9 8 7 5 4 3 2 1 0 13 14 15 16 17 18 20 21 22 23 24 25 End }
+                P1 directed:True )
+                
+                (track "Track2" { 19 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 End }
+                P2 directed:True )
+                }
+            use:Vertex )
+            
+            (dice d:6 num:2)
+            
+            (map "Bar" { 
+                (pair P1 6)
+                
+                (pair P2 19)
+                }
+            )
+            
+            (regions "FinalQuadrant" P1 
+                (sites { 20 21 22 23 24 25}
+                )
+            )
+            
+            (regions "FinalQuadrant" P2 
+                (sites { 7 8 9 10 11 12}
+                )
+            )
+            
+            (piece "Disc" Each 
+                (forEach Die if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        End)
+                        
+                        (if 
+                            (all Sites 
+                                (sites Occupied by:Mover)
+                                if:
+                                (is In 
+                                    (site)
+                                    
+                                    (sites Mover "FinalQuadrant")
+                                )
+                            )
+                            
+                            (move Remove 
+                                (from)
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (mapEntry "Bar" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 25 count:15)
+                
+                (place Stack "Disc2" 0 count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (forEach Piece top:True)
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (if 
+                        (is Mover P1)
+                        
+                        (and { 
+                            (is Friend 
+                                (who at:10)
+                            )
+                            
+                            (is Friend 
+                                (who at:11)
+                            )
+                            
+                            (is Friend 
+                                (who at:12)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:10)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:11)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:12)
+                            )
+                            }
+                        )
+                        
+                        (and { 
+                            (is Friend 
+                                (who at:13)
+                            )
+                            
+                            (is Friend 
+                                (who at:14)
+                            )
+                            
+                            (is Friend 
+                                (who at:15)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:13)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:14)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:15)
+                            )
+                            }
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (if 
+                        (is Mover P1)
+                        
+                        (and { 
+                            (is Friend 
+                                (who at:8)
+                            )
+                            
+                            (is Friend 
+                                (who at:9)
+                            )
+                            
+                            (is Friend 
+                                (who at:10)
+                            )
+                            
+                            (is Friend 
+                                (who at:11)
+                            )
+                            
+                            (is Friend 
+                                (who at:12)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:8)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:9)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:10)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:11)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:12)
+                            )
+                            }
+                        )
+                        
+                        (and { 
+                            (is Friend 
+                                (who at:13)
+                            )
+                            
+                            (is Friend 
+                                (who at:14)
+                            )
+                            
+                            (is Friend 
+                                (who at:15)
+                            )
+                            
+                            (is Friend 
+                                (who at:17)
+                            )
+                            
+                            (is Friend 
+                                (who at:18)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:13)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:14)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:15)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:17)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:18)
+                            )
+                            }
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (if 
+                        (is Mover P1)
+                        
+                        (and { 
+                            (is Friend 
+                                (who at:10)
+                            )
+                            
+                            (is Friend 
+                                (who at:11)
+                            )
+                            
+                            (is Friend 
+                                (who at:12)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:10)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:11)
+                            )
+                            
+                            (= 7 
+                                (size Stack at:12)
+                            )
+                            }
+                        )
+                        
+                        (and { 
+                            (is Friend 
+                                (who at:13)
+                            )
+                            
+                            (is Friend 
+                                (who at:14)
+                            )
+                            
+                            (is Friend 
+                                (who at:15)
+                            )
+                            
+                            (= 7 
+                                (size Stack at:13)
+                            )
+                            
+                            (= 5 
+                                (size Stack at:14)
+                            )
+                            
+                            (= 3 
+                                (size Stack at:15)
+                            )
+                            }
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (if 
+                        (is Mover P1)
+                        
+                        (and 
+                            (is Friend 
+                                (who at:12)
+                            )
+                            
+                            (= 15 
+                                (size Stack at:12)
+                            )
+                        )
+                        
+                        (and 
+                            (is Friend 
+                                (who at:13)
+                            )
+                            
+                            (= 15 
+                                (size Stack at:13)
+                            )
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                }
+            )
+        )
+        
+    > "The Tavlej (Ludii 7) ruleset.")
+    
+    (item "Tavlej (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track1" { 6 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 End }
+                P1 directed:True )
+                
+                (track "Track2" { 19 0 1 2 3 4 5 7 8 9 10 11 12 25 24 23 22 21 20 18 17 16 15 14 13 End }
+                P2 directed:True )
+                }
+            use:Vertex )
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (forEach Die replayDouble:True if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        End)
+                        
+                        (if 
+                            (all Sites 
+                                (sites Occupied by:Mover)
+                                if:
+                                (is In 
+                                    (site)
+                                    
+                                    (sites Mover "FinalQuadrant")
+                                )
+                            )
+                            
+                            (move Remove 
+                                (from)
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (and 
+                                    (or 
+                                        (not 
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                        
+                                        (= 1 
+                                            (size Stack at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (not 
+                                            (is In 
+                                                (to)
+                                                
+                                                (sites Mover "StartingSide")
+                                            )
+                                        )
+                                        True 
+                                        (if 
+                                            (= 
+                                                (value Player Mover)
+                                            1)
+                                            True 
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (if 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (fromTo 
+                                            (from 
+                                                (to)
+                                            )
+                                            
+                                            (to 
+                                                (mapEntry "Bar" Next)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (and 
+                            (if 
+                                (not 
+                                    (all DiceUsed)
+                                )
+                                
+                                (moveAgain)
+                            )
+                            
+                            (if 
+                                (and 
+                                    (= 
+                                        (last To)
+                                        
+                                        (mapEntry "12thPoint" Mover)
+                                    )
+                                    
+                                    (!= 1 
+                                        (value Player Mover)
+                                    )
+                                )
+                                
+                                (set Value Mover 1)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "FinalQuadrant" P1 
+                (sites { 7 8 9 10 11 12}
+                )
+            )
+            
+            (regions "FinalQuadrant" P2 
+                (sites { 13 14 15 16 17 18}
+                )
+            )
+            
+            (regions "StartingSide" P1 
+                (sites { 25 24 23 22 21 20 18 17 16 15 14}
+                )
+            )
+            
+            (regions "StartingSide" P2 
+                (sites { 0 1 2 3 4 5 7 8 9 10 11}
+                )
+            )
+            
+            (map "12thPoint" { 
+                (pair P1 13)
+                
+                (pair P2 12)
+                }
+            )
+            
+            (map "Bar" { 
+                (pair P1 6)
+                
+                (pair P2 19)
+                }
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 7 count:5)
+                
+                (place Stack "Disc1" 4 count:3)
+                
+                (place Stack "Disc1" 13 count:5)
+                
+                (place Stack "Disc1" 25 count:2)
+                
+                (place Stack "Disc2" 20 count:5)
+                
+                (place Stack "Disc2" 17 count:3)
+                
+                (place Stack "Disc2" 0 count:5)
+                
+                (place Stack "Disc2" 12 count:2)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (priority { 
+                        (if 
+                            (is Occupied 
+                                (mapEntry "Bar" Mover)
+                            )
+                            
+                            (forEach Die if:
+                                (!= 
+                                    (pips)
+                                0)
+                                
+                                (move 
+                                    (from 
+                                        (mapEntry "Bar" Mover)
+                                    )
+                                    
+                                    (to 
+                                        (trackSite Move from:
+                                            (mapEntry "Bar" Mover)
+                                            steps:
+                                            (pips)
+                                        )
+                                        if:
+                                        (< 
+                                            (size Stack at:
+                                                (to)
+                                            )
+                                        2)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (mapEntry "Bar" Next)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (not 
+                                            (all DiceUsed)
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (is Empty 
+                                (mapEntry "Bar" Mover)
+                            )
+                            
+                            (max Distance 
+                                (forEach Piece top:True)
+                            )
+                        )
+                        }
+                    )
+                    
+                    (then 
+                        (if 
+                            (no Pieces Mover)
+                            
+                            (if 
+                                (no Pieces Enemy in:
+                                    (sites Mover "FinalQuadrant")
+                                )
+                                
+                                (addScore Mover 1)
+                                
+                                (addScore Mover 2)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Tavlej (Ludii 8) ruleset.")
+    
+    (item "Tavlej (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track1" { 12 11 10 9 8 7 5 4 3 2 1 0 13 14 15 16 17 18 20 21 22 23 24 25 }
+                P1 directed:True )
+                
+                (track "Track2" { 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 }
+                P2 directed:True )
+                
+                (track "ReverseHuckeTrack1" { 0 1 2 3 4 5 7}
+                P1 directed:True )
+                
+                (track "ReverseHuckeTrack2" { 13 14 15 16 17 18 20}
+                P2 directed:True )
+                }
+            use:Vertex )
+            
+            (dice d:6 num:2)
+            
+            (piece "Disc" Each 
+                (if 
+                    (is In 
+                        (from)
+                        
+                        (sites Mover "BeforeHucke")
+                    )
+                    
+                    (forEach Die if:
+                        (!= 
+                            (pips)
+                        0)
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    "Track" steps:
+                                    (pips)
+                                )
+                                if:
+                                (and 
+                                    (is In 
+                                        (to)
+                                        
+                                        (sites Mover "BeforeHucke")
+                                    )
+                                    
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (not 
+                                    (all DiceUsed)
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (if 
+                        (!= 
+                            (from)
+                            
+                            (mapEntry "Hucke" 
+                                (mover)
+                            )
+                        )
+                        
+                        (forEach Die if:
+                            (!= 
+                                (pips)
+                            0)
+                            
+                            (if 
+                                (= 
+                                    (trackSite Move from:
+                                        (from)
+                                        "Track" steps:
+                                        (pips)
+                                    )
+                                Off )
+                                
+                                (move Remove 
+                                    (from)
+                                )
+                                
+                                (move 
+                                    (from 
+                                        (from)
+                                    )
+                                    
+                                    (to 
+                                        (trackSite Move from:
+                                            (from)
+                                            "Track" steps:
+                                            (pips)
+                                        )
+                                        if:
+                                        (not 
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (not 
+                                        (all DiceUsed)
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "BeforeHucke" P1 
+                (sites { 12 11 10 9 8 7 5 4 3 2 1}
+                )
+            )
+            
+            (regions "BeforeHucke" P2 
+                (sites { 25 24 23 22 21 20 18 17 16 15 14}
+                )
+            )
+            
+            (map "Hucke" { 
+                (pair P1 0)
+                
+                (pair P2 13)
+                }
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 12 count:15)
+                
+                (place Stack "Disc2" 25 count:15)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (do 
+                        (if 
+                            (not 
+                                (is Prev Mover)
+                            )
+                            
+                            (forEach Site 
+                                (sites Occupied by:Mover)
+                                
+                                (if 
+                                    (is In 
+                                        (site)
+                                        
+                                        (sites Mover "BeforeHucke")
+                                    )
+                                    
+                                    (and 
+                                        (if 
+                                            (and { 
+                                                (is In 
+                                                    (trackSite Move from:
+                                                        (site)
+                                                        "Track" steps:
+                                                        (face 26)
+                                                    )
+                                                    
+                                                    (sites Mover "BeforeHucke" )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (trackSite Move from:
+                                                            (site)
+                                                            "Track" steps:
+                                                            (face 26)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (= 1 
+                                                    (size Stack at:
+                                                        (trackSite Move from:
+                                                            (site)
+                                                            "Track" steps:
+                                                            (face 26)
+                                                        )
+                                                    )
+                                                )
+                                                }
+                                            )
+                                            
+                                            (addScore Mover 1)
+                                        )
+                                        
+                                        (if 
+                                            (and { 
+                                                (is In 
+                                                    (trackSite Move from:
+                                                        (site)
+                                                        "Track" steps:
+                                                        (face 27)
+                                                    )
+                                                    
+                                                    (sites Mover "BeforeHucke" )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (trackSite Move from:
+                                                            (site)
+                                                            "Track" steps:
+                                                            (face 27)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (= 1 
+                                                    (size Stack at:
+                                                        (trackSite Move from:
+                                                            (site)
+                                                            "Track" steps:
+                                                            (face 27)
+                                                        )
+                                                    )
+                                                )
+                                                }
+                                            )
+                                            
+                                            (addScore Mover 1)
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (!= 
+                                            (site)
+                                            
+                                            (mapEntry "Hucke" 
+                                                (mover)
+                                            )
+                                        )
+                                        
+                                        (and 
+                                            (if 
+                                                (and 
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (trackSite Move from:
+                                                                (site)
+                                                                "Track" steps:
+                                                                (face 26)
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (= 1 
+                                                        (size Stack at:
+                                                            (trackSite Move from:
+                                                                (site)
+                                                                "Track" steps:
+                                                                (face 26)
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (addScore Mover 1)
+                                            )
+                                            
+                                            (if 
+                                                (and 
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (trackSite Move from:
+                                                                (site)
+                                                                "Track" steps:
+                                                                (face 27)
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (= 1 
+                                                        (size Stack at:
+                                                            (trackSite Move from:
+                                                                (site)
+                                                                "Track" steps:
+                                                                (face 27)
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (addScore Mover 1)
+                                            )
+                                        )
+                                        
+                                        (if 
+                                            (and { 
+                                                (= 1 
+                                                    (face 26)
+                                                )
+                                                
+                                                (= 1 
+                                                    (face 27)
+                                                )
+                                                
+                                                (<= 4 
+                                                    (size Stack at:
+                                                        (mapEntry "Hucke" 
+                                                            (mover)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (= 1 
+                                                    (size Stack at:
+                                                        (trackSite Move from:
+                                                            (site)
+                                                            "Track" steps:
+                                                            (face 26)
+                                                        )
+                                                    )
+                                                )
+                                                }
+                                            )
+                                            
+                                            (addScore Mover 1)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        next:
+                        (or { 
+                            (if 
+                                (and 
+                                    (>= 0 
+                                        (var "MovingFromHucke")
+                                    )
+                                    
+                                    (>= 0 
+                                        (var "MovingToHucke")
+                                    )
+                                )
+                                
+                                (forEach Piece)
+                            )
+                            
+                            (if 
+                                (>= 0 
+                                    (var "MovingFromHucke")
+                                )
+                                
+                                (if 
+                                    (or 
+                                        (< 0 
+                                            (var "MovingToHucke")
+                                        )
+                                        
+                                        (if 
+                                            (= 
+                                                (face 26)
+                                                
+                                                (face 27)
+                                            )
+                                            
+                                            (<= 2 
+                                                (count Pieces Mover in:
+                                                    (sites { 
+                                                        (trackSite Move from:
+                                                            (mapEntry "Hucke" 
+                                                                (mover)
+                                                            )
+                                                            "ReverseHuckeTrack" steps:
+                                                            (face 27 )
+                                                        )
+                                                        }
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (and 
+                                                (<= 1 
+                                                    (count Pieces Mover in:
+                                                        (sites { 
+                                                            (trackSite Move from:
+                                                                (mapEntry "Hucke" 
+                                                                    (mover )
+                                                                )
+                                                                "ReverseHuckeTrack" steps:
+                                                                (face 26 )
+                                                            )
+                                                            }
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (<= 1 
+                                                    (count Pieces Mover in:
+                                                        (sites { 
+                                                            (trackSite Move from:
+                                                                (mapEntry "Hucke" 
+                                                                    (mover )
+                                                                )
+                                                                "ReverseHuckeTrack" steps:
+                                                                (face 27 )
+                                                            )
+                                                            }
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (or 
+                                        (if 
+                                            (and 
+                                                (!= 26 
+                                                    (var "MovingToHucke")
+                                                )
+                                                
+                                                (is Friend 
+                                                    (who at:
+                                                        (trackSite Move from:
+                                                            (mapEntry "Hucke" 
+                                                                (mover)
+                                                            )
+                                                            "ReverseHuckeTrack" steps:
+                                                            (face 26)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (move 
+                                                (from 
+                                                    (trackSite Move from:
+                                                        (mapEntry "Hucke" 
+                                                            (mover)
+                                                        )
+                                                        "ReverseHuckeTrack" steps:
+                                                        (face 26)
+                                                    )
+                                                )
+                                                
+                                                (to 
+                                                    (mapEntry "Hucke" 
+                                                        (mover)
+                                                    )
+                                                )
+                                                
+                                                (then 
+                                                    (if 
+                                                        (= 0 
+                                                            (count MovesThisTurn )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (moveAgain)
+                                                            
+                                                            (set Var "MovingToHucke" 26 )
+                                                        )
+                                                        
+                                                        (set Var "MovingToHucke" 0 )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (if 
+                                            (and 
+                                                (!= 27 
+                                                    (var "MovingToHucke")
+                                                )
+                                                
+                                                (is Friend 
+                                                    (who at:
+                                                        (trackSite Move from:
+                                                            (mapEntry "Hucke" 
+                                                                (mover)
+                                                            )
+                                                            "ReverseHuckeTrack" steps:
+                                                            (face 27)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (move 
+                                                (from 
+                                                    (trackSite Move from:
+                                                        (mapEntry "Hucke" 
+                                                            (mover)
+                                                        )
+                                                        "ReverseHuckeTrack" steps:
+                                                        (face 27)
+                                                    )
+                                                )
+                                                
+                                                (to 
+                                                    (mapEntry "Hucke" 
+                                                        (mover)
+                                                    )
+                                                )
+                                                
+                                                (then 
+                                                    (if 
+                                                        (= 0 
+                                                            (count MovesThisTurn )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (moveAgain)
+                                                            
+                                                            (set Var "MovingToHucke" 27 )
+                                                        )
+                                                        
+                                                        (set Var "MovingToHucke" 0 )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (if 
+                                (>= 0 
+                                    (var "MovingToHucke")
+                                )
+                                
+                                (if 
+                                    (or 
+                                        (< 0 
+                                            (var "MovingFromHucke")
+                                        )
+                                        
+                                        (if 
+                                            (and 
+                                                (and 
+                                                    (!= 
+                                                        (face 26)
+                                                    1)
+                                                    
+                                                    (!= 
+                                                        (face 27)
+                                                    1)
+                                                )
+                                                
+                                                (<= 2 
+                                                    (count Pieces Mover in:
+                                                        (sites { 
+                                                            (mapEntry "Hucke" 
+                                                                (mover)
+                                                            )
+                                                            }
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (if 
+                                                (= 
+                                                    (face 26)
+                                                    
+                                                    (face 27)
+                                                )
+                                                
+                                                (not 
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (trackSite Move from:
+                                                                (mapEntry "Hucke" 
+                                                                    (mover)
+                                                                )
+                                                                "Track" steps:
+                                                                (face 27 )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (and 
+                                                    (not 
+                                                        (is Enemy 
+                                                            (who at:
+                                                                (trackSite Move from:
+                                                                    (mapEntry "Hucke" 
+                                                                        (mover )
+                                                                    )
+                                                                    "Track" steps:
+                                                                    (face 26 )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (not 
+                                                        (is Enemy 
+                                                            (who at:
+                                                                (trackSite Move from:
+                                                                    (mapEntry "Hucke" 
+                                                                        (mover )
+                                                                    )
+                                                                    "Track" steps:
+                                                                    (face 27 )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (or 
+                                        (if 
+                                            (and 
+                                                (!= 26 
+                                                    (var "MovingFromHucke")
+                                                )
+                                                
+                                                (not 
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (trackSite Move from:
+                                                                (mapEntry "Hucke" 
+                                                                    (mover)
+                                                                )
+                                                                "Track" steps:
+                                                                (face 26 )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (move 
+                                                (from 
+                                                    (mapEntry "Hucke" 
+                                                        (mover)
+                                                    )
+                                                )
+                                                
+                                                (to 
+                                                    (trackSite Move from:
+                                                        (mapEntry "Hucke" 
+                                                            (mover)
+                                                        )
+                                                        "Track" steps:
+                                                        (face 26)
+                                                    )
+                                                )
+                                                
+                                                (then 
+                                                    (if 
+                                                        (= 0 
+                                                            (count MovesThisTurn )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (moveAgain)
+                                                            
+                                                            (set Var "MovingFromHucke" 26 )
+                                                        )
+                                                        
+                                                        (set Var "MovingFromHucke" 0 )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (if 
+                                            (and 
+                                                (!= 27 
+                                                    (var "MovingFromHucke")
+                                                )
+                                                
+                                                (not 
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (trackSite Move from:
+                                                                (mapEntry "Hucke" 
+                                                                    (mover)
+                                                                )
+                                                                "Track" steps:
+                                                                (face 27 )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (move 
+                                                (from 
+                                                    (mapEntry "Hucke" 
+                                                        (mover)
+                                                    )
+                                                )
+                                                
+                                                (to 
+                                                    (trackSite Move from:
+                                                        (mapEntry "Hucke" 
+                                                            (mover)
+                                                        )
+                                                        "Track" steps:
+                                                        (face 27)
+                                                    )
+                                                )
+                                                
+                                                (then 
+                                                    (if 
+                                                        (= 0 
+                                                            (count MovesThisTurn )
+                                                        )
+                                                        
+                                                        (and 
+                                                            (moveAgain)
+                                                            
+                                                            (set Var "MovingFromHucke" 27 )
+                                                        )
+                                                        
+                                                        (set Var "MovingFromHucke" 0 )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            }
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (no Pieces Mover)
+                            
+                            (addScore Mover 2)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (<= 12 
+                        (score Mover)
+                    )
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Tavlej (Ludii 9) ruleset.")
+    
+    (item "Tavlej (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 2 13)
+                { 
+                (track "Track1" { 6 12 11 10 9 8 7 5 4 3 2 1 0 13 14 15 16 17 18 20 21 22 23 24 25 End }
+                P1 directed:True )
+                
+                (track "Track2" { 19 25 24 23 22 21 20 18 17 16 15 14 13 0 1 2 3 4 5 7 8 9 10 11 12 End }
+                P2 directed:True )
+                }
+            use:Vertex )
+            
+            (dice d:6 num:2)
+            
+            (map "Bar" { 
+                (pair P1 6)
+                
+                (pair P2 19)
+                }
+            )
+            
+            (regions "FinalQuadrant" P1 
+                (sites { 20 21 22 23 24 25}
+                )
+            )
+            
+            (regions "FinalQuadrant" P2 
+                (sites { 7 8 9 10 11 12}
+                )
+            )
+            
+            (piece "Disc" Each 
+                (forEach Die if:
+                    (!= 
+                        (pips)
+                    0)
+                    
+                    (if 
+                        (= 
+                            (trackSite Move from:
+                                (from)
+                                steps:
+                                (pips)
+                            )
+                        End)
+                        
+                        (if 
+                            (all Sites 
+                                (sites Occupied by:Mover)
+                                if:
+                                (is In 
+                                    (site)
+                                    
+                                    (sites Mover "FinalQuadrant")
+                                )
+                            )
+                            
+                            (move Remove 
+                                (from)
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (from)
+                            )
+                            
+                            (to 
+                                (trackSite Move from:
+                                    (from)
+                                    steps:
+                                    (pips)
+                                )
+                                if:
+                                (or 
+                                    (not 
+                                        (is Enemy 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (= 1 
+                                        (size Stack at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (apply if:
+                                    (is Enemy 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (fromTo 
+                                        (from 
+                                            (to)
+                                        )
+                                        
+                                        (to 
+                                            (mapEntry "Bar" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (not 
+                                (all DiceUsed)
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place Stack "Disc1" 7 count:5)
+                
+                (place Stack "Disc1" 4 count:3)
+                
+                (place Stack "Disc1" 13 count:5)
+                
+                (place Stack "Disc1" 25 count:2)
+                
+                (place Stack "Disc2" 20 count:5)
+                
+                (place Stack "Disc2" 17 count:3)
+                
+                (place Stack "Disc2" 0 count:5)
+                
+                (place Stack "Disc2" 12 count:2)
+                }
+            )
+            
+            (play 
+                (do 
+                    (if 
+                        (not 
+                            (is Prev Mover)
+                        )
+                        
+                        (roll)
+                    )
+                    next:
+                    (priority { 
+                        (if 
+                            (is Occupied 
+                                (mapEntry "Bar" Mover)
+                            )
+                            
+                            (forEach Die if:
+                                (!= 
+                                    (pips)
+                                0)
+                                
+                                (move 
+                                    (from 
+                                        (mapEntry "Bar" Mover)
+                                    )
+                                    
+                                    (to 
+                                        (trackSite Move from:
+                                            (mapEntry "Bar" Mover)
+                                            steps:
+                                            (pips)
+                                        )
+                                        if:
+                                        (< 
+                                            (size Stack at:
+                                                (to)
+                                            )
+                                        2)
+                                        
+                                        (apply if:
+                                            (is Enemy 
+                                                (who at:
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (fromTo 
+                                                (from 
+                                                    (to)
+                                                )
+                                                
+                                                (to 
+                                                    (mapEntry "Bar" Next)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (not 
+                                            (all DiceUsed)
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (if 
+                            (is Empty 
+                                (mapEntry "Bar" Mover)
+                            )
+                            
+                            (max Distance 
+                                (forEach Piece top:True)
+                            )
+                        )
+                        }
+                    )
+                    
+                    (then 
+                        (if 
+                            (no Pieces Mover)
+                            
+                            (if 
+                                (no Pieces Enemy in:
+                                    (sites Mover "FinalQuadrant")
+                                )
+                                
+                                (addScore Mover 1)
+                                
+                                (addScore Mover 2)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Tavlej (Ludii 10) ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment [#])
+        (rules [#])
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Tavlej (Ludii 1) (Reconstructed)" {
+        "Variant/Tavlej (Ludii 1)"
+    })
+    (ruleset "Ruleset/Tavlej (Ludii 2) (Reconstructed)" {
+        "Variant/Tavlej (Ludii 2)"
+    })
+    (ruleset "Ruleset/Tavlej (Ludii 3) (Reconstructed)" {
+        "Variant/Tavlej (Ludii 3)"
+    })
+    (ruleset "Ruleset/Tavlej (Ludii 4) (Reconstructed)" {
+        "Variant/Tavlej (Ludii 4)"
+    })
+    (ruleset "Ruleset/Tavlej (Ludii 5) (Reconstructed)" {
+        "Variant/Tavlej (Ludii 5)"
+    })
+    (ruleset "Ruleset/Tavlej (Ludii 6) (Reconstructed)" {
+        "Variant/Tavlej (Ludii 6)"
+    })
+    (ruleset "Ruleset/Tavlej (Ludii 7) (Reconstructed)" {
+        "Variant/Tavlej (Ludii 7)"
+    })
+    (ruleset "Ruleset/Tavlej (Ludii 8) (Reconstructed)" {
+        "Variant/Tavlej (Ludii 8)"
+    })
+    (ruleset "Ruleset/Tavlej (Ludii 9) (Reconstructed)" {
+        "Variant/Tavlej (Ludii 9)"
+    })
+    (ruleset "Ruleset/Tavlej (Ludii 10) (Reconstructed)" {
+        "Variant/Tavlej (Ludii 10)"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tavlej is a game with dice played in Russia.")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Played with dice."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1444"))
+        (useFor "Ruleset/Tavlej (Ludii 1) (Reconstructed)" (rules "The game Tavlej is played by two players on a 2x13 rectangle board with square tiling.
+                Regions:
+                FinalQuadrant: sites [20,21,22,23,24,25] for P1
+                FinalQuadrant: sites [7,8,9,10,11,12] for P2
+                OppositeSide: sites [25,24,23,22,21,20,18,17,16,15,14,13] for P1
+                OppositeSide: sites [0,1,2,3,4,5,7,8,9,10,11,12] for P2 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, if all sites in sites occupied by any component owned by Mover satisfy the condition current site is in FinalQuadrant or FinalQuadrant, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: there is an enemy Player at to, not to is in OppositeSide or OppositeSide and the top level of the stack on vertex to is equal to 0 or not there is an enemy Player at to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Bar of the next player moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 12
+                Place stack of [Disc2] at vertex 25.
+                Rules: 
+                If not in the same turn, roll the dice and afterwards move one of your pieces.
+                Aim: 
+                If if 1 is the mover then 15 is equal to the number of pieces in the region sites [0,1,2,3,4,5], is a friend, is a friend, is a friend, 3 is equal to the size of the stack on vertex 0, 3 is equal to the size of the stack on vertex 1 and 3 is equal to the size of the stack on vertex 2 else 15 is equal to the number of pieces in the region sites [13,14,15,16,17,18], is a friend, is a friend, is a friend, 3 is equal to the size of the stack on vertex 13, 3 is equal to the size of the stack on vertex 14 and 3 is equal to the size of the stack on vertex 15, the moving player wins If there are no pieces owned by Player the moving player, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Tavlej (Ludii 1) (Reconstructed)" (id "3930"))
+        (useFor "Ruleset/Tavlej (Ludii 2) (Reconstructed)" (rules "The game Tavlej is played by two players on a 2x13 rectangle board with square tiling.
+                Regions:
+                FinalQuadrant: sites [7,8,9,10,11,12] for P1
+                FinalQuadrant: sites [13,14,15,16,17,18] for P2
+                StartingSide: sites [25,24,23,22,21,20,18,17,16,15,14] for P1
+                StartingSide: sites [0,1,2,3,4,5,7,8,9,10,11] for P2 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, if all sites in sites occupied by any component owned by Mover satisfy the condition current site is in FinalQuadrant or FinalQuadrant, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to and if not to is in StartingSide or StartingSide then true else if the value of Player the moving player is equal to 1 then true else empty captureEffect: if there is an enemy Player at to, from vertex in to to vertex Bar of the next player moveRule: true, the double rules apply.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 12
+                Place stack of [Disc2] at vertex 25.
+                Rules: 
+                If not in the same turn, roll the dice and afterwards move one of your pieces.
+                Aim: 
+                If if 1 is the mover then 15 is equal to the number of pieces in the region sites [0,1,2,3,4,5], is a friend, is a friend, is a friend, 3 is equal to the size of the stack on vertex 0, 3 is equal to the size of the stack on vertex 1 and 3 is equal to the size of the stack on vertex 2 else 15 is equal to the number of pieces in the region sites [13,14,15,16,17,18], is a friend, is a friend, is a friend, 3 is equal to the size of the stack on vertex 13, 3 is equal to the size of the stack on vertex 14 and 3 is equal to the size of the stack on vertex 15, the moving player wins If there are no pieces owned by Player the moving player, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Tavlej (Ludii 2) (Reconstructed)" (id "3931"))
+        (useFor "Ruleset/Tavlej (Ludii 3) (Reconstructed)" (rules "The game Tavlej is played by two players on a 2x13 rectangle board with square tiling.
+                Regions:
+                FinalQuadrant: sites [7,8,9,10,11,12] for P1
+                FinalQuadrant: sites [13,14,15,16,17,18] for P2
+                StartingSide: sites [25,24,23,22,21,20,18,17,16,15,14] for P1
+                StartingSide: sites [0,1,2,3,4,5,7,8,9,10,11] for P2 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, if all sites in sites occupied by any component owned by Mover satisfy the condition current site is in FinalQuadrant or FinalQuadrant, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to and if not to is in StartingSide or StartingSide then true else if the value of Player the moving player is equal to 1 then true else empty captureEffect: if there is an enemy Player at to, from vertex in to to vertex Bar of the next player moveRule: true, the double rules apply.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 25
+                Place stack of [Disc2] at vertex 0.
+                Rules: 
+                If not in the same turn, roll the dice and afterwards move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the moving player, the moving player wins If if 1 is the mover then is a friend, is a friend, is a friend, 5 is equal to the size of the stack on vertex 10, 5 is equal to the size of the stack on vertex 11 and 5 is equal to the size of the stack on vertex 12 else is a friend, is a friend, is a friend, 5 is equal to the size of the stack on vertex 13, 5 is equal to the size of the stack on vertex 14 and 5 is equal to the size of the stack on vertex 15, the moving player wins If if 1 is the mover then is a friend, is a friend, is a friend, is a friend, is a friend, 3 is equal to the size of the stack on vertex 8, 3 is equal to the size of the stack on vertex 9, 3 is equal to the size of the stack on vertex 10, 3 is equal to the size of the stack on vertex 11 and 3 is equal to the size of the stack on vertex 12 else is a friend, is a friend, is a friend, is a friend, is a friend, 3 is equal to the size of the stack on vertex 13, 3 is equal to the size of the stack on vertex 14, 3 is equal to the size of the stack on vertex 15, 3 is equal to the size of the stack on vertex 17 and 3 is equal to the size of the stack on vertex 18, the moving player wins If if 1 is the mover then is a friend, is a friend, is a friend, 3 is equal to the size of the stack on vertex 10, 5 is equal to the size of the stack on vertex 11 and 7 is equal to the size of the stack on vertex 12 else is a friend, is a friend, is a friend, 7 is equal to the size of the stack on vertex 13, 5 is equal to the size of the stack on vertex 14 and 3 is equal to the size of the stack on vertex 15, the moving player wins If if 1 is the mover then is a friend and 15 is equal to the size of the stack on vertex 12 else is a friend and 15 is equal to the size of the stack on vertex 13, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Tavlej (Ludii 3) (Reconstructed)" (id "3932"))
+        (useFor "Ruleset/Tavlej (Ludii 4) (Reconstructed)" (rules "The game Tavlej is played by two players on a 2x13 rectangle board with square tiling. 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player the next player's hand site 0 moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 12
+                Place stack of [Disc2] at vertex 25.
+                Rules: 
+                If not in the same turn, roll the dice and afterwards move one of your pieces.
+                Aim: 
+                If if 1 is the mover then 15 is equal to the number of pieces in the region sites [0,1,2,3,4,5], is a friend, is a friend, is a friend, 3 is equal to the size of the stack on vertex 0, 3 is equal to the size of the stack on vertex 1 and 3 is equal to the size of the stack on vertex 2 else 15 is equal to the number of pieces in the region sites [13,14,15,16,17,18], is a friend, is a friend, is a friend, 3 is equal to the size of the stack on vertex 13, 3 is equal to the size of the stack on vertex 14 and 3 is equal to the size of the stack on vertex 15, the moving player wins If there are no pieces owned by Player the moving player, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Tavlej (Ludii 4) (Reconstructed)" (id "3933"))
+        (useFor "Ruleset/Tavlej (Ludii 5) (Reconstructed)" (rules "The game Tavlej is played by two players on a 2x13 rectangle board with square tiling.
+                Regions:
+                BeforeHucke: sites [12,11,10,9,8,7,5,4,3,2,1] for P1
+                BeforeHucke: sites [25,24,23,22,21,20,18,17,16,15,14] for P2 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs if the location of the piece is in BeforeHucke or BeforeHucke, according to the value of the dice, from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track Track moveRule: to is in BeforeHucke or BeforeHucke and not there is an enemy Player at to, else if the location of the piece is not equal to Hucke of current moving player, according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track Track is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track Track moveRule: not there is an enemy Player at to.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 12
+                Place stack of [Disc2] at vertex 25.
+                Rules: 
+                If not in the same turn, roll the dice and afterwards move one of your pieces.
+                Aim: 
+                If if 1 is the mover then 15 is equal to the number of pieces in the region sites [0,1,2,3,4,5], is a friend, is a friend, is a friend, 3 is equal to the size of the stack on vertex 0, 3 is equal to the size of the stack on vertex 1 and 3 is equal to the size of the stack on vertex 2 else 15 is equal to the number of pieces in the region sites [13,14,15,16,17,18], is a friend, is a friend, is a friend, 3 is equal to the size of the stack on vertex 13, 3 is equal to the size of the stack on vertex 14 and 3 is equal to the size of the stack on vertex 15, the moving player wins If there are no pieces owned by Player the moving player, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Tavlej (Ludii 5) (Reconstructed)" (id "3934"))
+        (useFor "Ruleset/Tavlej (Ludii 6) (Reconstructed)" (rules "The game Tavlej is played by two players on a 2x13 rectangle board with square tiling. 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Player Player at to's hand site 0 moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 25
+                Place stack of [Disc2] at vertex 0.
+                Rules: 
+                If not in the same turn, roll the dice and afterwards move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the moving player, the moving player wins If if 1 is the mover then is a friend, is a friend, is a friend, 5 is equal to the size of the stack on vertex 10, 5 is equal to the size of the stack on vertex 11 and 5 is equal to the size of the stack on vertex 12 else is a friend, is a friend, is a friend, 5 is equal to the size of the stack on vertex 13, 5 is equal to the size of the stack on vertex 14 and 5 is equal to the size of the stack on vertex 15, the moving player wins If if 1 is the mover then is a friend, is a friend, is a friend, is a friend, is a friend, 3 is equal to the size of the stack on vertex 8, 3 is equal to the size of the stack on vertex 9, 3 is equal to the size of the stack on vertex 10, 3 is equal to the size of the stack on vertex 11 and 3 is equal to the size of the stack on vertex 12 else is a friend, is a friend, is a friend, is a friend, is a friend, 3 is equal to the size of the stack on vertex 13, 3 is equal to the size of the stack on vertex 14, 3 is equal to the size of the stack on vertex 15, 3 is equal to the size of the stack on vertex 17 and 3 is equal to the size of the stack on vertex 18, the moving player wins If if 1 is the mover then is a friend, is a friend, is a friend, 3 is equal to the size of the stack on vertex 10, 5 is equal to the size of the stack on vertex 11 and 7 is equal to the size of the stack on vertex 12 else is a friend, is a friend, is a friend, 7 is equal to the size of the stack on vertex 13, 5 is equal to the size of the stack on vertex 14 and 3 is equal to the size of the stack on vertex 15, the moving player wins If if 1 is the mover then is a friend and 15 is equal to the size of the stack on vertex 12 else is a friend and 15 is equal to the size of the stack on vertex 13, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Tavlej (Ludii 6) (Reconstructed)" (id "3935"))
+        (useFor "Ruleset/Tavlej (Ludii 7) (Reconstructed)" (rules "The game Tavlej is played by two players on a 2x13 rectangle board with square tiling.
+                Regions:
+                FinalQuadrant: sites [20,21,22,23,24,25] for P1
+                FinalQuadrant: sites [7,8,9,10,11,12] for P2 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, if all sites in sites occupied by any component owned by Mover satisfy the condition current site is in FinalQuadrant or FinalQuadrant, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Bar of the next player moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 25
+                Place stack of [Disc2] at vertex 0.
+                Rules: 
+                If not in the same turn, roll the dice and afterwards move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the moving player, the moving player wins If if 1 is the mover then is a friend, is a friend, is a friend, 5 is equal to the size of the stack on vertex 10, 5 is equal to the size of the stack on vertex 11 and 5 is equal to the size of the stack on vertex 12 else is a friend, is a friend, is a friend, 5 is equal to the size of the stack on vertex 13, 5 is equal to the size of the stack on vertex 14 and 5 is equal to the size of the stack on vertex 15, the moving player wins If if 1 is the mover then is a friend, is a friend, is a friend, is a friend, is a friend, 3 is equal to the size of the stack on vertex 8, 3 is equal to the size of the stack on vertex 9, 3 is equal to the size of the stack on vertex 10, 3 is equal to the size of the stack on vertex 11 and 3 is equal to the size of the stack on vertex 12 else is a friend, is a friend, is a friend, is a friend, is a friend, 3 is equal to the size of the stack on vertex 13, 3 is equal to the size of the stack on vertex 14, 3 is equal to the size of the stack on vertex 15, 3 is equal to the size of the stack on vertex 17 and 3 is equal to the size of the stack on vertex 18, the moving player wins If if 1 is the mover then is a friend, is a friend, is a friend, 3 is equal to the size of the stack on vertex 10, 5 is equal to the size of the stack on vertex 11 and 7 is equal to the size of the stack on vertex 12 else is a friend, is a friend, is a friend, 7 is equal to the size of the stack on vertex 13, 5 is equal to the size of the stack on vertex 14 and 3 is equal to the size of the stack on vertex 15, the moving player wins If if 1 is the mover then is a friend and 15 is equal to the size of the stack on vertex 12 else is a friend and 15 is equal to the size of the stack on vertex 13, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Tavlej (Ludii 7) (Reconstructed)" (id "3936"))
+        (useFor "Ruleset/Tavlej (Ludii 8) (Reconstructed)" (rules "The game Tavlej is played by two players on a 2x13 rectangle board with square tiling.
+                Regions:
+                FinalQuadrant: sites [7,8,9,10,11,12] for P1
+                FinalQuadrant: sites [13,14,15,16,17,18] for P2
+                StartingSide: sites [25,24,23,22,21,20,18,17,16,15,14] for P1
+                StartingSide: sites [0,1,2,3,4,5,7,8,9,10,11] for P2 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, if all sites in sites occupied by any component owned by Mover satisfy the condition current site is in FinalQuadrant or FinalQuadrant, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to and if not to is in StartingSide or StartingSide then true else if the value of Player the moving player is equal to 1 then true else empty captureEffect: if there is an enemy Player at to, from vertex in to to vertex Bar of the next player moveRule: true, the double rules apply.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 7
+                Place stack of [Disc1] at vertex 4
+                Place stack of [Disc1] at vertex 13
+                Place stack of [Disc1] at vertex 25
+                Place stack of [Disc2] at vertex 20
+                Place stack of [Disc2] at vertex 17
+                Place stack of [Disc2] at vertex 0
+                Place stack of [Disc2] at vertex 12.
+                Rules: 
+                If not in the same turn, roll the dice and afterwards moves with priority: if vertex Bar of the moving player is occupied, according to the value of the dice, from vertex in Bar of the moving player to vertex the number of pips on the dice steps forward from site Bar of the moving player on track null moveRule: the size of the stack on vertex to is less than 2 captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Bar of the next player moveRule: true, if empty, perform any of the following moves which travels the furthest distance move one of your pieces then if there are no pieces owned by Player the moving player, if there are no pieces owned by Player Enemy of FinalQuadrant or FinalQuadrant, add score 1 to player the moving player
+                , else add score 2 to player the moving player
+                .
+                Aim: 
+                If there are no pieces owned by Player the moving player, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Tavlej (Ludii 8) (Reconstructed)" (id "3937"))
+        (useFor "Ruleset/Tavlej (Ludii 9) (Reconstructed)" (rules "The game Tavlej is played by two players on a 2x13 rectangle board with square tiling.
+                Regions:
+                BeforeHucke: sites [12,11,10,9,8,7,5,4,3,2,1] for P1
+                BeforeHucke: sites [25,24,23,22,21,20,18,17,16,15,14] for P2 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs if the location of the piece is in BeforeHucke or BeforeHucke, according to the value of the dice, from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track Track moveRule: to is in BeforeHucke or BeforeHucke and not there is an enemy Player at to, else if the location of the piece is not equal to Hucke of current moving player, according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track Track is equal to -1, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track Track moveRule: not there is an enemy Player at to.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 12
+                Place stack of [Disc2] at vertex 25.
+                Rules: 
+                If not in the same turn, roll the dice and afterwards if not in the same turn, Each turn, where the site is within sites occupied by any component owned by Mover, if current site is in BeforeHucke or BeforeHucke, if the face of the die at site 26 steps forward from site current site on track Track is in BeforeHucke or BeforeHucke, there is an enemy Player at the face of the die at site 26 steps forward from site current site on track Track and 1 is equal to the size of the stack on vertex the face of the die at site 26 steps forward from site current site on track Track, add score 1 to player the moving player
+                and if the face of the die at site 27 steps forward from site current site on track Track is in BeforeHucke or BeforeHucke, there is an enemy Player at the face of the die at site 27 steps forward from site current site on track Track and 1 is equal to the size of the stack on vertex the face of the die at site 27 steps forward from site current site on track Track, add score 1 to player the moving player
+                , else if current site is not equal to Hucke of current moving player, if there is an enemy Player at the face of the die at site 26 steps forward from site current site on track Track and 1 is equal to the size of the stack on vertex the face of the die at site 26 steps forward from site current site on track Track, add score 1 to player the moving player
+                and if there is an enemy Player at the face of the die at site 27 steps forward from site current site on track Track and 1 is equal to the size of the stack on vertex the face of the die at site 27 steps forward from site current site on track Track, add score 1 to player the moving player
+                , else if 1 is equal to the face of the die at site 26, 1 is equal to the face of the die at site 27, 4 is less than or equal to the size of the stack on vertex Hucke of current moving player and 1 is equal to the size of the stack on vertex the face of the die at site 26 steps forward from site current site on track Track, add score 1 to player the moving player
+                and afterwards if 0 is greater than or equal to state variableMovingFromHucke and 0 is greater than or equal to state variableMovingToHucke, move one of your pieces or if 0 is greater than or equal to state variableMovingFromHucke, if 0 is less than state variableMovingToHucke or if the face of the die at site 26 is equal to the face of the die at site 27 then 2 is less than or equal to the number of pieces in the region sites [the face of the die at site 27 steps forward from site Hucke of current moving player on track ReverseHuckeTrack] else 1 is less than or equal to the number of pieces in the region sites [the face of the die at site 26 steps forward from site Hucke of current moving player on track ReverseHuckeTrack] and 1 is less than or equal to the number of pieces in the region sites [the face of the die at site 27 steps forward from site Hucke of current moving player on track ReverseHuckeTrack], if 26 is not equal to state variableMovingToHucke and is a friend, from vertex in the face of the die at site 26 steps forward from site Hucke of current moving player on track ReverseHuckeTrack to vertex Hucke of current moving player moveRule: true then if 0 is equal to the number of moves during this turn, move again and set the variable MovingToHucke to 26, else set the variable MovingToHucke to 0 or if 27 is not equal to state variableMovingToHucke and is a friend, from vertex in the face of the die at site 27 steps forward from site Hucke of current moving player on track ReverseHuckeTrack to vertex Hucke of current moving player moveRule: true then if 0 is equal to the number of moves during this turn, move again and set the variable MovingToHucke to 27, else set the variable MovingToHucke to 0 or if 0 is greater than or equal to state variableMovingToHucke, if 0 is less than state variableMovingFromHucke or if the face of the die at site 26 is not equal to 1 and the face of the die at site 27 is not equal to 1 and 2 is less than or equal to the number of pieces in the region sites [Hucke of current moving player] then if the face of the die at site 26 is equal to the face of the die at site 27 then not there is an enemy Player at the face of the die at site 27 steps forward from site Hucke of current moving player on track Track else not there is an enemy Player at the face of the die at site 26 steps forward from site Hucke of current moving player on track Track and not there is an enemy Player at the face of the die at site 27 steps forward from site Hucke of current moving player on track Track, if 26 is not equal to state variableMovingFromHucke and not there is an enemy Player at the face of the die at site 26 steps forward from site Hucke of current moving player on track Track, from vertex in Hucke of current moving player to vertex the face of the die at site 26 steps forward from site Hucke of current moving player on track Track moveRule: true then if 0 is equal to the number of moves during this turn, move again and set the variable MovingFromHucke to 26, else set the variable MovingFromHucke to 0 or if 27 is not equal to state variableMovingFromHucke and not there is an enemy Player at the face of the die at site 27 steps forward from site Hucke of current moving player on track Track, from vertex in Hucke of current moving player to vertex the face of the die at site 27 steps forward from site Hucke of current moving player on track Track moveRule: true then if 0 is equal to the number of moves during this turn, move again and set the variable MovingFromHucke to 27, else set the variable MovingFromHucke to 0 then if there are no pieces owned by Player the moving player, add score 2 to player the moving player
+                .
+                Aim: 
+                If 12 is less than or equal to the score of Player the moving player, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Tavlej (Ludii 9) (Reconstructed)" (id "3938"))
+        (useFor "Ruleset/Tavlej (Ludii 10) (Reconstructed)" (rules "The game Tavlej is played by two players on a 2x13 rectangle board with square tiling.
+                Regions:
+                FinalQuadrant: sites [20,21,22,23,24,25] for P1
+                FinalQuadrant: sites [7,8,9,10,11,12] for P2 
+                All players play with Discs. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6] and Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Discs according to the value of the dice, if the number of pips on the dice steps forward from site the location of the piece on track null is equal to -2, if all sites in sites occupied by any component owned by Mover satisfy the condition current site is in FinalQuadrant or FinalQuadrant, remove pieces at the location of the piece, else from vertex in the location of the piece to vertex the number of pips on the dice steps forward from site the location of the piece on track null moveRule: not there is an enemy Player at to or 1 is equal to the size of the stack on vertex to captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Bar of the next player moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place stack of [Disc1] at vertex 7
+                Place stack of [Disc1] at vertex 4
+                Place stack of [Disc1] at vertex 13
+                Place stack of [Disc1] at vertex 25
+                Place stack of [Disc2] at vertex 20
+                Place stack of [Disc2] at vertex 17
+                Place stack of [Disc2] at vertex 0
+                Place stack of [Disc2] at vertex 12.
+                Rules: 
+                If not in the same turn, roll the dice and afterwards moves with priority: if vertex Bar of the moving player is occupied, according to the value of the dice, from vertex in Bar of the moving player to vertex the number of pips on the dice steps forward from site Bar of the moving player on track null moveRule: the size of the stack on vertex to is less than 2 captureRule: there is an enemy Player at to captureEffect: from vertex in to to vertex Bar of the next player moveRule: true, if empty, perform any of the following moves which travels the furthest distance move one of your pieces then if there are no pieces owned by Player the moving player, if there are no pieces owned by Player Enemy of FinalQuadrant or FinalQuadrant, add score 1 to player the moving player
+                , else add score 2 to player the moving player
+                .
+                Aim: 
+                If there are no pieces owned by Player the moving player, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Tavlej (Ludii 10) (Reconstructed)" (id "3939"))
+        (source "Linder 1979. ")
+        (version "1.3.10")
+        (classification "board/race/escape/reconstruction/done")
+        (credit "Eric Piette")
+        (origin "This game was played in Russia, from around 1500 to 1599.")
+        }
+    )
+    
+    (graphics {
+        (board Style backgammon)
+        (stackType Backgammon)
+    })
+    
+    (recon {
+        (concept "Dice" True)
+    })
+    
+)
+

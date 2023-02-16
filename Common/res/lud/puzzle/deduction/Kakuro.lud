@@ -187,20 +187,20 @@
 //------------------------------------------------------------------------------
 
 (metadata
-(info
-{
-(description "Kakuro is a mathematical logic puzzle. Played on any size grid (usually 16x16), some of the squares are blacked out, leaving white squares in which play occurs.")
-(aliases {"Cross Sums" "Cross Addition"})
-(rules "Each row and column is assigned a number. The player then places a number from 1 to 9 in each square so that it adds up to the assigned number in each row and column. Numbers cannot be duplicated in any row or column.")
-(id "112")
-(source "<a href=\"https://en.wikipedia.org/wiki/Kakuro\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-(version "1.3.9")
-(classification "puzzle/deduction")
-(author "Jacob E. Funk")
-(publisher "Nikoli")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "Kakuro is a mathematical logic puzzle. Played on any size grid (usually 16x16), some of the squares are blacked out, leaving white squares in which play occurs.")
+        (aliases {"Cross Sums" "Cross Addition"})
+        (rules "Each row and column is assigned a number. The player then places a number from 1 to 9 in each square so that it adds up to the assigned number in each row and column. Numbers cannot be duplicated in any row or column.")
+        (id "112")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Kakuro\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.3.10")
+        (classification "puzzle/deduction")
+        (author "Jacob E. Funk")
+        (publisher "Nikoli")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (board Style Kakuro)

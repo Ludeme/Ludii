@@ -35,19 +35,19 @@
 //-------------------------------------------
 
 (metadata
-(info
-{
-(description "Shui Yen Ho-Shang is a hunt game from Sichuan, China. One player plays as a monk attempting to collect water, the other as the water trying to \"drown\" the monk.")
-(aliases {"The Water Drowns the Monk"})
-(rules "5x5 intersecting lines, with the diagonals of every 2x2 square formed. On one side, a diamond intersects with the central point of that side, with diagonals drawn in the diamond. One player plays as the monk, placed at the intersection of the diamond and the main board. The other player plays as fifteen water pieces, placed on each point along the perimeter of the main board. Players take turns moving their pieces to one adjacent point following the lines on the board. The monk may capture two water pieces by moving to an empty space between two water pieces. The goal of the water pieces is to trap the monk on the far point of the diamond. The monk wins by capturing all of the water.")
-(source "Nai-ch'iang and Schröder 1946: 169, 190.")
-(id "291")
-(version "1.3.9")
-(classification "board/hunt")
-(credit "Eric Piette")
-(origin "This game was played in Szechuan, around 1946.")
-}
-)
+    (info
+        {
+        (description "Shui Yen Ho-Shang is a hunt game from Sichuan, China. One player plays as a monk attempting to collect water, the other as the water trying to \"drown\" the monk.")
+        (aliases {"The Water Drowns the Monk"})
+        (rules "5x5 intersecting lines, with the diagonals of every 2x2 square formed. On one side, a diamond intersects with the central point of that side, with diagonals drawn in the diamond. One player plays as the monk, placed at the intersection of the diamond and the main board. The other player plays as fifteen water pieces, placed on each point along the perimeter of the main board. Players take turns moving their pieces to one adjacent point following the lines on the board. The monk may capture two water pieces by moving to an empty space between two water pieces. The goal of the water pieces is to trap the monk on the far point of the diamond. The monk wins by capturing all of the water.")
+        (source "Nai-ch'iang and Schröder 1946: 169, 190.")
+        (id "291")
+        (version "1.3.10")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin "This game was played in Szechuan, around 1946.")
+        }
+    )
     
     (ai
         "Shui Yen Ho-Shang_ai"

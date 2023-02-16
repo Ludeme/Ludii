@@ -1,0 +1,1165 @@
+(game "Samoan Game"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Samoan Game (Ludii 1)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 12 6)
+            )
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (expand 
+                        (sites Left)
+                    )
+                )
+                
+                (place "Marker2" 
+                    (expand 
+                        (sites Right)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Samoan Game (Ludii 1) ruleset.")
+    
+    (item "Samoan Game (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 12 6)
+            )
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (expand 
+                        (sites Left)
+                    )
+                )
+                
+                (place "Marker2" 
+                    (expand 
+                        (sites Right)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Samoan Game (Ludii 2) ruleset.")
+    
+    (item "Samoan Game (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 12 6)
+            )
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (expand 
+                        (sites Left)
+                    )
+                )
+                
+                (place "Marker2" 
+                    (expand 
+                        (sites Right)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Samoan Game (Ludii 3) ruleset.")
+    
+    (item "Samoan Game (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 12 6)
+            )
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (directions { FR FL }
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (expand 
+                        (sites Left)
+                    )
+                )
+                
+                (place "Marker2" 
+                    (expand 
+                        (sites Right)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+                
+                (if 
+                    (no Pieces P2)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Samoan Game (Ludii 4) ruleset.")
+    
+    (item "Samoan Game (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 12 6)
+            )
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (directions { FR FL }
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (expand 
+                        (sites Left)
+                    )
+                )
+                
+                (place "Marker2" 
+                    (expand 
+                        (sites Right)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Samoan Game (Ludii 5) ruleset.")
+    
+    (item "Samoan Game (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 12 6)
+            )
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (directions { FR FL }
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (expand 
+                        (sites Left)
+                    )
+                )
+                
+                (place "Marker2" 
+                    (expand 
+                        (sites Right)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Samoan Game (Ludii 6) ruleset.")
+    
+    (item "Samoan Game (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 12 6)
+            )
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (expand 
+                        (sites Left)
+                    )
+                )
+                
+                (place "Marker2" 
+                    (expand 
+                        (sites Right)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Samoan Game (Ludii 7) ruleset.")
+    
+    (item "Samoan Game (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 12 6)
+            )
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (directions { FR FL }
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (expand 
+                        (sites Left)
+                    )
+                )
+                
+                (place "Marker2" 
+                    (expand 
+                        (sites Right)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Samoan Game (Ludii 8) ruleset.")
+    
+    (item "Samoan Game (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 12 6)
+            )
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step 
+                        (directions { FR FL }
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step Orthogonal 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (and 
+                                (custodial 
+                                    (from 
+                                        (last To)
+                                    )
+                                    Orthogonal 
+                                    (between 
+                                        (max 1)
+                                        if:
+                                        (is Enemy 
+                                            (who at:
+                                                (between)
+                                            )
+                                        )
+                                        
+                                        (apply 
+                                            (remove 
+                                                (between)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Friend 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (surround 
+                                    (from 
+                                        (last To)
+                                    )
+                                    Orthogonal 
+                                    (between if:
+                                        (and 
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                            
+                                            (is In 
+                                                (between)
+                                                
+                                                (sites Corners)
+                                            )
+                                        )
+                                        
+                                        (apply 
+                                            (remove 
+                                                (between)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Friend 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (expand 
+                        (sites Left)
+                    )
+                )
+                
+                (place "Marker2" 
+                    (expand 
+                        (sites Right)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Samoan Game (Ludii 9) ruleset.")
+    
+    (item "Samoan Game (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 12 6)
+            )
+            
+            (piece "Marker" Each 
+                (or 
+                    (move Step Orthogonal 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step Orthogonal 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (and 
+                                (custodial 
+                                    (from 
+                                        (last To)
+                                    )
+                                    Orthogonal 
+                                    (between 
+                                        (max 1)
+                                        if:
+                                        (is Enemy 
+                                            (who at:
+                                                (between)
+                                            )
+                                        )
+                                        
+                                        (apply 
+                                            (remove 
+                                                (between)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Friend 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (surround 
+                                    (from 
+                                        (last To)
+                                    )
+                                    Orthogonal 
+                                    (between if:
+                                        (and 
+                                            (is Enemy 
+                                                (who at:
+                                                    (between)
+                                                )
+                                            )
+                                            
+                                            (is In 
+                                                (between)
+                                                
+                                                (sites Corners)
+                                            )
+                                        )
+                                        
+                                        (apply 
+                                            (remove 
+                                                (between)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Friend 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (expand 
+                        (sites Left)
+                    )
+                )
+                
+                (place "Marker2" 
+                    (expand 
+                        (sites Right)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P2)
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (no Pieces P1)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Samoan Game (Ludii 10) ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board (rectangle 12 6))
+            (piece "Marker" Each
+                (or
+                    (move Step [#]) // A step move but we do not know the condition
+                    (move [#]) // A capture move
+                )
+            )
+        })
+        (rules
+            (start {
+                (place "Marker1" (expand (sites Left)))
+                (place "Marker2" (expand (sites Right)))
+            })
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Samoan Game (Ludii 1) (Reconstructed)" {
+        "Variant/Samoan Game (Ludii 1)"
+    })
+    (ruleset "Ruleset/Samoan Game (Ludii 2) (Reconstructed)" {
+        "Variant/Samoan Game (Ludii 2)"
+    })
+    (ruleset "Ruleset/Samoan Game (Ludii 3) (Reconstructed)" {
+        "Variant/Samoan Game (Ludii 3)"
+    })
+    (ruleset "Ruleset/Samoan Game (Ludii 4) (Reconstructed)" {
+        "Variant/Samoan Game (Ludii 4)"
+    })
+    (ruleset "Ruleset/Samoan Game (Ludii 5) (Reconstructed)" {
+        "Variant/Samoan Game (Ludii 5)"
+    })
+    (ruleset "Ruleset/Samoan Game (Ludii 6) (Reconstructed)" {
+        "Variant/Samoan Game (Ludii 6)"
+    })
+    (ruleset "Ruleset/Samoan Game (Ludii 7) (Reconstructed)" {
+        "Variant/Samoan Game (Ludii 7)"
+    })
+    (ruleset "Ruleset/Samoan Game (Ludii 8) (Reconstructed)" {
+        "Variant/Samoan Game (Ludii 8)"
+    })
+    (ruleset "Ruleset/Samoan Game (Ludii 9) (Reconstructed)" {
+        "Variant/Samoan Game (Ludii 9)"
+    })
+    (ruleset "Ruleset/Samoan Game (Ludii 10) (Reconstructed)" {
+        "Variant/Samoan Game (Ludii 10)"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "This game was documented in the nineteenth century in Samoa, but it was already falling out of fashion. The board was made in mats, and the board was not of a predetermined size.")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "12x6 board, though other sizes are possible. Each player lines up their pieces in the first two rows of the long side. Pieces move one place only. Pieces do not jump when capturing."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1629"))
+        (useFor "Ruleset/Samoan Game (Ludii 1) (Reconstructed)" (rules "The game Samoan Game is played by two players on a 12x6 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent or hop adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the left sites of the board expanded by 1 steps.
+                Place a Marker for player two at the right sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If the next player cannot move, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Samoan Game (Ludii 1) (Reconstructed)" (id "3940"))
+        (useFor "Ruleset/Samoan Game (Ludii 2) (Reconstructed)" (rules "The game Samoan Game is played by two players on a 12x6 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent or hop adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the left sites of the board expanded by 1 steps.
+                Place a Marker for player two at the right sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If the next player cannot move, the next player loses If there are no pieces owned by Player 2, player two wins.
+                
+        "))
+        (useFor "Ruleset/Samoan Game (Ludii 2) (Reconstructed)" (id "3941"))
+        (useFor "Ruleset/Samoan Game (Ludii 3) (Reconstructed)" (rules "The game Samoan Game is played by two players on a 12x6 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent or hop adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the left sites of the board expanded by 1 steps.
+                Place a Marker for player two at the right sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Samoan Game (Ludii 3) (Reconstructed)" (id "3942"))
+        (useFor "Ruleset/Samoan Game (Ludii 4) (Reconstructed)" (rules "The game Samoan Game is played by two players on a 12x6 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step forward-right or forward-left or hop adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the left sites of the board expanded by 1 steps.
+                Place a Marker for player two at the right sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If the next player cannot move, the next player loses If there are no pieces owned by Player 2, player two wins.
+                
+        "))
+        (useFor "Ruleset/Samoan Game (Ludii 4) (Reconstructed)" (id "3943"))
+        (useFor "Ruleset/Samoan Game (Ludii 5) (Reconstructed)" (rules "The game Samoan Game is played by two players on a 12x6 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step forward-right or forward-left or hop adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the left sites of the board expanded by 1 steps.
+                Place a Marker for player two at the right sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If the next player cannot move, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Samoan Game (Ludii 5) (Reconstructed)" (id "3944"))
+        (useFor "Ruleset/Samoan Game (Ludii 6) (Reconstructed)" (rules "The game Samoan Game is played by two players on a 12x6 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step forward-right or forward-left or hop adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the left sites of the board expanded by 1 steps.
+                Place a Marker for player two at the right sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Samoan Game (Ludii 6) (Reconstructed)" (id "3945"))
+        (useFor "Ruleset/Samoan Game (Ludii 7) (Reconstructed)" (rules "The game Samoan Game is played by two players on a 12x6 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent or hop adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the left sites of the board expanded by 1 steps.
+                Place a Marker for player two at the right sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Samoan Game (Ludii 7) (Reconstructed)" (id "3946"))
+        (useFor "Ruleset/Samoan Game (Ludii 8) (Reconstructed)" (rules "The game Samoan Game is played by two players on a 12x6 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step forward-right or forward-left or hop adjacent.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the left sites of the board expanded by 1 steps.
+                Place a Marker for player two at the right sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Samoan Game (Ludii 8) (Reconstructed)" (id "3947"))
+        (useFor "Ruleset/Samoan Game (Ludii 9) (Reconstructed)" (rules "The game Samoan Game is played by two players on a 12x6 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step forward-right or forward-left or step orthogonal then for all flanked pieces on Cells starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and for all surrounded pieces on Cells starting from the to location of the last move with Orthogonal direction if the target is there is an enemy Player at between and between is in the corner sites of the board if the friend is is a friend except if 0remove pieces at between.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the left sites of the board expanded by 1 steps.
+                Place a Marker for player two at the right sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Samoan Game (Ludii 9) (Reconstructed)" (id "3948"))
+        (useFor "Ruleset/Samoan Game (Ludii 10) (Reconstructed)" (rules "The game Samoan Game is played by two players on a 12x6 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step orthogonal or step orthogonal then for all flanked pieces on Cells starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between and for all surrounded pieces on Cells starting from the to location of the last move with Orthogonal direction if the target is there is an enemy Player at between and between is in the corner sites of the board if the friend is is a friend except if 0remove pieces at between.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the left sites of the board expanded by 1 steps.
+                Place a Marker for player two at the right sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If player two cannot move, player one wins If there are no pieces owned by Player 1, player two wins.
+                
+        "))
+        (useFor "Ruleset/Samoan Game (Ludii 10) (Reconstructed)" (id "3949"))
+        (version "1.3.10")
+        (classification "board/war/reconstruction/done")
+        (credit "Eric Piette")
+        (origin "This game was played in Samoa, around 1899.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+    (recon {
+        (concept "StepDecision" True)
+        (concept "Hop" False)
+        (concept "Slide" False)
+        (concept "Capture" True)
+    })
+    
+)
+

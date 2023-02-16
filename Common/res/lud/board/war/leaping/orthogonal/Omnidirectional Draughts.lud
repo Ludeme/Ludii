@@ -83,18 +83,18 @@
 
 (metadata 
     
-(info
-{
-(description "A draughts variant with both orthogonal and diagonal movement and capture.")
-(rules "Men can move one step forwards orthogonally or diagonally, or can jump an opponent's adjacent piece to capture it, in any direction. When a man ends its turn on the opposite edge of the board from its starting position, it becomes a king and may move or jump over any number of spaces in any direction. Captures are compulsory and the maximum number of jumps must be made. The first player unable to move, loses.")
-(id "1199")
-(version "1.3.9")
-(classification "board/war/leaping/orthogonal")
-(author "A. Sambruni")
-(credit "A. Sambruni")
-(date "2021")
-}
-)
+    (info
+        {
+        (description "A draughts variant with both orthogonal and diagonal movement and capture.")
+        (rules "Men can move one step forwards orthogonally or diagonally, or can jump an opponent's adjacent piece to capture it, in any direction. When a man ends its turn on the opposite edge of the board from its starting position, it becomes a king and may move or jump over any number of spaces in any direction. Captures are compulsory and the maximum number of jumps must be made. The first player unable to move, loses.")
+        (id "1199")
+        (version "1.3.10")
+        (classification "board/war/leaping/orthogonal")
+        (author "A. Sambruni")
+        (credit "A. Sambruni")
+        (date "2021")
+        }
+    )
     
     (graphics {
         (board Style Chess)

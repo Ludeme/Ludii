@@ -15,9 +15,33 @@ Working with Ludii's source code requires Java Development Kit (JDK) version 8 o
 
 ## Getting Started
 
-After (optionally forking) and cloning this repository, we recommend importing all projects into the Eclipse IDE. The main method to launch Ludii from your IDE is located in `/Ludii/PlayerDesktop/src/app/StartDesktopApp`. At this time we do not use any more sophisticated build tools (such as Maven) in our day-to-day programming with Ludii. There are some relatively simple Ant build scripts, but we only use these -- specifically, the `/Ludii/PlayerDesktop/build.xml` script -- for generating the releases published on the [Ludii downloads page](https://ludii.games/download.php).
+### Eclipse (recommended)
+1. Clone (and optionally fork) this repository.
+2. Import the whole `Ludii/` folder to your workspace.
+3. To start the GUI, right click on `/Ludii/PlayerDesktop/src/app/StartDesktopApp` and launch it as a Java Application
 
-**Note on IDEs**: Other IDEs than Eclipse should ideally work as well, but we have no extensive experience working with Ludii in other IDEs, and are aware of at least some issues. For example, some parts of Ludii's code assume that, when launching Ludii from your IDE, that the current working directory is the one of the module containing the `main` method (i.e., `/Ludii/PlayerDesktop`). This is the case in Eclipse, but does not (by default) appear to be the case in some other IDEs such as IntelliJ. If you prefer working with different IDEs and are able to write a clear set of instructions for that IDE, we would be happy to see it in [a new Pull Request](https://github.com/Ludeme/Ludii/pulls)!
+Eclipse should recognise each folder as a separate project and automatically apply the `-parameters` compiler flag.
+
+### IntelliJ IDEA
+1. Clone (and optionally fork) this repository.
+2. Import the whole `Ludii/` folder as an Eclipse project. We recommend following the [official instructions on importing Eclipse projects](https://www.jetbrains.com/help/idea/import-project-from-eclipse-page-1.html). 
+Make sure to import each capitalised folder (`AI/`, ..., `View Controller/`) as a separate module.
+3. In `Settings | Build, Execution, Deployment | Compiler | Java Compiler`, under `Additional command line parameters`, type `-parameters`. 
+4. To start the GUI, create a new run configuration under `Run | Edit Configurations | + | Application`.
+   1. Set the module to `PlayerDesktop` and use java 1.8 or above.
+   2. Set the main class to `app.StartDesktopApp`.
+   3. **Change the working directory from `.../Ludii` to `.../Ludii/PlayerDesktop`**
+
+Every time you want to run a class, edit the run configuration such that the working directory is `.../Ludii/%Module%/` as opposed to `.../Ludii/`.
+
+### Other IDEs
+1. Keep in mind that each capitalised folder is meant to be a different module/project.
+2. The Core module needs to be compiled using the `-parameters` flag. It's also okay to compile all the modules with it.
+3. When executing a main method, set the working directory to the class's module, not the Ludii folder or the file location. 
+For example `StartDesktopApp` should have as working directory `.../Ludii/PlayerDesktop`.
+
+## Build & Run
+The main method to launch Ludii from your IDE is located in `/Ludii/PlayerDesktop/src/app/StartDesktopApp`. At this time we do not use any more sophisticated build tools (such as Maven) in our day-to-day programming with Ludii. There are some relatively simple Ant build scripts, but we only use these -- specifically, the `/Ludii/PlayerDesktop/build.xml` script -- for generating the releases published on the [Ludii downloads page](https://ludii.games/download.php).
 
 ## Other Resources
 

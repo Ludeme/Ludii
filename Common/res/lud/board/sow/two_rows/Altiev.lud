@@ -1,0 +1,76 @@
+(define "Columns" 6)
+
+//------------------------------------------------------------------------------
+
+(game "Altiev" 
+    (players 2) 
+    (equipment { 
+        (mancalaBoard 2 "Columns" store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (regions P1 (sites Bottom))   // P1 home
+        (regions P2 (sites Top))      // P2 home
+        (piece "Seed" Shared)
+        (hand Each)
+    }) 
+    (rules 
+        
+        (start (set Count 3 to:(sites Track)))
+        
+        (play 
+            (move Select 
+                (from 
+                    (if ("SameTurn") 
+                        "LastHoleSowed" 
+                        (sites Mover) 
+                    ) 
+                    if:(> (count at:(from)) 0)
+                )
+                (then 
+                    (sow
+                        apply:(if (> (count at:(to)) 1)
+                            (moveAgain)
+                            (if (is In (to) (sites Mover))
+                                (fromTo 
+                                    (from ("OppositePitTwoRows" (to))) 
+                                    (to (handSite Mover)) 
+                                    count:(count at:("OppositePitTwoRows" (to)))
+                                ) 
+                            )
+                        )
+                    )
+                )
+            )	
+        )
+        
+        (end {
+            (if (all Sites (sites P1) if:(= 0 (count at:(site)))) (result P2 Win))
+            (if (all Sites (sites P2) if:(= 0 (count at:(site)))) (result P1 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Altıev (\"six houses\") is a two-row mancala-style board game played in Safranbolu, Turkey. It is typically played in holes dug out of the earth.")
+        (aliases {"Altıev" "Mangala"})
+        (rules "2x6 board. Three counters in each hole. Sowing occurs from one of the holes in the player's row. If the final counter lands in an occupied hole, these counters are picked up and sowing continues. If the final counter lands in an empty hole in the player's own row, any counters in the opposite row hole are captured. A player wins when the opponent's row is empty.")
+        (source "Beşe 1935: 6.")
+        (id "285")
+        (version "1.3.10")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin "This game was played in Turkey, around 1935.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    (ai
+        "Alitev_ai"
+    )
+)

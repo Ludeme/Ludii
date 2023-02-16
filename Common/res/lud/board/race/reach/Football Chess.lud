@@ -134,27 +134,27 @@
 
 (metadata 
     
-(info
-{
-(description "This variant of Chess was invented in 1951 by Joseph Boyer, one of the most productive inventors of chess variants.The game is played on a board of 9 by 9 squares, checkered, with black squares in the corners.Each player has a king, a queen, two rooks, two knights, and two bishops, i.e., the usual set of pieces without pawns. There is an additional piece, not owned by any player: the ball.The ball starts the game on e5. The squares e1 and e9 are the goals.")
-(rules "A move of a player consists of two parts: he first makes a normal move with one of his pieces (this is not obligatory), but no piece may move to a goal, i.e., to e1 or e9. (Pieces like rooks and queens however may move across it, e.g. from d1 to f1.) However, no captures are made, and check is disregarded. Then, after this move, the player may, if he can, have a piece kick the ball.
-
-A piece can kick the ball if the ball is adjacent to it (i.e., a kings move away.) The ball moves in the same way as the piece that kicks the ball, and the ball must be moved directly away from the piece. Also, the ball cannot be moved to or over occupied squares (except when a knight kicks the ball). For instance, a rook on a3 can kick a ball on a4 to squares a5, a6, a7, a8, a9, as long as the ball isn't moved to an occupied square; but a rook on a3 cannot kick a ball on b4.
-
-A knight can kick the ball to any square, a knight-move away from the square where the ball was before the kick, but not to a square, adjacent to the knight.
-
-When the ball is kicked to a square adjacent to another piece of the same player, the player may make another kick. This is called a `pass'. If after a second kick, a third kick is possible, the player may also make this third kick, and similar for successive kicks. Making an infinite number of passes, in order to draw the game, however is not allowed. Note that when kicking, only the ball moves but all normal pieces remain on the same places.
-
-The object of the game is to kick to ball to the goal at the opponents side of the board. However, it is not allowed to kick the ball into or across the goal from a square on the 1st or 9th row.")
-(id "1793")
-(source "<a href=\"https://www.chessvariants.com/crossover.dir/football.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.chessvariants.com</a>")
-(version "1.3.9")
-(classification "board/race/reach")
-(author "Joseph Boyer")
-(credit "Eric Piette")
-(date "1951")
-}
-)
+    (info
+        {
+        (description "This variant of Chess was invented in 1951 by Joseph Boyer, one of the most productive inventors of chess variants.The game is played on a board of 9 by 9 squares, checkered, with black squares in the corners.Each player has a king, a queen, two rooks, two knights, and two bishops, i.e., the usual set of pieces without pawns. There is an additional piece, not owned by any player: the ball.The ball starts the game on e5. The squares e1 and e9 are the goals.")
+        (rules "A move of a player consists of two parts: he first makes a normal move with one of his pieces (this is not obligatory), but no piece may move to a goal, i.e., to e1 or e9. (Pieces like rooks and queens however may move across it, e.g. from d1 to f1.) However, no captures are made, and check is disregarded. Then, after this move, the player may, if he can, have a piece kick the ball.
+            
+            A piece can kick the ball if the ball is adjacent to it (i.e., a kings move away.) The ball moves in the same way as the piece that kicks the ball, and the ball must be moved directly away from the piece. Also, the ball cannot be moved to or over occupied squares (except when a knight kicks the ball). For instance, a rook on a3 can kick a ball on a4 to squares a5, a6, a7, a8, a9, as long as the ball isn't moved to an occupied square; but a rook on a3 cannot kick a ball on b4.
+            
+            A knight can kick the ball to any square, a knight-move away from the square where the ball was before the kick, but not to a square, adjacent to the knight.
+            
+            When the ball is kicked to a square adjacent to another piece of the same player, the player may make another kick. This is called a `pass'. If after a second kick, a third kick is possible, the player may also make this third kick, and similar for successive kicks. Making an infinite number of passes, in order to draw the game, however is not allowed. Note that when kicking, only the ball moves but all normal pieces remain on the same places.
+            
+        The object of the game is to kick to ball to the goal at the opponents side of the board. However, it is not allowed to kick the ball into or across the goal from a square on the 1st or 9th row.")
+        (id "1793")
+        (source "<a href=\"https://www.chessvariants.com/crossover.dir/football.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.chessvariants.com</a>")
+        (version "1.3.10")
+        (classification "board/race/reach")
+        (author "Joseph Boyer")
+        (credit "Eric Piette")
+        (date "1951")
+        }
+    )
     
     (graphics {
         (show Check "King")

@@ -432,6 +432,7 @@ public class PlayerViewUser extends View
 	/**
 	 * Gets the complete string to be printed for this player, including name, score, algorithm, etc.
 	 */
+	@SuppressWarnings("unused")
 	public String getNameAndExtrasString(final Context context, final Graphics2D g2d)
 	{
 		final Context instanceContext = context.currentInstanceContext();

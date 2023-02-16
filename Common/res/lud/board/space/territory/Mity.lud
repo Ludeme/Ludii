@@ -154,20 +154,20 @@
 
 (metadata 
     
-(info
-{
-(description "Mity is a simple territory game of pure placement invented by Michael Amundsen in 2021.")
-(rules "Players place one token of their color each turn and the first player unable to do so has lost. You may place on any empty cell unless your opponent has a token closer to that cell than you have along at least 2 of the 3 lines (axes) the cell is on. 
-
-The game uses the pie rule: One player chooses the first move and the other player chooses whose move it is.")
-(id "1520")
-(version "1.3.9")
-(classification "board/space/territory")
-(author "Michael Amundsen")
-(credit "Michael Amundsen")
-(date "2021")
-}
-)
+    (info
+        {
+        (description "Mity is a simple territory game of pure placement invented by Michael Amundsen in 2021.")
+        (rules "Players place one token of their color each turn and the first player unable to do so has lost. You may place on any empty cell unless your opponent has a token closer to that cell than you have along at least 2 of the 3 lines (axes) the cell is on. 
+            
+        The game uses the pie rule: One player chooses the first move and the other player chooses whose move it is.")
+        (id "1520")
+        (version "1.3.10")
+        (classification "board/space/territory")
+        (author "Michael Amundsen")
+        (credit "Michael Amundsen")
+        (date "2021")
+        }
+    )
     (ai
         "Mity_ai"
     )

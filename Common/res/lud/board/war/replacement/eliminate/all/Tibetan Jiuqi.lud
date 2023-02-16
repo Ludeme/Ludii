@@ -324,31 +324,31 @@
 
 (metadata 
     
-(info
-{
-(description "Tibetan Jiuqi is a board game played by Chinese Tibetans, widely distributed in Sichuan, Qinghai, Gansu and Tibetan Autonomous Region of China.")
-(rules "8x8 board, 32 pieces per player. There's a diagonal in the centre of the chessboard, but it's not an edge.
-
-The game is played by white first and is divided into three main stage: Layout, Battle and Fly.
-
-Layout stage: When placing a piece, both player must first place a piece on the diagonal of the middle square of the board, and then two players alternately put a piece on any point of the board until the board is full of chess pieces.
- 
-Battle Stage: At the end of the Layout stage, the first player removes the pieces on the Jiu-ti (diagonal line in the middle square of the board), and then the player who secondly place pieces in the Layout stage starts the first move and enters the Battle Stage; During the move, the opponent's pieces are taken by using the Square capture, Jumping capture.
-    
-Flying Stage: Later in the game, if a player's number of pieces is less than 8, the player enters the Flying Pieces phase, where the player moves pieces without the one-step-per-frame limit, and pieces can land on any empty square. The opponent's pieces are taken by using the Square capture, Jumping capture, but the rules of the Jumping capture have changed a little.
-
-Jumping capture: Pieces capture opponent's pieces by jumping them in a forward direction if they are adjacent. Multiple captures are allowed. But in the Flying Stage, single captures are forbidden, you can only do multiple captures.
-
-Square capture: Use four adjacent friendly chess pieces to make a square. When a player makes a new square, they may remove another of the opponent's pieces from the board.  Multiple captures are allowed.
-
-The goal: One player wins if the number of pieces of the opponent is less than 4.")
-(id "2038")
-(version "1.3.9")
-(classification "board/war/replacement/eliminate/all")
-(author "Yanyin Zhang")
-(credit "Yanyin Zhang")
-}
-)
+    (info
+        {
+        (description "Tibetan Jiuqi is a board game played by Chinese Tibetans, widely distributed in Sichuan, Qinghai, Gansu and Tibetan Autonomous Region of China.")
+        (rules "8x8 board, 32 pieces per player. There's a diagonal in the centre of the chessboard, but it's not an edge.
+            
+            The game is played by white first and is divided into three main stage: Layout, Battle and Fly.
+            
+            Layout stage: When placing a piece, both player must first place a piece on the diagonal of the middle square of the board, and then two players alternately put a piece on any point of the board until the board is full of chess pieces.
+            
+            Battle Stage: At the end of the Layout stage, the first player removes the pieces on the Jiu-ti (diagonal line in the middle square of the board), and then the player who secondly place pieces in the Layout stage starts the first move and enters the Battle Stage; During the move, the opponent's pieces are taken by using the Square capture, Jumping capture.
+            
+            Flying Stage: Later in the game, if a player's number of pieces is less than 8, the player enters the Flying Pieces phase, where the player moves pieces without the one-step-per-frame limit, and pieces can land on any empty square. The opponent's pieces are taken by using the Square capture, Jumping capture, but the rules of the Jumping capture have changed a little.
+            
+            Jumping capture: Pieces capture opponent's pieces by jumping them in a forward direction if they are adjacent. Multiple captures are allowed. But in the Flying Stage, single captures are forbidden, you can only do multiple captures.
+            
+            Square capture: Use four adjacent friendly chess pieces to make a square. When a player makes a new square, they may remove another of the opponent's pieces from the board.  Multiple captures are allowed.
+            
+        The goal: One player wins if the number of pieces of the opponent is less than 4.")
+        (id "2038")
+        (version "1.3.10")
+        (classification "board/war/replacement/eliminate/all")
+        (author "Yanyin Zhang")
+        (credit "Yanyin Zhang")
+        }
+    )
     
     (graphics {
         (board style Board)

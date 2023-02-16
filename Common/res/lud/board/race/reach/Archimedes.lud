@@ -87,33 +87,33 @@
 
 (metadata 
     
-(info
-{
-(description "Archimedes can be played with a standard checkers set. The board is an 8x8 grid,and each player has 12 \"ships\" represented by checkers of one color.")
-(rules "MOVING
-Each player moves one ship each turn. A ship moves any number of empty squares in a straight line, either vertically, horizontally, or diagonally (that is, like a chess queen). However, a ship may never end its turn in its home port.
-
-DESTROYING SHIPS
-Two opposing ships \"attack\" each other if they face each other along a straight line with no other ships between them (so that each could move to the other's square). A ship that is under attack from three or more enemy ships is \"vulnerable.\" At the end of your move, you must destroy all vulnerable enemy ships by removing them from the board. In the example below, the white ship on b3 is under attack from black ships on
-a2, b1, and d3, and can be destroyed. You can only destroy enemy ships after your move. Sometimes, if an enemy ship
-is vulnerable at the beginning of your turn, your move in that turn will make it no longer vulnerable. When this happens, you cannot destroy the ship. If the destruction of one ship makes another ship vulnerable that wasn't vulnerable before, both ships must be destroyed. In the example below, destroying the white ship on f8 makes the ship on g8 vulnerable. Both are destroyed.
-
-REBUILDING SHIPS
-At the beginning of your turn, you may rebuild one of your destroyed ships. The ship is placed in your home port, and since ships may not end a turn in their own port, you must use your turn to move the ship out of port. Therefore, you cannot rebuild a ship until you have a vacant square to move the ship to.
-
-WINNING
-You win the game by moving one of your ships into the enemy port, provided that
-your opponent cannot destroy it on his or her next turn. (If your opponent can
-destroy it, the game continues.)")
-(id "1797")
-(source "<a href=\"https://boardgamegeek.com/boardgame/18698/archimedes\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-(version "1.3.9")
-(classification "board/race/reach")
-(author "Scott Marley and Philip Cohen")
-(credit "Eric Piette")
-(date "1988")
-}
-)
+    (info
+        {
+        (description "Archimedes can be played with a standard checkers set. The board is an 8x8 grid,and each player has 12 \"ships\" represented by checkers of one color.")
+        (rules "MOVING
+            Each player moves one ship each turn. A ship moves any number of empty squares in a straight line, either vertically, horizontally, or diagonally (that is, like a chess queen). However, a ship may never end its turn in its home port.
+            
+            DESTROYING SHIPS
+            Two opposing ships \"attack\" each other if they face each other along a straight line with no other ships between them (so that each could move to the other's square). A ship that is under attack from three or more enemy ships is \"vulnerable.\" At the end of your move, you must destroy all vulnerable enemy ships by removing them from the board. In the example below, the white ship on b3 is under attack from black ships on
+            a2, b1, and d3, and can be destroyed. You can only destroy enemy ships after your move. Sometimes, if an enemy ship
+            is vulnerable at the beginning of your turn, your move in that turn will make it no longer vulnerable. When this happens, you cannot destroy the ship. If the destruction of one ship makes another ship vulnerable that wasn't vulnerable before, both ships must be destroyed. In the example below, destroying the white ship on f8 makes the ship on g8 vulnerable. Both are destroyed.
+            
+            REBUILDING SHIPS
+            At the beginning of your turn, you may rebuild one of your destroyed ships. The ship is placed in your home port, and since ships may not end a turn in their own port, you must use your turn to move the ship out of port. Therefore, you cannot rebuild a ship until you have a vacant square to move the ship to.
+            
+            WINNING
+            You win the game by moving one of your ships into the enemy port, provided that
+            your opponent cannot destroy it on his or her next turn. (If your opponent can
+        destroy it, the game continues.)")
+        (id "1797")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/18698/archimedes\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.10")
+        (classification "board/race/reach")
+        (author "Scott Marley and Philip Cohen")
+        (credit "Eric Piette")
+        (date "1988")
+        }
+    )
     
     (graphics {
         (board Style Chess)

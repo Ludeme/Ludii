@@ -1597,19 +1597,31 @@ public class Grammar
 
 	void linkDirectionsRules()
 	{
-		// Add clauses for <directionFacing>
+		// Add clauses for <directionFacing> rule
 		final Symbol symbolDirectionFacing = findSymbolByPath("game.util.directions.DirectionFacing");
-		//symbolDirectionFacing.setUsedInDescription(true);
 		symbolDirectionFacing.setUsedInGrammar(true);
 
-		final GrammarRule ruleDirectionFacing = findRule(symbolDirectionFacing);
+	
+		final Symbol symbolCompass = findSymbolByPath("game.util.directions.CompassDirection");
+		symbolCompass.setUsedInGrammar(true);
 
+		final Symbol symbolRotational = findSymbolByPath("game.util.directions.RotationalDirection");
+		symbolCompass.setUsedInGrammar(true);
+
+		final Symbol symbolSpatial = findSymbolByPath("game.util.directions.SpatialDirection");
+		symbolSpatial.setUsedInGrammar(true);
+		
+		final GrammarRule ruleDirectionFacing = findRule(symbolDirectionFacing);
+		
+		ruleDirectionFacing.addToRHS(new Clause(symbolCompass));
+		ruleDirectionFacing.addToRHS(new Clause(symbolRotational));
+		ruleDirectionFacing.addToRHS(new Clause(symbolSpatial));
+		
+		// Add clauses for <direction> rule		
 		final Symbol symbolAbsolute = findSymbolByPath("game.util.directions.AbsoluteDirection");
-		//symbolAbsolute.setUsedInDescription(true);
 		symbolAbsolute.setUsedInGrammar(true);
 
 		final Symbol symbolRelative = findSymbolByPath("game.util.directions.RelativeDirection");
-		//symbolRelative.setUsedInDescription(true);
 		symbolRelative.setUsedInGrammar(true);
 
 		final Symbol symbolDirections = findSymbolByPath("game.functions.directions.Directions");
@@ -1620,14 +1632,13 @@ public class Grammar
 		symbolIf.setUsedInDescription(true);
 		symbolIf.setUsedInGrammar(true);
 
-		ruleDirectionFacing.addToRHS(new Clause(symbolAbsolute));
-		ruleDirectionFacing.addToRHS(new Clause(symbolRelative));
-		ruleDirectionFacing.addToRHS(new Clause(symbolDirections));
-		ruleDirectionFacing.addToRHS(new Clause(symbolIf));
+//		ruleDirectionFacing.addToRHS(new Clause(symbolAbsolute));
+//		ruleDirectionFacing.addToRHS(new Clause(symbolRelative));
+//		ruleDirectionFacing.addToRHS(new Clause(symbolDirections));
+//		ruleDirectionFacing.addToRHS(new Clause(symbolIf));
 
 		// Add clauses for <direction>
 		final Symbol symbolDirection = findSymbolByPath("game.util.directions.Direction");
-		//symbolDirection.setUsedInDescription(true);
 		symbolDirection.setUsedInGrammar(true);
 
 		final GrammarRule ruleDirection = findRule(symbolDirection);

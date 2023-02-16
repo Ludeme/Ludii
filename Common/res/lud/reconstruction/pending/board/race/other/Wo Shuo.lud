@@ -10,11 +10,7 @@
         <
         (players 2) 
         (equipment [#]) 
-        (rules
-            (start [#])
-            (play [#]) // Single pieces on the board are vulnerable
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
@@ -34,18 +30,18 @@
 
 (metadata 
     
-(info
-{
-(description "Wo Shuo was a game popular during the period of Northern and Southern Dynasties (256-589 CE) in China. The game is mentioned in some accounts, but few details are known about gameplay or the board.")
-(rules "Two six-sided dice. Single pieces on the board are vulnerable.")
-(source "DLP evidence.")
-(id "1220")
-(version "1.3.9")
-(classification "board/race/reconstruction/pending")
-(credit "Eric Piette")
-(origin "This game was played in China, from around 505 to 842.")
-}
-)
+    (info
+        {
+        (description "Wo Shuo was a game popular during the period of Northern and Southern Dynasties (256-589 CE) in China. The game is mentioned in some accounts, but few details are known about gameplay or the board.")
+        (rules "Two six-sided dice. Single pieces on the board are vulnerable.")
+        (source "DLP evidence.")
+        (id "1220")
+        (version "1.3.10")
+        (classification "board/race/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in China, from around 505 to 842.")
+        }
+    )
     
     (recon {
         (concept "Dice" True)

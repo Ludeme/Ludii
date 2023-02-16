@@ -116,18 +116,18 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "DisPath is a 2-player graph theory game, which can be played on vertices or edges of any graph. The aim of the game is to make more disjoint paths. Every disjoint path needs to be fully disconnected from any other friendly path. The length of the path can be any integer (in this game, we have used k = 3). The motivation comes from the Disjoint path problem in graph theory. ")
-(rules "Each turn, a player selects a graph element (vertex or edge) to create a disjoint path with size k. When a player successfully makes a path of a specific size, he gets a point. The player with the highest score wins the game. ")
-(id "620")
-(version "1.3.9")
-(classification "math/graph")
-(author "Tahmina Begum")
-(credit "Tahmina Begum")
-(date "30-03-2020")
-}
-)
+    (info
+        {
+        (description "DisPath is a 2-player graph theory game, which can be played on vertices or edges of any graph. The aim of the game is to make more disjoint paths. Every disjoint path needs to be fully disconnected from any other friendly path. The length of the path can be any integer (in this game, we have used k = 3). The motivation comes from the Disjoint path problem in graph theory. ")
+        (rules "Each turn, a player selects a graph element (vertex or edge) to create a disjoint path with size k. When a player successfully makes a path of a specific size, he gets a point. The player with the highest score wins the game. ")
+        (id "620")
+        (version "1.3.10")
+        (classification "math/graph")
+        (author "Tahmina Begum")
+        (credit "Tahmina Begum")
+        (date "30-03-2020")
+        }
+    )
     (graphics {
         (player Colour P1 (colour Red))
         (player Colour P2 (colour Blue))

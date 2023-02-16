@@ -41,28 +41,28 @@
 
 (metadata 
     
-(info
-{
-(description "Manalath was invented in 2012 by Dieter Stein and Néstor Romeral Andrés. It is a Yavalath-like game in which the players must create a group of five without first making a group of four.")
-(rules "Players take turns placing pieces of any colour. They can't  create groups of more than five pieces which are adjacent to each other. 
-
-A group of 4 pieces is called a quart. A group of 5 pieces is called a quint.
-
-Players win if they finish their turn with a friendly quint, but lose if they finish their turn with a friendly quart on the board.
-
-Note: The winning and losing conditions for a player are checked after their move, only on their own turn.
-
-An end condition (win or loss) is effective when it occurred first and cannot be averted.")
-(source "<a href=\"https://spielstein.com/games/manalath/rules\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />spielstein.com</a>")
-(id "445")
-(version "1.3.9")
-(classification "board/space/group")
-(author "Dieter Stein Néstor Romeral Andrés")
-(publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a> (used with permission)")
-(credit "Eric Piette")
-(date "2012")
-}
-)
+    (info
+        {
+        (description "Manalath was invented in 2012 by Dieter Stein and Néstor Romeral Andrés. It is a Yavalath-like game in which the players must create a group of five without first making a group of four.")
+        (rules "Players take turns placing pieces of any colour. They can't  create groups of more than five pieces which are adjacent to each other. 
+            
+            A group of 4 pieces is called a quart. A group of 5 pieces is called a quint.
+            
+            Players win if they finish their turn with a friendly quint, but lose if they finish their turn with a friendly quart on the board.
+            
+            Note: The winning and losing conditions for a player are checked after their move, only on their own turn.
+            
+        An end condition (win or loss) is effective when it occurred first and cannot be averted.")
+        (source "<a href=\"https://spielstein.com/games/manalath/rules\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />spielstein.com</a>")
+        (id "445")
+        (version "1.3.10")
+        (classification "board/space/group")
+        (author "Dieter Stein Néstor Romeral Andrés")
+        (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a> (used with permission)")
+        (credit "Eric Piette")
+        (date "2012")
+        }
+    )
     
     (ai
         "Manalath_ai"

@@ -100,28 +100,28 @@
 
 (metadata 
     
-(info
-{
-(description "Onyx is a two-player abstract strategy board game invented by Larry Back in 1995. The game features a rule for performing captures, making Onyx unique among connection games.The Onyx board is a grid of interlocking squares and triangles, with pieces played on the points of intersection (as in Go). Each side of the board comprises twelve points.")
-(rules "The initial setup has four black pieces and four white pieces pre-placed. Black moves first by placing a black piece on any empty point of the board. White follows suit. Turns continue to alternate. A piece can be placed on the midpoint of a square only if all four corners of that square are currently unoccupied. Once placed, pieces do not move. Captured pieces are immediately removed from the game.
-
-The rule for capturing allows a player to capture two enemy pieces in a single turn. All of the following conditions must be met:
-- the two enemy pieces occupy opposite corners of a square;
-- a third corner of the square is already occupied by a piece owned by the capturing player;
-- the square's midpoint is unoccupied.
-
-The capture is executed by placing a piece on the remaining unoccupied corner of the square. If the capturing move also simultaneously completes a second square on the board where the same conditions prevail, then the move results in the capture of four enemy pieces instead of two.
-
-Black tries to connect the two horizontal (black) sides with an unbroken chain of black pieces, while White tries to connect the two vertical (white) sides with an unbroken chain of white pieces. The first to do so wins the game.")
-(id "1770")
-(source "<a href=\"https://en.wikipedia.org/wiki/Onyx_(game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-(version "1.3.9")
-(classification "board/space/connection")
-(author "Larry Back")
-(credit "Eric Piette")
-(date "1995")
-}
-)
+    (info
+        {
+        (description "Onyx is a two-player abstract strategy board game invented by Larry Back in 1995. The game features a rule for performing captures, making Onyx unique among connection games.The Onyx board is a grid of interlocking squares and triangles, with pieces played on the points of intersection (as in Go). Each side of the board comprises twelve points.")
+        (rules "The initial setup has four black pieces and four white pieces pre-placed. Black moves first by placing a black piece on any empty point of the board. White follows suit. Turns continue to alternate. A piece can be placed on the midpoint of a square only if all four corners of that square are currently unoccupied. Once placed, pieces do not move. Captured pieces are immediately removed from the game.
+            
+            The rule for capturing allows a player to capture two enemy pieces in a single turn. All of the following conditions must be met:
+            - the two enemy pieces occupy opposite corners of a square;
+            - a third corner of the square is already occupied by a piece owned by the capturing player;
+            - the square's midpoint is unoccupied.
+            
+            The capture is executed by placing a piece on the remaining unoccupied corner of the square. If the capturing move also simultaneously completes a second square on the board where the same conditions prevail, then the move results in the capture of four enemy pieces instead of two.
+            
+        Black tries to connect the two horizontal (black) sides with an unbroken chain of black pieces, while White tries to connect the two vertical (white) sides with an unbroken chain of white pieces. The first to do so wins the game.")
+        (id "1770")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Onyx_(game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.3.10")
+        (classification "board/space/connection")
+        (author "Larry Back")
+        (credit "Eric Piette")
+        (date "1995")
+        }
+    )
     
     (graphics {
         (player Colour P1 (colour Black))

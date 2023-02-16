@@ -27,8 +27,7 @@
         (play 
             (move Select 
                 (from 
-                    (if 
-                        ("SameTurn") 
+                    (if ("SameTurn") 
                         "LastHoleSowed" 
                         (sites Mover) 
                     ) 
@@ -90,20 +89,20 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-(info
-{
-(description "Chonka is a two-row mancala-style board game played in Colombo in Sri Lanka, and known by Tamil-speaking people as Pallankuli, though it is different from the Pallankuli known from India. It is typically played on a board with cowrie shells or tamarind seeds as counters.")
-(aliases {"Pallankuli"})
-(rules "2x7 board, with two stores. Seven counters per hole. The first player may choose the direction of sowing, which must be maintained throughout the game. Sowing includes the player's store, which is the store following the last hole in the player's row, according to the direction of sowing. When the final counter of a sowing falls into an occupied hole, the counters in that hole are picked up and sowing continues. When the final counter of a sowing falls into an empty hole, that counter is captured along with any counters in the hole in the row opposite it. When the final counter falls into the player's store, the turn ends. The player who first captures half of the counters wins.
-")
-(source "Parker 1909: 599-600.")
-(id "744")
-(version "1.3.9")
-(classification "board/sow/two rows")
-(credit "Eric Piette")
-(origin "This game was played in Sri Lanka., around 1909.")
-}
-)
+    (info
+        {
+        (description "Chonka is a two-row mancala-style board game played in Colombo in Sri Lanka, and known by Tamil-speaking people as Pallankuli, though it is different from the Pallankuli known from India. It is typically played on a board with cowrie shells or tamarind seeds as counters.")
+        (aliases {"Pallankuli"})
+        (rules "2x7 board, with two stores. Seven counters per hole. The first player may choose the direction of sowing, which must be maintained throughout the game. Sowing includes the player's store, which is the store following the last hole in the player's row, according to the direction of sowing. When the final counter of a sowing falls into an occupied hole, the counters in that hole are picked up and sowing continues. When the final counter of a sowing falls into an empty hole, that counter is captured along with any counters in the hole in the row opposite it. When the final counter falls into the player's store, the turn ends. The player who first captures half of the counters wins.
+        ")
+        (source "Parker 1909: 599-600.")
+        (id "744")
+        (version "1.3.10")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin "This game was played in Sri Lanka., around 1909.")
+        }
+    )
     
     (graphics {
         (board Style Mancala)

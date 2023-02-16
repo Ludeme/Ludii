@@ -41,18 +41,18 @@
 
 (metadata 
     
-(info
-{
-(description "Pasa is a dice game that was played in the Andes since at least the eighteenth century. It involves a special seven-sided die, and includes rolls where players may lose points. The highest roll is called \"Huayru,\" which is a word for dice known to be used by the Inka.")
-(rules "The board is a double-headed eagle, with two lines of ten holes. One seven-sided die. One side has a special mark, one is blank, and the others are numbered 1-5. The special mark scores 10, the blank side scores -10. Players roll the die, and add up their scores as they go, placing a peg in a hole to mark ten points. The player who reaches 100 points first wins.")
-(source "Juan and Ulloa 1748: 549; Bollaert 1860: 168; Depaulis 1998: 32.")
-(id "334")
-(version "1.3.9")
-(classification "board/race/score")
-(credit "Eric Piette")
-(origin "This game was played in Andes, from around 1735 to 1854.")
-}
-)
+    (info
+        {
+        (description "Pasa is a dice game that was played in the Andes since at least the eighteenth century. It involves a special seven-sided die, and includes rolls where players may lose points. The highest roll is called \"Huayru,\" which is a word for dice known to be used by the Inka.")
+        (rules "The board is a double-headed eagle, with two lines of ten holes. One seven-sided die. One side has a special mark, one is blank, and the others are numbered 1-5. The special mark scores 10, the blank side scores -10. Players roll the die, and add up their scores as they go, placing a peg in a hole to mark ten points. The player who reaches 100 points first wins.")
+        (source "Juan and Ulloa 1748: 549; Bollaert 1860: 168; Depaulis 1998: 32.")
+        (id "334")
+        (version "1.3.10")
+        (classification "board/race/score")
+        (credit "Eric Piette")
+        (origin "This game was played in Andes, from around 1735 to 1854.")
+        }
+    )
     
     (graphics {
         (piece Foreground "Die" state:6 image:"star" fillColour:(colour White) scale:0.2)

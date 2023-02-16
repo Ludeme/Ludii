@@ -89,25 +89,25 @@
 
 (metadata 
     
-(info
-{
-(description "A variant of Amazons played on a hex board.")
-(rules "Movement is the same as regular amazons. You can move or shoot as many spaces as you want in any orthogonal or diagonal direction. With a hex board you have 6 orthogonal lines of movement (green) as well as 6 diagonal lines of movement (blue).
-
-Like in the original, Amazons still cannot move or shoot through other arrows or other amazons. However the diagonals are a little bit more tricky than the original. If the two orthogonal spaces next to the diagonal line are blocked, than the amazon can no longer use (or continue along) this diagonal. This is important because it reduces the movement capabilities of the amazons and allows a wall of connected arrows to become impenetrable.
-
-One final rule, in order to balance the game (white has first move advantage). On whites first turn he/she can only move an amazon but not shoot an arrow afterwards. This prevents potential too strong opening moves.
-
-The first player to block the opponent wins.")
-(id "865")
-(source "<a href=\"https://boardgamegeek.com/thread/2501354/hex-amazons\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-(version "1.3.9")
-(classification "board/space/blocking")
-(author "Clark Hunter")
-(credit "Eric Piette")
-(date "11-09-2020")
-}
-)
+    (info
+        {
+        (description "A variant of Amazons played on a hex board.")
+        (rules "Movement is the same as regular amazons. You can move or shoot as many spaces as you want in any orthogonal or diagonal direction. With a hex board you have 6 orthogonal lines of movement (green) as well as 6 diagonal lines of movement (blue).
+            
+            Like in the original, Amazons still cannot move or shoot through other arrows or other amazons. However the diagonals are a little bit more tricky than the original. If the two orthogonal spaces next to the diagonal line are blocked, than the amazon can no longer use (or continue along) this diagonal. This is important because it reduces the movement capabilities of the amazons and allows a wall of connected arrows to become impenetrable.
+            
+            One final rule, in order to balance the game (white has first move advantage). On whites first turn he/she can only move an amazon but not shoot an arrow afterwards. This prevents potential too strong opening moves.
+            
+        The first player to block the opponent wins.")
+        (id "865")
+        (source "<a href=\"https://boardgamegeek.com/thread/2501354/hex-amazons\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.10")
+        (classification "board/space/blocking")
+        (author "Clark Hunter")
+        (credit "Eric Piette")
+        (date "11-09-2020")
+        }
+    )
     
     (graphics {
         (piece Scale "Dot" 0.333)

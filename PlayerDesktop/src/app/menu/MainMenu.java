@@ -846,6 +846,12 @@ public class MainMenu extends JMenuBar
 			
 			menu.addSeparator();
 			
+			menuItem = new JMenuItem("Serialise Game Object");
+			menuItem.addActionListener(al);
+			menu.add(menuItem);
+			
+			menu.addSeparator();
+			
 			cbMenuItem = new JCheckBoxMenuItem("Show dev tooltip");
 			cbMenuItem.setSelected(app.settingsPlayer().cursorTooltipDev());
 			cbMenuItem.addItemListener(il);

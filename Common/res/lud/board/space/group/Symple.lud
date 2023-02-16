@@ -150,17 +150,17 @@
 //-------------------------------------------------------------------------
 
 (metadata
-(info
-{
-(description "Symple is an abstract strategy game in which two players strive to get as much area as possible with as few groups as possible.")
-(rules "Players alternate making a move. White plays with the white stones and makes the first move, Black plays with the black stones. On his turn, a player may choose either a) to place a stone on the board without contact to other stones of his color in order to start a new group, or b) to grow all possible groups by one stone. When you grow your groups in this implementation, you place grey stones adjacent to your groups until each of your groups is adjacent to exactly one grey stone. At no point may a group of yours be adjacent to more than one grey stone. When your turn ends, all grey stones are replaced with stones of your color.
-   
-For balancing, there is an extra rule: Black is allowed to grow all his groups and place a single stone as long as neither player has not yet grown any groups.
-   
+    (info
+        {
+        (description "Symple is an abstract strategy game in which two players strive to get as much area as possible with as few groups as possible.")
+    (rules "Players alternate making a move. White plays with the white stones and makes the first move, Black plays with the black stones. On his turn, a player may choose either a) to place a stone on the board without contact to other stones of his color in order to start a new group, or b) to grow all possible groups by one stone. When you grow your groups in this implementation, you place grey stones adjacent to your groups until each of your groups is adjacent to exactly one grey stone. At no point may a group of yours be adjacent to more than one grey stone. When your turn ends, all grey stones are replaced with stones of your color.
+    
+    For balancing, there is an extra rule: Black is allowed to grow all his groups and place a single stone as long as neither player has not yet grown any groups.
+    
 The game ends when the board is filled in. The score is the number of stones each player has on the board minus 'P' times the number of groups he has, where 'P' is en even number of 4 or higher (the Ludii implementation also allows 0 and 2 as values of 'P'). With an even penalty and an odd boardsize, draws are not possible.")
 (id "1962")
 (source "<a href=\"https://boardgamegeek.com/boardgame/106341/symple\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-(version "1.3.9")
+(version "1.3.10")
 (classification "board/space/group")
 (author "Christian Feeling, Benedick Rosenau")
 (credit "Michael Amundsen")

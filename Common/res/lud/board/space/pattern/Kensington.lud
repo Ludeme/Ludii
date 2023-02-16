@@ -112,22 +112,22 @@
 
 (metadata
     
-(info
-{
-(description "Kensington is an abstract strategy board game devised by Brian Taylor and Peter Forbes in 1979, named after London's Kensington Gardens, which contains the mosaic upon which the gameboard is patterned. It is played on a geometrical board based on the rhombitrihexagonal tiling pattern.")
-(rules "The two players, Red and Blue, alternately place tokens on the intersections of the board until each has placed fifteen. Thereafter they alternate turns sliding a single token along a line to an adjacent vertex.
-
-A player who occupies the three vertices of any triangle has formed a mill and may relocate one enemy token. Occupying the four vertices of a square (forming a double mill) allows the player to relocate two enemy tokens. No more than two tokens may be relocated in a single turn, even if a player completes a mill and double mill with the same move.
-
-The winner is the first player to occupy all six vertices of either any neutral hexagon or one of his/her own color. A win can be achieved during either the placement or movement phases of the game.")
-(id "548")
-(version "1.3.9")
-(classification "board/space/pattern")
-(author "Brian Taylor and Peter Forbes")
-(credit "Eric Piette")
-(date "1979")
-}
-)
+    (info
+        {
+        (description "Kensington is an abstract strategy board game devised by Brian Taylor and Peter Forbes in 1979, named after London's Kensington Gardens, which contains the mosaic upon which the gameboard is patterned. It is played on a geometrical board based on the rhombitrihexagonal tiling pattern.")
+        (rules "The two players, Red and Blue, alternately place tokens on the intersections of the board until each has placed fifteen. Thereafter they alternate turns sliding a single token along a line to an adjacent vertex.
+            
+            A player who occupies the three vertices of any triangle has formed a mill and may relocate one enemy token. Occupying the four vertices of a square (forming a double mill) allows the player to relocate two enemy tokens. No more than two tokens may be relocated in a single turn, even if a player completes a mill and double mill with the same move.
+            
+        The winner is the first player to occupy all six vertices of either any neutral hexagon or one of his/her own color. A win can be achieved during either the placement or movement phases of the game.")
+        (id "548")
+        (version "1.3.10")
+        (classification "board/space/pattern")
+        (author "Brian Taylor and Peter Forbes")
+        (credit "Eric Piette")
+        (date "1979")
+        }
+    )
     
     (graphics {
         (player Colour P1 (colour Red))

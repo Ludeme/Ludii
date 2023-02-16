@@ -137,22 +137,22 @@
 
 (metadata 
     
-(info
-{
-(description "This game was observed played by Yoruba people, who called it Akidada, and in Ghana, during the early twentieth century. The board was traced into the sand, and the players used pieces which took the form of sticks made from palm leaves, one player using green sticks and the other using brown.")
-(aliases {"Ati"})
-(useFor "Ruleset/Wikipedia (Suggested)" (rules "Each player has six pieces. They take turns placing the pieces on the intersections of a , attempting to make three in a row. If they are unsuccessful after all of the pieces are placed, they then take turns moving their piece one spot along one of the lines until someone makes three in a row (Murray 1951: 43)."))
-(useFor "Ruleset/Wikipedia (Suggested)" (source "https://en.wikipedia.org/wiki/Achi_(game)"))
-(useFor "Ruleset/Wikipedia (Suggested)" (id "84"))
-(useFor "Ruleset/Murray (Described)" (rules "Two concentric squares with a line connecting their midpoints. Six pieces per player. Players alternate placing one of their pieces on the intersections of the lines. Whenever a player places three of their pieces in a row, they may remove one of the opponent's pieces from the board. Once all of the pieces are placed, players may take turns moving a piece to an adjacent point along the lines, attempting to place three of their pieces in a row. When one player is reduced to two pieces, that player loses."))
-(useFor "Ruleset/Murray (Described)" (source "Murray 1951: 42-43."))
-(useFor "Ruleset/Murray (Described)" (id "563"))
-(id "563")
-(version "1.3.9")
-(classification "board/space/line")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "This game was observed played by Yoruba people, who called it Akidada, and in Ghana, during the early twentieth century. The board was traced into the sand, and the players used pieces which took the form of sticks made from palm leaves, one player using green sticks and the other using brown.")
+        (aliases {"Ati"})
+        (useFor "Ruleset/Wikipedia (Suggested)" (rules "Each player has six pieces. They take turns placing the pieces on the intersections of a , attempting to make three in a row. If they are unsuccessful after all of the pieces are placed, they then take turns moving their piece one spot along one of the lines until someone makes three in a row (Murray 1951: 43)."))
+        (useFor "Ruleset/Wikipedia (Suggested)" (source "https://en.wikipedia.org/wiki/Achi_(game)"))
+        (useFor "Ruleset/Wikipedia (Suggested)" (id "84"))
+        (useFor "Ruleset/Murray (Described)" (rules "Two concentric squares with a line connecting their midpoints. Six pieces per player. Players alternate placing one of their pieces on the intersections of the lines. Whenever a player places three of their pieces in a row, they may remove one of the opponent's pieces from the board. Once all of the pieces are placed, players may take turns moving a piece to an adjacent point along the lines, attempting to place three of their pieces in a row. When one player is reduced to two pieces, that player loses."))
+        (useFor "Ruleset/Murray (Described)" (source "Murray 1951: 42-43."))
+        (useFor "Ruleset/Murray (Described)" (id "563"))
+        (id "563")
+        (version "1.3.10")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        }
+    )
     
     (ai 
         "Achi_ai"

@@ -30,24 +30,28 @@
 
 (metadata 
     
-(info
-{
-(description "Damdaman is a game that was played on the island of Java in Indonesia in the nineteenth century. It was described as being similar to a Draughts game played in India, but few details were given.")
-(rules "More pieces than English Draughts. Similar to an India draughts game.")
-(source "DLP evidence.")
-(id "1103")
-(version "1.3.9")
-(classification "board/war/leaping/diagonal/reconstruction/pending")
-(credit "Eric Piette")
-(origin "This game was played in Indonesia, around 1817.")
-}
-)
+    (info
+        {
+        (description "Damdaman is a game that was played on the island of Java in Indonesia in the nineteenth century. It was described as being similar to a Draughts game played in India, but few details were given.")
+        (rules "More pieces than English Draughts. Similar to an India draughts game.")
+        (source "DLP evidence.")
+        (id "1103")
+        (version "1.3.10")
+        (classification "board/war/leaping/diagonal/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Indonesia, around 1817.")
+        }
+    )
     
     (recon {
         (concept "HopDecision" True)
         (concept "PlayersWithDirections" True)
         (concept "NumComponentsTypePerPlayer" minValue:1 maxValue:2)
         (concept "NumStartComponents" minValue:25 maxValue:200)
+        (concept "NumStartComponentsPerPlayer" minValue:13 maxValue:200)
+        (concept "Cell" True)
+        (concept "SquareShape" True)
+        (concept "SquareTiling" True)
     })
     
 )

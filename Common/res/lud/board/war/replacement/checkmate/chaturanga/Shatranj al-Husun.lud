@@ -65,20 +65,20 @@
 
 (metadata 
     
-(info
-{
-(description "Shatranj al-Husun is a game known from medieval manuscripts from the work of al-Amuli, a Persian Shatranj expert. It is played on an enlarged board with extra spaces where the Shah can move to force a draw.")
-(aliases {"Citadel Chess"})
-(rules "10x10 board, with an extra square placed diagonally behind each Rukh. The pieces move as follows, with the number per player: 1 x Shah (king): moves one space orthogonally or diagonally. 1 x Fers (counselor): One square diagonally. 2 x Rukh (rook): Any number of spaces orthogonally. 2x Dabbaba: any number of squares diagonally. 2 x Pil (elephant): Two squares diagonally, jumping over the first. Cannot capture another Pil. 2 x Asb (horse): Moves as a Chess knight. 12 x Sarbaz (soldier): Moves one space forward orthogonally; one space forward diagonally to capture. No en passant. Promoted to Fers when reaching the tenth rank. No castling. Stalemate results in win for player causing it. The player who checkmates the king wins. If a player moves their king into one of the extra squares on the opposite side of the board, the game is a draw.
-")
-(source "Murray 1913: 3343-44.")
-(id "311")
-(version "1.3.9")
-(classification "board/war/replacement/checkmate/chaturanga")
-(credit "Eric Piette")
-(origin "This game was played in Persia, around 1352.")
-}
-)
+    (info
+        {
+        (description "Shatranj al-Husun is a game known from medieval manuscripts from the work of al-Amuli, a Persian Shatranj expert. It is played on an enlarged board with extra spaces where the Shah can move to force a draw.")
+        (aliases {"Citadel Chess"})
+        (rules "10x10 board, with an extra square placed diagonally behind each Rukh. The pieces move as follows, with the number per player: 1 x Shah (king): moves one space orthogonally or diagonally. 1 x Fers (counselor): One square diagonally. 2 x Rukh (rook): Any number of spaces orthogonally. 2x Dabbaba: any number of squares diagonally. 2 x Pil (elephant): Two squares diagonally, jumping over the first. Cannot capture another Pil. 2 x Asb (horse): Moves as a Chess knight. 12 x Sarbaz (soldier): Moves one space forward orthogonally; one space forward diagonally to capture. No en passant. Promoted to Fers when reaching the tenth rank. No castling. Stalemate results in win for player causing it. The player who checkmates the king wins. If a player moves their king into one of the extra squares on the opposite side of the board, the game is a draw.
+        ")
+        (source "Murray 1913: 3343-44.")
+        (id "311")
+        (version "1.3.10")
+        (classification "board/war/replacement/checkmate/chaturanga")
+        (credit "Eric Piette")
+        (origin "This game was played in Persia, around 1352.")
+        }
+    )
     
     (graphics {
         (board Colour Phase0 (colour 223 178 110))

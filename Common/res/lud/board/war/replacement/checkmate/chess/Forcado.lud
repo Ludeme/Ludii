@@ -178,20 +178,20 @@
 
 (metadata 
     
-(info
-{
-(description "Forçado is a version of Chess, played in the medieval period where captures are forced. It is recorded in Alfonso X's Libro de los Juegos.")
-(aliases {"Forçado" "Juego de las Donzellas"})
-(rules "8x8 board. The pieces move as follows, with the number per player: 1 x King: moves one space orthogonally or diagonally. 1 x Queen : One square diagonally. 2 x Rook: Any number of spaces orthogonally. 2 x Fil: Two squares diagonally, jumping over the first. Cannot capture another Fil. 2 x Knight: Moves orthogonally one space and then diagonally another space, jumping over any intervening pieces; 8 x Pawns: Moves one space forward orthogonally; one space forward diagonally to capture. No en passant. Pawns are promoted to Queen when reaching the eighth rank. No castling. When a piece can be captured, it must be. The highest ranking piece must be captured, and the lowest ranking piece must make the capture if several are able to capture the same piece. The ranking, from highest to lowest, is: King, Rook, Knight, Queen, Fil, Pawn. Stalemate results in a win for player causing it. The player who checkmates the king wins.
-")
-(source "Libro de los Juegos 5.")
-(id "979")
-(version "1.3.9")
-(classification "board/war/replacement/checkmate/chess")
-(credit "Eric Piette")
-(origin "This game was played in Spain, around 1283.")
-}
-)
+    (info
+        {
+        (description "Forçado is a version of Chess, played in the medieval period where captures are forced. It is recorded in Alfonso X's Libro de los Juegos.")
+        (aliases {"Forçado" "Juego de las Donzellas"})
+        (rules "8x8 board. The pieces move as follows, with the number per player: 1 x King: moves one space orthogonally or diagonally. 1 x Queen : One square diagonally. 2 x Rook: Any number of spaces orthogonally. 2 x Fil: Two squares diagonally, jumping over the first. Cannot capture another Fil. 2 x Knight: Moves orthogonally one space and then diagonally another space, jumping over any intervening pieces; 8 x Pawns: Moves one space forward orthogonally; one space forward diagonally to capture. No en passant. Pawns are promoted to Queen when reaching the eighth rank. No castling. When a piece can be captured, it must be. The highest ranking piece must be captured, and the lowest ranking piece must make the capture if several are able to capture the same piece. The ranking, from highest to lowest, is: King, Rook, Knight, Queen, Fil, Pawn. Stalemate results in a win for player causing it. The player who checkmates the king wins.
+        ")
+        (source "Libro de los Juegos 5.")
+        (id "979")
+        (version "1.3.10")
+        (classification "board/war/replacement/checkmate/chess")
+        (credit "Eric Piette")
+        (origin "This game was played in Spain, around 1283.")
+        }
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

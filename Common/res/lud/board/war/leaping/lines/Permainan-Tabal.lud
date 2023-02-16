@@ -1,0 +1,169 @@
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
+
+(define "HopStyle"
+    (move Hop 
+        #1 
+        #2 
+        (between 
+            if:(and 
+                (not (is In (between) (sites ToClear))) 
+                ("IsEnemyAt" (between))
+            )
+            (apply (remove (between)))
+        ) 
+        (to if:(is Empty (to))) 
+        #3
+    )
+)
+
+(define "HopSequenceCaptureAgain" 
+    (move Hop
+        (from (last To)) 
+        Adjacent
+        (between 
+            #1
+            #2
+            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between))) 
+            (apply (remove (between) #3))
+        )
+        (to if:(is Empty (to)))
+        (then 
+            (if (can Move 
+                    (hop 
+                        (from (last To))
+                        Adjacent 
+                        (between
+                            #1
+                            #2
+                            if:(and 
+                                (not (is In (between) (sites ToClear))) 
+                                ("IsEnemyAt" (between))
+                            )
+                        )
+                        (to if:(is Empty (to)))
+                    )
+                ) 
+                (moveAgain)
+            )
+        )
+    )
+)
+
+(define "HopSequenceCapture" 
+    (move Hop
+        Adjacent
+        (between 
+            #1
+            #2
+            if:("IsEnemyAt" (between)) 
+            (apply (remove (between) #3))
+        )
+        (to if:(is Empty (to)))
+        (then 
+            (if (can Move 
+                    (hop 
+                        (from (last To)) 
+                        Adjacent
+                        (between 
+                            #1
+                            #2
+                            if:(and 
+                                (not (is In (between) (sites ToClear))) 
+                                ("IsEnemyAt" (between))
+                            )
+                        )
+                        (to if:(is Empty (to)))
+                    )
+                ) 
+                (moveAgain)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Permainan-Tabal" 
+    ("TwoPlayersNorthSouth")
+    (equipment { 
+        ("AlquerqueBoardWithBottomAndTopTriangles")
+        (piece "Counter" P1 N)
+        (piece "Counter" P2 S) 
+        (piece "DoubleCounter" Each)
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+    }) 
+    
+    (rules 
+        (start {
+            (place "Counter1" (difference (expand (sites Bottom) steps:4) (sites Row 4)))
+            (place "Counter2" (difference (expand (sites Top) steps:4) (sites Row 4)))
+        })
+        (play 
+            (if "SameTurn"
+                (if "IsUnpromoted"
+                    ("HopStyle" (from (last To)) Adjacent
+                        (then 
+                            ("ReplayIfCanMove" ("HopStyle" (from (last To)) Adjacent)
+                                ("PromoteIfReach" (sites Next) "DoubleCounter")
+                            )
+                        ) 
+                    )
+                    ("HopSequenceCaptureAgain" before:(count Rows) after:(count Rows))
+                )
+                (priority {
+                    (or 
+                        (forEach Piece "Counter"
+                            ("HopStyle" (from) Adjacent
+                                (then 
+                                    ("ReplayIfCanMove" ("HopStyle" (from (last To)) Adjacent) 
+                                        ("PromoteIfReach" (sites Next) "DoubleCounter")
+                                    )
+                                ) 
+                            ) 
+                        )
+                        (forEach Piece "DoubleCounter" ("HopSequenceCapture" before:(count Rows) after:(count Rows)))
+                    )
+                    (or 
+                        (forEach Piece "Counter" 
+                            ("StepToEmpty" (directions {Forwards Rightward Leftward}))
+                            (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
+                        )
+                        (forEach Piece "DoubleCounter" (move Slide Adjacent))
+                    )
+                })
+            )
+        )
+        
+        (end ("BlockWin"))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Permainan-Tabal is a two-player abstract strategy board game from Indonesia.")
+        (rules "Players alternate their turns using one piece to either move or capture exclusively per turn.
+            Pieces may only move one space per turn either straight forward, diagonally forward, or sideways along a line onto a vacant adjacent intersection point. They cannot move backwards in any direction until they are promoted to Kings. However, pieces can make capturing moves backward.
+            Captures are compulsory.
+            Captured pieces are removed from the board.
+            For pieces that have not yet been promoted to King, their captures are done by the short leap as in draughts and Alquerque. A piece leaps over an adjacent enemy piece onto a vacant adjacent intersection point on the other side. The leap must be in a straight line following the pattern on the board. Even pieces that are not yet promoted to King can capture enemy pieces backwards. A player's piece must continue to capture within a turn provided each capture meets the criteria of the short leap.
+            A piece is promoted to King when it reaches the other player's first rank.
+            Kings can move any number of unoccupied spaces in any available direction following the pattern of the board like the King in international draughts.
+            Kings can leap over an enemy piece (and only one enemy piece per leap) from any distance and land any distance behind it onto a vacant intersection point as in the King in international draughts. The King must continue to capture within the turn if it is able to do so.
+        The player who captures all of their opponent's pieces is the winner.")
+        (id "3864")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Permainan-Tabal\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.3.10")
+        (classification "board/war/leaping/lines")
+        (credit "Eric Piette")
+        }
+    )
+    (graphics {
+        (show Edges Diagonal Hidden)
+    })
+    
+)

@@ -80,23 +80,23 @@
 
 (metadata 
     
-(info
-{
-(description "Cram is a mathematical game played on a sheet of graph paper. It is the impartial version of Domineering and the only difference in the rules is that each player may place their dominoes in either orientation, but it results in a very different game.")
-(aliases {"Plugg" "Dots and Pairs"})
-(rules "The game is played on a sheet of graph paper, with any set of designs traced out. It is most commonly played on rectangular board like a 6×6 square.
-
-Two players have a collection of dominoes which they place on the grid in turn. A player can place a domino either horizontally or vertically. Contrary to the related game of Domineering, the possible moves are the same for the two players, and Cram is then an impartial game.
-
-As for all impartial games, there are two possible conventions for victory: in the normal game, the first player who cannot move loses, and on the contrary, in the misere version, the first player who cannot move wins.")
-(id "683")
-(source "<a href=\"https://en.wikipedia.org/wiki/Cram_(game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-(version "1.3.9")
-(classification "board/space/blocking")
-(author "Martin Gardner")
-(credit "Eric Piette")
-}
-)
+    (info
+        {
+        (description "Cram is a mathematical game played on a sheet of graph paper. It is the impartial version of Domineering and the only difference in the rules is that each player may place their dominoes in either orientation, but it results in a very different game.")
+        (aliases {"Plugg" "Dots and Pairs"})
+        (rules "The game is played on a sheet of graph paper, with any set of designs traced out. It is most commonly played on rectangular board like a 6×6 square.
+            
+            Two players have a collection of dominoes which they place on the grid in turn. A player can place a domino either horizontally or vertically. Contrary to the related game of Domineering, the possible moves are the same for the two players, and Cram is then an impartial game.
+            
+        As for all impartial games, there are two possible conventions for victory: in the normal game, the first player who cannot move loses, and on the contrary, in the misere version, the first player who cannot move wins.")
+        (id "683")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Cram_(game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.3.10")
+        (classification "board/space/blocking")
+        (author "Martin Gardner")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (player Colour P1 (colour Blue))

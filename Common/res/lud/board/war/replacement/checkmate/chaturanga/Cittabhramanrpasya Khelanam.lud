@@ -62,18 +62,18 @@
 
 (metadata 
     
-(info
-{
-(description "Cittabhramanrpasya Khelanam is a game dervied from Chaturanga played in India during the nineteenth century. In it, one player plays as a single King, which can move like any of the other pieces, against the opponent who plays with their usual complement of pieces. It is described in the Kriddakausalya of Harikrishna.")
-(rules "8x8 board. One player plays with the following pieces: Raja (x1): moves one space in any direction; Mantri (x1): moves any distance orthogonally or diagonally; Ushtra (x2): moves diagonally any distance; Vaha (x2): move orthogonally one space and then diagonally another, jumping over any intervening pieces; Danti (x2): moves orthogonally any distance. Padati (x8): move forward orthogonally one space or one space diagonally forward to capture. When a Padati reaches the opposite edge of the board, it is promoted to a Mantri and is moved immediately to the space it last moved from. The opponent plays as one Raja, which can move as any of the other pieces. This Raja cannot move to a space adjacent to the opponent's Raja. An opponent's piece is captured by moving one of the player's own pieces onto the space occupied by the opponent's piece. If the Raja can be captured on the opponent's next turn, it is in check. The Raja cannot be in check at the end of the player's turn. If this is impossible, the opponent wins. Check and checkmate rules apply to the player with a single Raja.")
-(source "Iyer 1982: 51-52; Bock-Raming 1996: 116.")
-(id "1451")
-(version "1.3.9")
-(classification "board/war/replacement/checkmate/chaturanga")
-(credit "Eric Piette")
-(origin "This game was played in India, around 1871.")
-}
-)
+    (info
+        {
+        (description "Cittabhramanrpasya Khelanam is a game dervied from Chaturanga played in India during the nineteenth century. In it, one player plays as a single King, which can move like any of the other pieces, against the opponent who plays with their usual complement of pieces. It is described in the Kriddakausalya of Harikrishna.")
+        (rules "8x8 board. One player plays with the following pieces: Raja (x1): moves one space in any direction; Mantri (x1): moves any distance orthogonally or diagonally; Ushtra (x2): moves diagonally any distance; Vaha (x2): move orthogonally one space and then diagonally another, jumping over any intervening pieces; Danti (x2): moves orthogonally any distance. Padati (x8): move forward orthogonally one space or one space diagonally forward to capture. When a Padati reaches the opposite edge of the board, it is promoted to a Mantri and is moved immediately to the space it last moved from. The opponent plays as one Raja, which can move as any of the other pieces. This Raja cannot move to a space adjacent to the opponent's Raja. An opponent's piece is captured by moving one of the player's own pieces onto the space occupied by the opponent's piece. If the Raja can be captured on the opponent's next turn, it is in check. The Raja cannot be in check at the end of the player's turn. If this is impossible, the opponent wins. Check and checkmate rules apply to the player with a single Raja.")
+        (source "Iyer 1982: 51-52; Bock-Raming 1996: 116.")
+        (id "1451")
+        (version "1.3.10")
+        (classification "board/war/replacement/checkmate/chaturanga")
+        (credit "Eric Piette")
+        (origin "This game was played in India, around 1871.")
+        }
+    )
     
     (graphics {
         (piece Scale "Pawn" 0.825)

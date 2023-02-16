@@ -310,48 +310,44 @@
 
 (metadata 
     
-(info
-{
-(description "An abstract board game played on the vertices, edges and cells of the board.")
-(rules "Players take turns moving a piece of their colour as follows:
-
-1. A piece on a vertex can move either:
-
- 1a. To an adjacent empty vertex. The edge it travels over may be empty or occupied (if occupied by an enemy piece, that piece is captured and removed).
-
- 1b. To an empty cell that vertex is part of.
-
-
-2. A piece on an edge can move either:
-
- 2a. To a connected empty edge. The vertex it travels over may be empty or occupied (if occupied by an enemy piece, that piece is captured and removed).
-
- 2b. To an empty cell that edge is part of.
-
-
-3. A piece in a cell can move either:
-
- 3a. To a neighbouring empty cell which may be connected by an edge or a vertex. The connecting edge or vertex that the piece travels over may be empty or occupied (if occupied by an enemy piece, that piece is captured and removed).
-
- 3b. To step over one of its empty edges into an adjacent cell containing an enemy piece (which is captured), then step out over a different empty edge to another empty cell.
-
- 3c. To an empty vertex or edge belonging to that cell.
-
-
-Aim: A player wins if their opponent is reduced to a single piece. An empty edge has no piece on its midpoint. An empty cell has no piece on its centroid.
-
-
-Three Player Version:
-In the three player version, any player reduced to a single piece is removed from the game (along with their piece). Last remaining player wins.")
-(id "1145")
-(source "<a href=\"http://cambolbro.com/games/triple-tangle-rules-1.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />cambolbro.com</a>")
-(version "1.3.9")
-(classification "board/war/replacement/eliminate/all")
-(author "Cameron Browne")
-(credit "Eric Piette")
-(date "2020")
-}
-)
+    (info
+        {
+        (description "An abstract board game played on the vertices, edges and cells of the board.")
+        (rules "Players take turns moving a piece of their colour as follows:
+            
+            1. A piece on a vertex can move either:
+            
+            1a. To an adjacent empty vertex. The edge it travels over may be empty or occupied (if occupied by an enemy piece, that piece is captured and removed).
+            
+            1b. To an empty cell that vertex is part of.
+            
+            2. A piece on an edge can move either:
+            
+            2a. To a connected empty edge. The vertex it travels over may be empty or occupied (if occupied by an enemy piece, that piece is captured and removed).
+            
+            2b. To an empty cell that edge is part of.
+            
+            3. A piece in a cell can move either:
+            
+            3a. To a neighbouring empty cell which may be connected by an edge or a vertex. The connecting edge or vertex that the piece travels over may be empty or occupied (if occupied by an enemy piece, that piece is captured and removed).
+            
+            3b. To step over one of its empty edges into an adjacent cell containing an enemy piece (which is captured), then step out over a different empty edge to another empty cell.
+            
+            3c. To an empty vertex or edge belonging to that cell.
+            
+            Aim: A player wins if their opponent is reduced to a single piece. An empty edge has no piece on its midpoint. An empty cell has no piece on its centroid.
+            
+            Three Player Version:
+        In the three player version, any player reduced to a single piece is removed from the game (along with their piece). Last remaining player wins.")
+        (id "1145")
+        (source "<a href=\"http://cambolbro.com/games/triple-tangle-rules-1.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />cambolbro.com</a>")
+        (version "1.3.10")
+        (classification "board/war/replacement/eliminate/all")
+        (author "Cameron Browne")
+        (credit "Eric Piette")
+        (date "2020")
+        }
+    )
     
     (graphics {
         (player Colour P3 (colour Grey))
