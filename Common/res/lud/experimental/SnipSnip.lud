@@ -367,38 +367,83 @@
 //----------------------------------------------------------
 
 (metadata
-    (info 
+    (info
         {
-        
-        }
-    )
+        (description "SnipSnip is an outgrowth of 'Tri-It-Out', a pattern capture game, in which the capture pattern involves pieces of both player's symmetrically, and is used to exclude captured sites from immediate replacement. SnipSnip uses more local capture patterns: options of between, or diagonally between, opposing pieces. These patterns are self-limiting in the sense of not allowing cyclic captures.
+            
+            These capture patterns dictate dead sites that typically result in alternating linear and honeycomb arrangements of pieces with tactical exceptions.
+            
+            In addition the goal of 'SnipSnip' is changed from 'Tri-It-Out's 'most pieces' to 'largest Group', which creates greater drama and opportunities for turn-around tactics, and is the reason for the SnipSnip name.
+            
+        'Tri-It-Out' is Misere. 'SnipSnip' also includes non-Misere variants.")
+        (rules "SnipSnip is a 2-player strategy game
+            It may be played: 
+            -- on a hex grid
+            -- on a square grid
+            -- on a square plus diagonal grid
+            Goal: Largest Group (in Misere, the largest Group loses.)
+            
+            Definitions:
+            A Group is a set of all the pieces that can be reached from any one of them by a series of steps, where a step means movement from one piece to another of the same color, next to it.
+            
+            Note: For the Diagonal-Linked Group options a step also include diagonals (double-steps that are not in the same grid direction).
+            
+            A site is a board intersection.
+            
+            'Between' Variant:
+            -- A Capture site is any site adjacent to two stones of opposite color in the same line (i.e. directly between them.)
+            
+            'Diagonal' Variant:
+            -- A Capture site is any site adjacent to each of two stones of opposite color, where those stones are not on the same grid-line.
+            
+            Play:
+            Players take turn, starting on an empty board with White to play.
+            
+            On a turn
+        1) The mover places to an empty site that is not a Capture site.
+    2) Then, if possible, the mover removes one of the opponent's checkers from a Capture site that lies adjacent to the placement just made.
     
-    (define "HighlightConnections"
-        (show Symbol "Disc.svg" Vertex
-            ("DiagonallyConnectedDomainsOf" 2)
-            fillColour:(colour 0 0 255 50) edgeColour:(colour 0 0 0 0) scale:1
-        )
-        (show Symbol "Disc.svg" Vertex
-            ("DiagonallyConnectedDomainsOf" 1)
-            fillColour:(colour 255 255 0 100) edgeColour:(colour 0 0 0 0) scale:1
-    ))
+    In the case of Misere, the mover must take an additional turn after each capture.
     
-    (graphics 
-        {
-        (board Style Graph)
-        (board Colour InnerEdges (colour 62 72 55))
-        (board Colour OuterEdges (colour 62 72 55))
-        (board StyleThickness OuterEdges .25)
-        (board StyleThickness InnerEdges .25)
-        (show Edges Diagonal <Board:diag> (colour 62 72 55))
-        <Scoring:connectionHighlights>
-        (piece Scale P1 "Ball" 0.75)
-        (piece Scale P2 "Ball" 0.75)
-        (piece Scale P3 "Ball" 0.75)
-        (piece Scale P4 "Ball" 0.75)
-        (piece Scale P5 "Ball" 0.75)
-        (piece Scale P6 "Ball" 0.75)
-        }
+    Otherwise, the next player becomes the mover.
+    
+    The game ends when no placement is possible.
+In the case of a tie, the player who would have been next to place loses.")
+(id "3863")
+(version "1.3.10")
+(classification "experimental")
+(author "Dale W. Walton")
+(credit "Dale W. Walton")
+(date "04-01-2023")
+}
+)
+
+(define "HighlightConnections"
+    (show Symbol "Disc.svg" Vertex
+        ("DiagonallyConnectedDomainsOf" 2)
+        fillColour:(colour 0 0 255 50) edgeColour:(colour 0 0 0 0) scale:1
     )
+    (show Symbol "Disc.svg" Vertex
+        ("DiagonallyConnectedDomainsOf" 1)
+        fillColour:(colour 255 255 0 100) edgeColour:(colour 0 0 0 0) scale:1
+))
+
+(graphics 
+    {
+    (board Style Graph)
+    (board Colour InnerEdges (colour 62 72 55))
+    (board Colour OuterEdges (colour 62 72 55))
+    (board StyleThickness OuterEdges .25)
+    (board StyleThickness InnerEdges .25)
+    (show Edges Diagonal <Board:diag> (colour 62 72 55))
+    <Scoring:connectionHighlights>
+    (piece Scale P1 "Ball" 0.75)
+    (piece Scale P2 "Ball" 0.75)
+    (piece Scale P3 "Ball" 0.75)
+    (piece Scale P4 "Ball" 0.75)
+    (piece Scale P5 "Ball" 0.75)
+    (piece Scale P6 "Ball" 0.75)
+    }
+)
 )
 

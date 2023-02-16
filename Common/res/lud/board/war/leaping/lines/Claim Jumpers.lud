@@ -215,9 +215,14 @@
 //----------------------------------------------------------
 
 (metadata
-    (info 
+    (info
         {
-        
+        (description "Claim Jumpers was part of a series of games created while travelling, that sought to simplify some of my earlier games to there barest essentials.
+            A new element is placement before movement, but movement excludes the placed piece. 
+            This is similar to placement after the movement with restriction against placement to the movement origin site; but it also allows for placement that precludes the forced movement in certain cases.
+            The essence of the game is to force the opponent to capture your pieces in ways that allow greater capture-backs, and then hold onto that lead or increase it.
+            The game seems to be very interesting tactically, open to global strategies, but not forcing global play, due to the complexity and balance of local play.  Other than board edges, defensive resources include thick, rounded blocks of pieces - which does involve mid-range placements.
+        The A/B AI is strong on small tactical boards.")
         (rules "Claim Jumpers is a 2-player strategy game
             It may be played: 
             -- on a hex grid
@@ -230,26 +235,32 @@
             The board starts empty. Turns alternate starting with White.
             Game ends when the board is full. No passing.
             
-            Maximum captures are not required, but the piece choen to capture must capture at least one, and maynot stop capturing as long as it is able to capture the next adjacent opponent's piece."
-            
-        ) 
-        
+        Maximum captures are not required, but the piece choen to capture must capture at least one, and maynot stop capturing as long as it is able to capture the next adjacent opponent's piece.")
+        (id "3961")
+        (version "1.3.10")
+        (classification "board/war/leaping/lines")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "31-12-2022")
         }
     )
     
-    (graphics 
-        {
-        (board Style Graph)
-        (board Colour InnerEdges (colour 62 72 55))
-        (board Colour OuterEdges (colour 62 72 55))
-        (board StyleThickness OuterEdges .25)
-        (board StyleThickness InnerEdges .25)
-        (show Edges Diagonal <Board:diag> (colour 62 72 55))
-        (piece Scale P1 "Disc" 0.65)
-        (piece Scale P2 "Disc" 0.65)
-        (piece Scale P3 "Disc" 0.65)
-        (piece Scale P4 "Disc" 0.65)
-        (piece Scale P5 "Disc" 0.65)
-        }
+    }
+)
+
+(graphics 
+    {
+    (board Style Graph)
+    (board Colour InnerEdges (colour 62 72 55))
+    (board Colour OuterEdges (colour 62 72 55))
+    (board StyleThickness OuterEdges .25)
+    (board StyleThickness InnerEdges .25)
+    (show Edges Diagonal <Board:diag> (colour 62 72 55))
+    (piece Scale P1 "Disc" 0.65)
+    (piece Scale P2 "Disc" 0.65)
+    (piece Scale P3 "Disc" 0.65)
+    (piece Scale P4 "Disc" 0.65)
+    (piece Scale P5 "Disc" 0.65)
+    }
 ))
 

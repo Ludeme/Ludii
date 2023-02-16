@@ -353,32 +353,92 @@
 (metadata
     (info
         {
-        (author "Dale W. Walton")
-        (credit "Dale W. Walton")
-        (date "30-01-2023")
-        }
-    )
-    (define "ColourP1" (colour Black))
-    (define "ColourP2" (colour 252 255 234 #1))
-    (graphics 
-        {
-        (player Colour P1 ("ColourP1" ~))
-        (player Colour P2 ("ColourP2" ~))
-        (piece Scale P1 "Ball" 0.99)
-        (piece Scale P2 "Ball" 0.97)
-        (piece Colour P1 "Ball" state:0 fillColour:(colour Black))
-        (piece Colour P2 "Ball" state:0 fillColour:(colour White))
-        (piece Colour P1 "Ball" state:1 fillColour:(colour 0 0 0 80))
-        (piece Colour P2 "Ball" state:1 fillColour:(colour 255 255 255 100))
-        (piece Colour P1 "Ball" state:2 fillColour:(colour 60 0 0 100))
-        (piece Colour P2 "Ball" state:2 fillColour:(colour 255 180 180 100))
-    (board Colour Phase0 (colour 202 189 171))// (colour 246 236 213))
-    (region Colour ("EyesOf" "P1") (colour 60 0 0 100))
-    (region Colour ("EyesOf" "P2") (colour 255 180 180 80)) 
-    (board Colour OuterEdges (colour 0 0 0))
-    (board Colour InnerEdges (colour 0 0 0))
-    (board StyleThickness OuterEdges 1.0)
-    (board StyleThickness InnerEdges 0.5)
-    }
+        (description "This is a needed overhaul of both the rules and implmentation. Sprout-R-Out was a newly invented territorial game for Cairo and limping Hex boards based on an original placement protocol: 
+            
+            Players place one stone next to each opponent's group, but without touching any other group. Any group that cannot be played beside is removed.
+            
+            This creates an capture dynamic superficially like Go where groups get overgrown and die.  Unlike Go, a single, isolated eye, once formed, is enough to give life.
+            
+            On the other hand, even multiple larger eyes can be insufficient for life, because the timing of capture and the requirement to play against every opponent's group if possible, can leave multiple eyes filled with uncaptured stones.
+            
+            The feeling of the game definitely not like Go. The game is more tactical because placements are constrained to be adjacent to existing pieces, and multiple pieces are played per turn. 
+            
+            Spreading pieces out to quickly surround the opponent during your turn can easily backfire, as it leads to more opponent placements and fewer locations needed by the opponent to surround your pieces.
+            
+            The rules have been revised on the following points. 
+        1) Previously groups for removal were marked at the beginning of the turn and removed at the end. Now they may occur at any point during the turn, and thus one removal may prevent the removal of a nearby group.
+        
+    2) The need to always play against the opponent limited play and gave strong advatage to a player with the initiative.  Therefore, a first move was added to allow play to non-adjacent board sites. This adds tactics of bridging to make holes, 2-hole infill, blocking placements, and explanding play to multiple non-adjacent zones.
+    
+3) The game previously ended when score oscillations stopped, which pevented cycles, but took a long time to acheive in practice. Also this meant that a player could win by getting boxed in with a majority, by an immortal group. This has been changed by forcing the first move to be outside of the immortal territory, leading to a finite end to the moves of the game (if one player makes some effort to create holes), and ending when no moves are possible. The new end condition is then a score of more than half the board covered by immortal groups, with exceptional cases ending in a dpouble pass.")
+(rules "Goal: The most Territory.
+    
+    Definitions:
+    -- A 'group' is any set of a stones that is comprised of a starting stone and all the stones which can be reached from it by a series steps between adjacent stones, where the mentioned stones are all the same color.
+    
+    -- An 'eye' is either of:
+1) a single empty site around which all the adjacent sites are occupied by pieces of a single group; or
+2) an occupied site that was previously an eye.
+
+-- An 'Immortal group' is a group with at least one eye.
+
+-- Your 'territory' is the combination of your Immortal groups and their eyes.
+
+Normal Play
+Play starts on the empty board. Turns are a series of placements and/or captures. All placements are onto empty sites and adjacent to at most 1 enemy group.
+
+On a normal turn, 
+1) the player must first place a stone onto a site outside of both players' territories.
+
+2) Thereafter, a series of placements are made, each placement adjacent to a different enemy group, until all the enemy groups have been played to once during the turn; -- EXCEPT THAT, if no placement can be made adjacent to the selected group, that group is removed instead. 
+
+The removals can be made in any order. The chosen order can be important, since removing one group might prevent a different one from being removed.
+
+-- Note that except for the first placement, the placements CAN be made into the eyes.
+
+Passing is not allowed, except as allowed in the special cases below.
+
+When the turn is complete the next player plays, until the winning player's territory covers over half the board. 
+
+Exceptional Cases:
+Since territory is only those groups with eyes, when the score is close and/or there are many pieces that are not connected to eyes, exceptional cases may arise. 
+
+These are dealt with in order of priority, as follows:
+1) If at the start of their turn, a player finds the position of all the pieces on the board to be the same as at the beginning of their last turn, the player must pass (unless the previous player just passed.)
+2) If the player cannot legally place the first piece of their move, they must remove one eyeless enemy group and then pass.
+3) If there is no group to remove, they must pass.
+
+If both players pass consecutively before one has achieved majority territory, the game ends, and the territories are compared to see who has more. This can only occur if there is at least one unplayable site on the board between 2 friendly and 2 enemy territories, and the scores are very close. In such cases a tie is possible. ")
+(id "1649")
+(source "Dale W. Walton  (<a href=\"https://boardgamegeek.com/thread/3014732\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>)")
+(version "1.3.10")
+(classification "experimental")
+(author "Dale W. Walton")
+(credit "Dale W. Walton")
+(date "30-01-2023")
+}
+)
+(define "ColourP1" (colour Black))
+(define "ColourP2" (colour 252 255 234 #1))
+(graphics 
+    {
+    (player Colour P1 ("ColourP1" ~))
+    (player Colour P2 ("ColourP2" ~))
+    (piece Scale P1 "Ball" 0.99)
+    (piece Scale P2 "Ball" 0.97)
+    (piece Colour P1 "Ball" state:0 fillColour:(colour Black))
+    (piece Colour P2 "Ball" state:0 fillColour:(colour White))
+    (piece Colour P1 "Ball" state:1 fillColour:(colour 0 0 0 80))
+    (piece Colour P2 "Ball" state:1 fillColour:(colour 255 255 255 100))
+    (piece Colour P1 "Ball" state:2 fillColour:(colour 60 0 0 100))
+    (piece Colour P2 "Ball" state:2 fillColour:(colour 255 180 180 100))
+(board Colour Phase0 (colour 202 189 171))// (colour 246 236 213))
+(region Colour ("EyesOf" "P1") (colour 60 0 0 100))
+(region Colour ("EyesOf" "P2") (colour 255 180 180 80)) 
+(board Colour OuterEdges (colour 0 0 0))
+(board Colour InnerEdges (colour 0 0 0))
+(board StyleThickness OuterEdges 1.0)
+(board StyleThickness InnerEdges 0.5)
+}
 ))
 

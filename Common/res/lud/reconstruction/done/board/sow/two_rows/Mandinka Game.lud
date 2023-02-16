@@ -1813,11 +1813,159 @@
     (info
         {
         (description "This game was played on the River Gambia in the early seventeenth century. It is one of the earliest documented mancala-style board games. It was played outside, under shady trees, by men of the Mandinka people.")
-        (rules "Board with large holes. Around thirty counters. Counters are captured. The player who captures the most counters wins.")
-        (source "DLP evidence.")
-        (id "1265")
-        (version "1.3.9")
-        (classification "board/sow/reconstruction/pending")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Board with large holes. Around thirty counters. Counters are captured. The player who captures the most counters wins."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1265"))
+        (useFor "Ruleset/Mandinka Game (Ludii 1) (Reconstructed)" (rules "The game Mandinka Game is played by two players on a 2 x 6 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 6.
+                Rules: 
+                If The proposed is End, cast a vote with possible vote options [End] or cast a vote with possible vote options [No], else if we have repeated the same state three times, propose the following options [End] or select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: to is in RegionP1 or RegionP2 and the total number of vertex in to is equal to 2 or the total number of vertex in to is equal to 3, backtracking: true, captureEffect: from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: false.
+                Aim: 
+                If the moving player cannot move or End has been made, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Mandinka Game (Ludii 1) (Reconstructed)" (id "3964"))
+        (useFor "Ruleset/Mandinka Game (Ludii 2) (Reconstructed)" (rules "The game Mandinka Game is played by two players on a 2 x 4 Mancala board with 2 none stores.
+                Regions:
+                Home: the bottom sites of the board for P1
+                Home: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 6.
+                Rules: 
+                If The proposed is End, cast a vote with possible vote options [End] or cast a vote with possible vote options [No], else if we have repeated the same state three times, propose the following options [End] or select Vertex in Home or Home if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: to is in Home or Home and the total number of vertex in to is equal to 2 or the total number of vertex in to is equal to 3, backtracking: true, captureEffect: from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: false.
+                Aim: 
+                If the moving player cannot move or End has been made, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Mandinka Game (Ludii 2) (Reconstructed)" (id "3965"))
+        (useFor "Ruleset/Mandinka Game (Ludii 3) (Reconstructed)" (rules "The game Mandinka Game is played by two players on a 2 x 6 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 6.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: the total number of vertex in to is equal to 2, the total number of vertex in to is equal to 4 or the total number of vertex in to is equal to 6, captureEffect: from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                Aim: 
+                If the moving player cannot move, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Mandinka Game (Ludii 3) (Reconstructed)" (id "3966"))
+        (useFor "Ruleset/Mandinka Game (Ludii 4) (Reconstructed)" (rules "The game Mandinka Game is played by two players on a 2 x 4 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 6.
+                Rules: 
+                If The proposed is End, cast a vote with possible vote options [End] or cast a vote with possible vote options [No], else if we have repeated the same state three times, propose the following options [End] or select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: to is in RegionP1 or RegionP2 and the total number of vertex in to is equal to 2 or the total number of vertex in to is equal to 3, backtracking: true, captureEffect: from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: false.
+                Aim: 
+                If the moving player cannot move or End has been made, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Mandinka Game (Ludii 4) (Reconstructed)" (id "3967"))
+        (useFor "Ruleset/Mandinka Game (Ludii 5) (Reconstructed)" (rules "The game Mandinka Game is played by two players on a 2 x 4 Mancala board with 2 none stores.
+                Regions:
+                Home: the bottom sites of the board for P1
+                Home: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 6.
+                Rules: 
+                Select Vertex in Home or Home if the total number of vertex in the location of the piece is greater than 0 then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: true, captureRule: true, type: Vertex, includeSelf: true then Each turn, where the site is within track of board, if the total number of vertex in current site is in sites [2,4,6], from vertex in current site to vertex Player the moving player's hand site 0 moveRule: true.
+                Aim: 
+                If 0 is equal to the total number of vertex in track of board, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Mandinka Game (Ludii 5) (Reconstructed)" (id "3968"))
+        (useFor "Ruleset/Mandinka Game (Ludii 6) (Reconstructed)" (rules "The game Mandinka Game is played by two players on a 2 x 4 Mancala board with 2 none stores.
+                Regions:
+                Home: the bottom sites of the board for P1
+                Home: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 6.
+                Rules: 
+                Select Vertex in Home or Home if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: the total number of vertex in to is equal to 2, the total number of vertex in to is equal to 4 or the total number of vertex in to is equal to 6, captureEffect: from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                Aim: 
+                If the moving player cannot move, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Mandinka Game (Ludii 6) (Reconstructed)" (id "3969"))
+        (useFor "Ruleset/Mandinka Game (Ludii 7) (Reconstructed)" (rules "The game Mandinka Game is played by two players on a 2 x 4 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 6.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: the total number of vertex in to is equal to 2, the total number of vertex in to is equal to 4 or the total number of vertex in to is equal to 6, captureEffect: from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                Aim: 
+                If the moving player cannot move, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Mandinka Game (Ludii 7) (Reconstructed)" (id "3970"))
+        (useFor "Ruleset/Mandinka Game (Ludii 8) (Reconstructed)" (rules "The game Mandinka Game is played by two players on a 2 x 6 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 4
+                Remember the values the union of the top sites of the board and the bottom sites of the board.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if vertex the location of the piece is occupied and the location of the piece is in sites all remembered values then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if 2 is equal to the total number of vertex in to, 4 is equal to the total number of vertex in to, 6 is equal to the total number of vertex in to or 8 is equal to the total number of vertex in to and to is in sites all remembered values, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true if all sites in the union of the top sites of the board and the bottom sites of the board satisfy the condition 0 is equal to the total number of vertex in current site, forget all previously rememberd values, else Each turn, where the site is within the difference between the sites of the board and sites all remembered values, if 4 is less than or equal to the total number of vertex in current site, remember the value current site if not all sites in RegionP1 or RegionP2 satisfy the condition vertex current site is occupied, if 4 is less than or equal to the total number of cell in Player the moving player's hand site 0, from vertex in Player the moving player's hand site 0 to vertex in RegionP1 or RegionP2 moveRule: empty then remember the value the to location of the last move, else from vertex in Player the moving player's hand site 0 to vertex in RegionP1 or RegionP2 moveRule: empty.
+                
+        "))
+        (useFor "Ruleset/Mandinka Game (Ludii 8) (Reconstructed)" (id "3971"))
+        (useFor "Ruleset/Mandinka Game (Ludii 9) (Reconstructed)" (rules "The game Mandinka Game is played by two players on a 2 x 4 Mancala board with 2 none stores.
+                Regions:
+                Home: the bottom sites of the board for P1
+                Home: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 4
+                Remember the values the union of the top sites of the board and the bottom sites of the board.
+                Rules: 
+                Select Vertex in Home or Home if vertex the location of the piece is occupied and the location of the piece is in sites all remembered values then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if 2 is equal to the total number of vertex in to, 4 is equal to the total number of vertex in to, 6 is equal to the total number of vertex in to or 8 is equal to the total number of vertex in to and to is in sites all remembered values, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true if all sites in the union of the top sites of the board and the bottom sites of the board satisfy the condition 0 is equal to the total number of vertex in current site, forget all previously rememberd values, else Each turn, where the site is within the difference between the sites of the board and sites all remembered values, if 4 is less than or equal to the total number of vertex in current site, remember the value current site if not all sites in Home or Home satisfy the condition vertex current site is occupied, if 4 is less than or equal to the total number of cell in Player the moving player's hand site 0, from vertex in Player the moving player's hand site 0 to vertex in Home or Home moveRule: empty then remember the value the to location of the last move, else from vertex in Player the moving player's hand site 0 to vertex in Home or Home moveRule: empty.
+                
+        "))
+        (useFor "Ruleset/Mandinka Game (Ludii 9) (Reconstructed)" (id "3972"))
+        (useFor "Ruleset/Mandinka Game (Ludii 10) (Reconstructed)" (rules "The game Mandinka Game is played by two players on a 2 x 4 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 4
+                Remember the values the union of the top sites of the board and the bottom sites of the board.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if vertex the location of the piece is occupied and the location of the piece is in sites all remembered values then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if 2 is equal to the total number of vertex in to, 4 is equal to the total number of vertex in to, 6 is equal to the total number of vertex in to or 8 is equal to the total number of vertex in to and to is in sites all remembered values, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true if all sites in the union of the top sites of the board and the bottom sites of the board satisfy the condition 0 is equal to the total number of vertex in current site, forget all previously rememberd values, else Each turn, where the site is within the difference between the sites of the board and sites all remembered values, if 4 is less than or equal to the total number of vertex in current site, remember the value current site if not all sites in RegionP1 or RegionP2 satisfy the condition vertex current site is occupied, if 4 is less than or equal to the total number of cell in Player the moving player's hand site 0, from vertex in Player the moving player's hand site 0 to vertex in RegionP1 or RegionP2 moveRule: empty then remember the value the to location of the last move, else from vertex in Player the moving player's hand site 0 to vertex in RegionP1 or RegionP2 moveRule: empty.
+                
+        "))
+        (useFor "Ruleset/Mandinka Game (Ludii 10) (Reconstructed)" (id "3973"))
+        (source "Murray 1951: 177.")
+        (version "1.3.10")
+        (classification "board/sow/two rows/reconstruction/done")
         (credit "Eric Piette")
         (origin "This game was played in Gambia, from around 1620 to 1621.")
         }

@@ -321,9 +321,41 @@
 )
 
 (metadata
-    (info 
+    (info
         {
-        
+        (description "Parry is a game created on the same trip as Skirt, with a similar dynamic, but the sequence of placement and movement is opposite  (forced placement then optional move) and the restriction on movement is based on the strength of the placement rather than the groupings of the pieces, so the tactics are somewhat diffectent even if the overall strategies are similar.
+            The movement based on placement is adapted from Throngs, but instead of being restricted to a single piece, the actions granted by the placement can be applied to any piece. Also there is no capture nor the possibility to jump over the opponent that exists in Throngs, thus, like in Skirt, the game consists of slipping in between pieces so as to retain the ability to grow in as many regions as possible.
+            This system is more easily adapted to other board geometries than Skirt, and several additional board options have been included.
+        The game can also be played with more than 2 players, but is less territorial and more chaotic in those modes.")
+        (rules "Goal: Most territory, counted when one player cannot make a required placement.
+            
+            Definitions:
+            -- Site Power: For a given player, each site's power is equal to the amount by which the adjacent friendly pieces exceed the amount of all the rest of the adjacent pieces. If a site is occupied, the piece at the site is also counted as an adjacent piece.
+            -- Territory: A player's 'Territory' is all the sites where he has positive power, plus all the sites he occupies where no other player has positive power.
+            -- Uncontrolled site: An empty site which is not part of any player's territory is called an 'uncontrolled site'.
+            
+            Play:
+            Turns alternate starting with White.
+            To begin the turn, a player places a piece on an empty site.
+            -- The piece must be placed on a site the mover controls, if possible.
+            -- If this placement is not possible, the piece is placed onto an uncontrolled site.
+            -- If placement is still not possible, the game ends.
+            
+            After the initial placement, the player is allowed to make bonus step moves using any combination of his pieces in any order, other than the one just placed. 
+            -- The total number of steps must not exceed the power of the placement site before placement. 
+            -- These step moves are all optional. 
+            -- Unused bonus moves may not be saved for use in future turns.
+            
+            Jumping over other pieces is not allowed.
+            ------------------------------------------
+            The game can optionally be played with multiple players.
+        This application shows the territories with player-coloured rings.")
+        (id "3963")
+        (version "1.3.10")
+        (classification "experimental")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "04-01-2023")
         }
     )
     

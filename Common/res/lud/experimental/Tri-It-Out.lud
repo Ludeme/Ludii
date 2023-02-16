@@ -180,27 +180,52 @@
 //----------------------------------------------------------
 
 (metadata
-    (info 
+    (info
         {
-        
-        }
-    )
+        (description "Tri-It-Out is a 'Pattern Capture', 'Misere' based on equilateral triangle patterns with mixed piece ownership, in which the total piece-count on the board increases with each complete turn. A player's board presence can vary greatly from turn to turn, especially for the variant game, or for other variants that prioritize capturing-placements. 
+            
+            It demands of players excellent pattern scanning skills, awareness of opportunities to force the opponent to capture, and sensitivity to moves that affect the timing of the game-ending.
+            
+            The concept arose from consideration of patterns where a piece might be captured but not replaced in the same location, and preferrably patterns that provided a choice of pieces to remove in this fashion. Triangle patterns provided a solution where the affected patterns created restrictions accross the whole board, and a misere game seemed most suitable with that condition.
+            
+        A game with similar concept but based on local 3-in-a-row patterns called 'FreeChain' was created at the same time. That game uses regular scoring.")
+        (rules "Tri-It-Out is a 2-player strategy game played on a hex grid.
+            Definitions:
+            -- A 'Triangle' means a pattern of 3 counters that are equidistant from each other, it may be in any orientation including orientations with edges that do not follow grid lines.
+            -- A 'Mixed Triangle' is a triangle made of more than one player's counters.
+            -- A 'Restricted Location' is an empty intersection that would form a Mixed Triangle if either player placed a piece there; that is it would form a Triangle that includes a mixed-color pair of counters already on the board.
+            
+            The goal is to have the FEWEST counters on the board when no further play is possible. In the case of a tie, the player who would have been next to make a placement loses.
+            
+            Turns consist of:
+        -- 1) a Placement of a piece onto an empty site that is not a 'Restricted Location'. 
+    -- 2) If any new Mixed Triangles are created, a Capture is made by removing one opponent's piece from one of them.
     
-    (graphics 
-        {
-        (board Style Graph)
-        (board Colour InnerEdges (colour 62 72 55))
-        (board Colour OuterEdges (colour 62 72 55))
-        (board StyleThickness OuterEdges .25)
-        (board StyleThickness InnerEdges .25)
-        (show Edges Diagonal <Board:diag> (colour 62 72 55))
-        (piece Scale P1 "Counter" 0.75)
-        (piece Scale P2 "Counter" 0.75)
-        (piece Scale P3 "Counter" 0.75)
-        (piece Scale P4 "Counter" 0.75)
-        (piece Scale P5 "Counter" 0.75)
-        (piece Scale P6 "Counter" 0.75)
-        }
-    )
+A player must continue to take a series of consecutive turns until a Placement is made that cannot be followed by a Capture.")
+(id "3862")
+(version "1.3.10")
+(classification "experimental")
+(author "Dale W. Walton")
+(credit "Dale W. Walton")
+(date "14-02-2023")
+}
+)
+
+(graphics 
+    {
+    (board Style Graph)
+    (board Colour InnerEdges (colour 62 72 55))
+    (board Colour OuterEdges (colour 62 72 55))
+    (board StyleThickness OuterEdges .25)
+    (board StyleThickness InnerEdges .25)
+    (show Edges Diagonal <Board:diag> (colour 62 72 55))
+    (piece Scale P1 "Counter" 0.75)
+    (piece Scale P2 "Counter" 0.75)
+    (piece Scale P3 "Counter" 0.75)
+    (piece Scale P4 "Counter" 0.75)
+    (piece Scale P5 "Counter" 0.75)
+    (piece Scale P6 "Counter" 0.75)
+    }
+)
 )
 

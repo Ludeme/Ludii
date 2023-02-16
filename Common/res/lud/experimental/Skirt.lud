@@ -159,9 +159,27 @@
 //----------------------------------------------------------
 
 (metadata
-    (info 
+    (info
         {
-        
+        (description "Skirt was part of a series of games created while travelling, that sought to simplify some of my earlier games to there barest essentials.
+            It featured moving and then placement near the opponent.
+            Afterwards the restrictions were completely revised, in part to match the name: pieces were confined to skirting moves around other pieces.
+        In order to make the game more interesting by enabling earlier territory creation, the explicit concept of territory was added and then skirting was disallowed onto opponent's territory, and placement restricted to friendly territory.")
+        (rules "Goal: Last to place a piece (i.e control more territory)
+            
+            One player places two adjacent pieces on the board, one of each color; the other player either switches their locations or begins regular play.
+            
+            Definitions:
+            'Territory' is any empty cell directly adjacent to more of a player's own pieces than opponent's pieces.
+            A 'Skirting Move' is a series of steps in which the moving piece remains adjacent to at least one of the pieces it was adjacent to before making the step. None of these steps may land on another piece, nor land on an enemy territory.
+            
+        A turn consists of an optional 'skirting move' followed by a mandatory placement onto one's own territory.")
+        (id "3962")
+        (version "1.3.10")
+        (classification "experimental")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "31-12-2022")
         }
     )
     

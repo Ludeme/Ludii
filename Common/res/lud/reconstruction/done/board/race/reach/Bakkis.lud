@@ -1209,11 +1209,92 @@
     (info
         {
         (description "Bakkis is a race game played in Somaliland in the nineteenth century. It was said to be the same game as Pachisi, but no rules were given.")
-        (rules "Name of the game. Played similarly to Pachisi.")
-        (source "DLP eviednce.")
-        (id "1124")
-        (version "1.3.9")
-        (classification "board/race/reach/reconstruction/pending")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Name of the game. Played similarly to Pachisi."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP eviednce."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1124"))
+        (useFor "Ruleset/Bakkis (Ludii 1) (Reconstructed)" (rules "The game Bakkis is played by two players on a noshape board with nobasis tiling. 
+                All players play with Pawns. The following pieces are shared by all players: Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1] and Dies with 2 faces valued [0, 1].
+                Rules for Pieces:
+                Pawns from vertex in the location of the piece current level to vertex ThrowDiceValue of the number of pips owned by Player Shared steps forward from site the location of the piece on track Track moveRule: true captureEffect: if there is an enemy Player at to, for each level at Vertex to (FromTop) remove pieces at to.
+                Players take turns moving.
+                Setup:
+                Place stack of [Pawn1] at vertex Player 1's hand site 0
+                Place stack of [Pawn2] at vertex Player 2's hand site 0.
+                Rules: 
+                Roll the dice and afterwards if vertex Player the moving player's hand site 0 is occupied, from vertex in Player the moving player's hand site 0 to vertex ThrowDiceValue of the number of pips owned by Player Shared minus 1 steps forward from site Entry of the moving player on track Track moveRule: true captureEffect: if there is an enemy Player at to, for each level at Vertex to (FromTop) remove pieces at to or move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Bakkis (Ludii 1) (Reconstructed)" (id "3925"))
+        (useFor "Ruleset/Bakkis (Ludii 2) (Reconstructed)" (rules "The game Bakkis is played by two players on a noshape board with nobasis tiling. 
+                All players play with Pawns. The following pieces are shared by all players: Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1] and Dies with 2 faces valued [0, 1].
+                Rules for Pieces:
+                Pawns from vertex in the location of the piece current level to vertex ThrowDiceValue of the number of pips owned by Player Shared steps forward from site the location of the piece on track Track moveRule: true captureEffect: if there is an enemy Player at to, for each level at Vertex to (FromTop) remove pieces at to.
+                Players take turns moving.
+                Setup:
+                Place stack of [Pawn1] at vertex Player 1's hand site 0
+                Place stack of [Pawn2] at vertex Player 2's hand site 0.
+                Rules: 
+                Roll the dice and afterwards if vertex Player the moving player's hand site 0 is occupied, from vertex in Player the moving player's hand site 0 to vertex ThrowDiceValue of the number of pips owned by Player Shared minus 1 steps forward from site Entry of the moving player on track Track moveRule: true captureEffect: if there is an enemy Player at to, for each level at Vertex to (FromTop) remove pieces at to or move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Bakkis (Ludii 2) (Reconstructed)" (id "3926"))
+        (useFor "Ruleset/Bakkis (Ludii 3) (Reconstructed)" (rules "The game Bakkis is played by two players on a noshape board with nobasis tiling.
+                Regions:
+                Castle: contains the sites [61, 63, 65, 32, 47, 15, 80, 84, 86, 21, 38, 3]
+                Grace: contains the sites [0, 1, 6] 
+                All players play with Pawns. The following pieces are shared by all players: Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1] and Dies with 2 faces valued [0, 1].
+                Rules for Pieces:
+                Pawns if the number of pips owned by Player Shared steps forward from site the location of the piece on track null is equal to 96 or the number of pips owned by Player Shared is in [0,1,6] and the location of the piece is equal to PreviousGoal of current moving player, select Cell in the location of the piece if true and select Cell in 96 if true then remove pieces at the from location of the last move, else if not Die of the number of pips owned by Player Shared steps forward from site the location of the piece on track null is equal to 96 and not Die of the number of pips owned by Player Shared steps forward from site the location of the piece on track null is equal to -1, from cell in the location of the piece current level to cell Die of the number of pips owned by Player Shared steps forward from site the location of the piece on track null moveRule: true captureRule: not Die of the number of pips owned by Player Shared steps forward from site the location of the piece on track null is in [] or Die of the number of pips owned by Player Shared steps forward from site the location of the piece on track null is in [3,15,21,32,38,47,61,63,65,80,84,86] and is a friend captureEffect: if there is an enemy Player at to, from cell in to to cell Player Player at to's hand site 0 moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place stack of [Pawn1] at cell Player 1's hand site 0
+                Place stack of [Pawn2] at cell Player 2's hand site 0.
+                Rules: 
+                Roll the dice and afterwards if cell Player the moving player's hand site 0 is occupied, from cell in Player the moving player's hand site 0 to cell ThrowDiceValue of the number of pips owned by Player Shared minus 1 steps forward from site Entry of the moving player on track Track moveRule: true captureEffect: if there is an enemy Player at to, for each level at Cell to (FromTop) remove pieces at to or move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Bakkis (Ludii 3) (Reconstructed)" (id "3927"))
+        (useFor "Ruleset/Bakkis (Ludii 4) (Reconstructed)" (rules "The game Bakkis is played by two players on a noshape board with nobasis tiling.
+                Regions:
+                Protect: sites [0,10,5,16,21,23,30,36,46,56,51,42] for Neutral 
+                All players play with Pawns. The following pieces are shared by all players: Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1], Dies with 2 faces valued [0, 1] and Dies with 2 faces valued [0, 1].
+                Rules for Pieces:
+                Pawns if the number of pips owned by Player Shared steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else if the number of pips owned by Player Shared steps forward from site the location of the piece on track null is not equal to -1, if if not there is an enemy Player at the number of pips owned by Player Shared steps forward from site the location of the piece on track null then true else not the number of pips owned by Player Shared steps forward from site the location of the piece on track null is in [0,5,10,16,21,23,30,36,42,46,51,56], from cell in the location of the piece current level to cell the number of pips owned by Player Shared steps forward from site the location of the piece on track null moveRule: true captureRule: there is an enemy Player at to captureEffect: from cell in to to cell Player Player at to's hand site 0 moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place stack of [Pawn1] at cell Player 1's hand site 0
+                Place stack of [Pawn2] at cell Player 2's hand site 0.
+                Rules: 
+                Roll the dice and afterwards if cell Player the moving player's hand site 0 is occupied, from cell in Player the moving player's hand site 0 to cell ThrowDiceValue of the number of pips owned by Player Shared minus 1 steps forward from site Entry of the moving player on track Track moveRule: true captureEffect: if there is an enemy Player at to, for each level at Cell to (FromTop) remove pieces at to or move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Bakkis (Ludii 4) (Reconstructed)" (id "3928"))
+        (useFor "Ruleset/Bakkis (Ludii 5) (Reconstructed)" (rules "The game Bakkis is played by two players on a noshape board with nobasis tiling. 
+                All players play with Pawns. The following pieces are shared by all players: Dies with 4 faces valued [0, 1, 2, 4] and Dies with 4 faces valued [0, 1, 2, 4].
+                Rules for Pieces:
+                Pawns if the number of pips owned by Player Shared steps forward from site the location of the piece on track null is equal to -2, remove pieces at the location of the piece, else from cell in the location of the piece current level to cell the number of pips owned by Player Shared steps forward from site the location of the piece on track null moveRule: true captureEffect: if there is an enemy Player at to, if 1 is equal to the size of the stack on cell to, for each level at Cell to (FromTop) from cell in to current level to cell the centre point of the board moveRule: true, else for each level at Cell to (FromTop) from cell in to current level to cell Player Player at to's hand site 0 moveRule: true.
+                Players take turns moving.
+                Setup:
+                Place stack of [Pawn1] at cell Player 1's hand site 0
+                Place stack of [Pawn2] at cell Player 2's hand site 0.
+                Rules: 
+                Roll the dice and afterwards if cell Player the moving player's hand site 0 is occupied, from cell in Player the moving player's hand site 0 to cell ThrowDiceValue of the number of pips owned by Player Shared minus 1 steps forward from site Entry of the moving player on track Track moveRule: true captureEffect: if there is an enemy Player at to, for each level at Cell to (FromTop) remove pieces at to or move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Bakkis (Ludii 5) (Reconstructed)" (id "3929"))
+        (source "Murray 1951: 136")
+        (version "1.3.10")
+        (classification "board/race/reach/reconstruction/done")
         (credit "Eric Piette")
         (origin "This game was played in Somaliland, around 1856.")
         }

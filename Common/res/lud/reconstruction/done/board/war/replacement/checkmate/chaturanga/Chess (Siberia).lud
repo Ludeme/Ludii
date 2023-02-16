@@ -5042,11 +5042,379 @@
     (info
         {
         (description "This game was played on the banks of the Nagy-Jugan River in Siberia. ")
-        (rules "9x9 board. At least eight different piece types: two with eight pieces, three with two pieces, and two with one piece.")
-        (source "DLP evidence.")
-        (id "2031")
-        (version "1.3.9")
-        (classification "board/war/replacement/checkmate/chaturanga/reconstruction/pending")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "9x9 board. At least eight different piece types: two with eight pieces, three with two pieces, and two with one piece."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "2031"))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 1) (Reconstructed)" (rules "The game Chess (Siberia) is played by two players on a 9x9 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2 
+                All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+                Rules for Pieces:
+                Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+                Kings if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights leap a piece to not is a friend.
+                Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty or step forward or remove pieces at to then step forward-right or forward-left.
+                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 1 row.
+                Place a Pawn for player two at each cell of the 7 row.
+                Place a Rook for player one on sites: A1 and I1.
+                Place a Knight for player one on sites: B1 and H1.
+                Place a Bishop for player one on sites: C1 and G1.
+                Place a Queen for player one on site D1.
+                Place a King for player one on site E1.
+                Place a Rook for player two on sites: A9 and I9.
+                Place a Knight for player two on sites: B9 and H9.
+                Place a Bishop for player two on sites: C9 and G9.
+                Place a Queen for player two on site D9.
+                Place a King for player two on site E9..
+                Rules: 
+                Move one of your pieces then set the value of Player the moving player to add the following values: [1,the value of Player the moving player] and if the value of Player the moving player is not equal to 1, move again if in the same turn, a piece of the moving player the to location of the last move, this piece can promote into Queen, Knight, Bishop or Rook, else move one of your pieces.
+                Aim: 
+                If King of the next player is threatened and not can move move one of your pieces, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 1) (Reconstructed)" (id "3824"))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 2) (Reconstructed)" (rules "The game Chess (Siberia) is played by two players on a 9x9 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2 
+                All players play with KingnoCrosses, Rooks, Camels, Knights, Pawns and Dogs.
+                Rules for Pieces:
+                Camels hop diagonal.
+                Dogs remove pieces at to then step diagonal.
+                KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights leap a piece to not is a friend.
+                Pawns step forward or remove pieces at to then step forward-right or forward-left or if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty if the to location of the last move is in Promotion or Promotion, a piece of the moving player the to location of the last move, this piece can promote into Dog.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 1 row.
+                Place a Pawn for player two at each cell of the 7 row.
+                Place a Rook for player one on sites: A1 and I1.
+                Place a Knight for player one on sites: B1 and H1.
+                Place a Camel for player one on sites: C1 and G1.
+                Place a Dog for player one on site D1.
+                Place a KingnoCross for player one on site E1.
+                Place a Rook for player two on sites: A9 and I9.
+                Place a Knight for player two on sites: B9 and H9.
+                Place a Camel for player two on sites: C9 and G9.
+                Place a Dog for player two on site D9.
+                Place a KingnoCross for player two on site E9..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If KingnoCross of the next player is threatened and not can move move one of your pieces.
+                
+        "))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 2) (Reconstructed)" (id "3825"))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 3) (Reconstructed)" (rules "The game Chess (Siberia) is played by two players on a 9x9 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2
+                Half: the bottom sites of the board expanded by 3 steps for P1
+                Half: the top sites of the board expanded by 3 steps for P2 
+                All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+                Rules for Pieces:
+                Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+                Kings if there is an enemy Player at to, remove pieces at to then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Knights leap a piece to not is a friend.
+                Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward or remove pieces at to then step forward-right or forward-left or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again.
+                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 1 row.
+                Place a Pawn for player two at each cell of the 7 row.
+                Place a Rook for player one on sites: A1 and I1.
+                Place a Knight for player one on sites: B1 and H1.
+                Place a Bishop for player one on sites: C1 and G1.
+                Place a Queen for player one on site D1.
+                Place a King for player one on site E1.
+                Place a Rook for player two on sites: A9 and I9.
+                Place a Knight for player two on sites: B9 and H9.
+                Place a Bishop for player two on sites: C9 and G9.
+                Place a Queen for player two on site D9.
+                Place a King for player two on site E9..
+                Rules: 
+                Move one of your pieces then set the value of Player the moving player to add the following values: [1,the value of Player the moving player] and if the value of Player the moving player is not equal to 1, move again if in the same turn, a piece of the moving player the to location of the last move, this piece can promote into Queen, Knight, Bishop or Rook, else move one of your pieces.
+                Aim: 
+                If King of the next player is threatened and not can move move one of your pieces, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 3) (Reconstructed)" (id "3826"))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 4) (Reconstructed)" (rules "The game Chess (Siberia) is played by two players on a 9x9 rectangle board with square tiling. 
+                All players play with KingnoCrosses, Rooks, BishopnoCrosses, Knights, FerznoCrosses and Pawns.
+                Rules for Pieces:
+                BishopnoCrosses slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+                FerznoCrosses slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+                KingnoCrosses remove pieces at to then step adjacent then if 1 is equal to State at the to location of the last move and the to location of the last move is equal to AheadKing of the moving player, set the state of the Cell the to location of the last move to 2, else if State at the to location of the last move is not equal to 0, set the state of the Cell the to location of the last move to 0 or if 1 is equal to State at the location of the piece, 1 is equal to State at RookRight of the moving player and empty, from cell in the location of the piece to cell KnightKingRightForward of the moving player moveRule: true then if State at the to location of the last move is not equal to 0, set the state of the Cell the to location of the last move to 0 or if 1 is equal to State at the location of the piece, 1 is equal to State at RookLeft of the moving player and empty, from cell in the location of the piece to cell KnightKingLeftForward of the moving player moveRule: true then if State at the to location of the last move is not equal to 0, set the state of the Cell the to location of the last move to 0 or if 2 is equal to State at the location of the piece and 2 is equal to State at site 0 of region start position, from cell in the location of the piece to cell KnightKingLeftBackward of the moving player moveRule: true then set the state of the Cell the to location of the last move to 0 or if 2 is equal to State at the location of the piece and 3 is equal to State at site 0 of region start position, from cell in the location of the piece to cell KnightKingRightBackward of the moving player moveRule: true then set the state of the Cell the to location of the last move to 0.
+                Knights leap a piece to not is a friend.
+                Pawns step forward or remove pieces at to then step forward-right or forward-left.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, if the to location of the last move is in start position and 2 is equal to State at King of the moving player is in, if the from location of the last move is equal to RookLeft of the moving player, set the state of the Cell the to location of the last move to 2, else set the state of the Cell the to location of the last move to 3, else set the state of the Cell the to location of the last move to 0.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 1 row.
+                Place a Pawn for player two at each cell of the 7 row.
+                Place a Rook for player one on sites: A1 and I1.
+                Place a Knight for player one on sites: B1 and H1.
+                Place a BishopnoCross for player one on sites: C1 and G1.
+                Place a FerznoCross for player one on site D1.
+                Place a KingnoCross for player one on site E1.
+                Place a Rook for player two on sites: A9 and I9.
+                Place a Knight for player two on sites: B9 and H9.
+                Place a BishopnoCross for player two on sites: C9 and G9.
+                Place a FerznoCross for player two on site D9.
+                Place a KingnoCross for player two on site E9..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 4) (Reconstructed)" (id "3827"))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 5) (Reconstructed)" (rules "The game Chess (Siberia) is played by two players on a 9x9 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2
+                Half: the bottom sites of the board expanded by 3 steps for P1
+                Half: the top sites of the board expanded by 3 steps for P2 
+                All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+                Rules for Pieces:
+                Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+                Kings if there is an enemy Player at to, remove pieces at to then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Knights leap a piece to not is a friend.
+                Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward or remove pieces at to then step forward-right or forward-left or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again.
+                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 1 row.
+                Place a Pawn for player two at each cell of the 7 row.
+                Place a Rook for player one on sites: A1 and I1.
+                Place a Knight for player one on sites: B1 and H1.
+                Place a Bishop for player one on sites: C1 and G1.
+                Place a Queen for player one on site D1.
+                Place a King for player one on site E1.
+                Place a Rook for player two on sites: A9 and I9.
+                Place a Knight for player two on sites: B9 and H9.
+                Place a Bishop for player two on sites: C9 and G9.
+                Place a Queen for player two on site D9.
+                Place a King for player two on site E9..
+                Rules: 
+                Move one of your pieces then if not in the same turn, move again if in the same turn, a piece of the moving player the to location of the last move, this piece can promote into Queen, Knight, Bishop or Rook, else move one of your pieces or if State at King of current moving player is equal to 1 and not King of the moving player is threatened, if State at RookLeft of current moving player is equal to 1 and can move slide from RookLeft of current moving player in the east direction through empty, slide from King of current moving player in the west direction through empty and not King of the moving player is threatened then slide from RookLeft of current moving player in the east direction through true or if State at RookRight of current moving player is equal to 1 and can move slide from RookRight of current moving player in the west direction through empty, slide from King of current moving player in the east direction through empty and not King of the moving player is threatened then slide from RookRight of current moving player in the west direction through true.
+                Aim: 
+                If King of the next player is threatened and not can move move one of your pieces, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 5) (Reconstructed)" (id "3828"))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 6) (Reconstructed)" (rules "The game Chess (Siberia) is played by two players on a 9x9 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2 
+                All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+                Rules for Pieces:
+                Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+                Kings if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights leap a piece to not is a friend.
+                Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty or step forward or remove pieces at to then step forward-right or forward-left.
+                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 1 row.
+                Place a Pawn for player two at each cell of the 7 row.
+                Place a Rook for player one on sites: A1 and I1.
+                Place a Knight for player one on sites: B1 and H1.
+                Place a Bishop for player one on sites: C1 and G1.
+                Place a Queen for player one on site D1.
+                Place a King for player one on site E1.
+                Place a Rook for player two on sites: A9 and I9.
+                Place a Knight for player two on sites: B9 and H9.
+                Place a Bishop for player two on sites: C9 and G9.
+                Place a Queen for player two on site D9.
+                Place a King for player two on site E9..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If King of the next player is threatened and not can move move one of your pieces, the moving player wins If 1 is equal to the number of pieces owned by Player the next player, it's a draw.
+                
+        "))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 6) (Reconstructed)" (id "3829"))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 7) (Reconstructed)" (rules "The game Chess (Siberia) is played by two players on a 9x9 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2
+                Half: the bottom sites of the board expanded by 3 steps for P1
+                Half: the top sites of the board expanded by 3 steps for P2 
+                All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+                Rules for Pieces:
+                Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+                Kings if there is an enemy Player at to, remove pieces at to then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Knights leap a piece to not is a friend.
+                Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward or remove pieces at to then step forward-right or forward-left or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again.
+                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 1 row.
+                Place a Pawn for player two at each cell of the 7 row.
+                Place a Rook for player one on sites: A1 and I1.
+                Place a Knight for player one on sites: B1 and H1.
+                Place a Bishop for player one on sites: C1 and G1.
+                Place a Queen for player one on site D1.
+                Place a King for player one on site E1.
+                Place a Rook for player two on sites: A9 and I9.
+                Place a Knight for player two on sites: B9 and H9.
+                Place a Bishop for player two on sites: C9 and G9.
+                Place a Queen for player two on site D9.
+                Place a King for player two on site E9..
+                Rules: 
+                If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into Queen, Knight, Bishop or Rook, else move one of your pieces or if State at King of current moving player is equal to 1 and not King of the moving player is threatened, if State at RookLeft of current moving player is equal to 1 and can move slide from RookLeft of current moving player in the east direction through empty, slide from King of current moving player in the west direction through empty and not King of the moving player is threatened then slide from RookLeft of current moving player in the east direction through true or if State at RookRight of current moving player is equal to 1 and can move slide from RookRight of current moving player in the west direction through empty, slide from King of current moving player in the east direction through empty and not King of the moving player is threatened then slide from RookRight of current moving player in the west direction through true.
+                Aim: 
+                If King of the next player is threatened and not can move move one of your pieces, the moving player wins If the moving player cannot move or Counter is equal to 99, it's a draw.
+                
+        "))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 7) (Reconstructed)" (id "3830"))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 8) (Reconstructed)" (rules "The game Chess (Siberia) is played by two players on a 9x9 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2
+                Half: the bottom sites of the board expanded by 3 steps for P1
+                Half: the top sites of the board expanded by 3 steps for P2 
+                All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+                Rules for Pieces:
+                Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+                Kings if there is an enemy Player at to, remove pieces at to then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Knights leap a piece to not is a friend.
+                Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward or remove pieces at to then step forward-right or forward-left or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again.
+                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 1 row.
+                Place a Pawn for player two at each cell of the 7 row.
+                Place a Rook for player one on sites: A1 and I1.
+                Place a Knight for player one on sites: B1 and H1.
+                Place a Bishop for player one on sites: C1 and G1.
+                Place a Queen for player one on site D1.
+                Place a King for player one on site E1.
+                Place a Rook for player two on sites: A9 and I9.
+                Place a Knight for player two on sites: B9 and H9.
+                Place a Bishop for player two on sites: C9 and G9.
+                Place a Queen for player two on site D9.
+                Place a King for player two on site E9..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If King of the next player is threatened and not can move move one of your pieces, the moving player wins If 1 is equal to the number of pieces owned by Player the next player, it's a draw.
+                
+        "))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 8) (Reconstructed)" (id "3831"))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 9) (Reconstructed)" (rules "The game Chess (Siberia) is played by two players on a 9x9 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2 
+                All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+                Rules for Pieces:
+                Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+                Kings if there is an enemy Player at to, remove pieces at to then set the current counter of the game to -1 then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Knights leap a piece to not is a friend.
+                Pawns step forward or remove pieces at to then step forward-right or forward-left or if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again and set the current counter of the game to -1.
+                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 1 row.
+                Place a Pawn for player two at each cell of the 7 row.
+                Place a Rook for player one on sites: A1 and I1.
+                Place a Knight for player one on sites: B1 and H1.
+                Place a Bishop for player one on sites: C1 and G1.
+                Place a Queen for player one on site D1.
+                Place a King for player one on site E1.
+                Place a Rook for player two on sites: A9 and I9.
+                Place a Knight for player two on sites: B9 and H9.
+                Place a Bishop for player two on sites: C9 and G9.
+                Place a Queen for player two on site D9.
+                Place a King for player two on site E9..
+                Rules: 
+                If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into Queen, Knight, Bishop or Rook, else move one of your pieces or if State at King of current moving player is equal to 1 and not King of the moving player is threatened, if State at RookLeft of current moving player is equal to 1 and can move slide from RookLeft of current moving player in the east direction through empty, slide from King of current moving player in the west direction through empty and not King of the moving player is threatened then slide from RookLeft of current moving player in the east direction through true or if State at RookRight of current moving player is equal to 1 and can move slide from RookRight of current moving player in the west direction through empty, slide from King of current moving player in the east direction through empty and not King of the moving player is threatened then slide from RookRight of current moving player in the west direction through true.
+                Aim: 
+                If King of the next player is threatened and not can move move one of your pieces, the moving player wins If the moving player cannot move or Counter is equal to 99, it's a draw.
+                
+        "))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 9) (Reconstructed)" (id "3832"))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 10) (Reconstructed)" (rules "The game Chess (Siberia) is played by two players on a 9x9 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2 
+                All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+                Rules for Pieces:
+                Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+                Kings if there is an enemy Player at to, remove pieces at to then set the current counter of the game to -1 then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Knights leap a piece to not is a friend.
+                Pawns step forward or remove pieces at to then step forward-right or forward-left or if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again and set the current counter of the game to -1.
+                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 1 row.
+                Place a Pawn for player two at each cell of the 7 row.
+                Place a Rook for player one on sites: A1 and I1.
+                Place a Knight for player one on sites: B1 and H1.
+                Place a Bishop for player one on sites: C1 and G1.
+                Place a Queen for player one on site D1.
+                Place a King for player one on site E1.
+                Place a Rook for player two on sites: A9 and I9.
+                Place a Knight for player two on sites: B9 and H9.
+                Place a Bishop for player two on sites: C9 and G9.
+                Place a Queen for player two on site D9.
+                Place a King for player two on site E9..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If King of the next player is threatened and not can move move one of your pieces, the moving player wins If 1 is equal to the number of pieces owned by Player the next player, it's a draw.
+                
+        "))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 10) (Reconstructed)" (id "3833"))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 11) (Reconstructed)" (rules "The game Chess (Siberia) is played by two players on a 9x9 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2 
+                All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+                Rules for Pieces:
+                Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+                Kings if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights leap a piece to not is a friend.
+                Pawns step forward or remove pieces at to then step forward-right or forward-left or if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty.
+                Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 1 row.
+                Place a Pawn for player two at each cell of the 7 row.
+                Place a Rook for player one on sites: A1 and I1.
+                Place a Knight for player one on sites: B1 and H1.
+                Place a Bishop for player one on sites: C1 and G1.
+                Place a Queen for player one on site D1.
+                Place a King for player one on site E1.
+                Place a Rook for player two on sites: A9 and I9.
+                Place a Knight for player two on sites: B9 and H9.
+                Place a Bishop for player two on sites: C9 and G9.
+                Place a Queen for player two on site D9.
+                Place a King for player two on site E9..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If King of the next player is threatened and not can move move one of your pieces, the moving player wins If 1 is equal to the number of pieces owned by Player the next player, it's a draw.
+                
+        "))
+        (useFor "Ruleset/Chess (Siberia) (Ludii 11) (Reconstructed)" (id "3834"))
+        (version "1.3.10")
+        (classification "board/war/replacement/checkmate/chaturanga/reconstruction/done")
         (credit "Eric Piette")
         (origin "This game was played in Siberia, around 1898.")
         }
