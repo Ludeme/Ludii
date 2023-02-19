@@ -32,6 +32,7 @@ import main.math.BitTwiddling;
 import metadata.Metadata;
 import other.GameLoader;
 import other.UndoData;
+import other.action.Action;
 import other.model.MatchModel;
 import other.model.Model;
 import other.move.Move;
