@@ -700,28 +700,25 @@ public class Context
 	}
 	
 	/**
-	   * @param player The index of the player.
-	   * 
-	   * @return Note sent to a player at a last move.
+	    * @param player The index of the player.
+	    * 
+	    * @return List of notes sent to a player at the last move.
 	*/
 	public List<String> getNotes(final int player)
 	{
-		List <String> notes = new ArrayList <String>(); 
-			
-		if(trial().lastMove(player) == null) 
-		  return notes;
-			
-		List <Action> actions = trial().lastMove(player).actions();
-			
-		for (Action action: actions) {
-			if(action.getDescription().contentEquals("Note"))
-				notes.add(action.message());
-		}
-		
-		for(int i = notes.size() - 1;  i >= 0; i -= 2) {
-			notes.remove(i);
-		}
-		return notes;
+	    List <String> notes = new ArrayList <String>(); 
+	        
+	    if(trial().lastMove(player) == null) 
+	        return notes;
+	        
+	    List <Action> actions = trial().lastMove(player).actions();
+	        
+	    for (Action action: actions) {
+	        if(action.getDescription().contentEquals("Note") && action.who() == player)
+	            notes.add(action.message());
+	    }
+	    
+	    return notes;
 	}
 	  
 	/**
