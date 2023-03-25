@@ -101,6 +101,9 @@ public class MainWindowDesktop extends JPanel implements MouseListener, MouseMot
 	/** If we are currently painting the desktop frame. */
 	public boolean isPainting = false;
 
+	// View page for MYOG app
+	protected int page = 0;
+
 	//-------------------------------------------------------------------------
 
 	/**

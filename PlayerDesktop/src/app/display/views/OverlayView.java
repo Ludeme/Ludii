@@ -81,48 +81,48 @@ public final class OverlayView extends View
 		// Draw unique section text for exhibition app.
 		if (app.settingsPlayer().usingMYOGApp())
 		{
-			final Font exhbitionTitleFont = new Font("Cantarell", Font.BOLD, 52);
-			g2d.setFont(exhbitionTitleFont);
-			
-			try(InputStream in = getClass().getResourceAsStream("/National-Bold.ttf"))
-			{
-				g2d.setFont(Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(52f));
-			}
-			catch (final Exception e)
-			{
-				e.printStackTrace();
-			}
-			
-			g2d.setColor(new Color(29,136,188));
-			g2d.drawString(EnglishSwedishTranslations.MYOGTITLE.toString(), 45, 80);
+//			//final Font exhbitionTitleFont = new Font("Cantarell", Font.BOLD, 52);
+//			//g2d.setFont(exhbitionTitleFont);
+//			
+//			try(InputStream in = getClass().getResourceAsStream("/National-Bold.ttf"))
+//			{
+//				g2d.setFont(Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(52f));
+//			}
+//			catch (final Exception e)
+//			{
+//				e.printStackTrace();
+//			}
+//			
+//			g2d.setColor(new Color(29,136,188));
+//			g2d.drawString(EnglishSwedishTranslations.MYOGTITLE.toString(), 45, 80);
 			
 			if (app.manager().ref().context().game().hasSharedPlayer())
 			{
-				g2d.setColor(new Color(227,62,41));
-				final Font exhbitionLabelFont = new Font("Cantarell", Font.PLAIN, 24);
-				g2d.setFont(exhbitionLabelFont);
-
-				try(InputStream in = getClass().getResourceAsStream("/National-Regular.ttf"))
-				{
-					g2d.setFont(Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(24f));
-				}
-				catch (final Exception e)
-				{
-					e.printStackTrace();
-				}
-				
-				g2d.drawString("1. " + EnglishSwedishTranslations.CHOOSEBOARD.toString(), 50, 150);
-				
-				if (app.manager().ref().context().board().numSites() > 1)
-					g2d.drawString("2. " + EnglishSwedishTranslations.DRAGPIECES.toString(), 50, 375);
+//				g2d.setColor(new Color(227,62,41));
+//				//final Font exhbitionLabelFont = new Font("Cantarell", Font.PLAIN, 24);
+//				//g2d.setFont(exhbitionLabelFont);
+//
+//				try(InputStream in = getClass().getResourceAsStream("/National-Regular.ttf"))
+//				{
+//					g2d.setFont(Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(24f));
+//				}
+//				catch (final Exception e)
+//				{
+//					e.printStackTrace();
+//				}
+//				
+//				g2d.drawString("1. " + EnglishSwedishTranslations.CHOOSEBOARD.toString(), 50, 150);
+//				
+//				if (app.manager().ref().context().board().numSites() > 1)
+//					g2d.drawString("2. " + EnglishSwedishTranslations.DRAGPIECES.toString(), 50, 375);
 			}
 			else
 			{
 				// If playing a game, show toEnglish of that game's description
-				Font exhbitionDescriptionFont = new Font("Cantarell", Font.PLAIN, 22);
+				Font exhbitionDescriptionFont = null;  //new Font("Cantarell", Font.PLAIN, 22);
 				try(InputStream in = getClass().getResourceAsStream("/National-Regular.ttf"))
 				{
-					exhbitionDescriptionFont = Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(22f);
+					exhbitionDescriptionFont = Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(28f);
 				}
 				catch (final Exception e)
 				{
@@ -130,7 +130,7 @@ public final class OverlayView extends View
 				}
 				
 				englishDescriptionField.setFont(exhbitionDescriptionFont);
-				englishDescriptionField.setForeground(Color.white);
+				englishDescriptionField.setForeground(new Color(242, 238, 209));  // exhibition beige  //Color.white);
 				englishDescriptionField.setBounds(50, 100, 580, 450);
 				englishDescriptionField.setCaretColor(new Color(0,0,0,0));
 				englishDescriptionField.setOpaque(false);

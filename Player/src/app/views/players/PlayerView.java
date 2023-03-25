@@ -108,7 +108,8 @@ public class PlayerView extends View
 			// Place the shared hand in different location for exhibition app.
 			if (app.settingsPlayer().usingMYOGApp())
 			{
-				place = new Rectangle(350, 300, 180, 130);		// Last argument changes piece size.
+				//place = new Rectangle(415, 280, 180, 130);	// last argument changes piece size
+				place = new Rectangle(360, 280, 180, 130);	// last argument changes piece size
 			}
 			if (SettingsExhibition.exhibitionVersion)
 			{
