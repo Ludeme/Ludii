@@ -258,6 +258,8 @@ public final class OverlayView extends View
 	 */
 	private void drawExtraGameInformation(final Graphics2D g2d, final Context context)
 	{
+		//System.out.println("At OverlayView.drawExtraGameInformation()...");
+		
 		// Skip extra game information in certain circumstances.
 		if (app.settingsPlayer().isPerformingTutorialVisualisation())
 			return;
@@ -286,6 +288,9 @@ public final class OverlayView extends View
 			g2d.setFont(font);
 			g2d.setColor(Color.RED);
 			
+			//System.out.println("Is MYOG, context.winners() is: " + context.winners());
+			//System.out.println("boardPanel is at: " + DesktopApp.view().getBoardPanel().placement());
+						
 			if (EnglishSwedishTranslations.inEnglish())
 			{
 				if (context.winners().size() > 0)

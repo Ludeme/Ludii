@@ -5,10 +5,10 @@ public enum EnglishSwedishTranslations
 	// Menu Text
 	MYOGTITLE("Make Your Own Game", "Gor Ditt Eget Spel"),  //"Gör Ditt Eget Spel"),
 	
-	INTRO_A("Ludemes are the elements that make up games.", "Ludemes är beståndsdelar som utgör spel."),
+	INTRO_A("Ludemes are the elements that make up games.", "Spel består av beståndsdelar som kallas ludemes."),
 	INTRO_B("Here you can mix and match ludemes to make your own game!", "Här kan du mixa och matcha ludemes och göra ditt eget spel!"),
 			
-	MAKE_YOUR_GAME("Make Your Game", "Gora Ditt Spel"),
+	MAKE_YOUR_GAME("Make Your Game", "Gor Ditt Spel"),
 	PLAY_YOUR_GAME("Play Your Game", "Spela Ditt Spel"),
 
 	HOME("Home", "Home"),
@@ -18,12 +18,12 @@ public enum EnglishSwedishTranslations
 	
 	CHOOSEBOARD("Choose a board", "Välj ett spelbräde"),
 	DRAGPIECES("Drag pieces onto the board", "Dra pjäser till brädet"),
-	MOVEMENT("Piece moves", "Stycke rörelse"),
-	CAPTURE("How to Capture", "Hur man fångar"),
+	MOVEMENT("Piece moves", "Hur man flyttar"),
+	CAPTURE("How to capture", "Hur man fångar"),
 	GOAL("How to win", "Hur man vinner"),
 	
 	// Button Text
-	START("Start", "Start"),
+	START("Start", "Starta"),
 	RESET("Reset", "Återställ"),
 	PLAY("Play", "Spela"),
 	PLAYAGAIN("Play Again", "Spela igen"),
@@ -48,8 +48,8 @@ public enum EnglishSwedishTranslations
 	
 	// Capture Options
 	REPLACE("Replace", "Ersätta"),
-	HOP("Hop", "Hopp"),
-	FLANK("Flank", "Flank"),
+	HOP("Hop", "Hoppa"),
+	FLANK("Flank", "Flankera"),
 	NEIGHBOR("Neighbor", "Angränsa"),
 	;
 
