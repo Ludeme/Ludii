@@ -366,7 +366,7 @@ public class PlayerViewUser extends View
 		{
 			//System.out.println("Creating spinner...");
 			if (spinner == null)
-				spinner = new Spinner(new Rectangle2D.Double(935, 325, 100, 100));
+				spinner = new Spinner(new Rectangle2D.Double(905, 335, 100, 100));
 			spinner.setDotRadius(4);
 		}
 		else

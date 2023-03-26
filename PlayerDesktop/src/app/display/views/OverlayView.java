@@ -281,51 +281,51 @@ public final class OverlayView extends View
 			drawStringBelowBoard(g2d, str, 0.95);
 		}
 		
-		// Game over message for exhibition
-		if (app.settingsPlayer().usingMYOGApp() && context.trial().over())	
-		{
-			final Font font = new Font("Arial", Font.BOLD, 40);
-			g2d.setFont(font);
-			g2d.setColor(Color.RED);
-			
-			//System.out.println("Is MYOG, context.winners() is: " + context.winners());
-			//System.out.println("boardPanel is at: " + DesktopApp.view().getBoardPanel().placement());
-						
-			if (EnglishSwedishTranslations.inEnglish())
-			{
-				if (context.winners().size() > 0)
-				{
-					final String message = "Player " + context.winners().get(0) + " has won";
-					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
-					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
-					g2d.drawString(message, pixels + 42, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
-				}
-				else
-				{
-					final String message = "Draw";
-					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
-					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
-					g2d.drawString(message, pixels + 170, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
-				}
-			}
-			else
-			{
-				if (context.winners().size() > 0)
-				{
-					final String message = "Spelare " + context.winners().get(0) + " har vunnit";
-					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
-					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
-					g2d.drawString(message, pixels, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
-				}
-				else
-				{
-					final String message = "Dra";
-					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
-					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
-					g2d.drawString(message, pixels + 190, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
-				}
-			}
-		}
+//		// Game over message for exhibition
+//		if (app.settingsPlayer().usingMYOGApp() && context.trial().over())	
+//		{
+//			final Font font = new Font("Arial", Font.BOLD, 40);
+//			g2d.setFont(font);
+//			g2d.setColor(Color.RED);
+//			
+//			//System.out.println("Is MYOG, context.winners() is: " + context.winners());
+//			//System.out.println("boardPanel is at: " + DesktopApp.view().getBoardPanel().placement());
+//						
+//			if (EnglishSwedishTranslations.inEnglish())
+//			{
+//				if (context.winners().size() > 0)
+//				{
+//					final String message = "Player " + context.winners().get(0) + " has won";
+//					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+//					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+//					g2d.drawString(message, pixels + 42, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+//				}
+//				else
+//				{
+//					final String message = "Draw";
+//					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+//					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+//					g2d.drawString(message, pixels + 170, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+//				}
+//			}
+//			else
+//			{
+//				if (context.winners().size() > 0)
+//				{
+//					final String message = "Spelare " + context.winners().get(0) + " har vunnit";
+//					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+//					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+//					g2d.drawString(message, pixels, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+//				}
+//				else
+//				{
+//					final String message = "Dra";
+//					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+//					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+//					g2d.drawString(message, pixels + 190, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+//				}
+//			}
+//		}
 	}
 	
 	//-------------------------------------------------------------------------
