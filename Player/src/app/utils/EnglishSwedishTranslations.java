@@ -27,14 +27,14 @@ public enum EnglishSwedishTranslations
 	RESET("Reset", "Återställ"),
 	PLAY("Play", "Spela"),
 	PLAYAGAIN("Play Again", "Spela igen"),
-	EDIT("Edit Rules", "Redigera Regler"),
+	EDIT("Edit Rules", "Redigera regler"),
 	HUMANVSHUMAN("vs Human", "vs Person"),
 	HUMANVSAI("vs AI", "vs AI"),
 	PRINT("Print", "Skriva ut"),
 	
 	// Goal Options
-	LINE3("Line of 3", "Rad om 3"),
-	LINE4("Line of 4", "Rad om 4"),
+	LINE3("Line of 3", "Tre i rad"),
+	LINE4("Line of 4", "Fyra i rad"),
 	ELIMINATE("Eliminate", "Eliminera"),
 	BLOCK("Block", "Blockera"),
 	SURROUND("Surround", "Omringa"),
