@@ -24,7 +24,20 @@
 (game "Ssang-Ryouk"
     (players 2)
     (equipment {
-        ("TableBoard" ("TableTracksOppositeWithHands2" End))
+        (board 
+                (add
+                	(remove
+	                    (merge (rectangle 3 6) (shift 7 0 (rectangle 3 6))) 
+	                    vertices:{6 7 8 9 10 11 24 25 26 27 28 29}
+                    )
+                    edges:{{11 18} {5 12} {0 6} {1 7} {2 8} {3 9} {4 10} {5 11} {12 18} {13 19} {14 20} {15 21} {16 22} {17 23}}
+                )
+                { 
+                (track "Track1" "24,17,W,N,E,End" P1 directed:True)
+                (track "Track2" "25,23,W,S,E,End" P2 directed:True)
+                } 
+                use:Vertex
+        )
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die
@@ -47,14 +60,14 @@
         )
         (hand Each)
         (regions "FinalQuadrant" P1 (sites {18..23}))
-        (regions "FinalQuadrant" P2 (sites {6..11}))
+        (regions "FinalQuadrant" P2 (sites {12..17}))
     })
     (rules 
         (start {
             (place Stack "Disc1" 6 count:5) (place Stack "Disc1" 4 count:3) 
             (place Stack "Disc1" 12 count:5) (place Stack "Disc1" 23 count:2)
-            (place Stack "Disc2" 18 count:5) (place Stack "Disc2" 16 count:3) 
-            (place Stack "Disc2" 0 count:5) (place Stack "Disc2" 11 count:2)
+            (place Stack "Disc2" 18 count:5) (place Stack "Disc2" 10 count:3) 
+            (place Stack "Disc2" 0 count:5) (place Stack "Disc2" 17 count:2)
         })
         (play 
             ("RollEachNewTurnMove"
@@ -86,10 +99,16 @@
         }
     )
     
-    (graphics {
-        (show Edges Hidden)
-        (board Style Table)
-        (stackType Backgammon)
+    (graphics {    
+    	(show Edges Hidden) 
+        (board Background image:"rectangle.svg" fillColour:(colour Black) edgeColour:(colour Black) scaleX:1.1 scaleY:0.01 offsetX:0 offsetY:0.13)
+        (board Background image:"rectangle.svg" fillColour:(colour Black) edgeColour:(colour Black) scaleX:1.1 scaleY:0.01 offsetX:0 offsetY:-0.13)
+        (board Background image:"rectangle.svg" fillColour:(colour Black) edgeColour:(colour Black) scaleX:0.007 scaleY:0.423 offsetX:-0.55 offsetY:0)
+        (board Background image:"rectangle.svg" fillColour:(colour Black) edgeColour:(colour Black) scaleX:0.007 scaleY:0.423 offsetX:0.55 offsetY:0)
+        (board Background image:"flower.svg" fillColour:(colour Black) edgeColour:(colour Black) scale:0.06)
+        (board Background image:"FlowerHalf1.svg" fillColour:(colour Black) edgeColour:(colour Black) scale:0.06 offsetY:0.075)
+        (board Background image:"FlowerHalf2.svg" fillColour:(colour Black) edgeColour:(colour Black) scale:0.06 offsetY:-0.075)
+    
     })
     
 )
