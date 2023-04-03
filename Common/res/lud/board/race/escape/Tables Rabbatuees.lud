@@ -37,10 +37,10 @@
 (game "Tables Rabbatuees"
     (players 2)
     (equipment {
-        ("TableBoard"
+        ("BackgammonBoard"
             {
             (track "Track1" {0..5} P1 directed:True)
-            (track "Track2" {12..17} P2 directed:True)
+            (track "Track2" {13..18} P2 directed:True)
             }
         )
         (dice d:6 num:2)
@@ -59,14 +59,14 @@
             )		
         )
         (hand Each)
-        (map "StartTrack" {(pair P1 0) (pair P2 12)})
+        (map "StartTrack" {(pair P1 0) (pair P2 13)})
     })
     (rules 
         (start {
             (place Stack "Disc1" (sites {0..2}) count:2)
             (place Stack "Disc1" (sites {3..5}) count:3)
-            (place Stack "Disc2" (sites {12..14}) count:2)
-            (place Stack "Disc2" (sites {15..17}) count:3)
+            (place Stack "Disc2" (sites {13..15}) count:2)
+            (place Stack "Disc2" (sites {16..18}) count:3)
         })
         phases:{
         (phase "UnStacking" 
@@ -203,8 +203,7 @@
     )
     
     (graphics {
-        (show Edges Hidden)
-        (board Style Table)
+        (board Style backgammon)
         (stackType 1 Count)
         (stackType 2 Count)
         (stackType state:1 Backgammon limit:2)
