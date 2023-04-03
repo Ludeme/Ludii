@@ -101,7 +101,7 @@ count:(count Stack at:(last To) if:(= (id "Cone" #3)(what at:(to) level:(level))
 
 (define "IsLastMan"
     (and { (no Pieces in:(sites Mover "Base") )
-        (= 1 (count Pieces in:(intersection (sites "Rings") (sites Occupied by:Mover))  ))
+        (= 1 (count Sites in:(intersection (sites "Rings") (sites Occupied by:Mover))  ))
         (= 1 (size Stack at:(regionSite (intersection (sites Occupied by:Mover)(sites Mover "SitesLastMan")) index:0)) )
         "PlayerHasReserve"
     })
@@ -340,7 +340,7 @@ count:(count Stack at:(last To) if:(= (id "Cone" #3)(what at:(to) level:(level))
         
         (end  { (if "Extinction" (result Mover Win) )
             (if (>= (count Pieces Mover in:(sites "Prison")) <Num:pris>) (result Mover Win) )
-            //     (if "IsSelfStaleLastManLoop" (result Mover Draw) )  // only theoretical, waste of time.
+            //     (if "IsSelfStaleLastManLoop" (result Mover Draw) )  // only theoretical, waste of cpu time.
         })
     )
 )
@@ -358,6 +358,7 @@ count:(count Stack at:(last To) if:(= (id "Cone" #3)(what at:(to) level:(level))
     (item "Get 4 Prisoners"  <4>  "Transfer 4 enemy-pieces to your prison-cell.")
     (item "Get 5 Prisoners"  <5>  "Transfer 5 enemy-pieces to your prison-cell.")
     (item "Get 6 Prisoners"  <6>  "Transfer 6 enemy-pieces to your prison-cell.")
+    (item "Get 7 Prisoners"  <7>  "Transfer 7 enemy-pieces to your prison-cell.")
 } )
 
 //-------------
@@ -403,7 +404,7 @@ count:(count Stack at:(last To) if:(= (id "Cone" #3)(what at:(to) level:(level))
             But be aware: almost all moves change the steplength and attack & defence-patterns, ie. the whole situation.
         This makes it complicated to calculate, but entertaining to play.")
         (id "2002")
-        (version "1.3.10")
+        (version "1.3.11")
         (classification "board/war/replacement/eliminate/all")
         (author "Andreas Pichler")
         (credit "Franz Pichler")
