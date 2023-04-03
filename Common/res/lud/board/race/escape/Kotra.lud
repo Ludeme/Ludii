@@ -25,7 +25,12 @@
 (game "Kotra"
     (players 2)
     (equipment {
-        ("TableBoard" ("TableTracksSameDirectionOppositeCorners" End))
+        ("BackgammonBoard" 
+        	    {
+        	        (track "Track1" {12..7 5..0 13..18 20..25 End} P1 directed:True)
+        	        (track "Track2" {13..18 20..25 12..7 5..0 End} P2 directed:True)
+        	        }		
+        )
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die
@@ -58,18 +63,18 @@
             )		
         )
         (hand Each)
-        (regions "FinalQuadrant" P1 (sites {18..23}))
+        (regions "FinalQuadrant" P1 (sites {20..25}))
         (regions "FinalQuadrant" P2 (sites {0..5}))
-        (regions "StartingSide" P1 (sites {0..11}))
-        (regions "StartingSide" P2 (sites {12..23}))
-        (regions "AfterPenultimate" P1 (sites {23}))
+        (regions "StartingSide" P1 (sites {0..5 7..12}))
+        (regions "StartingSide" P2 (sites {13..18 20..25}))
+        (regions "AfterPenultimate" P1 (sites {25}))
         (regions "AfterPenultimate" P2 (sites {0}))
-        (map "Entry" {(pair P1 11) (pair P2 12)})
+        (map "Entry" {(pair P1 12) (pair P2 13)})
     })
     (rules 
         (start {
-            (place Stack "Disc1" 11 count:15)
-            (place Stack "Disc2" 12 count:15)
+            (place Stack "Disc1" 12 count:15)
+            (place Stack "Disc2" 13 count:15)
         })
         (play 
             ("RollEachNewTurnMove"
@@ -105,7 +110,7 @@
     
     (graphics {
         (show Edges Hidden)
-        (board Style Table)
+        (board Style backgammon)
         (stackType 1 Count)
         (stackType 2 Count)
         (stackType 0 Backgammon)
