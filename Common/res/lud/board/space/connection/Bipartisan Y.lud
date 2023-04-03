@@ -1,0 +1,116 @@
+// Bipartisan (play Friend and enemy on your turn) variant for Y / Master Y / Y Hex board 
+
+(define "Side1" (union (sites Side NE) (sites Side N)))
+(define "Side2" (union (sites Side SE) (sites Side S)))
+(define "Side3" (union (sites Side NW) (sites Side SW)))
+   
+(define "AddPieceOf"
+ (move Add (piece #1)
+  (to (sites Empty))
+  #2
+))
+     
+//---------------------------------------------
+// Main routine
+
+(game "Bipartisan Y" 
+ (players 2)
+ (equipment
+  {
+   (board <Board:size> use:Vertex)
+   (piece "Disc" Each )
+   (piece "Counter" Neutral maxState:2)
+  }
+ )
+ (rules
+  (play
+   (if
+    ("SameTurn")
+    ("AddPieceOf" (next) ~)    
+    ("AddPieceOf" (mover) (then (moveAgain)))    
+  ))
+  (end 
+   {
+    (if
+     (and
+      (= 1 (who at:(last To)))
+      (is Connected 3 {"Side1" "Side2" "Side3"})
+     )
+     (result P1 Win)
+    )
+    (if
+     (and
+      (= 2 (who at:(last To)))
+      (is Connected 3 {"Side1" "Side2" "Side3"})
+     )
+     (result P2 Win)
+    )
+   }
+)))
+
+//-------------------------------------------------
+// Options
+
+(option "Board" <Board>  args:{<size> } 
+  {
+   (item "Triangle 5" <(tri 5)> "Triangle-5 Board (15)")
+   (item "Triangle 6" <(tri 6)> "Triangle-6 Board (21)")
+   (item "Triangle 8*" <(tri 8)> "Triangle-8 Board (36)")**
+   (item "Triangle 9" <(tri 9)> "Triangle-9 Board (45)")
+   (item "Triangle 11" <(tri 11)> "Triangle-11 Board (66)")
+   (item "Triangle 12" <(tri 12)> "Triangle-12 Board (78)")
+   (item "Triangle 14" <(tri 14)> "Triangle-14 Board (105)")
+   (item "Triangle 15*" <(tri 15)> "Triangle-15 Board (120)")**
+   (item "Triangle 17" <(tri 17)> "Triangle-17 Board (153)")
+   (item "Hex 3-4" <(tri Limping 3)> "Hex 4-5 Board (48)")
+   (item "Hex 4-5*" <(tri Limping 4)> "Hex 4-5 Board (48)")***
+   (item "Hex 5-6" <(tri Limping 5)> "Hex 5-6 Board (75)")
+   (item "Hex 6-7*" <(tri Limping 6)> "Hex 6-7 Board (108)")**
+   (item "Hex 7-8" <(tri Limping 7)> "Hex 7-8 Board (146)")
+   (item "Hex 8-9" <(tri Limping 8)> "Hex 8-9 Board (146)")
+   (item "Tiangle 7-7"
+    <(renumber
+     (rotate 90
+      (trim
+       (remove (tri Limping 7)
+        vertices:{2 3 4 5 6 7 8 12 13 14 15 16 17 23 24 25 26 27 28 35 36 37 38 39 48 49 50 51 52 62 63 64 65 77 78 79 90 91 101 102 103 111 112 113 120 121 122 123 128 129 130 131 135 136 137 138 139 141 142 143 144 145 146}
+    ))))> 
+    "Triangle Board (83)"
+   )
+  }
+)
+
+(define "P1Colour" (colour DarkGreen))
+(define "P2Colour" (colour White))
+(define "BoardColour" (colour 215 203 170))
+(define "EdgesOfSide"
+ (intersection
+  (sites Outer Edge) 
+  (forEach of:(difference #1 (sites Corners Vertex))
+   (sites Incident Edge of:Vertex at:(site))
+)))
+
+//---------------------------------------------
+
+(metadata
+  (info
+    {
+    }
+  )
+  
+  (graphics
+   {
+    (player Colour P1 "P1Colour")
+    (player Colour P2 "P2Colour")
+    (board StyleThickness OuterEdges 4.0)
+    (region Colour Edge ("EdgesOfSide" "Side1") regionSiteType:Edge (colour Red))
+    (region Colour Edge ("EdgesOfSide" "Side2") regionSiteType:Edge (colour Blue))
+    (region Colour Edge ("EdgesOfSide" "Side3") regionSiteType:Edge (colour Yellow))
+    (board Style Board)
+    (board Colour Phase0 "BoardColour")    
+    (board Colour InnerEdges (colour 120 100 40 190) )
+    (board Colour OuterEdges (colour 120 100 40 190) )
+    (piece Scale .7) 
+   }
+))
+
