@@ -325,7 +325,8 @@ public enum ShogiType
 	FREEGOLD("奔金", "honkin", "Free gold"),
 	FREECAT("奔猫", "honmyō", "Free cat"),
 	BAT("蝙蝠", "kōmori", "Bat"),
-	CHUNIN("中忍", "Chūnin", "Chunin")
+	CHUNIN("中忍", "Chūnin", "Chunin"),
+	TOKIN("と", "Tokin", "Tokin")
 	;
 
 	//-------------------------------------------------------------------------
