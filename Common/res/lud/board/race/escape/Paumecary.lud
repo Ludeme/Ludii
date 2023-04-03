@@ -5,10 +5,10 @@
 (game "Paumecary"
     (players 2)
     (equipment {
-        ("TableBoard"
+        ("BackgammonBoard"
             {
-            (track "Track1" {24..18 End} P1 directed:True)
-            (track "Track2" {25 23..18 End} P2 directed:True)
+            (track "Track1" {26..20 End} P1 directed:True)
+            (track "Track2" {27 25..20 End} P2 directed:True)
             }
         )
         (dice d:6 num:2)
@@ -74,8 +74,7 @@
     )
     
     (graphics {
-        (show Edges Hidden)
-        (board Style Table)
+        (board Style backgammon)
         (stackType 0 Backgammon)
         (stackType 1 Count)
         (stackType 2 Count)
