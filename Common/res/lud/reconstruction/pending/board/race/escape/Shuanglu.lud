@@ -1,0 +1,29 @@
+(game "Shuanglu"
+    (players 2)
+    (equipment {
+        ("TableBoard" ("TableTracksOppositeWithHands2" End))
+        [#]
+    })
+    (rules 
+        [#]
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+        (board Style Table)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (stackType 0 Backgammon)
+    })
+    
+)
