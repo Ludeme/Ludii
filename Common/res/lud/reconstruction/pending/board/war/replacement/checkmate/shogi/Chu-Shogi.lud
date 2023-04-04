@@ -37,6 +37,10 @@
     )
 )
 
+(define "InPromotionZone"
+	    (is In #1 (sites Mover "Promotion"))	
+)
+
 (define "Promote"
     (move Promote (last To) (piece (mapEntry "Promoted" (what at:(last To)))))	
 )
@@ -49,6 +53,14 @@
         ) 
     )
 )
+
+(define "SlideMove"
+	    (move Slide
+	        #1 
+	        (to if:("IsEnemyAt" (to)) "CapturePiece")
+	        #2 
+	    ) 	
+	)
 
 (define "StepMove"
     (move Step
@@ -73,23 +85,54 @@
         (players 2) 
         (equipment { 
             (board (square 12))
+
+            (regions "Promotion" P1 (expand (sites Top) steps:2))
+            (regions "Promotion" P2 (expand (sites Bottom) steps:2))
             
             // King
             (piece "Osho" Each ("StepMove"))
             // Drunken Elephant
-            (piece "Suizo" Each ("StepMove" (directions {Forwards BR BL Rightward Leftward})))
+            (piece "Suizo" Each ("StepMove" (directions {Forwards BR BL Rightward Leftward}) "CanPromote"))
             // Taishi
             (piece "Prince" Each ("StepMove"))
+            // Kinsho
+            (piece "GoldGeneral" Each ("StepMove" (directions {Forward Backward Rightward Leftward FR FL})  "CanPromote"))
+            // Hisha
+            (piece "Rook" Each ("SlideMove" Orthogonal "CanPromote"))
+            // Ginsho
+            (piece "SilverGeneral" Each ("StepMove" (directions {Forward Backward FR FL BR BL}) "CanPromote"))
+            // Shugyo
+            (piece "VerticalMover" Each 
+            		(or
+	            		("SlideMove" (directions {Forward Backward}) "CanPromote")
+	            		("StepMove" (directions {Rightward Leftward}) "CanPromote")
+            		)
+            )
+            // Dosho
+            (piece "LongBowGeneral" Each ("StepMove" (directions {Forward Backward FR FL}) "CanPromote"))
+            // Ogyo
+            (piece "SideMover" Each 
+            		(or
+    	            		("SlideMove" (directions {Rightward Leftward}) "CanPromote")
+    	            		("StepMove" (directions {Forward Backward}) "CanPromote")
+                		)		
+            )
+            // Mohyo
+            (piece "FerociousLeopard" Each ("StepMove" (directions {Forward Backward FR FL BR BL}) "CanPromote"))
+            // Kakugyo
+            (piece "Bishop" Each ("SlideMove" Diagonal "CanPromote"))
+            // Hakku
+            (piece "WhiteHorse" Each ("SlideMove" (directions {Forward Backward FR FL})))
             
-          //Kinsho (x2): moves one space orthogonally or one space forward diagonally, promotes to Hisha, begins to left of Osho and right of Suizo; Ginsho (x2): moves one space diagonally or orthogonally forward or backward, promotes to Shugyo, begins next to Kinsho; Dosho (x2): moves one space orthogonally or diagonally forward or one step orthogonally backward, promotes to Ogyo, begins next to Shugyo; Mohyo (x2): moves orthogonally backward or forward or diagonally backward or forward, promotes to Kakugyo, begins next to Dosho; Kyosha (x2): moves any distance forward in an orthogonal direction, promotes to Hakku, which moves any distance forward orthogonally or diagonally or backwards orthogonally, begins next to the Mohyo; Hensha (x2): moves orthogonally forward or backward, promotes to Keigei, which moves any distance orthogonally forward and backward, or any distance diagonally backward, begins in front of the Kyosha, Kakugyo (x2): moves any distance diagonally, promotes to Ryuma which moves any distance in any direction except orthogonally forward which it can move up to two spaces, begins in from of the Dosho; Moko (x2): moves one space in any direction except orthogonally forward, promotes to Hiroku which moves any distance orthogonally forward or backward or one space in any other direction, begins in front of the Kinsho, Kirin (x1): jumps to the second square orthogonally or moves one space diagonally, promotes to Shishi, begins in front of the Osho; Hoo (x1): jumps to the second square diagonally or moves one space orthogonally, promotes to Honno, begins in front of the Shizo; Ogyo (x2): moves any distance orthogonally in a horizontal direction or one space orthogonally forward or backward, promotes to Honcho, which moves any distance in any direction except forward orthogonally, begins in front of the Hensha; Shugyo (x2): moves any distance orthogonally forward or backward or one space orthogonally in a horizontal direction, promotes to Higyu, which moves any distance in any direction, begins next to the Ogyo; Hisha (x2): moves any ditsnace orthogonally, promotes to Ryuo which moves any distance orthogonally or one space diagonally, begins next to the Shugyo; Ryuma (x2): moves any distance diagonally or one space orthogonally, promotes to Kakuo which moves any distance in any direction except forward orthogonally, where it can only move up to two spaces, begins next to the Hisha; Ryuo (x2): moves any distance orthogonally or one space diagonally, promotes to Hiju which moves any distance orthogonally or two spaces forward diagonally, begins next to the Ryuma; Shishi (x1): moves one space in any direction or may jump to the second space in any direction; moves twice in one turn, no promotion, begins next to the left Ryuo, Honno (x1): moves any distance in all directions, no promotion, begins next to the Shishi; Fuhyo (x12): move one space forward, unknown promotion; Chunin (x2): move one space orthogonally forward or backward, promotes to Suizo, begins in the fourth and ninth spaces from left in the fourth row. Captured pieces not reused.
+          //Hensha (x2): moves orthogonally forward or backward, promotes to Keigei, which moves any distance orthogonally forward and backward, or any distance diagonally backward, begins in front of the Kyosha, Kakugyo (x2): moves any distance diagonally, promotes to Ryuma which moves any distance in any direction except orthogonally forward which it can move up to two spaces, begins in from of the Dosho; Moko (x2): moves one space in any direction except orthogonally forward, promotes to Hiroku which moves any distance orthogonally forward or backward or one space in any other direction, begins in front of the Kinsho, Kirin (x1): jumps to the second square orthogonally or moves one space diagonally, promotes to Shishi, begins in front of the Osho; Hoo (x1): jumps to the second square diagonally or moves one space orthogonally, promotes to Honno, begins in front of the Shizo; Ogyo (x2): moves any distance orthogonally in a horizontal direction or one space orthogonally forward or backward, promotes to Honcho, which moves any distance in any direction except forward orthogonally, begins in front of the Hensha; Shugyo (x2): moves any distance orthogonally forward or backward or one space orthogonally in a horizontal direction, promotes to Higyu, which moves any distance in any direction, begins next to the Ogyo; Hisha (x2): moves any ditsnace orthogonally, promotes to Ryuo which moves any distance orthogonally or one space diagonally, begins next to the Shugyo; Ryuma (x2): moves any distance diagonally or one space orthogonally, promotes to Kakuo which moves any distance in any direction except forward orthogonally, where it can only move up to two spaces, begins next to the Hisha; Ryuo (x2): moves any distance orthogonally or one space diagonally, promotes to Hiju which moves any distance orthogonally or two spaces forward diagonally, begins next to the Ryuma; Shishi (x1): moves one space in any direction or may jump to the second space in any direction; moves twice in one turn, no promotion, begins next to the left Ryuo, Honno (x1): moves any distance in all directions, no promotion, begins next to the Shishi; Fuhyo (x12): move one space forward, unknown promotion; Chunin (x2): move one space orthogonally forward or backward, promotes to Suizo, begins in the fourth and ninth spaces from left in the fourth row. Captured pieces not reused.
             
             (map "Promoted" { 
                 (pair (id "Suizo" P1) (id "Prince" P1)) (pair (id "Suizo" P2) (id "Prince" P2)) 
-//                (pair (id "Ginsho" P1) (id "Narigin" P1)) (pair (id "Ginsho" P2) (id "Narigin" P2)) 
-//                (pair (id "Hisha" P1) (id "Ryuo" P1)) (pair (id "Hisha" P2) (id "Ryuo" P2)) 
-//                (pair (id "Kakugyo" P1) (id "Ryuma" P1)) (pair (id "Kakugyo" P2) (id "Ryuma" P2)) 
-//                (pair (id "Keima" P1) (id "Narikei" P1)) (pair (id "Keima" P2) (id "Narikei" P2)) 
-//                (pair (id "Kyosha" P1) (id "Narikyo" P1)) (pair (id "Kyosha" P2) (id "Narikyo" P2)) 
+                (pair (id "GoldGeneral" P1) (id "Rook" P1)) (pair (id "GoldGeneral" P2) (id "Rook" P2)) 
+                (pair (id "SilverGeneral" P1) (id "VerticalMover" P1)) (pair (id "SilverGeneral" P2) (id "VerticalMover" P2)) 
+                (pair (id "LongBowGeneral" P1) (id "SideMover" P1)) (pair (id "LongBowGeneral" P2) (id "SideMover" P2)) 
+                (pair (id "FerociousLeopard" P1) (id "Bishop" P1)) (pair (id "FerociousLeopard" P2) (id "Bishop" P2)) 
+                (pair (id "Rook" P1) (id "WhiteHorse" P1)) (pair (id "Rook" P2) (id "WhiteHorse" P2)) 
             })
         })
         (rules
@@ -98,6 +141,16 @@
                     (place "Osho2" coord:"G12")
                     (place "Suizo1" coord:"G1") 
                     (place "Suizo2" coord:"F12")
+                    (place "GoldGeneral1" {"E1" "H1"}) 
+                    (place "GoldGeneral2" {"E12" "H12"})
+                    (place "SilverGeneral1" {"D1" "I1"}) 
+                    (place "SilverGeneral2" {"D12" "I12"})
+                    (place "LongBowGeneral1" {"C1" "J1"}) 
+                    (place "LongBowGeneral2" {"C12" "J12"})
+                    (place "FerociousLeopard1" {"B1" "K1"}) 
+                    (place "FerociousLeopard2" {"B12" "K12"})
+                    (place "Rook1" {"A1" "L1"}) 
+                    (place "Rook2" {"A12" "L12"})
                 })
                 
             (play
