@@ -326,7 +326,9 @@ public enum ShogiType
 	FREECAT("奔猫", "honmyō", "Free cat"),
 	BAT("蝙蝠", "kōmori", "Bat"),
 	CHUNIN("中忍", "Chūnin", "Chunin"),
-	TOKIN("と", "Tokin", "Tokin")
+	TOKIN("と", "Tokin", "Tokin"),
+	OSHO("玉将", "Osho", "King"),
+	SUIZO("酔象", "suizō", "Drunken elephant"),
 	;
 
 	//-------------------------------------------------------------------------

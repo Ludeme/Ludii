@@ -1,0 +1,179 @@
+(define "CapturePiece"
+    (apply 
+        (if ("IsEnemyAt" (to))
+            (add 
+                (piece (mapEntry "Captured" (what at:(to)))) 
+                (to (mapEntry "Where" (what at:(to))))
+            )
+        )
+    )
+)
+
+(define "NextCannotMove"
+    (not 
+        (can Move 
+            (do 
+                (or {
+//                    (move 
+//                        (from (sites Occupied by:Next container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
+//                        (to (sites Empty))
+//                    ) 
+//                    (do 
+//                        (move 
+//                            (from (sites Occupied by:Next container:"Hand" component:"Fuhyo")) 
+//                            (to (difference (sites Empty) (sites Next "LastRank")) 
+//                                if:("OnePawnPerColumn" Next)
+//                            )
+//                        ) 
+//                        ifAfterwards:(not ("IsInCheck" "Osho" Mover))
+//                    )
+//                    ("PlaceLance" Next)
+//                    ("PlaceKnight" Next) 
+                    (forEach Piece Next) 
+                })
+                ifAfterwards:(not ("IsInCheck" "Osho" Next))
+            ) 
+        )
+    )
+)
+
+(define "Promote"
+    (move Promote (last To) (piece (mapEntry "Promoted" (what at:(last To)))))	
+)
+
+(define "CanPromote"
+    (then 
+        (if 
+            (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From))) 
+            (moveAgain) 
+        ) 
+    )
+)
+
+(define "StepMove"
+    (move Step
+        #1
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
+        #2 
+    ) 	
+)
+
+//------------------------------------------------------------------------------
+
+(game "Chu-Shogi"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board (square 12))
+            
+            // King
+            (piece "Osho" Each ("StepMove"))
+            // Drunken Elephant
+            (piece "Suizo" Each ("StepMove" (directions {Forwards BR BL Rightward Leftward})))
+            // Taishi
+            (piece "Prince" Each ("StepMove"))
+            
+          //Kinsho (x2): moves one space orthogonally or one space forward diagonally, promotes to Hisha, begins to left of Osho and right of Suizo; Ginsho (x2): moves one space diagonally or orthogonally forward or backward, promotes to Shugyo, begins next to Kinsho; Dosho (x2): moves one space orthogonally or diagonally forward or one step orthogonally backward, promotes to Ogyo, begins next to Shugyo; Mohyo (x2): moves orthogonally backward or forward or diagonally backward or forward, promotes to Kakugyo, begins next to Dosho; Kyosha (x2): moves any distance forward in an orthogonal direction, promotes to Hakku, which moves any distance forward orthogonally or diagonally or backwards orthogonally, begins next to the Mohyo; Hensha (x2): moves orthogonally forward or backward, promotes to Keigei, which moves any distance orthogonally forward and backward, or any distance diagonally backward, begins in front of the Kyosha, Kakugyo (x2): moves any distance diagonally, promotes to Ryuma which moves any distance in any direction except orthogonally forward which it can move up to two spaces, begins in from of the Dosho; Moko (x2): moves one space in any direction except orthogonally forward, promotes to Hiroku which moves any distance orthogonally forward or backward or one space in any other direction, begins in front of the Kinsho, Kirin (x1): jumps to the second square orthogonally or moves one space diagonally, promotes to Shishi, begins in front of the Osho; Hoo (x1): jumps to the second square diagonally or moves one space orthogonally, promotes to Honno, begins in front of the Shizo; Ogyo (x2): moves any distance orthogonally in a horizontal direction or one space orthogonally forward or backward, promotes to Honcho, which moves any distance in any direction except forward orthogonally, begins in front of the Hensha; Shugyo (x2): moves any distance orthogonally forward or backward or one space orthogonally in a horizontal direction, promotes to Higyu, which moves any distance in any direction, begins next to the Ogyo; Hisha (x2): moves any ditsnace orthogonally, promotes to Ryuo which moves any distance orthogonally or one space diagonally, begins next to the Shugyo; Ryuma (x2): moves any distance diagonally or one space orthogonally, promotes to Kakuo which moves any distance in any direction except forward orthogonally, where it can only move up to two spaces, begins next to the Hisha; Ryuo (x2): moves any distance orthogonally or one space diagonally, promotes to Hiju which moves any distance orthogonally or two spaces forward diagonally, begins next to the Ryuma; Shishi (x1): moves one space in any direction or may jump to the second space in any direction; moves twice in one turn, no promotion, begins next to the left Ryuo, Honno (x1): moves any distance in all directions, no promotion, begins next to the Shishi; Fuhyo (x12): move one space forward, unknown promotion; Chunin (x2): move one space orthogonally forward or backward, promotes to Suizo, begins in the fourth and ninth spaces from left in the fourth row. Captured pieces not reused.
+            
+            (map "Promoted" { 
+                (pair (id "Suizo" P1) (id "Prince" P1)) (pair (id "Suizo" P2) (id "Prince" P2)) 
+//                (pair (id "Ginsho" P1) (id "Narigin" P1)) (pair (id "Ginsho" P2) (id "Narigin" P2)) 
+//                (pair (id "Hisha" P1) (id "Ryuo" P1)) (pair (id "Hisha" P2) (id "Ryuo" P2)) 
+//                (pair (id "Kakugyo" P1) (id "Ryuma" P1)) (pair (id "Kakugyo" P2) (id "Ryuma" P2)) 
+//                (pair (id "Keima" P1) (id "Narikei" P1)) (pair (id "Keima" P2) (id "Narikei" P2)) 
+//                (pair (id "Kyosha" P1) (id "Narikyo" P1)) (pair (id "Kyosha" P2) (id "Narikyo" P2)) 
+            })
+        })
+        (rules
+                (start { 
+                    (place "Osho1" coord:"F1") 
+                    (place "Osho2" coord:"G12")
+                    (place "Suizo1" coord:"G1") 
+                    (place "Suizo2" coord:"F12")
+                })
+                
+            (play
+                    (if ("SameTurn")
+                        (or
+                            ("Promote")
+                            (move Pass)
+                        )
+                        (do 
+                            (or {
+//                                (move 
+//                                    (from (sites Occupied by:Mover container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
+//                                    (to (sites Empty))
+//                                ) 
+//                                ("PlacePawn" Mover Next)
+//                                ("PlaceLance" Mover)
+//                                ("PlaceKnight" Mover) 
+                                (forEach Piece) 
+                            })
+                            ifAfterwards:(not ("IsInCheck" "Osho" Mover))
+                        )
+                    )
+                )
+            (end {
+                (if (and 
+                        ("IsInCheck" "Osho" Next)
+                        ("NextCannotMove")
+                    ) 
+                    (result Mover Win)
+                ) 
+               // ("BlockWin")
+            })
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Chu-Shogi is a capturing game that was popular in medieval Japan, from the thirteenth until the sixteenth century. It was played on a larger board than today's popular version of Shogi.")
+        (rules "12x12 board. Each player has the following pieces: Osho (x1): moves one space in any direction; cannot move into check, begins on the sixth space from the left in the back row; Suizo (x1): moves one space in all directions except orthogonally backwards, promotes to Taishi, which moves like Osho, begins to the right of the Osho; Kinsho (x2): moves one space orthogonally or one space forward diagonally, promotes to Hisha, begins to left of Osho and right of Suizo; Ginsho (x2): moves one space diagonally or orthogonally forward or backward, promotes to Shugyo, begins next to Kinsho; Dosho (x2): moves one space orthogonally or diagonally forward or one step orthogonally backward, promotes to Ogyo, begins next to Shugyo; Mohyo (x2): moves orthogonally backward or forward or diagonally backward or forward, promotes to Kakugyo, begins next to Dosho; Kyosha (x2): moves any distance forward in an orthogonal direction, promotes to Hakku, which moves any distance forward orthogonally or diagonally or backwards orthogonally, begins next to the Mohyo; Hensha (x2): moves orthogonally forward or backward, promotes to Keigei, which moves any distance orthogonally forward and backward, or any distance diagonally backward, begins in front of the Kyosha, Kakugyo (x2): moves any distance diagonally, promotes to Ryuma which moves any distance in any direction except orthogonally forward which it can move up to two spaces, begins in from of the Dosho; Moko (x2): moves one space in any direction except orthogonally forward, promotes to Hiroku which moves any distance orthogonally forward or backward or one space in any other direction, begins in front of the Kinsho, Kirin (x1): jumps to the second square orthogonally or moves one space diagonally, promotes to Shishi, begins in front of the Osho; Hoo (x1): jumps to the second square diagonally or moves one space orthogonally, promotes to Honno, begins in front of the Shizo; Ogyo (x2): moves any distance orthogonally in a horizontal direction or one space orthogonally forward or backward, promotes to Honcho, which moves any distance in any direction except forward orthogonally, begins in front of the Hensha; Shugyo (x2): moves any distance orthogonally forward or backward or one space orthogonally in a horizontal direction, promotes to Higyu, which moves any distance in any direction, begins next to the Ogyo; Hisha (x2): moves any ditsnace orthogonally, promotes to Ryuo which moves any distance orthogonally or one space diagonally, begins next to the Shugyo; Ryuma (x2): moves any distance diagonally or one space orthogonally, promotes to Kakuo which moves any distance in any direction except forward orthogonally, where it can only move up to two spaces, begins next to the Hisha; Ryuo (x2): moves any distance orthogonally or one space diagonally, promotes to Hiju which moves any distance orthogonally or two spaces forward diagonally, begins next to the Ryuma; Shishi (x1): moves one space in any direction or may jump to the second space in any direction; moves twice in one turn, no promotion, begins next to the left Ryuo, Honno (x1): moves any distance in all directions, no promotion, begins next to the Shishi; Fuhyo (x12): move one space forward, unknown promotion; Chunin (x2): move one space orthogonally forward or backward, promotes to Suizo, begins in the fourth and ninth spaces from left in the fourth row. Captured pieces not reused.")
+        (source "DLP evidence.")
+        (id "802")
+        (version "1.3.10")
+        (classification "board/war/replacement/checkmate/shogi/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Japan, from around 1444 to 1834.")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour White))
+        (piece Rotate P2 degrees:180)
+        (board Style Shogi)
+        (piece Style ExtendedShogi)
+    })
+    
+    (recon {
+        (concept "NumStartComponents" 52)
+        (concept "NumComponentsType" 22)
+    })
+    
+)
