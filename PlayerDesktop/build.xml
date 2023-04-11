@@ -441,7 +441,7 @@
 			<classpath refid="PlayerDesktop.classpath"/>
 		</java>
 		<ant antfile="build.xml" dir="${LudiiDocGen.location}" inheritAll="false" target="build-project"/>
-		<java classname="main.GenerateLudiiEditorHelpFileMain" fork="true" failonerror="true">
+		<java classname="main.GenerateLudiiEditorHelpFileMain" fork="true" failonerror="false"> <!-- Eric: I changed this last boolean value to false because this does not work with a JDK higher than 13 and my eclipse needs it -->
 			<classpath refid="LudiiDocGen.classpath"/>
 		</java>
 		<sleep seconds="2"/>
