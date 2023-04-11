@@ -25,18 +25,18 @@
     (players 2)
     (equipment {
         (board 
-                (add
-                	(remove
-	                    (merge (rectangle 3 6) (shift 7 0 (rectangle 3 6))) 
-	                    vertices:{6 7 8 9 10 11 24 25 26 27 28 29}
-                    )
-                    edges:{{11 18} {5 12} {0 6} {1 7} {2 8} {3 9} {4 10} {5 11} {12 18} {13 19} {14 20} {15 21} {16 22} {17 23}}
+            (add
+                (remove
+                    (merge (rectangle 3 6) (shift 7 0 (rectangle 3 6))) 
+                    vertices:{6 7 8 9 10 11 24 25 26 27 28 29}
                 )
-                { 
-                (track "Track1" "24,17,W,N,E,End" P1 directed:True)
-                (track "Track2" "25,23,W,S,E,End" P2 directed:True)
-                } 
-                use:Vertex
+                edges:{{11 18} {5 12} {0 6} {1 7} {2 8} {3 9} {4 10} {5 11} {12 18} {13 19} {14 20} {15 21} {16 22} {17 23}}
+            )
+            { 
+            (track "Track1" "24,17,W,N,E,End" P1 directed:True)
+            (track "Track2" "25,23,W,S,E,End" P2 directed:True)
+            } 
+            use:Vertex
         )
         (dice d:6 num:2)
         (piece "Disc" Each
@@ -100,7 +100,7 @@
     )
     
     (graphics {    
-    	(show Edges Hidden) 
+        (show Edges Hidden) 
         (board Background image:"rectangle.svg" fillColour:(colour Black) edgeColour:(colour Black) scaleX:1.1 scaleY:0.01 offsetX:0 offsetY:0.13)
         (board Background image:"rectangle.svg" fillColour:(colour Black) edgeColour:(colour Black) scaleX:1.1 scaleY:0.01 offsetX:0 offsetY:-0.13)
         (board Background image:"rectangle.svg" fillColour:(colour Black) edgeColour:(colour Black) scaleX:0.007 scaleY:0.423 offsetX:-0.55 offsetY:0)
@@ -108,7 +108,7 @@
         (board Background image:"flower.svg" fillColour:(colour Black) edgeColour:(colour Black) scale:0.06)
         (board Background image:"FlowerHalf1.svg" fillColour:(colour Black) edgeColour:(colour Black) scale:0.06 offsetY:0.075)
         (board Background image:"FlowerHalf2.svg" fillColour:(colour Black) edgeColour:(colour Black) scale:0.06 offsetY:-0.075)
-    
+        
     })
     
 )

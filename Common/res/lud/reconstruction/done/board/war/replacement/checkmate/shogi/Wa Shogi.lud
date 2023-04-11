@@ -21,7 +21,7 @@
 )
 
 (define "InPromotionZone"
-	    (is In #1 (sites Mover "Promotion"))	
+    (is In #1 (sites Mover "Promotion"))	
 )
 
 (define "Promote"
@@ -31,20 +31,20 @@
 (define "CanPromote"
     (then 
         (if 
-            (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From))) 
+            (or [#]) 
             (moveAgain) 
         ) 
     )
 )
 
 (define "SlideMove"
-	    (move Slide
-	        #1 
-	        #3 
-	        (to if:("IsEnemyAt" (to)) "CapturePiece")
-	        #2 
-	    ) 	
-	)
+    (move Slide
+        #1 
+        #3 
+        (to if:("IsEnemyAt" (to)) "CapturePiece")
+        #2 
+    ) 	
+)
 
 (define "StepMove"
     (move Step
@@ -55,18 +55,18 @@
 )
 
 (define "HopMove" 
-	    (move Hop
-	        #1
-	        (between 
-	            if:True
-	        )
-	        (to 
-	            if:(not ("IsFriendAt" (to))) 
-	            (apply (if ("IsEnemyAt" (to)) (remove (to))))
-	        ) 
-	        #2 
-	    )
-	)
+    (move Hop
+        #1
+        (between 
+            if:True
+        )
+        (to 
+            if:(not ("IsFriendAt" (to))) 
+            (apply (if ("IsEnemyAt" (to)) (remove (to))))
+        ) 
+        #2 
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -99,19 +99,19 @@
             (piece "RightTiger" Each ("StepMove" (directions {Forward BR BL}) "CanPromote"))
             // Hiyo
             (piece "FlyingFalcon" Each
-            	(or
-            		("SlideMove" Diagonal "CanPromote")
-            		("StepMove" Forward "CanPromote")
-            	)
+                (or
+                    ("SlideMove" Diagonal "CanPromote")
+                    ("StepMove" Forward "CanPromote")
+                )
             )
             // Ganhi
             (piece "FlyingGoose" Each ("StepMove" (directions {Forward FR FL}) "CanPromote"))
             // En'u
             (piece "SwallowSwings" Each 
-            		(or
-            			("SlideMove" (directions {Rightward Leftward}))	
-            			("StepMove" (directions {Forward Backward}))
-            		)
+                (or
+                    ("SlideMove" (directions {Rightward Leftward}))	
+                    ("StepMove" (directions {Forward Backward}))
+                )
             )
             // Moro
             (piece "ViolentWolf" Each ("StepMove" (directions {Forward FR FL Rightward Leftward Backward}) "CanPromote"))
@@ -127,20 +127,20 @@
             (piece "FlyingCock" Each ("StepMove" (directions {FR FL Backward}) "CanPromote"))
             // En'yo
             (piece "RaidingFalcon" Each 
-            	(or
-            		("SlideMove" (directions {Forward Backward}))
-            		("StepMove" (directions {FR FL}))
-            	)
+                (or
+                    ("SlideMove" (directions {Forward Backward}))
+                    ("StepMove" (directions {FR FL}))
+                )
             )
             // Shigyo
             (piece "SwoopingOwl" Each ("StepMove" (directions {BR BL Forward}) "CanPromote"))
             // Unju
             (piece "CloudEagle" Each 
-            	(or {
-            		("SlideMove" (directions {Forward Backward}))
-            		("SlideMove" (directions {FR FL}) ~ (between (max 3)))
-            		("StepMove" (directions {Rightward Leftward BR BL}))
-            	})
+                (or {
+                    ("SlideMove" (directions {Forward Backward}))
+                    ("SlideMove" (directions {FR FL}) ~ (between (max 3)))
+                    ("StepMove" (directions {Rightward Leftward BR BL}))
+                })
             )
             // Toen
             (piece "ClimbingMonkey" Each ("StepMove" (directions {BR BL FR FL}) "CanPromote"))
@@ -148,18 +148,41 @@
             (piece "ViolentStag" Each ("StepMove" (directions {FR FL Forward})))
             // Fuma
             (piece "LiberatedHorse" Each 
-            	(or
-            		("SlideMove" Forward "CanPromote")
-            		("SlideMove" (directions {BR BL}) "CanPromote" (between (max 2)))
-            	)
+                (or
+                    ("SlideMove" Forward "CanPromote")
+                    ("SlideMove" (directions {BR BL}) "CanPromote" (between (max 2)))
+                )
             )
             // Temma
             (piece "HeavenlyHorse" Each ("SlideMove" (directions {FR FL BR BL}) ~ (between (max 3))))
             // Keiyo
-            (piece "TenaciousFalcon" Each ("SlideMove" (directions {FR FL BR BL}) ~ (between (max 3))))
+            (piece "TenaciousFalcon" Each 
+                (or	
+                    ("SlideMove" (directions {Forward Backward}))
+                    ("StepMove" (directions {Rightward Leftward BR BL FR FL}))
+                )
+            )
+            // Engyo
+            (piece "GlidingSwallow" Each ("SlideMove" Orthogonal))
+            // Jakufu
+            (piece "SparrowPawn" Each ("StepMove" Forward "CanPromote"))
+            // Kincho
+            (piece "GoldenBird" Each ("StepMove" (directions {Rightward Leftward FR FL Forward Backward})))
+            // Inko
+            (piece "TreacherousFox" Each
+                (or
+                    ("StepMove" (directions {Forward Backward}))
+                    ("SlideMove" (directions {FR FL BR BL}) ~ (between (max 2)))
+                )
+            )
+            // Soto
+            (piece "RunningRabbit" Each
+                (or
+                    ("StepMove" (directions {Backward BR BL FR FL}))
+                    ("SlideMove" Forward)
+                )
+            )
             
-            // Hiyo (x1): promotes to Keiyo which moves any distance orthogonally forward or backward, or one space diagonally or orthogonally horizontal, begins in front of Moken; En'u (x1): moves any distance orthogonally horizontal, or one space orthogonally forward or backward, promotes to Engyo, which moves any distance orthogonally, beings in front of Kakugyoku; Unju (x1): moves any distance forward or backward orthogonally, up to three spaces diagonally, or one space diagonally backward or orthogonally horizontal, begins in front of Toen; Jakufu (x11): move one space forward orthogonally, promotes to Kincho, which moves one space in any direction except diagonally backward, begins in the three spaces in the third row on the left, in the center, and on the right, and one in front of the Inko and one in front of the Soto; Inko (x1): moves one space orthogonally forward or backward or diagonally up to two sapces, no promotion, begins to the right of the three leftmost Jakufu; Soto (x1): moves one space orthogonally forward or backward or diagonally backward one space or any distance forward, no promotion, begins to the left of the rightmost three Jakufu.
-        
             (map "Promoted" { 
                 (pair (id "Oxcart" P1) (id "PloddingOx" P1)) (pair (id "Oxcart" P2) (id "PloddingOx" P2)) 
                 (pair (id "BlindDog" P1) (id "ViolentWolf" P1)) (pair (id "BlindDog" P2) (id "ViolentWolf" P2)) 
@@ -172,6 +195,8 @@
                 (pair (id "ClimbingMonkey" P1) (id "ViolentStag" P1)) (pair (id "ClimbingMonkey" P2) (id "ViolentStag" P2))
                 (pair (id "LiberatedHorse" P1) (id "HeavenlyHorse" P1)) (pair (id "LiberatedHorse" P2) (id "HeavenlyHorse" P2))
                 (pair (id "FlyingFalcon" P1) (id "TenaciousFalcon" P1)) (pair (id "FlyingFalcon" P2) (id "TenaciousFalcon" P2))
+                (pair (id "SwallowSwings" P1) (id "GlidingSwallow" P1)) (pair (id "SwallowSwings" P2) (id "GlidingSwallow" P2))
+                (pair (id "SparrowPawn" P1) (id "GoldenBird" P1)) (pair (id "SparrowPawn" P2) (id "GoldenBird" P2))
             })
         })
         (rules
@@ -198,35 +223,32 @@
                 (place "ClimbingMonkey2" coord:"B11")
                 (place "LiberatedHorse1" coord:"K1") 
                 (place "LiberatedHorse2" coord:"A11")
+                (place "FlyingFalcon1" coord:"B2") 
+                (place "FlyingFalcon2" coord:"J10")
+                (place "SwallowSwings1" coord:"F2") 
+                (place "SwallowSwings2" coord:"F10")
+                (place "CloudEagle1" coord:"J2") 
+                (place "CloudEagle2" coord:"B10")
+                (place "SparrowPawn1" {"A3" "B3" "C3" "F3" "G3" "D4" "K3" "J3" "I3" "E3" "H4"})
+                (place "SparrowPawn2" {"K9" "J9" "I9" "G9" "F9" "H8" "E9" "A9" "B9" "C9" "D8"})
+                (place "TreacherousFox1" coord:"D3") 
+                (place "TreacherousFox2" coord:"H9")
+                (place "RunningRabbit1" coord:"H3") 
+                (place "RunningRabbit2" coord:"D9")
             })
             (play
-//                    (if ("SameTurn")
-//                    	(if (and (is Pending) (is In (what at:(last To)) (sites {(id "Lion" Mover)})))
-//                            (forEach Piece {"Lion"}
-//	                    		(or
-//	                    	            ("HopMove" (directions All))
-//	                    	            ("StepMove" (directions All))
-//	                            	)
-//                            ) 
-//	                        (or
-//	                            ("Promote")
-//	                            (move Pass)
-//	                        )
-//                        )
-                        //(do 
-                            (forEach Piece) 
-                            //ifAfterwards:(not ("IsInCheck" "Osho" Mover))
-                        //)
+                (if ("SameTurn")
+                    (or
+                        ("Promote")
+                        (move Pass)
                     )
-                
-                    (end 
-                            (if (and 
-                                    ("IsInCheck" "CraneKing" Next)
-                                    ("NextCannotMove")
-                                ) 
-                                (result Mover Win)
-                            ) 
-                        )
+                    (do 
+                        (forEach Piece) 
+                        ifAfterwards:(not ("IsInCheck" "CraneKing" Mover))
+                    )
+                )
+            )
+            (end [#])
         )
         >
         "The incomplete ruleset."

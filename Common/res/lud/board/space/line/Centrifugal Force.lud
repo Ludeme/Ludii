@@ -1,47 +1,45 @@
 (define "DroppableFromDirection"
     (and (
-        (= 0
-            (count Pieces All in:(sites LineOfSight at:(site) #1))
-        )
-
-        (= 1
-            (count Pieces in:(sites Around (site) #2))
-        )    
+            (= 0
+                (count Pieces All in:(sites LineOfSight at:(site) #1))
+            )
+            
+            (= 1
+                (count Pieces in:(sites Around (site) #2))
+            )    
     ))
 )
 
 (define "FromEdgeToEdge"
     (and (
-        (
-            (is In (site) (sites #1))
-        )
-               
-        (
-            (= 0
-                (count Pieces All in:(sites LineOfSight at:(site) #2))
-            ) 
-        )
+            (
+                (is In (site) (sites #1))
+            )
+            
+            (
+                (= 0
+                    (count Pieces All in:(sites LineOfSight at:(site) #2))
+                ) 
+            )
     ))
 )
 
-
 //------------------------------------------------------------------------------
-
 
 (game "Centrifugal Force"
     (players 2)
-
+    
     (equipment
         {
         (board (square <Board:size>))
-                     
+        
         (piece "Cross" P1) 
         (piece "Disc" P2)
-
+        
         (piece "Square" Neutral)
         }
     )
-
+    
     (rules
         (start
             {
@@ -51,13 +49,13 @@
             (place "Square0" coord:<Board:topLeftSquare>)   
             }     
         )
-
+        
         (play
             (move Add 
                 (to   
                     (forEach (sites Empty)
                         if:
-                            (or (
+                        (or (
                                 (or
                                     {
                                     ("FromEdgeToEdge" Top S)
@@ -66,7 +64,7 @@
                                     ("FromEdgeToEdge" Right W)
                                     }
                                 )
-                                    
+                                
                                 (or
                                     {
                                     ("DroppableFromDirection" N S)
@@ -75,7 +73,7 @@
                                     ("DroppableFromDirection" E W)
                                     }
                                 )
-                            ))
+                        ))
                     )
                 )
             )
@@ -84,16 +82,14 @@
         (end
             {
             (if (is Line 5) (result Mover Win))
-
+            
             (if (no Moves Next) (result All Draw))
             }
         )
     )
 )
 
-
 //------------------------------------------------------------------------------
-
 
 (option "Board Size" <Board> args:{<size> <bottomRightSquare> <topRightSquare>  <topLeftSquare>}
     {
@@ -110,28 +106,26 @@
 (option "Look and feel" <Graphics> args:{<boardColour> <squareColour> <crossColour> <circleColour>}
     {
     (item "Retro" <(colour 249 245 235)> <(colour 51 51 51)> <(colour 48 62 205)> <(colour 234 84 85)> 
-        "Look and feel: Retro")
+    "Look and feel: Retro")
     (item "Black&White" <(colour 255 255 255)> <(colour 57 57 57)> <(colour 0 0 0)> <(colour 0 0 0)> 
-        "Look and feel: Black&White")
+    "Look and feel: Black&White")
     (item "Garden" <(colour 182 226 161)> <(colour 63 94 55)> <(colour 252 226 42)> <(colour 232 226 214)> 
-        "Look and feel: Garden")
+    "Look and feel: Garden")
     (item "Bathroom" <(colour 125 185 182)> <(colour 245 233 207)> <(colour 77 69 93)> <(colour 233 100 121)> 
-        "Look and feel: Bathroom")
+    "Look and feel: Bathroom")
     (item "PurpleTiger" <(colour 242 205 92)> <(colour 180 80 0)> <(colour 64 14 50)> <(colour 166 31 105)> 
-        "Look and feel: PurpleTiger")
+    "Look and feel: PurpleTiger")
     }
 )
 
-
 //------------------------------------------------------------------------------
-
 
 (metadata 
     (info
         {
         }
     )
-
+    
     (graphics 
         {
         (board Colour Phase0 <Graphics:boardColour>)
@@ -139,21 +133,20 @@
         (board Colour OuterEdges <Graphics:squareColour>)            
         (board StyleThickness InnerEdges 1.35)
         (board StyleThickness OuterEdges 1.90)
-
-
+        
         (piece Colour Neutral "Square" fillColour:<Graphics:squareColour> strokeColour:<Graphics:squareColour>)    
         (piece Scale "Square" 0.9)
-            
+        
         (player Name P1 "Cross")
         (player Colour P1 <Graphics:crossColour>)
         (piece Scale "Cross" 0.81)
-    
+        
         (player Name P2 "Circle")
         (player Colour P2 <Graphics:circleColour>)
         (piece Scale "Disc" 0.88)
         }
     )
-
+    
     (ai
         (bestAgent "MC-GRAVE")
         trainedHeuristics:(heuristics {
@@ -161,6 +154,4 @@
         })
     )
 )
-
-
 

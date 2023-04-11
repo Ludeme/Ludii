@@ -332,6 +332,7 @@ public enum ShogiType
 	PHENIX("鳳凰", "Hoo", "Phenix"),
 	CRANEKING("靏玉", "Kakugyoku", "Crane King"),
 	TENACIOUSFALCON("力鷹", "Keiyo", "Tenacious Falcon"),
+	SPARROWPAWN("萑歩", "Jakufu", "Sparrow Pawn"),
 	;
 
 	//-------------------------------------------------------------------------
