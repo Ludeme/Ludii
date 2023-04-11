@@ -3,7 +3,7 @@ package view.component.custom.types;
 /**
  * Shogi types.
  *
- * @author Matthew.Stephenson
+ * @author Matthew.Stephenson and Eric Piette
  */
 public enum ShogiType
 {
@@ -329,6 +329,7 @@ public enum ShogiType
 	TOKIN("と", "Tokin", "Tokin"),
 	OSHO("玉将", "Osho", "King"),
 	SUIZO("酔象", "suizō", "Drunken elephant"),
+	PHENIX("鳳凰", "Hoo", "Phenix"),
 	;
 
 	//-------------------------------------------------------------------------
