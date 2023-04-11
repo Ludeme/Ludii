@@ -123,8 +123,12 @@
             (piece "Bishop" Each ("SlideMove" Diagonal "CanPromote"))
             // Hakku
             (piece "WhiteHorse" Each ("SlideMove" (directions {Forward Backward FR FL})))
+            // Hensha
+            (piece "ReverseChariot" Each ("StepMove" (directions {Forward Backward}) "CanPromote"))
+            // Keigei
+            (piece "Whale" Each ("SlideMove" (directions {Forward Backward BR BL})))
             
-          //Hensha (x2): moves orthogonally forward or backward, promotes to Keigei, which moves any distance orthogonally forward and backward, or any distance diagonally backward, begins in front of the Kyosha, Kakugyo (x2): moves any distance diagonally, promotes to Ryuma which moves any distance in any direction except orthogonally forward which it can move up to two spaces, begins in from of the Dosho; Moko (x2): moves one space in any direction except orthogonally forward, promotes to Hiroku which moves any distance orthogonally forward or backward or one space in any other direction, begins in front of the Kinsho, Kirin (x1): jumps to the second square orthogonally or moves one space diagonally, promotes to Shishi, begins in front of the Osho; Hoo (x1): jumps to the second square diagonally or moves one space orthogonally, promotes to Honno, begins in front of the Shizo; Ogyo (x2): moves any distance orthogonally in a horizontal direction or one space orthogonally forward or backward, promotes to Honcho, which moves any distance in any direction except forward orthogonally, begins in front of the Hensha; Shugyo (x2): moves any distance orthogonally forward or backward or one space orthogonally in a horizontal direction, promotes to Higyu, which moves any distance in any direction, begins next to the Ogyo; Hisha (x2): moves any ditsnace orthogonally, promotes to Ryuo which moves any distance orthogonally or one space diagonally, begins next to the Shugyo; Ryuma (x2): moves any distance diagonally or one space orthogonally, promotes to Kakuo which moves any distance in any direction except forward orthogonally, where it can only move up to two spaces, begins next to the Hisha; Ryuo (x2): moves any distance orthogonally or one space diagonally, promotes to Hiju which moves any distance orthogonally or two spaces forward diagonally, begins next to the Ryuma; Shishi (x1): moves one space in any direction or may jump to the second space in any direction; moves twice in one turn, no promotion, begins next to the left Ryuo, Honno (x1): moves any distance in all directions, no promotion, begins next to the Shishi; Fuhyo (x12): move one space forward, unknown promotion; Chunin (x2): move one space orthogonally forward or backward, promotes to Suizo, begins in the fourth and ninth spaces from left in the fourth row. Captured pieces not reused.
+          //Hensha (x2): begins in front of the Kyosha, Kakugyo (x2): moves any distance diagonally, promotes to Ryuma which moves any distance in any direction except orthogonally forward which it can move up to two spaces, begins in from of the Dosho; Moko (x2): moves one space in any direction except orthogonally forward, promotes to Hiroku which moves any distance orthogonally forward or backward or one space in any other direction, begins in front of the Kinsho, Kirin (x1): jumps to the second square orthogonally or moves one space diagonally, promotes to Shishi, begins in front of the Osho; Hoo (x1): jumps to the second square diagonally or moves one space orthogonally, promotes to Honno, begins in front of the Shizo; Ogyo (x2): moves any distance orthogonally in a horizontal direction or one space orthogonally forward or backward, promotes to Honcho, which moves any distance in any direction except forward orthogonally, begins in front of the Hensha; Shugyo (x2): moves any distance orthogonally forward or backward or one space orthogonally in a horizontal direction, promotes to Higyu, which moves any distance in any direction, begins next to the Ogyo; Hisha (x2): moves any ditsnace orthogonally, promotes to Ryuo which moves any distance orthogonally or one space diagonally, begins next to the Shugyo; Ryuma (x2): moves any distance diagonally or one space orthogonally, promotes to Kakuo which moves any distance in any direction except forward orthogonally, where it can only move up to two spaces, begins next to the Hisha; Ryuo (x2): moves any distance orthogonally or one space diagonally, promotes to Hiju which moves any distance orthogonally or two spaces forward diagonally, begins next to the Ryuma; Shishi (x1): moves one space in any direction or may jump to the second space in any direction; moves twice in one turn, no promotion, begins next to the left Ryuo, Honno (x1): moves any distance in all directions, no promotion, begins next to the Shishi; Fuhyo (x12): move one space forward, unknown promotion; Chunin (x2): move one space orthogonally forward or backward, promotes to Suizo, begins in the fourth and ninth spaces from left in the fourth row. Captured pieces not reused.
             
             (map "Promoted" { 
                 (pair (id "Suizo" P1) (id "Prince" P1)) (pair (id "Suizo" P2) (id "Prince" P2)) 
@@ -133,6 +137,7 @@
                 (pair (id "LongBowGeneral" P1) (id "SideMover" P1)) (pair (id "LongBowGeneral" P2) (id "SideMover" P2)) 
                 (pair (id "FerociousLeopard" P1) (id "Bishop" P1)) (pair (id "FerociousLeopard" P2) (id "Bishop" P2)) 
                 (pair (id "Rook" P1) (id "WhiteHorse" P1)) (pair (id "Rook" P2) (id "WhiteHorse" P2)) 
+                (pair (id "ReverseChariot" P1) (id "Whale" P1)) (pair (id "ReverseChariot" P2) (id "Whale" P2)) 
             })
         })
         (rules
@@ -151,6 +156,8 @@
                     (place "FerociousLeopard2" {"B12" "K12"})
                     (place "Rook1" {"A1" "L1"}) 
                     (place "Rook2" {"A12" "L12"})
+                    (place "ReverseChariot1" {"A2" "L2"}) 
+                    (place "ReverseChariot2" {"A11" "L11"})
                 })
                 
             (play
