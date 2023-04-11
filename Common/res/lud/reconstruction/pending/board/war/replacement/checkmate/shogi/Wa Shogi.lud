@@ -1,3 +1,75 @@
+(define "CapturePiece"
+    (apply 
+        (if ("IsEnemyAt" (to))
+            (add 
+                (piece (mapEntry "Captured" (what at:(to)))) 
+                (to (mapEntry "Where" (what at:(to))))
+            )
+        )
+    )
+)
+
+(define "NextCannotMove"
+    (not 
+        (can Move 
+            (do 
+                (forEach Piece Next) 
+                ifAfterwards:(not ("IsInCheck" "CraneKing" Next))
+            ) 
+        )
+    )
+)
+
+(define "InPromotionZone"
+	    (is In #1 (sites Mover "Promotion"))	
+)
+
+(define "Promote"
+    (move Promote (last To) (piece (mapEntry "Promoted" (what at:(last To)))))	
+)
+
+(define "CanPromote"
+    (then 
+        (if 
+            (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From))) 
+            (moveAgain) 
+        ) 
+    )
+)
+
+(define "SlideMove"
+	    (move Slide
+	        #1 
+	        #3 
+	        (to if:("IsEnemyAt" (to)) "CapturePiece")
+	        #2 
+	    ) 	
+	)
+
+(define "StepMove"
+    (move Step
+        #1
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
+        #2 
+    ) 	
+)
+
+(define "HopMove" 
+	    (move Hop
+	        #1
+	        (between 
+	            if:True
+	        )
+	        (to 
+	            if:(not ("IsFriendAt" (to))) 
+	            (apply (if ("IsEnemyAt" (to)) (remove (to))))
+	        ) 
+	        #2 
+	    )
+	)
+
+//------------------------------------------------------------------------------
+
 (game "Wa Shogi"
     <Variant>
 )
@@ -11,13 +83,150 @@
         (players 2) 
         (equipment { 
             (board (square 11))
-            [?]
-            // We know: 17 piece types exist and 54 pieces in total.
+            
+            (regions "Promotion" P1 (expand (sites Top) steps:2))
+            (regions "Promotion" P2 (expand (sites Bottom) steps:2))
+            
+            // Gissha
+            (piece "Oxcart" Each ("SlideMove" Forward "CanPromote"))
+            // Sengyu
+            (piece "PloddingOx" Each ("StepMove" All))
+            // Moken
+            (piece "BlindDog" Each ("StepMove" (directions {FR FL Rightward Leftward Backward}) "CanPromote"))
+            // Moko
+            (piece "ViolentWolf" Each ("StepMove" (directions {Forward FR FL Rightward Leftward Backward})))
+            // Uko
+            (piece "RightTiger" Each ("StepMove" (directions {Forward BR BL}) "CanPromote"))
+            // Hiyo
+            (piece "FlyingFalcon" Each
+            	(or
+            		("SlideMove" Diagonal "CanPromote")
+            		("StepMove" Forward "CanPromote")
+            	)
+            )
+            // Ganhi
+            (piece "FlyingGoose" Each ("StepMove" (directions {Forward FR FL}) "CanPromote"))
+            // En'u
+            (piece "SwallowSwings" Each 
+            		(or
+            			("SlideMove" (directions {Rightward Leftward}))	
+            			("StepMove" (directions {Forward Backward}))
+            		)
+            )
+            // Moro
+            (piece "ViolentWolf" Each ("StepMove" (directions {Forward FR FL Rightward Leftward Backward}) "CanPromote"))
+            // Yugan
+            (piece "BearsEyes" Each ("StepMove" All))
+            // Kakugyoku
+            (piece "CraneKing" Each ("StepMove" All))
+            // Moroku
+            (piece "ViolentStag" Each ("StepMove" (directions {FR FL BR BL Backward}) "CanPromote"))
+            // Gyocho
+            (piece "RushingBoar" Each ("StepMove" (directions {FR FL BR BL Forward Rightward Leftward})))
+            // Keihi
+            (piece "FlyingCock" Each ("StepMove" (directions {FR FL Backward}) "CanPromote"))
+            // En'yo
+            (piece "RaidingFalcon" Each 
+            	(or
+            		("SlideMove" (directions {Forward Backward}))
+            		("StepMove" (directions {FR FL}))
+            	)
+            )
+            // Shigyo
+            (piece "SwoopingOwl" Each ("StepMove" (directions {BR BL Forward}) "CanPromote"))
+            // Unju
+            (piece "CloudEagle" Each 
+            	(or {
+            		("SlideMove" (directions {Forward Backward}))
+            		("SlideMove" (directions {FR FL}) ~ (between (max 3)))
+            		("StepMove" (directions {Rightward Leftward BR BL}))
+            	})
+            )
+            // Toen
+            (piece "ClimbingMonkey" Each ("StepMove" (directions {BR BL FR FL}) "CanPromote"))
+            // Moroku
+            (piece "ViolentStag" Each ("StepMove" (directions {FR FL Forward})))
+            // Fuma
+            (piece "LiberatedHorse" Each 
+            	(or
+            		("SlideMove" Forward "CanPromote")
+            		("SlideMove" (directions {BR BL}) "CanPromote" (between (max 2)))
+            	)
+            )
+            // Temma
+            (piece "HeavenlyHorse" Each ("SlideMove" (directions {FR FL BR BL}) ~ (between (max 3))))
+            // Keiyo
+            (piece "TenaciousFalcon" Each ("SlideMove" (directions {FR FL BR BL}) ~ (between (max 3))))
+            
+            // Hiyo (x1): promotes to Keiyo which moves any distance orthogonally forward or backward, or one space diagonally or orthogonally horizontal, begins in front of Moken; En'u (x1): moves any distance orthogonally horizontal, or one space orthogonally forward or backward, promotes to Engyo, which moves any distance orthogonally, beings in front of Kakugyoku; Unju (x1): moves any distance forward or backward orthogonally, up to three spaces diagonally, or one space diagonally backward or orthogonally horizontal, begins in front of Toen; Jakufu (x11): move one space forward orthogonally, promotes to Kincho, which moves one space in any direction except diagonally backward, begins in the three spaces in the third row on the left, in the center, and on the right, and one in front of the Inko and one in front of the Soto; Inko (x1): moves one space orthogonally forward or backward or diagonally up to two sapces, no promotion, begins to the right of the three leftmost Jakufu; Soto (x1): moves one space orthogonally forward or backward or diagonally backward one space or any distance forward, no promotion, begins to the left of the rightmost three Jakufu.
+        
+            (map "Promoted" { 
+                (pair (id "Oxcart" P1) (id "PloddingOx" P1)) (pair (id "Oxcart" P2) (id "PloddingOx" P2)) 
+                (pair (id "BlindDog" P1) (id "ViolentWolf" P1)) (pair (id "BlindDog" P2) (id "ViolentWolf" P2)) 
+                (pair (id "RightTiger" P1) (id "FlyingFalcon" P1)) (pair (id "RightTiger" P2) (id "FlyingFalcon" P2)) 
+                (pair (id "FlyingGoose" P1) (id "SwallowSwings" P1)) (pair (id "FlyingGoose" P2) (id "SwallowSwings" P2)) 
+                (pair (id "ViolentWolf" P1) (id "BearsEyes" P1)) (pair (id "ViolentWolf" P2) (id "BearsEyes" P2))
+                (pair (id "ViolentStag" P1) (id "RushingBoar" P1)) (pair (id "ViolentStag" P2) (id "RushingBoar" P2))
+                (pair (id "FlyingCock" P1) (id "RaidingFalcon" P1)) (pair (id "FlyingCock" P2) (id "RaidingFalcon" P2))
+                (pair (id "SwoopingOwl" P1) (id "CloudEagle" P1)) (pair (id "SwoopingOwl" P2) (id "CloudEagle" P2))
+                (pair (id "ClimbingMonkey" P1) (id "ViolentStag" P1)) (pair (id "ClimbingMonkey" P2) (id "ViolentStag" P2))
+                (pair (id "LiberatedHorse" P1) (id "HeavenlyHorse" P1)) (pair (id "LiberatedHorse" P2) (id "HeavenlyHorse" P2))
+                (pair (id "FlyingFalcon" P1) (id "TenaciousFalcon" P1)) (pair (id "FlyingFalcon" P2) (id "TenaciousFalcon" P2))
+            })
         })
         (rules
-            (start [#])
-            (play [#])
-            (end [#])
+            (start {
+                (place "Oxcart1" coord:"A1") 
+                (place "Oxcart2" coord:"K11")
+                (place "BlindDog1" coord:"B1") 
+                (place "BlindDog2" coord:"J11")
+                (place "RightTiger1" coord:"C1") 
+                (place "RightTiger2" coord:"I11")
+                (place "FlyingGoose1" coord:"D1") 
+                (place "FlyingGoose2" coord:"H11")
+                (place "ViolentWolf1" coord:"E1") 
+                (place "ViolentWolf2" coord:"G11")
+                (place "CraneKing1" coord:"F1") 
+                (place "CraneKing2" coord:"F11")
+                (place "ViolentStag1" coord:"G1") 
+                (place "ViolentStag2" coord:"E11")
+                (place "FlyingCock1" coord:"H1") 
+                (place "FlyingCock2" coord:"D11")
+                (place "SwoopingOwl1" coord:"I1") 
+                (place "SwoopingOwl2" coord:"C11")
+                (place "ClimbingMonkey1" coord:"J1") 
+                (place "ClimbingMonkey2" coord:"B11")
+                (place "LiberatedHorse1" coord:"K1") 
+                (place "LiberatedHorse2" coord:"A11")
+            })
+            (play
+//                    (if ("SameTurn")
+//                    	(if (and (is Pending) (is In (what at:(last To)) (sites {(id "Lion" Mover)})))
+//                            (forEach Piece {"Lion"}
+//	                    		(or
+//	                    	            ("HopMove" (directions All))
+//	                    	            ("StepMove" (directions All))
+//	                            	)
+//                            ) 
+//	                        (or
+//	                            ("Promote")
+//	                            (move Pass)
+//	                        )
+//                        )
+                        //(do 
+                            (forEach Piece) 
+                            //ifAfterwards:(not ("IsInCheck" "Osho" Mover))
+                        //)
+                    )
+                
+                    (end 
+                            (if (and 
+                                    ("IsInCheck" "CraneKing" Next)
+                                    ("NextCannotMove")
+                                ) 
+                                (result Mover Win)
+                            ) 
+                        )
         )
         >
         "The incomplete ruleset."
@@ -54,14 +263,9 @@
     (graphics {
         (player Colour P1 (colour White))
         (player Colour P2 (colour White))
-        (piece Families {"Defined" "Study"})
-        (board Style Shogi)
         (piece Rotate P2 degrees:180)
-    })
-    
-    (recon {
-        (concept "NumStartComponents" 54)
-        (concept "NumComponentsType" 17)
+        (board Style Shogi)
+        (piece Style ExtendedShogi)
     })
     
 )

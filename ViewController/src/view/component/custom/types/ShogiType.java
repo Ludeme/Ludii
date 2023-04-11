@@ -330,6 +330,8 @@ public enum ShogiType
 	OSHO("玉将", "Osho", "King"),
 	SUIZO("酔象", "suizō", "Drunken elephant"),
 	PHENIX("鳳凰", "Hoo", "Phenix"),
+	CRANEKING("靏玉", "Kakugyoku", "Crane King"),
+	TENACIOUSFALCON("力鷹", "Keiyo", "Tenacious Falcon"),
 	;
 
 	//-------------------------------------------------------------------------
