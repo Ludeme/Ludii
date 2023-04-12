@@ -155,7 +155,7 @@
                 (or
                     ("HopMove" (directions All))
                     ("StepMove" (directions All))
-                    (then (set Pending))
+                    (then (and (set Pending) (moveAgain)))
                 )
             )
             // Hoo

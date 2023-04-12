@@ -1,0 +1,391 @@
+(define "CapturePiece"
+    (apply 
+        (if ("IsEnemyAt" (to))
+            (add 
+                (piece (mapEntry "Captured" (what at:(to)))) 
+                (to (mapEntry "Where" (what at:(to))))
+            )
+        )
+    )
+)
+
+(define "NextCannotMove"
+    (not 
+        (can Move 
+            (do 
+                (forEach Piece Next) 
+                ifAfterwards:(not ("IsInCheck" "Osho" Next))
+            ) 
+        )
+    )
+)
+
+(define "InPromotionZone"
+    (is In #1 (sites Mover "Promotion"))	
+)
+
+(define "Promote"
+    (move Promote (last To) (piece (mapEntry "Promoted" (what at:(last To)))))	
+)
+
+(define "CanPromote"
+    (then 
+        (if 
+            (or [#])  
+            (moveAgain) 
+        ) 
+    )
+)
+
+(define "SlideMove"
+    (move Slide
+        #1 
+        #3 
+        (to if:("IsEnemyAt" (to)) "CapturePiece")
+        #2 
+    ) 	
+)
+
+(define "StepMove"
+    (move Step
+        #1
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
+        #2 
+    ) 	
+)
+
+(define "HopMove" 
+    (move Hop
+        #1
+        (between 
+            if:True
+        )
+        (to 
+            if:(not ("IsFriendAt" (to))) 
+            (apply (if ("IsEnemyAt" (to)) (remove (to))))
+        ) 
+        #2 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Dai Shogi"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Incomplete"
+        <
+        ("TwoPlayersNorthSouth") 
+        (equipment { 
+            (board (square 15))
+            
+            (regions "Promotion" P1 (expand (sites Top) steps:2))
+            (regions "Promotion" P2 (expand (sites Bottom) steps:2))
+            
+            // Kyosha
+            (piece "Lance" Each ("SlideMove" Forward "CanPromote"))
+            // Hakku
+            (piece "WhiteHorse" Each ("SlideMove" (directions {Forward Backward FR FL})))
+            // Keima
+            (piece "Knight" Each 
+                (forEach Direction 
+                    Forward 
+                    (to 
+                        if:True 
+                        (apply 
+                            (forEach Direction 
+                                (from (to)) 
+                                (directions {FR FL}) 
+                                (if (not ("IsFriendAt" (to))) 
+                                    (move 
+                                        (from) 
+                                        (to 
+                                            (apply 
+                                                if:("IsEnemyAt" (to))
+                                                (remove (to))
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    ) 
+                    "CanPromote" 
+                )
+            )
+            // Nerikei/Kinsho
+            (piece "GoldGeneral" Each ("StepMove" (directions {Forward Backward Rightward Leftward FR FL}) "CanPromote"))
+            // Sekisho
+            (piece "StoneGeneral" Each ("StepMove" (directions {FR FL}) "CanPromote"))
+            // Tessho
+            (piece "IronGeneral" Each ("StepMove" (directions {Forward FR FL}) "CanPromote"))
+            // Tessho
+            (piece "LongBowGeneral" Each ("StepMove" (directions {Forward FR FL Backward}) "CanPromote"))
+            // Ogyo
+            (piece "SideMover" Each 
+                (or
+                    ("SlideMove" (directions {Rightward Leftward}) "CanPromote")
+                    ("StepMove" (directions {Forward Backward}) "CanPromote")
+                )		
+            )
+            // Ginsho
+            (piece "SilverGeneral" Each ("StepMove" (directions {Forward Backward FR FL BR BL}) "CanPromote"))
+            // Shugyo
+            (piece "VerticalMover" Each 
+                (or
+                    ("SlideMove" (directions {Forward Backward}) "CanPromote")
+                    ("StepMove" (directions {Rightward Leftward}) "CanPromote")
+                )
+            ) // Hisha
+            (piece "Rook" Each ("SlideMove" Orthogonal "CanPromote")) 
+            // King
+            (piece "Osho" Each ("StepMove"))
+            // Hensha
+            (piece "ReverseChariot" Each ("StepMove" (directions {Forward Backward}) "CanPromote"))
+            // Keigei
+            (piece "Whale" Each ("SlideMove" (directions {Forward Backward BR BL})))
+            // Myojin
+            (piece "CatSword" Each ("StepMove" (directions {FR FL}) "CanPromote")) 
+            // Mohyo
+            (piece "FerociousLeopard" Each ("StepMove" (directions {Forward Backward FR FL BR BL}) "CanPromote")) 
+            // Kakugyo
+            (piece "Bishop" Each ("SlideMove" Diagonal "CanPromote"))
+            // Moko
+            (piece "BlindTiger" Each ("StepMove" (directions {FR FL Rightward Leftward Backward BR BL}) "CanPromote"))
+            // Hiroku
+            (piece "FlyingStag" Each 
+                (or
+                    ("SlideMove" (directions {Forward Backward}))
+                    ("StepMove" (directions {FR FL BR BL Rightward Leftward}))
+                )
+            )
+            // Drunken Elephant
+            (piece "Suizo" Each ("StepMove" (directions {Forwards BR BL Rightward Leftward}) "CanPromote"))
+            // Taishi
+            (piece "Prince" Each ("StepMove"))
+            // Mogyo
+            (piece "ViolentOx" Each ("SlideMove" (directions {Forward Backward Leftward Rightward}) "CanPromote" (between (max 2))))
+            // Shinsho
+            (piece "AngryBoar" Each ("StepMove" (directions {Forward Backward Leftward Rightward}) "CanPromote"))
+            // Akuro
+            (piece "EvilWolf" Each ("StepMove" (directions {Forward FR FL BR BL}) "CanPromote"))
+            // Kirin
+            (piece "Kirin" Each 
+                (or
+                    ("HopMove" (directions {Forward Backward Rightward Leftward}) "CanPromote")
+                    ("StepMove" (directions {FR FL BR BL}) "CanPromote")
+                )
+            )
+            // Shishi
+            (piece "Lion" Each 
+                (or
+                    ("HopMove" (directions All))
+                    ("StepMove" (directions All))
+                    (then (and (set Pending) (moveAgain)))
+                )
+            )
+            // Hoo
+            (piece "Phenix" Each 
+                (or
+                    ("StepMove" (directions {Forward Backward Rightward Leftward}) "CanPromote")
+                    ("HopMove" (directions {FR FL BR BL}) "CanPromote")
+                )
+            )
+            // Honno
+            (piece "Queen" Each ("SlideMove" All))
+            // Ryuo
+            (piece "DragonKing" Each 
+                (or
+                    ("SlideMove" Orthogonal)
+                    ("StepMove" Diagonal)
+                )
+            )
+            // Hiryu
+            (piece "FlyingDragon" Each ("SlideMove" (directions {FR FL BR BL}) "CanPromote" (between (max 2))))
+            // Honsho
+            (piece "FreeBoar" Each ("SlideMove" (directions {Backward Rightward Leftward FR FL BR BL})))
+            // Higyu
+            (piece "FlyingGox" Each ("SlideMove" All))
+            // Ryuma
+            (piece "DragonHorse" Each 
+                (or
+                    ("SlideMove" (directions {FR FL Rightward Leftward Backward BR BL}))
+                    ("SlideMove" (directions {Forward}) ~ (between (max 2)))
+                )
+            )  
+            // Kakuo
+            (piece "HornedFalcon" Each 
+                (or
+                    ("SlideMove" (directions {Backward Rightward Leftward FR FL BR BL}))
+                    ("SlideMove" Forward ~ (between (max 2)))
+                )
+            )
+            // Hiju
+            (piece "SoaringEagle" Each 
+                (or
+                    ("SlideMove" Orthogonal)
+                    ("SlideMove" (directions {FR FL}) ~ (between (max 2)))
+                )
+            )	
+            // Fuhyo
+            (piece "Pawn" Each ("StepMove" Forward "CanPromote"))
+            // Chunin
+            (piece "Chunin" Each ("StepMove" (directions {Forward Backward}) "CanPromote"))
+            
+            (map "Promoted" { 
+                (pair (id "Lance" P1) (id "WhiteHorse" P1)) (pair (id "Lance" P2) (id "WhiteHorse" P2)) 
+                (pair (id "Knight" P1) (id "GoldGeneral" P1)) (pair (id "Knight" P2) (id "GoldGeneral" P2)) 
+                (pair (id "StoneGeneral" P1) (id [#])) (pair (id "StoneGeneral" P2) (id [#])) 
+                (pair (id "IronGeneral" P1) (id [#])) (pair (id "IronGeneral" P2) (id [#]))
+                (pair (id "LongBowGeneral" P1) (id "SideMover" P1)) (pair (id "LongBowGeneral" P2) (id "SideMover" P2)) 
+                (pair (id "SilverGeneral" P1) (id "VerticalMover" P1)) (pair (id "SilverGeneral" P2) (id "VerticalMover" P2)) 
+                (pair (id "GoldGeneral" P1) (id "Rook" P1)) (pair (id "GoldGeneral" P2) (id "Rook" P2)) 
+                (pair (id "ReverseChariot" P1) (id "Whale" P1)) (pair (id "ReverseChariot" P2) (id "Whale" P2)) 
+                (pair (id "CatSword" P1) (id [#])) (pair (id "CatSword" P2) (id [#])) 
+                (pair (id "FerociousLeopard" P1) (id "Bishop" P1)) (pair (id "FerociousLeopard" P2) (id "Bishop" P2)) 
+                (pair (id "BlindTiger" P1) (id "FlyingStag" P1)) (pair (id "BlindTiger" P2) (id "FlyingStag" P2)) 
+                (pair (id "Suizo" P1) (id "Prince" P1)) (pair (id "Suizo" P2) (id "Prince" P2)) 
+                (pair (id "ViolentOx" P1) (id [#])) (pair (id "ViolentOx" P2) (id [#])) 
+                (pair (id "AngryBoar" P1) (id [#])) (pair (id "AngryBoar" P2) (id [#])) 
+                (pair (id "EvilWolf" P1) (id [#])) (pair (id "EvilWolf" P2) (id [#])) 
+                (pair (id "Kirin" P1) (id "Lion" P1)) (pair (id "Kirin" P2) (id "Lion" P2)) 
+                (pair (id "Phenix" P1) (id "Queen" P1)) (pair (id "Phenix" P2) (id "Queen" P2)) 
+                (pair (id "Rook" P1) (id "DragonKing" P1)) (pair (id "Rook" P2) (id "DragonKing" P2)) 
+                (pair (id "FlyingDragon" P1) (id [#])) (pair (id "FlyingDragon" P2) (id [#])) 
+                (pair (id "SideMover" P1) (id "FreeBoar" P1)) (pair (id "SideMover" P2) (id "FreeBoar" P2)) 
+                (pair (id "VerticalMover" P1) (id "FlyingGox" P1)) (pair (id "VerticalMover" P2) (id "FlyingGox" P2)) 
+                (pair (id "Bishop" P1) (id "DragonHorse" P1)) (pair (id "Bishop" P2) (id "DragonHorse" P2)) 
+                (pair (id "DragonHorse" P1) (id "HornedFalcon" P1)) (pair (id "DragonHorse" P2) (id "HornedFalcon" P2)) 
+                (pair (id "DragonKing" P1) (id "SoaringEagle" P1)) (pair (id "DragonKing" P2) (id "SoaringEagle" P2))    
+                (pair (id "Chunin" P1) (id "Suizo" P1)) (pair (id "Chunin" P2) (id "Suizo" P2)) 
+            })
+        })
+        (rules
+            (start {
+                (place "Lance1" {"A1" "O1"}) 
+                (place "Lance2" {"A15" "O15"})
+                (place "Knight1" {"B1" "N1"}) 
+                (place "Knight2" {"B15" "N15"})
+                (place "StoneGeneral1" {"C1" "M1"}) 
+                (place "StoneGeneral2" {"C15" "M15"})
+                (place "IronGeneral1" {"D1" "L1"}) 
+                (place "IronGeneral2" {"D15" "L15"})
+                (place "LongBowGeneral1" {"E1" "K1"}) 
+                (place "LongBowGeneral2" {"E15" "K15"})
+                (place "SilverGeneral1" {"F1" "J1"}) 
+                (place "SilverGeneral2" {"F15" "J15"})
+                (place "GoldGeneral1" {"G1" "I1"}) 
+                (place "GoldGeneral2" {"G15" "I15"}) 
+                (place "Osho1" coord:"H1") 
+                (place "Osho2" coord:"H15")
+                (place "ReverseChariot1" {"A2" "O2"}) 
+                (place "ReverseChariot2" {"A14" "O14"})
+                (place "CatSword1" {"C2" "M2"}) 
+                (place "CatSword2" {"C14" "M14"})
+                (place "FerociousLeopard1" {"E2" "K2"}) 
+                (place "FerociousLeopard2" {"E14" "K14"})
+                (place "BlindTiger1" {"G2" "I2"}) 
+                (place "BlindTiger2" {"G14" "I14"}) 
+                (place "Suizo1" coord:"H2") 
+                (place "Suizo2" coord:"H14")
+                (place "ViolentOx1" {"B3" "N3"}) 
+                (place "ViolentOx2" {"B13" "N13"})
+                (place "AngryBoar1" {"D3" "L3"}) 
+                (place "AngryBoar2" {"D13" "L13"})
+                (place "EvilWolf1" {"F3" "J3"}) 
+                (place "EvilWolf2" {"F13" "J13"})
+                (place "Kirin1" coord:"G3") 
+                (place "Kirin2" coord:"I13")
+                (place "Lion1" coord:"H3") 
+                (place "Lion2" coord:"H13")
+                (place "Phenix1" coord:"I3") 
+                (place "Phenix2" coord:"G13")
+                (place "Rook1" {"A4" "O4"}) 
+                (place "Rook2" {"O12" "A12"})
+                (place "FlyingDragon1" {"B4" "N4"}) 
+                (place "FlyingDragon2" {"B12" "N12"})
+                (place "SideMover1" {"C4" "M4"}) 
+                (place "SideMover2" {"C12" "M12"})
+                (place "VerticalMover1" {"D4" "L4"}) 
+                (place "VerticalMover2" {"D12" "L12"})
+                (place "Bishop1" {"E4" "K4"}) 
+                (place "Bishop2" {"E12" "K12"})
+                (place "DragonHorse1" {"F4" "J4"}) 
+                (place "DragonHorse2" {"F12" "J12"})
+                (place "DragonKing1" {"G4" "I4"}) 
+                (place "DragonKing2" {"G12" "I12"})
+                (place "Queen1" coord:"H4") 
+                (place "Queen2" coord:"H12")
+                (place "Pawn1" (sites Row 4))
+                (place "Pawn2" (sites Row 10))
+                (place "Chunin1" {"E6" "K6"}) 
+                (place "Chunin2" {"E10" "K10"})
+            })
+            (play
+                (if ("SameTurn")
+                    (if (and (is Pending) (is In (what at:(last To)) (sites {(id "Lion" Mover)})))
+                        (forEach Piece {"Lion"}
+                            (or
+                                ("HopMove" (directions All))
+                                ("StepMove" (directions All))
+                            )
+                        ) 
+                        (or
+                            ("Promote")
+                            (move Pass)
+                        )
+                    )
+                    (do 
+                        (forEach Piece) 
+                        ifAfterwards:(not ("IsInCheck" "Osho" Mover))
+                    )
+                )
+            )
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Dai Shogi is a large version of Shogi played in Japan played in the thirteenth-nineteenth century. These rules are from a manuscript known in the nineteenth century.")
+        (rules "15x15 board. Pieces for each player are as follows: Kyosha (x2): moves any distance forward in an orthogonal direction, promotes to Hakku, which moves any distance forward orthogonally or diagonally or backwards orthogonally, begins in the corners; Keima (x2): moves likes a knight in chess, promotes to Nerikei which moves one space in any direction except diagonally backward, begins next to the Keima; Sekisho (x2): moves one space diagonally forward, unknown promotion, begins next to the Keima; Tessho (x2): moves one space forward orthogonally or diagonally, unknown promotion, begins next to Sekisho; Dosho (x2): moves one space orthogonally or diagonally forward or one step orthogonally backward, promotes to Ogyo, begins next to the Tessho; Ginsho (x2): moves one space diagonally or orthogonally forward or backward, promotes to Shugyo, begins next to Dosho; Kinsho (x2): moves one space orthogonally or one space forward diagonally, promotes to Hisha, begins next to Ginsho; Osho (x1): moves one space in one direction, does not promote, begins in the center space of the back row; Hensha (x2): moves orthogonally forward or backward, promotes to Keigei, which moves any distance orthogonally forward and backward, or any distance diagonally backward, begins in front of the Kyosha, Myojin (x2): moves one space diagonally, promotion unknown. begins in front of Sekisho; Mohyo (x2): moves orthogonally backward or forward or diagonally backward or forward, promotes to Kakugyo, begins in front of Dosho; Moko (x2): moves one space in any direction except orthogonally forward, promotes to Hiroku which moves any distance orthogonally forward or backward or one space in any other direction, begins in front of Kinsho; Suizo (x1): moves one space in all directions except orthogonally backwards, promotes to Taishi, which moves like Osho, begins in front of Osho; Mogyu (x2): moves orthogonally up to two spaces, unknown promotion, begins in the third row in front of the Keima; Shincho (x2): moves one space orthogonally, unknown promotion, begins in third row in front of the Tessho; Akuro (x2): moves one space diagonally or forward orthogonally, unknown promotion, begins in the third row in front of the Ginsho; Kirin (x1): jumps to the second square orthogonally or moves one space diagonally, promotes to Shishi, begins in front of the left Moko; Shishi (x1): moves one space in any direction or may jump to the second space in any direction; moves twice in one turn, no promotion, begins in front of the Suizo; Hoo (x1): jumps to the second square diagonally or moves one space orthogonally, promotes to Honno, begins in front of the right Moko; Hisha (x2): moves any distance orthogonally, promotes to Ryuo which moves any distance orthogonally or one space diagonally, begins in the two outer spaces of row four; Hiryu (x2): moves diagonally up to two spaces, unknown promotion, begins next to the Hisha; Ogyo (x2): moves any distance orthogonally in a horizontal direction or one space orthogonally forward or backward, promotes to Honcho, which moves any distance in any direction except forward orthogonally, begins next to the Hiryu; Shugyo (x2): moves any distance orthogonally forward or backward or one space orthogonally in a horizontal direction, promotes to Higyu, which moves any distance in any direction, begins next to Ogyo; Kakugyo (x2): moves any distance diagonally, promotes to Ryuma which moves any distance in any direction except orthogonally forward which it can move up to two spaces, begins next to Shugyo; Ryuma (x2): moves any distance diagonally or one space orthogonally, promotes to Kakuo which moves any distance in any direction except forward orthogonally, where it can only move up to two spaces, begins next to Kakugyo;  Ryuo (x2): moves any distance orthogonally or one space diagonally, promotes to Hiju which moves any distance orthogonally or two spaces forward diagonally, begins next to Ryuma; Honno (x1): moves any distance in all directions, no promotion, begins next to Ryuo, Fuhyo (x15): moves one space orthogonally forward, begin in the fifth row; Chuni (x2): move one space orthogonally forward or backward, promotes to Suizo, begins in the sixth row in the fourth square from the left and the fourth square from the right. ")
+        (source "DLP evidence")
+        (id "1336")
+        (version "1.3.10")
+        (classification "board/war/replacement/checkmate/shogi/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Japan, around 1834.")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour White))
+        (piece Rotate P2 degrees:180)
+        (board Style Shogi)
+        (piece Style ExtendedShogi)
+    })
+    
+)
