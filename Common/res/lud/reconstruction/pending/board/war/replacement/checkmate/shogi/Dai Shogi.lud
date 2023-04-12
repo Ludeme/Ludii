@@ -1,3 +1,75 @@
+(define "CapturePiece"
+    (apply 
+        (if ("IsEnemyAt" (to))
+            (add 
+                (piece (mapEntry "Captured" (what at:(to)))) 
+                (to (mapEntry "Where" (what at:(to))))
+            )
+        )
+    )
+)
+
+(define "NextCannotMove"
+    (not 
+        (can Move 
+            (do 
+                (forEach Piece Next) 
+                ifAfterwards:(not ("IsInCheck" "Lance" Next))
+            ) 
+        )
+    )
+)
+
+(define "InPromotionZone"
+    (is In #1 (sites Mover "Promotion"))	
+)
+
+(define "Promote"
+    (move Promote (last To) (piece (mapEntry "Promoted" (what at:(last To)))))	
+)
+
+(define "CanPromote"
+    (then 
+        (if 
+        	(or ("InPromotionZone" (last To)) ("InPromotionZone" (last From)))  
+            (moveAgain) 
+        ) 
+    )
+)
+
+(define "SlideMove"
+    (move Slide
+        #1 
+        #3 
+        (to if:("IsEnemyAt" (to)) "CapturePiece")
+        #2 
+    ) 	
+)
+
+(define "StepMove"
+    (move Step
+        #1
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
+        #2 
+    ) 	
+)
+
+(define "HopMove" 
+    (move Hop
+        #1
+        (between 
+            if:True
+        )
+        (to 
+            if:(not ("IsFriendAt" (to))) 
+            (apply (if ("IsEnemyAt" (to)) (remove (to))))
+        ) 
+        #2 
+    )
+)
+
+//------------------------------------------------------------------------------
+
 (game "Dai Shogi"
     <Variant>
 )
@@ -8,16 +80,47 @@
     {
     (item "Incomplete"
         <
-        (players 2) 
+        ("TwoPlayersNorthSouth") 
         (equipment { 
             (board (square 15))
-            [?]
-            // We know: 130 pieces in total.
+
+            (regions "Promotion" P1 (expand (sites Top) steps:2))
+            (regions "Promotion" P2 (expand (sites Bottom) steps:2))
+            
+            // Kyosha
+            (piece "Lance" Each ("SlideMove" Forward "CanPromote"))
+            // Hakku
+            (piece "WhiteHorse" Each ("SlideMove" (directions {Forward Backward FR FL})))
+            
+            (map "Promoted" { 
+                (pair (id "Lance" P1) (id "WhiteHorse" P1)) (pair (id "Lance" P2) (id "WhiteHorse" P2)) 
+            })
         })
         (rules
-            (start [#])
-            (play [#])
-            (end [#])
+            (start {
+                (place "Lance1" {"A1" "O1"}) 
+                (place "Lance2" {"A15" "O15"})
+            })
+            (play
+                    (if ("SameTurn")
+                        (or
+                            ("Promote")
+                            (move Pass)
+                        )
+                        (do 
+                            (forEach Piece) 
+                            ifAfterwards:(not ("IsInCheck" "Lance" Mover))
+                        )
+                    )
+                )
+            (end
+                    (if (and 
+                            ("IsInCheck" "Lance" Next)
+                            ("NextCannotMove")
+                        ) 
+                        (result Mover Win)
+                    ) 		
+            )
         )
         >
         "The incomplete ruleset."
@@ -54,13 +157,9 @@
     (graphics {
         (player Colour P1 (colour White))
         (player Colour P2 (colour White))
-        (piece Families {"Defined" "Study"})
-        (board Style Shogi)
         (piece Rotate P2 degrees:180)
-    })
-    
-    (recon {
-        (concept "NumStartComponents" 130)
+        (board Style Shogi)
+        (piece Style ExtendedShogi)
     })
     
 )
