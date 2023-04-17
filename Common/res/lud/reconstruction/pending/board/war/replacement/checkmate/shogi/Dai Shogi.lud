@@ -146,7 +146,7 @@
             // King
             (piece "Osho" Each ("StepMove"))
             // Hensha
-            (piece "ReverseChariot" Each ("StepMove" (directions {Forward Backward}) "CanPromote"))
+            (piece "ReverseChariot" Each ("SlideMove" (directions {Forward Backward}) "CanPromote"))
             // Keigei
             (piece "Whale" Each ("SlideMove" (directions {Forward Backward BR BL})))
             // Myojin
