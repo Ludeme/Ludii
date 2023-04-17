@@ -272,6 +272,43 @@
                     ("StepMove" (directions {Rightward Leftward}))
                 )
             ) 
+            // Henko
+            (piece "EnchantedFox" Each ("SlideMove" (directions {FR FL Backward}) "CanPromote" (between (max 2))))
+            // Suigyu
+            (piece "WaterBuffalo" 
+            	(or
+            		("SlideMove" (directions {FR FL BR BL Leftward Rightward}) "CanPromote")
+            		("SlideMove" (directions {Forward Backward}) "CanPromote" (between (max 2)))
+            	)
+            )
+            // Ginsho
+            (piece "SilverGeneral" Each ("StepMove" (directions {Forward Backward FR FL BR BL}) "CanPromote"))
+            // Barin
+            (piece "FlyingHorse" Each 
+            	(or	
+            		("StepMove" Orthogonal "CanPromote")
+            		("SlideMove" (directions {FR FL}) "CanPromote" (between (max 2)))
+            	)
+            )
+            // Henri
+            (piece "EnchantedBadger" Each ("SlideMove" (directions {Forward Leftward Rightward}) "CanPromote" (between (max 2))))
+            // Kakugyo
+            (piece "Bishop" Each ("SlideMove" Diagonal "CanPromote"))
+            // Seiryu
+            (piece "BlueDragon" Each 
+            	(or	{
+            		("SlideMove" (directions {Leftward Rightward FL BR}))
+            		("SlideMove" (directions {Forward Backward}) ~ (between (max 2)))
+            		("StepMove" (directions {FR}))
+            	})
+            )
+            // Kozo
+            (piece "FragrantElephant" Each 
+            	(or	{
+            		("SlideMove" (directions {FR FL}))
+            		("SlideMove" (directions {Forward Backward Leftward Rightward BR BL}) ~ (between (max 2)))
+            	})
+            )
             
             (map "Promoted" { 
                 (pair (id "Lance" P1) (id "WhiteHorse" P1)) (pair (id "Lance" P2) (id "WhiteHorse" P2)) 
@@ -288,6 +325,13 @@
                 (pair (id "Kirin" P1) (id "GreatDragon" P1)) (pair (id "Kirin" P2) (id "GreatDragon" P2)) 
                 (pair (id "RushingBird" P1) (id "FreeDemon" P1)) (pair (id "RushingBird" P2) (id "FreeDemon" P2)) 
                 (pair (id "BlindMonkey" P1) (id "MountainWitch" P1)) (pair (id "BlindMonkey" P2) (id "MountainWitch" P2))
+                (pair (id "EnchantedFox" P1) (id "Yaksha" P1)) (pair (id "EnchantedFox" P2) (id "Yaksha" P2))
+                (pair (id "WaterBuffalo" P1) (id "FreeDreamEater" P1)) (pair (id "WaterBuffalo" P2) (id "FreeDreamEater" P2))
+                (pair (id "SilverGeneral" P1) (id "VerticalMover" P1)) (pair (id "SilverGeneral" P2) (id "VerticalMover" P2))
+                (pair (id "FlyingHorse" P1) (id "Queen" P1)) (pair (id "FlyingHorse" P2) (id "Queen" P2))
+                (pair (id "EnchantedBadger" P1) (id "Dove" P1)) (pair (id "EnchantedBadger" P2) (id "Dove" P2))
+                (pair (id "Bishop" P1) (id "DragonHorse" P1)) (pair (id "Bishop" P2) (id "DragonHorse" P2))
+                
             })
             
         })
@@ -359,6 +403,25 @@
                 (place "PoisonousSnake2" {"B16"})
             	(place "VerticalMover1" {"B3"}) 
                 (place "VerticalMover2" {"P15"})
+            	(place "EnchantedFox1" {"D3"}) 
+                (place "EnchantedFox2" {"N15"})
+            	(place "WaterBuffalo1" {"F3"}) 
+                (place "WaterBuffalo2" {"L15"})
+            	(place "SilverGeneral1" {"H3" "J3"}) 
+                (place "SilverGeneral2" {"J15" "H15"})
+            	(place "GreatDragon1" {"I3"}) 
+                (place "GreatDragon2" {"I15"})
+            	(place "FlyingHorse1" {"L3"}) 
+                (place "FlyingHorse2" {"F15"})
+            	(place "EnchantedBadger1" {"N3"}) 
+                (place "EnchantedBadger2" {"D15"})
+            	(place "PoisonousSnake1" {"P3"}) 
+                (place "PoisonousSnake2" {"B15"})
+            	(place "BlueDragon1" {"A4"}) 
+                (place "BlueDragon2" {"Q14"})
+            	(place "FragrantElephant1" {"B4"}) 
+                (place "FragrantElephant2" {"P14"})
+                
             })
             (play
                     (if ("SameTurn")

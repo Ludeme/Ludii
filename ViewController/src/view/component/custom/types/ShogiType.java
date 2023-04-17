@@ -334,6 +334,7 @@ public enum ShogiType
 	TENACIOUSFALCON("力鷹", "Keiyo", "Tenacious Falcon"),
 	SPARROWPAWN("萑歩", "Jakufu", "Sparrow Pawn"),
 	RACINGCHARIOT("走車", "Sosha", "Racing Chariot"),
+	ENCHANTEDFOX("走車", "Henko", "Enchanted Fox"),
 	;
 
 	//-------------------------------------------------------------------------
