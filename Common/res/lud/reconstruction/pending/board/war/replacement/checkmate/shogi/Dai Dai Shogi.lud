@@ -14,7 +14,7 @@
         (can Move 
             (do 
                 (forEach Piece Next) 
-                ifAfterwards:(not ("IsInCheck" "Lance" Next))
+                ifAfterwards:(not ("IsInCheck" "Osho" Next))
             ) 
         )
     )
@@ -91,33 +91,102 @@
             (piece "Lance" Each ("SlideMove" Forward "CanPromote"))
             // Hakku
             (piece "WhiteHorse" Each ("SlideMove" (directions {Forward Backward FR FL})))
+            // Tengu
+            (piece "LongNosedGoblin" Each ("SlideMove" Diagonal))
+            // Yasha
+            (piece "Yaksha" Each
+            	(or
+            		("SlideMove" Orthogonal ~ (between (max 5)))
+                    ("SlideMove" Diagonal ~ (between (max 2)))
+            	)
+            )
+            // Sosha
+            (piece "RacingChariot" Each 
+                	(or
+                		("SlideMove" Orthogonal)
+                        ("StepMove" (directions {BR BL}))
+                	)		
+            )
+            // Ryuma
+            (piece "DragonHorse" Each 
+                (or
+                    ("SlideMove" Diagonal "CanPromote")
+                    ("StepMove" Orthogonal "CanPromote")
+                )
+            ) 
+            // Kakuo
+            (piece "HornedFalcon" Each 
+                (or
+                    ("SlideMove" (directions {Backward Rightward Leftward FR FL BR BL}))
+                    ("SlideMove" Forward ~ (between (max 2)))
+                )
+            )
+            // Honki
+            (piece "FreeDemon" Each 
+                	(or
+                		("SlideMove" (directions {Rightward Leftward FR FL}))
+                        ("SlideMove" (directions {Forward Backward}) ~ (between (max 5)))
+                	)		
+            )
+            // Honno
+            (piece "Queen" Each ("SlideMove" All))
+            // Sasho
+            (piece "LeftGeneral" Each ("StepMove" (directions {Rightward Forward Backward FR FL BR BL})))
+            // King
+            (piece "Osho" Each ("StepMove"))
+            // Usho
+            (piece "RightGeneral" Each ("StepMove" (directions {Leftward Forward Backward FR FL BR BL})))
+            // Honbaku
+            (piece "FreeDreamEater" Each 
+                	(or
+                    		("SlideMove" (directions {Forward Backward FR FL}))
+                            ("SlideMove" (directions {Leftward Rightward}) ~ (between (max 5)))
+                    	)			
+            )
+            // Ryuo
+            (piece "DragonKing" Each 
+                (or
+                    ("SlideMove" Orthogonal "CanPromote")
+                    ("StepMove" Diagonal "CanPromote")
+                )
+            )
+            // Hiju
+            (piece "SoaringEagle" Each 
+                (or
+                    ("SlideMove" Orthogonal)
+                    ("SlideMove" (directions {FR FL}) ~ (between (max 2)))
+                )
+            )
+            // Hogyo
+            (piece "SquareMover" Each 
+                (or
+                    ("SlideMove" Orthogonal)
+                    ("StepMove" (directions {FR FL}))
+                )
+            )
+            // Hisha
+            (piece "Rook" Each ("SlideMove" Orthogonal "CanPromote")) 
+            // Kyuhan
+            (piece "Dove" Each 
+                (or
+                    ("SlideMove" Diagonal ~ (between (max 5)))
+                    ("SlideMove" Orthogonal ~ (between (max 2)))
+                )		
+            ) 
+            // Kogyo
+            (piece "HookMover" Each ("SlideMove" Orthogonal)) 
+            // Hensha
+            (piece "ReverseChariot" Each ("SlideMove" (directions {Forward Backward}) "CanPromote"))
+            // Keigei
+            (piece "Whale" Each ("SlideMove" (directions {Forward Backward BR BL})))
+            
             
             (map "Promoted" { 
                 (pair (id "Lance" P1) (id "WhiteHorse" P1)) (pair (id "Lance" P2) (id "WhiteHorse" P2)) 
-//                (pair (id "Knight" P1) (id "GoldGeneral" P1)) (pair (id "Knight" P2) (id "GoldGeneral" P2)) 
-//                (pair (id "StoneGeneral" P1) (id [#])) (pair (id "StoneGeneral" P2) (id [#])) 
-//                (pair (id "IronGeneral" P1) (id [#])) (pair (id "IronGeneral" P2) (id [#]))
-//                (pair (id "LongBowGeneral" P1) (id "SideMover" P1)) (pair (id "LongBowGeneral" P2) (id "SideMover" P2)) 
-//                (pair (id "SilverGeneral" P1) (id "VerticalMover" P1)) (pair (id "SilverGeneral" P2) (id "VerticalMover" P2)) 
-//                (pair (id "GoldGeneral" P1) (id "Rook" P1)) (pair (id "GoldGeneral" P2) (id "Rook" P2)) 
-//                (pair (id "ReverseChariot" P1) (id "Whale" P1)) (pair (id "ReverseChariot" P2) (id "Whale" P2)) 
-//                (pair (id "CatSword" P1) (id [#])) (pair (id "CatSword" P2) (id [#])) 
-//                (pair (id "FerociousLeopard" P1) (id "Bishop" P1)) (pair (id "FerociousLeopard" P2) (id "Bishop" P2)) 
-//                (pair (id "BlindTiger" P1) (id "FlyingStag" P1)) (pair (id "BlindTiger" P2) (id "FlyingStag" P2)) 
-//                (pair (id "Suizo" P1) (id "Prince" P1)) (pair (id "Suizo" P2) (id "Prince" P2)) 
-//                (pair (id "ViolentOx" P1) (id [#])) (pair (id "ViolentOx" P2) (id [#])) 
-//                (pair (id "AngryBoar" P1) (id [#])) (pair (id "AngryBoar" P2) (id [#])) 
-//                (pair (id "EvilWolf" P1) (id [#])) (pair (id "EvilWolf" P2) (id [#])) 
-//                (pair (id "Kirin" P1) (id "Lion" P1)) (pair (id "Kirin" P2) (id "Lion" P2)) 
-//                (pair (id "Phenix" P1) (id "Queen" P1)) (pair (id "Phenix" P2) (id "Queen" P2)) 
-//                (pair (id "Rook" P1) (id "DragonKing" P1)) (pair (id "Rook" P2) (id "DragonKing" P2)) 
-//                (pair (id "FlyingDragon" P1) (id [#])) (pair (id "FlyingDragon" P2) (id [#])) 
-//                (pair (id "SideMover" P1) (id "FreeBoar" P1)) (pair (id "SideMover" P2) (id "FreeBoar" P2)) 
-//                (pair (id "VerticalMover" P1) (id "FlyingGox" P1)) (pair (id "VerticalMover" P2) (id "FlyingGox" P2)) 
-//                (pair (id "Bishop" P1) (id "DragonHorse" P1)) (pair (id "Bishop" P2) (id "DragonHorse" P2)) 
-//                (pair (id "DragonHorse" P1) (id "HornedFalcon" P1)) (pair (id "DragonHorse" P2) (id "HornedFalcon" P2)) 
-//                (pair (id "DragonKing" P1) (id "SoaringEagle" P1)) (pair (id "DragonKing" P2) (id "SoaringEagle" P2))    
-//                (pair (id "Chunin" P1) (id "Suizo" P1)) (pair (id "Chunin" P2) (id "Suizo" P2)) 
+                (pair (id "DragonHorse" P1) (id "HornedFalcon" P1)) (pair (id "DragonHorse" P2) (id "HornedFalcon" P2)) 
+                (pair (id "DragonKing" P1) (id "SoaringEagle" P1)) (pair (id "DragonKing" P2) (id "SoaringEagle" P2)) 
+                (pair (id "Rook" P1) (id "SquareMover" P1)) (pair (id "Rook" P2) (id "SquareMover" P2)) 
+                (pair (id "ReverseChariot" P1) (id "Whale" P1)) (pair (id "ReverseChariot" P2) (id "Whale" P2)) 
             })
             
         })
@@ -127,6 +196,38 @@
             (start {
             	(place "Lance1" {"A1" "Q1"}) 
                 (place "Lance2" {"A17" "Q17"})
+            	(place "LongNosedGoblin1" {"B1"}) 
+                (place "LongNosedGoblin2" {"P17"})
+            	(place "Yaksha1" {"C1"}) 
+                (place "Yaksha2" {"O17"})
+            	(place "RacingChariot1" {"D1"}) 
+                (place "RacingChariot2" {"N17"})
+            	(place "DragonHorse1" {"E1"}) 
+                (place "DragonHorse2" {"M17"})
+            	(place "FreeDemon1" {"F1"}) 
+                (place "FreeDemon2" {"L17"})
+            	(place "Queen1" {"G1"}) 
+                (place "Queen2" {"K17"})
+            	(place "LeftGeneral1" {"H1"}) 
+                (place "LeftGeneral2" {"J17"})
+            	(place "Osho1" {"I1"}) 
+                (place "Osho2" {"I17"})
+            	(place "RightGeneral1" {"J1"}) 
+                (place "RightGeneral2" {"H17"})
+            	(place "FreeDreamEater1" {"K1"}) 
+                (place "FreeDreamEater2" {"G17"})
+            	(place "DragonKing1" {"L1"}) 
+                (place "DragonKing2" {"F17"})
+            	(place "SquareMover1" {"M1"}) 
+                (place "SquareMover2" {"E17"})
+            	(place "Rook1" {"N1"}) 
+                (place "Rook2" {"D17"})
+            	(place "Dove1" {"O1"}) 
+                (place "Dove2" {"C17"})
+            	(place "HookMover1" {"P1"}) 
+                (place "HookMover2" {"B17"})
+            	(place "ReverseChariot1" {"A2" "Q2"}) 
+                (place "ReverseChariot2" {"A16" "Q16"})
             })
             (play
                     (if ("SameTurn")
@@ -144,13 +245,13 @@
                       //  )
                         (do 
                             (forEach Piece) 
-                            ifAfterwards:(not ("IsInCheck" "Lance" Mover))
+                            ifAfterwards:(not ("IsInCheck" "Osho" Mover))
                         )
                     )
                 )
             (end {
                 (if (and 
-                        ("IsInCheck" "Lance" Next)
+                        ("IsInCheck" "Osho" Next)
                         ("NextCannotMove")
                     ) 
                     (result Mover Win)
