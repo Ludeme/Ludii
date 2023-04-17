@@ -309,6 +309,66 @@
             		("SlideMove" (directions {Forward Backward Leftward Rightward BR BL}) ~ (between (max 2)))
             	})
             )
+            // Hokuteki
+            (piece "NorthernBarbarian" Each 
+            	(or	{
+            		("StepMove" (directions {Rightward Leftward BR BL}))
+            		("SlideMove" (directions {FR FL}) ~ (between (max 2)))
+            	})
+            )
+            // Seiju
+            (piece "WesternBarbarian" Each 
+            	(or	{
+            		("StepMove" (directions {Forward Backward}))
+            		("SlideMove" (directions {Rightward Leftward}) ~ (between (max 2)))
+            	})
+            )
+            // Mokusho
+            (piece "WoodGeneral" Each ("SlideMove" (directions {FR FL}) ~ (between (max 2))))
+            // Sekisho
+            (piece "StoneGeneral" Each ("StepMove" (directions {FR FL})))
+            // Tessho
+            (piece "IronGeneral" Each ("StepMove" (directions {Forward FR FL})))
+            // Dosho
+            (piece "CopperGeneral" Each ("StepMove" (directions {Forward FR FL Backward})))
+            // Kinshi
+            (piece "GoldenBird" Each 
+            	(or {	
+            		("SlideMove" (directions {Forward Backward}))
+            		("SlideMove" (directions {FR FL BR BL}) ~ (between (max 3)))
+                    ("SlideMove" (directions {Rightward Leftward}) ~ (between (max 2)))
+            	})
+            )
+            // Toi
+            (piece "EasternBarbarian" Each 
+            	(or {	
+            		("StepMove" (directions {Leftward}))
+                    ("SlideMove" (directions {Forward Backward}) ~ (between (max 2)))
+            	})
+            )
+            // Namban
+            (piece "SouthernBarbarian" Each 
+            	(or {	
+            		("StepMove" (directions {Leftward}))
+                    ("SlideMove" (directions {BR BL}) ~ (between (max 2)))
+            	})
+            )
+            // Hakuzo
+            (piece "WhiteElephant" Each 
+            	(or {	
+                    ("SlideMove" (directions {FR FL Forward Leftward Rightward}) ~ (between (max 2)))
+            		("SlideMove" (directions {BR BL}))
+            	})
+            )
+            // Byajjo
+            (piece "WhiteTiger" Each 
+            	(or {	
+                    ("SlideMove" (directions {Leftward Rightward}) ~ (between (max 2)))
+            		("SlideMove" (directions {Forward Backward FR}))
+            		("StepMove" (directions {BL}))
+            	})
+            )
+            
             
             (map "Promoted" { 
                 (pair (id "Lance" P1) (id "WhiteHorse" P1)) (pair (id "Lance" P2) (id "WhiteHorse" P2)) 
@@ -331,6 +391,10 @@
                 (pair (id "FlyingHorse" P1) (id "Queen" P1)) (pair (id "FlyingHorse" P2) (id "Queen" P2))
                 (pair (id "EnchantedBadger" P1) (id "Dove" P1)) (pair (id "EnchantedBadger" P2) (id "Dove" P2))
                 (pair (id "Bishop" P1) (id "DragonHorse" P1)) (pair (id "Bishop" P2) (id "DragonHorse" P2))
+                (pair (id "NorthernBarbarian" P1) (id "FragrantElephant" P1)) (pair (id "NorthernBarbarian" P2) (id "FragrantElephant" P2))
+                (pair (id "WesternBarbarian" P1) (id "LionDog" P1)) (pair (id "WesternBarbarian" P2) (id "LionDog" P2))
+                (pair (id "EasternBarbarian" P1) (id "Lion" P1)) (pair (id "EasternBarbarian" P2) (id "Lion" P2))
+                (pair (id "SouthernBarbarian" P1) (id "WhiteElephant" P1)) (pair (id "SouthernBarbarian" P2) (id "WhiteElephant" P2))
                 
             })
             
@@ -421,6 +485,28 @@
                 (place "BlueDragon2" {"Q14"})
             	(place "FragrantElephant1" {"B4"}) 
                 (place "FragrantElephant2" {"P14"})
+            	(place "NorthernBarbarian1" {"C4"}) 
+                (place "NorthernBarbarian2" {"O14"})
+            	(place "WesternBarbarian1" {"D4"}) 
+                (place "WesternBarbarian2" {"N14"})
+            	(place "WoodGeneral1" {"E4" "M4"}) 
+                (place "WoodGeneral2" {"M14" "E14"})
+            	(place "StoneGeneral1" {"F4" "L4"}) 
+                (place "StoneGeneral2" {"L14" "F14"})
+            	(place "IronGeneral1" {"G4" "K4"}) 
+                (place "IronGeneral2" {"K14" "G14"})
+            	(place "CopperGeneral1" {"H4" "J4"}) 
+                (place "CopperGeneral2" {"J14" "H14"})
+            	(place "GoldenBird1" {"I4"}) 
+                (place "GoldenBird2" {"I14"})
+            	(place "EasternBarbarian1" {"N4"}) 
+                (place "EasternBarbarian2" {"D14"})
+            	(place "SouthernBarbarian1" {"O4"}) 
+                (place "SouthernBarbarian2" {"C14"})
+            	(place "WhiteElephant1" {"P4"}) 
+                (place "WhiteElephant2" {"B14"})
+            	(place "WhiteTiger1" {"Q4"}) 
+                (place "WhiteTiger2" {"A14"})
                 
             })
             (play
