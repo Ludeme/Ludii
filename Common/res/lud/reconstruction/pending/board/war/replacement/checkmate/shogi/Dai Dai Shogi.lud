@@ -31,7 +31,7 @@
 (define "CanPromote"
 	    (then 
 	        (if 
-	            (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From))) // to change to #
+	            (or [#])
 	            (moveAgain) 
 	        ) 
 	    )
@@ -195,7 +195,7 @@
                 )
             )
             // Funjin
-            (piece "FuriousFiend" Each ("StepMove" (directions All))) // to replace the move with #
+            (piece "FuriousFiend" Each (or [#]))
             // Roso
             (piece "OldRat" Each ("SlideMove" (directions {FR FL Backward}) "CanPromote" (between (max 2))))
             // Senkaku
@@ -368,7 +368,55 @@
             		("StepMove" (directions {BL}))
             	})
             )
-            
+            // Sasha
+            (piece "LeftChariot" Each 
+            	(or {	
+            		("SlideMove" (directions {Forward FR BL}))
+            		("StepMove" (directions {Leftward}))
+            	})
+            )
+            // Usha
+            (piece "RightChariot" Each 
+            	(or {	
+            		("SlideMove" (directions {Forward FL BR}))
+            		("StepMove" (directions {Rightward}))
+            	})
+            )
+            // Ogyo
+            (piece "SideMover" Each 
+                (or
+                    ("SlideMove" (directions {Rightward Leftward}) "CanPromote")
+                    ("StepMove" (directions {Forward Backward}) "CanPromote")
+                )		
+            )
+            // Honcho
+            (piece "FreeBoar" Each ("SlideMove" (directions {Backward Rightward Leftward FR FL BR BL})))
+            // Mogyo
+            (piece "ViolentOx" Each ("SlideMove" (directions {Forward Backward Leftward Rightward}) ~ (between (max 2))))
+            // Shinsho
+            (piece "AngryBoar" Each ("StepMove" (directions {Forward Backward Leftward Rightward})))
+            // Akuro
+            (piece "EvilWolf" Each ("StepMove" (directions {Forward FR FL BR BL})))
+            // Moyu
+            (piece "ViolentBear" Each ("StepMove" (directions {Leftward Rightward FR FL}))) 
+            // Mohyo
+            (piece "FerociousLeopard" Each ("StepMove" (directions {Forward Backward FR FL BR BL}) "CanPromote")) 
+            // Moko
+            (piece "BlindTiger" Each 
+            	(or
+            		("StepMove" (directions {FR FL}))
+            		("SlideMove" (directions {Forward Backward}) ~ (between (max 2)))
+            	)
+            )
+            // Fuhyo
+            (piece "Pawn" Each ("StepMove" Forward "CanPromote"))
+            // Kiken
+            (piece "HowlingDog" Each 
+            	(or
+            		("StepMove" Backward)
+            		("SlideMove" Forward)
+            	)
+            )
             
             (map "Promoted" { 
                 (pair (id "Lance" P1) (id "WhiteHorse" P1)) (pair (id "Lance" P2) (id "WhiteHorse" P2)) 
@@ -395,6 +443,8 @@
                 (pair (id "WesternBarbarian" P1) (id "LionDog" P1)) (pair (id "WesternBarbarian" P2) (id "LionDog" P2))
                 (pair (id "EasternBarbarian" P1) (id "Lion" P1)) (pair (id "EasternBarbarian" P2) (id "Lion" P2))
                 (pair (id "SouthernBarbarian" P1) (id "WhiteElephant" P1)) (pair (id "SouthernBarbarian" P2) (id "WhiteElephant" P2))
+                (pair (id "SideMover" P1) (id "FreeBoar" P1)) (pair (id "SideMover" P2) (id "FreeBoar" P2)) 
+                (pair (id "FerociousLeopard" P1) (id "Bishop" P1)) (pair (id "FerociousLeopard" P2) (id "Bishop" P2)) 
                 
             })
             
@@ -507,7 +557,30 @@
                 (place "WhiteElephant2" {"B14"})
             	(place "WhiteTiger1" {"Q4"}) 
                 (place "WhiteTiger2" {"A14"})
-                
+            	(place "LeftChariot1" {"A5"}) 
+                (place "LeftChariot2" {"Q13"})
+            	(place "RightChariot1" {"Q5"}) 
+                (place "RightChariot2" {"A13"})
+            	(place "SideMover1" {"B5" "P5"}) 
+                (place "SideMover2" {"B13" "P13"})
+            	(place "ViolentOx1" {"C5" "O5"}) 
+                (place "ViolentOx2" {"C13" "O13"})
+            	(place "AngryBoar1" {"D5" "N5"}) 
+                (place "AngryBoar2" {"D13" "N13"})
+            	(place "EvilWolf1" {"E5" "M5"}) 
+                (place "EvilWolf2" {"E13" "M13"})
+            	(place "ViolentBear1" {"F5" "L5"}) 
+                (place "ViolentBear2" {"F13" "L13"})
+            	(place "FerociousLeopard1" {"G5" "K5"}) 
+                (place "FerociousLeopard2" {"G13" "K13"})
+            	(place "BlindTiger1" {"H5" "J5"}) 
+                (place "BlindTiger2" {"H13" "J13"})
+            	(place "StandardBearer1" {"I5"}) 
+                (place "StandardBearer2" {"I13"})
+                (place "Pawn1" (sites Row 5))
+                (place "Pawn2" (sites Row 11))
+            	(place "HowlingDog1" {"F7" "L7"}) 
+                (place "HowlingDog2" {"F11" "L11"})
             })
             (play
                     (if ("SameTurn")
@@ -529,14 +602,7 @@
                         )
                     )
                 )
-            (end {
-                (if (and 
-                        ("IsInCheck" "Osho" Next)
-                        ("NextCannotMove")
-                    ) 
-                    (result Mover Win)
-                ) 
-            })
+            (end [#])
         )
         >
         "The incomplete ruleset."
