@@ -179,6 +179,41 @@
             (piece "ReverseChariot" Each ("SlideMove" (directions {Forward Backward}) "CanPromote"))
             // Keigei
             (piece "Whale" Each ("SlideMove" (directions {Forward Backward BR BL})))
+            // Kotetsu
+            (piece "OldKite" Each 
+                    (or
+                        ("SlideMove" (directions {FR FL}) "CanPromote")
+                        ("SlideMove" Orthogonal "CanPromote" (between (max 2)))
+                    )				
+            )
+            // Shishi
+            (piece "Lion" Each 
+                (or
+                    ("HopMove" (directions All))
+                    ("StepMove" (directions All))
+                    (then (and (set Pending) (moveAgain)))
+                )
+            )
+            // Funjin
+            (piece "FuriousFiend" Each ("StepMove" (directions All))) // to replace the move with #
+            // Roso
+            (piece "OldRat" Each ("SlideMove" (directions {FR FL Backward}) "CanPromote" (between (max 2))))
+            // Senkaku
+            (piece "WizardStork" Each 
+                    (or
+                        ("SlideMove" Diagonal)
+                        ("StepMove" Backward)
+                    )	
+            )
+            // Yoroku
+            (piece "PrancingStag" Each 
+                    (or
+                        ("SlideMove" (directions {Leftward Rightward}) ~ (between (max 2)))
+                        ("StepMove" (directions {Forward FR FL BR BL}))
+                    )	
+            )
+            // Myojin
+            (piece "CatSword" Each ("StepMove" Diagonal)) 
             
             
             (map "Promoted" { 
@@ -187,6 +222,9 @@
                 (pair (id "DragonKing" P1) (id "SoaringEagle" P1)) (pair (id "DragonKing" P2) (id "SoaringEagle" P2)) 
                 (pair (id "Rook" P1) (id "SquareMover" P1)) (pair (id "Rook" P2) (id "SquareMover" P2)) 
                 (pair (id "ReverseChariot" P1) (id "Whale" P1)) (pair (id "ReverseChariot" P2) (id "Whale" P2)) 
+                (pair (id "OldKite" P1) (id "LongNosedGoblin" P1)) (pair (id "OldKite" P2) (id "LongNosedGoblin" P2)) 
+                (pair (id "Lion" P1) (id "FuriousFiend" P1)) (pair (id "Lion" P2) (id "FuriousFiend" P2)) 
+                (pair (id "OldRat" P1) (id "WizardStork" P1)) (pair (id "OldRat" P2) (id "WizardStork" P2)) 
             })
             
         })
@@ -228,21 +266,31 @@
                 (place "HookMover2" {"B17"})
             	(place "ReverseChariot1" {"A2" "Q2"}) 
                 (place "ReverseChariot2" {"A16" "Q16"})
+            	(place "OldKite1" {"B2"}) 
+                (place "OldKite2" {"P16"})
+            	(place "Lion1" {"C2"}) 
+                (place "Lion2" {"O16"})
+            	(place "OldRat1" {"D2"}) 
+                (place "OldRat2" {"N16"})
+            	(place "PrancingStag1" {"E2"}) 
+                (place "PrancingStag2" {"M16"})
+            	(place "CatSword1" {"F2"}) 
+                (place "CatSword2" {"L16"})
             })
             (play
                     (if ("SameTurn")
-//                        (if (and (is Pending) (is In (what at:(last To)) (sites {(id "Lion" Mover)})))
-//                            (forEach Piece {"Lion"}
-//                                (or
-//                                    ("HopMove" (directions All))
-//                                    ("StepMove" (directions All))
-//                                )
-//                            ) 
+                        (if (and (is Pending) (is In (what at:(last To)) (sites {(id "Lion" Mover)})))
+                            (forEach Piece {"Lion"}
+                                (or
+                                    ("HopMove" (directions All))
+                                    ("StepMove" (directions All))
+                                )
+                            ) 
                             (or
                                 ("Promote")
                                 (move Pass)
                             )
-                      //  )
+                        )
                         (do 
                             (forEach Piece) 
                             ifAfterwards:(not ("IsInCheck" "Osho" Mover))

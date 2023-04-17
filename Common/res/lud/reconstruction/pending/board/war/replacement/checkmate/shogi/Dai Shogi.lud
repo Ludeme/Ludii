@@ -150,7 +150,7 @@
             // Keigei
             (piece "Whale" Each ("SlideMove" (directions {Forward Backward BR BL})))
             // Myojin
-            (piece "CatSword" Each ("StepMove" (directions {FR FL}) "CanPromote")) 
+            (piece "CatSword" Each ("StepMove" Diagonal "CanPromote")) 
             // Mohyo
             (piece "FerociousLeopard" Each ("StepMove" (directions {Forward Backward FR FL BR BL}) "CanPromote")) 
             // Kakugyo
