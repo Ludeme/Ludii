@@ -265,6 +265,13 @@
                     ("HopMove" (directions {Forward BR BL}))
             	})
             )
+            // Shugyo
+            (piece "VerticalMover" Each 
+                (or
+                    ("SlideMove" (directions {Forward Backward}))
+                    ("StepMove" (directions {Rightward Leftward}))
+                )
+            ) 
             
             (map "Promoted" { 
                 (pair (id "Lance" P1) (id "WhiteHorse" P1)) (pair (id "Lance" P2) (id "WhiteHorse" P2)) 
@@ -350,6 +357,8 @@
                 (place "LionDog2" {"C16"})
             	(place "PoisonousSnake1" {"P2"}) 
                 (place "PoisonousSnake2" {"B16"})
+            	(place "VerticalMover1" {"B3"}) 
+                (place "VerticalMover2" {"P15"})
             })
             (play
                     (if ("SameTurn")

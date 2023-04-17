@@ -141,7 +141,8 @@
                     ("SlideMove" (directions {Forward Backward}) "CanPromote")
                     ("StepMove" (directions {Rightward Leftward}) "CanPromote")
                 )
-            ) // Hisha
+            ) 
+            // Hisha
             (piece "Rook" Each ("SlideMove" Orthogonal "CanPromote")) 
             // King
             (piece "Osho" Each ("StepMove"))
