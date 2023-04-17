@@ -214,7 +214,57 @@
             )
             // Myojin
             (piece "CatSword" Each ("StepMove" Diagonal)) 
-            
+            // Hoo
+            (piece "Phenix" Each 
+                (or
+                    ("StepMove" (directions {Forward Backward Rightward Leftward}) "CanPromote")
+                    ("HopMove" (directions {FR FL BR BL}) "CanPromote")
+                )
+            )
+            // Kirin
+            (piece "Kirin" Each 
+                (or
+                    ("HopMove" (directions {Forward Backward Rightward Leftward}) "CanPromote")
+                    ("StepMove" (directions {FR FL BR BL}) "CanPromote")
+                )
+            )
+            // Kinsho
+            (piece "GoldGeneral" Each ("StepMove" (directions {Forward Backward Rightward Leftward FR FL}) "CanPromote"))
+            // Kinno
+            (piece "NeighborKing" Each ("StepMove" Orthogonal "CanPromote"))
+            // Zenki
+            (piece "StandardBearer" Each 
+            	(or {
+                    ("SlideMove" (directions {Forward FR FL}))
+                    ("SlideMove" (directions {Rightward Leftward}) ~ (between (max 2)))
+                    ("StepMove" (directions {BR BL Backward}))
+            	})
+            )
+            // Dairyu
+            (piece "GreatDragon" Each 
+            	(or {
+                    ("SlideMove" (directions {Forward Backward}) ~ (between (max 2)))
+                    ("SlideMove" (directions {BR BL}) ~ (between (max 3)))
+                    ("StepMove" (directions {Leftward Rightward}))
+            	})
+            )
+            // Gyocho
+            (piece "RushingBird" ("SlideMove" (directions {Forward Leftward Rightward BR BL FR FL}) "CanPromote"))
+            // Hiryu
+            (piece "FlyingDragon" Each ("SlideMove" (directions {FR FL BR BL}) ~ (between (max 2))))
+            // Moen
+            (piece "BlindMonkey" ("StepMove" (directions {FR FL BR BL Leftward Rightward}) "CanPromote"))
+            // Sambo
+            (piece "MountainWitch" ("SlideMove" (directions {FR FL BR BL Backward Forward})))
+            // Komainu
+            (piece "LionDog" ("SlideMove" All ~ (between (max 3))))
+            // Dokuja
+            (piece "PoisonousSnake" Each 
+            	(or {
+                    ("StepMove" (directions {Leftward Rightward}))
+                    ("HopMove" (directions {Forward BR BL}))
+            	})
+            )
             
             (map "Promoted" { 
                 (pair (id "Lance" P1) (id "WhiteHorse" P1)) (pair (id "Lance" P2) (id "WhiteHorse" P2)) 
@@ -225,6 +275,12 @@
                 (pair (id "OldKite" P1) (id "LongNosedGoblin" P1)) (pair (id "OldKite" P2) (id "LongNosedGoblin" P2)) 
                 (pair (id "Lion" P1) (id "FuriousFiend" P1)) (pair (id "Lion" P2) (id "FuriousFiend" P2)) 
                 (pair (id "OldRat" P1) (id "WizardStork" P1)) (pair (id "OldRat" P2) (id "WizardStork" P2)) 
+                (pair (id "Phenix" P1) (id "Kirin" P1)) (pair (id "Phenix" P2) (id "Kirin" P2)) 
+                (pair (id "GoldGeneral" P1) (id "Rook" P1)) (pair (id "GoldGeneral" P2) (id "Rook" P2)) 
+                (pair (id "NeighborKing" P1) (id "StandardBearer" P1)) (pair (id "NeighborKing" P2) (id "StandardBearer" P2)) 
+                (pair (id "Kirin" P1) (id "GreatDragon" P1)) (pair (id "Kirin" P2) (id "GreatDragon" P2)) 
+                (pair (id "RushingBird" P1) (id "FreeDemon" P1)) (pair (id "RushingBird" P2) (id "FreeDemon" P2)) 
+                (pair (id "BlindMonkey" P1) (id "MountainWitch" P1)) (pair (id "BlindMonkey" P2) (id "MountainWitch" P2))
             })
             
         })
@@ -276,6 +332,24 @@
                 (place "PrancingStag2" {"M16"})
             	(place "CatSword1" {"F2"}) 
                 (place "CatSword2" {"L16"})
+            	(place "Phenix1" {"G2"}) 
+                (place "Phenix2" {"K16"})
+            	(place "GoldGeneral1" {"H2" "J2"}) 
+                (place "GoldGeneral2" {"J16" "H16"})
+            	(place "NeighborKing1" {"I2"}) 
+                (place "NeighborKing2" {"I16"})
+            	(place "Kirin1" {"K2"}) 
+                (place "Kirin2" {"G16"})
+            	(place "RushingBird1" {"L2"}) 
+                (place "RushingBird2" {"F16"})
+            	(place "FlyingDragon1" {"M2"}) 
+                (place "FlyingDragon2" {"E16"})
+            	(place "BlindMonkey1" {"N2"}) 
+                (place "BlindMonkey2" {"D16"})
+            	(place "LionDog1" {"O2"}) 
+                (place "LionDog2" {"C16"})
+            	(place "PoisonousSnake1" {"P2"}) 
+                (place "PoisonousSnake2" {"B16"})
             })
             (play
                     (if ("SameTurn")
