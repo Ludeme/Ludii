@@ -233,7 +233,73 @@
             )
             // Honno
             (piece "Queen" Each ("SlideMove" All))
-            
+            // Roba
+            (piece "Donkey" Each 
+                (or
+                    ("StepMove" (directions {Rightward Leftward}))
+                    ("HopMove" (directions {Forward Backward}))
+                )
+            )
+            // Keima
+            (piece "Knight" Each 
+                (forEach Direction 
+                    Forward 
+                    (to 
+                        if:True 
+                        (apply 
+                            (forEach Direction 
+                                (from (to)) 
+                                (directions {FR FL}) 
+                                (if (not ("IsFriendAt" (to))) 
+                                    (move 
+                                        (from) 
+                                        (to 
+                                            (apply 
+                                                if:("IsEnemyAt" (to))
+                                                (remove (to))
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    ) 
+                )
+            )
+            // Mogyu
+            (piece "ViolentOx" Each ("SlideMove" (directions {Forward Backward Leftward Rightward}) ~ (between (max 2))))
+            // Hiryu
+            (piece "FlyingDragon" Each ("SlideMove" (directions {FR FL BR BL}) ~ (between (max 2))))
+            // Rasetsu
+            (piece "BuddhistDevil" Each
+            	(or
+            		("SlideMove" (directions {FR FL}) ~ (between (max 3)))
+            		("StepMove" (directions {Rightward Leftward Backward}))
+            	)
+            )
+            // Rikshi
+            (piece "Wrestler" Each
+            	(or
+            		("SlideMove" (directions {FR FL BR BL}) ~ (between (max 3)))
+            		("StepMove" (directions {Rightward Leftward}))
+            	)
+            )
+            // Komainu
+            (piece "LionDog" ("SlideMove" All ~ (between (max 3))))
+            // Kongo
+            (piece "GuardianOfTheGods" Each
+            	(or
+            		("SlideMove" Orthogonal ~ (between (max 3)))
+            		("StepMove" (directions {FR FL}))
+            	)
+            )
+            // Yasha
+            (piece "Yaksha" Each
+            	(or
+            		("SlideMove" Orthogonal ~ (between (max 5)))
+                    ("SlideMove" Diagonal ~ (between (max 2)))
+            	)
+            )
             
             (map "Promoted" { 
                 (pair (id "EarthGeneral" P1) (id "FreeGoer" P1)) (pair (id "EarthGeneral" P2) (id "FreeGoer" P2)) 
@@ -319,6 +385,24 @@
                 (place "Lion2" {"J17"})
             	(place "Phenix1" {"K3"}) 
                 (place "Phenix2" {"I17"})
+            	(place "Donkey1" {"A4" "S4"}) 
+                (place "Donkey2" {"A16" "S16"})
+            	(place "Knight1" {"C4" "Q4"}) 
+                (place "Knight2" {"C16" "Q16"})
+            	(place "ViolentOx1" {"E4" "O4"}) 
+                (place "ViolentOx2" {"E16" "O16"})
+            	(place "ViolentOx1" {"G4" "M4"}) 
+                (place "ViolentOx2" {"G16" "M16"})
+            	(place "BuddhistDevil1" {"H4"}) 
+                (place "BuddhistDevil2" {"L16"})
+            	(place "Wrestler1" {"I4"}) 
+                (place "Wrestler2" {"K16"})
+            	(place "LionDog1" {"J4"}) 
+                (place "LionDog2" {"J16"})
+            	(place "GuardianOfTheGods1" {"K4"}) 
+                (place "GuardianOfTheGods2" {"I16"})
+            	(place "Yaksha1" {"L4"}) 
+                (place "Yaksha2" {"H16"})
             })
             (play
                     (if ("SameTurn")
