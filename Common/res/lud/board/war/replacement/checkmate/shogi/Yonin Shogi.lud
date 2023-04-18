@@ -9,44 +9,22 @@
     )
 )
 
-(define "NextCannotMove"
-    (not 
-        (can Move 
-            (do 
-                (or {
-                    (move 
-                        (from (sites Occupied by:Next container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
-                        (to (sites Empty))
-                    ) 
-                    (do 
-                        (move 
-                            (from (sites Occupied by:Next container:"Hand" component:"Fuhyo")) 
-                            (to (difference (sites Empty) (sites Next "LastRank")) 
-                                if:("OnePawnPerColumn" Next)
-                            )
-                        ) 
-                        ifAfterwards:("IsInCheck" "Osho" Mover)
-                    )
-                    ("PlaceLance" Next)
-                    ("PlaceKnight" Next) 
-                    (forEach Piece Next) 
-                })
-                ifAfterwards:(not ("IsInCheck" "Osho" Next))
-            ) 
-        )
-    )
-)
-
 (define "CanNotMove"
     (not (can Move (do (and (forEach Piece #1) (set NextPlayer (player #2))) ifAfterwards:(not ("IsInCheck" "Osho" #1)))))
 )
 
-(define "OnePawnPerColumn" 
-    (= 
-        (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo")) 
-        (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (sites Column (column of:(to)))))
+// Fixed OnePawnPerColumn by dale walton
+(define "OnePawnPerColumn"
+  (if
+    (= 0 (% #2 2))  // #1 is even   
+    (=
+      (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo"))
+      (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (sites Row (row of:(to)))))
     )
-)
+    (=
+      (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo"))
+      (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (sites Column (column of:(to)))))
+) ) )
 
 (define "PlaceKnight" 
     (move 
@@ -62,15 +40,21 @@
     )
 )
 
+// Fixed PlacePawn by RubixOne
 (define "PlacePawn" 
     (do 
         (move 
             (from (sites Occupied by:#1 container:"Hand" component:"Fuhyo")) 
             (to (difference (sites Empty) (sites #1 "LastRank")) 
-                if:("OnePawnPerColumn" #1)
+                if:("OnePawnPerColumn" #1 #2)
             )
         ) 
-        ifAfterwards:(not (and ("IsInCheck" "Osho" #2) ("NextCannotMove")))
+        ifAfterwards:(not (or {
+            (and ("IsInCheck" "Osho" P1) ("CanNotMove" P1 1))
+            (and ("IsInCheck" "Osho" P2) ("CanNotMove" P2 2))
+            (and ("IsInCheck" "Osho" P3) ("CanNotMove" P3 3))
+            (and ("IsInCheck" "Osho" P4) ("CanNotMove" P4 4))
+        }))
     )
 ) 
 
@@ -461,7 +445,7 @@
                             (from (sites Occupied by:Mover container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
                             (to (sites Empty))
                         ) 
-                        ("PlacePawn" Mover Next)
+                        ("PlacePawn" Mover (mover) Next)
                         ("PlaceLance" Mover)
                         ("PlaceKnight" Mover) 
                         (forEach Piece) 
@@ -505,7 +489,7 @@
         (place "Osho1" coord:"E1") (place "Kinsho1" {"D1" "F1"}) (place "Ginsho1" {"C1" "G1"}) (place "Keima1" {"B1" "H1"}) (place "Kyosha1" coord:"A1") (place "Fuhyo1" {"D3" "F3" "E3" "G3" "H3"}) (place "Hisha1" coord:"G2") (place "Kakugyo1" coord:"B2")
         (place "Osho2" coord:"I5") (place "Kinsho2" {"I4" "I6"}) (place "Ginsho2" {"I3" "I7"}) (place "Keima2" {"I2" "I8"}) (place "Kyosha2" coord:"I1") (place "Fuhyo2" {"G4" "G5" "G6" "G7" "G8"}) (place "Hisha2" coord:"H7") (place "Kakugyo2" coord:"H2")
         (place "Osho3" coord:"E9") (place "Kinsho3" {"D9" "F9"}) (place "Ginsho3" {"C9" "G9"}) (place "Keima3" {"B9" "H9"}) (place "Kyosha3" coord:"I9") (place "Fuhyo3" {"B7" "C7" "D7" "E7" "F7"}) (place "Hisha3" coord:"C8") (place "Kakugyo3" coord:"H8")
-        (place "Osho4" coord:"A5") (place "Kinsho4" {"A4" "A6"}) (place "Ginsho4" {"A3" "A7"}) (place "Keima4" {"A2" "A8"}) (place "Kyosha4" coord:"A9") (place "Fuhyo4" {"C2" "C3" "C4" "C5" "C6"}) (place "Hisha4" coord:"B8") (place "Kakugyo4" coord:"B3")
+        (place "Osho4" coord:"A5") (place "Kinsho4" {"A4" "A6"}) (place "Ginsho4" {"A3" "A7"}) (place "Keima4" {"A2" "A8"}) (place "Kyosha4" coord:"A9") (place "Fuhyo4" {"C2" "C3" "C4" "C5" "C6"}) (place "Hisha4" coord:"B3") (place "Kakugyo4" coord:"B8")
         >
     "Setup in weekly children’s magazine in February 1991")
 })
@@ -545,9 +529,5 @@
         (piece Colour "Narikei" strokeColour:(colour Red))
         (piece Colour "Narikyo" strokeColour:(colour Red))
     })
-    
-    (ai 
-        "Yonin Shogi_ai"
-    )
     
 )
