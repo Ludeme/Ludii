@@ -29,13 +29,13 @@
 )
 
 (define "CanPromote"
-	    (then 
-	        (if 
-		        (or [#])
-	            (moveAgain) 
-	        ) 
-	    )
-	)
+    (then 
+        (if 
+            (or [#])
+            (moveAgain) 
+        ) 
+    )
+)
 
 (define "SlideMove"
     (move Slide
@@ -70,7 +70,6 @@
 
 //------------------------------------------------------------------------------
 
-
 (game "Maka Dai Dai Shogi"
     <Variant>
 )
@@ -84,10 +83,10 @@
         ("TwoPlayersNorthSouth") 
         (equipment { 
             (board (square 19))
-
+            
             (regions "Promotion" P1 (expand (sites Top) steps:2))
             (regions "Promotion" P2 (expand (sites Bottom) steps:2))
-
+            
             // Kyosha
             (piece "Lance" Each ("SlideMove" Forward))
             // Dosho
@@ -130,19 +129,19 @@
             (piece "Osho" Each ("StepMove" All "CanPromote"))
             // Tenno
             (piece "Emperor" Each 
-                    (and
-                            (do
-                                (move 
-                                    (from)
-                                    (to (sites Occupied by:Enemy))
-                                )
-                                ifAfterwards:(not ("IsInCheck" "Emperor" Mover))
-                            )
-                            (move 
-                                (from)
-                                (to (sites Empty))
-                            )
-                        )			
+                (and
+                    (do
+                        (move 
+                            (from)
+                            (to (sites Occupied by:Enemy))
+                        )
+                        ifAfterwards:(not ("IsInCheck" "Emperor" Mover))
+                    )
+                    (move 
+                        (from)
+                        (to (sites Empty))
+                    )
+                )			
             )
             // Hensha
             (piece "ReverseChariot" Each ("SlideMove" (directions {Forward Backward}) "CanPromote")) 
@@ -164,19 +163,19 @@
             (piece "RecliningDragon" Each ("StepMove" (directions {Backward BR BL Forward Leftward Rightward}) "CanPromote")) 
             // Hoonryu
             (piece "FreeDragon" Each 
-            	(or
-            		("SlideMove" (directions {FR FL Forward Leftward Rightward}))
-            		("StepMove" (directions {BR BL Backward}))
-            	)
+                (or
+                    ("SlideMove" (directions {FR FL Forward Leftward Rightward}))
+                    ("StepMove" (directions {BR BL Backward}))
+                )
             )
             // Koen
             (piece "OldMonkey" Each ("StepMove" (directions {Backward FR FL BR BL}) "CanPromote")) 
             // Sambu
             (piece "MountainWitch" Each 
-            	(or
-            		("SlideMove" (directions {FR FL Backward BR BL}))
-            		("StepMove" (directions {Forward}))
-            	)
+                (or
+                    ("SlideMove" (directions {FR FL Backward BR BL}))
+                    ("StepMove" (directions {Forward}))
+                )
             )
             // Mohyo
             (piece "FerociousLeopard" Each ("StepMove" (directions {Forward Backward FR FL BR BL}) "CanPromote")) 
@@ -200,10 +199,10 @@
             (piece "BlindBear" Each ("StepMove" (directions {FR FL BR BL Backward}))) 
             // Hon'yu
             (piece "FreeBear" Each 
-            	(or
-            		("SlideMove" (directions {FR FL BR BL Leftward Rightward}))
+                (or
+                    ("SlideMove" (directions {FR FL BR BL Leftward Rightward}))
                     ("HopMove" (directions {FR FL}))
-            	)
+                )
             ) 
             // Akuro
             (piece "EvilWolf" Each ("StepMove" (directions {Forward FR FL BR BL})))
@@ -272,33 +271,33 @@
             (piece "FlyingDragon" Each ("SlideMove" (directions {FR FL BR BL}) ~ (between (max 2))))
             // Rasetsu
             (piece "BuddhistDevil" Each
-            	(or
-            		("SlideMove" (directions {FR FL}) ~ (between (max 3)))
-            		("StepMove" (directions {Rightward Leftward Backward}))
-            	)
+                (or
+                    ("SlideMove" (directions {FR FL}) ~ (between (max 3)))
+                    ("StepMove" (directions {Rightward Leftward Backward}))
+                )
             )
             // Rikshi
             (piece "Wrestler" Each
-            	(or
-            		("SlideMove" (directions {FR FL BR BL}) ~ (between (max 3)))
-            		("StepMove" (directions {Rightward Leftward}))
-            	)
+                (or
+                    ("SlideMove" (directions {FR FL BR BL}) ~ (between (max 3)))
+                    ("StepMove" (directions {Rightward Leftward}))
+                )
             )
             // Komainu
             (piece "LionDog" ("SlideMove" All ~ (between (max 3))))
             // Kongo
             (piece "GuardianOfTheGods" Each
-            	(or
-            		("SlideMove" Orthogonal ~ (between (max 3)))
-            		("StepMove" (directions {FR FL}))
-            	)
+                (or
+                    ("SlideMove" Orthogonal ~ (between (max 3)))
+                    ("StepMove" (directions {FR FL}))
+                )
             )
             // Yasha
             (piece "Yaksha" Each
-            	(or
-            		("SlideMove" Orthogonal ~ (between (max 5)))
+                (or
+                    ("SlideMove" Orthogonal ~ (between (max 5)))
                     ("SlideMove" Diagonal ~ (between (max 2)))
-            	)
+                )
             )
             // Hisha
             (piece "Rook" Each ("SlideMove" Orthogonal "CanPromote")) 
@@ -311,17 +310,17 @@
             )
             // Sasha
             (piece "LeftChariot" Each 
-            	(or {	
-            		("SlideMove" (directions {Forward FR BL}))
-            		("StepMove" (directions {Leftward}))
-            	})
+                (or {	
+                    ("SlideMove" (directions {Forward FR BL}))
+                    ("StepMove" (directions {Leftward}))
+                })
             )
             // Usha
             (piece "RightChariot" Each 
-            	(or {	
-            		("SlideMove" (directions {Forward FL BR}))
-            		("StepMove" (directions {Rightward}))
-            	})
+                (or {	
+                    ("SlideMove" (directions {Forward FL BR}))
+                    ("StepMove" (directions {Rightward}))
+                })
             )
             // Ogyo
             (piece "SideMover" Each 
@@ -353,8 +352,8 @@
             // Ryuma
             (piece "DragonHorse" Each 
                 (or
-                     ("SlideMove" Diagonal "CanPromote")
-                     ("StepMove" Orthogonal "CanPromote")
+                    ("SlideMove" Diagonal "CanPromote")
+                    ("StepMove" Orthogonal "CanPromote")
                 )
             ) 
             // Kakuo
@@ -380,15 +379,15 @@
             )
             // Makatsu
             (piece "Capricorn" Each
-                    ("SlideMove" Diagonal 
-                        (then (moveAgain))
-                    )	
+                ("SlideMove" Diagonal 
+                    (then (moveAgain))
+                )	
             )
             // Kogyo
             (piece "HookMover" Each
-                    ("SlideMove" Orthogonal 
-                        (then (moveAgain))
-                    )	
+                ("SlideMove" Orthogonal 
+                    (then (moveAgain))
+                )	
             ) 
             // Fuhyo
             (piece "Pawn" Each ("StepMove" Forward))
@@ -433,142 +432,142 @@
         })
         (rules
             (start {
-            	(place "Lance1" {"A1" "S1"}) 
+                (place "Lance1" {"A1" "S1"}) 
                 (place "Lance2" {"A19" "S19"})
-            	(place "EarthGeneral1" {"B1" "R1"}) 
+                (place "EarthGeneral1" {"B1" "R1"}) 
                 (place "EarthGeneral2" {"B19" "R19"})
-            	(place "StoneGeneral1" {"C1" "Q1"}) 
+                (place "StoneGeneral1" {"C1" "Q1"}) 
                 (place "StoneGeneral2" {"C19" "Q19"})
-            	(place "TileGeneral1" {"D1" "P1"}) 
+                (place "TileGeneral1" {"D1" "P1"}) 
                 (place "TileGeneral2" {"D19" "P19"})
-            	(place "IronGeneral1" {"E1" "O1"}) 
+                (place "IronGeneral1" {"E1" "O1"}) 
                 (place "IronGeneral2" {"E19" "O19"})
-            	(place "CopperGeneral1" {"F1" "N1"}) 
+                (place "CopperGeneral1" {"F1" "N1"}) 
                 (place "CopperGeneral2" {"F19" "N19"})
-            	(place "SilverGeneral1" {"G1" "M1"}) 
+                (place "SilverGeneral1" {"G1" "M1"}) 
                 (place "SilverGeneral2" {"G19" "M19"})
-            	(place "GoldGeneral1" {"H1" "L1"}) 
+                (place "GoldGeneral1" {"H1" "L1"}) 
                 (place "GoldGeneral2" {"H19" "L19"})
-            	(place "Deva1" {"I1"}) 
+                (place "Deva1" {"I1"}) 
                 (place "Deva2" {"K19"})
-            	(place "DarkSpirit1" {"K1"}) 
+                (place "DarkSpirit1" {"K1"}) 
                 (place "DarkSpirit2" {"I19"})
-            	(place "Osho1" {"J1"}) 
+                (place "Osho1" {"J1"}) 
                 (place "Osho2" {"J19"})
-            	(place "ReverseChariot1" {"A2" "S2"}) 
+                (place "ReverseChariot1" {"A2" "S2"}) 
                 (place "ReverseChariot2" {"A18" "S18"})
-            	(place "CatSword1" {"C2" "Q2"}) 
+                (place "CatSword1" {"C2" "Q2"}) 
                 (place "CatSword2" {"C18" "Q18"})
-            	(place "ChineseCock1" {"E2"}) 
+                (place "ChineseCock1" {"E2"}) 
                 (place "ChineseCock2" {"O18"})
-            	(place "CoiledSerpent1" {"G2"}) 
+                (place "CoiledSerpent1" {"G2"}) 
                 (place "CoiledSerpent2" {"M18"})
-            	(place "RecliningDragon1" {"M2"}) 
+                (place "RecliningDragon1" {"M2"}) 
                 (place "RecliningDragon2" {"G18"})
-            	(place "OldMonkey1" {"O2"}) 
+                (place "OldMonkey1" {"O2"}) 
                 (place "OldMonkey2" {"E18"})
-            	(place "OldMonkey1" {"H2" "L2"}) 
+                (place "OldMonkey1" {"H2" "L2"}) 
                 (place "OldMonkey2" {"H18" "L18"})
-            	(place "BlindTiger1" {"I2" "K2"}) 
+                (place "BlindTiger1" {"I2" "K2"}) 
                 (place "BlindTiger2" {"I18" "K18"})
-            	(place "Suizo1" {"J2"}) 
+                (place "Suizo1" {"J2"}) 
                 (place "Suizo2" {"J18"})
-            	(place "OldRat1" {"B3" "R3"}) 
+                (place "OldRat1" {"B3" "R3"}) 
                 (place "OldRat2" {"B17" "R17"})
-            	(place "AngryBoar1" {"D3" "P3"}) 
+                (place "AngryBoar1" {"D3" "P3"}) 
                 (place "AngryBoar2" {"D17" "P17"})
-            	(place "BlindBear1" {"F3" "N3"}) 
+                (place "BlindBear1" {"F3" "N3"}) 
                 (place "BlindBear2" {"F17" "N17"})
-            	(place "EvilWolf1" {"H3" "L3"}) 
+                (place "EvilWolf1" {"H3" "L3"}) 
                 (place "EvilWolf2" {"H17" "L17"})
-            	(place "Kirin1" {"I3"}) 
+                (place "Kirin1" {"I3"}) 
                 (place "Kirin2" {"K17"})
-            	(place "Lion1" {"J3"}) 
+                (place "Lion1" {"J3"}) 
                 (place "Lion2" {"J17"})
-            	(place "Phenix1" {"K3"}) 
+                (place "Phenix1" {"K3"}) 
                 (place "Phenix2" {"I17"})
-            	(place "Donkey1" {"A4" "S4"}) 
+                (place "Donkey1" {"A4" "S4"}) 
                 (place "Donkey2" {"A16" "S16"})
-            	(place "Knight1" {"C4" "Q4"}) 
+                (place "Knight1" {"C4" "Q4"}) 
                 (place "Knight2" {"C16" "Q16"})
-            	(place "ViolentOx1" {"E4" "O4"}) 
+                (place "ViolentOx1" {"E4" "O4"}) 
                 (place "ViolentOx2" {"E16" "O16"})
-            	(place "ViolentOx1" {"G4" "M4"}) 
+                (place "ViolentOx1" {"G4" "M4"}) 
                 (place "ViolentOx2" {"G16" "M16"})
-            	(place "BuddhistDevil1" {"H4"}) 
+                (place "BuddhistDevil1" {"H4"}) 
                 (place "BuddhistDevil2" {"L16"})
-            	(place "Wrestler1" {"I4"}) 
+                (place "Wrestler1" {"I4"}) 
                 (place "Wrestler2" {"K16"})
-            	(place "LionDog1" {"J4"}) 
+                (place "LionDog1" {"J4"}) 
                 (place "LionDog2" {"J16"})
-            	(place "GuardianOfTheGods1" {"K4"}) 
+                (place "GuardianOfTheGods1" {"K4"}) 
                 (place "GuardianOfTheGods2" {"I16"})
-            	(place "Yaksha1" {"L4"}) 
+                (place "Yaksha1" {"L4"}) 
                 (place "Yaksha2" {"H16"})
-            	(place "Rook1" {"A5" "S5"}) 
+                (place "Rook1" {"A5" "S5"}) 
                 (place "Rook2" {"A15" "S15"})
-            	(place "LeftChariot1" {"B5"}) 
+                (place "LeftChariot1" {"B5"}) 
                 (place "LeftChariot2" {"R15"})
-            	(place "RightChariot1" {"R5"}) 
+                (place "RightChariot1" {"R5"}) 
                 (place "RightChariot2" {"B15"})
-            	(place "SideMover1" {"C5" "Q5"}) 
+                (place "SideMover1" {"C5" "Q5"}) 
                 (place "SideMover2" {"C15" "Q15"})
-            	(place "SideFlier1" {"D5" "P5"}) 
+                (place "SideFlier1" {"D5" "P5"}) 
                 (place "SideFlier2" {"D15" "P15"})
-            	(place "VerticalMover1" {"E5" "O5"}) 
+                (place "VerticalMover1" {"E5" "O5"}) 
                 (place "VerticalMover2" {"E15" "O15"})
-            	(place "Bishop1" {"F5" "N5"}) 
+                (place "Bishop1" {"F5" "N5"}) 
                 (place "Bishop2" {"F15" "N15"})
-            	(place "DragonHorse1" {"G5" "M5"}) 
+                (place "DragonHorse1" {"G5" "M5"}) 
                 (place "DragonHorse2" {"G15" "M15"})
-            	(place "DragonKing1" {"H5" "L5"}) 
+                (place "DragonKing1" {"H5" "L5"}) 
                 (place "DragonKing2" {"H15" "L15"})
-            	(place "Capricorn1" {"I5"}) 
+                (place "Capricorn1" {"I5"}) 
                 (place "Capricorn2" {"K15"})
-            	(place "Queen1" {"J5"}) 
+                (place "Queen1" {"J5"}) 
                 (place "Queen2" {"J15"})
-            	(place "HookMover1" {"K5"}) 
+                (place "HookMover1" {"K5"}) 
                 (place "HookMover2" {"I15"})
                 (place "Pawn1" (sites Row 5))
                 (place "Pawn2" (sites Row 13))
-            	(place "Chunin1" {"F7" "N7"}) 
+                (place "Chunin1" {"F7" "N7"}) 
                 (place "Chunin2" {"F13" "N13"})
             })
             (play
-                    (if ("SameTurn")
-                        (if (and (is Pending) (is In (what at:(last To)) (sites {(id "Lion" Mover)})))
-                            (forEach Piece {"Lion"}
-                                (or
-                                    ("HopMove" (directions All))
-                                    ("StepMove" (directions All))
-                                )
-                            ) 
-                            (if (is In (what at:(last To)) (sites {(id "Capricorn" Mover) (id "HookMover" Mover)}))
-                                (or
-                                    (move Pass)
-                                    ("SlideMove"
-                                        (from (last To))
-                                        ~
-                                        (difference 
-                                            (difference (if ("IsPieceAt" "HookMover" Mover (last To)) Orthogonal Diagonal)
-                                                ("LastDirection" Cell)
-                                            ) 
-                                            (directions Cell from:(last To) to:(last From))
-                                        )
+                (if ("SameTurn")
+                    (if (and (is Pending) (is In (what at:(last To)) (sites {(id "Lion" Mover)})))
+                        (forEach Piece {"Lion"}
+                            (or
+                                ("HopMove" (directions All))
+                                ("StepMove" (directions All))
+                            )
+                        ) 
+                        (if (is In (what at:(last To)) (sites {(id "Capricorn" Mover) (id "HookMover" Mover)}))
+                            (or
+                                (move Pass)
+                                ("SlideMove"
+                                    (from (last To))
+                                    ~
+                                    (difference 
+                                        (difference (if ("IsPieceAt" "HookMover" Mover (last To)) Orthogonal Diagonal)
+                                            ("LastDirection" Cell)
+                                        ) 
+                                        (directions Cell from:(last To) to:(last From))
                                     )
-                                )	
-	                            (or
-	                                ("Promote")
-	                                (move Pass)
-	                            )
+                                )
+                            )	
+                            (or
+                                ("Promote")
+                                (move Pass)
                             )
                         )
-                        (do 
-                            (forEach Piece) 
-                            ifAfterwards:(not ("IsInCheck" "Osho" Mover))
-                        )
+                    )
+                    (do 
+                        (forEach Piece) 
+                        ifAfterwards:(not ("IsInCheck" "Osho" Mover))
                     )
                 )
+            )
             (end [#])
         )
         >
