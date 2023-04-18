@@ -2,7 +2,7 @@
     (players 2)
     (equipment {
         (board (square <Board:size>))
-        (piece "Marker" Each "StepOrthogonalToEmpty")
+        (piece "Marker" Each (move Slide Orthogonal))
     })
     (rules 
         (start { 
