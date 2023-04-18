@@ -154,7 +154,7 @@
     ("TwoPlayersNorthSouth") 
     (equipment { 
         (board (square 16))
-        (piece "Pawn" ("StepMove" Forward))
+        (piece "Pawn" ("StepMove" Forward "Promote"))
         (piece "King" ("StepMove" Adjacent))
         (piece "Prince" ("StepMove" Adjacent))
         (piece "DrunkenElephant" ("StepMove" (difference Adjacent (directions {Backward}))))
