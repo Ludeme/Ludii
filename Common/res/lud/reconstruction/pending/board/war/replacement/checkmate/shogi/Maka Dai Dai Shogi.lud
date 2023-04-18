@@ -389,8 +389,9 @@
                     ("SlideMove" Orthogonal 
                         (then (moveAgain))
                     )	
-            )
-            
+            ) 
+            // Fuhyo
+            (piece "Pawn" Each ("StepMove" Forward "CanPromote"))
             
             (map "Promoted" { 
                 (pair (id "EarthGeneral" P1) (id "FreeGoer" P1)) (pair (id "EarthGeneral" P2) (id "FreeGoer" P2)) 
@@ -524,6 +525,8 @@
                 (place "Queen2" {"J15"})
             	(place "HookMover1" {"K5"}) 
                 (place "HookMover2" {"I15"})
+                (place "Pawn1" (sites Row 5))
+                (place "Pawn2" (sites Row 13))
             })
             (play
                     (if ("SameTurn")
