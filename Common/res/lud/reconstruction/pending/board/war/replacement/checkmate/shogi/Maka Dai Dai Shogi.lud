@@ -93,7 +93,7 @@
             // Dosho
             (piece "EarthGeneral" Each ("StepMove" (directions {Forward Backward}) "CanPromote"))
             // Honnin
-            (piece "FreeGoer" Each ("SlideMove" (directions {Forward BR BL})))
+            (piece "FreeEarth" Each ("SlideMove" (directions {Forward BR BL})))
             // Sekisho
             (piece "StoneGeneral" Each ("StepMove" (directions {FR FL}) "CanPromote"))
             // Honseki
@@ -391,10 +391,14 @@
                     )	
             ) 
             // Fuhyo
-            (piece "Pawn" Each ("StepMove" Forward "CanPromote"))
+            (piece "Pawn" Each ("StepMove" Forward))
+            // Chunin
+            (piece "Chunin" Each ("StepMove" (directions {Forward Backward}) "CanPromote"))
+            // Hondo
+            (piece "FreeGoer" Each ("SlideMove" (directions {Forward Backward})))
             
             (map "Promoted" { 
-                (pair (id "EarthGeneral" P1) (id "FreeGoer" P1)) (pair (id "EarthGeneral" P2) (id "FreeGoer" P2)) 
+                (pair (id "EarthGeneral" P1) (id "FreeEarth" P1)) (pair (id "EarthGeneral" P2) (id "FreeEarth" P2)) 
                 (pair (id "StoneGeneral" P1) (id "FreeStone" P1)) (pair (id "StoneGeneral" P2) (id "FreeStone" P2)) 
                 (pair (id "TileGeneral" P1) (id "FreeTile" P1)) (pair (id "TileGeneral" P2) (id "FreeTile" P2)) 
                 (pair (id "IronGeneral" P1) (id "FreeIron" P1)) (pair (id "IronGeneral" P2) (id "FreeIron" P2)) 
@@ -424,7 +428,7 @@
                 (pair (id "Bishop" P1) (id "DragonHorse" P1)) (pair (id "Bishop" P2) (id "DragonHorse" P2)) 
                 (pair (id "DragonHorse" P1) (id "HornedFalcon" P1)) (pair (id "DragonHorse" P2) (id "HornedFalcon" P2)) 
                 (pair (id "DragonKing" P1) (id "SoaringEagle" P1)) (pair (id "DragonKing" P2) (id "SoaringEagle" P2)) 
-            
+                (pair (id "Chunin" P1) (id "FreeGoer" P1)) (pair (id "DragonKing" P2) (id "FreeGoer" P2)) 
             })
         })
         (rules
@@ -527,6 +531,8 @@
                 (place "HookMover2" {"I15"})
                 (place "Pawn1" (sites Row 5))
                 (place "Pawn2" (sites Row 13))
+            	(place "Chunin1" {"F7" "N7"}) 
+                (place "Chunin2" {"F13" "N13"})
             })
             (play
                     (if ("SameTurn")
