@@ -15,15 +15,15 @@
 
 // Fixed OnePawnPerColumn by dale walton
 (define "OnePawnPerColumn"
-  (if
-    (= 0 (% #2 2))  // #1 is even   
-    (=
-      (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo"))
-      (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (sites Row (row of:(to)))))
-    )
-    (=
-      (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo"))
-      (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (sites Column (column of:(to)))))
+    (if
+        (= 0 (% #2 2))  // #1 is even   
+        (=
+            (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo"))
+            (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (sites Row (row of:(to)))))
+        )
+        (=
+            (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo"))
+            (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (sites Column (column of:(to)))))
 ) ) )
 
 (define "PlaceKnight" 
@@ -50,10 +50,10 @@
             )
         ) 
         ifAfterwards:(not (or {
-            (and ("IsInCheck" "Osho" P1) ("CanNotMove" P1 1))
-            (and ("IsInCheck" "Osho" P2) ("CanNotMove" P2 2))
-            (and ("IsInCheck" "Osho" P3) ("CanNotMove" P3 3))
-            (and ("IsInCheck" "Osho" P4) ("CanNotMove" P4 4))
+                (and ("IsInCheck" "Osho" P1) ("CanNotMove" P1 1))
+                (and ("IsInCheck" "Osho" P2) ("CanNotMove" P2 2))
+                (and ("IsInCheck" "Osho" P3) ("CanNotMove" P3 3))
+                (and ("IsInCheck" "Osho" P4) ("CanNotMove" P4 4))
         }))
     )
 ) 
