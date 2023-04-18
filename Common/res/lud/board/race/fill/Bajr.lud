@@ -6,7 +6,7 @@
     (players <Players:numPlayers>) 
     (equipment { 
         (board (square <Board:size>)) 
-        (piece "Counter" Each "StepToEmpty")
+        (piece "Counter" Each ("StepToEmpty" (directions {Forwards Leftward Rightward})))
         <Players:home>
     }) 
     (rules 
@@ -44,7 +44,7 @@
 (option "Players" <Players> args:{ <numPlayers> <home> <start> }
     {
     (item "2" 
-        <2>
+        <{(player NE) (player SW)}>
         < 
         (regions "Home" P1 (expand (intersection (sites Bottom) (sites Left)) steps:"SizeStart" Orthogonal))
         (regions "Home" P2 (expand (intersection (sites Top) (sites Right)) steps:"SizeStart" Orthogonal))
@@ -57,13 +57,13 @@
         "The game involves two players."
     )* 
     (item "4" 
-        <4>
+        <{(player NE) (player SW) (player SE) (player NW)}>
         < 
         (regions "Home" P1 (expand (intersection (sites Bottom) (sites Left)) steps:"SizeStart" Orthogonal))
         (regions "Home" P2 (expand (intersection (sites Top) (sites Right)) steps:"SizeStart" Orthogonal))
         (regions "Home" P3 (expand (intersection (sites Top) (sites Left)) steps:"SizeStart" Orthogonal))
         (regions "Home" P4 (expand (intersection (sites Bottom) (sites Right)) steps:"SizeStart" Orthogonal))
-        (map {(pair P1 P4) (pair P2 P3) (pair P3 P2) (pair P4 P1)})
+        (map {(pair P1 P2) (pair P2 P1) (pair P3 P4) (pair P4 P3)})
         >
         <
         (place "Counter1" (sites P1))
