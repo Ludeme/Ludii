@@ -300,6 +300,97 @@
                     ("SlideMove" Diagonal ~ (between (max 2)))
             	)
             )
+            // Hisha
+            (piece "Rook" Each ("SlideMove" Orthogonal "CanPromote")) 
+            // Ryuo
+            (piece "DragonKing" Each 
+                (or
+                    ("SlideMove" Orthogonal "CanPromote")
+                    ("StepMove" Diagonal "CanPromote")
+                )
+            )
+            // Sasha
+            (piece "LeftChariot" Each 
+            	(or {	
+            		("SlideMove" (directions {Forward FR BL}))
+            		("StepMove" (directions {Leftward}))
+            	})
+            )
+            // Usha
+            (piece "RightChariot" Each 
+            	(or {	
+            		("SlideMove" (directions {Forward FL BR}))
+            		("StepMove" (directions {Rightward}))
+            	})
+            )
+            // Ogyo
+            (piece "SideMover" Each 
+                (or
+                    ("SlideMove" (directions {Rightward Leftward}) "CanPromote")
+                    ("StepMove" (directions {Forward Backward}) "CanPromote")
+                )		
+            )
+            // Honcho
+            (piece "FreeBoar" Each ("SlideMove" (directions {Backward Rightward Leftward FR FL BR BL})))
+            // Ohi
+            (piece "SideFlier" Each 
+                (or
+                    ("SlideMove" (directions {Rightward Leftward}))
+                    ("StepMove" Diagonal)
+                )		
+            )
+            // Shugyo
+            (piece "VerticalMover" Each 
+                (or
+                    ("SlideMove" (directions {Forward Backward}))
+                    ("StepMove" (directions {Rightward Leftward}))
+                )
+            ) 
+            // Higyu
+            (piece "FlyingOx" Each ("SlideMove" All))
+            // Kakugyo
+            (piece "Bishop" Each ("SlideMove" Diagonal "CanPromote"))
+            // Ryuma
+            (piece "DragonHorse" Each 
+                (or
+                     ("SlideMove" Diagonal "CanPromote")
+                     ("StepMove" Orthogonal "CanPromote")
+                )
+            ) 
+            // Kakuo
+            (piece "HornedFalcon" Each 
+                (or
+                    ("SlideMove" (directions {Backward Rightward Leftward FR FL BR BL}))
+                    ("SlideMove" Forward ~ (between (max 2)))
+                )
+            )
+            // Ryuo
+            (piece "DragonKing" Each 
+                (or
+                    ("SlideMove" Orthogonal "CanPromote")
+                    ("StepMove" Diagonal "CanPromote")
+                )
+            )
+            // Hiju
+            (piece "SoaringEagle" Each 
+                (or
+                    ("SlideMove" Orthogonal)
+                    ("SlideMove" (directions {FR FL}) ~ (between (max 2)))
+                )
+            )
+            // Makatsu
+            (piece "Capricorn" Each
+                    ("SlideMove" Diagonal 
+                        (then (moveAgain))
+                    )	
+            )
+            // Kogyo
+            (piece "HookMover" Each
+                    ("SlideMove" Orthogonal 
+                        (then (moveAgain))
+                    )	
+            )
+            
             
             (map "Promoted" { 
                 (pair (id "EarthGeneral" P1) (id "FreeGoer" P1)) (pair (id "EarthGeneral" P2) (id "FreeGoer" P2)) 
@@ -326,6 +417,12 @@
                 (pair (id "EvilWolf" P1) (id "FreeWolf" P1)) (pair (id "EvilWolf" P2) (id "FreeWolf" P2)) 
                 (pair (id "Kirin" P1) (id "Lion" P1)) (pair (id "Kirin" P2) (id "Lion" P2)) 
                 (pair (id "Phenix" P1) (id "Queen" P1)) (pair (id "Phenix" P2) (id "Queen" P2)) 
+                (pair (id "Rook" P1) (id "DragonKing" P1)) (pair (id "Rook" P2) (id "DragonKing" P2)) 
+                (pair (id "SideMover" P1) (id "FreeBoar" P1)) (pair (id "SideMover" P2) (id "FreeBoar" P2)) 
+                (pair (id "VerticalMover" P1) (id "FlyingOx" P1)) (pair (id "VerticalMover" P2) (id "FlyingOx" P2)) 
+                (pair (id "Bishop" P1) (id "DragonHorse" P1)) (pair (id "Bishop" P2) (id "DragonHorse" P2)) 
+                (pair (id "DragonHorse" P1) (id "HornedFalcon" P1)) (pair (id "DragonHorse" P2) (id "HornedFalcon" P2)) 
+                (pair (id "DragonKing" P1) (id "SoaringEagle" P1)) (pair (id "DragonKing" P2) (id "SoaringEagle" P2)) 
             
             })
         })
@@ -403,6 +500,30 @@
                 (place "GuardianOfTheGods2" {"I16"})
             	(place "Yaksha1" {"L4"}) 
                 (place "Yaksha2" {"H16"})
+            	(place "Rook1" {"A5" "S5"}) 
+                (place "Rook2" {"A15" "S15"})
+            	(place "LeftChariot1" {"B5"}) 
+                (place "LeftChariot2" {"R15"})
+            	(place "RightChariot1" {"R5"}) 
+                (place "RightChariot2" {"B15"})
+            	(place "SideMover1" {"C5" "Q5"}) 
+                (place "SideMover2" {"C15" "Q15"})
+            	(place "SideFlier1" {"D5" "P5"}) 
+                (place "SideFlier2" {"D15" "P15"})
+            	(place "VerticalMover1" {"E5" "O5"}) 
+                (place "VerticalMover2" {"E15" "O15"})
+            	(place "Bishop1" {"F5" "N5"}) 
+                (place "Bishop2" {"F15" "N15"})
+            	(place "DragonHorse1" {"G5" "M5"}) 
+                (place "DragonHorse2" {"G15" "M15"})
+            	(place "DragonKing1" {"H5" "L5"}) 
+                (place "DragonKing2" {"H15" "L15"})
+            	(place "Capricorn1" {"I5"}) 
+                (place "Capricorn2" {"K15"})
+            	(place "Queen1" {"J5"}) 
+                (place "Queen2" {"J15"})
+            	(place "HookMover1" {"K5"}) 
+                (place "HookMover2" {"I15"})
             })
             (play
                     (if ("SameTurn")
@@ -413,9 +534,24 @@
                                     ("StepMove" (directions All))
                                 )
                             ) 
-                            (or
-                                ("Promote")
-                                (move Pass)
+                            (if (is In (what at:(last To)) (sites {(id "Capricorn" Mover) (id "HookMover" Mover)}))
+                                (or
+                                    (move Pass)
+                                    ("SlideMove"
+                                        (from (last To))
+                                        ~
+                                        (difference 
+                                            (difference (if ("IsPieceAt" "HookMover" Mover (last To)) Orthogonal Diagonal)
+                                                ("LastDirection" Cell)
+                                            ) 
+                                            (directions Cell from:(last To) to:(last From))
+                                        )
+                                    )
+                                )	
+	                            (or
+	                                ("Promote")
+	                                (move Pass)
+	                            )
                             )
                         )
                         (do 
