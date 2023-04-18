@@ -190,6 +190,50 @@
             (piece "Suizo" Each ("StepMove" (directions {Forward Rightward Leftward FR FL BR BL}) "CanPromote"))
             // Taishi
             (piece "Prince" Each ("StepMove" Orthogonal))
+            // Roso
+            (piece "OldRat" Each ("SlideMove" (directions {FR FL Backward}) "CanPromote" (between (max 2))))
+            // Komari
+            (piece "Bat" Each ("SlideMove" (directions {BR BL Forward}))) 
+            // Shinsho
+            (piece "AngryBoar" Each ("StepMove" Orthogonal))
+            // Moyu
+            (piece "BlindBear" Each ("StepMove" (directions {FR FL BR BL Backward}))) 
+            // Hon'yu
+            (piece "FreeBear" Each 
+            	(or
+            		("SlideMove" (directions {FR FL BR BL Leftward Rightward}))
+                    ("HopMove" (directions {FR FL}))
+            	)
+            ) 
+            // Akuro
+            (piece "EvilWolf" Each ("StepMove" (directions {Forward FR FL BR BL})))
+            // Honro
+            (piece "FreeWolf" Each ("SlideMove" (directions {Forward Backward FR FL BR BL})))
+            // Kirin
+            (piece "Kirin" Each 
+                (or
+                    ("HopMove" (directions {Forward Backward Rightward Leftward}) "CanPromote")
+                    ("StepMove" (directions {FR FL BR BL}) "CanPromote")
+                )
+            )
+            // Shishi
+            (piece "Lion" Each 
+                (or
+                    ("HopMove" (directions All))
+                    ("StepMove" (directions All))
+                    (then (and (set Pending) (moveAgain)))
+                )
+            )
+            // Hoo
+            (piece "Phenix" Each 
+                (or
+                    ("StepMove" (directions {Forward Backward Rightward Leftward}) "CanPromote")
+                    ("HopMove" (directions {FR FL BR BL}) "CanPromote")
+                )
+            )
+            // Honno
+            (piece "Queen" Each ("SlideMove" All))
+            
             
             (map "Promoted" { 
                 (pair (id "EarthGeneral" P1) (id "FreeGoer" P1)) (pair (id "EarthGeneral" P2) (id "FreeGoer" P2)) 
@@ -211,7 +255,13 @@
                 (pair (id "FerociousLeopard" P1) (id "FreeLeopard" P1)) (pair (id "FerociousLeopard" P2) (id "FreeLeopard" P2)) 
                 (pair (id "BlindTiger" P1) (id "FreeTiger" P1)) (pair (id "BlindTiger" P2) (id "FreeTiger" P2)) 
                 (pair (id "Suizo" P1) (id "Prince" P1)) (pair (id "Suizo" P2) (id "Prince" P2)) 
-             })
+                (pair (id "OldRat" P1) (id "Bat" P1)) (pair (id "OldRat" P2) (id "Bat" P2)) 
+                (pair (id "BlindBear" P1) (id "FreeBear" P1)) (pair (id "BlindBear" P2) (id "FreeBear" P2)) 
+                (pair (id "EvilWolf" P1) (id "FreeWolf" P1)) (pair (id "EvilWolf" P2) (id "FreeWolf" P2)) 
+                (pair (id "Kirin" P1) (id "Lion" P1)) (pair (id "Kirin" P2) (id "Lion" P2)) 
+                (pair (id "Phenix" P1) (id "Queen" P1)) (pair (id "Phenix" P2) (id "Queen" P2)) 
+            
+            })
         })
         (rules
             (start {
@@ -255,21 +305,35 @@
                 (place "BlindTiger2" {"I18" "K18"})
             	(place "Suizo1" {"J2"}) 
                 (place "Suizo2" {"J18"})
+            	(place "OldRat1" {"B3" "R3"}) 
+                (place "OldRat2" {"B17" "R17"})
+            	(place "AngryBoar1" {"D3" "P3"}) 
+                (place "AngryBoar2" {"D17" "P17"})
+            	(place "BlindBear1" {"F3" "N3"}) 
+                (place "BlindBear2" {"F17" "N17"})
+            	(place "EvilWolf1" {"H3" "L3"}) 
+                (place "EvilWolf2" {"H17" "L17"})
+            	(place "Kirin1" {"I3"}) 
+                (place "Kirin2" {"K17"})
+            	(place "Lion1" {"J3"}) 
+                (place "Lion2" {"J17"})
+            	(place "Phenix1" {"K3"}) 
+                (place "Phenix2" {"I17"})
             })
             (play
                     (if ("SameTurn")
-//                        (if (and (is Pending) (is In (what at:(last To)) (sites {(id "Lion" Mover)})))
-//                            (forEach Piece {"Lion"}
-//                                (or
-//                                    ("HopMove" (directions All))
-//                                    ("StepMove" (directions All))
-//                                )
-//                            ) 
+                        (if (and (is Pending) (is In (what at:(last To)) (sites {(id "Lion" Mover)})))
+                            (forEach Piece {"Lion"}
+                                (or
+                                    ("HopMove" (directions All))
+                                    ("StepMove" (directions All))
+                                )
+                            ) 
                             (or
                                 ("Promote")
                                 (move Pass)
                             )
-                       // )
+                        )
                         (do 
                             (forEach Piece) 
                             ifAfterwards:(not ("IsInCheck" "Osho" Mover))
