@@ -31,7 +31,7 @@
 (define "CanPromote"
 	    (then 
 	        (if 
-	            (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From))) 
+		        (or [#])
 	            (moveAgain) 
 	        ) 
 	    )
@@ -121,11 +121,11 @@
             // Deva
             (piece "Deva" Each ("StepMove" (directions {FR FL Leftward BL}) "CanPromote"))
             // Kyoo
-            (piece "TeachingKing" Each ("SlideMove" (directions {FR FL Leftward BR}))) // TO REPLACE THIS BY [#]
+            (piece "TeachingKing" Each (or [#]))
             // Mumyo
             (piece "DarkSpirit" Each ("StepMove" (directions {FR FL Rightward BR}) "CanPromote"))
             // Hosei
-            (piece "BuddhistSpirit" Each ("SlideMove" (directions {FR FL Leftward BR}))) // TO REPLACE THIS BY [#]
+            (piece "BuddhistSpirit" Each (or [#])) 
             // King
             (piece "Osho" Each ("StepMove" All "CanPromote"))
             // Tenno
@@ -569,14 +569,7 @@
                         )
                     )
                 )
-            (end {
-                (if (and 
-                        ("IsInCheck" "Osho" Next)
-                        ("NextCannotMove")
-                    ) 
-                    (result Mover Win)
-                ) 
-            })
+            (end [#])
         )
         >
         "The incomplete ruleset."
