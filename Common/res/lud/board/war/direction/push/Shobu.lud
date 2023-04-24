@@ -118,9 +118,9 @@
                     ifAfterwards:(can Move ("AgressiveMoves"))
                 )
             )
-            (nextPhase Mover "Agressive")
+            (nextPhase Mover "Aggressive")
         )
-        (phase "Agressive"
+        (phase "Aggressive"
             (play ("AgressiveMoves"))
             (nextPhase Mover "Passive")
         )

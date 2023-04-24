@@ -359,7 +359,7 @@ public class LudemeNodeComponent extends JPanel
     /**
      * Mouse Listener for the node component
      * - When the node is right-clicked, open a popup menu with options
-     * - When the node is double-clicked, select it and it's subtrees
+     * - When the node is double-clicked, select it and its subtrees
      * - When currently connecting and this node is left-clicked, try to connect to this node
      */
     final MouseListener mouseListener = new MouseAdapter()

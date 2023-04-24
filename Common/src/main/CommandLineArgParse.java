@@ -927,7 +927,7 @@ public final class CommandLineArgParse
 		//---------------------------------------------------------------------
 		
 		/**
-		 * @return Whether we exect a list of values (rather than a single value)
+		 * @return Whether we expect a list of values (rather than a single value)
 		 */
 		protected boolean expectsList()
 		{

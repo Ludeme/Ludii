@@ -155,7 +155,7 @@
 //----------------------------------------
 
 // Brusky blocking rule: If an Enemy piece blocks all movement in one forward direction,
-//  then that Pawn cannot move in either forward diretion.
+//  then that Pawn cannot move in either forward direction.
 // But an Enemy piece two Cells away does not block movement in the other direction.
 (define "IsPawnUnblocked_Base"
     (and

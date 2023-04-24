@@ -715,7 +715,7 @@ public class Graphics implements Serializable
 									if (rotation >= 0 && rotation <= MAX_ROTATION)
 										return rotation;
 									else
-										addError("Rotation for peice" + pieceNameCond + "was equal to " + rotation + ", rotation must be between 0 and " + MAX_ROTATION);
+										addError("Rotation for piece" + pieceNameCond + "was equal to " + rotation + ", rotation must be between 0 and " + MAX_ROTATION);
 			}
 
 		return 0;

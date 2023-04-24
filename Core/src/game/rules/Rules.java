@@ -24,7 +24,7 @@ public final class Rules extends BaseLudeme implements Serializable
 
 	//-------------------------------------------------------------------------
 
-	/** Metarules defined before play that supercede all other rules. */
+	/** Metarules defined before play that supersede all other rules. */
 	private final Meta metarules;
 
 	/** Starting instructions. */
@@ -41,7 +41,7 @@ public final class Rules extends BaseLudeme implements Serializable
 	/**
 	 * For defining the rules with start, play and end.
 	 * 
-	 * @param meta  Metarules defined before play that supercede all other rules.
+	 * @param meta  Metarules defined before play that supersede all other rules.
 	 * @param start Rules defining the starting position.
 	 * @param play  Rules of play.
 	 * @param end   Ending rules.
@@ -66,7 +66,7 @@ public final class Rules extends BaseLudeme implements Serializable
 	/**
 	 * For defining the rules with some phases.
 	 * 
-	 * @param meta   Metarules defined before play that supercede all other rules.
+	 * @param meta   Metarules defined before play that supersede all other rules.
 	 * @param start  The starting rules.
 	 * @param play   The playing rules shared between each phase.
 	 * @param phases The phases of the game.

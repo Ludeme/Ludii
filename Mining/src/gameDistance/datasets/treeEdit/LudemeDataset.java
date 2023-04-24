@@ -31,7 +31,7 @@ public class LudemeDataset implements Dataset
 	{
 		final List<LudemeInfo> allLudemes = GetLudemeInfo.getLudemeInfo();
 		
-		// Initalise all values to zero
+		// Initialise all values to zero
 		final Map<String, Double> featureMap = new HashMap<>();
 		for (final LudemeInfo ludeme :allLudemes)
 			featureMap.put(ludeme.symbol().name(), Double.valueOf(0.0));

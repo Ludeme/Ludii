@@ -373,7 +373,7 @@ count:(count Stack at:(last To) if:(= (id "Cone" #3)(what at:(to) level:(level))
             
             To CAPTURE an enemy, you need to be able to reach the same color of the enemy-piece in the opposite ring, then the possibility to directly capture the enemy on its board-position will be available.
             Capturing is not mandatory, you can also just go to the opposite-color position (move 'into the shadow'). Capturing with a start-move from the base is not possible.
-            RingCapture: with steplenght 8 you could theoretically move in a circle to your own position, but as normal move this is not allowed.
+            RingCapture: with steplength 8 you could theoretically move in a circle to your own position, but as normal move this is not allowed.
             But if there is an enemy-piece on the opposite same color, the (ring-)capture-move ist allowed! For steplengths of 12 or 14 etc this is also possible from some other positions.
             
             The captured pieces remain under the attacker in a stack and have to be brought to the Transmitter (field in the middle of the board) with the according steplength.
@@ -384,7 +384,7 @@ count:(count Stack at:(last To) if:(= (id "Cone" #3)(what at:(to) level:(level))
             Single pieces just step over it. With high steplength you can move in circles or to the other side and back, but not turn 180 degrees.
             
             Special Rules to balance the Start:
-            From the Start-situation (or later, when there are temporarily no picese on colored positions) you cannot copy the move of the enemy, ie move to the same color with your first piece.
+            From the Start-situation (or later, when there are temporarily no pieces on colored positions) you cannot copy the move of the enemy, ie move to the same color with your first piece.
             
             #CounterAttack: If your first starter is attacked immediately (by the first enemy move), you are allowed to start also to the colors in the enemy-ring with your second starter. In this case, there is no Starter generation, if you move to the opposite color of your first piece (to protect it from capturing).
             

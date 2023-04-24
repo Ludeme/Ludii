@@ -2595,14 +2595,14 @@ TYPE: game.rules.Rules
 TYPE JAVADOC: Sets the game's rules.
 NEW CTOR
 (rules [<meta>] [<start>] <play> <end>)
-PARAM JAVADOC: [<meta>]: Metarules defined before play that supercede all other rules.
+PARAM JAVADOC: [<meta>]: Metarules defined before play that supersede all other rules.
 PARAM JAVADOC: [<start>]: Rules defining the starting position.
 PARAM JAVADOC: <play>: Rules of play.
 PARAM JAVADOC: <end>: Ending rules.
 EXAMPLE: (rules (play (move Add (to (sites Empty)))) (end (if (is Line 3) (result Mover Win))) )
 NEW CTOR
 (rules [<meta>] [<start>] [<play>] phases:{<phase>} [<end>])
-PARAM JAVADOC: [<meta>]: Metarules defined before play that supercede all other rules.
+PARAM JAVADOC: [<meta>]: Metarules defined before play that supersede all other rules.
 PARAM JAVADOC: [<start>]: The starting rules.
 PARAM JAVADOC: [<play>]: The playing rules shared between each phase.
 PARAM JAVADOC: phases:{<phase>}: The phases of the game.
@@ -2668,14 +2668,14 @@ NEW CTOR
 (gravity [PyramidalDrop])
 EXAMPLE: (gravity)
 TYPE: game.rules.meta.Meta
-TYPE JAVADOC: Defines a metarule defined before play that supercedes all other rules.
+TYPE JAVADOC: Defines a metarule defined before play that supersedes all other rules.
 NEW CTOR
 (meta ({<metaRule>}  | <metaRule>))
 PARAM JAVADOC: {<metaRule>}: A collection of metarules.
 PARAM JAVADOC: <metaRule>: A single metarule.
 EXAMPLE: (meta (swap))
 TYPE: game.rules.meta.MetaRule
-TYPE JAVADOC: Metarule defined before play that supercedes all other rules.
+TYPE JAVADOC: Metarule defined before play that supersedes all other rules.
 SUBCLASS: game.rules.meta.Automove
 SUBCLASS: game.rules.meta.Gravity
 SUBCLASS: game.rules.meta.no.No
@@ -3503,7 +3503,7 @@ PARAM JAVADOC: [<then>]: The moves applied after that move is applied.
 EXAMPLE: (max Distance (forEach Piece))
 TYPE: game.rules.play.moves.nonDecision.effect.requirement.max.MaxMovesType
 TYPE JAVADOC: Defines the types of properties which can be used for the Max super ludeme with only a move ludeme in entry.
-CONST JAVADOC: Moves: To ilter a list of legal moves to keep only the moves allowing the maximum  number of moves in a turn.
+CONST JAVADOC: Moves: To filter a list of legal moves to keep only the moves allowing the maximum  number of moves in a turn.
 CONST JAVADOC: Captures: To filter a list of moves to keep only the moves doing the maximum possible  number of captures.
 TYPE: game.rules.play.moves.nonDecision.effect.set.Set
 TYPE JAVADOC: Sets some aspect of the game state in response to a move.
@@ -4021,7 +4021,7 @@ EXAMPLE: (set Team 1 {P1 P3})
 TYPE: game.rules.start.set.SetStartPlayerType
 TYPE JAVADOC: Defines the player properties that can be set in the starting rules.
 CONST JAVADOC: Amount: Sets the initial amount for a player.
-CONST JAVADOC: Score: Sets the intial score of a player.
+CONST JAVADOC: Score: Sets the initial score of a player.
 TYPE: game.rules.start.set.SetStartSitesType
 TYPE JAVADOC: Defines the properties of board sites that can be set in the starting rules.
 CONST JAVADOC: Count: Sets the count of a site or region.
@@ -5185,7 +5185,7 @@ PARAM JAVADOC: [offsetY:<float>]: Y offset for board center.
 EXAMPLE: (board Placement scale:0.8)
 NEW CTOR
 (board Curvature <float>)
-PARAM JAVADOC: <float>: The curve offest.
+PARAM JAVADOC: <float>: The curve offset.
 EXAMPLE: (board Curvature 0.45)
 TYPE: metadata.graphics.board.BoardBooleanType
 TYPE JAVADOC: Defines the types of Board metadata depending only of a boolean.
@@ -5574,7 +5574,7 @@ CONST JAVADOC: Tile: Style for tiles (components that fill a cell and may have m
 CONST JAVADOC: Card: Style for playing cards.
 CONST JAVADOC: Die: Style for die components used as playing pieces.
 CONST JAVADOC: Domino: Style for dominoes
-CONST JAVADOC: LargePiece: Style for large pieces that srtaddle more than once site, e.g. the L Game.
+CONST JAVADOC: LargePiece: Style for large pieces that straddle more than once site, e.g. the L Game.
 CONST JAVADOC: ExtendedShogi: Extended style for Shogi pieces.
 CONST JAVADOC: ExtendedXiangqi: Extended style for Shogi pieces.
 CONST JAVADOC: NativeAmericanDice: Style for native american dice.
@@ -5607,7 +5607,7 @@ CONST JAVADOC: Table: Custom style for the Table board.
 CONST JAVADOC: Tafl: Custom style for Tafl boards.
 CONST JAVADOC: Xiangqi: Custom style for the Xiangqi board.
 CONST JAVADOC: UltimateTicTacToe: Custom style for the Ultimate Tic-Tac-Toe board.
-CONST JAVADOC: Futoshiki: Custom style for the Futoskiki puzzle board.
+CONST JAVADOC: Futoshiki: Custom style for the Futoshiki puzzle board.
 CONST JAVADOC: Hashi: Custom style for the Hashi puzzle board.
 CONST JAVADOC: Kakuro: Custom style for the Kakuro puzzle board.
 CONST JAVADOC: Sudoku: Custom style for the Sudoku board.
@@ -5674,12 +5674,12 @@ CONST JAVADOC: Scale: Stack scale.
 CONST JAVADOC: Limit: Stack maximum number of pieces (used by some stack types).
 CONST JAVADOC: Type: Stack design.
 TYPE: metadata.graphics.util.ValueLocationType
-TYPE JAVADOC: Specifed where to draw state of an item in the interface, relative to its position.
+TYPE JAVADOC: Specified where to draw state of an item in the interface, relative to its position.
 CONST JAVADOC: None: No location.
 CONST JAVADOC: CornerLeft: At the top left corner of the item's location.
 CONST JAVADOC: CornerRight: At the top left corner of the item's location.
 CONST JAVADOC: Top: At the top of the item's location.
-CONST JAVADOC: Middle: Centred on the item's location.
+CONST JAVADOC: Middle: Centered on the item's location.
 TYPE: metadata.graphics.util.WhenScoreType
 TYPE JAVADOC: Specifies when to show player scores to the user.
 CONST JAVADOC: Always: Always show player scores.
@@ -5729,7 +5729,7 @@ CONST JAVADOC: DarkBrown: Dark brown.
 CONST JAVADOC: VeryDarkBrown: Very dark brown.
 CONST JAVADOC: Purple: Purple.
 CONST JAVADOC: Magenta: Magenta.
-CONST JAVADOC: Turquoise: Torquoise.
+CONST JAVADOC: Turquoise: Turquoise.
 CONST JAVADOC: Orange: Orange.
 CONST JAVADOC: LightOrange: Light orange.
 CONST JAVADOC: LightRed: Light red.
@@ -6184,10 +6184,10 @@ DEFINE: PhaseMovePiece
 DEFINE JAVADOC: Defines a phase to move each piece according to the move ludeme associated with each piece. #1 = The name of the phase. #2 = Optional ending condition applied only in this phase. 
 DEFINE EXAMPLE: ("PhaseMovePiece" "Movement")
 DEFINE: CustodialCapture
-DEFINE JAVADOC: Defines a custodial capture in all the directions specified (by default Adjacent) to capture an enemy piece. The enemy piece is removed. #1 = Directions of the capture. #2 = Contraints related to the number of pieces to capture. #3 = The consequences. 
+DEFINE JAVADOC: Defines a custodial capture in all the directions specified (by default Adjacent) to capture an enemy piece. The enemy piece is removed. #1 = Directions of the capture. #2 = Constraints related to the number of pieces to capture. #3 = The consequences. 
 DEFINE EXAMPLE: ("CustodialCapture")
 DEFINE: CustodialCapturePieceType
-DEFINE JAVADOC: Defines a custodial capture in all the directions specified (by default Adjacent) to capture a specific piece type owned by the next player. The piece is removed. #1 = The name of the piece type. #2 = Directions of the capture. #3 = Contraints related to the number of pieces to capture. #4 = The consequences. 
+DEFINE JAVADOC: Defines a custodial capture in all the directions specified (by default Adjacent) to capture a specific piece type owned by the next player. The piece is removed. #1 = The name of the piece type. #2 = Directions of the capture. #3 = Constraints related to the number of pieces to capture. #4 = The consequences. 
 DEFINE EXAMPLE: ("CustodialCapturePieceType" "Jarl")
 DEFINE: EncloseCapture
 DEFINE JAVADOC: Defines a enclose capture by all the directions specified (by default Adjacent). The enemy pieces are removed. #1 = Directions of the capture. #2 = The consequences. 
@@ -6202,7 +6202,7 @@ DEFINE: InterveneCapture
 DEFINE JAVADOC: Defines an intervene capture in all the directions specified (by default Adjacent). The enemy piece is removed. #1 = Directions of the capture. #2 = The consequences. 
 DEFINE EXAMPLE: ("InterveneCapture")
 DEFINE: SurroundCapture
-DEFINE JAVADOC: Defines a surround capture in all the directions specified (by default Adjacent). The enemy piece is removed. #1 = Directions of the capture. #2 = Contraints related to the number of pieces to capture. #3 = The consequences. 
+DEFINE JAVADOC: Defines a surround capture in all the directions specified (by default Adjacent). The enemy piece is removed. #1 = Directions of the capture. #2 = Constraints related to the number of pieces to capture. #3 = The consequences. 
 DEFINE EXAMPLE: ("SurroundCapture")
 DEFINE: ReplayIfCanMove
 DEFINE JAVADOC: Move again if the player can do the move specified. #1 = The moves. #2 = The movement to allow if the piece did not reach the region (Optional). 

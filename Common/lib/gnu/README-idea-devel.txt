@@ -7,7 +7,7 @@ you open the project):
                       files, but should contain the directory that does.
                         Example: C:/Users/reden/Documents/Trove
   - TROVE_VCS_ROOT  - Directory within TROVE_TOP_LEVEL that contains
-                      the CVS files. This should be an absoulte path.
+                      the CVS files. This should be an absolute path.
                         Example: C:/Users/reden/Documents/Trove/working
   - TROVE_JDK_NAME  - Name of the JDK for Trove to use.
                         Example: 1.6.0_17

@@ -429,7 +429,7 @@ public class UBFM extends ExpertPolicy
 			System.out.println(")");
 		}
 		
-		// To ouput a visual graph of the search tree:
+		// To output a visual graph of the search tree:
 		searchTreeOutput.append("]");
 		if (savingSearchTreeDescription)
 		{
@@ -567,7 +567,7 @@ public class UBFM extends ExpertPolicy
 					indexPicked = 0;
 				break;
 			default:
-				throw new RuntimeException("Unkown exploration policy");
+				throw new RuntimeException("Unknown exploration policy");
 			}
 			
 			final Move bestMove = sortedScoredMoves.get(indexPicked).move;
@@ -600,7 +600,7 @@ public class UBFM extends ExpertPolicy
 			}
 			
 			// Re-inserting the new value in the list of scored moves, last among moves of equal values			
-			int k = indexPicked; //TODO: put this in a funtion
+			int k = indexPicked; //TODO: put this in a function
 			while ((k < numLegalMoves-1))
 			{
 				if

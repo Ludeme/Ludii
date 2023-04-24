@@ -120,7 +120,7 @@ public class AddArgumentPanel extends JPanel
                     graphPanel.connectionHandler().cancelNewConnection();
                     setVisible(false);
                 }
-                // otherwise if its a ludeme, create a new node
+                // otherwise if it's a ludeme, create a new node
                 else
                 {
                     // Find the matching NodeArgument of the initiator InputField for the chosen symbol, if initiator is not null
