@@ -239,7 +239,7 @@ public class ValidationController {
                 top7PrecisionTest[i] = (byte) (top7Test ? 1 : 0);
             }
 
-            //6. calculate statitics
+            //6. calculate statistics
             if(DEBUG)System.out.println("Calc Stats");
             double nanosSum = 0;
 

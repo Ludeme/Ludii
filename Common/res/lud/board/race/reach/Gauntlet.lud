@@ -1,7 +1,7 @@
 // Defines a hop move in the given direction, hopped enemy pieces are removed.
 // #1 = To site
 // #2 = Direction = Forward | Backward
-// #3 = Then moves - conditional (moveagain) envoked
+// #3 = Then moves - conditional (moveagain) invoked
 (define "HopCounter"
     (move Hop
         (from #1)

@@ -498,7 +498,7 @@ public class Grammar
 			// **
 
 			final Symbol symbol = new Symbol(LudemeType.Ludeme, classPath, alias, cls);
-			symbol.setReturnType(symbol);  // returns itself (unless superceded by eval())
+			symbol.setReturnType(symbol);  // returns itself (unless superseded by eval())
 			symbols.add(symbol);
 
 			// Add this package name, if not already found

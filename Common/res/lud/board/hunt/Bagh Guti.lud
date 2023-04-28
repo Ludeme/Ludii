@@ -22,8 +22,8 @@
 
 (option "Start Rules" <Start> args:{ <tigerSites> }
     {
-    (item "Opposite" <(sites {"C1" "C5"})> "Initiallly, the tigers are placed at opposite sites of the top and the bottom of the board.")* 
-    (item "Center and Top" <(sites {"C3" "C5"})> "Initiallly, the tigers are placed at the center and at the middle of the top of the board.") 
+    (item "Opposite" <(sites {"C1" "C5"})> "Initially, the tigers are placed at opposite sites of the top and the bottom of the board.")* 
+    (item "Center and Top" <(sites {"C3" "C5"})> "Initially, the tigers are placed at the center and at the middle of the top of the board.") 
 })
 
 (option "Board" <Board> args:{ <type> }

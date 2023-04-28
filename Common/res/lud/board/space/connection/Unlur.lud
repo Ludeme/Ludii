@@ -81,7 +81,7 @@
 })
 
 (option "Edge Rule" <Edge> args:{ <target_zone> } {
-    (item "No Restricton" <(sites Empty)> "You may place stones on the edge in the opening phase.")
+    (item "No Restriction" <(sites Empty)> "You may place stones on the edge in the opening phase.")
     (item "Edge Restriction" <(intersection (sites Empty) (sites Inner))> "You cannot place stones on the edge in the opening phase.")**
 })
 

@@ -192,7 +192,7 @@
                     (set Value at:(last To) (max 0 (- (value Piece at:(last To)) ("AttackerDamage" (last From) (last To) False))))
                     (set State at:(last From) 0)
                 )
-                next:(if (and (= 8 (state at:(last To))) (!= (mover) (who at:(last To)))) 	// state = 8, means its a building
+                next:(if (and (= 8 (state at:(last To))) (!= (mover) (who at:(last To)))) 	// state = 8, means it's a building
                     // Attacking a building
                     "AttackBuilding"
                     
@@ -306,7 +306,7 @@
                 )
             )
         )
-        (if (and (= 8 (state at:(#2))) (!= (mover) (who at:(#2)))) 			// state = 8, means its a building
+        (if (and (= 8 (state at:(#2))) (!= (mover) (who at:(#2)))) 			// state = 8, means it's a building
             ("GetDoctrineValue" (who at:(#1)) 6) 5 
         )
         (if (> (who at:(#2)) 0) ("GetDoctrineValue" (who at:(#2)) 8) 4)

@@ -49,7 +49,7 @@
     )
 )
 
-(define "Substraction"
+(define "Subtraction"
     (!= 0 
         (count Sites 
             in:(forEach (sites Occupied by:Mover) 
@@ -233,7 +233,7 @@
         ("MultiplicationWithDistance")
         ("DivisionWithDistance")
         ("Addition")
-        ("Substraction")
+        ("Subtraction")
         ("Multiplication")
         ("Division")
     })

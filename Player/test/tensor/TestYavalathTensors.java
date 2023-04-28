@@ -96,7 +96,7 @@ public class TestYavalathTensors
 		assertEquals(state.numLegalMoves(), 61);	// Swap included!
 		assertAllZero(state.toTensor()[2]);			// Not Player 1's turn anymore
 		assertAllOne(state.toTensor()[3]);			// Player 2's turn now
-		assertAllZero(state.toTensor()[4]);			// No swap occured
+		assertAllZero(state.toTensor()[4]);			// No swap occurred
 		
 		// Player 2 plays move 60 (swap)
 		state.applyNthMove(60);
@@ -104,7 +104,7 @@ public class TestYavalathTensors
 		assertEquals(state.numLegalMoves(), 60);
 		assertAllOne(state.toTensor()[2]);			// Player 1's turn now
 		assertAllZero(state.toTensor()[3]);			// Not Player 2's turn anymore
-		assertAllOne(state.toTensor()[4]);			// Swap occured
+		assertAllOne(state.toTensor()[4]);			// Swap occurred
 		
 		// Black (previous Player 1, now Player 2) plays move 38 (= Cell 39)
 		state.applyNthMove(38);
@@ -112,7 +112,7 @@ public class TestYavalathTensors
 		assertEquals(state.numLegalMoves(), 59);
 		assertAllZero(state.toTensor()[2]);			// Not Player 1's turn anymore
 		assertAllOne(state.toTensor()[3]);			// Player 2's turn now
-		assertAllOne(state.toTensor()[4]);			// Swap occured
+		assertAllOne(state.toTensor()[4]);			// Swap occurred
 		
 		// White move 22 (= Cell 22)
 		state.applyNthMove(22);
@@ -120,7 +120,7 @@ public class TestYavalathTensors
 		assertEquals(state.numLegalMoves(), 58);
 		assertAllOne(state.toTensor()[2]);			// Player 1's turn now
 		assertAllZero(state.toTensor()[3]);			// Not Player 2's turn anymore
-		assertAllOne(state.toTensor()[4]);			// Swap occured
+		assertAllOne(state.toTensor()[4]);			// Swap occurred
 		
 		// Black move 29 (= Cell 31)
 		state.applyNthMove(29);
@@ -128,7 +128,7 @@ public class TestYavalathTensors
 		assertEquals(state.numLegalMoves(), 57);
 		assertAllZero(state.toTensor()[2]);			// Not Player 1's turn anymore
 		assertAllOne(state.toTensor()[3]);			// Player 2's turn now
-		assertAllOne(state.toTensor()[4]);			// Swap occured
+		assertAllOne(state.toTensor()[4]);			// Swap occurred
 		
 		// White move 9 (= Cell 9)
 		state.applyNthMove(9);
@@ -136,7 +136,7 @@ public class TestYavalathTensors
 		assertEquals(state.numLegalMoves(), 56);
 		assertAllOne(state.toTensor()[2]);			// Player 1's turn now
 		assertAllZero(state.toTensor()[3]);			// Not Player 2's turn anymore
-		assertAllOne(state.toTensor()[4]);			// Swap occured
+		assertAllOne(state.toTensor()[4]);			// Swap occurred
 		
 		// Black move 15 (= Cell 16)
 		state.applyNthMove(15);
@@ -144,7 +144,7 @@ public class TestYavalathTensors
 		assertEquals(state.numLegalMoves(), 55);
 		assertAllZero(state.toTensor()[2]);			// Not Player 1's turn anymore
 		assertAllOne(state.toTensor()[3]);			// Player 2's turn now
-		assertAllOne(state.toTensor()[4]);			// Swap occured
+		assertAllOne(state.toTensor()[4]);			// Swap occurred
 
 		// White move 14 (= Cell 15)
 		state.applyNthMove(14);

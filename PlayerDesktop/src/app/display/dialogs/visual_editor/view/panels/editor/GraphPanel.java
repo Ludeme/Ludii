@@ -807,10 +807,10 @@ public class GraphPanel extends JPanel implements IGraphPanel
                 // user is drawing a new connection
                 if(connectionHandler().selectedComponent() != null)
                 {
-                    // if its a 2D collection, connect to a 1D collection equivalent
+                    // if it's a 2D collection, connect to a 1D collection equivalent
                     if(connectionHandler().selectedComponent().inputField().nodeArgument(0).collection2D())
                         Handler.addNode(graph(), connectionHandler().selectedComponent().inputField().nodeArgument(0), e.getX(), e.getY());
-                        // if user has no chocie for next ludeme -> automatically add required ludeme
+                        // if user has no choice for next ludeme -> automatically add required ludeme
                     else if(connectionHandler().selectedComponent().possibleSymbolInputs().size() == 1)
                         Handler.addNode(graph(), connectionHandler().selectedComponent().possibleSymbolInputs().get(0), connectionHandler().selectedComponent().inputField().nodeArgument(0), e.getX(), e.getY(), true);
                     else if(!connectArgumentPanel.isVisible() && connectionHandler().selectedComponent().possibleSymbolInputs().size() > 1)

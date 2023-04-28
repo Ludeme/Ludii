@@ -44,7 +44,7 @@
 // The above "ShockPushSitesFromTowards" look for the first double space and captures all the sites before it.
 // If there is no double space, there must be an Anchor site at the edge of the board
 // and all sites consecutively adjacent to it are frozen, and not part of the push. 
-// Thus the clling routine sets the Anchor variable first. - see below.
+// Thus the calling routine sets the Anchor variable first. - see below.
 
 (define "PushFromTowards" 
     (if

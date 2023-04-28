@@ -231,7 +231,7 @@
                     ("FirstAction") 
                     (if
                         (= 0 (count Sites in:(sites Pending)))
-                        ("SlideAdjacent") // After placement the move continues with a compulsary slide of an adjacent piece
+                        ("SlideAdjacent") // After placement the move continues with a compulsory slide of an adjacent piece
                         ("DestroyEachMillsByCapturingAStaticPiece")
                         ("ThenIfMillsAddSites2PendingAndMoveAgain")
                     )
@@ -297,7 +297,7 @@
         (piece Scale "Disc" scaleX:.85 scaleY:.85)
         (piece Scale "Square" scaleX:.50 scaleY:.50)
         
-        // workaround for line thicknes after scaling square to necessary size:
+        // workaround for line thickness after scaling square to necessary size:
         (piece Background "Square" image:"square-alt1.svg" scaleX:.76 scaleY:.76)
         (piece Foreground "Square" state:3 image:"square-alt1.svg"
             fillColour:(colour Red) scaleX:.72 scaleY:.72
