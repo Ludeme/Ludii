@@ -1,0 +1,338 @@
+(define "CapturePiece"
+    (apply 
+        (if ("IsEnemyAt" (to))
+            (add 
+                (piece (mapEntry "Captured" (what at:(to)))) 
+                (to (mapEntry "Where" (what at:(to))))
+            )
+        )
+    )
+)
+
+(define "NextCannotMove"
+    (not 
+        (can Move 
+            (do 
+                (or {
+                    (move 
+                        (from (sites Occupied by:Next container:"Hand" components:{"SilverGeneral" "GoldGeneral" "Bishop" "Rook"})) 
+                        (to (sites Empty))
+                    ) 
+                    (do 
+                        (move 
+                            (from (sites Occupied by:Next container:"Hand" component:"Pawn")) 
+                            (to (difference (sites Empty) (sites Next "LastRank")) 
+                                if:("OnePawnPerColumn" Next)
+                            )
+                        ) 
+                        ifAfterwards:(not ("IsInCheck" "King" Mover))
+                    )
+                    ("PlaceLance" Next)
+                    ("PlaceKnight" Next) 
+                    (forEach Piece Next) 
+                })
+                ifAfterwards:(not ("IsInCheck" "King" Next))
+            ) 
+        )
+    )
+)
+
+(define "OnePawnPerColumn" 
+    (= 
+        (count Sites in:(sites Occupied by:#1 container:"Board" component:"Pawn")) 
+        (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Pawn") (sites Column (column of:(to)))))
+    )
+)
+
+(define "PlaceKnight" 
+    (move 
+        (from (sites Occupied by:#1 container:"Hand" component:"Knight")) 
+        (to (difference (sites Empty) (sites #1 "TwoFurthestRank")))
+    )
+)
+
+(define "PlaceLance" 
+    (move 
+        (from (sites Occupied by:#1 container:"Hand" component:"Lance")) 
+        (to (difference (sites Empty) (sites #1 "LastRank")))
+    )
+)
+
+(define "PlacePawn" 
+    (do 
+        (move 
+            (from (sites Occupied by:#1 container:"Hand" component:"Pawn")) 
+            (to (difference (sites Empty) (sites #1 "LastRank")) 
+                if:("OnePawnPerColumn" #1)
+            )
+        ) 
+        ifAfterwards:(not (and ("IsInCheck" "King" #2) ("NextCannotMove")))
+    )
+) 
+
+(define "InPromotionZone"
+    (is In #1 (sites Mover "Promotion"))	
+)
+
+(define "InLastRank"
+    (is In #1 (sites Mover "LastRank"))	
+)
+
+(define "InTwoFurthestRank"
+    (is In #1 (sites Mover "TwoFurthestRank"))	
+)
+
+(define "Promote"
+    (move Promote (last To) (piece (mapEntry "Promoted" (what at:(last To)))))	
+)
+
+(define "CanPromote"
+    (then 
+        (if 
+            (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From))) 
+            (moveAgain) 
+        ) 
+    )
+)
+
+(define "SlideMove"
+    (move Slide
+        #1 
+        (to if:("IsEnemyAt" (to)) "CapturePiece")
+        #2 
+    ) 	
+)
+
+(define "StepMove"
+    (move Step
+        #1
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
+        #2 
+    ) 	
+)
+
+(define "TwoStepLeap" 
+    (forEach Direction 
+        #1 
+        (to 
+            if:True 
+            (apply 
+                (forEach Direction 
+                    (from (to)) 
+                    #2 
+                    (if (not ("IsFriendAt" (to))) 
+                        (move 
+                            (from) 
+                            (to 
+                                ("CapturePiece")
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        #3
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Seireigi" 
+    ("TwoPlayersNorthSouth") 
+    
+    (equipment { 
+        (board (square 9))
+        
+        // Pawn 
+        (piece "Pawn" Each 
+            ("StepMove" 
+                Forward 
+                (then 
+                    (if ("InPromotionZone" (last To))
+                        (if ("InLastRank" (last To)) 
+                            ("Promote") 
+                            (moveAgain) 
+                        ) 
+                    ) 
+                )
+            )
+        )
+
+        // Lance
+        (piece "Lance" Each ("SlideMove" Forward 
+                (then  
+                    (if ("InPromotionZone" (last To))
+                        (if ("InLastRank" (last To)) 
+                            ("Promote") 
+                            (moveAgain) 
+                        ) 
+                    ) 
+                )
+            )
+        )       
+
+        // Knight
+        (piece "Knight" Each ("TwoStepLeap" Forward (directions {FL FR})
+                (then 
+                    (if ("InPromotionZone" (last To))
+                        (if ("InTwoFurthestRank" (last To)) 
+                            ("Promote") 
+                            (moveAgain) 
+                        ) 
+                    ) 
+                )
+            )
+        )
+
+        // Silver General
+        (piece "SilverGeneral" Each ("StepMove" (directions {Forward BL BR FL FR}) "CanPromote"))
+
+        // Gold General
+        (piece "GoldGeneral" Each ("StepMove" (directions {Forward Backward Leftward Rightward FL FR}) "CanPromote"))
+
+        // Bishop
+        (piece "Bishop" Each ("SlideMove" Diagonal "CanPromote"))
+
+        // Rook
+        (piece "Rook" Each ("SlideMove" Orthogonal "CanPromote"))
+
+        // King
+        (piece "King" Each ("StepMove"))
+
+        // Promoted Pawn
+        ("ShogiGold" "GoldenBird" "CapturePiece")
+
+        // Promoted Lance
+        (piece "FreeTiger" Each (or {("SlideMove" (directions {Leftward Rightward})) ("TwoStepLeap" (directions {Leftward Rightward}) (directions {FL FR})) ("StepMove" (directions {Forward Backward}))}))
+
+        // Promoted Knight
+        (piece "HeavenlyHorse" Each (or ("StepMove" (directions {Forward Leftward Rightward FL FR})) ("TwoStepLeap" Backward (directions {FL FR}))))
+ 
+        // Promoted Silver General
+        (piece "VenomousWolf" Each (or ("SlideMove" Forward) ("StepMove" (directions {FL FR Leftward Rightward Backward}))))
+
+        // Promoted Gold General
+        (piece "GreatElephant" Each (or ("SlideMove" (directions {FL FR})) ("StepMove" (directions {Forward Leftward Rightward BL BR}))))
+
+        // Promoted Bishop
+        (piece "DragonHorse" Each (or ("SlideMove" Diagonal) ("StepMove" Orthogonal)))
+
+        // Promoted Rook
+        (piece "DragonKing" Each (or ("SlideMove" Orthogonal) ("StepMove" Diagonal)))
+
+        (regions "LastRankP1" P1 (sites Top))
+        (regions "LastRankP2" P2 (sites Bottom))
+        (regions "TwoFurthestRankP1" P1 (expand (sites Top)))
+        (regions "TwoFurthestRankP2" P2 (expand (sites Bottom)))
+        (regions "Promotion" P1 (expand (sites Top) steps:2))
+        (regions "Promotion" P2 (expand (sites Bottom) steps:2))
+        (map "Where" {
+            (pair (id "Pawn" P1) (handSite P2)) (pair (id "Pawn" P2) (handSite P1)) 
+            (pair (id "Lance" P1) (handSite P2 1)) (pair (id "Lance" P2) (handSite P1 1)) 
+            (pair (id "Knight" P1) (handSite P2 2)) (pair (id "Knight" P2) (handSite P1 2)) 
+            (pair (id "SilverGeneral" P1) (handSite P2 3)) (pair (id "SilverGeneral" P2) (handSite P1 3)) 
+            (pair (id "GoldGeneral" P1) (handSite P2 4)) (pair (id "GoldGeneral" P2) (handSite P1 4)) 
+            (pair (id "Bishop" P1) (handSite P2 5)) (pair (id "Bishop" P2) (handSite P1 5)) 
+            (pair (id "Rook" P1) (handSite P2 6)) (pair (id "Rook" P2) (handSite P1 6)) 
+            (pair (id "GoldenBird" P1) (handSite P2)) (pair (id "GoldenBird" P2) (handSite P1)) 
+            (pair (id "FreeTiger" P1) (handSite P2 1)) (pair (id "FreeTiger" P2) (handSite P1 1)) 
+            (pair (id "HeavenlyHorse" P1) (handSite P2 2)) (pair (id "HeavenlyHorse" P2) (handSite P1 2)) 
+            (pair (id "VenomousWolf" P1) (handSite P2 3)) (pair (id "VenomousWolf" P2) (handSite P1 3)) 
+            (pair (id "GreatElephant" P1) (handSite P2 4)) (pair (id "GreatElephant" P2) (handSite P1 4)) 
+            (pair (id "DragonHorse" P1) (handSite P2 5)) (pair (id "DragonHorse" P2) (handSite P1 5)) 
+            (pair (id "DragonKing" P1) (handSite P2 6)) (pair (id "DragonKing" P2) (handSite P1 6)) 
+        })
+        (map "Captured" { 
+            (pair (id "Pawn" P1) (id "Pawn" P2)) (pair (id "Pawn" P2) (id "Pawn" P1)) 
+            (pair (id "Lance" P1) (id "Lance" P2)) (pair (id "Lance" P2) (id "Lance" P1)) 
+            (pair (id "Knight" P1) (id "Knight" P2)) (pair (id "Knight" P2) (id "Knight" P1)) 
+            (pair (id "SilverGeneral" P1) (id "SilverGeneral" P2)) (pair (id "SilverGeneral" P2) (id "SilverGeneral" P1)) 
+            (pair (id "GoldGeneral" P1) (id "GoldGeneral" P2)) (pair (id "GoldGeneral" P2) (id "GoldGeneral" P1)) 
+            (pair (id "Bishop" P1) (id "Bishop" P2)) (pair (id "Bishop" P2) (id "Bishop" P1)) 
+            (pair (id "Rook" P1) (id "Rook" P2)) (pair (id "Rook" P2) (id "Rook" P1)) 
+            (pair (id "GoldenBird" P1) (id "Pawn" P2)) (pair (id "GoldenBird" P2) (id "Pawn" P1)) 
+            (pair (id "FreeTiger" P1) (id "Lance" P2)) (pair (id "FreeTiger" P2) (id "Lance" P1)) 
+            (pair (id "HeavenlyHorse" P1) (id "Knight" P2)) (pair (id "HeavenlyHorse" P2) (id "Knight" P1)) 
+            (pair (id "VenomousWolf" P1) (id "SilverGeneral" P2)) (pair (id "VenomousWolf" P2) (id "SilverGeneral" P1)) 
+            (pair (id "GreatElephant" P1) (id "GoldGeneral" P2)) (pair (id "GreatElephant" P2) (id "GoldGeneral" P1)) 
+            (pair (id "DragonHorse" P1) (id "Bishop" P2)) (pair (id "DragonHorse" P2) (id "Bishop" P1)) 
+            (pair (id "DragonKing" P1) (id "Rook" P2)) (pair (id "DragonKing" P2) (id "Rook" P1)) 
+        })
+        (map "Promoted" { 
+            (pair (id "Pawn" P1) (id "GoldenBird" P1)) (pair (id "Pawn" P2) (id "GoldenBird" P2)) 
+            (pair (id "Lance" P1) (id "FreeTiger" P1)) (pair (id "Lance" P2) (id "FreeTiger" P2)) 
+            (pair (id "Knight" P1) (id "HeavenlyHorse" P1)) (pair (id "Knight" P2) (id "HeavenlyHorse" P2)) 
+            (pair (id "SilverGeneral" P1) (id "VenomousWolf" P1)) (pair (id "SilverGeneral" P2) (id "VenomousWolf" P2)) 
+            (pair (id "GoldGeneral" P1) (id "GreatElephant" P1)) (pair (id "GoldGeneral" P2) (id "GreatElephant" P2)) 
+            (pair (id "Bishop" P1) (id "DragonHorse" P1)) (pair (id "Bishop" P2) (id "DragonHorse" P2)) 
+            (pair (id "Rook" P1) (id "DragonKing" P1)) (pair (id "Rook" P2) (id "DragonKing" P2)) 
+        })
+        
+        (hand Each size:7)
+    })
+    
+    (rules 
+        (start { 
+            (place "King1" coord:"E1") (place "GoldGeneral1" {"D1" "F1"}) (place "SilverGeneral1" {"C1" "G1"}) (place "Knight1" {"B1" "H1"}) (place "Lance1" {"A1" "I1"}) (place "Rook1" coord:"H2") (place "Bishop1" coord:"B2") (place "Pawn1" (sites Row 2))
+            (place "King2" coord:"E9") (place "GoldGeneral2" {"D9" "F9"}) (place "SilverGeneral2" {"C9" "G9"}) (place "Knight2" {"B9" "H9"}) (place "Lance2" {"A9" "I9"}) (place "Rook2" coord:"B8") (place "Bishop2" coord:"H8") (place "Pawn2" (sites Row 6))
+        })
+        
+        (play
+            (if ("SameTurn")
+                (or
+                    ("Promote")
+                    (move Pass)
+                )
+                (do 
+                    (or {
+                        (move 
+                            (from (sites Occupied by:Mover container:"Hand" components:{"SilverGeneral" "GoldGeneral" "Bishop" "Rook"})) 
+                            (to (sites Empty))
+                        ) 
+                        ("PlacePawn" Mover Next)
+                        ("PlaceLance" Mover)
+                        ("PlaceKnight" Mover) 
+                        (forEach Piece) 
+                    })
+                    ifAfterwards:(not ("IsInCheck" "King" Mover))
+                )
+            )
+        )
+        
+        (end {
+            (if (and 
+                    ("IsInCheck" "King" Next)
+                    ("NextCannotMove")
+                ) 
+                (result Mover Win)
+            ) 
+            ("BlockWin")
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+(info
+{
+}
+)
+    
+    (graphics {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour White))
+        (board Style Shogi)
+        (piece Style ExtendedShogi)
+        (piece Rotate P2 degrees:180)
+        (piece Colour "GoldenBird" strokeColour:(colour Red))
+        (piece Colour "DragonHorse" strokeColour:(colour Red))
+        (piece Colour "DragonKing" strokeColour:(colour Red))
+        (piece Colour "FreeTiger" strokeColour:(colour Red))
+        (piece Colour "HeavenlyHorse" strokeColour:(colour Red))
+        (piece Colour "VenomousWolf" strokeColour:(colour Red))
+        (piece Colour "GreatElephant" strokeColour:(colour Red))
+    })
+    
+)
