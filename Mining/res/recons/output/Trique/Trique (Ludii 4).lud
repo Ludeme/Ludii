@@ -1,0 +1,113 @@
+(game "Trique" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (concentric Square rings:3)
+        use:Vertex)
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step Orthogonal 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (is Line 2 Orthogonal)
+                        
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:12)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (sites Occupied by:Enemy container:"Board")
+                    )
+                    
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (if 
+                                (is Line 3)
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase 
+                (all Sites 
+                    (sites Hand P2)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement" )
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if 
+                    (is Prev Mover)
+                    
+                    (move Remove 
+                        (sites Occupied by:Enemy container:"Board")
+                    )
+                    
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (<= 
+                    (count Pieces Next)
+                2)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Hand" True)
+        (concept "EliminatePiecesEnd" True)
+        (concept "Line" True)
+        (concept "AdjacentDirection" True)
+        (concept "Phase" True)
+    })
+    )
