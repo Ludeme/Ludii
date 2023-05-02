@@ -13,13 +13,9 @@
         (equipment { 
             ("NineMensMorrisBoard")
             (hand Each)
-            (piece "Disc" Each (move [#])) 
+            (piece "Marker" Each [#]) 
         })
-        (rules
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
