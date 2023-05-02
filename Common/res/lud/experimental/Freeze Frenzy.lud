@@ -2,81 +2,79 @@
 // utilities
 
 (define "Tag"
- (forEach Site
-  (sites Around (last To) if:(not (is Empty (to))))
-  (if
-   (is Mover (who at:(site)))
-   (set State at:(site) 0)
-   (set State at:(site) 1)
+    (forEach Site
+        (sites Around (last To) if:(not (is Empty (to))))
+        (if
+            (is Mover (who at:(site)))
+            (set State at:(site) 0)
+            (set State at:(site) 1)
 )))
 
 (define "Placement"
- (move
-  Add
-  (piece (mover))
-  (to (sites Empty))
+    (move
+        Add
+        (piece (mover))
+        (to (sites Empty))
 ))
-  
+
 (define "Movement"
- (forEach Piece
-  (if
-   (= 0 (state at:(from)))
-   (move Slide (then "Tag"))
+    (forEach Piece
+        (if
+            (= 0 (state at:(from)))
+            (move Slide (then "Tag"))
 )))
 
 (define "MPScoring"
- (set Score #1 (* 2 (count Pieces #1 in:(sites State 0))))
+    (set Score #1 (* 2 (count Pieces #1 in:(sites State 0))))
 )
 
 (define "ScoreTerritory"
- (and 
-  (set Score Mover (count Pieces Mover in:(sites State 0)))
-  (set Score Next  (count Pieces Next  in:(sites State 0)))
+    (and 
+        (set Score Mover (count Pieces Mover in:(sites State 0)))
+        (set Score Next  (count Pieces Next  in:(sites State 0)))
 ))
 //-------------------------------------------------
 
 (game "Freeze Frenzy" 
- (players 2)
- (equipment
-  {
-   "BoardUsed"
-   (piece "Ball" Each (move Slide))
-  }
- )
- (rules
-  (start 
-    {
-     (set Score Each 0)
-    }
-  )
-  (play 
-   (or
-    ("Placement") 
-    ("Movement") 
-    (then 
-     ("ScoreTerritory")
-  )))
-  (end
-   {
-    (if
-     (and 
-      (no Moves Next) 
-      (!= (score P1) (score P2))
-     )
-     (byScore)
+    (players 2)
+    (equipment
+        {
+        "BoardUsed"
+        (piece "Ball" Each (move Slide))
+        }
     )
-    (if
-     (no Moves Next) 
-     (result Next Win)
-    )
-   }
+    (rules
+        (start 
+            {
+            (set Score Each 0)
+            }
+        )
+        (play 
+            (or
+                ("Placement") 
+                ("Movement") 
+                (then 
+                    ("ScoreTerritory")
+        )))
+        (end
+            {
+            (if
+                (and 
+                    (no Moves Next) 
+                    (!= (score P1) (score P2))
+                )
+                (byScore)
+            )
+            (if
+                (no Moves Next) 
+                (result Next Win)
+            )
+            }
 )))
-
 
 //--------------------------
 // ending rules:
 
- 
 //-------------------------------------------------------
 
 (define "LoSDirection" Orthogonal)
@@ -90,50 +88,48 @@
 (define "Perf2" (board (dual (remove (hex  4 5) cells:{0 1 15 20 25 32 36 39 44 })) use:Vertex))
 (define "Perf3" (board (dual (remove (hex 5 6) cells:{0 1 2 3 4 5 6 7 11 12 13 14 21 25 30 37 42 53 63 64 65 69 70 71 72 73 74})) use:Vertex))
 
-
 (option "Size" <BoardSize> args:{<perf>} 
-  {
-  (item "Limping 2 (12)" <(board (tri Limping 2) use:Vertex)> "Limping 2")
-  (item "Limping 3 (27)" <(board (tri Limping 3) use:Vertex)> "Limping 3")***
-  (item "Limping 4 (48)" <(board (tri Limping 4) use:Vertex)> "Limping 4")
-  (item "Square cell 4 (16)" <(board (square 4) use:Cell)> "Square 4")
-  (item "Square cell 5 (25)" <(board (square 5) use:Cell)> "Square 5")
-  (item "Square 7 (49)" <(board (square 7) use:Vertex)> "Square 7")
-  (item "Square 9 (81)" <(board (square 9) use:Vertex)> "Square 9")
-  (item "Epoxy XS (39)" <"Perf2">  "Extra small board (39 nodes) as a filler game and for learning how to play")**
-  (item "Epoxy S (48)" <"Perf3">  "Small board (48 nodes)")
-  }
+    {
+    (item "Limping 2 (12)" <(board (tri Limping 2) use:Vertex)> "Limping 2")
+    (item "Limping 3 (27)" <(board (tri Limping 3) use:Vertex)> "Limping 3")***
+    (item "Limping 4 (48)" <(board (tri Limping 4) use:Vertex)> "Limping 4")
+    (item "Square cell 4 (16)" <(board (square 4) use:Cell)> "Square 4")
+    (item "Square cell 5 (25)" <(board (square 5) use:Cell)> "Square 5")
+    (item "Square 7 (49)" <(board (square 7) use:Vertex)> "Square 7")
+    (item "Square 9 (81)" <(board (square 9) use:Vertex)> "Square 9")
+    (item "Epoxy XS (39)" <"Perf2">  "Extra small board (39 nodes) as a filler game and for learning how to play")**
+    (item "Epoxy S (48)" <"Perf3">  "Small board (48 nodes)")
+    }
 )
 
 //------------------------------------------------
 
 (metadata
-  (info
-    {
-     }
-  ) 
-  
-  (graphics 
-   {
-    (player Colour P1 (colour 140 40 0))
-    (player Colour P2 (colour 255 250 220))
-    (piece Background state:0 image:"Disc" fillColour:(colour 0 0 0 120) edgeColour:(colour 0 0 0 0) scale:.97 offsetX:.26 offsetY:.35 )
-    (piece Scale state:1 0)  // Hide the Ball effect
-    (piece Foreground "Ball1" state:1 image:"knotTriangle.svg" fillColour:(colour 90 40 30 220) edgeColour:(colour 0 0 0 140) scale:.88 offsetY:-1)
-    (piece Foreground "Ball2" state:1 image:"knotTriangle.svg" fillColour:(colour 180 175 140 220) edgeColour:(colour 0 0 0 160) scale:.88 offsetY:-1)
-    (board StyleThickness InnerEdges 0.4)
-    (board StyleThickness OuterEdges 0.6)
-    (board StyleThickness InnerVertices 0.45)
-    (board StyleThickness OuterVertices 0.45)
-    (board Colour InnerVertices (colour Grey))
-    (board Colour OuterVertices (colour Grey))
-    (board Colour InnerEdges (colour Black))
-    (board Colour OuterEdges (colour Black))
-    (board Background fillColour:(colour HumanLight) edgeColour:(colour Grey) scale:1.3 )
-    (show Edges Diagonal Hidden (colour DarkGrey))
-  }
- )
- (ai (heuristics (score)))
+    (info
+        {
+        }
+    ) 
+    
+    (graphics 
+        {
+        (player Colour P1 (colour 140 40 0))
+        (player Colour P2 (colour 255 250 220))
+        (piece Background state:0 image:"Disc" fillColour:(colour 0 0 0 120) edgeColour:(colour 0 0 0 0) scale:.97 offsetX:.26 offsetY:.35 )
+        (piece Scale state:1 0)  // Hide the Ball effect
+        (piece Foreground "Ball1" state:1 image:"knotTriangle.svg" fillColour:(colour 90 40 30 220) edgeColour:(colour 0 0 0 140) scale:.88 offsetY:-1)
+        (piece Foreground "Ball2" state:1 image:"knotTriangle.svg" fillColour:(colour 180 175 140 220) edgeColour:(colour 0 0 0 160) scale:.88 offsetY:-1)
+        (board StyleThickness InnerEdges 0.4)
+        (board StyleThickness OuterEdges 0.6)
+        (board StyleThickness InnerVertices 0.45)
+        (board StyleThickness OuterVertices 0.45)
+        (board Colour InnerVertices (colour Grey))
+        (board Colour OuterVertices (colour Grey))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Background fillColour:(colour HumanLight) edgeColour:(colour Grey) scale:1.3 )
+        (show Edges Diagonal Hidden (colour DarkGrey))
+        }
+    )
+    (ai (heuristics (score)))
 )
-
 
