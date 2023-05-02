@@ -9,7 +9,7 @@
         (hand Each)
         
         (piece "Marker" Each 
-            (move Step 
+            (move Step Orthogonal 
                 (to if:
                     (is Empty 
                         (to)
@@ -18,16 +18,7 @@
                 
                 (then 
                     (if 
-                        (or { 
-                            (is Line 3 N exact:True)
-                            
-                            (is Line 3 S exact:True)
-                            
-                            (is Line 3 E exact:True)
-                            
-                            (is Line 3 W exact:True)
-                            }
-                        )
+                        (is Line 3 Orthogonal)
                         
                         (moveAgain)
                     )
@@ -47,36 +38,8 @@
                 (if 
                     (is Prev Mover)
                     
-                    (if 
-                        (can Move 
-                            (move Remove 
-                                (forEach 
-                                    (sites Occupied by:Enemy container:"Board" )
-                                    if:
-                                    (not 
-                                        (is Line 3 Orthogonal through:
-                                            (site)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                        
-                        (move Remove 
-                            (forEach 
-                                (sites Occupied by:Enemy container:"Board" )
-                                if:
-                                (not 
-                                    (is Line 3 Orthogonal through:
-                                        (site)
-                                    )
-                                )
-                            )
-                        )
-                        
-                        (move Remove 
-                            (sites Occupied by:Enemy container:"Board")
-                        )
+                    (move Remove 
+                        (sites Occupied by:Enemy container:"Board")
                     )
                     
                     (move 
@@ -90,7 +53,16 @@
                         
                         (then 
                             (if 
-                                (is Line 3 Orthogonal exact:True)
+                                (or { 
+                                    (is Line 3 N exact:True)
+                                    
+                                    (is Line 3 S exact:True)
+                                    
+                                    (is Line 3 E exact:True)
+                                    
+                                    (is Line 3 W exact:True)
+                                    }
+                                )
                                 
                                 (moveAgain)
                             )
@@ -117,39 +89,27 @@
                 (if 
                     (is Prev Mover)
                     
-                    (if 
-                        (can Move 
-                            (move Remove 
-                                (forEach 
-                                    (sites Occupied by:Enemy container:"Board" )
-                                    if:
-                                    (not 
-                                        (is Line 3 Orthogonal through:
-                                            (site)
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                        
-                        (move Remove 
-                            (forEach 
-                                (sites Occupied by:Enemy container:"Board" )
-                                if:
-                                (not 
-                                    (is Line 3 Orthogonal through:
-                                        (site)
-                                    )
-                                )
-                            )
-                        )
-                        
-                        (move Remove 
-                            (sites Occupied by:Enemy container:"Board")
-                        )
+                    (move Remove 
+                        (sites Occupied by:Enemy container:"Board")
                     )
                     
-                    (forEach Piece)
+                    (if 
+                        (> 
+                            (count Pieces Mover)
+                        4)
+                        
+                        (forEach Piece)
+                        
+                        (move 
+                            (from 
+                                (sites Occupied by:Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                        )
+                    )
                 )
             )
         )
@@ -157,15 +117,11 @@
         
         (end 
             (if 
-                (or 
-                    (no Moves Next)
-                    
-                    (<= 
-                        (count Pieces Next)
-                    2)
-                )
+                (<= 
+                    (count Pieces Next)
+                2)
                 
-                (result Mover Win)
+                (result Next Loss)
             )
         )
     )

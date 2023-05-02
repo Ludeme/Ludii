@@ -9,11 +9,19 @@
         (hand Each)
         
         (piece "Marker" Each 
-            (move 
-                (from)
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
                 
-                (to 
-                    (sites Empty)
+                (then 
+                    (if 
+                        (is Line 3 Orthogonal exact:True)
+                        
+                        (moveAgain)
+                    )
                 )
             )
         )
