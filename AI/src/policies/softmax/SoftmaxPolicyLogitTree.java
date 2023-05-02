@@ -35,7 +35,7 @@ import search.mcts.MCTS;
 
 /**
  * A policy that uses a Logit (Regression) Tree to compute logits per move,
- * and then a probabilitity distribution over those moves using a softmax.
+ * and then a probability distribution over those moves using a softmax.
  * 
  * @author Dennis Soemers
  */

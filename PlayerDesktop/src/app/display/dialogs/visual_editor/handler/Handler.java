@@ -95,7 +95,7 @@ public class Handler
 
 
     // Sensitivity to changes
-    /** Whether sensitivive actions should be confirmed by the user */
+    /** Whether sensitive actions should be confirmed by the user */
     public static boolean sensitivityToChanges = true;
     /** When X nodes are removed at once, ask the user for confirmation */
     public static final int SENSITIVITY_REMOVAL = 6;

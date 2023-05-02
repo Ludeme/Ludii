@@ -46,7 +46,7 @@ public final class Surround extends Effect
 	/** Location of the piece. */
 	private final IntFunction startLocationFn;
 
-	/** Direction choosen. */
+	/** Direction chosen. */
 	private final AbsoluteDirection dirnChoice;
 
 	/** The piece to surround. */

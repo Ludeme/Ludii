@@ -456,7 +456,7 @@ public class ImageProcessing
 //        g2d_master.drawImage(img_mask, 0, 0, null);
 //
 ////        //	Copy the master to the final result.
-////        //	Shrink by one pixel in each direction to stop antialised pixels on outer edges being clipped.
+////        //	Shrink by one pixel in each direction to stop antialiased pixels on outer edges being clipped.
 ////        Graphics2D g2d_final = (Graphics2D)this.getGraphics();
 ////    	g2d_final.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 ////    	g2d_final.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -464,7 +464,7 @@ public class ImageProcessing
 ////    	g2d_final.drawImage(img_master, 0,0, diameter,diameter, off-1,off-1, off+diameter+1,off+diameter+1, null);
 //
 //    	//	Copy the master to the final result.
-//        //	Shrink by one pixel in each direction to stop antialised pixels on outer edges being clipped.
+//        //	Shrink by one pixel in each direction to stop antialiased pixels on outer edges being clipped.
 //		final BufferedImage imgFinal = new BufferedImage(dim, dim, BufferedImage.TYPE_INT_ARGB);
 //        final Graphics2D g2dFinal = (Graphics2D)imgFinal.getGraphics();
 //    	g2dFinal.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

@@ -107,7 +107,7 @@ public class Tile extends Component implements Serializable
 			numNonNull++;
 
 		if (numNonNull > 1)
-			throw new IllegalArgumentException("Only one of 'walk' and 'wallks' can be specified.");
+			throw new IllegalArgumentException("Only one of 'walk' and 'walks' can be specified.");
 
 		numNonNull = 0;
 		if (slots != null)

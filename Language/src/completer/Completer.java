@@ -47,7 +47,7 @@ public class Completer
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Creates all completions exhautively.
+	 * Creates all completions exhaustively.
 	 * @param raw       Partial raw game description.
 	 * @param maxCompletions Maximum number of completions to make (default is 1, e.g. for Travis tests).
 	 * @param report    Report log for warnings and errors.

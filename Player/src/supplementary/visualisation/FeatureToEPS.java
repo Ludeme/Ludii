@@ -648,7 +648,7 @@ public class FeatureToEPS
 			w.println("{	% call: newpath i j XY moveto (string) StringAroundPoint");
 			w.println("	dup stringwidth pop		% get width of string");
 			w.println("	-2 div					% negate, and divide by 2");
-			w.println("	textheight -2.9 div		% dont know why, but div by 3 seems to work better than 2");
+			w.println("	textheight -2.9 div		% don't know why, but div by 3 seems to work better than 2");
 			w.println("	rmoveto					% move to left and down by half width and height");
 			w.println("	show					% show the string");
 			w.println("} def");

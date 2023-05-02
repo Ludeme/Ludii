@@ -16,7 +16,7 @@ import main.StringRoutines;
  */
 public class GameOptions
 {
-	/** Maximum number of option cateogories. */
+	/** Maximum number of option categories. */
 	public static final int MAX_OPTION_CATEGORIES = 10;
 	
 	/** List of option categories. */

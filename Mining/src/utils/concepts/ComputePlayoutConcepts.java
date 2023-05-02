@@ -114,7 +114,7 @@ public class ComputePlayoutConcepts
 		final List<Trial> trials = new ArrayList<Trial>();
 		final List<RandomProviderState> allStoredRNG = new ArrayList<RandomProviderState>();
 
-		// For now I exclude the matchs, but can be included too after. The deduc puzzle
+		// For now I exclude the matches, but can be included too after. The deduc puzzle
 		// will stay excluded.
 		if (game.hasSubgames() || game.isDeductionPuzzle() || game.isSimulationMoveGame()
 				|| game.name().contains("Trax") || game.name().contains("Kriegsspiel"))

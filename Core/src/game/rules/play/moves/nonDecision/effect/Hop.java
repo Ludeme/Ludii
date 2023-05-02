@@ -55,7 +55,7 @@ public final class Hop extends Effect
 	/** Location of the piece. */
 	private final IntFunction startLocationFn;
 
-	/** Direction choosen. */
+	/** Direction chosen. */
 	private final DirectionsFunction dirnChoice;
 
 	/** Move without to reach the hurdle. */

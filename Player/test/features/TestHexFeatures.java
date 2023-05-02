@@ -47,7 +47,7 @@ public class TestHexFeatures
 		features.add((SpatialFeature)Feature.fromString("rel:to=<{}>:pat=<refl=true,rots=all,els=[N6{}]>:comment=\"To-positions with connectivity 6.\""));
 		features.add((SpatialFeature)Feature.fromString("rel:to=<{}>:pat=<refl=true,rots=all,els=[N12{}]>:comment=\"No to-position has connectivity 12.\""));
 		
-		// Randomly pick one of the feature set impelmentations to test
+		// Randomly pick one of the feature set implementations to test
 		final BaseFeatureSet featureSet;
 		final double rand = ThreadLocalRandom.current().nextDouble();
 		if (rand < 0.25)

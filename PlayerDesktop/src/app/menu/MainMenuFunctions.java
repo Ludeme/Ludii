@@ -888,11 +888,11 @@ public class MainMenuFunctions extends JMenuBar
 						app.addTextToAnalysisPanel(gamesSet.resultsSummary().generateIntermediateSummary());
 						app.selectAnalysisTab();
 						app.setTemporaryMessage("");
-						app.setTemporaryMessage("Comparions have finished.\n");
+						app.setTemporaryMessage("Comparisons have finished.\n");
 					});
 					
 					app.setTemporaryMessage("");
-					app.setTemporaryMessage("Comparions have started.\n");
+					app.setTemporaryMessage("Comparisons have started.\n");
 					agentComparisonThread.setDaemon(true);
 					agentComparisonThread.start();				
 				}

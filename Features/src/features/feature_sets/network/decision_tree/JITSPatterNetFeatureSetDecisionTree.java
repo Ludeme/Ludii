@@ -343,10 +343,10 @@ public class JITSPatterNetFeatureSetDecisionTree
 //	private class JITMap
 //	{
 //		
-//		/** Map to prop-feature-instance-set represenation */
+//		/** Map to prop-feature-instance-set representation */
 //		private final Map<MoveFeaturesKey, PropFeatureInstanceSet> propInstanceSetMap;
 //		
-//		/** Map to SPatterNet represenation (without thresholding) */
+//		/** Map to SPatterNet representation (without thresholding) */
 //		private final Map<MoveFeaturesKey, SPatterNet> spatterNetMap;
 //		
 //		/**

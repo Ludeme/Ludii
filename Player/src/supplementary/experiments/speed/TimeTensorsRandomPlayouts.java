@@ -198,7 +198,7 @@ public final class TimeTensorsRandomPlayouts
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Main metohd
+	 * Main method
 	 * @param args
 	 */
 	@SuppressWarnings("unchecked")

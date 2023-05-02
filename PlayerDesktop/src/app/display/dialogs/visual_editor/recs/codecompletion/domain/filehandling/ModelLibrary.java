@@ -66,7 +66,7 @@ public class ModelLibrary implements iModelLibrary
     }
 
     /**
-     * Returns all model locations, is updated everytime it is called
+     * Returns all model locations, is updated every time it is called
      */
     @Override
     public List<String> allModelLocations() 

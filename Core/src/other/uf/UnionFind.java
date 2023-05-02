@@ -58,7 +58,7 @@ public class UnionFind implements Serializable
 //		final TIntArrayList neighbourList = new TIntArrayList(); 
 //		
 //		final Topology topology = context.topology();
-//		final List<game.util.graph.Step> steps = topology.trajectories().steps(type, site, type, dirnChoice);		// TODO shouldnt we use siteId here?
+//		final List<game.util.graph.Step> steps = topology.trajectories().steps(type, site, type, dirnChoice);		// TODO shouldn't we use siteId here?
 //
 //		for (final game.util.graph.Step step : steps)
 //			neighbourList.add(step.to().id());

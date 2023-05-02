@@ -174,7 +174,7 @@ public class APTED<C extends CostModel, D> {
   }
 
   /**
-   * This method is only for testing purspose. It computes TED with a fixed
+   * This method is only for testing purpose. It computes TED with a fixed
    * path type in the strategy to trigger execution of a specific single-path
    * function.
    *
@@ -246,7 +246,7 @@ public class APTED<C extends CostModel, D> {
         sizeY = it2.sizes[y];
         parentY = it2.parents[y];
         // Set values in delta based on the sums of deletion and insertion
-        // costs. Substract the costs for root nodes.
+        // costs. Subtract the costs for root nodes.
         // In this method we don't have to verify the order of the input trees
         // because it is equal to the original.
         if (sizeX == 1 && sizeY == 1) {
@@ -268,7 +268,7 @@ public class APTED<C extends CostModel, D> {
    * @param it2 node indexer of the destination input tree.
    * @return array with the optimal strategy.
    */
-  // TODO: Document the internals. Point to lines of the lagorithm.
+  // TODO: Document the internals. Point to lines of the algorithm.
   public float[][] computeOptStrategy_postL(final NodeIndexer it1, final NodeIndexer it2) {
 
     final int size1 = it1.getSize();
@@ -496,7 +496,7 @@ public class APTED<C extends CostModel, D> {
    * @return array with the optimal strategy.
    */
   // QUESTION: Is it possible to merge it with the other strategy computation?
-  // TODO: Document the internals. Point to lines of the lagorithm.
+  // TODO: Document the internals. Point to lines of the algorithm.
   public float[][] computeOptStrategy_postR(final NodeIndexer it1, final NodeIndexer it2) {
     final int size1 = it1.getSize();
     final int size2 = it2.getSize();
@@ -957,7 +957,7 @@ public class APTED<C extends CostModel, D> {
         // Store the current size and cost of forest in F.
         tmpForestSize1 = currentForestSize1;
         tmpForestCost1 = currentForestCost1;
-        // Loop B [1, Algoritm 3] - for all nodes in G (right-hand input tree).
+        // Loop B [1, Algorithm 3] - for all nodes in G (right-hand input tree).
         for (int rG = rGfirst; rG >= rGlast; rG--) {
           lGfirst = it2preR_to_preL[rG];
           rG_in_preL = it2preR_to_preL[rG];
@@ -1679,7 +1679,7 @@ public class APTED<C extends CostModel, D> {
   public List<int[]> computeEditMapping() {
 
     // Initialize tree and forest distance arrays.
-    // Arrays for subtree distrances is not needed because the distances
+    // Arrays for subtree distances is not needed because the distances
     // between subtrees without the root nodes are already stored in delta.
     final float[][] forestdist = new float[size1 + 1][size2 + 1];
 

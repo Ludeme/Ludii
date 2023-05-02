@@ -13,7 +13,7 @@ import main.grammar.Symbol.LudemeType;
 /**
  * Get ludeme info from JavaDoc help and database.
  *
- * @author cambolbro and Matthew.Stepehenson
+ * @author cambolbro and Matthew.Stephenson
  */
 public class GetLudemeInfo
 {

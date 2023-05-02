@@ -70,7 +70,7 @@ public enum UserColourType implements GraphicsItem
 	/** Magenta. */
 	Magenta("Magenta", 255, 0, 255),
 
-	/** Torquoise. */
+	/** Turquoise. */
 	Turquoise("Turquoise", 0, 127, 127),
 	
 	/** Orange. */

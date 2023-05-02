@@ -42,7 +42,7 @@ public final class Ahead extends BaseIntFunction
 	/** The number of steps in this direction. */
 	private final IntFunction stepsFn;
 
-	/** Direction choosen. */
+	/** Direction chosen. */
 	private final DirectionsFunction dirnChoice;
 	
 	/** Add on Cell/Edge/Vertex. */

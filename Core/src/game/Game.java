@@ -1024,7 +1024,7 @@ public class Game extends BaseLudeme implements API, Serializable
 	}
 
 	/**
-	 * @return True if the gmae uses somes decks.
+	 * @return True if the game uses somes decks.
 	 */
 	public boolean hasHandDeck()
 	{
@@ -2759,7 +2759,7 @@ public class Game extends BaseLudeme implements API, Serializable
 //				for (int what = 1; what < context.components().size(); what++)
 //				{
 //					final String nameCompo = context.components().get(what).name();
-//					System.out.println("Compoent " + nameCompo + " starting pos = " + context.trial().startingPos(what));
+//					System.out.println("Component " + nameCompo + " starting pos = " + context.trial().startingPos(what));
 //				}
 	
 				// To update the sum of the dice container.
@@ -3871,7 +3871,7 @@ public class Game extends BaseLudeme implements API, Serializable
 	 * Dummy class to grant the Game class access to the State's
 	 * non-copy-constructor.
 	 * 
-	 * Noone else should call that constructor! Just copy our reference state!
+	 * No one else should call that constructor! Just copy our reference state!
 	 * 
 	 * @author Dennis Soemers
 	 */

@@ -81,7 +81,7 @@ public class TestAmazonsFeatures
 		features.add((SpatialFeature)Feature.fromString("rel:to=<{}>:pat=<refl=true,rots=all,els=[N4{}]>:comment=\"Every to-position has connectivity 4.\""));				// 15
 		features.add((SpatialFeature)Feature.fromString("rel:to=<{}>:pat=<refl=true,rots=all,els=[N8{}]>:comment=\"No to-position has connectivity 8.\""));					// 16
 		
-		// Randomly pick one of the feature set impelmentations to test
+		// Randomly pick one of the feature set implementations to test
 		final BaseFeatureSet featureSet;
 		final double rand = ThreadLocalRandom.current().nextDouble();
 		if (rand < 0.25)

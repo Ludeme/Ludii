@@ -11,7 +11,7 @@ import main.Constants;
 //-----------------------------------------------------------------------------
 
 /**
- * Percentage of overlaping entries
+ * Percentage of overlapping entries
  * 
  * @author Matthew.Stephenson
  */

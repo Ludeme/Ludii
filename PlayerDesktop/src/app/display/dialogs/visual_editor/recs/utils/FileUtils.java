@@ -88,7 +88,7 @@ public class FileUtils {
         int i = absolutePath.indexOf("src");
         //https://stackoverflow.com/questions/5596458/string-replace-a-backslash
         //big thanks to Paulo Ebermann: "Try replaceAll("\\\\", "") or replaceAll("\\\\/", "/").
-        //The problem here is that a backslash is (1) an escape chararacter in Java string literals, and (2) an escape
+        //The problem here is that a backslash is (1) an escape character in Java string literals, and (2) an escape
         // character in regular expressions – each of this uses need doubling the character, in effect needing 4 \ in
         // row."
         // This helped me in replacing backslashes

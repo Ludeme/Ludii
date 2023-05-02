@@ -171,7 +171,7 @@ public class EditorDialog extends JDialog
 			{
 				app.settingsPlayer().setEditorParseText(verifiedByParserCheckbox.isSelected());
 				verifiedByParserCheckbox.setSelected(app.settingsPlayer().isEditorParseText());
-				app.addTextToStatusPanel("Please close and repoen the editor for this change to apply.\n");
+				app.addTextToStatusPanel("Please close and reopen the editor for this change to apply.\n");
 			}
 		};
 		
