@@ -27,7 +27,7 @@ public class CreateSneliusClusterConceptScript
 		final int maxTime = 175000;
 		final int maxMove = 5000; //250; //5000; // Constants.DEFAULT_MOVES_LIMIT;
 		final int thinkingTime = 1;
-		final String agentName = "Random"; //"Alpha-Beta"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", "ABONEPLY", "UCTONEPLY", or "Random"
+		final String agentName = "UCT"; //"Alpha-Beta"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", "ABONEPLY", "UCTONEPLY", or "Random"
 		final String folder = "/../Trials/Trials"+agentName; //""; //"/../Trials/TrialsAll";
 		final String mainScriptName = "Concepts.sh";
 		final String folderName = "Concepts"+agentName;
