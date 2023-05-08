@@ -96,7 +96,7 @@ public abstract class Model implements Playout
 	 * games, or a collection of moves by active players in Simultaneous-Move games).<br>
 	 * <br>
 	 * By default: <br>
-	 * 	- A blocking call (sequencees not return until the step has been completed).<br>
+	 * 	- A blocking call (sequences not return until the step has been completed).<br>
 	 * 	- Does not force running in a separate thread (so may run in the calling thread).<br>
 	 * 	- Allows running AIs in different threads (simultaneous-move models will prefer to
 	 * 	run AIs in multiple threads if allowed, whereas alternating-move models prefer to

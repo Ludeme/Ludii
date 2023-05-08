@@ -225,7 +225,7 @@ public class GameUtil
 		if (gameAlreadyIncluded == -1)
 			gameAlreadyIncluded = recentGames.length-1;
 
-		// Shift all games ahead of the recored position down a spot.
+		// Shift all games ahead of the record position down a spot.
 		for (int i = gameAlreadyIncluded; i > 0; i--)
 			recentGames[i] = recentGames[i-1];
 		

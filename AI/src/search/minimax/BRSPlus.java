@@ -103,7 +103,7 @@ public class BRSPlus extends ExpertPolicy
 	/** If true at end of a search, it means we searched full tree (probably proved a draw) */
 	protected boolean searchedFullTree = false;
 	
-	/** Transposiiton Table */
+	/** Transposition Table */
 	protected TranspositionTable transpositionTable = null;
 	
 	//-------------------------------------------------------------------------

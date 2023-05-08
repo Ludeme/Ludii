@@ -214,7 +214,7 @@ public class BreadthFirstExpansion
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Main metohd
+	 * Main method
 	 * @param args
 	 */
 	@SuppressWarnings("unchecked")

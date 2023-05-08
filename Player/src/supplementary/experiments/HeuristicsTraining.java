@@ -86,19 +86,19 @@ public class HeuristicsTraining
 //	/** Probability that an entry gets assigned to the testing data set: */
 //	private final double proportionOfTestingEntries = 0.15;
 //	
-//	/** Score assosciated to a win: */
+//	/** Score associated to a win: */
 //	private final float scoreWin = 20f;
 //	
 //	/** Number of playouts before the weights are updated */
 //	private final int numPlayoutsPerIteration = 40;
 //	
-//	/** Numbre of turns after which the games are stopped */
+//	/** Number of turns after which the games are stopped */
 //	private int maxNbTurns = 40;
 //	
 //	/** Probability of discarding an entry: */
 //	private final double probabilityDiscard = 0.9;
 //	
-//	/** Threhshold of the heuristics weights (under it thy are not saved) */
+//	/** Threshold of the heuristics weights (under it thy are not saved) */
 //	private final float heuristicWeightsThreshold = 0.001f;
 //	
 //	//-------------------------------------------------------------------------
@@ -303,7 +303,7 @@ public class HeuristicsTraining
 //			
 //			System.out.println("** Linear Regression Evaluation with Datasets **");
 //			System.out.println(eval.toSummaryString());
-//			System.out.print(" the expression for the input data as per alogorithm is ");
+//			System.out.print(" the expression for the input data as per algorithm is ");
 //			System.out.println(classifier);
 //			
 //			//---------------------------------------------------------------------
@@ -406,7 +406,7 @@ public class HeuristicsTraining
 //			System.out.println("\nGenerating training set for the linear regression:\n");
 //		}
 //		
-//		System.out.println("Nubmer of entries in the TT: "+Integer.toString(AI.getTranspositionTable().nbEntries()));
+//		System.out.println("Number of entries in the TT: "+Integer.toString(AI.getTranspositionTable().nbEntries()));
 //		
 //		final long zobrist = initialContext.state().fullHash(initialContext);
 //		final UBFMTTData tableData = AI.getTranspositionTable().retrieve(zobrist);

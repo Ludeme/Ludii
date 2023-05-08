@@ -207,7 +207,7 @@ public class EvaluationDialog extends JDialog
 		lblTrailsPerMatch.setBounds(26, 513, 175, 15);
 		LeftPanel.add(lblTrailsPerMatch);
 		
-		final JLabel lblHardTimeLimit = new JLabel("Maximium Time(s)");
+		final JLabel lblHardTimeLimit = new JLabel("Maximum Time(s)");
 		lblHardTimeLimit.setBounds(26, 539, 175, 15);
 		LeftPanel.add(lblHardTimeLimit);
 		

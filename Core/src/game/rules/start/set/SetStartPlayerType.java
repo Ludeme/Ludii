@@ -8,6 +8,6 @@ public enum SetStartPlayerType
 	/** Sets the initial amount for a player. */
 	Amount,
 
-	/** Sets the intial score of a player. */
+	/** Sets the initial score of a player. */
 	Score,
 }

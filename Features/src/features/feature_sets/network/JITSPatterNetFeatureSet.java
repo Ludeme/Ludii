@@ -565,13 +565,13 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 	private class JITMap
 	{
 		
-		/** Map to prop-feature-instance-set represenation */
+		/** Map to prop-feature-instance-set representation */
 		private final Map<MoveFeaturesKey, PropFeatureInstanceSet> propInstanceSetMap;
 		
-		/** Map to SPatterNet represenation (without thresholding) */
+		/** Map to SPatterNet representation (without thresholding) */
 		private final Map<MoveFeaturesKey, SPatterNet> spatterNetMap;
 		
-		/** Map to SPatterNet represenation (thresholded) */
+		/** Map to SPatterNet representation (thresholded) */
 		private final Map<MoveFeaturesKey, SPatterNet> spatterNetMapThresholded;
 		
 		/**

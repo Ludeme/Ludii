@@ -212,7 +212,7 @@ public class EvaluateAllUBFMs
 											opponentAI = new RandomAI();
 											break;
 										default:
-											throw new RuntimeException("Unkown opponent");
+											throw new RuntimeException("Unknown opponent");
 										}
 										
 										compareAgents(game, Tested_AI, opponentAI, agentScores, numTrialsPerComparison, configuration);

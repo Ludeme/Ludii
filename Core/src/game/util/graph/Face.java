@@ -155,7 +155,7 @@ public class Face extends GraphElement
 			return false;
 		
 		// Try forwards
-//		System.out.print("Fowards:");
+//		System.out.print("Forwards:");
 		int n;
 		for (n = 0; n < numSides; n++)
 		{

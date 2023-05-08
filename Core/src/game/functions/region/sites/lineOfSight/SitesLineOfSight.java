@@ -48,7 +48,7 @@ public final class SitesLineOfSight extends BaseRegionFunction
 	/** Location. */
 	private final IntFunction loc;
 
-	/** Direction choosen. */
+	/** Direction chosen. */
 	private final DirectionsFunction dirnChoice;
 
 	/** Graph Type of the location */

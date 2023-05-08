@@ -48,7 +48,7 @@ public abstract class MoveDialog extends JDialog
 	 */
 	protected MoveDialog()
 	{
-		// Dont initialise.
+		// Don't initialise.
 	}
 	
 	//-------------------------------------------------------------------------

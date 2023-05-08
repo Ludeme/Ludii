@@ -6,7 +6,7 @@ import game.Game;
 import metadata.graphics.GraphicsItem;
 
 /**
- * Defines known shapes for the rhombotrihexahedral (semi-regular 3.4.6.4) tiling.
+ * Defines known shapes for the rhombitrihexahedral (semi-regular 3.4.6.4) tiling.
  * 
  * @author cambolbro
  */

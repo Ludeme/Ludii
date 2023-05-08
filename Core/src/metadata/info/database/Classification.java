@@ -46,7 +46,7 @@ public class Classification implements InfoItem
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @return The classificiation.
+	 * @return The classification.
 	 */
 	public String classification()
 	{

@@ -102,7 +102,7 @@ public final class FromTo extends Effect
 
 	//-------------------------------------------------------------------------
 
-	/** True if the to type was defined explicity */
+	/** True if the to type was defined explicitly */
 	private final boolean typeToDefined;
 
 	/**

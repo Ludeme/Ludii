@@ -89,10 +89,10 @@ public final class Slide extends Effect
 	/** The Move applied on the location reached. */
 	private final Moves sideEffect;
 	
-	/** Direction choosen. */
+	/** Direction chosen. */
 	private final DirectionsFunction dirnChoice;
 	
-	/** Track choosen */
+	/** Track chosen */
 	private final String trackName;
 
 	/** Add on Cell/Edge/Vertex. */

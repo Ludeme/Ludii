@@ -473,7 +473,7 @@ public final class SetHidden extends Effect
 			hiddenDataTypeString = "";
 			for (final HiddenData h : dataTypes)
 				hiddenDataTypeString += h.name().toLowerCase() + ", ";
-			hiddenDataTypeString = "properies " + hiddenDataTypeString.substring(0, hiddenDataTypeString.length()-2);
+			hiddenDataTypeString = "properties " + hiddenDataTypeString.substring(0, hiddenDataTypeString.length()-2);
 		}
 		
 		String regionString = "";

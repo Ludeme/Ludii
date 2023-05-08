@@ -700,7 +700,7 @@ public class Is extends BaseBooleanFunction
 
 		if (numNonNull != 1)
 			throw new IllegalArgumentException(
-					"Is(): With IsRelationType oly one siteB or region parameter can be non-null.");
+					"Is(): With IsRelationType only one siteB or region parameter can be non-null.");
 
 		switch (isType)
 		{
@@ -746,7 +746,7 @@ public class Is extends BaseBooleanFunction
 
 		if (numNonNull > 1)
 			throw new IllegalArgumentException(
-					"Is(): wtih IsTargetType eero or one containerId or containerName parameter must be non-null.");
+					"Is(): with IsTargetType zero or one containerId or containerName parameter must be non-null.");
 
 		int numNonNullA = 0;
 		if (specificSite != null)
@@ -756,7 +756,7 @@ public class Is extends BaseBooleanFunction
 
 		if (numNonNullA > 1)
 			throw new IllegalArgumentException(
-					"Is(): wtih IsTargetType zero or one specificSite or specificSites parameter must be non-null.");
+					"Is(): with IsTargetType zero or one specificSite or specificSites parameter must be non-null.");
 
 		switch (isType)
 		{

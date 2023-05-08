@@ -21,7 +21,7 @@ import other.context.Context;
 //-----------------------------------------------------------------------------
 
 /**
- * Defines a hexagonal rhombotrihexahedral (semi-regular tiling 3.4.6.4) board.
+ * Defines a hexagonal rhombitrihexahedral (semi-regular tiling 3.4.6.4) board.
  * 
  * @author cambolbro
  */

@@ -734,7 +734,7 @@ public class ExportDbCsvConcepts
 		// Used to return the frequency (of each playout concept).
 		final Map<String, Double> mapFrequency = new HashMap<String, Double>();
 
-		// For now I exclude the matchs, but can be included too after. The deduc puzzle
+		// For now I exclude the matches, but can be included too after. The deduc puzzle
 		// will stay excluded.
 		if (//game.hasSubgames() || game.isDeductionPuzzle() || game.isSimulationMoveGame())
 				 game.name().contains("Kriegsspiel"))

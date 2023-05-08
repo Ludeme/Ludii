@@ -44,7 +44,7 @@ public class BadSymbolException extends CompilerException
 	@Override
 	public String getMessageTitle()
 	{
-		return "An error occurred when matchng " + badSymbol + ".";
+		return "An error occurred when matching " + badSymbol + ".";
 	}
 
 }
