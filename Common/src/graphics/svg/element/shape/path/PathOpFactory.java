@@ -36,7 +36,7 @@ public class PathOpFactory
 	//-------------------------------------------------------------------------
 
 	/**
-	 * Private constructor: only this class can contruct itself.
+	 * Private constructor: only this class can construct itself.
 	 */
 	private PathOpFactory() 
 	{

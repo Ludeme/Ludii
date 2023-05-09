@@ -37,7 +37,7 @@ public final class Vertex extends TopologyElement implements Serializable
 	/** Off connected vertices. */
 	private final List<Vertex> off = new ArrayList<Vertex>();
 
-	/** Adjacent neightbours. */
+	/** Adjacent neighbours. */
 	private final List<Vertex> adjacent = new ArrayList<Vertex>();
 	
 	/** Neighbours. */

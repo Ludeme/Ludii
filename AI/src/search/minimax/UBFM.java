@@ -365,7 +365,7 @@ public class UBFM extends ExpertPolicy
 		rootValueEstimates = new FVector(numRootMoves);
 		rootMovesScores = new float[numRootMoves];
 		
-		// To ouput a visual graph of the search tree:
+		// To output a visual graph of the search tree:
 		searchTreeOutput.setLength(0);
 		searchTreeOutput.append("[\n");
 

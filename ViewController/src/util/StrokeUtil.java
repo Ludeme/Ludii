@@ -5,7 +5,7 @@ import java.awt.BasicStroke;
 import metadata.graphics.util.LineStyle;
 
 /**
- * Routines for getting strokes with specified peoperties.
+ * Routines for getting strokes with specified properties.
  * 
  * @author matthew.stephenson and cambolbro
  */

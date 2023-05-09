@@ -38,7 +38,7 @@ public class BufferedImageUtil
 	    // Set the Graphics composite to Alpha
 	    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
 	        (float) alpha));
-	    // Draw the image into the prepared reciver image
+	    // Draw the image into the prepared receiver image
 	    g.drawImage(source, null, 0, 0);
 	    // let go of all system resources in this Graphics
 	    g.dispose();

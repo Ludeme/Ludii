@@ -114,7 +114,7 @@ public class LanguageUtils
 		int number = originalNumber;
 		
 		if(number < -999 || number > 999)
-			throw new IllegalArgumentException("This function is not inplemented for numbers at this range yet! [" + number + "]");
+			throw new IllegalArgumentException("This function is not implemented for numbers at this range yet! [" + number + "]");
 
 		String text = "";
 		if(number < 0) {
@@ -202,7 +202,7 @@ public class LanguageUtils
 	public static String IndexAsText(final int index) 
 	{
 		if(index < 0 || index > 999)
-			throw new IllegalArgumentException("This function is not inplemented for indeces at this range yet! [" + index + "]");
+			throw new IllegalArgumentException("This function is not implemented for indices at this range yet! [" + index + "]");
 
 		String text = "";
 
@@ -356,7 +356,7 @@ public class LanguageUtils
 	
 	/**
 	 * @param string
-	 * @return the camel case string split into seperate words
+	 * @return the camel case string split into separate words
 	 */
 	public final static String splitCamelCase(final String string)
 	{

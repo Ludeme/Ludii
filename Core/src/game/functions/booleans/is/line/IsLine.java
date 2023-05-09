@@ -48,7 +48,7 @@ public class IsLine extends BaseBooleanFunction
 
 	//-------------------------------------------------------------------------
 
-	/** Mimimum length of the line. */
+	/** Minimum length of the line. */
 	private final IntFunction length;
 
 	/** The direction category of potential lines. */

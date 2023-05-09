@@ -301,7 +301,7 @@ public class Call
 	//-------------------------------------------------------------------------
 	
 //	/**
-//	 * @return LudemeInfo list representation of callTree for ludemplex analysis purposes.
+//	 * @return LudemeInfo list representation of callTree for ludemeplex analysis purposes.
 //	 */
 //	public List<LudemeInfo> analysisFormatList(final int depth, final List<LudemeInfo> ludemes)
 //	{
@@ -339,7 +339,7 @@ public class Call
 //	}
 	
 	/**
-	 * @return LudemeInfo dictionary representation of callTree for ludemplex analysis purposes.
+	 * @return LudemeInfo dictionary representation of callTree for ludemeplex analysis purposes.
 	 */
 	public Map<LudemeInfo, Integer> analysisFormat(final int depth, final List<LudemeInfo> ludemes)
 	{

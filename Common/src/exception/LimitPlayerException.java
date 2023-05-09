@@ -15,7 +15,7 @@ public class LimitPlayerException extends RuntimeException
 
 	public LimitPlayerException(int numPlayers)
 	{
-		System.err.println("Instanciation of a play with " + numPlayers);
+		System.err.println("Instantiation of a play with " + numPlayers);
 	}
 	
 }

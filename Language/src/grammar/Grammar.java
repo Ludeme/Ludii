@@ -2325,7 +2325,7 @@ public class Grammar
 		{
 //			if (symbol.cls() != null && MetadataItem.class.isAssignableFrom(symbol.cls()))
 //			{
-//				System.out.println("Metatada symbol path: " + symbol.path());
+//				System.out.println("Metadata symbol path: " + symbol.path());
 //				symbol.setUsedInMetadata(true);
 //			}
 

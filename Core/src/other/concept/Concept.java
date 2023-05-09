@@ -3862,7 +3862,7 @@ public enum Concept
 	(
 		"3.3.1.2.1.9.3.1",
 		252, 
-		"Sowing in skiping some holes.", 
+		"Sowing in skipping some holes.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
@@ -5703,7 +5703,7 @@ public enum Concept
 		Concept.Information
 	),
 	
-	/** Any ludeme hidding all the info on a site. */
+	/** Any ludeme hiding all the info on a site. */
 	InvisiblePiece
 	(
 		"3.3.5.7",

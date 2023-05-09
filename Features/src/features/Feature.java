@@ -20,7 +20,7 @@ public abstract class Feature
 	
 	/**
 	 * @param string
-	 * @return Feature constructed from given stirng
+	 * @return Feature constructed from given string
 	 */
 	public static Feature fromString(final String string)
 	{

@@ -101,7 +101,7 @@ public class DatabaseFunctions
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Records all Define Ludemeplexes (ludemplexes with a # in them).
+	 * Records all Define Ludemeplexes (ludemeplexes with a # in them).
 	 * NOTE This loops over everything twice, so could be optimised more.
 	 * @param allLudemeplexescount 
 	 */

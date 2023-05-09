@@ -829,7 +829,7 @@ public class FindBestBaseAgentScriptsGen
 								}
 								else
 								{
-									// Our MCTS requires heuristics but we dont have any, so skip
+									// Our MCTS requires heuristics but we don't have any, so skip
 									continue;
 								}
 							}

@@ -1878,7 +1878,7 @@ public final class ChunkSet implements Cloneable, java.io.Serializable
 		final ChunkSet mask, final ChunkSet pattern, final int startWord
 	)
 	{
-		// TODO I dont think we want this check here...
+		// TODO I don't think we want this check here...
 		/*
 		if (wordsInUse < mask.wordsInUse)
 		{

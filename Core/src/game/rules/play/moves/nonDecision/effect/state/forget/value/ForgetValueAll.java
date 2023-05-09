@@ -213,7 +213,7 @@ public final class ForgetValueAll extends Effect
 		if (then() != null)
 			thenString = " then " + then().toEnglish(game);
 		
-		return "forget all previously rememberd values" + thenString;
+		return "forget all previously remembered values" + thenString;
 	}
 	
 	//-------------------------------------------------------------------------

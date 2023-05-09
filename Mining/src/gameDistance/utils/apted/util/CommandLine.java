@@ -159,7 +159,7 @@ public class CommandLine<C extends CostModel, P extends InputParser> {
   }
 
   /**
-   * Main method, invoced when executing the jar file.
+   * Main method, invoked when executing the jar file.
    *
    * @param args array of command line arguments passed when executing jar file.
    */
@@ -279,7 +279,7 @@ public class CommandLine<C extends CostModel, P extends InputParser> {
     }
   }
 
-  // TODO: Bring the functionalitites below back to life.
+  // TODO: Bring the functionalities below back to life.
 
   // /**
   //  * Set custom costs for the edit operations.

@@ -208,7 +208,7 @@ public class ScreenCapture
 							// create a new BufferedOutputStream with the last argument
 							try(final ImageOutputStream output = new FileImageOutputStream(new File(videoLocation)))
 							{
-								// create a gif sequence with the type of the first image, 10 miliseconds between frames, which loops continuously.
+								// create a gif sequence with the type of the first image, 10 milliseconds between frames, which loops continuously.
 								final GifSequenceWriter writer = new GifSequenceWriter(output, firstImage.getType(), 1, true);
 								
 								// write out all images in our sequence.

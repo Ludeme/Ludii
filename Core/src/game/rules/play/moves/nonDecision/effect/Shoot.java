@@ -51,7 +51,7 @@ public final class Shoot extends Effect
 	/** Location of the piece. */
 	private final IntFunction startLocationFn;
 
-	/** Direction choosen. */
+	/** Direction chosen. */
 	private final Directions dirnChoice;
 
 	/** The rule to continue the move. */

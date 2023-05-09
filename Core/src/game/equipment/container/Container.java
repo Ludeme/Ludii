@@ -251,7 +251,7 @@ public abstract class Container extends Item implements Serializable, Cloneable
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @return The controler of the board.
+	 * @return The controller of the board.
 	 */
 	public ControllerType controller()
 	{
@@ -259,7 +259,7 @@ public abstract class Container extends Item implements Serializable, Cloneable
 	}
 	
 	/**
-	 * To set the controler of the board.
+	 * To set the controller of the board.
 	 * 
 	 * @param controller
 	 */
@@ -290,10 +290,10 @@ public abstract class Container extends Item implements Serializable, Cloneable
 		this.ownedTracks = ownedTracks;
 	}
 
-	// ---------------------------------------Symetries-----------------------------------------------------------------
+	// ---------------------------------------Symmetries-----------------------------------------------------------------
 
 	/**
-	 * Tries to find symmetries by rotating topologys, edges, and vertices at all
+	 * Tries to find symmetries by rotating topologies, edges, and vertices at all
 	 * reasonable angles The following will be caught by this code:
 	 * 
 	 * no symmetry half-turn symmetry; e.g. hex board 3-fold symmetry (triangle)
@@ -317,7 +317,7 @@ public abstract class Container extends Item implements Serializable, Cloneable
 	}
 
 	/**
-	 * Tries to find symmetries by rotating topologys, edges, and vertices by the
+	 * Tries to find symmetries by rotating topologies, edges, and vertices by the
 	 * angles suggested by symmetries
 	 * 
 	 * @param topology

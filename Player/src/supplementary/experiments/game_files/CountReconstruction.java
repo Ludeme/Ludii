@@ -144,7 +144,7 @@ public class CountReconstruction
 		// print category name
 		System.out.print(category.name + ":");
 		
-		// append extra indentation to accomodate widest category string
+		// append extra indentation to accommodate widest category string
 		final int numCharactersPrinted = indentation * NUM_INDENT_SPACES + category.name.length() + 1;
 		final int numCharactersWanted = widestStringLength + Math.min(4, NUM_INDENT_SPACES);
 		
