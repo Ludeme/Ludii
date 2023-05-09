@@ -13,6 +13,9 @@ public enum DiagonalsType //implements GraphicsItem
 	/** Solid edges between opposite diagonals, which split the square into four triangles. */
 	Solid,
 	
+	/** Solid edges between opposite diagonals, but do not split the square into four triangles. */
+	SolidNoSplit,
+	
 	/** Every second diagonal is a solid edge, as per Alquerque boards. */
 	Alternating,
 	

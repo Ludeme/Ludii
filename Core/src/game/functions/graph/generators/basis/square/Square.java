@@ -200,6 +200,25 @@ public class Square extends Basis
 					graph.findOrAddEdge(vertexD, vertexX);		
 				}
 		}
+		else if (diagonals == DiagonalsType.SolidNoSplit)
+		{
+			// Add diagonal edges to all cells
+			for (int r = fromRow; r <= toRow; r++)
+				for (int c = fromCol; c <= toCol; c++)
+				{
+					// Add central vertex and edges to corner vertices
+					final Vertex vertexA = graph.findVertex(c,   r);
+					final Vertex vertexB = graph.findVertex(c,   r+1);
+					final Vertex vertexC = graph.findVertex(c+1, r+1);
+					final Vertex vertexD = graph.findVertex(c+1, r);
+
+					if (vertexA == null || vertexB == null || vertexC == null || vertexD == null)
+						continue;
+					
+					graph.findOrAddEdge(vertexA, vertexC);		
+					graph.findOrAddEdge(vertexB, vertexD);		
+				}
+		}
 		else if (diagonals == DiagonalsType.Concentric)
 		{
 			// Add diagonal edges to concentric squares around centre

@@ -2,7 +2,7 @@
     (players 1) 
     (equipment { 
     	(board 
-                (square 20) 
+                (square 20 diagonals:SolidNoSplit) 
                 use:Vertex
             )
         (piece "Cross" P1)
@@ -20,6 +20,9 @@
         (play (move Select 
                 (from Vertex (intersection (sites Around (sites Occupied by:P1) All) (sites Empty Edge)))
                 (to Vertex (sites Around (from) All)) 
+                (then 
+                	(add (to Edge (edge (last From) (last To))))
+                )
          )
        )
         (end (if (no Moves Mover) (result P1 Win)))
