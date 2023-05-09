@@ -23,7 +23,10 @@
                 	if:(is Empty Edge (edge (from) (to)))
                 ) 
                 (then 
+                	(and {
+                	(add (to Vertex (last From)))
                 	(add (to Edge (edge (last From) (last To))))
+                	})
                 )
          )
        )
