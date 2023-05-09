@@ -5,12 +5,17 @@
                 (square 20) 
                 use:Vertex
             )
-        (piece "Marker" P1 ("HopFriendCapture" Orthogonal))
+        (piece "Cross" P1)
     }) 
     (rules 
-//        (start { 
-//            (place "Marker" (difference (sites Board) (sites "D4")))
-//        })
+        (start { 
+            (place "Cross" (sites {
+            	148  128 108..111 165..168 185 205 225..228
+            	131 151 171..174 194 214 234..231 251
+            	271 291..288 248 268
+            	})
+            )
+        })
         
         (play (forEach Piece))
         (end (if (and (is Friend (who at:(centrePoint))) (= 1 (count Pieces All))) (result P1 Win))) 
@@ -30,10 +35,10 @@
         //(board Style Graph)
         (show Edges Orthogonal Hidden)
         (show Edges Diagonal Hidden)
-        (board Colour OuterEdges (colour Hidden))
         (board Colour OuterVertices (colour Hidden))
-        //(show Vertices Hidden)
-        //(board StyleThickness InnerVertices 3.0)
+        (board Colour InnerVertices (colour Hidden))
+        (piece Scale "Cross" 0.4)
+        (player Colour P1 (colour Black))
     })
     
 )
