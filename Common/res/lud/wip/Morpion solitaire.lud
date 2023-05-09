@@ -17,8 +17,12 @@
             )
         })
         
-        (play (forEach Piece))
-        (end (if (and (is Friend (who at:(centrePoint))) (= 1 (count Pieces All))) (result P1 Win))) 
+        (play (move Select 
+                (from Vertex (intersection (sites Around (sites Occupied by:P1) All) (sites Empty Edge)))
+                (to Vertex (sites Around (from) All)) 
+         )
+       )
+        (end (if (no Moves Mover) (result P1 Win)))
     )
 )
 
@@ -32,13 +36,12 @@
     )
     
     (graphics {
-        //(board Style Graph)
         (show Edges Orthogonal Hidden)
         (show Edges Diagonal Hidden)
         (board Colour OuterVertices (colour Hidden))
         (board Colour InnerVertices (colour Hidden))
-        (piece Scale "Cross" 0.4)
         (player Colour P1 (colour Black))
+        (board Style PenAndPaper replaceComponentsWithFilledCells:True)
     })
     
 )
