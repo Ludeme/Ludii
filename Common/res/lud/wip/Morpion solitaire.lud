@@ -18,8 +18,10 @@
         })
         
         (play (move Select 
-                (from Vertex (intersection (sites Around (sites Occupied by:P1) All) (sites Empty Edge)))
-                (to Vertex (sites Around (from) All)) 
+                (from Vertex (intersection (sites Around (sites Occupied by:P1)) (sites Empty Edge)))
+                (to Vertex (intersection (sites Occupied by:P1) (sites Around (from)))
+                	if:(is Empty Edge (edge (from) (to)))
+                ) 
                 (then 
                 	(add (to Edge (edge (last From) (last To))))
                 )
