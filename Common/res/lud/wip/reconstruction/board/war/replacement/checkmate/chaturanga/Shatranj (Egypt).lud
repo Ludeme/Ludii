@@ -1,15 +1,11 @@
 (game "Shatranj (Egypt)" 
     (players 2) 
-    (equipment 
-        { 
-        (board (square 8)) 
-        }
-    )
+    (equipment { 
+        (board (square 8))
+        [#]
+     })
     
-    (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
-    )
+    (rules [#])
 )
 
 //------------------------------------------------------------------------------
