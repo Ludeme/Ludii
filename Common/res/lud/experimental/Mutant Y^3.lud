@@ -401,6 +401,31 @@
 (metadata
     (info
         {
+        (description "Mutant Y^3 is an experimental order-3-fractal generalization of the game of 'Y', with a symmetrical triple goal. The three, hierarchical 'Y' connection goals are made visible by using three boards with permuted parametric placements. The three goals comprise rotations of the scales of the hierarchical, Fire-and-Ice-game style goal, one triple-level goal pattern revealed on each board. 
+            
+            There are 4 variants for placement protocol, including: pure placement, non-partisan double placement (Friend + Enemy), double move (12*) protocol, and Fire-and-Ice (move then place Enemy at vacated site) protocol.
+            
+            The rotation of goal scales increases the symmetry of the game and ensures that all parts of the board are significant for placement during every stage of play.
+            
+            For ease in implementation and to aid players visualize their progress I added a visual score board for each level of the hierarchy of the boards: a stone on a score-board represents a 'Y' connected triangle on the board above, and ultimately on the triple game board. A win, then, is when two of the three cells of the smallest, most abstracted, scoreboard contain a player's stones, indicating that the boards corresponding to those stones each contain the entire goal pattern. A numerical score shows the number of stones on each level of the scoreboards using the formula 100 * L0 stones + 100 * L1 Stones + L2 Stones.
+            
+            The script also handles generating the three parametric stone placements based on the mover's selection.  Without this feature, the game would not be humanly playable, due to the difficulty of visualizing and correctly applying them by hand, or alternatively, the difficulty in recognizing the symmetrical goals if the game were to be played with single placements to a single board. 
+            
+            Placements are specified by selecting an empty location on one of the boards and converting it to an ordered triple (a,b,c). Then this triplet is permuted as specified on each board, where the three coordinates are given in the order of largest to smallest levels, and the pieces add added to the boards accordingly.
+            
+        The game is implemented at two scales: Order 2 triangles give maximum 27 unique placements, and order 3 triangles give maximum 216 unique placements. Order 4 is beyond the scope of Ludii and of reasonable human play with maximum 1000 placements. Such a board or even the next with 3375 placement choices might be of interest for Ai competition testing.")
+        (rules "Goal: Control 2 of the 3 main boards, indicated by occupying 2 cells of the smallest scoreboard. Note that a stone on the score-board represents a 'Y' connected triangle on the board above and ultimately on the triple game board.
+            
+            Play:
+            Each player selects a site for his placement, and the script generates the corresponding placements for each of the three main boards, by permuting the indices for each level, as indicated by the formulas shown on the boards.
+            
+        Turns alternate according to the Protocol option selected, and play continues until one player has created a winning pattern on 2 of the boards. There is always a winner.")
+        (id "3979")
+        (version "1.3.11")
+        (classification "experimental")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "05-04-2023")
         }
     )
     ("GraphicsOptions")

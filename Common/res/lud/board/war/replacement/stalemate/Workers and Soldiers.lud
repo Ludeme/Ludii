@@ -27,21 +27,21 @@
     (and
         (custodial
             (from (last To))
-                (between
-                    (max 1)
-                    if:(is Empty (between))
-                    (apply (set State at:(between) "ProduceBase"))
-                )
-                (to if:("IsFriendlyWorkerAt" (to)))
+            (between
+                (max 1)
+                if:(is Empty (between))
+                (apply (set State at:(between) "ProduceBase"))
+            )
+            (to if:("IsFriendlyWorkerAt" (to)))
         )
         (custodial
             (from (last To))
-                (between
-                    (max 1)
-                    if:(is Empty (between))
-                    (apply (set State at:(between) "ProduceWorkerOrSoldier"))
-                )
-                (to if:("IsFriendlyBaseAt" (to)))
+            (between
+                (max 1)
+                if:(is Empty (between))
+                (apply (set State at:(between) "ProduceWorkerOrSoldier"))
+            )
+            (to if:("IsFriendlyBaseAt" (to)))
         )
     )
 )
@@ -74,64 +74,64 @@
         })
         
         phases:{
-            (phase "Movement2"
-                (play
-                    (or
-                        (forEach Piece)
-                        (move
-                            (from (sites Occupied by:Mover container:"Hand"))
-                            (to (sites Empty))
-                            (then "Produce")
-                        )
-                        (then (if ("ProductionSites") (moveAgain)))
+        (phase "Movement2"
+            (play
+                (or
+                    (forEach Piece)
+                    (move
+                        (from (sites Occupied by:Mover container:"Hand"))
+                        (to (sites Empty))
+                        (then "Produce")
                     )
+                    (then (if ("ProductionSites") (moveAgain)))
                 )
-                {
-                    (nextPhase ("ProductionSites") "Produce2")
-                    (nextPhase (not ("ProductionSites")) "Movement1")
-                }
             )
-            (phase "Produce2"
-                (play
-                    (or
-                        { (move Add (piece (id "Soldier" Mover)) (to (sites Empty) if:(= (state at:(to)) "ProduceWorkerOrSoldier")) ((then (set State at:(last To) 0))))
-                          (move Add (piece (id "Shooter" Mover)) (to (sites Empty) if:(= (state at:(to)) "ProduceWorkerOrSoldier")) ((then (set State at:(last To) 0))))
-                          (move Add (piece (id "Base" Mover))    (to (sites Empty) if:(= (state at:(to)) "ProduceBase"           )) ((then (set State at:(last To) 0))))
-                          (move Pass (then "ClearProduction")) }
-                        (then (if ("ProductionSites") (moveAgain)))
+            {
+            (nextPhase ("ProductionSites") "Produce2")
+            (nextPhase (not ("ProductionSites")) "Movement1")
+            }
+        )
+        (phase "Produce2"
+            (play
+                (or
+                    { (move Add (piece (id "Soldier" Mover)) (to (sites Empty) if:(= (state at:(to)) "ProduceWorkerOrSoldier")) ((then (set State at:(last To) 0))))
+                    (move Add (piece (id "Shooter" Mover)) (to (sites Empty) if:(= (state at:(to)) "ProduceWorkerOrSoldier")) ((then (set State at:(last To) 0))))
+                    (move Add (piece (id "Base" Mover))    (to (sites Empty) if:(= (state at:(to)) "ProduceBase"           )) ((then (set State at:(last To) 0))))
+                    (move Pass (then "ClearProduction")) }
+                    (then (if ("ProductionSites") (moveAgain)))
+                )
+            )
+            { (nextPhase (not ("ProductionSites")) "Movement1") }
+        )
+        (phase "Movement1"
+            (play
+                (or
+                    (forEach Piece)
+                    (move
+                        (from (sites Occupied by:Mover container:"Hand"))
+                        (to (sites Empty))
+                        (then "Produce")
                     )
+                    (then (moveAgain))
                 )
-                { (nextPhase (not ("ProductionSites")) "Movement1") }
             )
-            (phase "Movement1"
-                (play
-                    (or
-                        (forEach Piece)
-                        (move
-                            (from (sites Occupied by:Mover container:"Hand"))
-                            (to (sites Empty))
-                            (then "Produce")
-                        )
-                        (then (moveAgain))
-                    )
+            {
+            (nextPhase ("ProductionSites") "Produce1")
+            (nextPhase (not ("ProductionSites")) "Movement2")
+            }
+        )
+        (phase "Produce1"
+            (play
+                (or
+                    { (move Add (piece (id "Soldier" Mover)) (to (sites Empty) if:(= (state at:(to)) "ProduceWorkerOrSoldier")) ((then (set State at:(last To) 0))))
+                    (move Add (piece (id "Shooter" Mover)) (to (sites Empty) if:(= (state at:(to)) "ProduceWorkerOrSoldier")) ((then (set State at:(last To) 0))))
+                    (move Add (piece (id "Base" Mover))    (to (sites Empty) if:(= (state at:(to)) "ProduceBase"           )) ((then (set State at:(last To) 0))))
+                    (move Pass (then "ClearProduction")) }
+                    (then (moveAgain))
                 )
-                {
-                    (nextPhase ("ProductionSites") "Produce1")
-                    (nextPhase (not ("ProductionSites")) "Movement2")
-                }
             )
-            (phase "Produce1"
-                (play
-                    (or
-                        { (move Add (piece (id "Soldier" Mover)) (to (sites Empty) if:(= (state at:(to)) "ProduceWorkerOrSoldier")) ((then (set State at:(last To) 0))))
-                          (move Add (piece (id "Shooter" Mover)) (to (sites Empty) if:(= (state at:(to)) "ProduceWorkerOrSoldier")) ((then (set State at:(last To) 0))))
-                          (move Add (piece (id "Base" Mover))    (to (sites Empty) if:(= (state at:(to)) "ProduceBase"           )) ((then (set State at:(last To) 0))))
-                          (move Pass (then "ClearProduction")) }
-                        (then (moveAgain))
-                    )
-                )
-                { (nextPhase (not ("ProductionSites")) "Movement2") }
-            )
+            { (nextPhase (not ("ProductionSites")) "Movement2") }
+        )
         }
         
         (end {
@@ -147,6 +147,12 @@
     
     (info
         {
+        (description "Workers and Soldiers is a simplified 3X game (Expand, Exploit, Exterminate). Originally created for Alek Ericson's 'Realm variants contest'")
+        (rules "For setup, players may drop their initial two workers anywhere on the board. Then players take turns moving either a worker or a soldier. Soldiers move in straight lines and capture by replacement. Workers produce new things based on the piece opposite them (worker+worker = base, worker+base = worker or soldier). The first player to be left with no moves loses.")
+        (id "4033")
+        (version "1.3.11")
+        (classification "board/war/replacement/stalemate")
+        (credit "Alexander Brady")
         }
     )
     

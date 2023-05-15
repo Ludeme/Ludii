@@ -85,8 +85,24 @@
 })
 
 (metadata
-    (info {
-    })
+    (info
+        {
+        (description "Compart is a simple game of territory and timing. Walling off areas of the board with your stones multiplies enemy placements, but be mindful that your opponent will try to use those extra placements to enclose new areas that multiply your own placements. Whoever has fewer stones at the end wins.")
+        (rules "Played with black and white stones on an initially empty square board. On your turn, for every viable area with one or more empty points, place a stone of your color on one of those points.
+            
+            A viable area is a viable point along with all other such points one can reach from it through a series of steps onto orthogonally adjacent viable points. A viable point is a point that is empty or occupied by a friendly stone.
+            
+            When the board is full, the player with fewer stones on the board wins. If there is a tie, whoever placed the last stone wins. Ties are only possible on even-sized boards.
+            
+        To make the game fair, the second player will have the option, on their first turn only, to swap sides with their opponent instead of making a regular move.")
+        (id "3978")
+        (version "1.3.11")
+        (classification "board/space/territory")
+        (author "Luis Bolanos Mures")
+        (credit "Michael Amundsen")
+        (date "2023")
+        }
+    )
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))

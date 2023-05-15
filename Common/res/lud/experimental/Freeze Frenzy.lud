@@ -107,29 +107,49 @@
 (metadata
     (info
         {
-        }
-    ) 
+        (description "Freeze Frenzy is a Shaka (Epoxy) variant based on the sport of Freeze tag. Intended as a casual experiment because it is opaque. With experience it might prove to be facile or very deep, or remain inscrutable. The purpose of this script is to test it to see which of these outcomes is the most likely.")
+        (rules "Goal: Most active pieces on the full board.
+            Play on any board, a small order 'limping' Hex-hex board is recommended.
+            Uses counters in 2 colors capable of 2 states (Active and frozen)
+            
+            Play starts on an empty board, turns alternate.
+            
+            On a turn, the mover may either 
+        -- A) place a piece on to an empty site or
+    -- B) slide a piece.
     
-    (graphics 
-        {
-        (player Colour P1 (colour 140 40 0))
-        (player Colour P2 (colour 255 250 220))
-        (piece Background state:0 image:"Disc" fillColour:(colour 0 0 0 120) edgeColour:(colour 0 0 0 0) scale:.97 offsetX:.26 offsetY:.35 )
-        (piece Scale state:1 0)  // Hide the Ball effect
-        (piece Foreground "Ball1" state:1 image:"knotTriangle.svg" fillColour:(colour 90 40 30 220) edgeColour:(colour 0 0 0 140) scale:.88 offsetY:-1)
-        (piece Foreground "Ball2" state:1 image:"knotTriangle.svg" fillColour:(colour 180 175 140 220) edgeColour:(colour 0 0 0 160) scale:.88 offsetY:-1)
-        (board StyleThickness InnerEdges 0.4)
-        (board StyleThickness OuterEdges 0.6)
-        (board StyleThickness InnerVertices 0.45)
-        (board StyleThickness OuterVertices 0.45)
-        (board Colour InnerVertices (colour Grey))
-        (board Colour OuterVertices (colour Grey))
-        (board Colour InnerEdges (colour Black))
-        (board Colour OuterEdges (colour Black))
-        (board Background fillColour:(colour HumanLight) edgeColour:(colour Grey) scale:1.3 )
-        (show Edges Diagonal Hidden (colour DarkGrey))
-        }
-    )
-    (ai (heuristics (score)))
+In the case of B), after sliding the piece all the pieces now adjacent to it are tagged, meaning that frozen friendly pieces become active, and active enemy pieces become frozen.
+
+The game ends when the board is full. Last to play loses if the active count is equal.")
+(id "3981")
+(version "1.3.11")
+(classification "experimental")
+(author "Dale W. Walton")
+(credit "Dale W. Walton")
+(date "17-04-2023")
+}
+)
+
+(graphics 
+    {
+    (player Colour P1 (colour 140 40 0))
+    (player Colour P2 (colour 255 250 220))
+    (piece Background state:0 image:"Disc" fillColour:(colour 0 0 0 120) edgeColour:(colour 0 0 0 0) scale:.97 offsetX:.26 offsetY:.35 )
+    (piece Scale state:1 0)  // Hide the Ball effect
+    (piece Foreground "Ball1" state:1 image:"knotTriangle.svg" fillColour:(colour 90 40 30 220) edgeColour:(colour 0 0 0 140) scale:.88 offsetY:-1)
+    (piece Foreground "Ball2" state:1 image:"knotTriangle.svg" fillColour:(colour 180 175 140 220) edgeColour:(colour 0 0 0 160) scale:.88 offsetY:-1)
+    (board StyleThickness InnerEdges 0.4)
+    (board StyleThickness OuterEdges 0.6)
+    (board StyleThickness InnerVertices 0.45)
+    (board StyleThickness OuterVertices 0.45)
+    (board Colour InnerVertices (colour Grey))
+    (board Colour OuterVertices (colour Grey))
+    (board Colour InnerEdges (colour Black))
+    (board Colour OuterEdges (colour Black))
+    (board Background fillColour:(colour HumanLight) edgeColour:(colour Grey) scale:1.3 )
+    (show Edges Diagonal Hidden (colour DarkGrey))
+    }
+)
+(ai (heuristics (score)))
 )
 

@@ -431,11 +431,11 @@
     
     (info
         {
-        (description "A chess variant played on the intersections of the chess board. The key feature is that only the dark squares may be crossed diagonally.    To make up for this limitation, all of the pieces are more powerful than in standard chess and the width of the board is reduced to eliminate the rooks, and keep the game from becoming too complex.     The power of the King is enhanced by giving it double moves. -- And the other pieces are enhanced enough to checkmate with only the support of a king.    Tactical differences:  -- Pawns are more mobile and easier to promote. They can form mutually supportive chains like in chess, but only in crossing formations that don't lead to the obstruction of major pieces. Alternatively, they can be supported by other pieces and placed so as to attack in front and defend in back. They can open and close columns.  -- The queen-like Bishops can be released along their own columns by 2 pawn moves, or on the Knight column by a pawn and Bishop move after the Knight has been moved; or they can be opened to their own diagonal by a single pawn move.  -- The Queen is not the most powerful piece: It has the capacity to attack almost half the board from protected locations in the mid-game, but is easily blocked. -- Tightly surrounding the King is bad defense as it restricts its movement options. The Knights are good King defenders, and paired Knights are mutually supporting in many positions.-- Attacks can be lead by a brave King advancing into the board.")
-        (rules "Played on an 8x6 board with pieces with specialized moves. White moves first:
+        (description "A chess variant played on the intersections of the chess board. The key feature is that only the dark squares may be crossed diagonally.    To make up for this limitation, all the pieces are more powerful than in standard chess and the width of the board is reduced to eliminate the rooks, and keep the game from becoming too complex.     The power of the King is enhanced by giving it double moves. -- And the other pieces are enhanced enough to checkmate with only the support of a king.    Tactical differences:  -- Pawns are more mobile and easier to promote. They can form mutually supportive chains like in chess, but only in crossing formations that don't lead to the obstruction of major pieces. Alternatively, they can be supported by other pieces and placed to attack in front and defend in back. They can open and close columns.  -- The queen-like Bishops can be released along their own columns by 2 pawn moves, or on the Knight column by a pawn and Bishop move after the Knight has been moved; or they can be opened to their own diagonal by a single pawn move.  -- The Queen is not the most powerful piece: It has the capacity to attack almost half the board from protected locations in the mid-game, but is easily blocked. -- Tightly surrounding the King is bad defence as it restricts its movement options. The Knights are good King defenders, and paired Knights are mutually supporting in many positions.-- Attacks can be led by a brave King advancing into the board.")
+        (rules "Played on a 8x6 board with pieces with specialized moves. White moves first:
             
             Pawns (6): can move one space forwards (orthogonally or diagonally across dark squares) and can capture an enemy located diagonally across either of the adjacent dark squares (diagonal forwards and diagonal backwards). Upon reaching the last rank, Pawns promote to any major piece except a king.
-            -- There are no initial double moves, nor enpassant.
+            -- There are no initial double moves, nor en passant.
             
             Bishops (2): Can move like chess queens - any orthogonal direction or allowed diagonal direction (but not across light squares).
             
@@ -457,9 +457,9 @@
             
             The game is won when the enemy king must move, but cannot. 
             
-        Not implemented yet and still under consideration: 13 continuous check moves is also a win. the last player to move a pawn or capture a piece loses after 20 moves per player: Note that bare kings will normally end in a stalemate win before this limit is reached.")
+        Not implemented yet and still under consideration: 13 continuous ckeck moves is also a win. The last player to move a pawn or capture a piece loses after 20 moves per player: Note that bare kings will normally end in a stalemate win before this limit is reached.")
         (id "2019")
-        (version "1.3.10")
+        (version "1.3.11")
         (classification "board/war/replacement/checkmate/chess")
         (author "Dale Walton")
         (credit "Dale Walton")

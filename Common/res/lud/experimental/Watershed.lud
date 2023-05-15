@@ -224,7 +224,7 @@
 (metadata
     (info
         {
-        (description "Watershed is a square board placement game based on Branching Coral, with the principle of placing pieces, such that, after placement, every site on the boards still has a connection via empty sites to an empty site at the perimeter.                                      Scoring for the standard Plateau version is based on the size of the largest group plus a bonus factor for the number of opponent's pieces captured.  This works to reward capture and thus encourages breaking up opponent's groups, while remaining straight forward in the need to enlarge your largest group, it allows creating come-back groups, or staging comebacks by capturing material.                           Ties are broken in favor of the underdog by considering only the largest group size as a negative score without including the capture bonus. Opponent-paired groups of the same size are excluded in this comparison. If all groups are paired in size with the opponent, last to play wins.                   Play is only on odd sized boards to avoid mirror strategy, since last to play also wins.                  A Floodplain variant reverses the board connections, group connections, bonus attribution and tie-breaker rules.")
+        (description "Watershed is a square board placement game based on Branching Coral, with the principle of placing pieces, such that, after placement, every site on the boards still has a connection via empty sites to an empty site at the perimeter.                                      Scoring for the standard Plateau version is based on the size of the largest group plus a bonus factor for the number of opponent's pieces captured.  This works to reward capture and thus encourages breaking up opponent's groups, while remaining straight forward in the need to enlarge your largest group, it allows creating come-back groups, or staging combacks by capturing material.                           Ties are broken in favour of the underdog by considering only the largest group size as a negative score without including the capture bonus. Opponent-paired groups of the same size are excluded in this comparison. If all groups are paired in size with the opponent, last to play wins.                   Play is only on odd sized boards to avoid mirror strategy, since last to play also wins.                  A Floodplain variant reverses the board connections, group connections, bonus attribution and tie-breaker rules.")
         (rules "Goal: Score the most points: 
             -- One point for each stone in one's largest group.
             -- Bonus points are also awarded for certain captured stones.
@@ -238,7 +238,7 @@
             
             There is no passing. The game ends when no more placements can be made.  
             
-            Ties are broken in favor of the underdog by comparing cascading largest groups (excluding tied pairs) Tie breaker scores are negative, so largest group LOSES.
+            Ties are broken in favor of the underdog by compairing cascading largest groups (excluding tied pairs) Tie breaker scores are negative, so largest group LOSES.
             
             Plateau version (mauve background):
             Connection to the edge is by omni-directional steps. Stone groups are orthogonal only. 
@@ -252,7 +252,7 @@
             
         The player with the higher score wins.")
         (id "1661")
-        (version "1.3.10")
+        (version "1.3.11")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

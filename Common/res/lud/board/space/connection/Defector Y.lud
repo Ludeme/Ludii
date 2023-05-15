@@ -121,7 +121,31 @@
 (metadata
     (info
         {
-        
+        (description "Defector Y is a Y variant based on replacing overcrouded opponent's pieces with your own before your placement.
+            
+            Defection has the effect that completing a single Y fork must be deferred until the opponent is nearby, and thus the opponent can easily sever a fork that is set in an open area of the board. 
+            
+            There are also occasions where one offers a defection in order to obtain a nearby defection in return, or to prevent an opponent blocking a critical location, or to allow your own safe play into such a location. 
+            
+        The effect also is to cause the board to fill considerably before a win, and to create more contorted connection paths.")
+        (rules "Goal: Connect all three edge colors with a single group of connected stones of your own color. (As in 'Y') 
+            
+            Turns alternate. The player seeking to connect with the darker color starts.
+            
+            The turns consist of two parts: a conditional conversion of stones in the vicinity of the last placement, followed by one's own placement.
+            
+            The conversion part requires one to examine the opponent's stones around (and including) the last placed stone. Then to convert into your own, any that are surrounded by more of their own color than of yours. This is done one-by-one in any desired order, until the condition no longer applies.
+            
+            When no stone has more friendly neighbors than enemy neighbors, the current player places a new stone onto any empty location.
+            The first player to connect all 3 sides is the winner.
+            
+        If the 122* turn protocol option is selected, the turn begins and ends with a placement, and the conversions occur in between.")
+        (id "3974")
+        (version "1.3.11")
+        (classification "board/space/connection")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "11-03-2023")
         }
     )
     (graphics

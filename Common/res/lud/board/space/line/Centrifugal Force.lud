@@ -123,6 +123,23 @@
 (metadata 
     (info
         {
+        (description "Centrifugal Force is a paper-and-pencil game for two players inspired by Connect4, but using four different directions from which you can drop the tokens.
+        It was invented by Diego Soranzo and Gabriele Soranzo while they were talking about Centripetal Force, a similar game invented about forty years before by Gabriele Soranzo.")
+        (rules "At the beginning of the game, the board is empty except for the the four edge cells, which are occupied by a square which belongs to neither player.
+            
+            The first player plays with crosses, the second with circles.
+            Each player, on his turn, must place his marker on the grid onto an empty cell respecting the following rule:
+            the marker is dropped from one of the four sides of the board choosing a row or a column, and, proceeding in a straight line so that it goes inside of the board, it stops in front of the first obstacle (the border of the board, a marker of any of the two players or one of the four sqaures).
+            Pretty much the same as what happens in Connect4, except here there are four dropping directions.
+            
+            To win the game you need to be the first to form an horizontal, vertical, or diagonal line of at least five of your markers.
+        If there are no available moves, the game ends in a draw.")
+        (id "3977")
+        (version "1.3.11")
+        (classification "board/space/line")
+        (author "Diego Soranzo, Gabriele Soranzo")
+        (credit "Diego Soranzo")
+        (date "17-03-2023")
         }
     )
     

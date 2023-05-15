@@ -510,18 +510,18 @@
             
             These yield Equi, Equiversi, and multiplayer Hops-a-Daisy which is different enough to be considered an entirely separate game.
             
-            In the work-in-progress (WIP) version of Equi (Dec 2020), the influencing neighbor pieces were found along 'lines of sight', and included only those pieces that were at the same distance as the nearest of them. This had a high perceptual cost in play, and proved unnecessary because it only makes a difference in the opening stages of the game, which already has a high degree of chaos. Thus the current implementation is limited to using a comparison of directly adjacent piece counts.
+            In the work-in-progress (WIP) version of Equi (Dec 2020), the influencing neighbour pieces were found along 'lines of sight', and included only those pieces that were at the same distance as the nearest of them. This had a high perceptual cost in play, and proved unnecessary because it only makes a difference in the opening stages of the game, which already has a high degree of chaos. Thus, the current implementation is limited to using a comparison of directly adjacent piece counts.
             
             The WIP version also had optional placement with special limitations not discussed here, to reduce cycling. 
             
             Equiversi - an evolution of the WIP (Jan 2021) intended to be easier to play and have less cycling issues.
-            It has forced opponent hops, but no friendly hops, hopped enemies change ownership but not type, optional placement (game ends if neither player places, last to place loses in a tie), Hex placement based on 'adjacent neighbor' counts, Discs placed at non-Hex locations that don't force jumps, but only if there was no previous Disc movement in the same turn. Game ends when no preceding player has placed on their last turn.
+            It has forced opponent hops, but no friendly hops, hopped enemies change ownership but not type, optional placement (game ends if neither player places, last to place loses in a tie), Hex placement based on 'adjacent neighbour' counts, Discs placed at non-Hex locations that don't force jumps, but only if there was no previous Disc movement in the same turn. Game ends when no preceding player has placed on their last turn.
             
             A second evolution, (Jan 2021) was to explore the concept of allowing a choice of Disc values. A value of 0 is the simplest, leading to Equiversi-2, which additionally allows friendly hops again, and relaxes Disc placements to made be anywhere, but only if there was no previous Disc movement in the same turn. This creates a territorial game, as narrow blocked-in areas will not be fillable, and playing a Disc into larger blocked in areas will usually be advantageous for the owner of the walls.
             
-            Both these frequently feature tactical endings in which a player times a favorable score oscillation with a depletion of placement opportunities for the opponent after forcing him to jump.
+            Both these frequently feature tactical endings in which a player times a favourable score oscillation with a depletion of placement opportunities for the opponent after forcing him to jump.
             
-            The latest Equi, (Nov 2022) implemented here, eliminates such surprise endings and focuses on the tactical trade-off of mobility vs score found in the original while avoiding the possibility of ties and playing with fewer moves on the same sized board. The capture-conversion applies to all pieces converting every type to friendly Territory. Forced placement can force adding Discs, and new scoring values incentivise sacrificing the Discs for points or trapping the opponent's Discs. In general it gives a spread of values to different capture combos, similar in effect to the (1, -1) piece value system without type change found in the WIP version. It has 'adjacent neighbor' based placement rules, forced hopping of enemy pieces and optional friendly hops, all hopped pieces become friendly Territory pieces, Territory value +1, Discs penalise (-3), No passing, Mandatory placement every turn, Hex placement based on neighbor counts, discs only where Hexes are not allowed, suicide placements are OK, Game ends when placement cannot be made. 
+            The latest Equi, (Nov 2022) implemented here, eliminates such surprise endings and focuses on the tactical trade-off of mobility vs score found in the original while avoiding the possibility of ties and playing with fewer moves on the same sized board. The capture-conversion applies to all pieces converting every type to friendly Territory. Forced placement can force adding Discs, and new scoring values incentivise sacrificing the Discs for points or trapping the opponent's Discs. In general, it gives a spread of values to different capture combos, similar in effect to the (1, -1) piece value system without type change found in the WIP version. It has 'adjacent neighbour' based placement rules, forced hopping of enemy pieces and optional friendly hops, all hopped pieces become friendly Territory pieces, Territory value +1, Discs penalise (-3), No passing, Mandatory placement every turn, Hex placement based on neighbour counts, discs only where Hexes are not allowed, suicide placements are OK, Game ends when placement cannot be made. 
             
             Since this version ends with a full board and all pieces have odd values; on a board with odd cells there cannot be a tied score.
             
@@ -604,7 +604,7 @@ Otherwise, choosing to move a Disc is optional.
 
 The Placement:
 Placement is separate from the conversions due to jumping.
-Disc placement is not allowed if Disc movement has occurred.
+Disc placement is not allowed if Disc movement has occured.
 
 The placement must be made to an empty space on the board (possibly the place that Disc moved from.)
 The type of piece that gets placed depends on the number of pieces on the adjacent locations at the time of placement:
@@ -648,7 +648,7 @@ Otherwise, choosing to move a Disc is optional.
 
 The Placement:
 Placement is separate from the conversions due to jumping.
-Disc placement is not allowed if Disc movement has occurred
+Disc placement is not allowed if Disc movement has occured
 
 The placement must be made to an empty space on the board (possibly the place that Disc moved from.)
 The type of piece that gets placed depends on the number of pieces on the adjacent locations at the time of placement:
@@ -661,7 +661,7 @@ You score 1 point for each of your Territory pieces, Discs have no score value.
 Ties go to the last player to make a placement."))
 (useFor "Ruleset/Equiversi 2 (Described)" (id "2880"))
 (id "2878")
-(version "1.3.10")
+(version "1.3.11")
 (classification "experimental")
 (author "Dale W. Walton")
 (credit "Dale W. Walton")
