@@ -12,7 +12,7 @@ public class Situation
 	String label = "";
 	
 	/**
-	 * @return an RCL coordinaate.
+	 * @return an RCL coordinate.
 	 */
 	public RCL rcl()
 	{

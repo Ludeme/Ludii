@@ -13,7 +13,7 @@ public class IndexPlayerException extends RuntimeException
 
 	public IndexPlayerException(int index)
 	{
-		System.err.println("Instanciation of a player with the index " + index);
+		System.err.println("Instantiation of a player with the index " + index);
 	}
 	
 }

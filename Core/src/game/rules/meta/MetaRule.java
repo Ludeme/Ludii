@@ -4,7 +4,7 @@ import game.rules.Rule;
 import other.BaseLudeme;
 
 /**
- * Metarule defined before play that supercedes all other rules.
+ * Metarule defined before play that supersedes all other rules.
  * 
  * @author cambolbro
  */

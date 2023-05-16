@@ -214,7 +214,7 @@ public class ConnectiveGoalDesign extends BoardDesign
 				if (ptSharedA != null && ptSharedB != null)
 				{
 					// Clip triangle from centre to lines projected through 
-					// shared cells (should be extremeties of regions).
+					// shared cells (should be extremities of regions).
 					final int ax = ptCentre.x + 2 * (ptSharedA.x - ptCentre.x);
 					final int ay = ptCentre.y + 2 * (ptSharedA.y - ptCentre.y);
 					final Point ptA = new Point(ax, ay);

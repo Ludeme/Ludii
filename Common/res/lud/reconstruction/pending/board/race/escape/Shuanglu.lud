@@ -1,0 +1,33 @@
+(game "Shuanglu"
+    (players 2)
+    (equipment [#])
+    (rules [#])
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Shuanglu is a race game known from East Asia that is similar to European Backgammon. References to it in Chinese sources date to the first millennium CE.")
+        (aliases {"Shwan-Liu" "Ssang-Ryouk" "Sunoroku"})
+        (rules "2x12 board. Backgammon-type game.")
+        (source "DLP evidence.")
+        (id "325")
+        (version "1.3.11")
+        (classification "board/race/escape/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in East Asia, around 1895.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+        (board Style Table)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (stackType 0 Backgammon)
+    })
+    
+)

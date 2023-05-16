@@ -36,7 +36,7 @@ public class SandboxUtil
 	//-------------------------------------------------------------------------
 
 	/**
-	 * Returns an error message if sandbox is not allowed for the specifed component.
+	 * Returns an error message if sandbox is not allowed for the specified component.
 	 */
 	public static boolean isSandboxAllowed(final PlayerApp app, final Location selectedLocation)
 	{

@@ -364,9 +364,10 @@ public class PlayerViewUser extends View
 		
 		if (app.settingsPlayer().usingMYOGApp())
 		{
+			//System.out.println("Creating spinner...");
 			if (spinner == null)
-				spinner = new Spinner(new Rectangle2D.Double(850,290,200,200));
-			spinner.setDotRadius(5);
+				spinner = new Spinner(new Rectangle2D.Double(905, 335, 100, 100));
+			spinner.setDotRadius(4);
 		}
 		else
 		{	
@@ -383,7 +384,22 @@ public class PlayerViewUser extends View
 
 		if (spinner != null)
 		{
-			if (context.state().mover() == playerId && !app.manager().aiSelected()[app.manager().playerToAgent(playerId)].menuItemName().equals("Human") && app.manager().liveAIs() != null && !app.manager().liveAIs().isEmpty())
+//			if (context.state().mover() == playerId)
+//			{
+//				System.out.println("Mover menu name is: " + app.manager().aiSelected()[app.manager().playerToAgent(playerId)].menuItemName() );
+//				System.out.println("liveAIs is: " + app.manager().liveAIs());
+//			}
+			
+			if 
+			(
+				context.state().mover() == playerId 
+				&& 
+				!app.manager().aiSelected()[app.manager().playerToAgent(playerId)].menuItemName().equals("Human") 
+				&& 
+				app.manager().liveAIs() != null 
+				&& 
+				!app.manager().liveAIs().isEmpty()
+			)
 				spinner.startSpinner();
 			else
 				spinner.stopSpinner();

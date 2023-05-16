@@ -50,7 +50,7 @@ public final class SitesDirection extends BaseRegionFunction
 	/** Distance. */
 	private final IntFunction distanceFn;
 
-	/** Direction choosen. */
+	/** Direction chosen. */
 	private final DirectionsFunction dirnChoice;
 
 	/** Condition to stop on this direction. */

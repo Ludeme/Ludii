@@ -19,7 +19,7 @@ public abstract class BaseTrackStepFunction extends BaseLudeme implements TrackS
 
 	//-------------------------------------------------------------------------
 
-	/** Dim function (inlcudes positive integers). */
+	/** Dim function (includes positive integers). */
 	protected final DimFunction dim;
 	
 	/** Compass direction. */

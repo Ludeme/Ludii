@@ -6,7 +6,7 @@ import game.Game;
 import metadata.graphics.GraphicsItem;
 
 /**
- * Specifed where to draw state of an item in the interface, relative to its position.
+ * Specified where to draw state of an item in the interface, relative to its position.
  * 
  * @author matthew.stephenson and cambolbro
  */

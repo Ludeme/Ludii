@@ -1,7 +1,7 @@
 package main.math;
 
 /**
- * Dimension types in an RCL coorinate.
+ * Dimension types in an RCL coordinate.
  * 
  * @author cambolbro
  */

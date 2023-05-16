@@ -1,3 +1,75 @@
+(define "CapturePiece"
+    (apply 
+        (if ("IsEnemyAt" (to))
+            (add 
+                (piece (mapEntry "Captured" (what at:(to)))) 
+                (to (mapEntry "Where" (what at:(to))))
+            )
+        )
+    )
+)
+
+(define "NextCannotMove"
+    (not 
+        (can Move 
+            (do 
+                (forEach Piece Next) 
+                ifAfterwards:(not ("IsInCheck" "Osho" Next))
+            ) 
+        )
+    )
+)
+
+(define "InPromotionZone"
+    (is In #1 (sites Mover "Promotion"))	
+)
+
+(define "Promote"
+    (move Promote (last To) (piece (mapEntry "Promoted" (what at:(last To)))))	
+)
+
+(define "CanPromote"
+    (then 
+        (if 
+            (or [#]) 
+            (moveAgain) 
+        ) 
+    )
+)
+
+(define "SlideMove"
+    (move Slide
+        #1 
+        #3 
+        (to if:("IsEnemyAt" (to)) "CapturePiece")
+        #2 
+    ) 	
+)
+
+(define "StepMove"
+    (move Step
+        #1
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
+        #2 
+    ) 	
+)
+
+(define "HopMove" 
+    (move Hop
+        #1
+        (between 
+            if:True
+        )
+        (to 
+            if:(not ("IsFriendAt" (to))) 
+            (apply (if ("IsEnemyAt" (to)) (remove (to))))
+        ) 
+        #2 
+    )
+)
+
+//------------------------------------------------------------------------------
+
 (game "Chu-Shogi"
     <Variant>
 )
@@ -8,15 +80,209 @@
     {
     (item "Incomplete"
         <
-        (players 2) 
+        ("TwoPlayersNorthSouth") 
         (equipment { 
             (board (square 12))
-            [?]
-            // We know: 26 pieces per player and 22 piece types.
+            
+            (regions "Promotion" P1 (expand (sites Top) steps:2))
+            (regions "Promotion" P2 (expand (sites Bottom) steps:2))
+            
+            // King
+            (piece "Osho" Each ("StepMove"))
+            // Drunken Elephant
+            (piece "Suizo" Each ("StepMove" (directions {Forwards BR BL Rightward Leftward}) "CanPromote"))
+            // Taishi
+            (piece "Prince" Each ("StepMove"))
+            // Kinsho
+            (piece "GoldGeneral" Each ("StepMove" (directions {Forward Backward Rightward Leftward FR FL})  "CanPromote"))
+            // Hisha
+            (piece "Rook" Each ("SlideMove" Orthogonal "CanPromote"))
+            // Ginsho
+            (piece "SilverGeneral" Each ("StepMove" (directions {Forward Backward FR FL BR BL}) "CanPromote"))
+            // Shugyo
+            (piece "VerticalMover" Each 
+                (or
+                    ("SlideMove" (directions {Forward Backward}) "CanPromote")
+                    ("StepMove" (directions {Rightward Leftward}) "CanPromote")
+                )
+            )
+            // Dosho
+            (piece "LongBowGeneral" Each ("StepMove" (directions {Forward Backward FR FL}) "CanPromote"))
+            // Ogyo
+            (piece "SideMover" Each 
+                (or
+                    ("SlideMove" (directions {Rightward Leftward}) "CanPromote")
+                    ("StepMove" (directions {Forward Backward}) "CanPromote")
+                )		
+            )
+            // Mohyo
+            (piece "FerociousLeopard" Each ("StepMove" (directions {Forward Backward FR FL BR BL}) "CanPromote"))
+            // Kakugyo
+            (piece "Bishop" Each ("SlideMove" Diagonal "CanPromote"))
+            // Kyosha
+            (piece "Lance" Each ("SlideMove" Forward "CanPromote"))
+            // Hakku
+            (piece "WhiteHorse" Each ("SlideMove" (directions {Forward Backward FR FL})))
+            // Hensha
+            (piece "ReverseChariot" Each ("StepMove" (directions {Forward Backward}) "CanPromote"))
+            // Keigei
+            (piece "Whale" Each ("SlideMove" (directions {Forward Backward BR BL})))
+            // Ryuma
+            (piece "DragonHorse" Each 
+                (or
+                    ("SlideMove" (directions {FR FL Rightward Leftward Backward BR BL}))
+                    ("SlideMove" (directions {Forward}) ~ (between (max 2)))
+                )
+            )           
+            // Moko
+            (piece "BlindTiger" Each ("StepMove" (directions {FR FL Rightward Leftward Backward BR BL}) "CanPromote"))
+            // Hiroku
+            (piece "FlyingStag" Each 
+                (or
+                    ("SlideMove" (directions {Forward Backward}))
+                    ("StepMove" (directions {FR FL BR BL Rightward Leftward}))
+                )
+            )
+            // Kirin
+            (piece "Kirin" Each 
+                (or
+                    ("HopMove" (directions {Forward Backward Rightward Leftward}) "CanPromote")
+                    ("StepMove" (directions {FR FL BR BL}) "CanPromote")
+                )
+            )
+            // Shishi
+            (piece "Lion" Each 
+                (or
+                    ("HopMove" (directions All))
+                    ("StepMove" (directions All))
+                    (then (and (set Pending) (moveAgain)))
+                )
+            )
+            // Hoo
+            (piece "Phenix" Each 
+                (or
+                    ("StepMove" (directions {Forward Backward Rightward Leftward}) "CanPromote")
+                    ("HopMove" (directions {FR FL BR BL}) "CanPromote")
+                )
+            )
+            // Honno
+            (piece "Queen" Each ("SlideMove" All))
+            // Honsho
+            (piece "FreeBoar" Each ("SlideMove" (directions {Backward Rightward Leftward FR FL BR BL})))
+            // Higyu
+            (piece "FlyingGox" Each ("SlideMove" All))
+            // Ryuo
+            (piece "DragonKing" Each 
+                (or
+                    ("SlideMove" Orthogonal)
+                    ("StepMove" Diagonal)
+                )
+            )
+            // Kakuo
+            (piece "HornedFalcon" Each 
+                (or
+                    ("SlideMove" (directions {Backward Rightward Leftward FR FL BR BL}))
+                    ("SlideMove" Forward ~ (between (max 2)))
+                )
+            )
+            // Hiju
+            (piece "SoaringEagle" Each 
+                (or
+                    ("SlideMove" Orthogonal)
+                    ("SlideMove" (directions {FR FL}) ~ (between (max 2)))
+                )
+            )	        
+            // Fuhyo
+            (piece "Pawn" Each ("StepMove" Forward "CanPromote"))
+            // Chunin
+            (piece "Chunin" Each ("StepMove" (directions {Forward Backward}) "CanPromote"))
+            
+            (map "Promoted" { 
+                (pair (id "Suizo" P1) (id "Prince" P1)) (pair (id "Suizo" P2) (id "Prince" P2)) 
+                (pair (id "GoldGeneral" P1) (id "Rook" P1)) (pair (id "GoldGeneral" P2) (id "Rook" P2)) 
+                (pair (id "SilverGeneral" P1) (id "VerticalMover" P1)) (pair (id "SilverGeneral" P2) (id "VerticalMover" P2)) 
+                (pair (id "LongBowGeneral" P1) (id "SideMover" P1)) (pair (id "LongBowGeneral" P2) (id "SideMover" P2)) 
+                (pair (id "FerociousLeopard" P1) (id "Bishop" P1)) (pair (id "FerociousLeopard" P2) (id "Bishop" P2)) 
+                (pair (id "Lance" P1) (id "WhiteHorse" P1)) (pair (id "Lance" P2) (id "WhiteHorse" P2)) 
+                (pair (id "ReverseChariot" P1) (id "Whale" P1)) (pair (id "ReverseChariot" P2) (id "Whale" P2)) 
+                (pair (id "Bishop" P1) (id "DragonHorse" P1)) (pair (id "Bishop" P2) (id "DragonHorse" P2)) 
+                (pair (id "BlindTiger" P1) (id "FlyingStag" P1)) (pair (id "BlindTiger" P2) (id "FlyingStag" P2)) 
+                (pair (id "Kirin" P1) (id "Lion" P1)) (pair (id "Kirin" P2) (id "Lion" P2)) 
+                (pair (id "Phenix" P1) (id "Queen" P1)) (pair (id "Phenix" P2) (id "Queen" P2)) 
+                (pair (id "SideMover" P1) (id "FreeBoar" P1)) (pair (id "SideMover" P2) (id "FreeBoar" P2)) 
+                (pair (id "VerticalMover" P1) (id "FlyingGox" P1)) (pair (id "VerticalMover" P2) (id "FlyingGox" P2)) 
+                (pair (id "Rook" P1) (id "DragonKing" P1)) (pair (id "Rook" P2) (id "DragonKing" P2)) 
+                (pair (id "WhiteHorse" P1) (id "HornedFalcon" P1)) (pair (id "WhiteHorse" P2) (id "HornedFalcon" P2)) 
+                (pair (id "Pawn" P1) (id [#])) (pair (id "Pawn" P2) (id [#]))
+                (pair (id "Chunin" P1) (id "Suizo" P1)) (pair (id "Chunin" P2) (id "Suizo" P2)) 
+            })
         })
         (rules
-            (start [#])
-            (play [#])
+            (start { 
+                (place "Osho1" coord:"F1") 
+                (place "Osho2" coord:"G12")
+                (place "Suizo1" coord:"G1") 
+                (place "Suizo2" coord:"F12")
+                (place "GoldGeneral1" {"E1" "H1"}) 
+                (place "GoldGeneral2" {"E12" "H12"})
+                (place "SilverGeneral1" {"D1" "I1"}) 
+                (place "SilverGeneral2" {"D12" "I12"})
+                (place "LongBowGeneral1" {"C1" "J1"}) 
+                (place "LongBowGeneral2" {"C12" "J12"})
+                (place "FerociousLeopard1" {"B1" "K1"}) 
+                (place "FerociousLeopard2" {"B12" "K12"})
+                (place "Lance1" {"A1" "L1"}) 
+                (place "Lance2" {"A12" "L12"})
+                (place "ReverseChariot1" {"A2" "L2"}) 
+                (place "ReverseChariot2" {"A11" "L11"})
+                (place "Bishop1" {"C2" "J2"}) 
+                (place "Bishop2" {"C11" "J11"})
+                (place "BlindTiger1" {"E2" "H2"}) 
+                (place "BlindTiger2" {"E11" "H11"})
+                (place "Kirin1" coord:"F2") 
+                (place "Kirin2" coord:"G11")
+                (place "Phenix1" coord:"G2") 
+                (place "Phenix2" coord:"F11")
+                (place "SideMover1" {"A3" "L3"}) 
+                (place "SideMover2" {"A10" "L10"})
+                (place "VerticalMover1" {"B3" "K3"}) 
+                (place "VerticalMover2" {"B10" "K10"})
+                (place "Rook1" {"C3" "J3"}) 
+                (place "Rook2" {"C10" "J10"})
+                (place "DragonHorse1" {"D3" "I3"}) 
+                (place "DragonHorse2" {"D10" "I10"})
+                (place "DragonKing1" {"E3" "H3"}) 
+                (place "DragonKing2" {"E10" "H10"})
+                (place "Lion1" coord:"F3")
+                (place "Lion2" coord:"G10")
+                (place "Queen1" coord:"G3")
+                (place "Queen2" coord:"F10")
+                (place "Pawn1" (sites Row 3))
+                (place "Pawn2" (sites Row 8))
+                (place "Chunin1" {"D5" "I5"}) 
+                (place "Chunin2" {"D8" "I8"})
+            })
+            
+            (play
+                (if ("SameTurn")
+                    (if (and (is Pending) (is In (what at:(last To)) (sites {(id "Lion" Mover)})))
+                        (forEach Piece {"Lion"}
+                            (or
+                                ("HopMove" (directions All))
+                                ("StepMove" (directions All))
+                            )
+                        ) 
+                        (or
+                            ("Promote")
+                            (move Pass)
+                        )
+                    )
+                    (do 
+                        (forEach Piece) 
+                        ifAfterwards:(not ("IsInCheck" "Osho" Mover))
+                    )
+                )
+            )
             (end [#])
         )
         >
@@ -44,7 +310,7 @@
         (rules "12x12 board. Each player has the following pieces: Osho (x1): moves one space in any direction; cannot move into check, begins on the sixth space from the left in the back row; Suizo (x1): moves one space in all directions except orthogonally backwards, promotes to Taishi, which moves like Osho, begins to the right of the Osho; Kinsho (x2): moves one space orthogonally or one space forward diagonally, promotes to Hisha, begins to left of Osho and right of Suizo; Ginsho (x2): moves one space diagonally or orthogonally forward or backward, promotes to Shugyo, begins next to Kinsho; Dosho (x2): moves one space orthogonally or diagonally forward or one step orthogonally backward, promotes to Ogyo, begins next to Shugyo; Mohyo (x2): moves orthogonally backward or forward or diagonally backward or forward, promotes to Kakugyo, begins next to Dosho; Kyosha (x2): moves any distance forward in an orthogonal direction, promotes to Hakku, which moves any distance forward orthogonally or diagonally or backwards orthogonally, begins next to the Mohyo; Hensha (x2): moves orthogonally forward or backward, promotes to Keigei, which moves any distance orthogonally forward and backward, or any distance diagonally backward, begins in front of the Kyosha, Kakugyo (x2): moves any distance diagonally, promotes to Ryuma which moves any distance in any direction except orthogonally forward which it can move up to two spaces, begins in from of the Dosho; Moko (x2): moves one space in any direction except orthogonally forward, promotes to Hiroku which moves any distance orthogonally forward or backward or one space in any other direction, begins in front of the Kinsho, Kirin (x1): jumps to the second square orthogonally or moves one space diagonally, promotes to Shishi, begins in front of the Osho; Hoo (x1): jumps to the second square diagonally or moves one space orthogonally, promotes to Honno, begins in front of the Shizo; Ogyo (x2): moves any distance orthogonally in a horizontal direction or one space orthogonally forward or backward, promotes to Honcho, which moves any distance in any direction except forward orthogonally, begins in front of the Hensha; Shugyo (x2): moves any distance orthogonally forward or backward or one space orthogonally in a horizontal direction, promotes to Higyu, which moves any distance in any direction, begins next to the Ogyo; Hisha (x2): moves any ditsnace orthogonally, promotes to Ryuo which moves any distance orthogonally or one space diagonally, begins next to the Shugyo; Ryuma (x2): moves any distance diagonally or one space orthogonally, promotes to Kakuo which moves any distance in any direction except forward orthogonally, where it can only move up to two spaces, begins next to the Hisha; Ryuo (x2): moves any distance orthogonally or one space diagonally, promotes to Hiju which moves any distance orthogonally or two spaces forward diagonally, begins next to the Ryuma; Shishi (x1): moves one space in any direction or may jump to the second space in any direction; moves twice in one turn, no promotion, begins next to the left Ryuo, Honno (x1): moves any distance in all directions, no promotion, begins next to the Shishi; Fuhyo (x12): move one space forward, unknown promotion; Chunin (x2): move one space orthogonally forward or backward, promotes to Suizo, begins in the fourth and ninth spaces from left in the fourth row. Captured pieces not reused.")
         (source "DLP evidence.")
         (id "802")
-        (version "1.3.10")
+        (version "1.3.11")
         (classification "board/war/replacement/checkmate/shogi/reconstruction/pending")
         (credit "Eric Piette")
         (origin "This game was played in Japan, from around 1444 to 1834.")
@@ -54,14 +320,9 @@
     (graphics {
         (player Colour P1 (colour White))
         (player Colour P2 (colour White))
-        (piece Families {"Defined" "Study"})
-        (board Style Shogi)
         (piece Rotate P2 degrees:180)
-    })
-    
-    (recon {
-        (concept "NumStartComponents" 52)
-        (concept "NumComponentsType" 22)
+        (board Style Shogi)
+        (piece Style ExtendedShogi)
     })
     
 )

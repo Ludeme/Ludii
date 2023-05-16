@@ -140,7 +140,7 @@ public class GraphicsCache
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Gets the image of the component if its a dice (transparent if already used).
+	 * Gets the image of the component if it's a dice (transparent if already used).
 	 */
 	private static BufferedImage getDiceImage
 	(

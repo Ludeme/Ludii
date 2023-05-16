@@ -1,0 +1,150 @@
+(define "DroppableFromDirection"
+    (and
+        (
+            (= 0
+                (count Pieces All in:(sites LineOfSight at:(site) #1))
+            ) 
+            
+            (= 1
+                (count Pieces in:(sites Around (site) #2))
+            )       
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Centripetal Force"
+    (players 2)
+    
+    (equipment
+        {
+        (board (square <Board:size>))
+        
+        (piece "Cross" P1) 
+        (piece "Disc" P2)
+        
+        (piece "Square" Neutral)
+        }
+    )
+    
+    (rules
+        (start
+            (place "Square0" coord:<Board:centralPoint>)
+        )
+        
+        (play
+            (move Add 
+                (to   
+                    (forEach (sites Empty)
+                        if:
+                        (and (
+                                (< 0
+                                    (count Pieces in:(sites Around (site) Orthogonal))
+                                )
+                                
+                                (or
+                                    {
+                                    ("DroppableFromDirection" N S)
+                                    ("DroppableFromDirection" S N)
+                                    ("DroppableFromDirection" W E)  
+                                    ("DroppableFromDirection" E W)
+                                    }
+                                )
+                        ))
+                    )
+                )
+            )
+        )
+        
+        (end
+            {
+            (if (is Line 5) (result Mover Win))
+            (if (no Moves Next) (result All Draw))
+            }
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{<size> <centralPoint>}
+    {
+    (item "15x15" <15> <"H8"> "The game is played on a 15x15 board.")
+    (item "7x7" <7> <"D4"> "The game is played on a 7x7 board.") 
+    (item "9x9" <9> <"E5"> "The game is played on a 9x9 board.") 
+    (item "11x11" <11> <"F6"> "The game is played on a 11x11 board.")
+    (item "13x13" <13> <"G7"> "The game is played on a 13x13 board.") 
+    (item "17x17" <17> <"I9"> "The game is played on a 17x17 board.") 
+    (item "19x19" <19> <"J10"> "The game is played on a 19x19 board.")   
+    }
+)
+
+(option "Look and feel" <Graphics> args:{<boardColour> <squareColour> <crossColour> <circleColour>}
+    {
+    (item "Retro" <(colour 249 245 235)> <(colour 51 51 51)> <(colour 48 62 205)> <(colour 234 84 85)> 
+    "Look and feel: Retro")
+    (item "Black&White" <(colour 255 255 255)> <(colour 57 57 57)> <(colour 0 0 0)> <(colour 0 0 0)> 
+    "Look and feel: Black&White")
+    (item "Garden" <(colour 182 226 161)> <(colour 63 94 55)> <(colour 252 226 42)> <(colour 232 226 214)> 
+    "Look and feel: Garden")
+    (item "Bathroom" <(colour 125 185 182)> <(colour 245 233 207)> <(colour 77 69 93)> <(colour 233 100 121)> 
+    "Look and feel: Bathroom")
+    (item "PurpleTiger" <(colour 242 205 92)> <(colour 180 80 0)> <(colour 64 14 50)> <(colour 166 31 105)> 
+    "Look and feel: PurpleTiger")
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Centripetal Force is a paper-and-pencil game for two players inspired by Connect4, but using four different directions from which you can drop the tokens.
+        It was invented by Gabriele Soranzo during a school lesson to play with his classmate simply with paper and pen without being seen by the professor.")
+        (rules "At the beginning of the game, the board is empty except for the central cell which is occupied by a square which belongs to neither player.
+            
+            The first player plays with crosses, the second with circles.
+            Each player, on his turn, must place his marker on the grid onto an empty cell respecting the following rule:
+            the marker is dropped from one of the four sides of the board choosing a row or a column, and, proceeding in a straight line so that it goes inside of the board, it stops in front of the first obstacle (a marker of any of the two players, or the central square).
+            Pretty much the same as what happens in Connect4, except here there are four dropping directions.
+            If the marker reaches the opposite side without encountering any obstacles, the move is illegal.
+            
+            To win the game you need to be the first to form an horizontal, vertical, or diagonal line of at least five of your markers.
+        If there are no available moves, the game ends in a draw.")
+        (id "3976")
+        (version "1.3.11")
+        (classification "board/space/line")
+        (author "Gabriele Soranzo")
+        (credit "Diego Soranzo, Gabriele Soranzo")
+        (date "1984")
+        }
+    )
+    
+    (graphics 
+        {
+        (board Colour Phase0 <Graphics:boardColour>)
+        (board Colour InnerEdges <Graphics:squareColour>)          
+        (board StyleThickness InnerEdges 0.85)
+        
+        (piece Colour Neutral "Square" fillColour:<Graphics:squareColour> strokeColour:<Graphics:squareColour>)    
+        (piece Scale "Square" 0.9)
+        
+        (player Name P1 "Cross")
+        (player Colour P1 <Graphics:crossColour>)
+        (piece Scale "Cross" 0.81)
+        
+        (player Name P2 "Circle")
+        (player Colour P2 <Graphics:circleColour>)
+        (piece Scale "Disc" 0.88)
+        }
+    )
+    
+    (ai
+        (bestAgent "MC-GRAVE")
+        trainedHeuristics:(heuristics {
+            (lineCompletionHeuristic)
+        })
+    )
+)
+

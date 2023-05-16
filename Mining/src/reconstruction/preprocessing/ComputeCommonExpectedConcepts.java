@@ -119,6 +119,8 @@ public class ComputeCommonExpectedConcepts
 			
 			final String gameName = fileName.substring(fileName.lastIndexOf("/") + 1, fileName.length() - 4);
 	
+			//System.out.println("TEST: " + gameName);
+			
 			String path = fileName.replaceAll(Pattern.quote("\\"), "/");
 			path = path.substring(path.indexOf("/lud/"));
 	

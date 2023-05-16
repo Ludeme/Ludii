@@ -74,7 +74,7 @@ public final class Sub extends BaseIntFunction
 	}
 
 	/**
-	 * @return The value to substract.
+	 * @return The value to subtract.
 	 */
 	public IntFunction b()
 	{

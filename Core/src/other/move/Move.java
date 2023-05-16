@@ -1242,7 +1242,7 @@ public class Move extends BaseAction
 	}
 
 	/**
-	 * To set the to site of the move whatevere the decision action.
+	 * To set the to site of the move whatever the decision action.
 	 * 
 	 * @param to The new to site.
 	 */
@@ -1260,7 +1260,7 @@ public class Move extends BaseAction
 	}
 
 	/**
-	 * To set the between sites of the move whatevere the decision action.
+	 * To set the between sites of the move whatever the decision action.
 	 * 
 	 * @param between The new between sites.
 	 */

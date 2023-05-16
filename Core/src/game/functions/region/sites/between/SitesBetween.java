@@ -51,7 +51,7 @@ public final class SitesBetween extends BaseRegionFunction
 	/** The condition to include a site in between */
 	private final BooleanFunction betweenCond;
 	
-	/** Direction choosen. */
+	/** Direction chosen. */
 	private final DirectionsFunction dirnChoice;
 	
 	/**

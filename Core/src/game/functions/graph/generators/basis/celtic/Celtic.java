@@ -240,7 +240,7 @@ public class Celtic extends Basis
 				
 				if (Math.abs(diffC) < 0.1 * Math.PI)
 				{
-					// Is flat step: override tabgents
+					// Is flat step: override tangents
 					tangentAX = new Vector(vc.pt2D(), vd.pt2D());
 					tangentBX = new Vector(vc.pt2D(), vd.pt2D());
 					

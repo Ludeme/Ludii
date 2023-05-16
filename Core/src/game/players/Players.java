@@ -232,7 +232,7 @@ public final class Players extends BaseLudeme implements Serializable
 			if(i == 1)
 				allMatch = match;
 			else if(allMatch ^ match)
-				throw new RuntimeException("We assume that every player has a unique name or noone has one!");
+				throw new RuntimeException("We assume that every player has a unique name or no one has one!");
 
 			if(!match) 
 			{

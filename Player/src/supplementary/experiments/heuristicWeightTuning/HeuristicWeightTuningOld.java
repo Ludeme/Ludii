@@ -61,7 +61,7 @@ public class HeuristicWeightTuningOld
 	// Number of samples when evaluating an agent.
 	final static int sampleSize = 100;
 	
-	// Minimum win-rate against Null heuristic to surivive initial pruning.
+	// Minimum win-rate against Null heuristic to survive initial pruning.
 	final static double initialWinRateThreshold = 0.55;
 	
 	final static boolean tryHeuristicRemoval = true;

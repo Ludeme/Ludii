@@ -122,7 +122,7 @@ public class Colour implements GraphicsItem
      * @param hue Hue (0..360).
      * @param saturation Saturation (0..1).
      * @param value Value (0..1).
-     * @return Java Color object correspnding to HSV colour.
+     * @return Java Color object corresponding to HSV colour.
      */
     public static Color HSVtoColor
     (

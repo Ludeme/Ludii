@@ -83,7 +83,7 @@ public abstract class AI
 	}
 	
 	/**
-	 * @param amount Leniency amound in range 0..1.
+	 * @param amount Leniency amount in range 0..1.
 	 */
 	public void setLeniency(final double amount)
 	{

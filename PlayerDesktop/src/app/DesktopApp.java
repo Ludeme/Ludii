@@ -75,7 +75,7 @@ public class DesktopApp extends PlayerApp
 	/** Set me to false if we are making a release jar. 
 	 * NOTE. In reality this is final, but keeping it non final prevents dead-code warnings.
 	 */
-	public static boolean devJar = false;
+	public static boolean devJar = true;
 
 	/** Main frame. */
 	protected static JFrameListener frame;

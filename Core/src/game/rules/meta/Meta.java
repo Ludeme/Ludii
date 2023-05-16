@@ -7,7 +7,7 @@ import other.BaseLudeme;
 import other.context.Context;
 
 /**
- * Defines a metarule defined before play that supercedes all other rules.
+ * Defines a metarule defined before play that supersedes all other rules.
  * 
  * @author cambolbro
  * 

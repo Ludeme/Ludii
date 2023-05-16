@@ -3,7 +3,7 @@ package view.component.custom.types;
 /**
  * Shogi types.
  *
- * @author Matthew.Stephenson
+ * @author Matthew.Stephenson and Eric Piette
  */
 public enum ShogiType
 {
@@ -325,7 +325,16 @@ public enum ShogiType
 	FREEGOLD("奔金", "honkin", "Free gold"),
 	FREECAT("奔猫", "honmyō", "Free cat"),
 	BAT("蝙蝠", "kōmori", "Bat"),
-	CHUNIN("中忍", "Chūnin", "Chunin")
+	CHUNIN("中忍", "Chūnin", "Chunin"),
+	TOKIN("と", "Tokin", "Tokin"),
+	OSHO("玉将", "Osho", "King"),
+	SUIZO("酔象", "suizō", "Drunken elephant"),
+	PHENIX("鳳凰", "Hoo", "Phenix"),
+	CRANEKING("靏玉", "Kakugyoku", "Crane King"),
+	TENACIOUSFALCON("力鷹", "Keiyo", "Tenacious Falcon"),
+	SPARROWPAWN("萑歩", "Jakufu", "Sparrow Pawn"),
+	RACINGCHARIOT("走車", "Sosha", "Racing Chariot"),
+	ENCHANTEDFOX("走車", "Henko", "Enchanted Fox"),
 	;
 
 	//-------------------------------------------------------------------------

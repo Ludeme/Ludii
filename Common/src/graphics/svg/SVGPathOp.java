@@ -8,7 +8,7 @@ import java.util.List;
 //-----------------------------------------------------------------------------
 
 /**
- * An SVG opertation.
+ * An SVG operation.
  * @author cambolbro
  */
 public class SVGPathOp

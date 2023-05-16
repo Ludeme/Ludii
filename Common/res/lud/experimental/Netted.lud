@@ -6,7 +6,7 @@
 // Observations: -
 // full moves show that everything other than placement of a piece on a cell is done twice.
 // maybe this is also slowing the script down. 
-// Sometimes the locations og the secone edge marker
+// Sometimes the locations of the second edge marker
 // and the size of the indecise and move markers changes
 // a few seconds after the move is displayed.
 //---------------------------------------
@@ -150,7 +150,7 @@
 
 // Allow state to be calculated as (2 - liberties) 
 // State 0: liberties > 1 OK, State 1 = liberties = 1, State 2: Liberties = 0 Dead 
-// State 1 is used idintify suicidal groups and cells to filter the Add moves.
+// State 1 is used identify suicidal groups and cells to filter the Add moves.
 
 (define "Liberties"
     (max 0
@@ -188,13 +188,13 @@
 //------------------------------
 // Suicidal site determination 
 //-- suicidal sites cannot be added to, and are rarely reset during the game, so remembering them speeds up move processing considerably.
-// Liberties at an opponent's bridging markers need to be counted explicity
+// Liberties at an opponent's bridging markers need to be counted explicitly
 
 //---------------------------------------
 //----------------------------------
 // Update own states after move
 
-(define "UpdateListOrStatePlayerBlocker" // note prameter-shift
+(define "UpdateListOrStatePlayerBlocker" // note parameter-shift
     (if 
         (= (id "Ball" #3) (what at:(site)))
         (and
@@ -611,7 +611,7 @@
     The player who Nets his opponent wins.
 A player who cannot place on their turn, loses.")
 (id "1652")
-(version "1.3.10")
+(version "1.3.11")
 (classification "experimental")
 (author "Dale W. Walton")
 (credit "Dale W. Walton")

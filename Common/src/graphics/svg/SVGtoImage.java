@@ -366,7 +366,7 @@ public class SVGtoImage
 					tokens.add("0");  // involves power of 10, assume is negligibly small
 				else
 					tokens.add(token);
-				c = cc;  // move to end of numberic sequence
+				c = cc;  // move to end of numeric sequence
 			}
 			else if (ch == '<')
 			{

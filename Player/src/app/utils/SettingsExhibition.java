@@ -12,11 +12,15 @@ public class SettingsExhibition
 	public static final boolean exhibitionVersion = false;
 	
 	/** The resolution of the app (some aspects may be hard-coded to this size). */
-	public static final int exhibitionDisplayWidth = 1920;
+	public static final int exhibitionDisplayWidth  = 1920;
 	public static final int exhibitionDisplayHeight = 1080;
 	
+	/** If Player 2 should be controlled by an AI agent. */
+	public static final boolean againstAI = true;
+	public static final double thinkingTime = 2.0;
+	
 	/** The game to load (there exists both an English and Swedish version of each game). */
-	public static final String exhibitionGamePath = "/lud/wip/exhibition/Baghchal Exhibition English.lud";
+//	public static final String exhibitionGamePath = "/lud/wip/exhibition/Baghchal Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Hnefatafl Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Mu Torere Exhibition English.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Mweso Exhibition English.lud";
@@ -33,7 +37,7 @@ public class SettingsExhibition
 	
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Baghchal Exhibition Swedish.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Hnefatafl Exhibition Swedish.lud";
-//	public static final String exhibitionGamePath = "/lud/wip/exhibition/Mu Torere Exhibition Swedish.lud";
+	public static final String exhibitionGamePath = "/lud/wip/exhibition/Mu Torere Exhibition Swedish.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Mweso Exhibition Swedish.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Nard Exhibition Swedish.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Papan Dakon Exhibition Swedish.lud";
@@ -45,8 +49,4 @@ public class SettingsExhibition
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Wari Exhibition Swedish.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Weiqi Exhibition Swedish.lud";
 //	public static final String exhibitionGamePath = "/lud/wip/exhibition/Xiangqi Exhibition Swedish.lud";
-	
-	/** If Player 2 should be controlled by an AI agent. */
-	public static final boolean againstAI = true;
-	public static final double thinkingTime = 2.0;
 }

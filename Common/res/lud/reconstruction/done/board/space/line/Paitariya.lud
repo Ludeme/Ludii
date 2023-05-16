@@ -1,0 +1,1301 @@
+(game "Paitariya"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Paitariya (Ludii 1)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (play 
+                (move Add 
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Paitariya (Ludii 1) ruleset.")
+    
+    (item "Paitariya (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (play 
+                (move Add 
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Paitariya (Ludii 2) ruleset.")
+    
+    (item "Paitariya (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (sites Phase 1)
+                )
+                
+                (place "Marker2" 
+                    (sites Phase 0)
+                )
+                }
+            )
+            phases:{ 
+            (phase "OpeningP1" P1 
+                (play 
+                    (move Remove 
+                        (intersection 
+                            (union 
+                                (sites Corners)
+                                
+                                (sites Centre)
+                            )
+                            
+                            (sites Phase 1)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover "Movement")
+            )
+            
+            (phase "OpeningP2" P2 
+                (play 
+                    (move Remove 
+                        (sites Around 
+                            (last To)
+                        Own)
+                    )
+                )
+                
+                (nextPhase Mover "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (or 
+                            (move Hop 
+                                (from 
+                                    (last To)
+                                )
+                                SameDirection 
+                                (between if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Empty 
+                                        (to)
+                                    )
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (can Move 
+                                            (move Hop 
+                                                (from 
+                                                    (last To)
+                                                )
+                                                SameDirection 
+                                                (between if:
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                    
+                                                    (apply 
+                                                        (remove 
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (to if:
+                                                    (is Empty 
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                            
+                            (move Pass)
+                        )
+                        
+                        (forEach Piece "Marker" 
+                            (move Hop 
+                                (from 
+                                    (from)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Empty 
+                                        (to)
+                                    )
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (can Move 
+                                            (move Hop 
+                                                (from 
+                                                    (last To)
+                                                )
+                                                SameDirection 
+                                                (between if:
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                    
+                                                    (apply 
+                                                        (remove 
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (to if:
+                                                    (is Empty 
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Paitariya (Ludii 3) ruleset.")
+    
+    (item "Paitariya (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (or { 
+                                (is Line 3 N exact:True)
+                                
+                                (is Line 3 S exact:True)
+                                
+                                (is Line 3 E exact:True)
+                                
+                                (is Line 3 W exact:True)
+                                }
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (sites Phase 1)
+                )
+                
+                (place "Marker2" 
+                    (sites Phase 0)
+                )
+                }
+            )
+            phases:{ 
+            (phase "OpeningP1" P1 
+                (play 
+                    (move Remove 
+                        (intersection 
+                            (union 
+                                (sites Corners)
+                                
+                                (sites Centre)
+                            )
+                            
+                            (sites Phase 1)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover "Movement")
+            )
+            
+            (phase "OpeningP2" P2 
+                (play 
+                    (move Remove 
+                        (sites Around 
+                            (last To)
+                        Own)
+                    )
+                )
+                
+                (nextPhase Mover "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (or 
+                            (move Hop 
+                                (from 
+                                    (last To)
+                                )
+                                SameDirection 
+                                (between if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Empty 
+                                        (to)
+                                    )
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (can Move 
+                                            (move Hop 
+                                                (from 
+                                                    (last To)
+                                                )
+                                                SameDirection 
+                                                (between if:
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                    
+                                                    (apply 
+                                                        (remove 
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (to if:
+                                                    (is Empty 
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                            
+                            (move Pass)
+                        )
+                        
+                        (forEach Piece "Marker" 
+                            (move Hop 
+                                (from 
+                                    (from)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Empty 
+                                        (to)
+                                    )
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (can Move 
+                                            (move Hop 
+                                                (from 
+                                                    (last To)
+                                                )
+                                                SameDirection 
+                                                (between if:
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                    
+                                                    (apply 
+                                                        (remove 
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (to if:
+                                                    (is Empty 
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Paitariya (Ludii 4) ruleset.")
+    
+    (item "Paitariya (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal exact:True)
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Paitariya (Ludii 5) ruleset.")
+    
+    (item "Paitariya (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:6)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Paitariya (Ludii 6) ruleset.")
+    
+    (item "Paitariya (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (or { 
+                                (is Line 3 N exact:True)
+                                
+                                (is Line 3 S exact:True)
+                                
+                                (is Line 3 E exact:True)
+                                
+                                (is Line 3 W exact:True)
+                                }
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Paitariya (Ludii 7) ruleset.")
+    
+    (item "Paitariya (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:5)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase 
+                    (all Sites 
+                        (sites Hand P2)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 5)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Paitariya (Ludii 8) ruleset.")
+    
+    (item "Paitariya (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move 
+                    (from)
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:5)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 5)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Paitariya (Ludii 9) ruleset.")
+    
+    (item "Paitariya (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (concentric Square rings:3)
+            use:Vertex)
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (or { 
+                                (is Line 3 N exact:True)
+                                
+                                (is Line 3 S exact:True)
+                                
+                                (is Line 3 E exact:True)
+                                
+                                (is Line 3 W exact:True)
+                                }
+                            )
+                            
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (or { 
+                                        (is Line 3 N exact:True)
+                                        
+                                        (is Line 3 S exact:True)
+                                        
+                                        (is Line 3 E exact:True)
+                                        
+                                        (is Line 3 W exact:True)
+                                        }
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            4)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Paitariya (Ludii 10) ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2)
+        
+        (equipment { 
+            ("NineMensMorrisBoard")
+            (hand Each)
+            (piece "Marker" Each [#]) 
+        })
+        (rules [#])
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Paitariya (Ludii 1) (Reconstructed)" {
+        "Variant/Paitariya (Ludii 1)"
+    })
+    (ruleset "Ruleset/Paitariya (Ludii 2) (Reconstructed)" {
+        "Variant/Paitariya (Ludii 2)"
+    })
+    (ruleset "Ruleset/Paitariya (Ludii 3) (Reconstructed)" {
+        "Variant/Paitariya (Ludii 3)"
+    })
+    (ruleset "Ruleset/Paitariya (Ludii 4) (Reconstructed)" {
+        "Variant/Paitariya (Ludii 4)"
+    })
+    (ruleset "Ruleset/Paitariya (Ludii 5) (Reconstructed)" {
+        "Variant/Paitariya (Ludii 5)"
+    })
+    (ruleset "Ruleset/Paitariya (Ludii 6) (Reconstructed)" {
+        "Variant/Paitariya (Ludii 6)"
+    })
+    (ruleset "Ruleset/Paitariya (Ludii 7) (Reconstructed)" {
+        "Variant/Paitariya (Ludii 7)"
+    })
+    (ruleset "Ruleset/Paitariya (Ludii 8) (Reconstructed)" {
+        "Variant/Paitariya (Ludii 8)"
+    })
+    (ruleset "Ruleset/Paitariya (Ludii 9) (Reconstructed)" {
+        "Variant/Paitariya (Ludii 9)"
+    })
+    (ruleset "Ruleset/Paitariya (Ludii 10) (Reconstructed)" {
+        "Variant/Paitariya (Ludii 10)"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Paitaiya is a game that was played at Cochití Pueblo, New Mexico. ")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Three concentric squares, with lines connecting the midpoints of the sides, extending beyond the outer square."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1108"))
+        (useFor "Ruleset/Paitariya (Ludii 1) (Reconstructed)" (rules "The game Paitariya is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent.
+                Players take turns moving.
+                Rules: 
+                Add one of your pieces to the set of empty vertexs.
+                Aim: 
+                If a player places 3 of their pieces in an adjacent direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Paitariya (Ludii 1) (Reconstructed)" (id "3982"))
+        (useFor "Ruleset/Paitariya (Ludii 2) (Reconstructed)" (rules "The game Paitariya is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step orthogonal then if a player places 3 of their pieces in an orthogonal direction line, move again.
+                Players take turns moving.
+                Rules: 
+                Add one of your pieces to the set of empty vertexs.
+                Aim: 
+                If a player places 3 of their pieces in an adjacent direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Paitariya (Ludii 2) (Reconstructed)" (id "3983"))
+        (useFor "Ruleset/Paitariya (Ludii 3) (Reconstructed)" (rules "The game Paitariya is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at all sites within [1,3,5,7,9,11,12,14,16,18,20,22].
+                Place a Marker for player two at all sites within [0,2,4,6,8,10,13,15,17,19,21,23]..
+                Rules: 
+                Remove pieces at the intersection of the union of the corner sites of the board and the centre sites of the board and all sites within [1,3,5,7,9,11,12,14,16,18,20,22] remove pieces at the number of own sites within 1 spaces of the to location of the last move includeOrigin: false if in the same turn, hop same direction then if can move hop same direction, move again or pass, else move one of your pieces.
+                Aim: 
+                If the next player cannot move, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Paitariya (Ludii 3) (Reconstructed)" (id "3984"))
+        (useFor "Ruleset/Paitariya (Ludii 4) (Reconstructed)" (rules "The game Paitariya is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at all sites within [1,3,5,7,9,11,12,14,16,18,20,22].
+                Place a Marker for player two at all sites within [0,2,4,6,8,10,13,15,17,19,21,23]..
+                Rules: 
+                Remove pieces at the intersection of the union of the corner sites of the board and the centre sites of the board and all sites within [1,3,5,7,9,11,12,14,16,18,20,22] remove pieces at the number of own sites within 1 spaces of the to location of the last move includeOrigin: false if in the same turn, hop same direction then if can move hop same direction, move again or pass, else move one of your pieces.
+                Aim: 
+                If the next player cannot move, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Paitariya (Ludii 4) (Reconstructed)" (id "3985"))
+        (useFor "Ruleset/Paitariya (Ludii 5) (Reconstructed)" (rules "The game Paitariya is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an orthogonal direction line, move again.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Paitariya (Ludii 5) (Reconstructed)" (id "3986"))
+        (useFor "Ruleset/Paitariya (Ludii 6) (Reconstructed)" (rules "The game Paitariya is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Paitariya (Ludii 6) (Reconstructed)" (id "3987"))
+        (useFor "Ruleset/Paitariya (Ludii 7) (Reconstructed)" (rules "The game Paitariya is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an adjacent direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Paitariya (Ludii 7) (Reconstructed)" (id "3988"))
+        (useFor "Ruleset/Paitariya (Ludii 8) (Reconstructed)" (rules "The game Paitariya is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If a player places 5 of their pieces in an adjacent direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Paitariya (Ludii 8) (Reconstructed)" (id "3989"))
+        (useFor "Ruleset/Paitariya (Ludii 9) (Reconstructed)" (rules "The game Paitariya is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers from vertex in the location of the piece to vertex in the set of empty vertexs moveRule: true.
+                Players take turns moving.
+                Rules: 
+                From vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true move one of your pieces.
+                Aim: 
+                If a player places 5 of their pieces in an adjacent direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Paitariya (Ludii 9) (Reconstructed)" (id "3990"))
+        (useFor "Ruleset/Paitariya (Ludii 10) (Reconstructed)" (rules "The game Paitariya is played by two players on a square board with concentric tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step adjacent then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from vertex in Player the moving player's hand site 0 to vertex in the set of empty vertexs moveRule: true then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 4, move one of your pieces, else from vertex in sites occupied by any component owned by Mover to vertex in the set of empty vertexs moveRule: true.
+                Aim: 
+                If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Paitariya (Ludii 10) (Reconstructed)" (id "3991"))
+        (source "Murray 1951: 48.")
+        (version "1.3.11")
+        (classification "board/space/line/reconstruction/done")
+        (credit "Eric Piette")
+        (origin "This game was played in New Mexico, around 1907.")
+        }
+    )
+    
+)
+

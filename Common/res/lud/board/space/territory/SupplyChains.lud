@@ -1,0 +1,227 @@
+//game: Supply Chains 
+
+// Booleans
+
+(define "IsSupplierAt"
+    (and
+        (not (is Empty #1)) 
+        (> 3 (count Pieces of:(who at:#1) in:(sites Around #1 <Grid:dir> if:(not (is Empty (to))))))
+))
+
+(define "IsWarehouseAt"
+    (< 2 (count Pieces of:(who at:#1) in:(sites Around #1 <Grid:dir>)))
+)
+
+(define "IsDeficitInChainAt" 
+    (< 
+        (size Array (array ("SuppliersAroundChainAt" #1)))
+        (size Array (array ("WarehousesinChainAt" #1)))
+))
+
+//------------------
+// Regions
+
+(define "ChainAt" (sites Group at:#1 <Grid:dir>))
+
+(define "SuppliersAroundChainAt"
+    (sites Around ("ChainAt" #1) <Grid:dir> if:("IsSupplierAt" (to)))
+)
+
+(define "WarehousesinChainAt"
+    (forEach 
+        ("ChainAt" #1) 
+        if:("IsWarehouseAt" (site))
+))
+
+//-------------------
+(define "Place"
+    (do
+        (move Add
+            (to (sites Empty))
+        )
+        ifAfterwards:(not ("IsDeficitInChainAt" (last To)))
+))
+
+(define "DeficitWarehousesOf"
+    (forEach (sites Occupied by:#1)
+        if:(and
+            ("IsWarehouseAt" (site))
+            ("IsDeficitInChainAt" (site))
+)))
+
+//-------------------------------------------------
+
+(game "SupplyChains" 
+    (players 2)
+    (equipment
+        {
+        <Board:used>
+        (piece "Disc" Each) 
+        }
+    )
+    (rules
+        (play 
+            (priority
+                {
+                (move Remove ("DeficitWarehousesOf" <Variant:removalsBy>))
+                (or
+                    {
+                    ("Place")
+                    <Variant:passingAllowed>
+                    }
+                )
+                }
+                (then 
+                    (and
+                        {
+                        ("UpdateSurplusesToDisplayFor" Mover)
+                        ("UpdateSurplusesToDisplayFor"  Next)
+                        ("Score")
+                        (if 
+                            (can Move (move Remove ("DeficitWarehousesOf" <Variant:removalsBy>)))
+                            (moveAgain)  
+                            <Variant:moveProtocol>
+                        )
+                        }
+        ))))
+        (end (if (or (all Passed) (no Moves Mover)) (byScore)))
+))
+
+(define "DoubleTurnProtocol"
+    (set Var "MoveInTurn" (% (+ 3 (var "MoveInTurn")) 2)
+        (then
+            (if
+                (= 1 (var "MoveInTurn"))
+                (moveAgain)
+))))
+//--------------------------
+// Scoring and display
+//-------------------------------------------------------
+// Scoring and display regions
+
+(define "AllWarehousesOf" (forEach (sites Occupied by:#1) if:("IsWarehouseAt" (site))))
+
+//-------------------
+// Scoring
+
+(define "Score" (and ("ScoreFor" P1) ("ScoreFor" P2)))
+(define "ScoreFor" (set Score #1 (size Array (array ("AllWarehousesOf" #1)))))
+
+//-----------------------
+// Display utilities
+
+(define "SurplusGoodsChainAt"
+    (-
+        (size Array (array ("SuppliersAroundChainAt" #1)))
+        (size Array (array ("WarehousesinChainAt" #1)))
+))
+
+(define "UpdateSurplusesToDisplayFor"
+    (forEach Group <Grid:dir> 
+        if:(is In (to) (sites Occupied by:#1)) 
+        (forEach Value
+            (array (sites))
+            (set Value at:(value) ("SurplusGoodsChainAt" (value)))
+)))
+
+//-------------------------------------------------------
+// Board definitions
+
+(option "Board" <Board> args:{<used> <warehouse>} 
+    {
+    (item "Hex 3,4 (27)" <(board (hex 3 4) use:Cell)> <"Hex.svg"> "Hex 3,4")
+    (item "Hex 3,5 (36)" <(board (hex 3 5) use:Cell)> <"Hex.svg"> "Hex 3,5")**
+    (item "Hex 4,5 (48)" <(board (hex 4 5) use:Cell)> <"Hex.svg"> "Hex 4,5")
+    (item "Hex 4,6 (60)" <(board (hex 5 6) use:Cell)> <"Hex.svg"> "Hex 5,6")
+    (item "Hex 6,7 (108)" <(board (hex 6 7) use:Cell)> <"Hex.svg"> "Hex 6,7")
+    (item "Hex 6,8 (126)" <(board (hex 6 8) use:Cell)> <"Hex.svg"> "Hex 6,8")
+    (item "Square 8 (64)" <(board (square 8) use:Cell)> <"Square.svg"> "Square 8")
+    }
+)
+
+(option "Connectivity" <Grid> args:{<dir>} 
+    {
+    (item "Orthogonal Cells" <Orthogonal> "Grid of orthogonally linked cells")
+    (item "Adjacent Cells" <Adjacent> "Grid of adjacent cells")**
+    }
+)
+(option "Variants" <Variant> args:{ <removalsBy> <passingAllowed> <moveProtocol>} 
+    {
+    (item "Self Removals, Forced placement, 122* moves" <Mover> <> <"DoubleTurnProtocol"> "Self Removals, Forced placement Double moves")**
+    (item "Capture, Forced placement 122* moves" <Next> <> <"DoubleTurnProtocol"> "Capture, Forced placement, Double moves")
+    (item "Self Removals, Forced placement" <Mover> <> <> "Self Removals, Forced placement")
+    (item "Self Removals, Passing allowed" <Mover> <(move Pass)> <> "Self Removals, Passing allowed")
+    }
+)
+//------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "'Supply Chains' originated as a search for alternative liberty and life concepts, taking a body-foot concept from 'Polypods' and 'Mutant Y'.  Placements mutate one's pieces (from 'Suppliers' to scoring 'Warehouses' based on a critical friendly neighborhood density of 3.)
+            
+            Each player's ability to retain Warehouses relies on their opponent's Supplier pieces. This also constrains the sites that can be used for expansion in an area, and potentially forces removals of unsupported Warehouses in the opponent's neighboring chains. Only warehouses can be removed, ensuring that the game is finite.
+            
+            In keeping with the theme, removals are done by their owner, and so, cause loss of oportunity to place new material on that turn.
+            
+            The game ends when no more moves are possible. 
+            
+            After testing, there seemed to be a clear first player advantage due to unbalanced presence on the board, so a double move protocol was added.
+            
+            Passing can strongly affect the positioning tactics that lead into the endgame, so is included as a variant.
+            
+            The game can also be played with a more traditional capture mode, where the the mover captures the opponent's Warehouses, yielding slightly more agressive/exciting play but less clean rules. 
+            
+        A further, non-finite version, where placement is allowed as long as the chain is stable AFTER captures, is well beyond my ability to implement in Ludii, and also raises issues of 'ko'.")
+        (rules "Goal: Most 'Warehouses' when the board is full.
+            Definitions:
+            -- 'friendly': a player's piece. -- 'foreign': their opponent's piece.
+            -- A 'Supplier' is a piece with less than 3 friendly neighbors.
+            -- A 'Warehouse' is a piece with 3 or more friendly neighbors.
+            -- A 'Supply Chain' is any of a player's pieces, and all of the friendly pieces that can connect to it through series of adjacent connections with each other.
+            
+            -- A supply chain 'deficit' is a condition that occurs when the number of Warehouses in a Supply Chain exceeds the number of foreign Suppliers next to that Chain.
+            
+            -- A supply chain 'Surplus' is the number by which the number of foreign Suppliers next to a Friendly Supply Chain exceeds the Warehouses in that Chain, displayed for informational purposes.
+            
+            Play:
+            After the first player takes a single turn, the players continue to play, each taking 2 turns in a row until no more placements can be made.
+            
+            On a normal turn, the mover adds a piece to the board, taking care not to cause a supply chain deficit in the chain being extended.
+            
+            However, if a player starts a turn with a supply chain deficit, the player must remove Warehouses from the deficit chains until no deficit remains. In this case, no placement is made for the turn.
+            
+        In either case, all piece conversions are updated, and supply chain surpluses are shown for each chain.")
+        (id "4034")
+        (version "1.3.11")
+        (classification "board/space/territory")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "09-05-2023")
+        }
+    )
+    
+    (graphics 
+        {
+        (player Colour P1 (colour 120 36 0))
+        (player Colour P2 (colour Cream))
+        (piece Scale "Disc" .7)    
+        (board StyleThickness InnerEdges 0.4)
+        (board StyleThickness OuterEdges 0.7)
+        (board StyleThickness InnerVertices 0.45)
+        (board StyleThickness OuterVertices 0.45)
+        (board Colour InnerVertices (colour Grey))
+        (board Colour OuterVertices (colour Grey))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Background fillColour:(colour 170 160 140) edgeColour:(colour Grey) scale:1.3 )
+        (board Colour Phase0 (colour HumanLight))
+        (show Piece Value Middle scale:.85)
+        (show Symbol <Board:warehouse> ("DeficitWarehousesOf" All) fillColour:(colour LightRed) scaleY:1.03)
+        (show Symbol <Board:warehouse> (difference ("AllWarehousesOf" All) ("DeficitWarehousesOf" All))
+            fillColour:(colour Grey) scaleY:1.03
+        )
+        }
+    )
+)
+

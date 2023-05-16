@@ -9,7 +9,7 @@ import app.display.dialogs.visual_editor.recs.utils.StringUtils;
 public class ModelFilehandler {
     public static final String MODEL_LOCATION = DocHandler.getInstance().getModelsLocation()+"/ngram_model_";
     /**
-     * This method performs the operation of extracting a model from it's file.
+     * This method performs the operation of extracting a model from its file.
      * @param N
      */
     public static NGram readModel(int N) {

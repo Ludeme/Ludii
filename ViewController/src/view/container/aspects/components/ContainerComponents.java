@@ -113,7 +113,7 @@ public class ContainerComponents
 						final int value = cs.value(site, level, type);
 						final Component component = context.equipment().components()[what];
 						
-						// if the what is zero, then its a hidden piece.
+						// if the what is zero, then it's a hidden piece.
 						if (what == 0)
 						{
 							// Cannot hide the what for games with large pieces.
@@ -206,7 +206,7 @@ public class ContainerComponents
 							}
 							catch (final Exception e)
 							{
-								// carry on, sometimes animation timers dont line up...
+								// carry on, sometimes animation timers don't line up...
 							}
 						}
 						

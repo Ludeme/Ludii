@@ -81,48 +81,48 @@ public final class OverlayView extends View
 		// Draw unique section text for exhibition app.
 		if (app.settingsPlayer().usingMYOGApp())
 		{
-			final Font exhbitionTitleFont = new Font("Cantarell", Font.BOLD, 52);
-			g2d.setFont(exhbitionTitleFont);
-			
-			try(InputStream in = getClass().getResourceAsStream("/National-Bold.ttf"))
-			{
-				g2d.setFont(Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(52f));
-			}
-			catch (final Exception e)
-			{
-				e.printStackTrace();
-			}
-			
-			g2d.setColor(new Color(29,136,188));
-			g2d.drawString(EnglishSwedishTranslations.MYOGTITLE.toString(), 45, 80);
+//			//final Font exhbitionTitleFont = new Font("Cantarell", Font.BOLD, 52);
+//			//g2d.setFont(exhbitionTitleFont);
+//			
+//			try(InputStream in = getClass().getResourceAsStream("/National-Bold.ttf"))
+//			{
+//				g2d.setFont(Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(52f));
+//			}
+//			catch (final Exception e)
+//			{
+//				e.printStackTrace();
+//			}
+//			
+//			g2d.setColor(new Color(29,136,188));
+//			g2d.drawString(EnglishSwedishTranslations.MYOGTITLE.toString(), 45, 80);
 			
 			if (app.manager().ref().context().game().hasSharedPlayer())
 			{
-				g2d.setColor(new Color(227,62,41));
-				final Font exhbitionLabelFont = new Font("Cantarell", Font.PLAIN, 24);
-				g2d.setFont(exhbitionLabelFont);
-
-				try(InputStream in = getClass().getResourceAsStream("/National-Regular.ttf"))
-				{
-					g2d.setFont(Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(24f));
-				}
-				catch (final Exception e)
-				{
-					e.printStackTrace();
-				}
-				
-				g2d.drawString("1. " + EnglishSwedishTranslations.CHOOSEBOARD.toString(), 50, 150);
-				
-				if (app.manager().ref().context().board().numSites() > 1)
-					g2d.drawString("2. " + EnglishSwedishTranslations.DRAGPIECES.toString(), 50, 375);
+//				g2d.setColor(new Color(227,62,41));
+//				//final Font exhbitionLabelFont = new Font("Cantarell", Font.PLAIN, 24);
+//				//g2d.setFont(exhbitionLabelFont);
+//
+//				try(InputStream in = getClass().getResourceAsStream("/National-Regular.ttf"))
+//				{
+//					g2d.setFont(Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(24f));
+//				}
+//				catch (final Exception e)
+//				{
+//					e.printStackTrace();
+//				}
+//				
+//				g2d.drawString("1. " + EnglishSwedishTranslations.CHOOSEBOARD.toString(), 50, 150);
+//				
+//				if (app.manager().ref().context().board().numSites() > 1)
+//					g2d.drawString("2. " + EnglishSwedishTranslations.DRAGPIECES.toString(), 50, 375);
 			}
 			else
 			{
 				// If playing a game, show toEnglish of that game's description
-				Font exhbitionDescriptionFont = new Font("Cantarell", Font.PLAIN, 22);
+				Font exhbitionDescriptionFont = null;  //new Font("Cantarell", Font.PLAIN, 22);
 				try(InputStream in = getClass().getResourceAsStream("/National-Regular.ttf"))
 				{
-					exhbitionDescriptionFont = Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(22f);
+					exhbitionDescriptionFont = Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(28f);
 				}
 				catch (final Exception e)
 				{
@@ -130,7 +130,7 @@ public final class OverlayView extends View
 				}
 				
 				englishDescriptionField.setFont(exhbitionDescriptionFont);
-				englishDescriptionField.setForeground(Color.white);
+				englishDescriptionField.setForeground(new Color(242, 238, 209));  // exhibition beige  //Color.white);
 				englishDescriptionField.setBounds(50, 100, 580, 450);
 				englishDescriptionField.setCaretColor(new Color(0,0,0,0));
 				englishDescriptionField.setOpaque(false);
@@ -258,6 +258,8 @@ public final class OverlayView extends View
 	 */
 	private void drawExtraGameInformation(final Graphics2D g2d, final Context context)
 	{
+		//System.out.println("At OverlayView.drawExtraGameInformation()...");
+		
 		// Skip extra game information in certain circumstances.
 		if (app.settingsPlayer().isPerformingTutorialVisualisation())
 			return;
@@ -279,48 +281,51 @@ public final class OverlayView extends View
 			drawStringBelowBoard(g2d, str, 0.95);
 		}
 		
-		// Game over message for exhibition
-		if (app.settingsPlayer().usingMYOGApp() && context.trial().over())	
-		{
-			final Font font = new Font("Arial", Font.BOLD, 40);
-			g2d.setFont(font);
-			g2d.setColor(Color.RED);
-			
-			if (EnglishSwedishTranslations.inEnglish())
-			{
-				if (context.winners().size() > 0)
-				{
-					final String message = "Player " + context.winners().get(0) + " has won";
-					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
-					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
-					g2d.drawString(message, pixels + 42, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
-				}
-				else
-				{
-					final String message = "Draw";
-					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
-					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
-					g2d.drawString(message, pixels + 170, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
-				}
-			}
-			else
-			{
-				if (context.winners().size() > 0)
-				{
-					final String message = "Spelare " + context.winners().get(0) + " har vunnit";
-					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
-					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
-					g2d.drawString(message, pixels, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
-				}
-				else
-				{
-					final String message = "Dra";
-					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
-					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
-					g2d.drawString(message, pixels + 190, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
-				}
-			}
-		}
+//		// Game over message for exhibition
+//		if (app.settingsPlayer().usingMYOGApp() && context.trial().over())	
+//		{
+//			final Font font = new Font("Arial", Font.BOLD, 40);
+//			g2d.setFont(font);
+//			g2d.setColor(Color.RED);
+//			
+//			//System.out.println("Is MYOG, context.winners() is: " + context.winners());
+//			//System.out.println("boardPanel is at: " + DesktopApp.view().getBoardPanel().placement());
+//						
+//			if (EnglishSwedishTranslations.inEnglish())
+//			{
+//				if (context.winners().size() > 0)
+//				{
+//					final String message = "Player " + context.winners().get(0) + " has won";
+//					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+//					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+//					g2d.drawString(message, pixels + 42, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+//				}
+//				else
+//				{
+//					final String message = "Draw";
+//					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+//					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+//					g2d.drawString(message, pixels + 170, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+//				}
+//			}
+//			else
+//			{
+//				if (context.winners().size() > 0)
+//				{
+//					final String message = "Spelare " + context.winners().get(0) + " har vunnit";
+//					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+//					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+//					g2d.drawString(message, pixels, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+//				}
+//				else
+//				{
+//					final String message = "Dra";
+//					final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(message, g2d);
+//					final int pixels = DesktopApp.view().getBoardPanel().placement().width;
+//					g2d.drawString(message, pixels + 190, (int)(0.5 * pixels + placement.y * 2 + bounds.getHeight()/1.1));
+//				}
+//			}
+//		}
 	}
 	
 	//-------------------------------------------------------------------------

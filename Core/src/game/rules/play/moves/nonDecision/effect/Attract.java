@@ -40,7 +40,7 @@ public final class Attract extends Effect
 	/** Location of the piece. */
 	private final IntFunction startLocationFn;
 
-	/** Direction choosen. */
+	/** Direction chosen. */
 	private final Directions dirnChoice;
 
 	/** Add on Cell/Edge/Vertex. */

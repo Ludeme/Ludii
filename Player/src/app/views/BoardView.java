@@ -14,7 +14,7 @@ import util.PlaneType;
 //-----------------------------------------------------------------------------
 
 /**
- * Panel showing the gmae board.
+ * Panel showing the game board.
  *
  * @author Matthew.Stephenson and cambolbro
  */

@@ -1,0 +1,877 @@
+(game "Yi"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Yi (Ludii 1)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 17)
+            use:Vertex)
+            
+            (piece "Marker" Each)
+            }
+        )
+        
+        (rules 
+            (play 
+                (or 
+                    (move Add 
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (enclose 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+            )
+            
+            (end 
+                (if 
+                    (all Passed)
+                    
+                    (byScore { 
+                        (score P1 
+                            (+ 
+                                (count Pieces P1)
+                                
+                                (size Territory P1)
+                            )
+                        )
+                        
+                        (score P2 
+                            (+ 
+                                (count Pieces P2)
+                                
+                                (size Territory P2)
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Yi (Ludii 1) ruleset.")
+    
+    (item "Yi (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 17)
+            use:Vertex)
+            
+            (piece "Marker" Each)
+            }
+        )
+        
+        (rules 
+            (play 
+                (or 
+                    (move Add 
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (enclose 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+            )
+            
+            (end 
+                (if 
+                    (= 
+                        (count Pieces Mover)
+                        
+                        (- 
+                            (count Pieces All)
+                        2)
+                    )
+                    
+                    (byScore)
+                )
+            )
+        )
+        
+    > "The Yi (Ludii 2) ruleset.")
+    
+    (item "Yi (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 17)
+            use:Vertex)
+            
+            (piece "Marker" Each)
+            }
+        )
+        
+        (rules 
+            (play 
+                (or 
+                    (move Add 
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (enclose 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+            )
+            
+            (end { 
+                (if 
+                    (no Moves P2)
+                    
+                    (result P1 Win)
+                )
+                
+                (if 
+                    (no Pieces P1)
+                    
+                    (result P2 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Yi (Ludii 3) ruleset.")
+    
+    (item "Yi (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 17)
+            use:Vertex)
+            
+            (piece "Marker" Each)
+            }
+        )
+        
+        (rules 
+            (play 
+                (or 
+                    (move Add 
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (enclose 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Yi (Ludii 4) ruleset.")
+    
+    (item "Yi (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 17)
+            use:Vertex)
+            
+            (piece "Marker" Each)
+            }
+        )
+        
+        (rules 
+            (play 
+                (or 
+                    (move Add 
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (enclose 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+            )
+            
+            (end 
+                (if 
+                    (all Passed)
+                    
+                    (byScore { 
+                        (score P1 
+                            (+ 
+                                (score P1)
+                                
+                                (size Territory P1)
+                            )
+                        )
+                        
+                        (score P2 
+                            (+ 
+                                (score P2)
+                                
+                                (size Territory P2)
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Yi (Ludii 5) ruleset.")
+    
+    (item "Yi (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 17)
+            use:Vertex)
+            
+            (piece "Marker" Each)
+            }
+        )
+        
+        (rules 
+            (play 
+                (or 
+                    (move Add 
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (enclose 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+            )
+            
+            (end 
+                (if 
+                    (= 
+                        (count Pieces Next)
+                    1)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Yi (Ludii 6) ruleset.")
+    
+    (item "Yi (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 17)
+            use:Vertex)
+            
+            (piece "Marker" Each)
+            }
+        )
+        
+        (rules 
+            (play 
+                (or 
+                    (move Add 
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (enclose 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+            )
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Yi (Ludii 7) ruleset.")
+    
+    (item "Yi (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 17)
+            use:Vertex)
+            
+            (piece "Marker" Each)
+            }
+        )
+        
+        (rules 
+            (play 
+                (or 
+                    (do 
+                        (move Add 
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (enclose 
+                                    (from 
+                                        (last To)
+                                    )
+                                    Orthogonal 
+                                    (between if:
+                                        (is Enemy 
+                                            (who at:
+                                                (between)
+                                            )
+                                        )
+                                        
+                                        (apply 
+                                            (and 
+                                                (addScore Mover 1)
+                                                
+                                                (remove 
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        ifAfterwards:
+                        (> 
+                            (count Liberties Orthogonal)
+                        0)
+                    )
+                    
+                    (move Pass)
+                )
+            )
+            
+            (end 
+                (if 
+                    (= 
+                        (count Pieces Mover)
+                        
+                        (- 
+                            (count Pieces All)
+                        2)
+                    )
+                    
+                    (byScore)
+                )
+            )
+        )
+        
+    > "The Yi (Ludii 8) ruleset.")
+    
+    (item "Yi (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 17)
+            use:Vertex)
+            
+            (piece "Marker" Each)
+            }
+        )
+        
+        (rules 
+            (play 
+                (or 
+                    (do 
+                        (move Add 
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (enclose 
+                                    (from 
+                                        (last To)
+                                    )
+                                    Orthogonal 
+                                    (between if:
+                                        (is Enemy 
+                                            (who at:
+                                                (between)
+                                            )
+                                        )
+                                        
+                                        (apply 
+                                            (and 
+                                                (addScore Mover 1)
+                                                
+                                                (remove 
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        ifAfterwards:
+                        (> 
+                            (count Liberties Orthogonal)
+                        0)
+                    )
+                    
+                    (move Pass)
+                )
+            )
+            
+            (end 
+                (if 
+                    (is Line 3 Orthogonal)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Yi (Ludii 9) ruleset.")
+    
+    (item "Yi (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 17)
+            use:Vertex)
+            
+            (piece "Marker" Each)
+            }
+        )
+        
+        (rules 
+            (play 
+                (or 
+                    (do 
+                        (move Add 
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (enclose 
+                                    (from 
+                                        (last To)
+                                    )
+                                    Orthogonal 
+                                    (between if:
+                                        (is Enemy 
+                                            (who at:
+                                                (between)
+                                            )
+                                        )
+                                        
+                                        (apply 
+                                            (and 
+                                                (addScore Mover 1)
+                                                
+                                                (remove 
+                                                    (between)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        ifAfterwards:
+                        (> 
+                            (count Liberties Orthogonal)
+                        0)
+                    )
+                    
+                    (move Pass)
+                )
+            )
+            
+            (end 
+                (if 
+                    (= 
+                        (count Pieces Next)
+                    1)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Yi (Ludii 10) ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board (square 17) use:Vertex) 
+            (piece "Marker" Each)
+        }) 
+        (rules 
+            (play [#]) // "Players make groups on the board, opponents may capture groups" NEED CONCEPT
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Yi (Ludii 1) (Reconstructed)" {
+        "Variant/Yi (Ludii 1)"
+    })
+    (ruleset "Ruleset/Yi (Ludii 2) (Reconstructed)" {
+        "Variant/Yi (Ludii 2)"
+    })
+    (ruleset "Ruleset/Yi (Ludii 3) (Reconstructed)" {
+        "Variant/Yi (Ludii 3)"
+    })
+    (ruleset "Ruleset/Yi (Ludii 4) (Reconstructed)" {
+        "Variant/Yi (Ludii 4)"
+    })
+    (ruleset "Ruleset/Yi (Ludii 5) (Reconstructed)" {
+        "Variant/Yi (Ludii 5)"
+    })
+    (ruleset "Ruleset/Yi (Ludii 6) (Reconstructed)" {
+        "Variant/Yi (Ludii 6)"
+    })
+    (ruleset "Ruleset/Yi (Ludii 7) (Reconstructed)" {
+        "Variant/Yi (Ludii 7)"
+    })
+    (ruleset "Ruleset/Yi (Ludii 8) (Reconstructed)" {
+        "Variant/Yi (Ludii 8)"
+    })
+    (ruleset "Ruleset/Yi (Ludii 9) (Reconstructed)" {
+        "Variant/Yi (Ludii 9)"
+    })
+    (ruleset "Ruleset/Yi (Ludii 10) (Reconstructed)" {
+        "Variant/Yi (Ludii 10)"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Yi is an ancient name for the game Weiqi. While they were probably used interchangeably at the time, this is the older version of the game, which was played on a 17x17 board.")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "17x17 board. Players make groups on the board, opponents may capture groups."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1182"))
+        (useFor "Ruleset/Yi (Ludii 1) (Reconstructed)" (rules "The game Yi is played by two players on a 17x17 rectangle board with square tiling. 
+                All players play with Markers.
+                Players take turns moving.
+                Rules: 
+                Add one of your pieces to the set of empty vertexs then for all enclosed pieces on Vertexes starting from the to location of the last move with orthogonal direction if the number of liberties is less than or equal to 0 if the target is there is an enemy Player at betweenremove pieces at between or pass.
+                Aim: 
+                If all players have passed, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Yi (Ludii 1) (Reconstructed)" (id "4012"))
+        (useFor "Ruleset/Yi (Ludii 2) (Reconstructed)" (rules "The game Yi is played by two players on a 17x17 rectangle board with square tiling. 
+                All players play with Markers.
+                Players take turns moving.
+                Rules: 
+                Add one of your pieces to the set of empty vertexs then for all enclosed pieces on Vertexes starting from the to location of the last move with orthogonal direction if the number of liberties is less than or equal to 0 if the target is there is an enemy Player at betweenremove pieces at between or pass.
+                Aim: 
+                If the number of pieces owned by Player the moving player is equal to the number of pieces owned by Player All minus 2, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Yi (Ludii 2) (Reconstructed)" (id "4013"))
+        (useFor "Ruleset/Yi (Ludii 3) (Reconstructed)" (rules "The game Yi is played by two players on a 17x17 rectangle board with square tiling. 
+                All players play with Markers.
+                Players take turns moving.
+                Rules: 
+                Add one of your pieces to the set of empty vertexs then for all enclosed pieces on Vertexes starting from the to location of the last move with orthogonal direction if the number of liberties is less than or equal to 0 if the target is there is an enemy Player at betweenremove pieces at between or pass.
+                Aim: 
+                If player two cannot move, player one wins If there are no pieces owned by Player 1, player two wins.
+                
+        "))
+        (useFor "Ruleset/Yi (Ludii 3) (Reconstructed)" (id "4014"))
+        (useFor "Ruleset/Yi (Ludii 4) (Reconstructed)" (rules "The game Yi is played by two players on a 17x17 rectangle board with square tiling. 
+                All players play with Markers.
+                Players take turns moving.
+                Rules: 
+                Add one of your pieces to the set of empty vertexs then for all enclosed pieces on Vertexes starting from the to location of the last move with orthogonal direction if the number of liberties is less than or equal to 0 if the target is there is an enemy Player at betweenremove pieces at between or pass.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Yi (Ludii 4) (Reconstructed)" (id "4015"))
+        (useFor "Ruleset/Yi (Ludii 5) (Reconstructed)" (rules "The game Yi is played by two players on a 17x17 rectangle board with square tiling. 
+                All players play with Markers.
+                Players take turns moving.
+                Rules: 
+                Add one of your pieces to the set of empty vertexs then for all enclosed pieces on Vertexes starting from the to location of the last move with orthogonal direction if the number of liberties is less than or equal to 0 if the target is there is an enemy Player at betweenremove pieces at between or pass.
+                Aim: 
+                If all players have passed, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Yi (Ludii 5) (Reconstructed)" (id "4016"))
+        (useFor "Ruleset/Yi (Ludii 6) (Reconstructed)" (rules "The game Yi is played by two players on a 17x17 rectangle board with square tiling. 
+                All players play with Markers.
+                Players take turns moving.
+                Rules: 
+                Add one of your pieces to the set of empty vertexs then for all enclosed pieces on Vertexes starting from the to location of the last move with orthogonal direction if the number of liberties is less than or equal to 0 if the target is there is an enemy Player at betweenremove pieces at between or pass.
+                Aim: 
+                If the number of pieces owned by Player the next player is equal to 1, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Yi (Ludii 6) (Reconstructed)" (id "4017"))
+        (useFor "Ruleset/Yi (Ludii 7) (Reconstructed)" (rules "The game Yi is played by two players on a 17x17 rectangle board with square tiling. 
+                All players play with Markers.
+                Players take turns moving.
+                Rules: 
+                Add one of your pieces to the set of empty vertexs then for all enclosed pieces on Vertexes starting from the to location of the last move with orthogonal direction if the number of liberties is less than or equal to 0 if the target is there is an enemy Player at betweenremove pieces at between or pass.
+                Aim: 
+                If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Yi (Ludii 7) (Reconstructed)" (id "4018"))
+        (useFor "Ruleset/Yi (Ludii 8) (Reconstructed)" (rules "The game Yi is played by two players on a 17x17 rectangle board with square tiling. 
+                All players play with Markers.
+                Players take turns moving.
+                Rules: 
+                Add one of your pieces to the set of empty vertexs then for all enclosed pieces on Vertexes starting from the to location of the last move with orthogonal direction if the number of liberties is less than or equal to 0 if the target is there is an enemy Player at betweenadd score 1 to player the moving player
+                and remove pieces at between or pass.
+                Aim: 
+                If the number of pieces owned by Player the moving player is equal to the number of pieces owned by Player All minus 2, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Yi (Ludii 8) (Reconstructed)" (id "4019"))
+        (useFor "Ruleset/Yi (Ludii 9) (Reconstructed)" (rules "The game Yi is played by two players on a 17x17 rectangle board with square tiling. 
+                All players play with Markers.
+                Players take turns moving.
+                Rules: 
+                Add one of your pieces to the set of empty vertexs then for all enclosed pieces on Vertexes starting from the to location of the last move with orthogonal direction if the number of liberties is less than or equal to 0 if the target is there is an enemy Player at betweenadd score 1 to player the moving player
+                and remove pieces at between or pass.
+                Aim: 
+                If a player places 3 of their pieces in an orthogonal direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Yi (Ludii 9) (Reconstructed)" (id "4020"))
+        (useFor "Ruleset/Yi (Ludii 10) (Reconstructed)" (rules "The game Yi is played by two players on a 17x17 rectangle board with square tiling. 
+                All players play with Markers.
+                Players take turns moving.
+                Rules: 
+                Add one of your pieces to the set of empty vertexs then for all enclosed pieces on Vertexes starting from the to location of the last move with orthogonal direction if the number of liberties is less than or equal to 0 if the target is there is an enemy Player at betweenadd score 1 to player the moving player
+                and remove pieces at between or pass.
+                Aim: 
+                If the number of pieces owned by Player the next player is equal to 1, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Yi (Ludii 10) (Reconstructed)" (id "4021"))
+        (source "Fairbair 2007.")
+        (version "1.3.11")
+        (classification "board/space/territory/reconstruction/done")
+        (credit "Eric Piette")
+        (origin "This game was played in China, from around 450BCE to 755.")
+        }
+    )
+    
+    (graphics {
+        (board Style Go)
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+    })
+    
+    (recon {
+        (concept "Capture" True)
+        (concept "EncloseCapture" True)
+    })
+    
+)
+

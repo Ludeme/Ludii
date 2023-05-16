@@ -931,7 +931,7 @@ public class ExpertIteration
 									final FVector valueFunctionParams = valueFunction.paramsVector();
 									Gradients.minimise
 									(
-										valueFunctionOptimiser, 	// TODO dont we need separate one per player??????
+										valueFunctionOptimiser, 	// TODO don't we need separate one per player??????
 										valueFunctionParams, 
 										meanGradientsValue, 
 										(float)objectiveParams.weightDecayLambda

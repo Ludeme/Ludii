@@ -239,9 +239,9 @@
     
     (item "Diagonal-linked Groups" <("SetDiagonalGroupScores" 1)> < > <"HighlightConnections"> "Score one point for each stone in your largest group of adjacent stones")*
     
-    //  (item "Pairs - Misere" <("SetPairScores" "Misere")> <(moveAgain)> < > "Misere: Score one negative point for each adjecent pair of your stones")
+    //  (item "Pairs - Misere" <("SetPairScores" "Misere")> <(moveAgain)> < > "Misere: Score one negative point for each adjacent pair of your stones")
     
-    //  (item "Pairs" <("SetPairScores" 1)> < > < > "Score one point for each adjecent pair of your stones")
+    //  (item "Pairs" <("SetPairScores" 1)> < > < > "Score one point for each adjacent pair of your stones")
     
     //  (item "Stones - Misere" <("SetStoneScores" "Misere")> <(moveAgain)> < > "Misere: Score one negative point for each stone")
     
@@ -410,7 +410,7 @@
     The game ends when no placement is possible.
 In the case of a tie, the player who would have been next to place loses.")
 (id "3863")
-(version "1.3.10")
+(version "1.3.11")
 (classification "experimental")
 (author "Dale W. Walton")
 (credit "Dale W. Walton")

@@ -41,7 +41,7 @@ public final class Intervene extends Effect
 	/** Location of the piece. */
 	private final IntFunction startLocationFn;
 
-	/** Direction choosen. */
+	/** Direction chosen. */
 	private final AbsoluteDirection dirnChoice;
 
 	/** Limit to intervene. */
@@ -397,7 +397,7 @@ public final class Intervene extends Effect
 	{		
 		String directionString = "";
 		if (dirnChoice != null)
-			directionString = " in dirrection " + dirnChoice.toString();
+			directionString = " in direction " + dirnChoice.toString();
 		
 		String thenString = "";
 		if (then() != null)

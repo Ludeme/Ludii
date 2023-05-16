@@ -704,7 +704,7 @@ public class LInputArea extends JPanel
      */
     private LInputField inputFieldBelow(LInputField inputField)
     {
-        // this is inefficient, but the one below doesnt work. Maybe because the ArrayList is altered in the process before (but id stays the same!)
+        // this is inefficient, but the one below doesn't work. Maybe because the ArrayList is altered in the process before (but id stays the same!)
         int index = inputFieldIndex(inputField) + 1;
         if(index >= currentInputFields.size())
             return null;
@@ -1199,7 +1199,7 @@ public class LInputArea extends JPanel
         // Remove the NodeArgument from the merged InputField
         if(inputField != null) {
             inputField.removeNodeArgument(nodeArgument);
-            // If the merged InputField now only contains one NodeArgument, notify it to update it accordingly (shouldnt happen)
+            // If the merged InputField now only contains one NodeArgument, notify it to update it accordingly (shouldn't happen)
             if (inputField.nodeArguments().size() == 0) {
                 for(LInputField lif : currentInputFields)
                 {

@@ -230,7 +230,7 @@ public class Quadhex extends Basis
 			}
 		}
 
-		// Dpulicate three sections, rotated
+		// Duplicate three sections, rotated
 		final int verticesPerSection = section.vertices().size(); 
 		final double theta = 2 * Math.PI / 3;
 		final Vertex[][] save = new Vertex[3][3];

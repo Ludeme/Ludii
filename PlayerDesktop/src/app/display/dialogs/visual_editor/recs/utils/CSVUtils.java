@@ -15,7 +15,7 @@ public class CSVUtils {
      * lines(1)
      * line(2)
      * ...
-     * The method already expects the singular methods to be in the comma seperated format
+     * The method already expects the singular methods to be in the comma separated format
      * @param location
      * @param header
      * @param lines

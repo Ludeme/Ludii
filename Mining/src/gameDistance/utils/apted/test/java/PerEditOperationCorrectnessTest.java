@@ -55,7 +55,7 @@ public class PerEditOperationCorrectnessTest {
 
   /**
    * This class represents a single test case from the JSON file. JSON keys
-   * are mapped to fiels of this class.
+   * are mapped to fields of this class.
    */
   // [TODO] Verify if this is the best placement for this class.
   private static class TestCase {

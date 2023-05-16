@@ -1,0 +1,186 @@
+(define "SelectVertices"
+    (move Select 
+        (from Vertex (intersection (sites Around (sites Occupied by:P1)) (sites Empty Edge)))
+        (to Vertex (intersection (sites Occupied by:P1) (sites Around (from)))
+            if:#1
+        ) 
+        (then 
+            #2
+        )
+    )		
+)
+
+(define "FiveInARowEmpty"
+    (and {
+        (is Occupied Vertex (ahead (to) steps:1 (directions Vertex from:(from) to:(to))))
+        (is Occupied Vertex (ahead (to) steps:2 (directions Vertex from:(from) to:(to))))
+        (is Occupied Vertex (ahead (to) steps:3 (directions Vertex from:(from) to:(to))))
+        (is Empty Edge (edge (from) (to)))
+        (is Empty Edge (edge (to) (ahead (to) steps:1 (directions Vertex from:(from) to:(to)))))
+        (is Empty Edge 
+            (edge 
+                (ahead (to) steps:1 (directions Vertex from:(from) to:(to))) 
+                (ahead (to) steps:2 (directions Vertex from:(from) to:(to))) 
+            )
+        )
+        (is Empty Edge 
+            (edge 
+                (ahead (to) steps:2 (directions Vertex from:(from) to:(to))) 
+                (ahead (to) steps:3 (directions Vertex from:(from) to:(to))) 
+            )
+        )
+    })	
+)
+
+(define "DrawFiveInARow"
+    (and {
+        (add (to Vertex (last From)))
+        (add (to Edge (edge (last From) (last To))))
+        (add (to Edge (edge (last To) (ahead (last To) steps:1 (directions Vertex from:(last From) to:(last To))))))
+        (add (to Edge 
+                (edge 
+                    (ahead (last To) steps:1 (directions Vertex from:(last From) to:(last To))) 
+                    (ahead (last To) steps:2 (directions Vertex from:(last From) to:(last To))) 
+                )
+            )
+        )
+        (add (to Edge 
+                (edge 
+                    (ahead (last To) steps:2 (directions Vertex from:(last From) to:(last To))) 
+                    (ahead (last To) steps:3 (directions Vertex from:(last From) to:(last To))) 
+                )
+            )
+        )
+    })
+)
+
+(define "FourInARowAndOneBackEmpty"
+    (and {
+        (is Occupied Vertex (ahead (to) steps:1 (directions Vertex from:(from) to:(to))))
+        (is Occupied Vertex (ahead (to) steps:2 (directions Vertex from:(from) to:(to))))
+        (is Occupied Vertex (ahead (from) steps:1 (directions Vertex from:(to) to:(from))))
+        (is Empty Edge (edge (from) (to)))
+        (is Empty Edge (edge (to) (ahead (to) steps:1 (directions Vertex from:(from) to:(to)))))
+        (is Empty Edge 
+            (edge 
+                (ahead (to) steps:1 (directions Vertex from:(from) to:(to))) 
+                (ahead (to) steps:2 (directions Vertex from:(from) to:(to))) 
+            )
+        )
+        (is Empty Edge (edge (from) (ahead (from) steps:1 (directions Vertex from:(to) to:(from)))))
+    })	
+)
+
+(define "DrawFourInARowOneBack"
+    (and {
+        (add (to Vertex (last From)))
+        (add (to Edge (edge (last From) (last To))))
+        (add (to Edge (edge (last To) (ahead (last To) steps:1 (directions Vertex from:(last From) to:(last To))))))
+        (add (to Edge 
+                (edge 
+                    (ahead (last To) steps:1 (directions Vertex from:(last From) to:(last To))) 
+                    (ahead (last To) steps:2 (directions Vertex from:(last From) to:(last To))) 
+                )
+            )
+        )
+        (add (to Edge (edge (last From) (ahead (last From) steps:1 (directions Vertex from:(last To) to:(last From))))))
+    })
+)
+
+(define "ThreeInARowAndTwoBackEmpty"
+    (and {
+        (is Occupied Vertex (ahead (to) steps:1 (directions Vertex from:(from) to:(to))))
+        (is Occupied Vertex (ahead (from) steps:1 (directions Vertex from:(to) to:(from))))
+        (is Occupied Vertex (ahead (from) steps:2 (directions Vertex from:(to) to:(from))))
+        (is Empty Edge (edge (from) (to)))
+        (is Empty Edge (edge (to) (ahead (to) steps:1 (directions Vertex from:(from) to:(to)))))
+        (is Empty Edge (edge (from) (ahead (from) steps:1 (directions Vertex from:(to) to:(from)))))
+        (is Empty Edge 
+            (edge 
+                (ahead (from) steps:1 (directions Vertex from:(to) to:(from))) 
+                (ahead (from) steps:2 (directions Vertex from:(to) to:(from))) 
+            )
+        )
+    })	
+)
+
+(define "DrawThreeInARowTwoBack"
+    (and {
+        (add (to Vertex (last From)))
+        (add (to Edge (edge (last From) (last To))))
+        (add (to Edge (edge (last To) (ahead (last To) steps:1 (directions Vertex from:(last From) to:(last To))))))
+        (add (to Edge (edge (last From) (ahead (last From) steps:1 (directions Vertex from:(last To) to:(last From))))))
+        (add (to Edge 
+                (edge 
+                    (ahead (last From) steps:1 (directions Vertex from:(last To) to:(last From))) 
+                    (ahead (last From) steps:2 (directions Vertex from:(last To) to:(last From))) 
+                )
+            )
+        )
+    })
+)
+
+//-------------------------------------------------------------------------
+
+(game "Morpion Solitaire" 
+    (players 1) 
+    (equipment { 
+        (board 
+            (square 20 diagonals:SolidNoSplit) 
+            use:Vertex
+        )
+        (piece "Cross" P1)
+    }) 
+    (rules 
+        (start { 
+            (place "Cross" (sites {
+                    148  128 108..111 165..168 185 205 225..228
+                    131 151 171..174 194 214 234..231 251
+                    271 291..288 248 268
+                })
+            )
+        })
+        
+        (play
+            (or {
+                ("SelectVertices" "FiveInARowEmpty" "DrawFiveInARow")
+                ("SelectVertices" "FourInARowAndOneBackEmpty" "DrawFourInARowOneBack")
+                ("SelectVertices" "ThreeInARowAndTwoBackEmpty" "DrawThreeInARowTwoBack")
+                }
+                (then (addScore Mover 1))
+            )
+        )
+        (end (if (no Moves Mover) (result P1 Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Morpion Solitaire is a paper and pencil game for one or two players, played on a plus-shaped grid of dots. The origins of the game are probably in northern Europe. References to the game first appeared in French publications in the 1970s.")
+        (aliases {"Join Five; Cross 'n' Lines; Line Game"})
+        (rules "Game starts with a cross made from dots.
+        During each turn, place a dot to form a straight line that is exactly five dots long and then draw a straight line. This line can not overlap a part of an existing line. For every line drown we get a point. The goal is to maximise the score.")
+        (id "4032")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Join_Five\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.3.11")
+        (classification "puzzle/planning")
+        (credit "Eric Piette")
+        (date "1970")
+        }
+    )
+    
+    (graphics {
+        (show Edges Orthogonal Hidden)
+        (show Edges Diagonal Hidden)
+        (board Colour OuterVertices (colour Hidden))
+        (board Colour InnerVertices (colour Hidden))
+        (player Colour P1 (colour Black))
+        (board Style PenAndPaper replaceComponentsWithFilledCells:True)
+    })
+    
+)
+

@@ -102,7 +102,7 @@ public enum ContainerStyleType implements MetadataItem
 	
 	//---------- Custom styles for specific puzzles ----------
 
-	/** Custom style for the Futoskiki puzzle board. */
+	/** Custom style for the Futoshiki puzzle board. */
 	Futoshiki,
 		
 	/** Custom style for the Hashi puzzle board. */

@@ -95,7 +95,7 @@ public class Handler
 
 
     // Sensitivity to changes
-    /** Whether sensitivive actions should be confirmed by the user */
+    /** Whether sensitive actions should be confirmed by the user */
     public static boolean sensitivityToChanges = true;
     /** When X nodes are removed at once, ask the user for confirmation */
     public static final int SENSITIVITY_REMOVAL = 6;
@@ -296,9 +296,9 @@ public class Handler
 
         // Remove the node from the graph
         graph.removeNode(node);
-        // notify its children that it's parent is null
+        // notify its children that its parent is null
         node.childrenNodes().forEach(child -> child.setParent(null));
-        // notify its parent that it's child is null
+        // notify its parent that its child is null
         if(node.parentNode() != null) node.parentNode().removeChildren(node);
         // reset the parent's inputs
         if(node.parentNode() != null)
@@ -756,7 +756,7 @@ public class Handler
                 lnc.markUncompilable(false);
             }
         }
-        // if its a define graph, notify the graph about that
+        // if it's a define graph, notify the graph about that
         if(graph.isDefine())
             graph.notifyDefineChanged(nodeArgument, input);
 

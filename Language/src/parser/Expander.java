@@ -1025,7 +1025,7 @@ public class Expander
 				{
 					if (str.charAt(aTo) == ':')
 					{
-						// Named parameter, check if remainding of expression is bracketed
+						// Named parameter, check if remaining of expression is bracketed
 						if (StringRoutines.isOpenBracket(str.charAt(aTo+1)))
 						{
 							aTo = StringRoutines.matchingBracketAt(str, aTo+1);
@@ -1123,7 +1123,7 @@ public class Expander
 	)
 	{
 		// Tokens that protect the following string from being expanded as a define, 
-		// in case the string accidentally mathces a known define.
+		// in case the string accidentally matches a known define.
 		final String[] safeTokens = { "game", "match", "instance" };
 		
 		// Step back to previous token (might be a bracket)

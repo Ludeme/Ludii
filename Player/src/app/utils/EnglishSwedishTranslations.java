@@ -3,41 +3,54 @@ package app.utils;
 public enum EnglishSwedishTranslations 
 {
 	// Menu Text
-	MYOGTITLE("Make Your Own Game", "Gör Ditt Eget Spel"),
-	CHOOSEBOARD("Choose a board", "Välj en bräda"),
-	DRAGPIECES("Drag pieces onto board", "Dra bitar till brädet"),
-	MOVEMENT("Movement", "Rörelse"),
-	CAPTURE("Capture", "Fånga"),
-	GOAL("Goal", "Mål"),
+	MYOGTITLE("Make Your Own Game", "Gor Ditt Eget Spel"),  //"Gör Ditt Eget Spel"),
+	
+	INTRO_A("Ludemes are the elements that make up games.", "Spel består av beståndsdelar som kallas ludemes."),
+	INTRO_B("Here you can mix and match ludemes to make your own game!", "Här kan du mixa och matcha ludemes och göra ditt eget spel!"),
+			
+	MAKE_YOUR_GAME("Make Your Game", "Gor Ditt Spel"),
+	PLAY_YOUR_GAME("Play Your Game", "Spela Ditt Spel"),
+
+	HOME("Home", "Home"),
+	
+	ENGLISH("EN", "EN"),	
+	SWEDISH("SV", "SV"),
+	
+	CHOOSEBOARD("Choose a board", "Välj ett spelbräde"),
+	DRAGPIECES("Drag pieces onto the board", "Dra pjäser till brädet"),
+	MOVEMENT("Piece moves", "Hur man flyttar"),
+	CAPTURE("How to capture", "Hur man fångar"),
+	GOAL("How to win", "Hur man vinner"),
 	
 	// Button Text
-	RESET("Reset", "Återställa"),
+	START("Start", "Starta"),
+	RESET("Reset", "Återställ"),
 	PLAY("Play", "Spela"),
 	PLAYAGAIN("Play Again", "Spela igen"),
-	EDIT("Edit", "Redigera"),
-	HUMANVSHUMAN("vs. Human", "vs. Person"),
-	HUMANVSAI("vs. AI", "vs. AI"),
+	EDIT("Edit Rules", "Redigera regler"),
+	HUMANVSHUMAN("vs Human", "vs Person"),
+	HUMANVSAI("vs AI", "vs AI"),
 	PRINT("Print", "Skriva ut"),
 	
 	// Goal Options
-	LINE3("Line 3", "Rad 3"),
-	LINE4("Line 4", "Rad 4"),
+	LINE3("Line of 3", "Tre i rad"),
+	LINE4("Line of 4", "Fyra i rad"),
 	ELIMINATE("Eliminate", "Eliminera"),
 	BLOCK("Block", "Blockera"),
-	SURROUND("Surround", "Omge"),
+	SURROUND("Surround", "Omringa"),
 	
 	// Move Options
 	STEP("Step", "Steg"),
 	SLIDE("Slide", "Glida"),
 	KNIGHT("Knight", "Riddare"),
-	ADD("Add", "tillsätta"),
-	ANY("Any", "Några"),
+	ADD("Add", "Tillsätta"),
+	ANY("Anywhere", "Överallt"),
 	
 	// Capture Options
 	REPLACE("Replace", "Ersätta"),
-	HOP("Hop", "Hopp"),
-	FLANK("Flank", "Flank"),
-	NEIGHBOR("Neighbor", "Granne"),
+	HOP("Hop", "Hoppa"),
+	FLANK("Flank", "Flankera"),
+	NEIGHBOR("Neighbor", "Angränsa"),
 	;
 
 	//-------------------------------------------------------------------------
