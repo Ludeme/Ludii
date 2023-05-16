@@ -1,0 +1,122 @@
+(game "Shatranj (Egypt)" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Fox" P1 
+            (or 
+                (move Step Diagonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Hop Diagonal 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Hen" P2 N 
+            (move Step 
+                (directions { FR FL }
+                )
+                
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        
+        (hand P1)
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Fox1" 
+                (handSite P1)
+            )
+            
+            (place "Hen2" 
+                (difference 
+                    (expand 
+                        (sites Bottom)
+                    steps:2)
+                    
+                    (sites Phase 0)
+                )
+            )
+            }
+        )
+        phases:{ 
+        (phase "Placement" P1 
+            (play 
+                (move 
+                    (from 
+                        (handSite Mover)
+                    )
+                    
+                    (to 
+                        (difference 
+                            (sites Empty)
+                            
+                            (sites Phase 0)
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (forEach Piece)
+            )
+        )
+        }
+        
+        (end { 
+            (if 
+                (no Moves P1)
+                
+                (result P2 Win)
+            )
+            
+            (if 
+                (no Pieces P2)
+                
+                (result P1 Win)
+            )
+            }
+        )
+    )
+)
+
+
