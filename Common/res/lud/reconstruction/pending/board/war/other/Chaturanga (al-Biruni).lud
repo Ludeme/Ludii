@@ -8,13 +8,9 @@
     {
     (item "Incomplete"
         <
-        (players 2) 
+        ("TwoPlayersNorthSouth")
         (equipment [#]) // The Elephant moves forward one space or diagonally forward or backward.
-        (rules
-            (start [#])
-            (play [#]) 
-            (end [#]) 
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
@@ -49,7 +45,7 @@
     
     (recon {
         (concept "StepDecision" True)
-        (concept "PieceDirection" True)
+        (concept "Checkmate" True)
     })
     
 )
