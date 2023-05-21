@@ -42,13 +42,13 @@ public class ReconstructionGenerator
 	final static String defaultOutputPath        = "./res/recons/output/";
 	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 20000;
-	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/war/other/Chaturanga (al-Biruni)";
+	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/war/other/Fidchell";
 	final static String defaultOptionName        = "Variant/Incomplete";
 	
 	final static double  defaultConceptualWeight = 0.0;
 	final static double  defaultHistoricalWeight = 0.5;
 	final static double  defaultGeographicalWeight = 0.5;
-	final static double  defaultThreshold = 0.99;
+	final static double  defaultThreshold = 0.60;
 	final static boolean geographicalOrder = true;
 	
 	final static boolean checkTimeoutRandomPlayout = false;
