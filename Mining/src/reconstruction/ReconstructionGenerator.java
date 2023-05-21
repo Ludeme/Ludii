@@ -42,7 +42,7 @@ public class ReconstructionGenerator
 	final static String defaultOutputPath        = "./res/recons/output/";
 	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 20000;
-	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/war/replacement/checkmate/chaturanga/Chatrang (Sassanian)";
+	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/war/replacement/checkmate/chaturanga/Four-Handed Chaturanga";
 	final static String defaultOptionName        = "Variant/Incomplete";
 	
 	final static double  defaultConceptualWeight = 0.0;
