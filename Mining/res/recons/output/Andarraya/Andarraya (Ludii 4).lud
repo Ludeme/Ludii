@@ -1,0 +1,753 @@
+(game "Andarraya" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Counter" P1 N)
+        
+        (piece "Counter" P2 S)
+        
+        (piece "DoubleCounter" Each)
+        
+        (regions P1 
+            (sites Bottom)
+        )
+        
+        (regions P2 
+            (sites Top)
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Counter1" 
+                (difference 
+                    (expand 
+                        (sites Bottom)
+                        steps:
+                        (- 3 1)
+                    )
+                    
+                    (sites Phase 1)
+                )
+            )
+            
+            (place "Counter2" 
+                (difference 
+                    (expand 
+                        (sites Top)
+                        steps:
+                        (- 3 1)
+                    )
+                    
+                    (sites Phase 1)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (if 
+                (is Prev Mover)
+                
+                (if 
+                    (= 
+                        (what at:
+                            (last To)
+                        )
+                        
+                        (id "Counter" Mover)
+                    )
+                    
+                    (max Moves 
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            
+                            (directions { FR FL }
+                            )
+                            
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is In 
+                                        (last To)
+                                        
+                                        (sites Next)
+                                    )
+                                    
+                                    (and 
+                                        (promote 
+                                            (last To)
+                                            
+                                            (piece "DoubleCounter")
+                                        Mover )
+                                        
+                                        (if 
+                                            (can Move 
+                                                (move Hop 
+                                                    (from 
+                                                        (last To)
+                                                    )
+                                                    Diagonal 
+                                                    (between before:
+                                                        (count Rows)
+                                                        after:
+                                                        (count Rows)
+                                                        if:
+                                                        (is Enemy 
+                                                            (who at:
+                                                                (between)
+                                                            )
+                                                        )
+                                                        
+                                                        (apply 
+                                                            (remove 
+                                                                (between)
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (to if:
+                                                        (is Empty 
+                                                            (to)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (moveAgain)
+                                        )
+                                    )
+                                    
+                                    (if 
+                                        (can Move 
+                                            (move Hop 
+                                                (from 
+                                                    (last To)
+                                                )
+                                                
+                                                (directions { FR FL }
+                                                )
+                                                
+                                                (between if:
+                                                    (is Enemy 
+                                                        (who at:
+                                                            (between)
+                                                        )
+                                                    )
+                                                    
+                                                    (apply 
+                                                        (remove 
+                                                            (between)
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (to if:
+                                                    (is Empty 
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (max Moves 
+                        (move Hop 
+                            (from 
+                                (last To)
+                            )
+                            Diagonal 
+                            (between before:
+                                (count Rows)
+                                after:
+                                (count Rows)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (if 
+                                    (can Move 
+                                        (move Hop 
+                                            (from 
+                                                (last To)
+                                            )
+                                            Diagonal 
+                                            (between before:
+                                                (count Rows)
+                                                after:
+                                                (count Rows)
+                                                if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (do 
+                    (set Pending 
+                        (sites From 
+                            (max Moves 
+                                (or 
+                                    (forEach Piece "Counter" 
+                                        (move Hop 
+                                            (from)
+                                            
+                                            (directions { FR FL }
+                                            )
+                                            
+                                            (between if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (then 
+                                                (if 
+                                                    (is In 
+                                                        (last To)
+                                                        
+                                                        (sites Next)
+                                                    )
+                                                    
+                                                    (and 
+                                                        (promote 
+                                                            (last To)
+                                                            
+                                                            (piece "DoubleCounter" )
+                                                        Mover )
+                                                        
+                                                        (if 
+                                                            (can Move 
+                                                                (move Hop 
+                                                                    (from 
+                                                                        (last To )
+                                                                    )
+                                                                    Diagonal 
+                                                                    (between before:
+                                                                        (count Rows )
+                                                                        after:
+                                                                        (count Rows )
+                                                                        if:
+                                                                        (is Enemy 
+                                                                            (who at:
+                                                                                (between )
+                                                                            )
+                                                                        )
+                                                                        
+                                                                        (apply 
+                                                                            (remove 
+                                                                                (between )
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                    
+                                                                    (to if:
+                                                                        (is Empty 
+                                                                            (to )
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                            
+                                                            (moveAgain)
+                                                        )
+                                                    )
+                                                    
+                                                    (if 
+                                                        (can Move 
+                                                            (move Hop 
+                                                                (from 
+                                                                    (last To)
+                                                                )
+                                                                
+                                                                (directions { FR FL }
+                                                                )
+                                                                
+                                                                (between if:
+                                                                    (is Enemy 
+                                                                        (who at:
+                                                                            (between )
+                                                                        )
+                                                                    )
+                                                                    
+                                                                    (apply 
+                                                                        (remove 
+                                                                            (between )
+                                                                        )
+                                                                    )
+                                                                )
+                                                                
+                                                                (to if:
+                                                                    (is Empty 
+                                                                        (to)
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (moveAgain)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (forEach Piece "DoubleCounter" 
+                                        (move Hop 
+                                            (from)
+                                            Diagonal 
+                                            (between before:
+                                                (count Rows)
+                                                after:
+                                                (count Rows)
+                                                if:
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                                
+                                                (apply 
+                                                    (remove 
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                            
+                                            (to if:
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                            )
+                                            
+                                            (then 
+                                                (if 
+                                                    (can Move 
+                                                        (move Hop 
+                                                            (from 
+                                                                (last To)
+                                                            )
+                                                            Diagonal 
+                                                            (between before:
+                                                                (count Rows )
+                                                                after:
+                                                                (count Rows )
+                                                                if:
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (between )
+                                                                    )
+                                                                )
+                                                                
+                                                                (apply 
+                                                                    (remove 
+                                                                        (between )
+                                                                    )
+                                                                )
+                                                            )
+                                                            
+                                                            (to if:
+                                                                (is Empty 
+                                                                    (to)
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (moveAgain)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    next:
+                    (or { 
+                        (forEach Piece "Counter" 
+                            (max Moves 
+                                (move Hop 
+                                    (from)
+                                    
+                                    (directions { FR FL }
+                                    )
+                                    
+                                    (between if:
+                                        (is Enemy 
+                                            (who at:
+                                                (between)
+                                            )
+                                        )
+                                        
+                                        (apply 
+                                            (remove 
+                                                (between)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Empty 
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (then 
+                                        (and 
+                                            (set Value Mover 
+                                                (last To)
+                                            )
+                                            
+                                            (if 
+                                                (is In 
+                                                    (last To)
+                                                    
+                                                    (sites Next)
+                                                )
+                                                
+                                                (and 
+                                                    (promote 
+                                                        (last To)
+                                                        
+                                                        (piece "DoubleCounter" )
+                                                    Mover )
+                                                    
+                                                    (if 
+                                                        (can Move 
+                                                            (move Hop 
+                                                                (from 
+                                                                    (last To )
+                                                                )
+                                                                Diagonal 
+                                                                (between before:
+                                                                    (count Rows )
+                                                                    after:
+                                                                    (count Rows )
+                                                                    if:
+                                                                    (is Enemy 
+                                                                        (who at:
+                                                                            (between )
+                                                                        )
+                                                                    )
+                                                                    
+                                                                    (apply 
+                                                                        (remove 
+                                                                            (between )
+                                                                        )
+                                                                    )
+                                                                )
+                                                                
+                                                                (to if:
+                                                                    (is Empty 
+                                                                        (to )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (moveAgain)
+                                                    )
+                                                )
+                                                
+                                                (if 
+                                                    (can Move 
+                                                        (move Hop 
+                                                            (from 
+                                                                (last To)
+                                                            )
+                                                            
+                                                            (directions { FR FL }
+                                                            )
+                                                            
+                                                            (between if:
+                                                                (is Enemy 
+                                                                    (who at:
+                                                                        (between )
+                                                                    )
+                                                                )
+                                                                
+                                                                (apply 
+                                                                    (remove 
+                                                                        (between )
+                                                                    )
+                                                                )
+                                                            )
+                                                            
+                                                            (to if:
+                                                                (is Empty 
+                                                                    (to)
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                    
+                                                    (moveAgain)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece "DoubleCounter" 
+                            (max Moves 
+                                (move Hop 
+                                    (from)
+                                    Diagonal 
+                                    (between before:
+                                        (count Rows)
+                                        after:
+                                        (count Rows)
+                                        if:
+                                        (is Enemy 
+                                            (who at:
+                                                (between)
+                                            )
+                                        )
+                                        
+                                        (apply 
+                                            (remove 
+                                                (between)
+                                            )
+                                        )
+                                    )
+                                    
+                                    (to if:
+                                        (is Empty 
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (then 
+                                        (and 
+                                            (set Value Mover 
+                                                (last To)
+                                            )
+                                            
+                                            (if 
+                                                (can Move 
+                                                    (move Hop 
+                                                        (from 
+                                                            (last To)
+                                                        )
+                                                        Diagonal 
+                                                        (between before:
+                                                            (count Rows )
+                                                            after:
+                                                            (count Rows )
+                                                            if:
+                                                            (is Enemy 
+                                                                (who at:
+                                                                    (between )
+                                                                )
+                                                            )
+                                                            
+                                                            (apply 
+                                                                (remove 
+                                                                    (between )
+                                                                )
+                                                            )
+                                                        )
+                                                        
+                                                        (to if:
+                                                            (is Empty 
+                                                                (to)
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                
+                                                (moveAgain)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece "Counter" 
+                            (move Step 
+                                (directions { FR FL }
+                                )
+                                
+                                (to if:
+                                    (is Empty 
+                                        (to)
+                                    )
+                                )
+                                
+                                (then 
+                                    (if 
+                                        (is In 
+                                            (last To)
+                                            
+                                            (sites Next)
+                                        )
+                                        
+                                        (promote 
+                                            (last To)
+                                            
+                                            (piece "DoubleCounter")
+                                        Mover )
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece "DoubleCounter" 
+                            (move Slide Diagonal)
+                        )
+                        }
+                    )
+                    
+                    (then 
+                        (and 
+                            (if 
+                                (and 
+                                    (!= 
+                                        (value Player Mover)
+                                        
+                                        (last To)
+                                    )
+                                    
+                                    (not 
+                                        (is In 
+                                            (last To)
+                                            
+                                            (sites Pending)
+                                        )
+                                    )
+                                )
+                                
+                                (remove 
+                                    (sites Pending)
+                                )
+                            )
+                            
+                            (if 
+                                (and 
+                                    (!= 
+                                        (value Player Mover)
+                                        
+                                        (last To)
+                                    )
+                                    
+                                    (is In 
+                                        (last From)
+                                        
+                                        (sites Pending)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (last To)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end 
+            (forEach Player if:
+                (no Moves Player)
+                
+                (result Player Loss)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Capture" True)
+    })
+    )

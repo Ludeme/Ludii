@@ -1,0 +1,661 @@
+(game "Andarraya" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Pawn" Each 
+            (or { 
+                (move Step Forward 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (directions { FR FL }
+                    )
+                    
+                    (to if:
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                
+                (or 
+                    (if 
+                        (is In 
+                            (from)
+                            
+                            (sites Start 
+                                (piece 
+                                    (what at:
+                                        (from)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move Slide Forward 
+                            (between 
+                                (exact 2)
+                                if:
+                                (is Empty 
+                                    (between)
+                                )
+                            )
+                            
+                            (to if:
+                                (is Empty 
+                                    (to)
+                                )
+                            )
+                            
+                            (then 
+                                (set Pending 
+                                    (ahead 
+                                        (last To)
+                                    Backward)
+                                )
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (directions { FR FL }
+                        )
+                        
+                        (to if:
+                            (and 
+                                (is Pending)
+                                
+                                (= 
+                                    (to)
+                                    
+                                    (value Pending)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (remove 
+                                (ahead 
+                                    (last To)
+                                Backward)
+                            )
+                        )
+                    )
+                )
+                }
+                
+                (then 
+                    (if 
+                        (and 
+                            (= 
+                                (where "Queen" Mover)
+                            Off)
+                            
+                            (is In 
+                                (last To)
+                                
+                                (sites Mover "Promotion")
+                            )
+                        )
+                        
+                        (promote 
+                            (last To)
+                            
+                            (piece { "Queen"}
+                            )
+                        Mover)
+                    )
+                )
+            )
+        )
+        
+        (piece "Rook" Each 
+            (move Slide Orthogonal 
+                (to if:
+                    (is Enemy 
+                        (who at:
+                            (to)
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (to)
+                        )
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (= 
+                            (state at:
+                                (last To)
+                            )
+                        1)
+                        
+                        (set State at:
+                            (last To)
+                        0)
+                    )
+                )
+            )
+        )
+        
+        (piece "King" Each 
+            (or 
+                (if 
+                    (and 
+                        (not 
+                            (is Threatened 
+                                (id "King" Mover)
+                            )
+                        )
+                        
+                        (= 
+                            (state at:
+                                (mapEntry "King" 
+                                    (mover)
+                                )
+                            )
+                        1)
+                    )
+                    
+                    (move Slide 
+                        (between 
+                            (exact 2)
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (= 
+                            (state at:
+                                (last To)
+                            )
+                        1)
+                        
+                        (set State at:
+                            (last To)
+                        0)
+                    )
+                )
+            )
+        )
+        
+        (piece "Bishop" Each 
+            (move Slide Diagonal 
+                (to if:
+                    (is Enemy 
+                        (who at:
+                            (to)
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Knight" Each 
+            (move Leap { { F F R F }
+                { F F L F }
+                }
+                
+                (to if:
+                    (not 
+                        (is Friend 
+                            (who at:
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (apply 
+                        (if 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Queen" Each 
+            (move Slide 
+                (to if:
+                    (and 
+                        (not 
+                            (= 
+                                (what at:
+                                    (to)
+                                )
+                                
+                                (id "Queen" Next)
+                            )
+                        )
+                        
+                        (is Enemy 
+                            (who at:
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (apply 
+                        (if 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (map "King" { 
+            (pair 1 "E1")
+            
+            (pair 2 "E8")
+            }
+        )
+        
+        (map "RookLeft" { 
+            (pair 1 "A1")
+            
+            (pair 2 "A8")
+            }
+        )
+        
+        (map "RookRight" { 
+            (pair 1 "H1")
+            
+            (pair 2 "H8")
+            }
+        )
+        
+        (regions "Promotion" P1 
+            (sites Top)
+        )
+        
+        (regions "Promotion" P2 
+            (sites Bottom)
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Pawn1" 
+                (sites Row 1)
+            )
+            
+            (place "Pawn2" 
+                (sites Row 6)
+            )
+            
+            (place "Rook1" { "A1" "H1"}
+            state:1)
+            
+            (place "Knight1" { "B1" "G1"}
+            )
+            
+            (place "Bishop1" { "C1" "F1"}
+            )
+            
+            (place "Queen1" coord:"D1")
+            
+            (place "King1" coord:"E1" state:1)
+            
+            (place "Rook2" { "A8" "H8"}
+            state:1)
+            
+            (place "Knight2" { "B8" "G8"}
+            )
+            
+            (place "Bishop2" { "C8" "F8"}
+            )
+            
+            (place "Queen2" coord:"D8")
+            
+            (place "King2" coord:"E8" state:1)
+            }
+        )
+        
+        (play 
+            (if 
+                (is Prev Mover)
+                
+                (move Promote 
+                    (last To)
+                    
+                    (piece { "Queen" "Knight" "Bishop" "Rook"}
+                    )
+                Mover )
+                
+                (do 
+                    (or 
+                        (forEach Piece)
+                        
+                        (if 
+                            (and 
+                                (= 
+                                    (state at:
+                                        (mapEntry "King" 
+                                            (mover)
+                                        )
+                                    )
+                                1)
+                                
+                                (not 
+                                    (is Threatened 
+                                        (id "King" Mover)
+                                    )
+                                )
+                            )
+                            
+                            (or 
+                                (if 
+                                    (and 
+                                        (= 
+                                            (state at:
+                                                (mapEntry "RookLeft" 
+                                                    (mover)
+                                                )
+                                            )
+                                        1 )
+                                        
+                                        (can Move 
+                                            (slide 
+                                                (from 
+                                                    (mapEntry "RookLeft" 
+                                                        (mover)
+                                                    )
+                                                )
+                                                E 
+                                                (between 
+                                                    (exact 3)
+                                                    if:
+                                                    (is Empty 
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (to if:True 
+                                                    (apply 
+                                                        (set State at:
+                                                            (from)
+                                                        0 )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (move Slide 
+                                        (from 
+                                            (mapEntry "King" 
+                                                (mover)
+                                            )
+                                        )
+                                        W 
+                                        (between 
+                                            (exact 2)
+                                            if:
+                                            (and 
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                                
+                                                (not 
+                                                    (is Threatened 
+                                                        (id "King" Mover)
+                                                        at:
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:True 
+                                            (apply 
+                                                (set State at:
+                                                    (from)
+                                                0)
+                                            )
+                                        )
+                                        
+                                        (then 
+                                            (slide 
+                                                (from 
+                                                    (mapEntry "RookLeft" 
+                                                        (mover)
+                                                    )
+                                                )
+                                                E 
+                                                (between 
+                                                    (exact 3)
+                                                if:True)
+                                                
+                                                (to if:True 
+                                                    (apply 
+                                                        (set State at:
+                                                            (from)
+                                                        0 )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (if 
+                                    (and 
+                                        (= 
+                                            (state at:
+                                                (mapEntry "RookRight" 
+                                                    (mover)
+                                                )
+                                            )
+                                        1 )
+                                        
+                                        (can Move 
+                                            (slide 
+                                                (from 
+                                                    (mapEntry "RookRight" 
+                                                        (mover)
+                                                    )
+                                                )
+                                                W 
+                                                (between 
+                                                    (exact 2)
+                                                    if:
+                                                    (is Empty 
+                                                        (to)
+                                                    )
+                                                )
+                                                
+                                                (to if:True 
+                                                    (apply 
+                                                        (set State at:
+                                                            (from)
+                                                        0 )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (move Slide 
+                                        (from 
+                                            (mapEntry "King" 
+                                                (mover)
+                                            )
+                                        )
+                                        E 
+                                        (between 
+                                            (exact 2)
+                                            if:
+                                            (and 
+                                                (is Empty 
+                                                    (to)
+                                                )
+                                                
+                                                (not 
+                                                    (is Threatened 
+                                                        (id "King" Mover)
+                                                        at:
+                                                        (to)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:True 
+                                            (apply 
+                                                (set State at:
+                                                    (from)
+                                                0)
+                                            )
+                                        )
+                                        
+                                        (then 
+                                            (slide 
+                                                (from 
+                                                    (mapEntry "RookRight" 
+                                                        (mover)
+                                                    )
+                                                )
+                                                W 
+                                                (between 
+                                                    (exact 2)
+                                                if:True)
+                                                
+                                                (to if:True 
+                                                    (apply 
+                                                        (set State at:
+                                                            (from)
+                                                        0 )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    ifAfterwards:
+                    (not 
+                        (is Threatened 
+                            (id "King" Mover)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end { 
+            (if 
+                (and 
+                    (is Threatened 
+                        (id "King" Next)
+                    )
+                    
+                    (not 
+                        (can Move 
+                            (do 
+                                (forEach Piece Next)
+                                ifAfterwards:
+                                (not 
+                                    (is Threatened 
+                                        (id "King" Next)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (result Mover Win)
+            )
+            
+            (if 
+                (or 
+                    (no Moves Mover)
+                    
+                    (= 
+                        (counter)
+                    99)
+                )
+                
+                (result Mover Draw)
+            )
+            }
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Capture" True)
+    })
+    )
