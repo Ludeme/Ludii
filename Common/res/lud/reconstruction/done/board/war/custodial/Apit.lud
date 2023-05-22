@@ -1,0 +1,1516 @@
+(game "Apit"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+{
+(item "Apit (Ludii 1)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Marker" Each 
+            (move Slide Orthogonal 
+                (then 
+                    (and 
+                        (intervene 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (to if:
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union { 
+                    (sites Row 0)
+                    
+                    (sites Row 1)
+                    
+                    (sites Row 2)
+                    
+                    (sites Row 3)
+                    }
+                )
+            )
+            
+            (place "Marker2" 
+                (union { 
+                    (sites Row 5)
+                    
+                    (sites Row 6)
+                    
+                    (sites Row 7)
+                    
+                    (sites Row 8)
+                    }
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Apit (Ludii 1) ruleset.")
+
+(item "Apit (Ludii 2)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Marker" Each 
+            (move Slide Orthogonal 
+                (then 
+                    (and 
+                        (intervene 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (to if:
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union { 
+                    (sites Row 0)
+                    
+                    (sites Row 1)
+                    
+                    (sites Row 2)
+                    
+                    (sites Row 3)
+                    }
+                )
+            )
+            
+            (place "Marker2" 
+                (union { 
+                    (sites Row 5)
+                    
+                    (sites Row 6)
+                    
+                    (sites Row 7)
+                    
+                    (sites Row 8)
+                    }
+                )
+            )
+            }
+        )
+        
+        (play 
+            (if 
+                (is Prev Mover)
+                
+                (or 
+                    (move Hop 
+                        (from 
+                            (last To)
+                        )
+                        
+                        (between if:
+                            (and 
+                                (not 
+                                    (is In 
+                                        (between)
+                                        
+                                        (sites ToClear)
+                                    )
+                                )
+                                
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+                
+                (forEach Piece)
+            )
+        )
+        
+        (end 
+            (if 
+                (no Moves Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Apit (Ludii 2) ruleset.")
+
+(item "Apit (Ludii 3)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Marker" Each 
+            (move Slide Orthogonal 
+                (then 
+                    (and 
+                        (intervene 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (to if:
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union { 
+                    (sites Row 0)
+                    
+                    (sites Row 1)
+                    
+                    (sites Row 2)
+                    
+                    (sites Row 3)
+                    
+                    (sites Row 4)
+                    }
+                )
+            )
+            
+            (place "Marker2" 
+                (union { 
+                    (sites Row 6)
+                    
+                    (sites Row 7)
+                    
+                    (sites Row 8)
+                    
+                    (sites Row 9)
+                    
+                    (sites Row 10)
+                    }
+                )
+            )
+            }
+        )
+        
+        (play 
+            (if 
+                (is Prev Mover)
+                
+                (or 
+                    (move Hop 
+                        (from 
+                            (last To)
+                        )
+                        
+                        (between if:
+                            (and 
+                                (not 
+                                    (is In 
+                                        (between)
+                                        
+                                        (sites ToClear)
+                                    )
+                                )
+                                
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+                
+                (forEach Piece)
+            )
+        )
+        
+        (end 
+            (if 
+                (no Moves Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Apit (Ludii 3) ruleset.")
+
+(item "Apit (Ludii 4)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Marker" Each 
+            (move Slide Orthogonal 
+                (then 
+                    (and 
+                        (intervene 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (to if:
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (sites { "H3" "F6" "G6" "H6" "I6" "J6" "L6" "H8" "I8" "J8"}
+                )
+            )
+            
+            (place "Marker2" 
+                (sites { "H10" "I10" "J10" "F12" "H12" "I12" "J12" "L12" "J15" }
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Moves Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Apit (Ludii 4) ruleset.")
+
+(item "Apit (Ludii 5)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Marker" Each 
+            (move Slide Orthogonal 
+                (then 
+                    (and 
+                        (intervene 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (to if:
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union 
+                    (expand 
+                        (sites Bottom)
+                    )
+                    
+                    (sites { "A3"}
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (union 
+                    (expand 
+                        (sites Top)
+                    )
+                    
+                    (sites { "E3"}
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Apit (Ludii 5) ruleset.")
+
+(item "Apit (Ludii 6)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Marker" Each 
+            (move Slide Orthogonal 
+                (then 
+                    (and 
+                        (intervene 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (to if:
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (forEach 
+                    (sites Board)
+                    if:
+                    (< 
+                        (site)
+                        
+                        (centrePoint)
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (forEach 
+                    (sites Board)
+                    if:
+                    (> 
+                        (site)
+                        
+                        (centrePoint)
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (if 
+                (is Prev Mover)
+                
+                (or 
+                    (move Hop 
+                        (from 
+                            (last To)
+                        )
+                        
+                        (between if:
+                            (and 
+                                (not 
+                                    (is In 
+                                        (between)
+                                        
+                                        (sites ToClear)
+                                    )
+                                )
+                                
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+                
+                (forEach Piece)
+            )
+        )
+        
+        (end 
+            (forEach Player if:
+                (no Pieces Player)
+                
+                (result Player Loss)
+            )
+        )
+    )
+
+ > "The Apit (Ludii 6) ruleset.")
+
+(item "Apit (Ludii 7)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Marker" Each 
+            (move Slide Orthogonal 
+                (then 
+                    (and 
+                        (intervene 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (to if:
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union 
+                    (sites Row 0)
+                    
+                    (sites Row 2)
+                )
+            )
+            
+            (place "Marker2" 
+                (union 
+                    (sites Row 5)
+                    
+                    (sites Row 7)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Apit (Ludii 7) ruleset.")
+
+(item "Apit (Ludii 8)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Marker" Each 
+            (move Slide Orthogonal 
+                (then 
+                    (and 
+                        (intervene 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (to if:
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (forEach 
+                    (sites Board)
+                    if:
+                    (< 
+                        (site)
+                        
+                        (centrePoint)
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (forEach 
+                    (sites Board)
+                    if:
+                    (and 
+                        (> 
+                            (site)
+                            
+                            (centrePoint)
+                        )
+                        
+                        (< 
+                            (site)
+                            
+                            (* 9 9)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (if 
+                (is Prev Mover)
+                
+                (or 
+                    (move Hop 
+                        (from 
+                            (last To)
+                        )
+                        
+                        (between if:
+                            (and 
+                                (not 
+                                    (is In 
+                                        (between)
+                                        
+                                        (sites ToClear)
+                                    )
+                                )
+                                
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                        
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from 
+                                            (last To)
+                                        )
+                                        
+                                        (between if:
+                                            (and 
+                                                (not 
+                                                    (is In 
+                                                        (between)
+                                                        
+                                                        (sites ToClear)
+                                                    )
+                                                )
+                                                
+                                                (is Enemy 
+                                                    (who at:
+                                                        (between)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        
+                                        (to if:
+                                            (is Empty 
+                                                (to)
+                                            )
+                                        )
+                                    )
+                                )
+                                
+                                (moveAgain)
+                            )
+                        )
+                    )
+                    
+                    (move Pass)
+                )
+                
+                (forEach Piece)
+            )
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Apit (Ludii 8) ruleset.")
+
+(item "Apit (Ludii 9)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Marker" Each 
+            (move Slide Orthogonal 
+                (then 
+                    (and 
+                        (intervene 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (to if:
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (forEach 
+                    (sites Board)
+                    if:
+                    (< 
+                        (site)
+                        
+                        (centrePoint)
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (forEach 
+                    (sites Board)
+                    if:
+                    (> 
+                        (site)
+                        
+                        (centrePoint)
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Apit (Ludii 9) ruleset.")
+
+(item "Apit (Ludii 10)" <
+ 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 8)
+        )
+        
+        (piece "Marker" Each 
+            (move Slide Orthogonal 
+                (then 
+                    (and 
+                        (intervene 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (to if:
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (difference 
+                    (expand 
+                        (sites Bottom)
+                    steps:4)
+                    
+                    (sites { 36 37 38 39 40}
+                    )
+                )
+            )
+            
+            (place "Marker2" 
+                (difference 
+                    (expand 
+                        (sites Top)
+                    steps:4)
+                    
+                    (sites { 40 41 42 43 44}
+                    )
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+
+ > "The Apit (Ludii 10) ruleset.")
+
+
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (board (square 8))
+            [#]
+        })
+        (rules [#])
+        >
+        "The incomplete ruleset."
+    )
+
+ })
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+
+(ruleset "Ruleset/Apit (Ludii 1) (Reconstructed)" {
+     "Variant/Apit (Ludii 1)"
+})
+(ruleset "Ruleset/Apit (Ludii 2) (Reconstructed)" {
+     "Variant/Apit (Ludii 2)"
+})
+(ruleset "Ruleset/Apit (Ludii 3) (Reconstructed)" {
+     "Variant/Apit (Ludii 3)"
+})
+(ruleset "Ruleset/Apit (Ludii 4) (Reconstructed)" {
+     "Variant/Apit (Ludii 4)"
+})
+(ruleset "Ruleset/Apit (Ludii 5) (Reconstructed)" {
+     "Variant/Apit (Ludii 5)"
+})
+(ruleset "Ruleset/Apit (Ludii 6) (Reconstructed)" {
+     "Variant/Apit (Ludii 6)"
+})
+(ruleset "Ruleset/Apit (Ludii 7) (Reconstructed)" {
+     "Variant/Apit (Ludii 7)"
+})
+(ruleset "Ruleset/Apit (Ludii 8) (Reconstructed)" {
+     "Variant/Apit (Ludii 8)"
+})
+(ruleset "Ruleset/Apit (Ludii 9) (Reconstructed)" {
+     "Variant/Apit (Ludii 9)"
+})
+(ruleset "Ruleset/Apit (Ludii 10) (Reconstructed)" {
+     "Variant/Apit (Ludii 10)"
+}) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+ (metadata 
+    
+    (info
+        {
+        (description "Apit is a capturing game played in Malaysia in the early twentieth century.")
+        (aliases {"Apit-Sodok"})
+        (rules "8x8 board. An opponent's piece may be captured when it is surrounded on opposite sides by two of the player's pieces. When a player moves a piece between two of the opponent's pieces, both of the opponent's pieces are taken.")
+        (source "DLP evidence.")
+        (id "1131")
+        (version "1.3.11")
+        (classification "board/war/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Malaysia, around 1915.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+    (recon {
+        (concept "InterveneCapture" True)
+        (concept "CustodialCapture" True)
+    })
+    
+)
+
+
