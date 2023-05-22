@@ -204,7 +204,7 @@ public class GenerateTrialsClusterParallel
 						{
 							agentStrings.add(aisListPerThread.get(0).get(p - 1).friendlyName());
 						}
-						final ResultsSummary resultsSummary = new ResultsSummary(game, agentStrings);
+						final ResultsSummary resultsSummary = new ResultsSummary(rulesetGame, agentStrings);
 						
 						for (int i = beginTrialIndex; i < NUM_TRIALS_PER_GAME; ++i)
 						{
