@@ -1,0 +1,268 @@
+(define "PrimaryDirectionsFor"
+ (if 
+  (if
+   (= 1 (player #1)) 
+   (directions {Forwards Rightward})
+   (if
+    (= 2 <Board:players>) 
+    (directions {Backwards Leftward})
+    (if 
+     (= 2 (player #1))
+     (directions {Backwards Leftward})
+     (directions {Backwards Leftward})
+)))))
+
+(define "LapSiteOf"
+ (if (= 1 #1) (sites <Board:lapP1>)
+  (if (= 2 #1) (sites <Board:lapP2>) (sites <Board:lapP3>))
+))
+ 
+(game "There and Back" 
+ (players <Board:players>)
+ (equipment
+   {
+    <Board:used>
+    (regions P1 (sites <Board:sideP1>))
+    (regions P2 (sites <Board:sideP2>))
+    (regions P3 (sites <Board:sideP3>))
+    (piece "Disc" Each)
+   }
+ )
+ (rules
+  (start 
+    {
+     (place "Disc1" (sites P1) state:0 rotation:0)
+     (place "Disc2" (sites P2) state:0 rotation:(- 6 (/ <Board:sides> 2)))
+     (place "Disc<Board:players>" (sites P3) state:0 rotation:5)
+    }
+  )
+  (play
+   (<Capture:forcedOrNot>
+    (forEach Piece
+     (move Step
+      (to 
+       if:(is In (to) (union (sites Occupied by:Prev) (sites Occupied by:Next)))
+       (apply (remove (to)))
+    )))
+    (forEach Piece
+     (move Slide
+      (if
+       (= 0 (state at:(from)))
+       (directions {Forwards Rightward})
+       (directions {Backwards Leftward})
+    )))
+    (then
+     (if
+      (and (= 0 (state at:(last To))) (is In (last To)  ("LapSiteOf" (mover))))
+      (set State at:(last To) 1)
+  ))))
+  (end
+   (if
+    (or
+     (and (no Moves Prev) (no Moves Next))
+     (< 0
+      (size Array
+       (array
+        (intersection {(sites Mover) (sites State 1) (sites Occupied by:Mover)}) 
+    ))))
+    (result Mover Win)
+))))
+
+//--------------------------
+// ending rules:
+//-------------------------------------------------------
+
+
+(define "GridDir" Adjacent)
+
+//-------------------------------------------------------
+// Board definitions
+
+(define "SymRemover" // Rotation, board, cells or vertices to remove 
+ (renumber (rotate (* (- #1 1) (/ 360 #1)) (trim (remove #2 #3))))
+)
+
+(define "Sym2Remover" ("SymRemover" 2  ("SymRemover" 2 #1 #2) #2))
+ 
+(define "RaggedSquare" // symmetry, board, recurrent removals, final edge removal
+ ("SymRemover" 4 ("SymRemover" 4 ("SymRemover" 4 ("SymRemover" 4 #1 #2) #2) #2) #3)
+)
+
+(define "RaggedTri" 
+ ("SymRemover" 1 ("SymRemover" 3 ("SymRemover" 3 #1 #2) #2) #3)
+)
+(define "RaggedHex" 
+ ("SymRemover" 6 ("SymRemover" 6 ("SymRemover" 6 ("SymRemover" 6 ("SymRemover" 6 ("SymRemover" 6 (hex #1) #2) #2) #2) #2) #2) #3)
+ )
+
+(option "Capture" <Capture> args:{ <forcedOrNot>  }
+ {
+  (item "Not Forced" <or> "Capture is discretionary")**
+  (item "Forced" <priority> "Capture is mandatory")
+ }
+)
+
+(option "Board" <Board> args:{ <players> <sides> <used> <sideP1> <sideP2> <sideP3> <lapP1> <lapP2> <lapP3>} 
+  {
+  
+  (item "SquareNut 4 (36 cells)"
+   <2> 
+   <4>
+   <(board
+     ("SymRemover" 1 
+      ("RaggedSquare" 
+       (square 8)
+       cells:{0..3 8 9} 
+       cells:{0..3 6 7}
+      ) 
+      cells:{10 15 24 29}
+     )
+     use:Cell
+   )>  
+   <{0..3 6..7}>
+   <{28..29 32..35}>
+   <{}>
+   <{28..29 32..35}>
+   <{0..3 6..7}>
+   <{}>
+   "SquareNut 4 (36 cells)"
+  )
+  
+  (item "SquareNut 9 (64 cells)" 
+   <2> 
+   <4>
+   <(board
+     ("SymRemover" 1
+      ("RaggedSquare" 
+       (square 11)
+       cells:{0..5 11..14 22 23} 
+       cells:{0..5 8..11 16 17} 
+      )
+      cells:{10 17 24 29 36 43 48 55 62}
+     )
+     use:Cell
+   )> 
+   <{0..3 6..7 12..13}>
+   <{50..51 56..57 60..63}> 
+   <{}>
+   <{50..51 56..57 60..63}>
+   <{0..3 6..7 12..13}> 
+   <{}>
+   "SquareNut 9 (64 cells)" 
+  )
+  
+  (item "SquareNut 16 (100 cells)" 
+   <2>
+   <4>
+   <(board
+     ("SymRemover" 1
+      ("RaggedSquare" 
+       (square 14)
+       cells:{0..7 14..19 28..31 42 43} 
+       cells:{0..7 10..15 20..23 31 32} 
+      )
+      cells:{10 17 26 31 36 41 50 55 60 65 74 79 84 89 98 105} 
+     )
+     use:Cell
+   )>  
+   <{0..3 6..7 12..13 20..21}>
+   <{78..79 86..87 92..93 96..99}>
+   <{}>
+   <{78..79 86..87 92..93 96..99}>
+   <{0..3 6..7 12..13 20..21}>
+   <{}>
+   
+   "SquareNut 16 (100 nodes)" 
+  )
+  
+  (item "SquareNut 25 (144 cells)"  
+   <2>
+   <4>
+   <(board
+     ("SymRemover" 1
+      ("RaggedSquare" 
+       (square 17)
+       cells:{0..9 17..24 34..39 51..54 68 69} 
+       cells:{0..9 12..19 24..29 37..40 50 51} 
+      )
+      cells:{10 17 26 31 38 43 50 55 60 67 72 79 84 89 96 101 108 113 118 125 130 137 142 151 158}
+     )
+     use:Cell
+   )>   
+   <{0..3 6..7 12..13 20..21}>
+   <{78..79 86..87 92..93 96..99}> 
+   <{}>
+   <{78..79 86..87 92..93 96..99}> 
+   <{0..3 6..7 12..13 20..21}>
+   <{}>
+   "SquareNut 25 (144 cells)" 
+  )
+  (item "2-Player (72) hex cells"
+   <2>
+   <6>
+   <(board (remove (hex 6) cells:{0 1 5 12 17 23 30 37 40 45 50 53 60 67 73 78 85 89 90}) use:Cell)>  
+   <{0..5 9 16}>
+   <{55 62 66..71}> 
+   <{}>
+   <{55 62 66..71}> 
+   <{0..5 9 16}>
+   <{}> 
+   "2-Player Medium board (72 cells) -- Movement is in 3 forward orthogonal directions."
+  )
+  (item "3-Player (72) hex cells"
+   <3>
+   <6>
+   <(board (remove (hex 6) cells:{0 1 5 12 17 23 30 37 40 45 50 53 60 67 73 78 85 89 90}) use:Cell)>  
+   <{0..1 3..5}>
+   <{48 56 57 63 69}> 
+   <{31 39 47 55 62}>
+   <{66..68 70..71}> 
+   <{2 8 14 15 23}>
+   <{9 16 24 32 40}> 
+   "3-Player Medium board (72 cells) -- Movement is in 3 forward orthogonal directions."
+  )
+  }
+)
+
+(define "DestinationEdgesFor" (intersection (sites Perimeter Edge) (forEach of:(sites #1) (sites Incident Edge of:Cell at:(site)))))
+
+(define "DestinationEdgesForx" (sites Perimeter Edge))
+
+//------------------------------------------------
+
+(metadata
+  (info
+    {
+     }
+  ) 
+  
+  (graphics 
+   {
+    (player Colour P1 (colour 120 36 0))
+    (player Colour P2 (colour Cream))
+    (player Colour P3 (colour Blue))
+    (piece Foreground P1 state:1 image:"Double_Counter")
+    (piece Foreground P2 state:1 image:"Double_Counter")
+    (piece Foreground P3 state:1 image:"Double_Counter")
+    (board StyleThickness InnerEdges 0.4)
+    (board StyleThickness OuterEdges 3.0)
+    (board StyleThickness InnerVertices 0.45)
+    (board StyleThickness OuterVertices 0.45)
+    (board Colour InnerVertices (colour Grey))
+    (board Colour OuterVertices (colour Grey))
+    (board Colour InnerEdges (colour Black))
+    (board Colour OuterEdges (colour Grey))
+    (board Background fillColour:(colour 170 160 140) edgeColour:(colour Grey) scale:1.3 )
+    (board Colour Phase0 (colour HumanLight))
+    (show Edges Diagonal Hidden (colour DarkGrey))
+    (region Colour Edge ("DestinationEdgesFor" <Board:lapP1>) regionSiteType:Edge (colour 120 36 0))
+    (region Colour Edge ("DestinationEdgesFor" <Board:lapP2>) regionSiteType:Edge (colour White))
+    (region Colour Edge ("DestinationEdgesFor" <Board:lapP3>) regionSiteType:Edge (colour Blue))
+    (region Colour (sites <Board:sideP1>) (colour 120 36 0))
+    (region Colour (sites <Board:sideP2>) (colour White))
+    (region Colour (sites <Board:sideP3>) (colour Blue))
+   }
+  )
+)
+
+
