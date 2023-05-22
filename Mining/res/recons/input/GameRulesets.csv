@@ -1926,7 +1926,7 @@ If at any point, the Prison and the Hospital each contain 12 or more inmates, ei
 ","Fiske 1905: 318.","Sweden",NULL,NULL,NULL,"63°18'42.58""N, 17°32'7.22""E","5339,5339","0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
 "1209","1050","Buffa de Baldrac",NULL,"Rules for Buffa de Baldrac.","1","Rules described in Alfonso X's Libro de los Juegos.","Played on a Tables board with sockets for the pieces instead of points. Fifteen pieces per player. Three six-sided dice. Players move according to the number on each die by moving one piece the value on one die, another piece the value on another die, and another piece the value on the final die, by moving one piece the value of two of the die subsequently, and a second piece the value of the remaining die, or one piece the value of each die subsequently. Pieces begin off the board. Players must enter all of their pieces onto one half of the board (one player entering in the quadrant to their right and the other player's entering into the quadrant on their left), according to the throws of the dice. Once a player has entered all of their pieces, they move through all of the quadrants of the board toward the quadrant where the opponent entered their pieces. A piece landing on a space with a single opponent's piece sends the opponent's piece back to start, and it must be reentered. Once players enter all of their pieces into the final quadrant, they may bear off their pieces. They can do so by rolling a 6 to move from the sixth point, and so on down to 1. Throughout the game, a player must use the maximum number of moves presented by the dice. The first player to remove all of their pieces wins.
 ","Libro de los Juegos 79.","Spain",NULL,NULL,NULL,"38°25'53.03""N, 5°46'34.41""W","4783,4783","0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
-"1210","1052","Historical Information",NULL,"From DLP evidence.","5","Rules for Shing Kun T'o as played during the Manchu Dynasty from the DLP evidence.","6 spaces. Four dice per player. A player enters the board with :three 4s advance to a hereditary rank; 3, 4, 5, 6; three of another number of two of any number. Subsequent throws allow players to be promoted or demoted according to the instructions on the board. Doubles allow a player to move once, three of the same number allow a player to move twice, all four of the same number allow the player to move four times. Double 4 is the highest, followed by double 6, and so on down to 1. Thirteen starting places in the lower right hand corner. Three 4s enter the highest rank of these, and then, proceeding down in rank, throws of: 3, 4, 5, 6; 3 sixes; three 5s; three 3s; three 2s; three 1s; double 4; double 6; double 5; double 3; double 2; double 1. Grand secretary is the highest rank, and a player who reaches that position wins.","DLP evidence.","China",NULL,NULL,NULL,"23°7'44.51""N, 113°15'51.35""E","5395,5395","0",NULL,"0","1",NULL,NULL,NULL,NULL,NULL,NULL
+"1210","1052","Historical Information",NULL,"From DLP evidence.","5","Rules for Shing Kun T'o as played during the Manchu Dynasty from the DLP evidence.","76 spaces. Four dice per player. A player enters the board with :three 4s advance to a hereditary rank; 3, 4, 5, 6; three of another number of two of any number. Subsequent throws allow players to be promoted or demoted according to the instructions on the board. Doubles allow a player to move once, three of the same number allow a player to move twice, all four of the same number allow the player to move four times. Double 4 is the highest, followed by double 6, and so on down to 1. Thirteen starting places in the lower right hand corner. Three 4s enter the highest rank of these, and then, proceeding down in rank, throws of: 3, 4, 5, 6; 3 sixes; three 5s; three 3s; three 2s; three 1s; double 4; double 6; double 5; double 3; double 2; double 1. Grand secretary is the highest rank, and a player who reaches that position wins.","DLP evidence.","China",NULL,NULL,NULL,"23°7'44.51""N, 113°15'51.35""E","5395,5395","0",NULL,"0","1",NULL,NULL,NULL,NULL,NULL,NULL
 "1211","1053","Historical Information",NULL,"Tules from DLP Evidence.","5","Rules for Tjyong- Kyeng To as konw from the DLP evidence.","Board with 108 squares. Five-sided die, marked from 1-5.
 ","DLP evidence.","Korea",NULL,NULL,NULL,"39°39'21.36""N, 125°10'15.86""E","5395,5395","0",NULL,"0","1",NULL,NULL,NULL,NULL,NULL,NULL
 "1212","1054","Historical Information",NULL,"From DLP evidence.","5","Rules known for Han Guan Yi from the DLP evidence.","152 or more spaces. Two dice. Players roll dice to determine which space to begin. They continue to throw to determine where to be promoted or demoted. There is a limit of 25 rounds. The first person to reach the position of Chancellor, Commander-in-Chief, Grandee Secretary, Grand Master, Grand Tutor, Grand Guardian, or Prince, wins; otherwise the highest ranked player after 25 rounds wins. 
@@ -23129,3 +23129,42 @@ Aim:
      If the next player cannot move, the moving player wins.
 
 ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.91","0.905","0.458","0.915","1203, 875","[]"
+"4032","1640","Default",NULL,NULL,"1",NULL,"Game starts with a cross made from dots.
+During each turn, place a dot to form a straight line that is exactly five dots long and then draw a straight line. This line can not overlap a part of an existing line. For every line drown we get a point. The goal is to maximise the score.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
+"4033","1641","Default",NULL,NULL,"1",NULL,"For setup, players may drop their initial two workers anywhere on the board. Then players take turns moving either a worker or a soldier. Soldiers move in straight lines and capture by replacement. Workers produce new things based on the piece opposite them (worker+worker = base, worker+base = worker or soldier). The first player to be left with no moves loses.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
+"4034","1642","Default",NULL,NULL,"1",NULL,"Goal: Most 'Warehouses' when the board is full.
+        Definitions:
+-- 'friendly': a player's piece. -- 'foreign': their opponent's piece.
+-- A 'Supplier' is a piece with less than 3 friendly neighbors.
+-- A 'Warehouse' is a piece with 3 or more friendly neighbors.
+-- A 'Supply Chain' is any of a player's pieces, and all of the friendly pieces that can connect to it through series of adjacent connections with each other.
+
+-- A supply chain 'deficit' is a condition that occurs when the number of Warehouses in a Supply Chain exceeds the number of foreign Suppliers next to that Chain.
+
+-- A supply chain 'Surplus' is the number by which the number of foreign Suppliers next to a Friendly Supply Chain exceeds the Warehouses in that Chain, displayed for informational purposes.
+
+Play:
+After the first player takes a single turn, the players continue to play, each taking 2 turns in a row until no more placements can be made.
+
+On a normal turn, the mover adds a piece to the board, taking care not to cause a supply chain deficit in the chain being extended.
+
+However, if a player starts a turn with a supply chain deficit, the player must remove Warehouses from the deficit chains until no deficit remains. In this case, no placement is made for the turn.
+
+In either case, all piece conversions are updated, and supply chain surpluses are shown for each chain.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
+"4035","1643","Default",NULL,NULL,"1",NULL,"Goal: Connect all three edge colors with a single group of connected stones of your own color. (As in 'Y') 
+    
+    First turn is a single move. In the standard game subsequent turns have two placements each. The player seeking to connect with the darker color starts.
+    
+    The moves consist of two parts: placement, then conditional 'flipping' of stones:
+    - Placement is to any empty location.
+    - 'Flipping' means changing the color of a stone that has more neighbors of its own color than enemy neighbors. 
+    
+    Flipping is restricted to the selected option. Stones are flipped one at a time until no more can flip.
+    
+    Options are:
+    -- 00'Y': All - Each applicable stone flips, one at a time with cascading effects, until no more can flip.
+    -- Defector Y: Enemies flip into Friends - these might be pieces near/at the stone just placed placed, and/or a stone the opponent flipped.
+    -- Friends flip into Enemies - these might be pieces near/at the opponent's last placements or flips.
+ 
+
+The first player to connect all 3 sides after the all flips have been made is the winner.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
