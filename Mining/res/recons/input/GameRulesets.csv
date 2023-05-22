@@ -23785,3 +23785,315 @@ Aim:
      If there are no pieces owned by Player the moving player, the moving player wins.
 
 ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.939","0.909","0.469","0.969","733, 734","[]"
+"4066","1615","Chatrang (Sassanian) (Ludii 1)",NULL,"Reconstructed with Ludii","2",NULL,"The game Chatrang (Sassanian) is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with Pawns, Rooks, KingnoCrosses, Elephants, Knights and FerznoCrosses.
+Rules for Pieces:
+     Elephants hop orthogonal.
+     FerznoCrosses remove pieces at to then step diagonal.
+     KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+     Knights leap a piece to not is a friend.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, move again.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Elephant for player one on sites: C1 and F1.
+     Place a FerznoCross for player one on site D1.
+     Place a KingnoCross for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Elephant for player two on sites: C8 and F8.
+     Place a FerznoCross for player two on site E8.
+     Place a KingnoCross for player two on site D8..
+Rules: 
+     If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into FerznoCross, else move one of your pieces.
+Aim: 
+     If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the moving player cannot move, the moving player wins If the number of pieces owned by Player the next player is less than or equal to 1, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.995","0.997","0.997","0.993","145, 145","[]"
+"4067","1615","Chatrang (Sassanian) (Ludii 2)",NULL,"Reconstructed with Ludii","2",NULL,"The game Chatrang (Sassanian) is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with Pawns, Rooks, KingnoCrosses, BishopnoCrosses, Knights and FerznoCrosses.
+Rules for Pieces:
+     BishopnoCrosses hop diagonal.
+     FerznoCrosses remove pieces at to then step diagonal.
+     KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+     Knights leap a piece to not is a friend.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, move again.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a BishopnoCross for player one on sites: C1 and F1.
+     Place a FerznoCross for player one on site D1.
+     Place a KingnoCross for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a BishopnoCross for player two on sites: C8 and F8.
+     Place a FerznoCross for player two on site D8.
+     Place a KingnoCross for player two on site E8..
+Rules: 
+     If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into FerznoCross, else move one of your pieces.
+Aim: 
+     If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the number of pieces owned by Player the next player is equal to 1, the moving player wins If the next player cannot move, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.944","0.92","0.972","0.968","306, 306","[{306, 1435}, {1435, 306}, {1435, 1435}]"
+"4068","1615","Chatrang (Sassanian) (Ludii 3)",NULL,"Reconstructed with Ludii","2",NULL,"The game Chatrang (Sassanian) is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with KingnoCrosses, Rooks, Elephants, Knights, Pawns and Queens.
+Rules for Pieces:
+     Elephants hop orthogonal.
+     KingnoCrosses remove pieces at to then step adjacent.
+     Knights leap a piece to not is a friend.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left.
+     Queens remove pieces at to then step diagonal.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Elephant for player one on sites: A1 and H1.
+     Place a Rook for player one on sites: B1 and G1.
+     Place a Knight for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a KingnoCross for player one on site E1.
+     Place a Elephant for player two on sites: A8 and H8.
+     Place a Rook for player two on sites: B8 and G8.
+     Place a Knight for player two on sites: C8 and F8.
+     Place a Queen for player two on site E8.
+     Place a KingnoCross for player two on site D8..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the number of pieces owned by Player the next player is equal to 1, the moving player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.933","0.907","0.966","0.959","1445, 1445","[]"
+"4069","1615","Chatrang (Sassanian) (Ludii 4)",NULL,"Reconstructed with Ludii","2",NULL,"The game Chatrang (Sassanian) is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with Pawns, Rooks, KingnoCrosses, Elephants, Knights and FerznoCrosses.
+Rules for Pieces:
+     Elephants hop orthogonal.
+     FerznoCrosses remove pieces at to then step diagonal.
+     KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+     Knights leap a piece to not is a friend.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, move again.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Elephant for player one on sites: C1 and F1.
+     Place a FerznoCross for player one on site D1.
+     Place a KingnoCross for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Elephant for player two on sites: C8 and F8.
+     Place a FerznoCross for player two on site D8.
+     Place a KingnoCross for player two on site E8..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the moving player cannot move, the moving player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.922","0.849","0.997","0.995","145, 1436","[{145, 1438}]"
+"4070","1615","Chatrang (Sassanian) (Ludii 5)",NULL,"Reconstructed with Ludii","2",NULL,"The game Chatrang (Sassanian) is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with KingnoCrosses, FerznoCrosses, Elephants, Knights, Rooks and Pawns.
+Rules for Pieces:
+     Elephants hop diagonal.
+     FerznoCrosses remove pieces at to then step diagonal or if not 1 is equal to State at the location of the piece, hop adjacent if not 1 is equal to State at the to location of the last move, set the state of the Cell the to location of the last move to 1.
+     KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+     Knights leap a piece to not is a friend.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of the moving player the to location of the last move, this piece can promote into FerznoCross.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Elephant for player one on sites: C1 and F1.
+     Place a FerznoCross for player one on site D1.
+     Place a KingnoCross for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Elephant for player two on sites: C8 and F8.
+     Place a FerznoCross for player two on site E8.
+     Place a KingnoCross for player two on site D8..
+Rules: 
+     If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into FerznoCross, else move one of your pieces.
+Aim: 
+     If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the moving player cannot move, the moving player wins If the number of pieces owned by Player the next player is less than or equal to 1, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.922","0.924","0.924","0.92","1436, 145","[]"
+"4071","1615","Chatrang (Sassanian) (Ludii 6)",NULL,"Reconstructed with Ludii","2",NULL,"The game Chatrang (Sassanian) is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with KingnoCrosses, FerznoCrosses, Elephants, Knights, Rooks and Pawns.
+Rules for Pieces:
+     Elephants slide from the location of the piece in the diagonal direction through between is in the number of sites within 1 spaces of the location of the piece includeOrigin: false or empty.
+     FerznoCrosses slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells or leap a piece to not is a friend.
+     KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+     Knights leap a piece to not is a friend.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of the moving player the to location of the last move, this piece can promote into FerznoCross.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Elephant for player one on sites: C1 and F1.
+     Place a FerznoCross for player one on site D1.
+     Place a KingnoCross for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Elephant for player two on sites: C8 and F8.
+     Place a FerznoCross for player two on site E8.
+     Place a KingnoCross for player two on site D8..
+Rules: 
+     If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into FerznoCross, else move one of your pieces.
+Aim: 
+     If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the moving player cannot move, the moving player wins If the number of pieces owned by Player the next player is less than or equal to 1, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.92","0.922","0.922","0.917","1438, 145","[]"
+"4072","1615","Chatrang (Sassanian) (Ludii 7)",NULL,"Reconstructed with Ludii","2",NULL,"The game Chatrang (Sassanian) is played by two players on a 8x8 rectangle board with square tiling. 
+Player one plays with KingnoCrosses, FerznoCrosses, Knights, Elephants, Rooks and Pawns. Player two plays with KingnoCrosses. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6]. Shared plays with Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+Rules for Pieces:
+     Elephants hop orthogonal.
+     FerznoCrosses remove pieces at to then step diagonal.
+     KingnoCrosses slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells or leap a piece to not is a friend or hop orthogonal or remove pieces at to then step diagonal or remove pieces at to then step diagonal or remove pieces at to then step adjacent.
+     Knights leap a piece to not is a friend.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in the top sites of the board, a piece of the moving player the to location of the last move, this piece can promote into FerznoCross.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Elephant for player one on sites: C1 and F1.
+     Place a FerznoCross for player one on site D1.
+     Place a KingnoCross for player one on site E1.
+     Place a KingnoCross for player two on site E8..
+Rules: 
+     If 1 is the mover, roll the dice and afterwards if the number of pips owned by Player Shared is equal to 6, move one of your pieces, else if the number of pips owned by Player Shared is equal to 5, move one of your pieces, else if the number of pips owned by Player Shared is equal to 4, move one of your pieces, else if the number of pips owned by Player Shared is equal to 3, move one of your pieces, else if the number of pips owned by Player Shared is equal to 2, move one of your pieces, else move one of your pieces, else move one of your pieces.
+Aim: 
+     If 2 is the mover, KingnoCross of the next player is threatened and not can move move one of your pieces, player two wins If 1 is the mover and player two cannot move, player one wins If 1 is the mover, KingnoCross of player one is threatened and player one cannot move, player two wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.85","0.8","0.925","0.9","1448, 1448","[]"
+"4073","1615","Chatrang (Sassanian) (Ludii 8)",NULL,"Reconstructed with Ludii","2",NULL,"The game Chatrang (Sassanian) is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with KingnoCrosses, FerznoCrosses, Elephants, Knights, Rooks and Pawns.
+Rules for Pieces:
+     Elephants slide from the location of the piece in the diagonal direction through between is in the number of sites within 1 spaces of the location of the piece includeOrigin: false or empty.
+     FerznoCrosses slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells or leap a piece to not is a friend.
+     KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+     Knights leap a piece to not is a friend.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of the moving player the to location of the last move, this piece can promote into FerznoCross.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Elephant for player one on sites: C1 and F1.
+     Place a FerznoCross for player one on site D1.
+     Place a KingnoCross for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Elephant for player two on sites: C8 and F8.
+     Place a FerznoCross for player two on site D8.
+     Place a KingnoCross for player two on site E8..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the moving player cannot move, the moving player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.847","0.774","0.922","0.92","1438, 1436","[{1438, 1438}]"
+"4074","1615","Chatrang (Sassanian) (Ludii 9)",NULL,"Reconstructed with Ludii","2",NULL,"The game Chatrang (Sassanian) is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with KingnoCrosses, FerznoCrosses, Elephants, Knights, Rooks and Pawns.
+Rules for Pieces:
+     Elephants hop diagonal.
+     FerznoCrosses remove pieces at to then step diagonal or if not 1 is equal to State at the location of the piece, hop adjacent if not 1 is equal to State at the to location of the last move, set the state of the Cell the to location of the last move to 1.
+     KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+     Knights leap a piece to not is a friend.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of the moving player the to location of the last move, this piece can promote into FerznoCross.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Elephant for player one on sites: C1 and F1.
+     Place a FerznoCross for player one on site D1.
+     Place a KingnoCross for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Elephant for player two on sites: C8 and F8.
+     Place a FerznoCross for player two on site D8.
+     Place a KingnoCross for player two on site E8..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the moving player cannot move, the moving player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.847","0.772","0.924","0.922","1436, 1438","[]"
+"4075","1615","Chatrang (Sassanian) (Ludii 10)",NULL,"Reconstructed with Ludii","2",NULL,"The game Chatrang (Sassanian) is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with Kings, Rooks, Bishops, Knights, Queens and Pawns.
+Rules for Pieces:
+     Bishops hop diagonal.
+     Kings remove pieces at to then step adjacent or if 1 is equal to State at the location of the piece, hop adjacent or leap a piece to empty if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+     Knights leap a piece to not is a friend.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left or if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into  and set the state of the Cell the to location of the last move to 1.
+     Queens remove pieces at to then step diagonal then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0 or if 1 is equal to State at the location of the piece, hop diagonal if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Bishop for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a King for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Bishop for player two on sites: C8 and F8.
+     Place a Queen for player two on site D8.
+     Place a King for player two on site E8..
+Rules: 
+     Move one of your pieces then if 1 is equal to State at King of the next player is in and King of the next player is threatened, set the state of the Cell King of the next player is in to 0.
+Aim: 
+     If King of the next player is threatened and not can move move one of your pieces, the moving player wins If the next player cannot move, it's a draw.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.844","0.841","0.922","0.847","1330, 1330","[]"
