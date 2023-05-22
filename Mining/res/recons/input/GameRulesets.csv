@@ -24400,3 +24400,303 @@ Aim:
      If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the next player is CanNotEscape, the moving player wins If not can move move one of your pieces, the moving player wins.
 
 ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.882","0.884","0.441","0.879","307, 307","[]"
+"4086","1269","Shakhmaty (Medieval) (Ludii 1)",NULL,"Reconstructed with Ludii","2",NULL,"The game Shakhmaty (Medieval) is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with Pawns, Rooks, KingnoCrosses, BishopnoCrosses, Knights and FerznoCrosses.
+Rules for Pieces:
+     BishopnoCrosses hop diagonal.
+     FerznoCrosses remove pieces at to then step diagonal.
+     KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+     Knights leap a piece to not is a friend.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, move again.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a BishopnoCross for player one on sites: C1 and F1.
+     Place a FerznoCross for player one on site D1.
+     Place a KingnoCross for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a BishopnoCross for player two on sites: C8 and F8.
+     Place a FerznoCross for player two on site D8.
+     Place a KingnoCross for player two on site E8..
+Rules: 
+     If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into FerznoCross, else move one of your pieces.
+Aim: 
+     If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the number of pieces owned by Player the next player is equal to 1, the moving player wins If the next player cannot move, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.945","0.922","0.972","0.969","1435, 1435","[]"
+"4087","1269","Shakhmaty (Medieval) (Ludii 2)",NULL,"Reconstructed with Ludii","2",NULL,"The game Shakhmaty (Medieval) is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+Rules for Pieces:
+     Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+     Kings if there is an enemy Player at to, remove pieces at to then set the current counter of the game to -1 then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+     Knights leap a piece to not is a friend.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left or if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again and set the current counter of the game to -1.
+     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Bishop for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a King for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Bishop for player two on sites: C8 and F8.
+     Place a Queen for player two on site D8.
+     Place a King for player two on site E8..
+Rules: 
+     If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into Queen, Knight, Bishop or Rook, else move one of your pieces or if State at King of current moving player is equal to 1 and not King of the moving player is threatened, if State at RookLeft of current moving player is equal to 1 and can move slide from RookLeft of current moving player in the east direction through empty, slide from King of current moving player in the west direction through empty and not King of the moving player is threatened then slide from RookLeft of current moving player in the east direction through true or if State at RookRight of current moving player is equal to 1 and can move slide from RookRight of current moving player in the west direction through empty, slide from King of current moving player in the east direction through empty and not King of the moving player is threatened then slide from RookRight of current moving player in the west direction through true.
+Aim: 
+     If King of the next player is threatened and not can move move one of your pieces, the moving player wins If the moving player cannot move or Counter is equal to 99, it's a draw.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.936","0.915","0.968","0.957","44, 44","[]"
+"4088","1269","Shakhmaty (Medieval) (Ludii 3)",NULL,"Reconstructed with Ludii","2",NULL,"The game Shakhmaty (Medieval) is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2
+    Half: the bottom sites of the board expanded by 3 steps for P1
+    Half: the top sites of the board expanded by 3 steps for P2 
+All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+Rules for Pieces:
+     Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+     Kings if there is an enemy Player at to, remove pieces at to then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+     Knights leap a piece to not is a friend.
+     Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward or remove pieces at to then step forward-right or forward-left or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again.
+     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Bishop for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a King for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Bishop for player two on sites: C8 and F8.
+     Place a Queen for player two on site D8.
+     Place a King for player two on site E8..
+Rules: 
+     If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into Queen, Knight, Bishop or Rook, else move one of your pieces or if State at King of current moving player is equal to 1 and not King of the moving player is threatened, if State at RookLeft of current moving player is equal to 1 and can move slide from RookLeft of current moving player in the east direction through empty, slide from King of current moving player in the west direction through empty and not King of the moving player is threatened then slide from RookLeft of current moving player in the east direction through true or if State at RookRight of current moving player is equal to 1 and can move slide from RookRight of current moving player in the west direction through empty, slide from King of current moving player in the east direction through empty and not King of the moving player is threatened then slide from RookRight of current moving player in the west direction through true.
+Aim: 
+     If King of the next player is threatened and not can move move one of your pieces, the moving player wins If the moving player cannot move or Counter is equal to 99, it's a draw.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.933","0.912","0.965","0.953","1426, 44","[]"
+"4089","1269","Shakhmaty (Medieval) (Ludii 4)",NULL,"Reconstructed with Ludii","2",NULL,"The game Shakhmaty (Medieval) is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2
+    Half: the bottom sites of the board expanded by 3 steps for P1
+    Half: the top sites of the board expanded by 3 steps for P2 
+All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+Rules for Pieces:
+     Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+     Kings if there is an enemy Player at to, remove pieces at to then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+     Knights leap a piece to not is a friend.
+     Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward or remove pieces at to then step forward-right or forward-left or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again.
+     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Bishop for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a King for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Bishop for player two on sites: C8 and F8.
+     Place a Queen for player two on site D8.
+     Place a King for player two on site E8..
+Rules: 
+     Move one of your pieces then if not in the same turn, move again if in the same turn, a piece of the moving player the to location of the last move, this piece can promote into Queen, Knight, Bishop or Rook, else move one of your pieces or if State at King of current moving player is equal to 1 and not King of the moving player is threatened, if State at RookLeft of current moving player is equal to 1 and can move slide from RookLeft of current moving player in the east direction through empty, slide from King of current moving player in the west direction through empty and not King of the moving player is threatened then slide from RookLeft of current moving player in the east direction through true or if State at RookRight of current moving player is equal to 1 and can move slide from RookRight of current moving player in the west direction through empty, slide from King of current moving player in the east direction through empty and not King of the moving player is threatened then slide from RookRight of current moving player in the west direction through true.
+Aim: 
+     If King of the next player is threatened and not can move move one of your pieces, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.93","0.897","0.965","0.962","1426, 1426","[]"
+"4090","1269","Shakhmaty (Medieval) (Ludii 5)",NULL,"Reconstructed with Ludii","2",NULL,"The game Shakhmaty (Medieval) is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+Rules for Pieces:
+     Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+     Kings if there is an enemy Player at to, remove pieces at to then set the current counter of the game to -1 then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+     Knights leap a piece to not is a friend.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left or if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again and set the current counter of the game to -1.
+     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at the cells with coordinates [A2, D2, E2, H2].
+     Place a Pawn for player two at the cells with coordinates [A7, D7, E7, H7].
+     Place a Pawn for player one at the cells with coordinates [B2, C2, F2, G2].
+     Place a Pawn for player two at the cells with coordinates [B7, C7, F7, G7].
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Bishop for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a King for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Bishop for player two on sites: C8 and F8.
+     Place a Queen for player two on site D8.
+     Place a King for player two on site E8..
+Rules: 
+     Move one of your pieces then if 1 is equal to State at King of the next player is in and King of the next player is threatened, set the state of the Cell King of the next player is in to 0.
+Aim: 
+     If King of the next player is threatened and not can move move one of your pieces, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.93","0.915","0.968","0.944","44, 1331","[]"
+"4091","1269","Shakhmaty (Medieval) (Ludii 6)",NULL,"Reconstructed with Ludii","2",NULL,"The game Shakhmaty (Medieval) is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2
+    Half: the bottom sites of the board expanded by 3 steps for P1
+    Half: the top sites of the board expanded by 3 steps for P2 
+All players play with Pawns, Rooks, Kings, Bishops, Knights and Queens.
+Rules for Pieces:
+     Bishops slide from the location of the piece in the diagonal direction through [between] is in the set of empty cells.
+     Kings if there is an enemy Player at to, remove pieces at to then step adjacent then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+     Knights leap a piece to not is a friend.
+     Pawns if the location of the piece is in start position, slide from the location of the piece in the forward direction through empty then set the site  the Cell 1 steps ahead of the to location of the last move in the direction backward to pending or step forward or remove pieces at to then step forward-right or forward-left or step forward-right or forward-left then remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction backward if the to location of the last move is in Promotion or Promotion, move again.
+     Queens slide from the location of the piece in the adjacent direction through [between] is in the set of empty cells.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at the cells with coordinates [A2, D2, E2, H2].
+     Place a Pawn for player two at the cells with coordinates [A7, D7, E7, H7].
+     Place a Pawn for player one at the cells with coordinates [B2, C2, F2, G2].
+     Place a Pawn for player two at the cells with coordinates [B7, C7, F7, G7].
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Bishop for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a King for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Bishop for player two on sites: C8 and F8.
+     Place a Queen for player two on site D8.
+     Place a King for player two on site E8..
+Rules: 
+     Move one of your pieces then if 1 is equal to State at King of the next player is in and King of the next player is threatened, set the state of the Cell King of the next player is in to 0.
+Aim: 
+     If King of the next player is threatened and not can move move one of your pieces, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.927","0.912","0.965","0.941","1426, 1331","[]"
+"4092","1269","Shakhmaty (Medieval) (Ludii 7)",NULL,"Reconstructed with Ludii","2",NULL,"The game Shakhmaty (Medieval) is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with KingnoCrosses, FerznoCrosses, Elephants, Knights, Rooks and Pawns.
+Rules for Pieces:
+     Elephants hop diagonal.
+     FerznoCrosses remove pieces at to then step diagonal or if not 1 is equal to State at the location of the piece, hop adjacent if not 1 is equal to State at the to location of the last move, set the state of the Cell the to location of the last move to 1.
+     KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+     Knights leap a piece to not is a friend.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of the moving player the to location of the last move, this piece can promote into FerznoCross.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Elephant for player one on sites: C1 and F1.
+     Place a FerznoCross for player one on site D1.
+     Place a KingnoCross for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Elephant for player two on sites: C8 and F8.
+     Place a FerznoCross for player two on site D8.
+     Place a KingnoCross for player two on site E8..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the moving player cannot move, the moving player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.924","0.905","0.962","0.943","1436, 1436","[]"
+"4093","1269","Shakhmaty (Medieval) (Ludii 8)",NULL,"Reconstructed with Ludii","2",NULL,"The game Shakhmaty (Medieval) is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with Kings, Rooks, Bishops, Knights, Queens and Pawns.
+Rules for Pieces:
+     Bishops hop diagonal.
+     Kings remove pieces at to then step adjacent or if 1 is equal to State at the location of the piece, hop adjacent if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+     Knights leap a piece to not is a friend.
+     Pawns step forward or remove pieces at to then step forward-right or forward-left or if the location of the piece is in start position, 1 is equal to State at the location of the piece and 32 is equal to the number of sites in sites occupied by any component owned by All, slide from the location of the piece in the forward direction through empty if the to location of the last move is in Promotion or Promotion, a piece of a player the to location of the last move, this piece can promote into  and set the state of the Cell the to location of the last move to 1.
+     Queens remove pieces at to then step diagonal then if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0 or if 1 is equal to State at the location of the piece, hop diagonal if State at the to location of the last move is equal to 1, set the state of the Cell the to location of the last move to 0.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at the cells with coordinates [A2, D2, E2, H2].
+     Place a Pawn for player two at the cells with coordinates [A7, D7, E7, H7].
+     Place a Pawn for player one at the cells with coordinates [B2, C2, F2, G2].
+     Place a Pawn for player two at the cells with coordinates [B7, C7, F7, G7].
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a Bishop for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a King for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a Bishop for player two on sites: C8 and F8.
+     Place a Queen for player two on site D8.
+     Place a King for player two on site E8..
+Rules: 
+     Move one of your pieces then if 1 is equal to State at King of the next player is in and King of the next player is threatened, set the state of the Cell King of the next player is in to 0.
+Aim: 
+     If King of the next player is threatened and not can move move one of your pieces, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.923","0.909","0.961","0.938","1331, 1331","[]"
+"4094","1269","Shakhmaty (Medieval) (Ludii 9)",NULL,"Reconstructed with Ludii","2",NULL,"The game Shakhmaty (Medieval) is played by two players on a 8x8 rectangle board with square tiling.
+Regions:
+    Promotion: the top sites of the board for P1
+    Promotion: the bottom sites of the board for P2 
+All players play with KingnoCrosses, Queens, BishopnoCrosses, Knights, Rooks and Pawns.
+Rules for Pieces:
+     BishopnoCrosses hop diagonal.
+     KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+     Knights leap a piece to not is a friend and if not to is in Promotion or Promotion then true else Piece at to is not equal to Pawn of the next player.
+     Pawns if 0 is equal to State at the location of the piece, step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, set the state of the Cell the to location of the last move to 1, else slide from the location of the piece in the backward direction through empty then if the to location of the last move is in start position, a piece of the moving player the to location of the last move, this piece can promote into Queen.
+     Queens if there is an enemy Player at to, remove pieces at to then step diagonal.
+     Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+Players take turns moving.
+Setup:
+     Place a Pawn for player one at each cell of the 1 row.
+     Place a Pawn for player two at each cell of the 6 row.
+     Place a Rook for player one on sites: A1 and H1.
+     Place a Knight for player one on sites: B1 and G1.
+     Place a BishopnoCross for player one on sites: C1 and F1.
+     Place a Queen for player one on site D1.
+     Place a KingnoCross for player one on site E1.
+     Place a Rook for player two on sites: A8 and H8.
+     Place a Knight for player two on sites: B8 and G8.
+     Place a BishopnoCross for player two on sites: C8 and F8.
+     Place a Queen for player two on site E8.
+     Place a KingnoCross for player two on site D8..
+Rules: 
+     Move one of your pieces or move one of your pieces move one of your pieces.
+Aim: 
+     If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.917","0.894","0.958","0.939","1431, 1431","[]"
