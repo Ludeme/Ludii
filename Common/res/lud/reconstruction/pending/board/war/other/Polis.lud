@@ -9,12 +9,8 @@
     (item "Incomplete"
         <
         (players 2) 
-        (equipment [#]) 
-        (rules
-            (start [#]) 
-            (play [#]) // Custodial capture
-            (end [#])
-        )
+        (equipment (board [(square 9) | (square 11) | (rectangle 8 10)]) [#]) 
+        (rules [#])
         >
         "The incomplete ruleset."
     )
