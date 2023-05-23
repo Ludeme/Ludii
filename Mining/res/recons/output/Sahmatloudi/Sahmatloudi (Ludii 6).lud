@@ -1,0 +1,103 @@
+(game "Sahmatloudi" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 9)
+        )
+        
+        (hand Each)
+        
+        (piece "Marker" Each 
+            (move Step Orthogonal 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+                
+                (then 
+                    (custodial 
+                        (from 
+                            (last To)
+                        )
+                        Orthogonal 
+                        (between 
+                            (max 1)
+                            if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (place "Marker" "Hand" count:3)
+        )
+        phases:{ 
+        (phase "Placement" 
+            (play 
+                (move 
+                    (from 
+                        (handSite Mover)
+                    )
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            
+            (nextPhase Mover 
+                (all Sites 
+                    (sites Hand Mover)
+                    if:
+                    (= 0 
+                        (count Cell at:
+                            (site)
+                        )
+                    )
+                )
+            "Movement" )
+        )
+        
+        (phase "Movement" 
+            (play 
+                (forEach Piece)
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (is Line 3)
+                
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+

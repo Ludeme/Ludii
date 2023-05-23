@@ -10,16 +10,11 @@
         <
         (players 2)
         (equipment {
-            (board 
-                (square 9)
-            )
-            (piece "Disc" P1 (move [#])) 
-            (piece "Disc" P2 (move [#])) 
+            (board (square 9))
+            [#]
         }) 
         (rules 
-            (start [#]) 
-            (play [#])
-            (end [#])
+            [#]
         )
         >
         "The incomplete ruleset."
