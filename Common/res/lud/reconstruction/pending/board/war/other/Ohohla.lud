@@ -8,12 +8,10 @@
     {
     (item "Incomplete"
         <
-        (players 2) 
+        (players [#])
         (equipment { 
             ("StarBoard" 5)
-            (hand Each)
-            (piece "Marker" P1 (or [#]))
-            (piece "Marker" P2 (move [#]))
+            [#]
         }) 
         (rules [#])
         >
