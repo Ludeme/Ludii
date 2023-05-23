@@ -18,7 +18,7 @@
                 }) 
                 use:Vertex
             )
-            (piece [#]) // "Pieces move vertically or horizontally. Replacement capture." NEED CONCEPT
+            (piece [#])
         }) 
         (rules 
             (start [#]) // 11 pieces.
@@ -65,7 +65,7 @@
     })
     
     (recon {
-        (concept "NumStartComponents" 22)
+        (concept "NumStartComponents" minValue:4 maxValue:30)
         (concept "ReplacementCapture" True)
     })
     
