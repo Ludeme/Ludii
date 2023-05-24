@@ -157,7 +157,7 @@
                 )
             )
         )
-
+        
         // Lance
         (piece "Lance" Each ("SlideMove" Forward 
                 (then  
@@ -170,7 +170,7 @@
                 )
             )
         )       
-
+        
         // Knight
         (piece "Knight" Each ("TwoStepLeap" Forward (directions {FL FR})
                 (then 
@@ -183,43 +183,43 @@
                 )
             )
         )
-
+        
         // Silver General
         (piece "SilverGeneral" Each ("StepMove" (directions {Forward BL BR FL FR}) "CanPromote"))
-
+        
         // Gold General
         (piece "GoldGeneral" Each ("StepMove" (directions {Forward Backward Leftward Rightward FL FR}) "CanPromote"))
-
+        
         // Bishop
         (piece "Bishop" Each ("SlideMove" Diagonal "CanPromote"))
-
+        
         // Rook
         (piece "Rook" Each ("SlideMove" Orthogonal "CanPromote"))
-
+        
         // King
         (piece "King" Each ("StepMove"))
-
+        
         // Promoted Pawn
         ("ShogiGold" "GoldenBird" "CapturePiece")
-
+        
         // Promoted Lance
         (piece "FreeTiger" Each (or {("SlideMove" (directions {Leftward Rightward})) ("TwoStepLeap" (directions {Leftward Rightward}) (directions {FL FR})) ("StepMove" (directions {Forward Backward}))}))
-
+        
         // Promoted Knight
         (piece "HeavenlyHorse" Each (or ("StepMove" (directions {Forward Leftward Rightward FL FR})) ("TwoStepLeap" Backward (directions {FL FR}))))
- 
+        
         // Promoted Silver General
         (piece "VenomousWolf" Each (or ("SlideMove" Forward) ("StepMove" (directions {FL FR Leftward Rightward Backward}))))
-
+        
         // Promoted Gold General
         (piece "GreatElephant" Each (or ("SlideMove" (directions {FL FR})) ("StepMove" (directions {Forward Leftward Rightward BL BR}))))
-
+        
         // Promoted Bishop
         (piece "DragonHorse" Each (or ("SlideMove" Diagonal) ("StepMove" Orthogonal)))
-
+        
         // Promoted Rook
         (piece "DragonKing" Each (or ("SlideMove" Orthogonal) ("StepMove" Diagonal)))
-
+        
         (regions "LastRankP1" P1 (sites Top))
         (regions "LastRankP2" P2 (sites Bottom))
         (regions "TwoFurthestRankP1" P1 (expand (sites Top)))
