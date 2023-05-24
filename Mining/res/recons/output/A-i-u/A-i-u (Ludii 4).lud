@@ -1,0 +1,116 @@
+(game "A-i-u" 
+    (players 2)
+    
+    (equipment { 
+        (mancalaBoard 2 6 store:None 
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        
+        (piece "Seed" Shared)
+        
+        (hand Each)
+        
+        (regions P1 
+            (sites Bottom)
+        )
+        
+        (regions P2 
+            (sites Top)
+        )
+        }
+    )
+    
+    (rules 
+        (start 
+            (set Count 4 to:
+                (union 
+                    (sites Bottom)
+                    
+                    (sites Top)
+                )
+            )
+        )
+        
+        (play 
+            (do 
+                (move Select 
+                    (from 
+                        (sites Mover)
+                        if:
+                        (< 0 
+                            (count at:
+                                (from)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (sow if:
+                            (and 
+                                (is In 
+                                    (to)
+                                    
+                                    (sites Next)
+                                )
+                                
+                                (or 
+                                    (= 
+                                        (count at:
+                                            (to)
+                                        )
+                                    2)
+                                    
+                                    (= 
+                                        (count at:
+                                            (to)
+                                        )
+                                    3)
+                                )
+                            )
+                            apply:
+                            (fromTo 
+                                (from 
+                                    (to)
+                                )
+                                
+                                (to 
+                                    (handSite Mover)
+                                )
+                                count:
+                                (count at:
+                                    (to)
+                                )
+                            )
+                        includeSelf:False backtracking:True )
+                    )
+                )
+                ifAfterwards:
+                (< 0 
+                    (count in:
+                        (sites Next)
+                    )
+                )
+            )
+        )
+        
+        (end { 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+            
+            (if 
+                (is Triggered "Draw" Mover)
+                
+                (result Mover Draw)
+            )
+            }
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Sow" True)
+    }))

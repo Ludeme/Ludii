@@ -11,20 +11,25 @@
         (players 2) 
         (equipment { 
             (mancalaBoard 2 6 store:None
-                {
-                (track [#])
-                (track [#])
-                }
-            )
-            (piece "Seed" Shared)
+                    (track "Track" "0,E,N,W" loop:True)
+                    )
+                    
+                    (piece "Seed" Shared)
+                    
+                    (hand Each)
+                    
+                    (regions P1 
+                        (sites Bottom)
+                    )
+                    
+                    (regions P2 
+                        (sites Top)
+                    )
         }) 
         (rules 
             (start [#])
             (play 
-                (move Select 
-                    (from [#])
-                    (then (sow [#]))
-                )
+              [#]
             )
             (end [#])
         )
