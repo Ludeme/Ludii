@@ -11,21 +11,16 @@
         (players 2) 
         (equipment { 
             (mancalaBoard 2 9 store:None
-                {
-                (track [#])
-                (track [#])
-                }
+                (track "Track" "0,E,N,W" loop:True)
             )
             (piece "Seed" Shared)
+            (hand Each)
+            (regions P1 (sites Bottom))      // P1 home
+            (regions P2 (sites Top))      // P2 home
         }) 
         (rules 
-            (start [#]) // 24 counters per player....
-            (play 
-                (move Select 
-                    (from [#])
-                    (then (sow [#]))
-                )
-            )
+            (start [#])
+            (play [#])
             (end [#])
         )
         >
