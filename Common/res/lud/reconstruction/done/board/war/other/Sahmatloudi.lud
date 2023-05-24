@@ -1,0 +1,1457 @@
+(game "Sahmatloudi"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Sahmatloudi (Ludii 1)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 9)
+            )
+            
+            (piece "Thrall" P1 
+                (move Slide Orthogonal 
+                    (between if:
+                        (and 
+                            (!= 
+                                (between)
+                                
+                                (centrePoint)
+                            )
+                            
+                            (is Empty 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (or { 
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between 
+                                    (max 1)
+                                    if:
+                                    (= 
+                                        (what at:
+                                            (between)
+                                        )
+                                        
+                                        (id "Thrall2")
+                                    )
+                                    
+                                    (apply 
+                                        (remove 
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (to if:
+                                    (or 
+                                        (is Friend 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (= 
+                                            (to)
+                                            
+                                            (centrePoint)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (surround 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (and 
+                                        (= 
+                                            (what at:
+                                                (between)
+                                            )
+                                            
+                                            (id "Jarl2")
+                                        )
+                                        
+                                        (or 
+                                            (= 
+                                                (between)
+                                                
+                                                (centrePoint)
+                                            )
+                                            
+                                            (is In 
+                                                (between)
+                                                
+                                                (sites "OrthogonalSitesCentre" )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (trigger "Surrounded" P2)
+                                    )
+                                )
+                                
+                                (to if:
+                                    (or 
+                                        (is Friend 
+                                            (who at:
+                                                (to)
+                                            )
+                                        )
+                                        
+                                        (= 
+                                            (to)
+                                            
+                                            (centrePoint)
+                                        )
+                                    )
+                                )
+                            )
+                            
+                            (custodial 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between 
+                                    (max 1)
+                                    if:
+                                    (and 
+                                        (= 
+                                            (what at:
+                                                (between)
+                                            )
+                                            
+                                            (id "Jarl2")
+                                        )
+                                        
+                                        (and 
+                                            (!= 
+                                                (between)
+                                                
+                                                (centrePoint)
+                                            )
+                                            
+                                            (not 
+                                                (is In 
+                                                    (between)
+                                                    
+                                                    (sites "OrthogonalSitesCentre" )
+                                                )
+                                            )
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (trigger "Surrounded" P2)
+                                    )
+                                )
+                                
+                                (to if:
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                            )
+                            }
+                        )
+                    )
+                )
+            )
+            
+            (piece "Thrall" P2 
+                (move Slide Orthogonal 
+                    (between if:
+                        (and 
+                            (!= 
+                                (between)
+                                
+                                (centrePoint)
+                            )
+                            
+                            (is Empty 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (= 
+                                    (what at:
+                                        (between)
+                                    )
+                                    
+                                    (id "Thrall1")
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (or 
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (= 
+                                        (to)
+                                        
+                                        (centrePoint)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Jarl" P2 
+                (move Slide Orthogonal 
+                    (between if:
+                        (and 
+                            (!= 
+                                (between)
+                                
+                                (centrePoint)
+                            )
+                            
+                            (is Empty 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (= 
+                                    (what at:
+                                        (between)
+                                    )
+                                    
+                                    (id "Thrall1")
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (or 
+                                    (is Friend 
+                                        (who at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (= 
+                                        (to)
+                                        
+                                        (centrePoint)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (regions "OrthogonalSitesCentre" 
+                (difference 
+                    (expand origin:
+                        (centrePoint)
+                    Orthogonal)
+                    
+                    (centrePoint)
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Thrall1" { "D1" "E1" "F1" "E2" "A4" "A5" "A6" "B5" "I4" "I5" "I6" "H5" "E8" "D9" "E9" "F9" "E8" }
+                )
+                
+                (place "Thrall2" { "E3" "E4" "E6" "E7" "C5" "D5" "F5" "G5"}
+                )
+                
+                (place "Jarl2" 
+                    (centrePoint)
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (is Within 
+                        (id "Jarl2")
+                        in:
+                        (sites Outer)
+                    )
+                    
+                    (result P2 Win)
+                )
+                
+                (if 
+                    (is Triggered "Surrounded" P2)
+                    
+                    (result P1 Win)
+                )
+                }
+            )
+        )
+        
+    > "The Sahmatloudi (Ludii 1) ruleset.")
+    
+    (item "Sahmatloudi (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 9)
+            )
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (forEach 
+                                (sites Occupied by:Enemy container:"Board")
+                                if:
+                                (not 
+                                    (is Line 3 Orthogonal through:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (forEach 
+                                (sites Occupied by:Enemy container:"Board")
+                                if:
+                                (not 
+                                    (is Line 3 Orthogonal through:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end { 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+                
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+                }
+            )
+        )
+        
+    > "The Sahmatloudi (Ludii 2) ruleset.")
+    
+    (item "Sahmatloudi (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 9)
+            )
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:9)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (or { 
+                                        (is Line 3 N exact:True)
+                                        
+                                        (is Line 3 S exact:True)
+                                        
+                                        (is Line 3 E exact:True)
+                                        
+                                        (is Line 3 W exact:True)
+                                        }
+                                    )
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (if 
+                            (> 
+                                (count Pieces Mover)
+                            4)
+                            
+                            (forEach Piece)
+                            
+                            (move 
+                                (from 
+                                    (sites Occupied by:Mover)
+                                )
+                                
+                                (to 
+                                    (sites Empty)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= 
+                        (count Pieces Next)
+                    2)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Sahmatloudi (Ludii 3) ruleset.")
+    
+    (item "Sahmatloudi (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 9)
+            )
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:6)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3 Orthogonal exact:True)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (sites Occupied by:Enemy container:"Board")
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Sahmatloudi (Ludii 4) ruleset.")
+    
+    (item "Sahmatloudi (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 9)
+            )
+            
+            (piece "Knight" Each 
+                (move Leap { { F F R F }
+                    { F F L F }
+                    }
+                    
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Knight1" 
+                    (sites Bottom)
+                )
+                
+                (place "Knight2" 
+                    (sites Top)
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end { 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (is In 
+                        (last To)
+                        
+                        (sites Centre)
+                    )
+                    
+                    (result Mover Win)
+                )
+                }
+            )
+        )
+        
+    > "The Sahmatloudi (Ludii 5) ruleset.")
+    
+    (item "Sahmatloudi (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 9)
+            )
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from 
+                            (handSite Mover)
+                        )
+                        
+                        (to 
+                            (sites Empty)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (forEach Piece)
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Sahmatloudi (Ludii 6) ruleset.")
+    
+    (item "Sahmatloudi (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 9)
+            )
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:12)
+            )
+            phases:{ 
+            (phase "Placement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (forEach 
+                                (sites Occupied by:Enemy container:"Board")
+                                if:
+                                (not 
+                                    (is Line 3 Orthogonal through:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (move 
+                            (from 
+                                (handSite Mover)
+                            )
+                            
+                            (to 
+                                (sites Empty)
+                            )
+                            
+                            (then 
+                                (if 
+                                    (is Line 3)
+                                    
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (nextPhase Mover 
+                    (all Sites 
+                        (sites Hand Mover)
+                        if:
+                        (= 0 
+                            (count Cell at:
+                                (site)
+                            )
+                        )
+                    )
+                "Movement" )
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if 
+                        (is Prev Mover)
+                        
+                        (move Remove 
+                            (forEach 
+                                (sites Occupied by:Enemy container:"Board")
+                                if:
+                                (not 
+                                    (is Line 3 Orthogonal through:
+                                        (site)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Sahmatloudi (Ludii 7) ruleset.")
+    
+    (item "Sahmatloudi (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 9)
+            )
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (expand 
+                        (sites Bottom)
+                    )
+                )
+                
+                (place "Marker2" 
+                    (expand 
+                        (sites Top)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Sahmatloudi (Ludii 8) ruleset.")
+    
+    (item "Sahmatloudi (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 9)
+            )
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (place "Marker" "Hand" count:3)
+            )
+            
+            (play 
+                (move 
+                    (from 
+                        (handSite Mover)
+                    )
+                    
+                    (to 
+                        (sites Empty)
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (is Line 3)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Sahmatloudi (Ludii 9) ruleset.")
+    
+    (item "Sahmatloudi (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 9)
+            )
+            
+            (hand Each)
+            
+            (piece "Marker" Each 
+                (move Step Orthogonal 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                    
+                    (then 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (sites Top)
+                )
+                
+                (place "Marker2" 
+                    (sites Bottom)
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (and 
+                        (is In 
+                            (centrePoint)
+                            
+                            (sites Occupied by:Mover)
+                        )
+                        
+                        (is Line 3)
+                    )
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Sahmatloudi (Ludii 10) ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2)
+        (equipment {
+            (board (square 9))
+            [#]
+        }) 
+        (rules 
+            [#]
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Sahmatloudi (Ludii 1) (Reconstructed)" {
+        "Variant/Sahmatloudi (Ludii 1)"
+    })
+    (ruleset "Ruleset/Sahmatloudi (Ludii 2) (Reconstructed)" {
+        "Variant/Sahmatloudi (Ludii 2)"
+    })
+    (ruleset "Ruleset/Sahmatloudi (Ludii 3) (Reconstructed)" {
+        "Variant/Sahmatloudi (Ludii 3)"
+    })
+    (ruleset "Ruleset/Sahmatloudi (Ludii 4) (Reconstructed)" {
+        "Variant/Sahmatloudi (Ludii 4)"
+    })
+    (ruleset "Ruleset/Sahmatloudi (Ludii 5) (Reconstructed)" {
+        "Variant/Sahmatloudi (Ludii 5)"
+    })
+    (ruleset "Ruleset/Sahmatloudi (Ludii 6) (Reconstructed)" {
+        "Variant/Sahmatloudi (Ludii 6)"
+    })
+    (ruleset "Ruleset/Sahmatloudi (Ludii 7) (Reconstructed)" {
+        "Variant/Sahmatloudi (Ludii 7)"
+    })
+    (ruleset "Ruleset/Sahmatloudi (Ludii 8) (Reconstructed)" {
+        "Variant/Sahmatloudi (Ludii 8)"
+    })
+    (ruleset "Ruleset/Sahmatloudi (Ludii 9) (Reconstructed)" {
+        "Variant/Sahmatloudi (Ludii 9)"
+    })
+    (ruleset "Ruleset/Sahmatloudi (Ludii 10) (Reconstructed)" {
+        "Variant/Sahmatloudi (Ludii 10)"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Sahmatloudi is a game played one a 9x9 board by the Skolt Sámi people of Suenjel village.")
+        (rules "9x9 board. ")
+        (source "DLP Evidence.")
+        (id "1482")
+        (version "1.3.11")
+        (classification "board/war/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Finland, from around 1800 to 1945.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)
+
