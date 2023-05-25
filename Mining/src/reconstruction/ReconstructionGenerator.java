@@ -42,7 +42,7 @@ public class ReconstructionGenerator
 	final static String defaultOutputPath        = "./res/recons/output/";
 	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 20000;
-	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/sow/two_rows/A-i-u";
+	final static String defaultReconsPath        = "/lud/reconstruction/pending/board/sow/two_rows/Al-Andalus Game";
 	final static String defaultOptionName        = "Variant/Incomplete";
 	
 	final static double  defaultConceptualWeight = 0.0;
