@@ -14,6 +14,9 @@
             (mancalaBoard 2 [3..10]
                 (track "Track" "1,E,N,W" loop:True)
             )
+            (regions P1 (sites Bottom))     // P1 home
+            (regions P2 (sites Top))      // P2 home
+            (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
             (piece "Seed" Shared)
             }
         ) 

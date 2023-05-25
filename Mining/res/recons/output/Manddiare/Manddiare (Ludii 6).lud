@@ -1,0 +1,96 @@
+(game "Manddiare" 
+    (players 2)
+    
+    (equipment { 
+        (mancalaBoard 2 3 
+            (track "Track" "1,E,N,W" loop:True)
+        )
+        
+        (regions P1 
+            (sites Bottom)
+        )
+        
+        (regions P2 
+            (sites Top)
+        )
+        
+        (map { 
+            (pair P1 FirstSite)
+            
+            (pair P2 LastSite)
+            }
+        )
+        
+        (piece "Seed" Shared)
+        }
+    )
+    
+    (rules 
+        (start 
+            (set Count 5 to:
+                (sites Track)
+            )
+        )
+        
+        (play 
+            (move Select 
+                (from 
+                    (sites Mover)
+                    if:
+                    (> 
+                        (count at:
+                            (from)
+                        )
+                    0)
+                )
+                
+                (then 
+                    (sow apply:
+                        (if 
+                            (or 
+                                (= 
+                                    (count at:
+                                        (to)
+                                    )
+                                2)
+                                
+                                (= 
+                                    (count at:
+                                        (to)
+                                    )
+                                3)
+                            )
+                            
+                            (fromTo 
+                                (from 
+                                    (to)
+                                )
+                                
+                                (to 
+                                    (mapEntry Mover)
+                                )
+                                count:
+                                (count at:
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+
+(metadata (recon {
+        (concept "Sow" True)
+    }))
