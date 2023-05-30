@@ -7,16 +7,6 @@
         )
         
         (piece "Queen" Each 
-            (move Step Forward 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        
-        (piece "King" Each 
             (move Step 
                 (to if:
                     (not 
@@ -36,29 +26,21 @@
             )
         )
         
-        (piece "Pawn" Each 
+        (piece "King" Each 
             (move Step 
                 (to if:
-                    (not 
-                        (is Friend 
-                            (who at:
-                                (to)
-                            )
-                        )
+                    (is Empty 
+                        (to)
                     )
-                    
-                    (apply 
-                        (if 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (remove 
-                                (to)
-                            )
-                        )
+                )
+            )
+        )
+        
+        (piece "Pawn" Each 
+            (move Step Forward 
+                (to if:
+                    (is Empty 
+                        (to)
                     )
                 )
             )
@@ -68,13 +50,13 @@
     
     (rules 
         (start { 
-            (place "King1" coord:"H8")
+            (place "King1" coord:"H1")
             
-            (place "Queen1" coord:"B8")
+            (place "Queen1" coord:"B1")
             
-            (place "King2" coord:"H1")
+            (place "King2" coord:"H8")
             
-            (place "Queen2" coord:"B1")
+            (place "Queen2" coord:"B8")
             
             (place "Pawn1" 
                 (difference 
@@ -134,7 +116,7 @@
             (if 
                 (no Moves Next)
                 
-                (result Mover Win)
+                (result Next Win)
             )
         )
     )

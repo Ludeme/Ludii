@@ -27,16 +27,6 @@
         )
         
         (piece "King" Each 
-            (move Step Forward 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        
-        (piece "Pawn" Each 
             (move Step 
                 (to if:
                     (not 
@@ -48,9 +38,27 @@
                     )
                     
                     (apply 
-                        (remove 
-                            (to)
+                        (if 
+                            (is Enemy 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                            
+                            (remove 
+                                (to)
+                            )
                         )
+                    )
+                )
+            )
+        )
+        
+        (piece "Pawn" Each 
+            (move Step 
+                (to if:
+                    (is Empty 
+                        (to)
                     )
                 )
             )
@@ -60,13 +68,13 @@
     
     (rules 
         (start { 
-            (place "King1" coord:"H8")
+            (place "King1" coord:"H1")
             
-            (place "Queen1" coord:"B8")
+            (place "Queen1" coord:"B1")
             
-            (place "King2" coord:"H1")
+            (place "King2" coord:"H8")
             
-            (place "Queen2" coord:"B1")
+            (place "Queen2" coord:"B8")
             
             (place "Pawn1" 
                 (difference 
@@ -124,25 +132,7 @@
         
         (end 
             (if 
-                (and 
-                    (is Threatened 
-                        (id "King" Next)
-                    )
-                    
-                    (not 
-                        (can Move 
-                            (do 
-                                (forEach Piece Next)
-                                ifAfterwards:
-                                (not 
-                                    (is Threatened 
-                                        (id "King" Next)
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
+                (no Moves Next)
                 
                 (result Mover Win)
             )

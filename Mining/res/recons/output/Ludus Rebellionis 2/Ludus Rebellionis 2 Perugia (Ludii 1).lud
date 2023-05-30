@@ -7,10 +7,20 @@
         )
         
         (piece "Queen" Each 
-            (move Step Forward 
+            (move Step 
                 (to if:
-                    (is Empty 
-                        (to)
+                    (not 
+                        (is Friend 
+                            (who at:
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (apply 
+                        (remove 
+                            (to)
+                        )
                     )
                 )
             )
@@ -45,28 +55,10 @@
         )
         
         (piece "Pawn" Each 
-            (move Step 
+            (move Step Forward 
                 (to if:
-                    (not 
-                        (is Friend 
-                            (who at:
-                                (to)
-                            )
-                        )
-                    )
-                    
-                    (apply 
-                        (if 
-                            (is Enemy 
-                                (who at:
-                                    (to)
-                                )
-                            )
-                            
-                            (remove 
-                                (to)
-                            )
-                        )
+                    (is Empty 
+                        (to)
                     )
                 )
             )
@@ -76,13 +68,13 @@
     
     (rules 
         (start { 
-            (place "King1" coord:"H8")
+            (place "King1" coord:"H1")
             
-            (place "Queen1" coord:"B8")
+            (place "Queen1" coord:"B1")
             
-            (place "King2" coord:"H1")
+            (place "King2" coord:"H8")
             
-            (place "Queen2" coord:"B1")
+            (place "Queen2" coord:"B8")
             
             (place "Pawn1" 
                 (difference 
@@ -138,7 +130,7 @@
             )
         )
         
-        (end 
+        (end { 
             (if 
                 (and 
                     (is Threatened 
@@ -162,6 +154,19 @@
                 
                 (result Mover Win)
             )
+            
+            (if 
+                (or 
+                    (no Moves Mover)
+                    
+                    (= 
+                        (counter)
+                    99)
+                )
+                
+                (result Mover Draw)
+            )
+            }
         )
     )
 )

@@ -9,6 +9,16 @@
         (piece "Queen" Each 
             (move Step 
                 (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        
+        (piece "King" Each 
+            (move Step 
+                (to if:
                     (not 
                         (is Friend 
                             (who at:
@@ -34,57 +44,11 @@
             )
         )
         
-        (piece "King" Each 
-            (move Select 
-                (from 
-                    (last To)
-                )
-                
-                (then 
-                    (if 
-                        (= 
-                            (count at:
-                                (last To)
-                            )
-                        1)
-                        
-                        (remove 
-                            (last To)
-                        )
-                        
-                        (and 
-                            (set Count at:
-                                (last To)
-                                
-                                (- 
-                                    (count at:
-                                        (last To)
-                                    )
-                                1)
-                            )
-                            
-                            (moveAgain)
-                        )
-                    )
-                )
-            )
-        )
-        
         (piece "Pawn" Each 
             (move Step 
                 (to if:
-                    (not 
-                        (is Friend 
-                            (who at:
-                                (to)
-                            )
-                        )
-                    )
-                    
-                    (apply 
-                        (remove 
-                            (to)
-                        )
+                    (is Empty 
+                        (to)
                     )
                 )
             )
@@ -94,13 +58,13 @@
     
     (rules 
         (start { 
-            (place "King1" coord:"H8")
+            (place "King1" coord:"H1")
             
-            (place "Queen1" coord:"B8")
+            (place "Queen1" coord:"B1")
             
-            (place "King2" coord:"H1")
+            (place "King2" coord:"H8")
             
-            (place "Queen2" coord:"B1")
+            (place "Queen2" coord:"B8")
             
             (place "Pawn1" 
                 (difference 
@@ -158,27 +122,11 @@
         
         (end 
             (if 
-                (and 
-                    (is Threatened 
-                        (id "King" Next)
-                    )
-                    
-                    (not 
-                        (can Move 
-                            (do 
-                                (forEach Piece Next)
-                                ifAfterwards:
-                                (not 
-                                    (is Threatened 
-                                        (id "King" Next)
-                                    )
-                                )
-                            )
-                        )
-                    )
+                (!= 0 
+                    (score P1)
                 )
                 
-                (result Mover Win)
+                (byScore)
             )
         )
     )

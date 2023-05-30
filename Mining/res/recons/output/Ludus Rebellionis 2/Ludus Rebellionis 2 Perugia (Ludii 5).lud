@@ -7,7 +7,7 @@
         )
         
         (piece "Queen" Each 
-            (move Step Forward 
+            (move Step 
                 (to if:
                     (is Empty 
                         (to)
@@ -58,13 +58,13 @@
     
     (rules 
         (start { 
-            (place "King1" coord:"H8")
+            (place "King1" coord:"H1")
             
-            (place "Queen1" coord:"B8")
+            (place "Queen1" coord:"B1")
             
-            (place "King2" coord:"H1")
+            (place "King2" coord:"H8")
             
-            (place "Queen2" coord:"B1")
+            (place "Queen2" coord:"B8")
             
             (place "Pawn1" 
                 (difference 
@@ -146,7 +146,13 @@
             )
             
             (if 
-                (no Moves Next)
+                (or 
+                    (no Moves Mover)
+                    
+                    (= 
+                        (counter)
+                    99)
+                )
                 
                 (result Mover Draw)
             )
