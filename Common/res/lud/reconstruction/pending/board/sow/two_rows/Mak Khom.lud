@@ -45,10 +45,10 @@
         )
         (phase "Playing"
             (play [#]) // When sowing, players may take the entire contents of a hole, or only part of them. The players agree on a number of counters which need to be captured in order to win.
+            (end [#])
         )
         }
         
-        (end [#])
     )
         >
         "The incomplete ruleset."
