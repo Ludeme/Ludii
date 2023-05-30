@@ -10,13 +10,13 @@
 )
 
 (define "CanNotMove"
-    (not (can Move (do (and (forEach Piece #1) (set NextPlayer (player #2))) ifAfterwards:(not ("IsInCheck" "King" #1)))))
+    (not (can Move (do (and (forEach Piece #1) (set NextPlayer (player (id #1)))) ifAfterwards:(not ("IsInCheck" "King" #1)))))
 )
 
-// Fixed OnePawnPerColumn by dale walton
+// Fixed OnePawnPerColumn by dale walton and RubixOne
 (define "OnePawnPerColumn"
     (if
-        (= 0 (% #2 2))  // #1 is even   
+        (= 0 (% (id #1) 2))  // #1 is even   
         (=
             (count Sites in:(sites Occupied by:#1 container:"Board" component:"Pawn"))
             (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Pawn") (sites Row (row of:(to)))))
@@ -24,7 +24,9 @@
         (=
             (count Sites in:(sites Occupied by:#1 container:"Board" component:"Pawn"))
             (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Pawn") (sites Column (column of:(to)))))
-) ) )
+        )
+    )
+)
 
 (define "PlaceKnight" 
     (move 
@@ -46,14 +48,14 @@
         (move 
             (from (sites Occupied by:#1 container:"Hand" component:"Pawn")) 
             (to (difference (sites Empty) (sites #1 "LastRank")) 
-                if:("OnePawnPerColumn" #1 #2)
+                if:("OnePawnPerColumn" #1)
             )
         ) 
         ifAfterwards:(not (or {
-                (and ("IsInCheck" "King" P1) ("CanNotMove" P1 1))
-                (and ("IsInCheck" "King" P2) ("CanNotMove" P2 2))
-                (and ("IsInCheck" "King" P3) ("CanNotMove" P3 3))
-                (and ("IsInCheck" "King" P4) ("CanNotMove" P4 4))
+            (and ("IsInCheck" "King" P1) ("CanNotMove" P1))
+            (and ("IsInCheck" "King" P2) ("CanNotMove" P2))
+            (and ("IsInCheck" "King" P3) ("CanNotMove" P3))
+            (and ("IsInCheck" "King" P4) ("CanNotMove" P4))
         }))
     )
 ) 
@@ -309,11 +311,21 @@
         (if 
             (and 
                 ("IsInCheck" "King" #1)
-                ("CanNotMove" #1 #2)
+                ("CanNotMove" #1)
             )
             ("ReappropriatePieces" #1 Mover)
         )
     )		
+)
+
+(define "RemoveKingIfStalemate"
+    (if 
+        (and 
+            (no Moves Next) 
+            (not ("IsOffBoard" (where "King" Next)))
+        ) 
+        ("ReappropriatePieces" Next Mover)
+    )
 )
 
 // Reappropriates pieces in the hand of #1 to #2
@@ -357,7 +369,7 @@
                 )
             )
         )
-        
+
         // Lance
         (piece "Lance" Each ("SlideMove" Forward 
                 (then  
@@ -370,7 +382,7 @@
                 )
             )
         )       
-        
+
         // Knight
         (piece "Knight" Each ("TwoStepLeap" Forward (directions {FL FR})
                 (then 
@@ -383,40 +395,40 @@
                 )
             )
         )
-        
+
         // Silver General
         (piece "SilverGeneral" Each ("StepMove" (directions {Forward BL BR FL FR}) "CanPromote"))
-        
+
         // Gold General
         (piece "GoldGeneral" Each ("StepMove" (directions {Forward Backward Leftward Rightward FL FR}) "CanPromote"))
-        
+
         // Bishop
         (piece "Bishop" Each ("SlideMove" Diagonal "CanPromote"))
-        
+
         // Rook
         (piece "Rook" Each ("SlideMove" Orthogonal "CanPromote"))
-        
+
         // King
         (piece "King" Each ("StepMove"))
-        
+
         // Promoted Pawn
         ("ShogiGold" "GoldenBird" "CapturePiece")
-        
+
         // Promoted Lance
         (piece "FreeTiger" Each (or {("SlideMove" (directions {Leftward Rightward})) ("TwoStepLeap" (directions {Leftward Rightward}) (directions {FL FR})) ("StepMove" (directions {Forward Backward}))}))
-        
+
         // Promoted Knight
         (piece "HeavenlyHorse" Each (or ("StepMove" (directions {Forward Leftward Rightward FL FR})) ("TwoStepLeap" Backward (directions {FL FR}))))
-        
+ 
         // Promoted Silver General
         (piece "VenomousWolf" Each (or ("SlideMove" Forward) ("StepMove" (directions {FL FR Leftward Rightward Backward}))))
-        
+
         // Promoted Gold General
         (piece "GreatElephant" Each (or ("SlideMove" (directions {FL FR})) ("StepMove" (directions {Forward Leftward Rightward BL BR}))))
-        
+
         // Promoted Bishop
         (piece "DragonHorse" Each (or ("SlideMove" Diagonal) ("StepMove" Orthogonal)))
-        
+
         // Promoted Rook
         (piece "DragonKing" Each (or ("SlideMove" Orthogonal) ("StepMove" Diagonal)))
         
@@ -478,7 +490,7 @@
                             (from (sites Occupied by:Mover container:"Hand" components:{"Bishop" "SilverGeneral" "Rook" "GoldGeneral"})) 
                             (to (sites Empty))
                         ) 
-                        ("PlacePawn" Mover (mover) Next)
+                        ("PlacePawn" Mover)
                         ("PlaceLance" Mover)
                         ("PlaceKnight" Mover) 
                         (forEach Piece) 
@@ -487,10 +499,11 @@
                 )
                 (then
                     (and {
-                        ("RemoveKingIfCheckmate" P1 1)
-                        ("RemoveKingIfCheckmate" P2 2)
-                        ("RemoveKingIfCheckmate" P3 3)
-                        ("RemoveKingIfCheckmate" P4 4)
+                        ("RemoveKingIfCheckmate" P1)
+                        ("RemoveKingIfCheckmate" P2)
+                        ("RemoveKingIfCheckmate" P3)
+                        ("RemoveKingIfCheckmate" P4)
+                        ("RemoveKingIfStalemate")
                     })
                 )
             )
