@@ -25021,3 +25021,45 @@ The Vice General moves one square in any direction except straight backward, doe
 The Queen slides in any orthogonal or diagonal direction, does not promote.
 The Lion makes up to two King steps to another square, stopping at the first capture, or captures without moving one square in any direction, does not promote.
 The promotion zone is the farthest four ranks of the board. Perpetual check is allowed. In over-the-board play, the minimum number of points needed to not lose during an impasse is 65. Each Lion, Queen, Rook, Bishop, Vertical Mover, Side Mover, Phoenix, or Kirin, promoted or not, scores 5 points for the owning player, and all other pieces except Kings score 1 point each.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
+"4119","1332","A-i-u (Ludii 1)",NULL,"Reconstructed with Ludii","2",NULL,"The game A-i-u is played by two players on a 2 x 6 Mancala board with 2 none stores.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with null The following pieces are shared by all players: Seeds.
+Players take turns moving.
+Setup:
+     Set the count of the vertexes in the union of the bottom sites of the board and the top sites of the board to 4.
+Rules: 
+     Select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: to is in RegionP1 or RegionP2 and the total number of vertex in to is equal to 2 or the total number of vertex in to is equal to 3, backtracking: true, captureEffect: from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: false.
+Aim: 
+     If the next player cannot move.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.893","0.892","0.928","0.894","965, 251, 252","[{968, 251, 252}, {967, 251, 252}]"
+"4120","1332","A-i-u (Ludii 2)",NULL,"Reconstructed with Ludii","2",NULL,"The game A-i-u is played by two players on a 2 x 6 Mancala board with 2 none stores.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with null The following pieces are shared by all players: Seeds.
+Players take turns moving.
+Setup:
+     Set the count of the vertexes in track of board to 4.
+Rules: 
+     Select Vertex in the difference between RegionP1 or RegionP2 and sites <game.functions.intArray.math.If> if 1 is less than the total number of vertex in to then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: true, captureRule: true, type: Vertex, includeSelf: true and if 1 is the mover, remember the value the from location of the last move, else remember the value the from location of the last move.
+Aim: 
+     If all sites in track of board satisfy the condition the total number of vertex in current site is less than or equal to 1, the game ends and the player with the highest score wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.893","0.893","0.929","0.894","251, 252, 251","[]"
+"4121","1332","A-i-u (Ludii 3)",NULL,"Reconstructed with Ludii","2",NULL,"The game A-i-u is played by two players on a 2 x 6 Mancala board with 2 none stores.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with null The following pieces are shared by all players: Seeds.
+Players take turns moving.
+Setup:
+     Set the count of the vertexes in track of board to 4.
+Rules: 
+     Select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: to is in RegionP1 or RegionP2 and the total number of vertex in to is equal to 2 or the total number of vertex in to is equal to 3, backtracking: true, captureEffect: from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: false.
+Aim: 
+     If all sites in track of board satisfy the condition the total number of vertex in current site is less than or equal to 1, the game ends and the player with the highest score wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.893","0.892","0.928","0.893","251, 251, 251","[]"
