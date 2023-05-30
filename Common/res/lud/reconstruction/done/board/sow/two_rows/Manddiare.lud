@@ -1,0 +1,693 @@
+(game "Manddiare"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Manddiare (Ludii 1)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 8 
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (map { 
+                (pair P1 FirstSite)
+                
+                (pair P2 LastSite)
+                }
+            )
+            
+            (piece "Seed" Shared)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 6 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (do 
+                    (move Select 
+                        (from 
+                            (sites Mover)
+                            if:
+                            (< 0 
+                                (count at:
+                                    (from)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (sow if:
+                                (and 
+                                    (is In 
+                                        (to)
+                                        
+                                        (sites Next)
+                                    )
+                                    
+                                    (or 
+                                        (= 
+                                            (count at:
+                                                (to)
+                                            )
+                                        2)
+                                        
+                                        (= 
+                                            (count at:
+                                                (to)
+                                            )
+                                        3)
+                                    )
+                                )
+                                apply:
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (mapEntry 
+                                            (mover)
+                                        )
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            includeSelf:False backtracking:True )
+                        )
+                    )
+                    ifAfterwards:
+                    (< 0 
+                        (count in:
+                            (sites Next)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Mover)
+                    
+                    (result Next Win)
+                )
+            )
+        )
+        
+    > "The Manddiare (Ludii 1) ruleset.")
+    
+    (item "Manddiare (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 4 
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (map { 
+                (pair P1 FirstSite)
+                
+                (pair P2 LastSite)
+                }
+            )
+            
+            (piece "Seed" Shared)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 6 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (do 
+                    (move Select 
+                        (from 
+                            (sites Mover)
+                            if:
+                            (< 0 
+                                (count at:
+                                    (from)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (sow if:
+                                (and 
+                                    (is In 
+                                        (to)
+                                        
+                                        (sites Next)
+                                    )
+                                    
+                                    (or 
+                                        (= 
+                                            (count at:
+                                                (to)
+                                            )
+                                        2)
+                                        
+                                        (= 
+                                            (count at:
+                                                (to)
+                                            )
+                                        3)
+                                    )
+                                )
+                                apply:
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (mapEntry 
+                                            (mover)
+                                        )
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            includeSelf:False backtracking:True )
+                        )
+                    )
+                    ifAfterwards:
+                    (< 0 
+                        (count in:
+                            (sites Next)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (forEach Player if:
+                    (all Sites 
+                        (sites Player)
+                        if:
+                        (>= 1 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (result Player Loss)
+                )
+            )
+        )
+        
+    > "The Manddiare (Ludii 2) ruleset.")
+    
+    (item "Manddiare (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 8 
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (map { 
+                (pair P1 FirstSite)
+                
+                (pair P2 LastSite)
+                }
+            )
+            
+            (piece "Seed" Shared)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 4 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover)
+                        if:
+                        (> 
+                            (count at:
+                                (from)
+                            )
+                        0)
+                    )
+                    
+                    (then 
+                        (sow apply:
+                            (if 
+                                (or 
+                                    (= 
+                                        (count at:
+                                            (to)
+                                        )
+                                    2)
+                                    
+                                    (= 
+                                        (count at:
+                                            (to)
+                                        )
+                                    3)
+                                )
+                                
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (mapEntry Mover)
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Mover)
+                    
+                    (byScore { 
+                        (score P1 
+                            (+ 
+                                (count at:
+                                    (mapEntry P1)
+                                )
+                                
+                                (count in:
+                                    (sites P1)
+                                )
+                            )
+                        )
+                        
+                        (score P2 
+                            (+ 
+                                (count at:
+                                    (mapEntry P2)
+                                )
+                                
+                                (count in:
+                                    (sites P2)
+                                )
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Manddiare (Ludii 3) ruleset.")
+    
+    (item "Manddiare (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 3 
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (map { 
+                (pair P1 FirstSite)
+                
+                (pair P2 LastSite)
+                }
+            )
+            
+            (piece "Seed" Shared)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 4 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (do 
+                    (move Select 
+                        (from 
+                            (sites Mover)
+                            if:
+                            (< 0 
+                                (count at:
+                                    (from)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (sow if:
+                                (and 
+                                    (is In 
+                                        (to)
+                                        
+                                        (sites Next)
+                                    )
+                                    
+                                    (or 
+                                        (= 
+                                            (count at:
+                                                (to)
+                                            )
+                                        2)
+                                        
+                                        (= 
+                                            (count at:
+                                                (to)
+                                            )
+                                        3)
+                                    )
+                                )
+                                apply:
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (mapEntry 
+                                            (mover)
+                                        )
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            includeSelf:False backtracking:True )
+                        )
+                    )
+                    ifAfterwards:
+                    (< 0 
+                        (count in:
+                            (sites Next)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (byScore { 
+                        (score P1 
+                            (count at:
+                                (mapEntry P1)
+                            )
+                        )
+                        
+                        (score P2 
+                            (count at:
+                                (mapEntry P2)
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Manddiare (Ludii 4) ruleset.")
+    
+    (item "Manddiare (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 10 
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (map { 
+                (pair P1 FirstSite)
+                
+                (pair P2 LastSite)
+                }
+            )
+            
+            (piece "Seed" Shared)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 4 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (do 
+                    (move Select 
+                        (from 
+                            (sites Mover)
+                            if:
+                            (< 0 
+                                (count at:
+                                    (from)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (sow if:
+                                (and 
+                                    (is In 
+                                        (to)
+                                        
+                                        (sites Next)
+                                    )
+                                    
+                                    (or 
+                                        (= 
+                                            (count at:
+                                                (to)
+                                            )
+                                        2)
+                                        
+                                        (= 
+                                            (count at:
+                                                (to)
+                                            )
+                                        3)
+                                    )
+                                )
+                                apply:
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (mapEntry 
+                                            (mover)
+                                        )
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            includeSelf:False backtracking:True )
+                        )
+                    )
+                    ifAfterwards:
+                    (< 0 
+                        (count in:
+                            (sites Next)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Mover)
+                    
+                    (byScore { 
+                        (score P1 
+                            (+ 
+                                (count Cell at:
+                                    (handSite P1)
+                                )
+                                
+                                (count in:
+                                    (sites P1)
+                                )
+                            )
+                        )
+                        
+                        (score P2 
+                            (+ 
+                                (count Cell at:
+                                    (handSite P2)
+                                )
+                                
+                                (count in:
+                                    (sites P2)
+                                )
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Manddiare (Ludii 5) ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2) 
+        
+        (equipment { 
+            (mancalaBoard 2 [3..10]
+                (track "Track" "1,E,N,W" loop:True)
+            )
+            (regions P1 (sites Bottom))     // P1 home
+            (regions P2 (sites Top))      // P2 home
+            (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
+            (piece "Seed" Shared)
+            }
+        ) 
+        (rules 
+            
+            (start [#])
+            
+            (play [#]) // When the final counter of the sowing lands in a hole, making it contain an even number of counters, these are captured.
+            
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Manddiare (Ludii 1) (Reconstructed)" {
+        "Variant/Manddiare (Ludii 1)"
+    })
+    (ruleset "Ruleset/Manddiare (Ludii 2) (Reconstructed)" {
+        "Variant/Manddiare (Ludii 2)"
+    })
+    (ruleset "Ruleset/Manddiare (Ludii 3) (Reconstructed)" {
+        "Variant/Manddiare (Ludii 3)"
+    })
+    (ruleset "Ruleset/Manddiare (Ludii 4) (Reconstructed)" {
+        "Variant/Manddiare (Ludii 4)"
+    })
+    (ruleset "Ruleset/Manddiare (Ludii 5) (Reconstructed)" {
+        "Variant/Manddiare (Ludii 5)"
+    }) 
+    
+    (ruleset "Ruleset/Manddiare (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Manddiaré is a two-row mancala-style board game played in Mauritania but women amd young girls. Sometimes boys would play it to get to know girls, but this would not occur in public spaces.")
+        (aliases {"Manddiaré"})
+        (rules "2x3-10 board. Sowing occurs in an anti-clockwise direction. When the final counter of the sowing lands in a hole, making it contain an even number of counters, these are captured. ")
+        (source "Béart 1955: 512.")
+        (id "424")
+        (version "1.3.11")
+        (classification "board/sow/two rows/reconstruction/pending")
+        (credit "Eric Piette")
+        (origin "This game was played in Mauritania, around 1955.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+    (recon {
+        (concept "Sow" True)
+    })
+)
+
