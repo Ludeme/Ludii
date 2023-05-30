@@ -3,6 +3,15 @@
 //------------------------------------------------------------------------------
 
 (game "Mak Khom" 
+	<Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+  {
+	    (item "Incomplete"
+	        <
     (players 2) 
     
     (equipment { 
@@ -35,17 +44,27 @@
             (nextPhase Mover "Playing")
         )
         (phase "Playing"
-            (play (forEach Piece)) // When sowing, players may take the entire contents of a hole, or only part of them. The players agree on a number of counters which need to be captured in order to win.
+            (play [#]) // When sowing, players may take the entire contents of a hole, or only part of them. The players agree on a number of counters which need to be captured in order to win.
         )
         }
         
-        (end // Missing ending rules ?
-            (if (no Moves Next)
-                (result Mover Win)
-            )
-        )
+        (end [#])
     )
-)
+        >
+        "The incomplete ruleset."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
 
 //------------------------------------------------------------------------------
 
@@ -65,6 +84,10 @@
     
     (graphics {
         (board Style Mancala)
+    })
+    
+    (recon {
+        (concept "SowCapture" True)
     })
 )
 
