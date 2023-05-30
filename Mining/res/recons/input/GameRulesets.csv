@@ -25063,3 +25063,71 @@ Aim:
      If all sites in track of board satisfy the condition the total number of vertex in current site is less than or equal to 1, the game ends and the player with the highest score wins.
 
 ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.893","0.892","0.928","0.893","251, 251, 251","[]"
+"4122","408","Manddiare (Ludii 1)",NULL,"Reconstructed with Ludii","2",NULL,"The game Manddiare is played by two players on a 2 x 8 Mancala board with 2 outer stores.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with null The following pieces are shared by all players: Seeds.
+Players take turns moving.
+Setup:
+     Set the count of the vertexes in track of board to 6.
+Rules: 
+     Select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: to is in RegionP1 or RegionP2 and the total number of vertex in to is equal to 2 or the total number of vertex in to is equal to 3, backtracking: true, captureEffect: from vertex in to to vertex null of current moving player moveRule: true, type: Vertex, includeSelf: false.
+Aim: 
+     If the moving player cannot move, the next player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.945","0.945","0.778","0.944","783, 1200, 415","[]"
+"4123","408","Manddiare (Ludii 2)",NULL,"Reconstructed with Ludii","2",NULL,"The game Manddiare is played by two players on a 2 x 4 Mancala board with 2 outer stores.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with null The following pieces are shared by all players: Seeds.
+Players take turns moving.
+Setup:
+     Set the count of the vertexes in track of board to 6.
+Rules: 
+     Select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: to is in RegionP1 or RegionP2 and the total number of vertex in to is equal to 2 or the total number of vertex in to is equal to 3, backtracking: true, captureEffect: from vertex in to to vertex null of current moving player moveRule: true, type: Vertex, includeSelf: false.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.943","0.953","0.954","0.933","427, 1200, 782","[]"
+"4124","408","Manddiare (Ludii 3)",NULL,"Reconstructed with Ludii","2",NULL,"The game Manddiare is played by two players on a 2 x 8 Mancala board with 2 outer stores.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with null The following pieces are shared by all players: Seeds.
+Players take turns moving.
+Setup:
+     Set the count of the vertexes in track of board to 4.
+Rules: 
+     Select Vertex in RegionP1 or RegionP2 if the total number of vertex in the location of the piece is greater than 0 then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if the total number of vertex in to is equal to 2 or the total number of vertex in to is equal to 3, from vertex in to to vertex null of the moving player moveRule: true, type: Vertex, includeSelf: true.
+Aim: 
+     If the moving player cannot move, the game ends and the player with the highest score wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.934","0.926","0.961","0.942","1392, 280, 1307","[]"
+"4125","408","Manddiare (Ludii 4)",NULL,"Reconstructed with Ludii","2",NULL,"The game Manddiare is played by two players on a 2 x 3 Mancala board with 2 outer stores.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with null The following pieces are shared by all players: Seeds.
+Players take turns moving.
+Setup:
+     Set the count of the vertexes in track of board to 4.
+Rules: 
+     Select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: to is in RegionP1 or RegionP2 and the total number of vertex in to is equal to 2 or the total number of vertex in to is equal to 3, backtracking: true, captureEffect: from vertex in to to vertex null of current moving player moveRule: true, type: Vertex, includeSelf: false.
+Aim: 
+     If the next player cannot move, the game ends and the player with the highest score wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.919","0.929","0.93","0.91","1307, 1200, 370","[]"
+"4126","408","Manddiare (Ludii 5)",NULL,"Reconstructed with Ludii","2",NULL,"The game Manddiare is played by two players on a 2 x 10 Mancala board with 2 outer stores.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with null The following pieces are shared by all players: Seeds.
+Players take turns moving.
+Setup:
+     Set the count of the vertexes in track of board to 4.
+Rules: 
+     Select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: to is in RegionP1 or RegionP2 and the total number of vertex in to is equal to 2 or the total number of vertex in to is equal to 3, backtracking: true, captureEffect: from vertex in to to vertex null of current moving player moveRule: true, type: Vertex, includeSelf: false.
+Aim: 
+     If the moving player cannot move, the game ends and the player with the highest score wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.918","0.928","0.928","0.909","280, 1200, 281","[]"
