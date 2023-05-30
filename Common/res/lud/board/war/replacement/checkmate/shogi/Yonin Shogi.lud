@@ -9,14 +9,15 @@
     )
 )
 
+// Fixed CanNotMove by RubixOne
 (define "CanNotMove"
-    (not (can Move (do (and (forEach Piece #1) (set NextPlayer (player #2))) ifAfterwards:(not ("IsInCheck" "Osho" #1)))))
+    (not (can Move (do (and (forEach Piece #1) (set NextPlayer (player (id #1)))) ifAfterwards:(not ("IsInCheck" "Osho" #1)))))
 )
 
-// Fixed OnePawnPerColumn by dale walton
+// Fixed OnePawnPerColumn by dale walton and RubixOne
 (define "OnePawnPerColumn"
     (if
-        (= 0 (% #2 2))  // #1 is even   
+        (= 0 (% (id #1) 2))  // #1 is even   
         (=
             (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo"))
             (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (sites Row (row of:(to)))))
@@ -24,7 +25,9 @@
         (=
             (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo"))
             (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (sites Column (column of:(to)))))
-) ) )
+        )
+    )
+)
 
 (define "PlaceKnight" 
     (move 
@@ -46,14 +49,14 @@
         (move 
             (from (sites Occupied by:#1 container:"Hand" component:"Fuhyo")) 
             (to (difference (sites Empty) (sites #1 "LastRank")) 
-                if:("OnePawnPerColumn" #1 #2)
+                if:("OnePawnPerColumn" #1)
             )
         ) 
         ifAfterwards:(not (or {
-                (and ("IsInCheck" "Osho" P1) ("CanNotMove" P1 1))
-                (and ("IsInCheck" "Osho" P2) ("CanNotMove" P2 2))
-                (and ("IsInCheck" "Osho" P3) ("CanNotMove" P3 3))
-                (and ("IsInCheck" "Osho" P4) ("CanNotMove" P4 4))
+            (and ("IsInCheck" "Osho" P1) ("CanNotMove" P1))
+            (and ("IsInCheck" "Osho" P2) ("CanNotMove" P2))
+            (and ("IsInCheck" "Osho" P3) ("CanNotMove" P3))
+            (and ("IsInCheck" "Osho" P4) ("CanNotMove" P4))
         }))
     )
 ) 
@@ -268,16 +271,28 @@
     )
 )
 
+// Fixed RemoveKingIfCheckmate by RubixOne
 (define "RemoveKingIfCheckmate"
     (if (and (is Active #1) (not (is Mover #1)))
         (if 
             (and 
                 ("IsInCheck" "Osho" #1)
-                ("CanNotMove" #1 #2)
+                ("CanNotMove" #1)
             )
             (remove (where (id "Osho" #1)))
         )
     )		
+)
+
+// RemoveKingIfStalemate by RubixOne
+(define "RemoveKingIfStalemate"
+    (if 
+        (and 
+            (no Moves Next) 
+            (not ("IsOffBoard" (where "Osho" Next)))
+        ) 
+        (remove (where (id "Osho" Next)))
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -291,7 +306,7 @@
         // King
         (piece "Osho" Each ("StepMove"))
         
-        //Pawn 
+        // Pawn 
         (piece "Fuhyo" Each 
             ("StepMove" 
                 Forward 
@@ -445,7 +460,7 @@
                             (from (sites Occupied by:Mover container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
                             (to (sites Empty))
                         ) 
-                        ("PlacePawn" Mover (mover) Next)
+                        ("PlacePawn" Mover)
                         ("PlaceLance" Mover)
                         ("PlaceKnight" Mover) 
                         (forEach Piece) 
@@ -454,10 +469,11 @@
                 )
                 (then
                     (and {
-                        ("RemoveKingIfCheckmate" P1 1)
-                        ("RemoveKingIfCheckmate" P2 2)
-                        ("RemoveKingIfCheckmate" P3 3)
-                        ("RemoveKingIfCheckmate" P4 4)
+                        ("RemoveKingIfCheckmate" P1)
+                        ("RemoveKingIfCheckmate" P2)
+                        ("RemoveKingIfCheckmate" P3)
+                        ("RemoveKingIfCheckmate" P4)
+                        ("RemoveKingIfStalemate")
                     })
                 )
             )
@@ -468,7 +484,6 @@
                 if:("IsOffBoard" (where "Osho" Player)) 
                 (result Player Loss)
             ) 
-            ("NoMoves" Loss)
         })
     )
 )
