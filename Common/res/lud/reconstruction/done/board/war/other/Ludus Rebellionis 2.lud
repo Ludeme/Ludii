@@ -1,0 +1,2096 @@
+(game "Ludus Rebellionis 2"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Ludus Rebellionis 2 Cesena (Ludii 1)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Queen" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "King" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Pawn" Each 
+                (move Step Forward 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "King1" coord:"H8")
+                
+                (place "Queen1" coord:"B8")
+                
+                (place "King2" coord:"H1")
+                
+                (place "Queen2" coord:"B1")
+                
+                (place "Pawn1" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:3)
+                        
+                        (sites Phase 0)
+                    )
+                )
+                
+                (place "Pawn2" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:3)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:
+                    (not 
+                        (is Threatened 
+                            (id "King" Mover)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (= 1 
+                                    (state at:
+                                        (where "King" Next)
+                                    )
+                                )
+                                
+                                (is Threatened 
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (set State at:
+                                (where "King" Next)
+                            0)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (and 
+                        (is Threatened 
+                            (id "King" Next)
+                        )
+                        
+                        (not 
+                            (can Move 
+                                (do 
+                                    (forEach Piece Next)
+                                    ifAfterwards:
+                                    (not 
+                                        (is Threatened 
+                                            (id "King" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Ludus Rebellionis 2 Cesena (Ludii 1) ruleset.")
+    
+    (item "Ludus Rebellionis 2 Perugia (Ludii 1)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Queen" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "King" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Pawn" Each 
+                (move Step Forward 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "King1" coord:"H1")
+                
+                (place "Queen1" coord:"B1")
+                
+                (place "King2" coord:"H8")
+                
+                (place "Queen2" coord:"B8")
+                
+                (place "Pawn1" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:3)
+                        
+                        (sites Phase 0)
+                    )
+                )
+                
+                (place "Pawn2" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:3)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:
+                    (not 
+                        (is Threatened 
+                            (id "King" Mover)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (= 1 
+                                    (state at:
+                                        (where "King" Next)
+                                    )
+                                )
+                                
+                                (is Threatened 
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (set State at:
+                                (where "King" Next)
+                            0)
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (and 
+                        (is Threatened 
+                            (id "King" Next)
+                        )
+                        
+                        (not 
+                            (can Move 
+                                (do 
+                                    (forEach Piece Next)
+                                    ifAfterwards:
+                                    (not 
+                                        (is Threatened 
+                                            (id "King" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (or 
+                        (no Moves Mover)
+                        
+                        (= 
+                            (counter)
+                        99)
+                    )
+                    
+                    (result Mover Draw)
+                )
+                }
+            )
+        )
+        
+    > "The Ludus Rebellionis 2 Perugia (Ludii 1) ruleset.")
+    
+    (item "Ludus Rebellionis 2 Cesena (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Queen" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (piece "King" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Pawn" Each 
+                (move Step Forward 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "King1" coord:"H8")
+                
+                (place "Queen1" coord:"B8")
+                
+                (place "King2" coord:"H1")
+                
+                (place "Queen2" coord:"B1")
+                
+                (place "Pawn1" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:3)
+                        
+                        (sites Phase 0)
+                    )
+                )
+                
+                (place "Pawn2" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:3)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:
+                    (not 
+                        (is Threatened 
+                            (id "King" Mover)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (= 1 
+                                    (state at:
+                                        (where "King" Next)
+                                    )
+                                )
+                                
+                                (is Threatened 
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (set State at:
+                                (where "King" Next)
+                            0)
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (and 
+                        (is Threatened 
+                            (id "King" Next)
+                        )
+                        
+                        (not 
+                            (can Move 
+                                (do 
+                                    (forEach Piece Next)
+                                    ifAfterwards:
+                                    (not 
+                                        (is Threatened 
+                                            (id "King" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (or 
+                        (no Moves Mover)
+                        
+                        (= 
+                            (counter)
+                        99)
+                    )
+                    
+                    (result Mover Draw)
+                )
+                }
+            )
+        )
+        
+    > "The Ludus Rebellionis 2 Cesena (Ludii 2) ruleset.")
+    
+    (item "Ludus Rebellionis 2 Perugia (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Queen" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "King" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Pawn" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "King1" coord:"H1")
+                
+                (place "Queen1" coord:"B1")
+                
+                (place "King2" coord:"H8")
+                
+                (place "Queen2" coord:"B8")
+                
+                (place "Pawn1" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:3)
+                        
+                        (sites Phase 0)
+                    )
+                )
+                
+                (place "Pawn2" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:3)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:
+                    (not 
+                        (is Threatened 
+                            (id "King" Mover)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (= 1 
+                                    (state at:
+                                        (where "King" Next)
+                                    )
+                                )
+                                
+                                (is Threatened 
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (set State at:
+                                (where "King" Next)
+                            0)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Ludus Rebellionis 2 Perugia (Ludii 2) ruleset.")
+    
+    (item "Ludus Rebellionis 2 Cesena (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Queen" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "King" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Pawn" Each 
+                (move Step Forward 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "King1" coord:"H8")
+                
+                (place "Queen1" coord:"B8")
+                
+                (place "King2" coord:"H1")
+                
+                (place "Queen2" coord:"B1")
+                
+                (place "Pawn1" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:3)
+                        
+                        (sites Phase 0)
+                    )
+                )
+                
+                (place "Pawn2" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:3)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:
+                    (not 
+                        (is Threatened 
+                            (id "King" Mover)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (= 1 
+                                    (state at:
+                                        (where "King" Next)
+                                    )
+                                )
+                                
+                                (is Threatened 
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (set State at:
+                                (where "King" Next)
+                            0)
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (and 
+                        (is Threatened 
+                            (id "King" Next)
+                        )
+                        
+                        (not 
+                            (can Move 
+                                (do 
+                                    (forEach Piece Next)
+                                    ifAfterwards:
+                                    (not 
+                                        (is Threatened 
+                                            (id "King" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (or 
+                        (no Moves Mover)
+                        
+                        (= 
+                            (counter)
+                        99)
+                    )
+                    
+                    (result Mover Draw)
+                )
+                }
+            )
+        )
+        
+    > "The Ludus Rebellionis 2 Cesena (Ludii 3) ruleset.")
+    
+    (item "Ludus Rebellionis 2 Perugia (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Queen" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "King" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Pawn" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "King1" coord:"H1")
+                
+                (place "Queen1" coord:"B1")
+                
+                (place "King2" coord:"H8")
+                
+                (place "Queen2" coord:"B8")
+                
+                (place "Pawn1" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:3)
+                        
+                        (sites Phase 0)
+                    )
+                )
+                
+                (place "Pawn2" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:3)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:
+                    (not 
+                        (is Threatened 
+                            (id "King" Mover)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (= 1 
+                                    (state at:
+                                        (where "King" Next)
+                                    )
+                                )
+                                
+                                (is Threatened 
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (set State at:
+                                (where "King" Next)
+                            0)
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (and 
+                        (is Threatened 
+                            (id "King" Next)
+                        )
+                        
+                        (not 
+                            (can Move 
+                                (do 
+                                    (forEach Piece Next)
+                                    ifAfterwards:
+                                    (not 
+                                        (is Threatened 
+                                            (id "King" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Draw)
+                )
+                }
+            )
+        )
+        
+    > "The Ludus Rebellionis 2 Perugia (Ludii 3) ruleset.")
+    
+    (item "Ludus Rebellionis 2 Cesena (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Queen" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (piece "King" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Pawn" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "King1" coord:"H8")
+                
+                (place "Queen1" coord:"B8")
+                
+                (place "King2" coord:"H1")
+                
+                (place "Queen2" coord:"B1")
+                
+                (place "Pawn1" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:3)
+                        
+                        (sites Phase 0)
+                    )
+                )
+                
+                (place "Pawn2" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:3)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:
+                    (not 
+                        (is Threatened 
+                            (id "King" Mover)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (= 1 
+                                    (state at:
+                                        (where "King" Next)
+                                    )
+                                )
+                                
+                                (is Threatened 
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (set State at:
+                                (where "King" Next)
+                            0)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (and 
+                        (is Threatened 
+                            (id "King" Next)
+                        )
+                        
+                        (not 
+                            (can Move 
+                                (do 
+                                    (forEach Piece Next)
+                                    ifAfterwards:
+                                    (not 
+                                        (is Threatened 
+                                            (id "King" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Ludus Rebellionis 2 Cesena (Ludii 4) ruleset.")
+    
+    (item "Ludus Rebellionis 2 Perugia (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Queen" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "King" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Pawn" Each 
+                (move Step Forward 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "King1" coord:"H1")
+                
+                (place "Queen1" coord:"B1")
+                
+                (place "King2" coord:"H8")
+                
+                (place "Queen2" coord:"B8")
+                
+                (place "Pawn1" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:3)
+                        
+                        (sites Phase 0)
+                    )
+                )
+                
+                (place "Pawn2" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:3)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:
+                    (not 
+                        (is Threatened 
+                            (id "King" Mover)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (= 1 
+                                    (state at:
+                                        (where "King" Next)
+                                    )
+                                )
+                                
+                                (is Threatened 
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (set State at:
+                                (where "King" Next)
+                            0)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Win)
+                )
+            )
+        )
+        
+    > "The Ludus Rebellionis 2 Perugia (Ludii 4) ruleset.")
+    
+    (item "Ludus Rebellionis 2 Cesena (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Queen" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "King" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Pawn" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "King1" coord:"H8")
+                
+                (place "Queen1" coord:"B8")
+                
+                (place "King2" coord:"H1")
+                
+                (place "Queen2" coord:"B1")
+                
+                (place "Pawn1" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:3)
+                        
+                        (sites Phase 0)
+                    )
+                )
+                
+                (place "Pawn2" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:3)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:
+                    (not 
+                        (is Threatened 
+                            (id "King" Mover)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (= 1 
+                                    (state at:
+                                        (where "King" Next)
+                                    )
+                                )
+                                
+                                (is Threatened 
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (set State at:
+                                (where "King" Next)
+                            0)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (!= 0 
+                        (score P1)
+                    )
+                    
+                    (byScore)
+                )
+            )
+        )
+        
+    > "The Ludus Rebellionis 2 Cesena (Ludii 5) ruleset.")
+    
+    (item "Ludus Rebellionis 2 Perugia (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Queen" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (piece "King" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Pawn" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "King1" coord:"H1")
+                
+                (place "Queen1" coord:"B1")
+                
+                (place "King2" coord:"H8")
+                
+                (place "Queen2" coord:"B8")
+                
+                (place "Pawn1" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:3)
+                        
+                        (sites Phase 0)
+                    )
+                )
+                
+                (place "Pawn2" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:3)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:
+                    (not 
+                        (is Threatened 
+                            (id "King" Mover)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (= 1 
+                                    (state at:
+                                        (where "King" Next)
+                                    )
+                                )
+                                
+                                (is Threatened 
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (set State at:
+                                (where "King" Next)
+                            0)
+                        )
+                    )
+                )
+            )
+            
+            (end { 
+                (if 
+                    (and 
+                        (is Threatened 
+                            (id "King" Next)
+                        )
+                        
+                        (not 
+                            (can Move 
+                                (do 
+                                    (forEach Piece Next)
+                                    ifAfterwards:
+                                    (not 
+                                        (is Threatened 
+                                            (id "King" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+                
+                (if 
+                    (or 
+                        (no Moves Mover)
+                        
+                        (= 
+                            (counter)
+                        99)
+                    )
+                    
+                    (result Mover Draw)
+                )
+                }
+            )
+        )
+        
+    > "The Ludus Rebellionis 2 Perugia (Ludii 5) ruleset.")
+    
+    (item "Ludus Rebellionis 2 Perugia (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Queen" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "King" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (piece "Pawn" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "King1" coord:"H1")
+                
+                (place "Queen1" coord:"B1")
+                
+                (place "King2" coord:"H8")
+                
+                (place "Queen2" coord:"B8")
+                
+                (place "Pawn1" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:3)
+                        
+                        (sites Phase 0)
+                    )
+                )
+                
+                (place "Pawn2" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:3)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:
+                    (not 
+                        (is Threatened 
+                            (id "King" Mover)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (= 1 
+                                    (state at:
+                                        (where "King" Next)
+                                    )
+                                )
+                                
+                                (is Threatened 
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (set State at:
+                                (where "King" Next)
+                            0)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (and 
+                        (is Threatened 
+                            (id "King" Next)
+                        )
+                        
+                        (not 
+                            (can Move 
+                                (do 
+                                    (forEach Piece Next)
+                                    ifAfterwards:
+                                    (not 
+                                        (is Threatened 
+                                            (id "King" Next)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Ludus Rebellionis 2 Perugia (Ludii 6) ruleset.")
+    
+    (item "Ludus Rebellionis 2 Perugia (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Queen" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "King" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Pawn" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "King1" coord:"H1")
+                
+                (place "Queen1" coord:"B1")
+                
+                (place "King2" coord:"H8")
+                
+                (place "Queen2" coord:"B8")
+                
+                (place "Pawn1" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:3)
+                        
+                        (sites Phase 0)
+                    )
+                )
+                
+                (place "Pawn2" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:3)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:
+                    (not 
+                        (is Threatened 
+                            (id "King" Mover)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (= 1 
+                                    (state at:
+                                        (where "King" Next)
+                                    )
+                                )
+                                
+                                (is Threatened 
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (set State at:
+                                (where "King" Next)
+                            0)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (!= 0 
+                        (score P1)
+                    )
+                    
+                    (byScore)
+                )
+            )
+        )
+        
+    > "The Ludus Rebellionis 2 Perugia (Ludii 7) ruleset.")
+    
+    (item "Ludus Rebellionis 2 Perugia (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (square 8)
+            )
+            
+            (piece "Queen" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            
+            (piece "King" Each 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (if 
+                                (is Enemy 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                                
+                                (remove 
+                                    (to)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Pawn" Each 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "King1" coord:"H1")
+                
+                (place "Queen1" coord:"B1")
+                
+                (place "King2" coord:"H8")
+                
+                (place "Queen2" coord:"B8")
+                
+                (place "Pawn1" 
+                    (difference 
+                        (expand 
+                            (sites Top)
+                        steps:3)
+                        
+                        (sites Phase 0)
+                    )
+                )
+                
+                (place "Pawn2" 
+                    (difference 
+                        (expand 
+                            (sites Bottom)
+                        steps:3)
+                        
+                        (sites Phase 1)
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:
+                    (not 
+                        (is Threatened 
+                            (id "King" Mover)
+                        )
+                    )
+                    
+                    (then 
+                        (if 
+                            (and 
+                                (= 1 
+                                    (state at:
+                                        (where "King" Next)
+                                    )
+                                )
+                                
+                                (is Threatened 
+                                    (id "King" Next)
+                                )
+                            )
+                            
+                            (set State at:
+                                (where "King" Next)
+                            0)
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (!= 0 
+                        (score P1)
+                    )
+                    
+                    (byScore)
+                )
+            )
+        )
+        
+    > "The Ludus Rebellionis 2 Perugia (Ludii 8) ruleset.")
+    
+    (item "Incomplete Cesena"
+        <
+        (players 2) 
+        (equipment { 
+            (board (square 8)) 	
+            (piece "Queen" Each (move [#]))
+            (piece "King" Each (move [#]))
+            (piece "Pawn" Each (move [#]))
+        })
+        (rules 
+            (start {
+                (place "King1" coord:"H8")
+                (place "Queen1" coord:"B8")
+                (place "King2" coord:"H1")
+                (place "Queen2" coord:"B1")
+                (place "Pawn1" (difference (expand (sites Top) steps:3) (sites Phase 0) ))
+                (place "Pawn2" (difference (expand (sites Bottom) steps:3) (sites Phase 1) ))
+            })
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+    (item "Incomplete Perugia"
+        <
+        (players 2) 
+        (equipment { 
+            (board (square 8)) 	
+            (piece "Queen" Each (move [#]))
+            (piece "King" Each (move [#]))
+            (piece "Pawn" Each (move [#]))
+        })
+        (rules 
+            (start {
+                (place "King1" coord:"H1")
+                (place "Queen1" coord:"B1")
+                (place "King2" coord:"H8")
+                (place "Queen2" coord:"B8")
+                (place "Pawn1" (difference (expand (sites Top) steps:3) (sites Phase 0) ))
+                (place "Pawn2" (difference (expand (sites Bottom) steps:3) (sites Phase 1) ))
+            })
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Ludus Rebellionis 2 Cesena (Ludii 1) (Reconstructed)" {
+        "Variant/Ludus Rebellionis 2 Cesena (Ludii 1)"
+    })
+    (ruleset "Ruleset/Ludus Rebellionis 2 Perugia (Ludii 1) (Reconstructed)" {
+        "Variant/Ludus Rebellionis 2 Perugia (Ludii 1)"
+    })
+    (ruleset "Ruleset/Ludus Rebellionis 2 Cesena (Ludii 2) (Reconstructed)" {
+        "Variant/Ludus Rebellionis 2 Cesena (Ludii 2)"
+    })
+    (ruleset "Ruleset/Ludus Rebellionis 2 Perugia (Ludii 2) (Reconstructed)" {
+        "Variant/Ludus Rebellionis 2 Perugia (Ludii 2)"
+    })
+    (ruleset "Ruleset/Ludus Rebellionis 2 Cesena (Ludii 3) (Reconstructed)" {
+        "Variant/Ludus Rebellionis 2 Cesena (Ludii 3)"
+    })
+    (ruleset "Ruleset/Ludus Rebellionis 2 Perugia (Ludii 3) (Reconstructed)" {
+        "Variant/Ludus Rebellionis 2 Perugia (Ludii 3)"
+    })
+    (ruleset "Ruleset/Ludus Rebellionis 2 Cesena (Ludii 4) (Reconstructed)" {
+        "Variant/Ludus Rebellionis 2 Cesena (Ludii 4)"
+    })
+    (ruleset "Ruleset/Ludus Rebellionis 2 Perugia (Ludii 4) (Reconstructed)" {
+        "Variant/Ludus Rebellionis 2 Perugia (Ludii 4)"
+    })
+    (ruleset "Ruleset/Ludus Rebellionis 2 Cesena (Ludii 5) (Reconstructed)" {
+        "Variant/Ludus Rebellionis 2 Cesena (Ludii 5)"
+    })
+    (ruleset "Ruleset/Ludus Rebellionis 2 Perugia (Ludii 5) (Reconstructed)" {
+        "Variant/Ludus Rebellionis 2 Perugia (Ludii 5)"
+    })
+    (ruleset "Ruleset/Ludus Rebellionis 2 Perugia (Ludii 6) (Reconstructed)" {
+        "Variant/Ludus Rebellionis 2 Perugia (Ludii 6)"
+    })
+    (ruleset "Ruleset/Ludus Rebellionis 2 Perugia (Ludii 7) (Reconstructed)" {
+        "Variant/Ludus Rebellionis 2 Perugia (Ludii 7)"
+    })
+    (ruleset "Ruleset/Ludus Rebellionis 2 Perugia (Ludii 8) (Reconstructed)" {
+        "Variant/Ludus Rebellionis 2 Perugia (Ludii 8)"
+    }) 
+    
+    (ruleset "Ruleset/Cesena (Incomplete)" {
+        "Variant/Incomplete Cesena"
+    })
+    
+    (ruleset "Ruleset/Perugia (Incomplete)" {
+        "Variant/Incomplete Perugia"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "The Ludus Rebellionis appears in a sixteenth century Italian manuscript, with three different diagrams. In this version each side plays with a King, Queen, and sixteen Pawns which begin in opposing camps.")
+        (useFor "Ruleset/Cesena (Incomplete)" (rules "8x8 board. Each player plays as one King, one Queen, and sixteen Pawns. The Black King starts in the bottom right corner, and the Queen in the Queen in the space to the right of the bottom left corner. The Pawns are on alternate spaces in the first four rows, starting with a Pawn in the bottom left corner. Red's pieces reflect this pattern, with Kings and Queens opposite each other."))
+        (useFor "Ruleset/Cesena (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Cesena (Incomplete)" (id "1560"))
+        (useFor "Ruleset/Perugia (Incomplete)" (rules "The Kings and Queens start on opposite sides as their Pawms."))
+        (useFor "Ruleset/Perugia (Incomplete)" (source "Murray 1951: 105-106."))
+        (useFor "Ruleset/Perugia (Incomplete)" (id "1562"))
+        (source "Murray 1951: 105.")
+        (version "1.3.11")
+        (classification "board/war/reconstruction/pending")
+        (origin "This game was played in Italy, from around 1500 to 1599.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)
+
