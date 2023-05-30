@@ -24700,7 +24700,8 @@ Aim:
      If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins.
 
 ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.917","0.894","0.958","0.939","1431, 1431","[]"
-"4095","1644","Default",NULL,NULL,"1",NULL,"All rules are the same as in standard Shogi, except as follows. Pawns promote to Golden Bird, which moves as a Gold General (one square orthogonally or forward). Lances promote to Free Tiger, which slides sideways, steps vertically, or jumps to any square that is two squares to either side in an adjacent rank (row). Knights promote to Heavenly Horse, which moves one square in any sideways or forward direction, or jumps to either square that is two squares behind in an adjacent file (column). Silver Generals promote to Venomous Wolf, which moves one square orthogonally or forward, or slides straight forward. Gold Generals promote to Great Elephant, which moves one square in any direction except straight backward, or slides diagonally forward. Perpetual check is allowed. After deciding who goes first, play continues clockwise. Pawns cannot be dropped onto any square where they can reach another friendly unpromoted Pawn by jumping any distance from said square in a straight line directly forward or backward. If a player is stalemated, that player loses their turn. Once a player is checkmated their King is removed and the pieces in their hand are reappropriated to the mating player, but all their other pieces remain on the board as neutral obstacles. The mating player is the player making the move that results in mate. Pieces that are reappropriated to the mating player must be dropped in the original direction of the mating player. Neutral pieces cannot move until they are captured, but will still give check to the remaining Kings. In over-the-board play, the rules for impasse are as follows. The minimum points needed to not lose during an impasse is 21 for the Compact Setup and 41 for the Complete setup. Rooks and Bishops score 5 points for the owning player, and all other pieces except Kings score 1 point each, as in Shogi. Players that score below the minimum lose unless all players score below the minimum, in which case the first to score above the minimum wins. If multiple players score above the minimum, the game ends in a draw for said players, and any players below the minimum lose.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
+"4095","1644","Default",NULL,NULL,"1",NULL,"All rules are the same as in standard Shogi, except as follows. Pawns promote to Golden Bird, which moves as a Gold General (one square orthogonally or forward). Lances promote to Free Tiger, which slides sideways, steps vertically, or jumps to any square that is two squares to either side in an adjacent rank (row). Knights promote to Heavenly Horse, which moves one square in any sideways or forward direction, or jumps to either square that is two squares behind in an adjacent file (column). Silver Generals promote to Venomous Wolf, which moves one square orthogonally or forward, or slides straight forward. Gold Generals promote to Great Elephant, which moves one square in any direction except straight backward, or slides diagonally forward. Perpetual check is allowed. After deciding who goes first, play continues clockwise. Pawns cannot be dropped onto any square where they can reach another friendly unpromoted Pawn by jumping any distance from said square in a straight line directly forward or backward. Stalemate only takes effect once it is the stalemated player's turn to move. Once a player has lost for any reason, their King is removed and the pieces in their hand are reappropriated to the mating player, but all their other pieces remain on the board as neutral obstacles. The mating player is the player making the move that results in mate; for losses not resulting from mate, this is the player who moved last. Pieces that are reappropriated to the mating player must be dropped in the original direction of the mating player. Neutral pieces cannot move until they are captured, but will still give check to the remaining Kings. In over-the-board play, the rules for impasse are as follows. The minimum number of points needed to not lose during an impasse is 21 for the Compact Setup and 41 for the Complete setup. Rooks and Bishops score 5 points for the owning player, and all other pieces except Kings score 1 point each, as in Shogi. Players that score below the minimum lose unless all players score below the minimum, in which case the first to score above the minimum wins. If multiple players score above the minimum, the game ends in a draw for said players, and any players below the minimum lose.
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
 "4096","1645","Default",NULL,NULL,"1",NULL,"Be the first player to send one of your pieces across the board from your starting cells and return.
 
 Turns alternate.
@@ -24711,20 +24712,35 @@ On your turn either
 When a piece reaches the opposite edge (marked with a line of your color), it is crowned, and its allowed direction of movement is reversed.
 
 A Hexagonal option for 2 or 3 players is also available.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
-"4097","1646","Default",NULL,NULL,"1",NULL,"Play starts with Red placing a stone on the board. Thereafter, players alternate, placing twice (or, for the variant protocol, once) per turn. Each placement is as follows:
+"4097","1646","Default",NULL,NULL,"1",NULL,"Play starts with Red placing a stone on the board. Thereafter, players alternate, placing twice per turn. (For the variant protocol, placing once.) Each placement is as follows:
         
-Stones are placed on any empty cell (not stars), 
+Stones are placed on any empty tan cell, 
  -- but only if 'inspired' at that location.
 
-A stone is 'inspired' if it has a view of a star across an empty cell,
+A stone is 'inspired'
+ -- if it has a view of a star across an empty cell,
  -- or if it has line-of-sight to an 'inspired' friendly stone (whether or not there is space between them.)
 
 - Note this definition is recursive, 'inspiration' can be granted by a star-gazing stone many stones away.
 
 There are no stone removals.
 
-The game ends when one player cannot place a stone. 
-The player with the least number of 'uninspired' pieces win. If tied, the last to place wins.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
+The game ends when one player cannot place a stone.
+
+The player with the least number of 'uninspired' pieces wins. If tied, the last to place wins.
+
+
+Note however that the game can end earlier: Namely, when the assured part of your score is more than the opponent's potential to score.
+
+This is because the game is territorial: Fully enclosing enemy stones makes them permanently uninspired, while fully enclosing empty spaces without views to a star makes them unplayable (and thus safe from future captures.)
+
+-- The assured part of your score means: the number of opponent's stones that you completely (thus permanently) enclose.
+
+-- The opponent's best potential to score means: all your own stones and playable spaces that are not directly connected to one of your permanent eyes. (This does not included any empty spaces that are within an enclosure that lacks star views)
+
+The application determines this for you, illustrates it with colors, and marks additional potential dead stone placements at the end of the game.
+There is an option to turn these off, for practicing the Over-the-Board experience.
+There are also options for board size, and turn alternation protocol.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
 "4098","1324","Sahmatloudi (Ludii 1)",NULL,"Reconstructed with Ludii","2",NULL,"The game Sahmatloudi is played by two players on a 9x9 rectangle board with square tiling.
 Regions:
     OrthogonalSitesCentre: the difference between the centre point of the board expanded by 1 steps and site the centre point of the board for Neutral 
@@ -24986,3 +25002,22 @@ Aim:
      If the moving player cannot move, the game ends and the player with the highest score wins.
 
 ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.933","0.92","0.955","0.946","240, 1346, 240","[]"
+"4118","1647","Default",NULL,NULL,"1",NULL,"All rules are the same as in standard Shogi, except as follows.
+Pawns promote to Golden Bird, which moves as a Gold General (one square orthogonally or forward).
+The Copper General moves one square vertically or forward, promotes to Great Leopard, which moves as a Silver General (one square diagonally or forward) or jumps two squares in a straight line in any sideways or forward direction.
+Silver Generals promote to Venomous Wolf, which moves one square orthogonally or forward, or slides straight forward.
+Gold Generals promote to Great Elephant, which moves one square in any direction except straight backward, or slides diagonally forward.
+Knights promote to Heavenly Horse, which moves one square in any sideways or forward direction, or jumps to either square that is two squares behind in an adjacent file (column).
+The Flying Cat jumps two squares in a straight line in any forward direction, promotes to Free Pup, which slides vertically or forward, moves up to two squares directly sideways, or one square diagonally backward.
+The Kirin moves one square diagonally or jumps two squares in a straight line orthogonally, promotes to Horned Falcon, which slides in any direction except directly forward, moves up to two squares directly forward, or captures without moving one square directly forward.
+The Phoenix moves one square orthogonally or jumps two squares in a straight line diagonally, promotes to Soaring Eagle, which slides in any direction except diagonally forward, moves up to two squares diagonally forward, or captures without moving one square diagonally forward.
+The Violent Bear moves one square sideways or diagonally backward, or up to two squares diagonally forward, promotes to Great Dream Eater, which slides orthogonally, moves up to two squares diagonally backward, or jumps two squares in a straight line diagonally forward.
+The Poisonous Snake moves one square directly backward or diagonally forward, or up to two squares directly sideways or directly forward, promotes to Free Demon, which slides diagonally, moves up to two squares directly backward, or jumps two squares in a straight line directly forward.
+Lances promote to Free Tiger, which slides sideways, steps vertically, or jumps to any square that is two squares to either side in an adjacent rank (row).
+The Running Chariot slides diagonally forward, promotes to Great Stag, which slides vertically, steps sideways, or jumps to any square that is two squares ahead or behind in an adjacent file (column).
+The Side Mover slides sideways or moves one square vertically, promotes to Free Boar, which slides sideways or diagonally.
+The Vertical Mover slides vertically or moves one square sideways, promotes to Flying Ox, which slides vertically or diagonally.
+The Vice General moves one square in any direction except straight backward, does not promote.
+The Queen slides in any orthogonal or diagonal direction, does not promote.
+The Lion makes up to two King steps to another square, stopping at the first capture, or captures without moving one square in any direction, does not promote.
+The promotion zone is the farthest four ranks of the board. Perpetual check is allowed. In over-the-board play, the minimum number of points needed to not lose during an impasse is 65. Each Lion, Queen, Rook, Bishop, Vertical Mover, Side Mover, Phoenix, or Kirin, promoted or not, scores 5 points for the owning player, and all other pieces except Kings score 1 point each.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
