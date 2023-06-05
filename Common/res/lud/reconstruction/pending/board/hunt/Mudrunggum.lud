@@ -20,14 +20,14 @@
                 ) 
                 use:Vertex
             )
-            (piece "Tiger" P1 (move [#]))
-            (piece "Sheep" P2 (move [#]))
+            (piece "Tiger" P1 (or [#]))
+            (piece "Sheep" P2 (move Step [#]))
         }) 
         
         (rules 
             (start {
-                (place "Tiger1" (sites [#])) // 4 Tigers !
-                (place "Sheep2" (sites [#])) // 16 Sheeps !
+                (place "Tiger1" [#]) // 4 Tigers !
+                (place "Sheep2" [#]) // 16 Sheeps !
             })
             (play [#])
             (end [#])
@@ -68,8 +68,8 @@
         (show Edges Diagonal Hidden)
     })
     
-    (recon {
-        (concept "NumStartComponents" 20)
-    })
+//    (recon {
+//        (concept "NumStartComponents" 20)
+//    })
     
 )
