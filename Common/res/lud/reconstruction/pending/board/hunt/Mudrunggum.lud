@@ -21,7 +21,7 @@
                 use:Vertex
             )
             (piece "Tiger" P1 (or [#]))
-            (piece "Sheep" P2 (move Step [#]))
+            (piece "Sheep" P2 (move [#]))
         }) 
         
         (rules 
@@ -68,8 +68,8 @@
         (show Edges Diagonal Hidden)
     })
     
-//    (recon {
-//        (concept "NumStartComponents" 20)
-//    })
+    (recon {
+        (concept "NumStartComponents" 20)
+    })
     
 )
