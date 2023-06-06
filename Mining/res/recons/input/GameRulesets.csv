@@ -25958,3 +25958,27 @@ Aim:
      If 0 is not equal to the score of Player 1, the game ends and the player with the highest score wins.
 
 ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.951","0.938","0.766","0.965","1163, 821, 1163, 1330, 1163","[]"
+"4170","833","Mak Khom (Ludii 1)",NULL,"Reconstructed with Ludii","2",NULL,"The game Mak Khom is played by two players on a 2 x 7 Mancala board with 2 none stores.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with null The following pieces are shared by all players: Seeds.
+Players take turns moving.
+Setup:
+     Set the count of the vertexes in track of board to 7.
+Rules: 
+     Select Vertex in null of the moving player if true then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: true, captureRule: true, type: Vertex, includeSelf: true select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: the total number of vertex in to is equal to 1, backtracking: true, captureEffect: from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.932","0.912","0.465","0.953","436, 220","[]"
+"4171","833","Mak Khom (Ludii 2)",NULL,"Reconstructed with Ludii","2",NULL,"The game Mak Khom is played by two players on a 2 x 7 Mancala board with 2 none stores.
+Regions:
+    RegionP1: the bottom sites of the board for P1
+    RegionP2: the top sites of the board for P2 
+All players play with null The following pieces are shared by all players: Seeds.
+Players take turns moving.
+Setup:
+     Set the count of the vertexes in track of board to 7.
+Rules: 
+     Select Vertex in null of the moving player if true then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: true, captureRule: true, type: Vertex, includeSelf: true select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: the total number of vertex in to is equal to 1, backtracking: true, captureEffect: from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.931","0.912","0.465","0.951","436, 436","[]"
