@@ -12,8 +12,8 @@
         (equipment { 
             ("AlquerqueBoard" 5 5)
             (piece "Marker" P1 (or [#]))
-            (piece "Marker" P2 (move [#]))
-        }) 
+            (piece "Marker" P2 (move Step [#]))
+        })
         
         (rules 
             (start {
