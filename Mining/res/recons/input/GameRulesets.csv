@@ -25982,3 +25982,45 @@ Rules:
      Select Vertex in null of the moving player if true then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: true, captureRule: true, type: Vertex, includeSelf: true select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: the total number of vertex in to is equal to 1, backtracking: true, captureEffect: from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
 
 ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.931","0.912","0.465","0.951","436, 436","[]"
+"4172","809","Kuang (Ludii 1)",NULL,"Reconstructed with Ludii","2",NULL,"The game Kuang is played by two players on a 5x5 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step forward-right or forward-left.
+Players take turns moving.
+Setup:
+     Place a Marker for player one at the centre sites of the board.
+     Place a Marker for player two at the union of the intersection of the union of the left sites of the board and the right sites of the board and each vertex of the 2 row and the bottom sites of the board expanded by 1 steps..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If the next player cannot move, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.992","0.993","0.827","0.99","393, 152, 577, 577","[{158, 152, 154, 577}, {154, 152, 393, 577}, {158, 152, 393, 154}, {577, 152, 577, 154}, {154, 152, 158, 577}, {577, 152, 154, 577}, {393, 152, 158, 577}, {158, 152, 154, 158}, {158, 152, 577, 154}, {393, 152, 154, 577}, {154, 152, 154, 577}, {577, 152, 154, 158}, {393, 152, 393, 154}, {154, 152, 577, 577}, {393, 152, 158, 154}, {577, 152, 393, 577}, {393, 152, 154, 154}, {154, 152, 158, 158}]"
+"4173","809","Kuang (Ludii 2)",NULL,"Reconstructed with Ludii","2",NULL,"The game Kuang is played by two players on a 5x5 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent.
+Players take turns moving.
+Setup:
+     Place a Marker for player one at the centre sites of the board.
+     Place a Marker for player two at the union of the intersection of the union of the left sites of the board and the right sites of the board and each vertex of the 2 row and the bottom sites of the board expanded by 1 steps..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If there are no pieces owned by Player the moving player, the moving player wins.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.992","0.993","0.799","0.99","577, 393, 158, 204","[{577, 158, 393, 173}, {577, 154, 154, 705}, {577, 393, 158, 173}, {158, 158, 158, 141}, {158, 158, 577, 204}, {158, 154, 393, 204}, {154, 158, 154, 705}, {577, 577, 158, 204}, {158, 393, 577, 173}, {154, 154, 393, 141}, {154, 577, 154, 173}, {577, 158, 154, 705}, {154, 393, 577, 204}, {158, 577, 158, 204}, {577, 154, 577, 141}, {154, 154, 577, 141}, {154, 158, 158, 705}, {577, 154, 158, 705}, {577, 154, 158, 173}, {158, 393, 393, 141}, {158, 158, 393, 141}, {154, 393, 154, 173}, {393, 158, 158, 173}, {393, 577, 393, 204}, {393, 577, 158, 173}, {393, 577, 577, 173}, {577, 577, 158, 141}, {577, 577, 158, 173}, {393, 158, 154, 173}, {158, 393, 577, 705}, {158, 577, 577, 173}, {158, 577, 154, 204}, {158, 577, 154, 173}, {158, 158, 158, 705}, {393, 393, 577, 705}, {393, 393, 158, 705}, {393, 158, 393, 705}, {154, 577, 577, 204}, {158, 154, 154, 141}, {154, 154, 158, 173}, {577, 154, 154, 141}, {154, 393, 158, 705}, {158, 158, 577, 705}, {158, 158, 154, 204}, {393, 393, 393, 204}, {393, 577, 393, 705}, {393, 393, 154, 705}, {393, 577, 158, 141}, {158, 393, 158, 204}, {577, 154, 154, 173}, {158, 158, 158, 204}, {154, 154, 154, 141}, {577, 158, 577, 705}, {158, 393, 393, 204}, {154, 577, 393, 141}, {158, 393, 577, 141}, {154, 577, 154, 705}, {158, 577, 154, 705}, {577, 393, 158, 141}, {158, 577, 154, 141}, {577, 393, 393, 705}, {154, 158, 393, 204}, {393, 393, 154, 204}, {154, 154, 577, 204}, {154, 158, 393, 173}, {577, 577, 154, 204}, {154, 393, 577, 705}, {154, 158, 154, 141}, {577, 158, 393, 204}, {154, 577, 577, 173}, {154, 393, 154, 204}, {154, 158, 577, 141}, {158, 154, 393, 173}, {154, 393, 577, 141}, {577, 158, 158, 705}, {154, 577, 577, 705}, {577, 577, 158, 705}, {154, 158, 158, 141}, {158, 158, 154, 705}, {154, 393, 393, 141}, {154, 154, 154, 173}, {154, 158, 158, 204}, {158, 577, 393, 141}, {158, 158, 154, 173}, {158, 577, 393, 705}, {158, 154, 154, 705}, {158, 158, 393, 173}, {158, 393, 154, 705}, {393, 393, 154, 173}, {154, 154, 393, 204}, {154, 393, 154, 705}, {393, 393, 158, 173}, {393, 154, 154, 173}, {158, 158, 154, 141}, {393, 393, 577, 141}, {154, 158, 154, 204}, {577, 393, 577, 204}, {393, 154, 158, 705}, {577, 393, 393, 204}, {154, 158, 577, 705}, {158, 393, 393, 173}, {158, 158, 393, 204}, {393, 577, 393, 141}, {393, 393, 577, 204}, {154, 577, 158, 141}, {577, 393, 393, 141}, {393, 393, 154, 141}, {393, 158, 154, 141}, {577, 158, 158, 173}, {577, 154, 577, 204}, {154, 158, 577, 173}, {154, 577, 154, 204}, {158, 154, 577, 705}, {154, 154, 154, 204}, {154, 577, 158, 705}, {393, 577, 154, 141}, {577, 577, 393, 141}, {393, 154, 158, 204}, {158, 577, 393, 173}, {154, 158, 154, 173}, {393, 393, 393, 173}, {154, 158, 393, 141}]"
+"4174","809","Kuang (Ludii 3)",NULL,"Reconstructed with Ludii","2",NULL,"The game Kuang is played by two players on a 5x5 rectangle board with square tiling. 
+All players play with Markers.
+Rules for Pieces:
+     Markers step adjacent.
+Players take turns moving.
+Setup:
+     Place a Marker for player one at the centre sites of the board.
+     Place a Marker for player two at the union of the intersection of the union of the left sites of the board and the right sites of the board and each vertex of the 2 row and the bottom sites of the board expanded by 1 steps..
+Rules: 
+     Move one of your pieces.
+Aim: 
+     If the next player cannot move, the next player loses.
+
+",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.99","0.992","0.909","0.987","577, 393, 154, 154","[{577, 154, 577, 577}, {393, 154, 158, 577}, {154, 158, 158, 577}, {577, 577, 154, 577}, {393, 158, 577, 154}, {154, 577, 154, 577}, {154, 577, 577, 577}, {154, 154, 158, 158}, {577, 154, 154, 577}, {393, 393, 154, 577}, {393, 393, 154, 158}, {577, 154, 158, 158}, {393, 577, 393, 577}, {577, 577, 393, 577}, {393, 577, 577, 154}, {154, 158, 577, 154}, {158, 154, 154, 158}, {577, 577, 158, 154}, {577, 154, 158, 154}, {393, 158, 393, 154}, {393, 158, 577, 158}, {393, 577, 158, 577}, {158, 158, 577, 154}, {158, 577, 577, 577}, {154, 158, 154, 577}, {158, 393, 577, 154}, {393, 154, 577, 158}, {158, 577, 158, 158}, {154, 577, 577, 158}, {154, 393, 154, 577}, {158, 158, 577, 577}, {158, 577, 158, 577}, {577, 393, 154, 158}, {154, 577, 158, 158}, {158, 393, 393, 577}, {154, 154, 393, 154}, {154, 393, 158, 158}, {158, 393, 154, 577}, {154, 393, 577, 154}, {154, 154, 577, 577}, {577, 154, 577, 154}, {393, 393, 158, 158}, {577, 158, 577, 154}, {158, 158, 393, 158}, {154, 158, 154, 154}, {158, 158, 393, 577}, {577, 577, 154, 154}, {393, 577, 158, 158}, {393, 577, 577, 577}, {577, 158, 393, 158}, {158, 393, 393, 158}, {154, 393, 158, 154}, {577, 158, 577, 577}, {577, 577, 577, 158}, {577, 393, 577, 577}, {154, 393, 577, 577}, {154, 158, 393, 577}, {577, 393, 158, 154}, {577, 158, 158, 158}, {577, 393, 393, 577}, {154, 577, 577, 154}, {577, 393, 158, 158}, {393, 577, 154, 154}, {154, 154, 154, 158}, {158, 154, 154, 577}, {154, 393, 393, 577}, {154, 154, 154, 154}, {158, 577, 577, 154}, {158, 577, 154, 158}, {577, 577, 577, 154}, {577, 393, 393, 158}, {393, 393, 393, 154}, {158, 154, 577, 154}, {154, 154, 577, 154}, {158, 154, 577, 577}, {577, 393, 154, 577}, {158, 393, 393, 154}, {154, 393, 577, 158}, {577, 158, 393, 154}, {158, 577, 393, 577}, {158, 158, 154, 154}, {393, 158, 577, 577}, {154, 158, 577, 577}, {577, 154, 154, 154}, {393, 577, 158, 154}, {393, 577, 577, 158}, {158, 154, 393, 158}, {577, 577, 158, 577}, {393, 393, 577, 158}, {154, 158, 158, 158}, {393, 154, 158, 158}, {577, 158, 154, 154}, {577, 393, 577, 158}, {577, 393, 158, 577}, {577, 577, 158, 158}, {158, 393, 577, 158}, {393, 154, 393, 154}, {577, 154, 577, 158}]"
