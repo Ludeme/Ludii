@@ -12,14 +12,10 @@
         (equipment {
             ("CrossBoard" 3 9 use:Vertex diagonals:Alternating)
             (piece "Counter" P1 (move [#]))
-            (piece "Counter" P2 (move [#]))
+            (piece "Counter" P2 (or [#]))
         }) 
         
-        (rules 
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
