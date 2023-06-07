@@ -5,31 +5,53 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <variant> }
-{
-(item "Kuang (Ludii 1)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (rectangle 5 5 diagonals:Alternating)
-        use:Vertex)
+    {
+    (item "Kuang (Ludii 1)" <
         
-        (piece "Marker" P1 
-            (or 
-                (move Hop 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 5 5 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Marker" P1 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
                             )
                         )
                         
-                        (apply 
-                            (remove 
-                                (between)
+                        (to if:
+                            (is Empty 
+                                (to)
                             )
                         )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Marker" P2 
+                (move Step 
+                    (directions { FR FL }
                     )
                     
                     (to if:
@@ -38,7 +60,95 @@
                         )
                     )
                 )
+            )
+            }
+        )
+        
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (sites Centre)
+                )
                 
+                (place "Marker2" 
+                    (union 
+                        (intersection 
+                            (union 
+                                (sites Left)
+                                
+                                (sites Right)
+                            )
+                            
+                            (sites Row 2)
+                        )
+                        
+                        (expand 
+                            (sites Bottom)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Next Loss)
+                )
+            )
+        )
+        
+    > "The Kuang (Ludii 1) ruleset.")
+    
+    (item "Kuang (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 5 5 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Marker" P1 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                    
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (piece "Marker" P2 
                 (move Step 
                     (to if:
                         (is Empty 
@@ -47,97 +157,94 @@
                     )
                 )
             )
-        )
-        
-        (piece "Marker" P2 
-            (move Step 
-                (directions { FR FL }
-                )
-                
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (sites Centre)
-            )
-            
-            (place "Marker2" 
-                (union 
-                    (intersection 
-                        (union 
-                            (sites Left)
-                            
-                            (sites Right)
-                        )
-                        
-                        (sites Row 2)
-                    )
-                    
-                    (expand 
-                        (sites Bottom)
-                    )
-                )
-            )
             }
         )
         
-        (play 
-            (forEach Piece)
-        )
-        
-        (end 
-            (if 
-                (no Moves Next)
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (sites Centre)
+                )
                 
-                (result Next Loss)
+                (place "Marker2" 
+                    (union 
+                        (intersection 
+                            (union 
+                                (sites Left)
+                                
+                                (sites Right)
+                            )
+                            
+                            (sites Row 2)
+                        )
+                        
+                        (expand 
+                            (sites Bottom)
+                        )
+                    )
+                )
+                }
+            )
+            
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Pieces Mover)
+                    
+                    (result Mover Win)
+                )
             )
         )
-    )
-
- > "The Kuang (Ludii 1) ruleset.")
-
-(item "Kuang (Ludii 2)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (rectangle 5 5 diagonals:Alternating)
-        use:Vertex)
         
-        (piece "Marker" P1 
-            (or 
-                (move Hop 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
+    > "The Kuang (Ludii 2) ruleset.")
+    
+    (item "Kuang (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (board 
+                (rectangle 5 5 diagonals:Alternating)
+            use:Vertex)
+            
+            (piece "Marker" P1 
+                (or 
+                    (move Hop 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
                             )
                         )
                         
-                        (apply 
-                            (remove 
-                                (between)
+                        (to if:
+                            (is Empty 
+                                (to)
                             )
                         )
                     )
                     
-                    (to if:
-                        (is Empty 
-                            (to)
+                    (move Step 
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
                         )
                     )
                 )
-                
+            )
+            
+            (piece "Marker" P2 
                 (move Step 
                     (to if:
                         (is Empty 
@@ -146,158 +253,50 @@
                     )
                 )
             )
-        )
-        
-        (piece "Marker" P2 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (sites Centre)
-            )
-            
-            (place "Marker2" 
-                (union 
-                    (intersection 
-                        (union 
-                            (sites Left)
-                            
-                            (sites Right)
-                        )
-                        
-                        (sites Row 2)
-                    )
-                    
-                    (expand 
-                        (sites Bottom)
-                    )
-                )
-            )
             }
         )
         
-        (play 
-            (forEach Piece)
-        )
-        
-        (end 
-            (if 
-                (no Pieces Mover)
+        (rules 
+            (start { 
+                (place "Marker1" 
+                    (sites Centre)
+                )
                 
-                (result Mover Win)
-            )
-        )
-    )
-
- > "The Kuang (Ludii 2) ruleset.")
-
-(item "Kuang (Ludii 3)" <
- 
-    (players 2)
-    
-    (equipment { 
-        (board 
-            (rectangle 5 5 diagonals:Alternating)
-        use:Vertex)
-        
-        (piece "Marker" P1 
-            (or 
-                (move Hop 
-                    (between if:
-                        (is Enemy 
-                            (who at:
-                                (between)
+                (place "Marker2" 
+                    (union 
+                        (intersection 
+                            (union 
+                                (sites Left)
+                                
+                                (sites Right)
                             )
+                            
+                            (sites Row 2)
                         )
                         
-                        (apply 
-                            (remove 
-                                (between)
-                            )
-                        )
-                    )
-                    
-                    (to if:
-                        (is Empty 
-                            (to)
+                        (expand 
+                            (sites Bottom)
                         )
                     )
                 )
-                
-                (move Step 
-                    (to if:
-                        (is Empty 
-                            (to)
-                        )
-                    )
-                )
-            )
-        )
-        
-        (piece "Marker" P2 
-            (move Step 
-                (to if:
-                    (is Empty 
-                        (to)
-                    )
-                )
-            )
-        )
-        }
-    )
-    
-    (rules 
-        (start { 
-            (place "Marker1" 
-                (sites Centre)
+                }
             )
             
-            (place "Marker2" 
-                (union 
-                    (intersection 
-                        (union 
-                            (sites Left)
-                            
-                            (sites Right)
-                        )
-                        
-                        (sites Row 2)
-                    )
+            (play 
+                (forEach Piece)
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
                     
-                    (expand 
-                        (sites Bottom)
-                    )
+                    (result Next Loss)
                 )
             )
-            }
         )
         
-        (play 
-            (forEach Piece)
-        )
-        
-        (end 
-            (if 
-                (no Moves Next)
-                
-                (result Next Loss)
-            )
-        )
-    )
-
- > "The Kuang (Ludii 3) ruleset.")
-
-
+    > "The Kuang (Ludii 3) ruleset.")
+    
     (item "Incomplete"
         <
         (players 2) 
@@ -318,22 +317,22 @@
         >
         "The incomplete ruleset."
     )
-
- })
+    
+})
 
 //------------------------------------------------------------------------------
 
 (rulesets {
-
-(ruleset "Ruleset/Kuang (Ludii 1) (Reconstructed)" {
-     "Variant/Kuang (Ludii 1)"
-})
-(ruleset "Ruleset/Kuang (Ludii 2) (Reconstructed)" {
-     "Variant/Kuang (Ludii 2)"
-})
-(ruleset "Ruleset/Kuang (Ludii 3) (Reconstructed)" {
-     "Variant/Kuang (Ludii 3)"
-}) 
+    
+    (ruleset "Ruleset/Kuang (Ludii 1) (Reconstructed)" {
+        "Variant/Kuang (Ludii 1)"
+    })
+    (ruleset "Ruleset/Kuang (Ludii 2) (Reconstructed)" {
+        "Variant/Kuang (Ludii 2)"
+    })
+    (ruleset "Ruleset/Kuang (Ludii 3) (Reconstructed)" {
+        "Variant/Kuang (Ludii 3)"
+    }) 
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
@@ -343,7 +342,7 @@
 
 //------------------------------------------------------------------------------
 
- (metadata 
+(metadata 
     
     (info
         {
