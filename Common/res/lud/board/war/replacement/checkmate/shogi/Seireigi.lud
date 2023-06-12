@@ -14,19 +14,8 @@
         (can Move 
             (do 
                 (or {
-                    (move 
-                        (from (sites Occupied by:Next container:"Hand" components:{"SilverGeneral" "GoldGeneral" "Bishop" "Rook"})) 
-                        (to (sites Empty))
-                    ) 
-                    (do 
-                        (move 
-                            (from (sites Occupied by:Next container:"Hand" component:"Pawn")) 
-                            (to (difference (sites Empty) (sites Next "LastRank")) 
-                                if:("OnePawnPerColumn" Next)
-                            )
-                        ) 
-                        ifAfterwards:(not ("IsInCheck" "King" Mover))
-                    )
+                    ("PlaceUnrestrictedPiece" Next) 
+                    ("PlacePawn" Next ifAfterwards:(not ("IsInCheck" "King" Mover)))
                     ("PlaceLance" Next)
                     ("PlaceKnight" Next) 
                     (forEach Piece Next) 
@@ -35,6 +24,13 @@
             ) 
         )
     )
+)
+
+(define "PlaceUnrestrictedPiece"
+    (move 
+        (from (sites Occupied by:#1 container:"Hand" components:{"SilverGeneral" "GoldGeneral" "Bishop" "Rook"})) 
+        (to (sites Empty))
+    ) 
 )
 
 (define "OnePawnPerColumn" 
@@ -66,7 +62,7 @@
                 if:("OnePawnPerColumn" #1)
             )
         ) 
-        ifAfterwards:(not (and ("IsInCheck" "King" #2) ("NextCannotMove")))
+        #2
     )
 ) 
 
@@ -157,7 +153,7 @@
                 )
             )
         )
-        
+
         // Lance
         (piece "Lance" Each ("SlideMove" Forward 
                 (then  
@@ -170,7 +166,7 @@
                 )
             )
         )       
-        
+
         // Knight
         (piece "Knight" Each ("TwoStepLeap" Forward (directions {FL FR})
                 (then 
@@ -183,43 +179,43 @@
                 )
             )
         )
-        
+
         // Silver General
         (piece "SilverGeneral" Each ("StepMove" (directions {Forward BL BR FL FR}) "CanPromote"))
-        
+
         // Gold General
         (piece "GoldGeneral" Each ("StepMove" (directions {Forward Backward Leftward Rightward FL FR}) "CanPromote"))
-        
+
         // Bishop
         (piece "Bishop" Each ("SlideMove" Diagonal "CanPromote"))
-        
+
         // Rook
         (piece "Rook" Each ("SlideMove" Orthogonal "CanPromote"))
-        
+
         // King
         (piece "King" Each ("StepMove"))
-        
+
         // Promoted Pawn
-        ("ShogiGold" "GoldenBird" "CapturePiece")
-        
+        ("ShogiGold" "Tokin" "CapturePiece")
+
         // Promoted Lance
         (piece "FreeTiger" Each (or {("SlideMove" (directions {Leftward Rightward})) ("TwoStepLeap" (directions {Leftward Rightward}) (directions {FL FR})) ("StepMove" (directions {Forward Backward}))}))
-        
+
         // Promoted Knight
         (piece "HeavenlyHorse" Each (or ("StepMove" (directions {Forward Leftward Rightward FL FR})) ("TwoStepLeap" Backward (directions {FL FR}))))
-        
+ 
         // Promoted Silver General
         (piece "VenomousWolf" Each (or ("SlideMove" Forward) ("StepMove" (directions {FL FR Leftward Rightward Backward}))))
-        
+
         // Promoted Gold General
         (piece "GreatElephant" Each (or ("SlideMove" (directions {FL FR})) ("StepMove" (directions {Forward Leftward Rightward BL BR}))))
-        
+
         // Promoted Bishop
         (piece "DragonHorse" Each (or ("SlideMove" Diagonal) ("StepMove" Orthogonal)))
-        
+
         // Promoted Rook
         (piece "DragonKing" Each (or ("SlideMove" Orthogonal) ("StepMove" Diagonal)))
-        
+
         (regions "LastRankP1" P1 (sites Top))
         (regions "LastRankP2" P2 (sites Bottom))
         (regions "TwoFurthestRankP1" P1 (expand (sites Top)))
@@ -234,7 +230,7 @@
             (pair (id "GoldGeneral" P1) (handSite P2 4)) (pair (id "GoldGeneral" P2) (handSite P1 4)) 
             (pair (id "Bishop" P1) (handSite P2 5)) (pair (id "Bishop" P2) (handSite P1 5)) 
             (pair (id "Rook" P1) (handSite P2 6)) (pair (id "Rook" P2) (handSite P1 6)) 
-            (pair (id "GoldenBird" P1) (handSite P2)) (pair (id "GoldenBird" P2) (handSite P1)) 
+            (pair (id "Tokin" P1) (handSite P2)) (pair (id "Tokin" P2) (handSite P1)) 
             (pair (id "FreeTiger" P1) (handSite P2 1)) (pair (id "FreeTiger" P2) (handSite P1 1)) 
             (pair (id "HeavenlyHorse" P1) (handSite P2 2)) (pair (id "HeavenlyHorse" P2) (handSite P1 2)) 
             (pair (id "VenomousWolf" P1) (handSite P2 3)) (pair (id "VenomousWolf" P2) (handSite P1 3)) 
@@ -250,7 +246,7 @@
             (pair (id "GoldGeneral" P1) (id "GoldGeneral" P2)) (pair (id "GoldGeneral" P2) (id "GoldGeneral" P1)) 
             (pair (id "Bishop" P1) (id "Bishop" P2)) (pair (id "Bishop" P2) (id "Bishop" P1)) 
             (pair (id "Rook" P1) (id "Rook" P2)) (pair (id "Rook" P2) (id "Rook" P1)) 
-            (pair (id "GoldenBird" P1) (id "Pawn" P2)) (pair (id "GoldenBird" P2) (id "Pawn" P1)) 
+            (pair (id "Tokin" P1) (id "Pawn" P2)) (pair (id "Tokin" P2) (id "Pawn" P1)) 
             (pair (id "FreeTiger" P1) (id "Lance" P2)) (pair (id "FreeTiger" P2) (id "Lance" P1)) 
             (pair (id "HeavenlyHorse" P1) (id "Knight" P2)) (pair (id "HeavenlyHorse" P2) (id "Knight" P1)) 
             (pair (id "VenomousWolf" P1) (id "SilverGeneral" P2)) (pair (id "VenomousWolf" P2) (id "SilverGeneral" P1)) 
@@ -259,7 +255,7 @@
             (pair (id "DragonKing" P1) (id "Rook" P2)) (pair (id "DragonKing" P2) (id "Rook" P1)) 
         })
         (map "Promoted" { 
-            (pair (id "Pawn" P1) (id "GoldenBird" P1)) (pair (id "Pawn" P2) (id "GoldenBird" P2)) 
+            (pair (id "Pawn" P1) (id "Tokin" P1)) (pair (id "Pawn" P2) (id "Tokin" P2)) 
             (pair (id "Lance" P1) (id "FreeTiger" P1)) (pair (id "Lance" P2) (id "FreeTiger" P2)) 
             (pair (id "Knight" P1) (id "HeavenlyHorse" P1)) (pair (id "Knight" P2) (id "HeavenlyHorse" P2)) 
             (pair (id "SilverGeneral" P1) (id "VenomousWolf" P1)) (pair (id "SilverGeneral" P2) (id "VenomousWolf" P2)) 
@@ -285,11 +281,8 @@
                 )
                 (do 
                     (or {
-                        (move 
-                            (from (sites Occupied by:Mover container:"Hand" components:{"SilverGeneral" "GoldGeneral" "Bishop" "Rook"})) 
-                            (to (sites Empty))
-                        ) 
-                        ("PlacePawn" Mover Next)
+                        ("PlaceUnrestrictedPiece" Mover)
+                        ("PlacePawn" Mover ifAfterwards:(not (and ("IsInCheck" "King" Next) ("NextCannotMove"))))
                         ("PlaceLance" Mover)
                         ("PlaceKnight" Mover) 
                         (forEach Piece) 
@@ -317,6 +310,14 @@
     
     (info
         {
+        (id "3980")
+        (source "<a href=\"https://www.chessvariants.com/invention/seireigi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Seireigi</a>")
+        (version "1.3.11")
+        (classification "board/war/replacement/checkmate/shogi")
+        (author "A. M. DeWitt")
+        (credit "A. M. DeWitt")
+        (origin "Seireigi was conceived from wanting to create a game that could be played with standard Chess equipment while also having a reduced importance of material advantage. While a game that fulfilled those criteria never came to fruition, the author was able to do the next best thing.")
+        (date "2023")
         }
     )
     
@@ -326,7 +327,7 @@
         (board Style Shogi)
         (piece Style ExtendedShogi)
         (piece Rotate P2 degrees:180)
-        (piece Colour "GoldenBird" strokeColour:(colour Red))
+        (piece Colour "Tokin" strokeColour:(colour Red))
         (piece Colour "FreeTiger" strokeColour:(colour Red))
         (piece Colour "HeavenlyHorse" strokeColour:(colour Red))
         (piece Colour "VenomousWolf" strokeColour:(colour Red))
