@@ -18,14 +18,18 @@
     )
 )
 
-(define "PlaceOutOfSight"
+(define "PlaceOutOfSight" // also must not be fully surrounded...
     (move Add
         (to (sites Empty) 
-            if:(not "TooClose")
-        )
+            if:(and
+                (not "TooClose")
+                (!= 0 (count Sites in:(sites Around (to) if:(is Empty (to)))))
+        ))
         (then 
-            (do ("Capture") next:("UpdateScore"))
-        )
+            (set Var "LM" 3
+                (then
+                    (do ("Capture") next:("UpdateScore"))
+        )))
     )
 )
 
@@ -43,15 +47,26 @@
     (move Step
         (to 
             if:(and
+                {
                 (is Empty (to))
                 (< (count Pieces Mover in:(sites Around (from)))
                     (- (count Pieces Mover in:(sites Around (to))) 1)
                 )
+                (or  //no move reversal after a pass
+                    {
+                    (not (was Pass))
+                    (!= (from) (var "LT"))
+                    (!= (to) (var "LF"))
+                    }
+                )
+                }
             )
         )
         (then 
-            (do ("Capture") next:("UpdateScore"))
-        )
+            (set Var "LM" 1
+                (then
+                    (do ("Capture") next:("UpdateScore"))
+        )))
     )
 )
 
@@ -66,8 +81,10 @@
             )
         )
         (then 
-            (do ("Capture") next:("UpdateScore"))
-        )
+            (set Var "LM" 2
+                (then
+                    (do ("Capture") next:("UpdateScore"))
+        )))
     )
 )
 
@@ -127,15 +144,23 @@
         (start (set Score Each 0))
         (play
             (or {
-                (move Pass)
+                (do 
+                    (set Var "LT" (last To)
+                        (then (set Var "LF" (last From)))
+                    )
+                    next:(move Pass (then (set Var "LM" 0)))
+                )
                 ("PlaceOutOfSight")   
                 (forEach Piece 
                     (or
                         ("Move2Friends") 
                         (if 
                             (and 
-                                (not (was Pass))
+                                {
+                                (!= 2 (var "LM")) // testing special restrictions
+                                (< 0 (var "LM")) // (not (was Pass))
                                 (not (can Move ("Move2Friends")))
+                                }
                             ) 
                             ("MoveFromEnemies")
                         )
@@ -170,6 +195,7 @@
 (option "Board Size" <BoardSize> args:{<gridType>} 
     {
     (item "2 Limp" <(hex Limping 2)> "Edge 2,3 Hex board")
+    (item "2-4 Hex" <(hex 2 4)> "Edge 2,4 Hex board")***
     (item "3 Limp" <(hex Limping 3)> "Edge 3,4 Hex board")**
     (item "4 Limp" <(hex Limping 4)> "Edge 4,5 Hex board")
     (item "5 Limp" <(hex Limping 5)> "Edge 5,6 Hex board")
@@ -210,34 +236,6 @@
 (metadata
     (info
         {
-        (description "'Goats Wintering' gives the impression of goats gathering into herds in a sheltered area as winter approaches. The goal is to maximize the connections between the goats. However, goats may not be placed too close to others of their kind along sight-lines. So there is tension in who can place and move their goats together most efficiently. The novel movement mechanism is that a goat's movement is restricted to steps that increase its friendly contact, -- or, when increasing friendly contact is not available to it, steps that decrease its contact with competing goats. When goats get close enough to others of their kind, they can then thus move to join a flock and increase the connections. But frequently they will need the presence of the opponent's goats to be able to get this close to their own flocks. This is because goats allow movement choices for any goats near them: isolated goats can't move. So, the tension is in finding places to enter one's goats that are at a suitable range to gather them together. There is capture: Moves that fully surround any of the opponent's goats cause those goats to leave the play area. To prevent cycling, the subordinate kind of goat move is not allowed after a pass. This allows a player with a strong lead to pass until the other player runs out of moves and the game ends.        The game is inspired from Infuse by the same Author, but the clumping here is more open and pronounced and clumps are distance-limited, not line-of-sight limited. It may be played on either hex grids with adjacent movement, or square grids with ortho-diagonal diagonal movement.")
-        (rules "--- Goal: Have the warmest goats at end.  The warmth of you goats is the total number of contacts they have with other goats. To find the winner, it is only necessary to count goat-to-goat contacts between their own kind.
-            
-            The game start on an empty board. Play alternates.
-            
-            On a turn either: 
-            1. Pass (sometimes this is forced); or 
-            
-            2. Place a goat on an empty cell that is not too close to another goat of its color: 
-            -- If they are in line, they need gap of 2 or 3 spaces (as selected in Options.)
-            
-            3. Move one of your goats one step with the following condition:
-            -- the goat must gain more contacts with adjacent goats of its own kind than before; or 
-            
-            4. Use the following alternate condition to step-move a goat that cannot move using the previous rule: 
-            -- the step must reduce your goat's net contact with enemy goats.  
-            
-            Exception: Moves using rule 4. are not allowed immediately after the previous player has passed.
-            
-            Capture
-            -- After moving, simultaneously remove all individual enemy goats that have no adjacent space empty.
-            -- Capturing does not happen on a passing turn: to capture one must play a piece. 
-            
-            Ending the game 
-            -- The game ends with 2 passes. Then the number of connections are compared. 
-            -- In the case of a tie, the last to pass loses.
-            
-        Variants not implemented: No capture. / Score simple goat count.")
         (id "1327")
         (version "1.3.11")
         (classification "board/space/territory")
