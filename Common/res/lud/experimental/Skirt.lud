@@ -1,29 +1,62 @@
+// Skirt
+
 (define "SameTurn" (is Prev Mover))
 
-(define "CanSkirtByFrom" // (mover) (next) ; location ; origin 
-    (>=
-        (+ 1 (count Pieces of:(mover) in:(difference (sites Around #1 Orthogonal) #2)))
-        (count Pieces of:(next) in:(sites Around #1 Orthogonal))
-))
-
-(define "IsTerritoryOfAt" // (mover) (next)
+(define "IsPlaceableByAt" // (mover) (next)
     (> 
         (count Pieces of:#1 in:(sites Around #2 Orthogonal))
         (count Pieces of:(- 3 #1) in:(sites Around #2 Orthogonal))
 ))
 
-(define "TerritoryOf" // (mover) (next)
-    (forEach (sites Empty)
-        if:(> 
-            (count Pieces of:#1 in:(sites Around (site) Orthogonal))
-            (count Pieces of:(- 3 #1) in:(sites Around (site) Orthogonal))
-)))
-
 (define "Placement"
     (move Add 
         (piece (id "Disc" Mover))
-        (to ("TerritoryOf" (mover)))
+        (to 
+            (sites Empty)
+            if:("IsPlaceableByAt" (mover) (to))
+)))
+
+(define "CanSkirtByFrom" // (mover) (next) ; location ; origin 
+    (>=
+        (+ 1
+            (count Pieces of:(mover)
+                in:(difference (sites Around #1 Orthogonal) #2)
+        ))
+        (count Pieces of:(next) in:(sites Around #1 Orthogonal))
 ))
+
+(define "Skirting"
+    (forEach Piece
+        (do
+            (set Var "LF" (from))
+            next:(move (from)
+                (to (sites Empty)
+                    if:(!= Infinity
+                        (count Steps Orthogonal
+                            (step Orthogonal
+                                (to
+                                    if:(and
+                                        {
+                                        (is Empty (to))
+                                        // the moving piece dynamically affects the territory count.
+                                        ("CanSkirtByFrom" (to) (var "LF"))
+                                        (not
+                                            (no Pieces
+                                                in:(difference
+                                                    (intersection
+                                                        (sites Around (from) Orthogonal)
+                                                        (sites Around (to) Orthogonal)
+                                                    )
+                                                    (var "LF")
+                                                )
+                                        ))
+                                        }
+                            )))
+                            (from)
+                            (to)
+            ))))
+            (then (moveAgain))
+)))       
 
 (define "PieOffer"
     (move Select 
@@ -55,39 +88,6 @@
                                 (apply (remove (to)))
 ))))))))
 
-(define "Skirt"
-    (forEach Piece
-        (do
-            (set Var "LF" (from))
-            next:(move (from)
-                (to (sites Empty)
-                    if:(!= Infinity
-                        (count Steps Orthogonal
-                            (step Orthogonal
-                                (to
-                                    if:(and
-                                        {
-                                        (is Empty (to))
-                                        // the moving piece should dynamically affect the territory count.
-                                        ("CanSkirtByFrom" (to) (var "LF"))
-                                        (not
-                                            (no Pieces
-                                                in:(difference
-                                                    (intersection
-                                                        (sites Around (from) Orthogonal)
-                                                        (sites Around (to) Orthogonal)
-                                                    )
-                                                    (var "LF")
-                                                )
-                                        ))
-                                        }
-                            )))
-                            (from)
-                            (to)
-            ))))
-            (then (moveAgain))
-)))       
-
 //---------------------------------------
 // Main routine
 //---------------------------------------
@@ -114,20 +114,82 @@
                             ("PieRefusal")
                         )
                         (or
-                            ("Skirt")
+                            ("Skirting")
                             ("Placement")
-        ))))) 
+                )))
+                (then "Score")
+        )) 
         (end 
             {
             (if
                 "EndCondition"
                 (result Mover Loss)
             )
-            
+            (if ("HeuristicEnd")
+                (byScore
+                    {(score P1 ("ScoreOf" 1)) (score P2 ("ScoreOf" 2))}
+            )) 
             }  
 )))
 
+//----------------------------------------
+// Scoring and End conditions
+//
+
+(define "Score"
+    (set Score P1 ("ScoreOf" 1)
+        (then
+            (set Score P2 ("ScoreOf" 2))
+))) 
+
 (define "EndCondition"(no Moves Mover)) 
+
+(define "HeuristicEnd"
+    // number of placements left is not the same
+    (< (count Sites in:(sites Empty)) (* 2 (max ("ScoreOf" 1) ("ScoreOf" 2))))
+)
+//---------------
+// Scoring defines
+
+(define "IsReachableOfAt"
+    (>= 
+        (count Pieces of:#1 in:(sites Around #2 Orthogonal))
+        (count Pieces of:(- 3 #1) in:(sites Around #2 Orthogonal))
+))
+
+(define "SitesReachableOf"
+    (forEach
+        (sites Empty)
+        if:("IsReachableOfAt" #1 (site))
+))
+
+(define "ScoringTerritoryOf"
+    (forEach
+        (sites Empty)
+        if:(and
+            (!= Infinity 
+                (count Steps Orthogonal
+                    (step (to if:(is In (to) (sites Empty))))
+                    (site)
+                    (sites Around
+                        (sites Occupied by:(player #1)) 
+                        if:("IsPlaceableByAt" #1 (to))
+            )))
+            (= Infinity 
+                (count Steps Orthogonal
+                    (step (to if:(is In (to) (sites Empty))))
+                    (site)
+                    (sites Around
+                        (sites Occupied by:(player #2)) 
+                        if:("IsReachableOfAt" #2 (to))
+                ))
+))))
+
+(define "ScoreOf"
+    (size Array
+        (array
+            ("ScoringTerritoryOf" #1 (- 3 #1))
+)))
 
 //---------------------------------------
 
@@ -135,6 +197,7 @@
 (define "Tri56Bug"  (tri {5 6 5 7 5}))
 (define "Tri57Bug"  (tri {5 7 5 8 5}))
 (define "Tri78Bug"  (tri {7 8 7 10 6}))
+
 (option "Board Size" <Board> args:{ <size> <adj> <diag> }
     {   
     (item "Hex 2-3 (12)"         <(tri {2 3 2 3 2})>   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 2 and 4")
@@ -161,19 +224,6 @@
 (metadata
     (info
         {
-        (description "Skirt was part of a series of games created while travelling, that sought to simplify some of my earlier games to there barest essentials.
-            It featured moving and then placement near the opponent.
-            Afterwards the restrictions were completely revised, in part to match the name: pieces were confined to skirting moves around other pieces.
-        In order to make the game more interesting by enabling earlier territory creation, the explicit concept of territory was added and then skirting was disallowed onto opponent's territory, and placement restricted to friendly territory.")
-        (rules "Goal: Last to place a piece (i.e control more territory)
-            
-            One player places two adjacent pieces on the board, one of each color; the other player either switches their locations or begins regular play.
-            
-            Definitions:
-            'Territory' is any empty cell directly adjacent to more of a player's own pieces than opponent's pieces.
-            A 'Skirting Move' is a series of steps in which the moving piece remains adjacent to at least one of the pieces it was adjacent to before making the step. None of these steps may land on another piece, nor land on an enemy territory.
-            
-        A turn consists of an optional 'skirting move' followed by a mandatory placement onto one's own territory.")
         (id "3962")
         (version "1.3.11")
         (classification "experimental")
@@ -188,14 +238,20 @@
         (board Style Graph)
         (board Colour InnerEdges (colour 62 72 55))
         (board Colour OuterEdges (colour 62 72 55))
+        (board Colour InnerVertices (colour 170 160 140))
+        (board Colour OuterVertices (colour 170 160 140))
         (board StyleThickness OuterEdges .25)
         (board StyleThickness InnerEdges .25)
+        (board Background fillColour:(colour HumanLight) edgeColour:(colour 170 160 140) scale:1.3)
         (show Edges Diagonal <Board:diag> (colour 62 72 55))
-        (piece Scale P1 "Disc" 0.65)
-        (piece Scale P2 "Disc" 0.65)
-        (piece Scale P3 "Disc" 0.65)
-        (piece Scale P4 "Disc" 0.65)
-        (piece Scale P5 "Disc" 0.65)
+        (piece Scale P1 "Disc" 0.7)
+        (piece Scale P2 "Disc" 0.7)
+        (region Colour 
+            ("ScoringTerritoryOf" 2 1) regionSiteType:Vertex (colour DarkGrey)
+        )
+        (region Colour 
+            ("ScoringTerritoryOf" 1 2) regionSiteType:Vertex (colour VeryLightGrey) scale:1.02
+        )
         }
-))
-
+    )
+)
