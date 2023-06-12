@@ -2151,32 +2151,34 @@ Once a player is checkmated their king is removed, but all their other pieces re
 ","Markov 2017.","Uzbekistan",NULL,NULL,NULL,"39°39'12.42""N, 66°57'33.25""E","5377,5377","0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
 "1326","1165","Historical Information",NULL,"Rules from DLP evidence.","5","Rules known for Tuvinian Chess from the DLP evidence.","Chess-like game.","DLP evidence.","Siberia",NULL,NULL,NULL,NULL,"0,5520","0",NULL,"0","1",NULL,NULL,NULL,NULL,NULL,NULL
 "1327","1167","Default",NULL,NULL,"1",NULL,"--- Goal: Have the warmest goats at end.  The warmth of you goats is the total number of contacts they have with other goats. To find the winner, it is only necessary to count goat-to-goat contacts between their own kind.
-
-The game start on an empty board. Play alternates.
-        
-On a turn either: 
-1. Pass (sometimes this is forced); or 
-
-2. Place a goat on an empty cell that is not too close to another goat of its color: 
--- If they are in line, they need gap of 2 or 3 spaces (as selected in Options.)
-
-3. Move one of your goats one step with the following condition:
--- the goat must gain more contacts with adjacent goats of its own kind than before; or 
-
-4. Use the following alternate condition to step-move a goat that cannot move using the previous rule: 
--- the step must reduce your goat's net contact with enemy goats.  
-
-Exception: Moves using rule 4. are not allowed immediately after the previous player has passed.
-        
-Capture
--- After moving, simultaneously remove all individual enemy goats that have no adjacent space empty.
--- Capturing does not happen on a passing turn: to capture one must play a piece. 
-
-Ending the game 
--- The game ends with 2 passes. Then the number of connections are compared. 
--- In the case of a tie, the last to pass loses.
-
-Variants not implemented: No capture. / Score simple goat count.",NULL,NULL,NULL,NULL,NULL,NULL,"0,5520","0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
+            
+            The game start on an empty board. Play alternates.
+            
+            On a turn either: 
+            
+            1. Place a goat on an empty cell that is next to another empty cell, and not too close to another goat of its color: 
+            -- If they are in line, they need gap of 2 or 3 spaces (as selected in Options.)
+            
+            2. Group: Move one of your goats one step that increases its contact with goats of its own kind.
+            
+            3. Stray: Move one of your goats one step that decreases its contact with the opponent's goats.
+            Straying is limited. A given goat may not stray in any of these cases:
+            -- If it can group. 
+            -- If the previous player's goat strayed. 
+            -- If the previous player passed.
+            
+            4. Pass (sometimes this is forced)
+            Note that after a pass, the other player is not allowed Stray. He may Group if this does not 'undo' his previous move. 
+            
+            Capture
+            -- After moving, simultaneously remove all individual enemy goats that have no adjacent space empty.
+            -- Capturing does not happen on a passing turn: to capture one must play a piece. 
+            
+            Ending the game 
+            -- The game ends with 2 passes. Then the number of connections are compared. 
+            -- In the case of a tie, the last to pass loses.
+            
+        Variants not implemented: No capture. / Score simple goat count.",NULL,NULL,NULL,NULL,NULL,NULL,"0,5520","0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
 "1328","1166","Historical Information",NULL,"Rules from the DLP evidence.","5","Rules known for Samantsy from the DLP evidence.","8x8 board. Pieces with the following movement, for each player: Hova (x1): moves one space orthogonally or diagonally, is not taken by other pieces and does not take other pieces; Anakova (x1): moves one space diagonally; Farasy (x2): moves one space orthogonally and one space diagonally, jumping over any intervening pieces; Basy (x2): moves diagonally to the second space, but does not jump over the first; Vorona (2): moves orthogonally any number of spaces; Zaza (x8): move one space forward orthogonally, captures one space forward diagonally to capture. When a Zaza reaches the opposite edge of the board, they are promoted to Anakova. The pieces are set up on the last row of the player's side of the board, from left to right, as follows: Vorona, Farasy, Basy, Hova, Anakova, Basy, Farasy, Vorona, except the Hova and Anakova are swapped for the opponent. The Zaza are placed in the row in front of these pieces.  Replacement capture.","DLP evidence.","Madagascar",NULL,NULL,NULL,"21°16'48.91""S, 47°8'1.27""E","5412,5412","0",NULL,"0","1",NULL,NULL,NULL,NULL,NULL,NULL
 "1329","1168","Historical Information",NULL,"Rules from DLP evidence.","5","Rules known for Tenjiku Shogi from the DLP evidence.","16x16 board. 156 pieces. Includes the same pieces as Sho Shogi, Chu Shogi, and Dai Shogi, with the addition of the following pieces: Great General: moves any distance orthogonally or diagonally, jumping over any intervening pieces; Vice General: moves one space orthogonally or any distance diagonally; Fire Demon: moves two spaces forward or backward; moves any distance left or right or diagonally, pieces in adjacent squares ""perish by burning""; Rook General: moves any distance orthogonally, jumping over any intervening pieces; Bishop General: moves any distance diagonally, jumping over any intervening pieces; Lion Hawk: moves two spaces orthogonally and any distance diagonally; Water Buffalo: moves two spaces forward or backward or any distance left, right, or diagonally; Chariot Soldier: moves two spaces left or right and any distance forward or backward orthogonally or diagonally; Vertical Soldier: moves any distance orthogonally forward, two spaces left or right, or one step backward orthogonally; Side Soldier: moves any distance left or right orthogonally or two spaces left or right or one space backward; Dog: one space forward or one space backward diagonally; Multi General: moves any distance forward or backward diagonally; Heavenly Tetrarch: moves like the Chariot Soldier but not to adjacent squares; Free Eagle: moves like the Free King or Cat Sword twice. Tokin: promoted pawn. Pieces promote as follows: Knight to Side Soldier; Iron General to Vertical General; Side Soldier to Water Buffalo; Vertical Soldier to Chariot Soldier; Chariot Soldier to Heavenly Tetrarch; Horned Falcon to Bishop General; Soaring Eagle to Rook General; Bishop General to Vice General; Rook General to Great General; Water Buffalo to Fire Demon; Lion to Lion Hawk; Free King to Free Eagle.","DLP evidence.","Japan",NULL,NULL,NULL,"37°21'35.13""N, 139°44'30.09""E","5175,5199","0",NULL,"0","1",NULL,NULL,NULL,NULL,NULL,NULL
 "1330","1169","Lombard Chess",NULL,"Rules for Lombard Chess.","1","Rules played in Lombardy.","8x8 board. The pieces move as follows, with the number per player: 1 x King (king): moves one space orthogonally or diagonally. The King may leap to the second or third square on its first move, or move as a Knight, and does not hop over an opponent's piece. The King also cannot capture with this move. 1 x Queen: One square diagonally. On its first move, the Queen may jump diagonally two squares. The Queen cannot capture when making this move. 2 x Rook: Any number of spaces orthogonally. 2 x Bishop: Two squares diagonally, jumping over the first. Cannot capture another Bishop. 2 x Knight: Moves one space orthogonally and then one space diagonally, jumping over any intervening pieces. 8 x Pawn: Moves one space forward orthogonally; one space forward diagonally to capture. May move two spaces on its first move. En passant is not allowed. Promoted to Queen when reaching the eighth rank, and may make the Queen's leap on its first move after being promoted. If this promotion is made with the opponent's King at the distance of the extended move, it does not give check on that turn. No castling. An opponent's piece is captured by moving a player's own piece onto a space occupied by the opponent's piece. When a King can be captured on the next turn by an opponent's piece, it is in check. The King must not be in check at the end of the player's turn. If this is not possible, it is checkmate and the opponent wins. Stalemate results in a draw. 
@@ -2933,7 +2935,8 @@ Players take turns. There is no passing.
 Edge spaces are controlled by two orthogonally adjacent mover stones that are also orthogonally adjacent to each other.
 
 All other spaces are controlled by having at least 3 orthogonally adjacent mover stones, one of which that is both orthogonally adjacent to the second, and diagonally adjacent to the third.",NULL,NULL,NULL,NULL,NULL,NULL,"0,5520","0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
-"1586","1412","Default",NULL,NULL,"1",NULL,"Pieces move the same as in normal Shogi. Once a player is checkmated their Osho is removed, but all their other pieces remain on the board as neutral obstacles. Neutral pieces cannot help checkmate other players.",NULL,NULL,NULL,NULL,NULL,NULL,"0,5520","0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
+"1586","1412","Default",NULL,NULL,"1",NULL,"Pieces move the same as in normal Shogi. Ranks (rows) and files (columns) are defined relative to the direction of the moving player's pieces. Once a player is mated their Osho is removed, but all their other pieces remain on the board as neutral obstacles. Neutral pieces cannot move until they are captured, but will still give check.
+",NULL,NULL,NULL,NULL,NULL,NULL,"0,5520","0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
 "1587","4","Schadler 2001","Schädler 2001","Rules proposed by Ulrich Schädler in 2001.","6","These rules were suggested by Ulrich Schädler in 2001 based on critical examination of archaeological and textual evidence for Ludus Latrunculorum.","Players agree on a number of pieces to use between 16 and 24. The players take turns placing one piece on any vacant square. In this phase no captures are made.
 When all the pieces have been placed, the players take turns moving pieces on the board. The pieces can be moved orthogonally to any adjacent square. A piece can leap over any single piece of either color, if the square behind is unoccupied. Several leaps in one turn are possible (as in Draughts).
 If a player can trap an enemy piece between two friendly pieces, the enemy piece is blocked and cannot be moved.
@@ -22326,15 +22329,25 @@ The board starts empty. Turns alternate starting with White.
 Game ends when the board is full. No passing.
  
 Maximum captures are not required, but the piece choen to capture must capture at least one, and maynot stop capturing as long as it is able to capture the next adjacent opponent's piece.",NULL,NULL,NULL,NULL,NULL,NULL,"0,5520","0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
-"3962","1630","Default",NULL,NULL,"1",NULL,"Goal: Last to place a piece (i.e control more territory)
-
-One player places two adjacent pieces on the board, one of each color; the other player either switches their locations or begins regular play.
-
+"3962","1630","Default",NULL,NULL,"1",NULL,"Goal: Last to place a piece.
+   This goal is automatically achieved when a player creates a territory that is larger than the empty locations outside of that territory.
+  
 Definitions:
-'Territory' is any empty cell directly adjacent to more of a player's own pieces than opponent's pieces.
-A 'Skirting Move' is a series of steps in which the moving piece remains adjacent to at least one of the pieces it was adjacent to before making the step. None of these steps may land on another piece, nor land on an enemy territory.
+-- A player's 'Placement Zone' consists of every empty cell directly adjacent to more of a player's own pieces than opponent's pieces.
 
-A turn consists of an optional 'skirting move' followed by a mandatory placement onto one's own territory.",NULL,NULL,NULL,NULL,NULL,NULL,"0,5520","0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
+-- A 'Skirting Move' is a series of steps in which, for each step, the stepping piece remains adjacent to at least one of the pieces it was just adjacent to. None of these steps may enter the enemy's placement zone as determined at the time the individual step is made.
+
+-- A player's 'Territory' is every empty location that is connected to that player's own placement zone, but is not connected to such locations outside of the friendly placement zone as are next to an opponent's piece. 
+By 'connected' is meant that there are a series of adjacent empty locations between the two locations.
+
+... In other words, territory consists of locations permanently sealed off from the opponent's play even if the friendly player only makes placements.
+ 
+Play:
+The White player places two adjacent pieces on the board: white, then black.
+
+The other player either switches their locations or takes the first regular turn. Turns alternate.
+
+A turn consists of an optional 'skirting move' followed by a mandatory placement onto one's own placement zone.",NULL,NULL,NULL,NULL,NULL,NULL,"0,5520","0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
 "3963","1631","Default",NULL,NULL,"1",NULL,"Goal: Most territory, counted when one player cannot make a required placement.
 
 Definitions:
@@ -22543,7 +22556,12 @@ To make the game fair, the second player will have the option, on their first tu
     Each player selects a site for his placement, and the script generates the corresponding placements for each of the three main boards, by permuting the indices for each level, as indicated by the formulas shown on the boards.
     
     Turns alternate according to the Protocol option selected, and play continues until one player has created a winning pattern on 2 of the boards. There is always a winner.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
-"3980","1638","Default",NULL,NULL,"1",NULL,"All rules are the same as in standard Shogi, except as follows. Pawns promote to Golden Bird, which moves as a Gold General (one square orthogonally or forward). Lances promote to Free Tiger, which slides sideways, steps vertically, or jumps to any square that is two squares to either side in an adjacent rank (row). Knights promote to Heavenly Horse, which moves one square in any sideways or forward direction, or jumps to either square that is two squares behind in an adjacent file (column). Silver Generals promote to Venomous Wolf, which moves one square orthogonally or forward, or slides straight forward. Gold Generals promote to Great Elephant, which moves one square in any direction except straight backward, or slides diagonally forward. Perpetual check is allowed.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
+"3980","1638","Default",NULL,NULL,"1",NULL,"All rules are the same as in standard Shogi, except as follows.
+● Lances promote to Free Tiger, which slides sideways, steps vertically, or jumps to any square that is two squares to either side in an adjacent rank (row).
+● Knights promote to Heavenly Horse, which moves one square in any sideways or forward direction, or jumps to either square that is two squares behind in an adjacent file (column).
+● Silver Generals promote to Venomous Wolf, which moves one square orthogonally or forward, or slides straight forward.
+● Gold Generals promote to Great Elephant, which moves one square in any direction except straight backward, or slides diagonally forward.
+● Perpetual check is allowed.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
 "3981","1639","Default",NULL,NULL,"1",NULL,"Goal: Most active pieces on the full board.
         Play on any board, a small order 'limping' Hex-hex board is recommended.
         Uses counters in 2 colors capable of 2 states (Active and frozen)
@@ -24700,8 +24718,17 @@ Aim:
      If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins.
 
 ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.917","0.894","0.958","0.939","1431, 1431","[]"
-"4095","1644","Default",NULL,NULL,"1",NULL,"All rules are the same as in standard Shogi, except as follows. Pawns promote to Golden Bird, which moves as a Gold General (one square orthogonally or forward). Lances promote to Free Tiger, which slides sideways, steps vertically, or jumps to any square that is two squares to either side in an adjacent rank (row). Knights promote to Heavenly Horse, which moves one square in any sideways or forward direction, or jumps to either square that is two squares behind in an adjacent file (column). Silver Generals promote to Venomous Wolf, which moves one square orthogonally or forward, or slides straight forward. Gold Generals promote to Great Elephant, which moves one square in any direction except straight backward, or slides diagonally forward. Perpetual check is allowed. After deciding who goes first, play continues clockwise. Pawns cannot be dropped onto any square where they can reach another friendly unpromoted Pawn by jumping any distance from said square in a straight line directly forward or backward. Stalemate only takes effect once it is the stalemated player's turn to move. Once a player has lost for any reason, their King is removed and the pieces in their hand are reappropriated to the mating player, but all their other pieces remain on the board as neutral obstacles. The mating player is the player making the move that results in mate; for losses not resulting from mate, this is the player who moved last. Pieces that are reappropriated to the mating player must be dropped in the original direction of the mating player. Neutral pieces cannot move until they are captured, but will still give check to the remaining Kings. In over-the-board play, the rules for impasse are as follows. The minimum number of points needed to not lose during an impasse is 21 for the Compact Setup and 41 for the Complete setup. Rooks and Bishops score 5 points for the owning player, and all other pieces except Kings score 1 point each, as in Shogi. Players that score below the minimum lose unless all players score below the minimum, in which case the first to score above the minimum wins. If multiple players score above the minimum, the game ends in a draw for said players, and any players below the minimum lose.
-",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
+"4095","1644","Default",NULL,NULL,"1",NULL,"All rules are the same as in standard Shogi, except as follows.
+● Lances promote to Free Tiger, which slides sideways, steps vertically, or jumps to any square that is two squares to either side in an adjacent rank (row).
+● Knights promote to Heavenly Horse, which moves one square in any sideways or forward direction, or jumps to either square that is two squares behind in an adjacent file (column).
+● Silver Generals promote to Venomous Wolf, which moves one square orthogonally or forward, or slides straight forward.
+● Gold Generals promote to Great Elephant, which moves one square in any direction except straight backward, or slides diagonally forward.
+● After deciding who goes first, play continues clockwise.
+● Ranks (rows) and files (columns) are defined relative to the direction of the moving player's pieces.
+● Perpetual check is allowed.
+● Stalemate results in a loss of turn.
+● Once a player has lost for any reason, their King is removed and the pieces in their hand are reappropriated to the mating player, but all their other pieces remain on the board as neutral obstacles. The mating player is the player making the move that results in mate; for losses not resulting from mate, this is the player who moved last. Pieces that are reappropriated to the mating player must be dropped in the original direction of the mating player. Neutral pieces cannot move until they are captured, but will still give check.
+● In over-the-board play, the rules for impasse are as follows. The minimum number of points needed to not lose during an impasse is 21 for the Compact Setup and 41 for the Complete setup. Pieces are scored as in Shogi (5 per Rook/Bishop, 1 for all other pieces besides Kings). Players that score below the minimum lose unless all players score below the minimum, in which case the first to score above the minimum wins. If multiple players score above the minimum, the game ends in a draw for said players, and any players below the minimum lose.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
 "4096","1645","Default",NULL,NULL,"1",NULL,"Be the first player to send one of your pieces across the board from your starting cells and return.
 
 Turns alternate.
@@ -25003,24 +25030,25 @@ Aim:
 
 ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.933","0.92","0.955","0.946","240, 1346, 240","[]"
 "4118","1647","Default",NULL,NULL,"1",NULL,"All rules are the same as in standard Shogi, except as follows.
-Pawns promote to Golden Bird, which moves as a Gold General (one square orthogonally or forward).
-The Copper General moves one square vertically or forward, promotes to Great Leopard, which moves as a Silver General (one square diagonally or forward) or jumps two squares in a straight line in any sideways or forward direction.
-Silver Generals promote to Venomous Wolf, which moves one square orthogonally or forward, or slides straight forward.
-Gold Generals promote to Great Elephant, which moves one square in any direction except straight backward, or slides diagonally forward.
-Knights promote to Heavenly Horse, which moves one square in any sideways or forward direction, or jumps to either square that is two squares behind in an adjacent file (column).
-The Flying Cat jumps two squares in a straight line in any forward direction, promotes to Free Pup, which slides vertically or forward, moves up to two squares directly sideways, or one square diagonally backward.
-The Kirin moves one square diagonally or jumps two squares in a straight line orthogonally, promotes to Horned Falcon, which slides in any direction except directly forward, moves up to two squares directly forward, or captures without moving one square directly forward.
-The Phoenix moves one square orthogonally or jumps two squares in a straight line diagonally, promotes to Soaring Eagle, which slides in any direction except diagonally forward, moves up to two squares diagonally forward, or captures without moving one square diagonally forward.
-The Violent Bear moves one square sideways or diagonally backward, or up to two squares diagonally forward, promotes to Great Dream Eater, which slides orthogonally, moves up to two squares diagonally backward, or jumps two squares in a straight line diagonally forward.
-The Poisonous Snake moves one square directly backward or diagonally forward, or up to two squares directly sideways or directly forward, promotes to Free Demon, which slides diagonally, moves up to two squares directly backward, or jumps two squares in a straight line directly forward.
-Lances promote to Free Tiger, which slides sideways, steps vertically, or jumps to any square that is two squares to either side in an adjacent rank (row).
-The Running Chariot slides diagonally forward, promotes to Great Stag, which slides vertically, steps sideways, or jumps to any square that is two squares ahead or behind in an adjacent file (column).
-The Side Mover slides sideways or moves one square vertically, promotes to Free Boar, which slides sideways or diagonally.
-The Vertical Mover slides vertically or moves one square sideways, promotes to Flying Ox, which slides vertically or diagonally.
-The Vice General moves one square in any direction except straight backward, does not promote.
-The Queen slides in any orthogonal or diagonal direction, does not promote.
-The Lion makes up to two King steps to another square, stopping at the first capture, or captures without moving one square in any direction, does not promote.
-The promotion zone is the farthest four ranks of the board. Perpetual check is allowed. In over-the-board play, the minimum number of points needed to not lose during an impasse is 65. Each Lion, Queen, Rook, Bishop, Vertical Mover, Side Mover, Phoenix, or Kirin, promoted or not, scores 5 points for the owning player, and all other pieces except Kings score 1 point each.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
+● The Copper General moves one square vertically or forward, promotes to Great Leopard, which moves as a Silver General (one square diagonally or forward) or jumps two squares in a straight line in any sideways or forward direction.
+● Silver Generals promote to Venomous Wolf, which moves one square orthogonally or forward, or slides straight forward.
+● Gold Generals promote to Great Elephant, which moves one square in any direction except straight backward, or slides diagonally forward.
+● Knights promote to Heavenly Horse, which moves one square in any sideways or forward direction, or jumps to either square that is two squares behind in an adjacent file (column).
+● The Flying Cat jumps two squares in a straight line in any forward direction, promotes to Free Pup, which slides vertically or forward, moves up to two squares directly sideways, or one square diagonally backward.
+● The Violent Bear moves one square sideways or diagonally backward, or up to two squares diagonally forward, promotes to Great Dream Eater, which slides orthogonally, moves up to two squares diagonally backward, or jumps two squares in a straight line diagonally forward.
+● The Poisonous Snake moves one square directly backward or diagonally forward, or up to two squares directly sideways or directly forward, promotes to Free Demon, which slides diagonally, moves up to two squares directly backward, or jumps two squares in a straight line directly sideways or forward.
+● Lances promote to Free Tiger, which slides sideways, steps vertically, or jumps to any square that is two squares to either side in an adjacent rank (row).
+● The Ram's-Head Soldier slides diagonally forward, promotes to Great Stag, which slides vertically, steps sideways, or jumps to any square that is two squares ahead or behind in an adjacent file (column).
+● The Kirin moves one square diagonally or jumps two squares in a straight line orthogonally, promotes to Horned Falcon, which slides in any direction except directly forward, moves one square directly forward, jumps two squares directly forward, or captures without moving one square orthogonally.
+● The Phoenix moves one square orthogonally or jumps two squares in a straight line diagonally, promotes to Soaring Eagle, which slides in any direction except diagonally forward, moves one square diagonally forward, jumps two squares diagonally forward, or captures without moving one square diagonally.
+● The Side Mover slides sideways or moves one square vertically, promotes to Free Boar, which slides sideways or diagonally.
+● The Vertical Mover slides vertically or moves one square sideways, promotes to Flying Ox, which slides vertically or diagonally.
+● The Vice General moves one square in any direction except straight backward, does not promote.
+● The Queen slides in any orthogonal or diagonal direction, does not promote.
+● The Lion makes up to two King steps to another square, stopping at the first capture, or captures without moving one square in any direction, does not promote.
+● The promotion zone is the farthest four ranks of the board.
+● Perpetual check is allowed.
+● In over-the-board play, the minimum number of points needed to not lose during an impasse is 62. Each Lion, Queen, Rook, Bishop, Vertical Mover, Side Mover, Phoenix, or Kirin, promoted or not, scores 5 points for the owning player, and all other pieces except Kings score 1 point each.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
 "4119","1332","A-i-u (Ludii 1)",NULL,"Reconstructed with Ludii","2",NULL,"The game A-i-u is played by two players on a 2 x 6 Mancala board with 2 none stores.
 Regions:
     RegionP1: the bottom sites of the board for P1
@@ -26170,3 +26198,38 @@ Aim:
      If there are no pieces owned by Player the next player, the next player loses.
 
 ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0","0.914","0.899","0.736","0.93","884, 98, 884","[]"
+"4185","1648","Default",NULL,NULL,"1",NULL,"The game is played with three boards, one for each player; the third is for the umpire (and spectators). Each opponent knows the exact position of just their own pieces, and does not know where the opponent's pieces are (but can keep track of how many there are). Only the umpire knows the position of the game. The game proceeds in the following way:
+          The umpire announces:
+          -'White's [or Black's] turn'.
+          -'Pawn at (square) captured', when a pawn is captured. The square of the capture is announced, e.g. Pawn gone on d4, or Pawn captured on d4. (En passant captures are specifically announced as such.)
+          -'Piece at (square) captured', when a piece is captured. The square of the capture is announced.
+          -'Illegal move' when the attempted move is illegal, given the opponent's position. For example: moving the king into check; moving a queen, rook, bishop, or pawn through squares occupied by the opponent's pieces; advancing a pawn into a square occupied by the opponent's pieces; moving a piece under an absolute pin.
+          -'Rank check'.
+          -'File check'.
+          -'Long-diagonal check' (the longer of the two diagonals, from the king's point of view).
+          -'Short-diagonal check'.
+          -'Knight check'.
+          -'(number)  tries' (number of legal capturing moves using pawns).
+          -'Checkmate', 'stalemate', 'draw by repetition', 'draw by insufficient force', '50-move draw'.
+          Pawn promotions are not announced. The precise location of the checking piece is not announced (although it may be deduced).
+          Illegal move attempts are not announced to the opponent.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
+"4186","1649","Default",NULL,NULL,"1",NULL,"Players take turn laying their eight circles upon the board, then enter a phase of movement, the sum goal being either a line of four or a 2x2 block.
+ ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
+"4187","1650","Default",NULL,NULL,"1",NULL,"All rules are the same as in standard Shogi, except as follows.
+● The Copper General moves one square vertically or forward, promotes to Great Leopard, which moves as a Silver General (one square diagonally or forward) or jumps two squares in a straight line in any sideways or forward direction.
+● Silver Generals promote to Venomous Wolf, which moves one square orthogonally or forward, or slides straight forward.
+● Gold Generals promote to Great Elephant, which moves one square in any direction except straight backward, or slides diagonally forward.
+● The Flying Cat jumps two squares in a straight line in any forward direction, promotes to Free Pup, which slides vertically or forward, moves up to two squares directly sideways, or one square diagonally backward.
+● The Violent Bear moves one square sideways or diagonally backward, or up to two squares diagonally forward, promotes to Great Dream Eater, which slides orthogonally, moves up to two squares diagonally backward, or jumps two squares in a straight line diagonally forward.
+● The Poisonous Snake moves one square directly backward or diagonally forward, or up to two squares directly sideways or directly forward, promotes to Free Demon, which slides diagonally, moves up to two squares directly backward, or jumps two squares in a straight line directly sideways or forward.
+● The Ram's-Head Soldier slides diagonally forward, promotes to Great Stag, which slides vertically, steps sideways, or jumps to any square that is two squares ahead or behind in an adjacent file (column).
+● The Kirin moves one square diagonally or jumps two squares in a straight line orthogonally, promotes to Horned Falcon, which slides in any direction except directly forward, moves one square directly forward, jumps two squares directly forward, or captures without moving one square orthogonally.
+● The Phoenix moves one square orthogonally or jumps two squares in a straight line diagonally, promotes to Soaring Eagle, which slides in any direction except diagonally forward, moves one square diagonally forward, jumps two squares diagonally forward, or captures without moving one square diagonally.
+● The Side Mover slides sideways or moves one square vertically, promotes to Free Boar, which slides sideways or diagonally.
+● The Vertical Mover slides vertically or moves one square sideways, promotes to Flying Ox, which slides vertically or diagonally.
+● The Vice General moves one square in any direction except straight backward, does not promote.
+● The Queen slides in any orthogonal or diagonal direction, does not promote.
+● The Lion makes up to two King steps to another square, stopping at the first capture, or captures without moving one square in any direction, does not promote.
+● The promotion zone is the farthest three ranks of the board.
+● Perpetual check is allowed.
+● In over-the-board play, the minimum number of points needed to not lose during an impasse is 47. Each Lion, Queen, Vertical Mover, Side Mover, Phoenix, or Kirin, promoted or not, scores 5 points for the owning player, and all other pieces except Kings score 1 point each.",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","0",NULL,NULL,NULL,NULL,NULL,NULL
