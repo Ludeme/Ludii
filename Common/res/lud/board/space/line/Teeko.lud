@@ -1,0 +1,48 @@
+(define "FromHand" 
+    (from (sites Occupied by:Mover container:(mover))) 
+)
+
+//------------------------------------------------------------------------------
+
+(game "Teeko" 
+    (players 2) 
+    (equipment { 
+        (board (square 5)) 
+        (hand Each size:8)
+        (piece "Marker" Each ("StepToEmpty"))
+    }) 
+    (rules 
+        (start { 
+            (place "Marker" "Hand" count:8)
+        })
+        
+        phases:{
+        (phase "Placement"
+            (play (move ("FromHand") (to (sites Empty))))
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        
+        ("PhaseMovePiece" "Movement")
+        }
+        
+        (end 
+            (if 
+                (or {
+                    (is Pattern {F R F R F})
+                    (is Line 4)
+                })
+                (result Mover Win)
+            )
+        ) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+)
