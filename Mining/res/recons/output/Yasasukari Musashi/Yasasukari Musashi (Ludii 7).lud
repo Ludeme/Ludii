@@ -1,0 +1,162 @@
+(game "Yasasukari Musashi" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" P1 
+            (or 
+                (do 
+                    (move Add 
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (enclose 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (and 
+                                            (addScore Mover 1)
+                                            
+                                            (remove 
+                                                (between)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    ifAfterwards:
+                    (> 
+                        (count Liberties Orthogonal)
+                    0)
+                )
+                
+                (move Pass)
+            )
+        )
+        
+        (piece "Marker" P2 
+            (move Slide Orthogonal 
+                (then 
+                    (or 
+                        (custodial 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between 
+                                (max 1)
+                                if:
+                                (is Enemy 
+                                    (who at:
+                                        (between)
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                        
+                        (surround 
+                            (from 
+                                (last To)
+                            )
+                            Orthogonal 
+                            (between if:
+                                (and 
+                                    (is In 
+                                        (between)
+                                        
+                                        (sites Corners)
+                                    )
+                                    
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                )
+                                
+                                (apply 
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                            
+                            (to if:
+                                (is Friend 
+                                    (who at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (sites Centre)
+            )
+            
+            (place "Marker2" 
+                (sites Outer)
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end { 
+            (if 
+                (no Moves P2)
+                
+                (result P1 Win)
+            )
+            
+            (if 
+                (no Pieces P1)
+                
+                (result P2 Win)
+            )
+            }
+        )
+    )
+)
+
+

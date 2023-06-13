@@ -1,0 +1,155 @@
+(game "Yasasukari Musashi" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" P1 
+            (or 
+                (do 
+                    (move Add 
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (enclose 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (and 
+                                            (addScore Mover 1)
+                                            
+                                            (remove 
+                                                (between)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    ifAfterwards:
+                    (> 
+                        (count Liberties Orthogonal)
+                    0)
+                )
+                
+                (move Pass)
+            )
+        )
+        
+        (piece "Marker" P2 
+            (move Add 
+                (to 
+                    (sites Empty)
+                )
+                
+                (then 
+                    (enclose 
+                        (from 
+                            (last To)
+                        )
+                        Orthogonal 
+                        (between if:
+                            (is Enemy 
+                                (who at:
+                                    (between)
+                                )
+                            )
+                            
+                            (apply 
+                                (and 
+                                    (addScore Mover 1)
+                                    
+                                    (remove 
+                                        (between)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (sites Centre)
+            )
+            
+            (place "Marker2" 
+                (sites Outer)
+            )
+            }
+        )
+        
+        (play 
+            (or 
+                (do 
+                    (move Add 
+                        (to 
+                            (sites Empty)
+                        )
+                        
+                        (then 
+                            (enclose 
+                                (from 
+                                    (last To)
+                                )
+                                Orthogonal 
+                                (between if:
+                                    (is Enemy 
+                                        (who at:
+                                            (between)
+                                        )
+                                    )
+                                    
+                                    (apply 
+                                        (and 
+                                            (addScore Mover 1)
+                                            
+                                            (remove 
+                                                (between)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    ifAfterwards:
+                    (> 
+                        (count Liberties Orthogonal)
+                    0)
+                )
+                
+                (move Pass)
+            )
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+
