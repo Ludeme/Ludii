@@ -50,7 +50,7 @@
     }
 )
 
-(option "Pie rule" <Pie> args:{ <pie> <direction>}
+(option "Pie rule" <Pie> args:{ <pie> }
     {
     (item "Off" <> "The pie rule is currently not in force.")*
     (item "On" <(meta (swap))> "The pie rule is currently in force.")
