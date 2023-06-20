@@ -15,13 +15,9 @@
                 use:Vertex
             )
             (piece "Disc" P1 (move [#])) 
-            (piece "Disc" P2 (move [#])) 
+            (piece "Disc" P2 (or [#])) 
         }) 
-        (rules 
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
