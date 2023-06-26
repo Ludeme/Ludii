@@ -122,7 +122,7 @@
                                 (sites Mover "FourLeftMost") 
                             )
                             if:(and {
-                                if:(if ("SameTurn")
+                                (if ("SameTurn")
                                     (< 0 (count at:(from)))
                                     (< 1 (count at:(from)))
                                 )
