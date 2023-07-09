@@ -2,7 +2,6 @@ package supplementary.experiments.scripts;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -81,9 +80,6 @@ public class EvalMCTSVariantsScriptsGen
 				"Pagade Kayi Ata (Sixteen-handed).lud",
 				"Taikyoku Shogi.lud"
 			};
-	
-	/** Max number of trials we want to be running from a single script */
-	private static final int NUM_TRIALS_PER_SCRIPT = 150;
 	
 	/** All our hyperparameters for MCTS */
 	private static final String[] mctsHyperparamNames = new String[] 
@@ -264,17 +260,6 @@ public class EvalMCTSVariantsScriptsGen
 			nameParts.add(backpropType);
 			switch (backpropType)
 			{
-			case "AlphaGo05":
-				algStringParts.add("backprop=alphago");
-				algStringParts.add("playout_value_weight=0.5");
-				break;
-			case "AlphaGo0":
-				algStringParts.add("backprop=alphago");
-				algStringParts.add("playout_value_weight=0.0");
-				break;
-			case "Heuristic":
-				algStringParts.add("backprop=heuristic");
-				break;
 			case "MonteCarlo":
 				algStringParts.add("backprop=montecarlo");
 				break;
@@ -372,9 +357,7 @@ public class EvalMCTSVariantsScriptsGen
 			scriptsDir += "/";
 		
 		final String userName = argParse.getValueString("--user-name");
-		
-		//final BestStartingHeuristics bestStartingHeuristics = BestStartingHeuristics.loadData();
-		
+				
 		final String[] allGameNames = Arrays.stream(FileHandling.listGames()).filter(s -> (
 				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/bad/")) &&
 				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wip/")) &&
@@ -389,6 +372,9 @@ public class EvalMCTSVariantsScriptsGen
 			)).toArray(String[]::new);
 		
 		long callID = 0L;
+		
+		// First create list with data for every process we want to run
+		final List<ProcessData> processDataList = new ArrayList<ProcessData>();
 		
 		for (final String fullGamePath : allGameNames)
 		{
@@ -450,9 +436,6 @@ public class EvalMCTSVariantsScriptsGen
 				if (game.hasSubgames())
 					continue;
 								
-				final String filepathsGameName = StringRoutines.cleanGameName(gameName);
-				final String filepathsRulesetName = StringRoutines.cleanRulesetName(fullRulesetName.replaceAll(Pattern.quote("Ruleset/"), ""));
-				
 				final List<String> relevantNonMCTSAIs = new ArrayList<String>();
 
 				if (dummyRandom.supportsGame(game))
@@ -460,249 +443,179 @@ public class EvalMCTSVariantsScriptsGen
 				
 				final int numPlayers = game.players().count();
 				
-				int numTrialsThisJob = 0;
-				int jobCounterThisGame = 0;
-				
-				@SuppressWarnings("resource")	// Not using try-catch to control this resource because we need to sometimes switch to different files
-				PrintWriter writer = null;
-				
-				try
+				if (dummyUCT.supportsGame(game))
 				{
-					// Evaluate all of the non-MCTSes against each other
-					for (int evalAgentIdxNonMCTS = 0; evalAgentIdxNonMCTS < relevantNonMCTSAIs.size(); ++evalAgentIdxNonMCTS)
-					{
-						final String agentToEval = relevantNonMCTSAIs.get(evalAgentIdxNonMCTS);
-						
+					// Evaluate all MCTSes...
+					final String[] relevantMCTSNames = (game.isStochasticGame()) ? mctsNamesStochastic : mctsNamesDeterministic;
+					final String[] relevantMCTSStrings = (game.isStochasticGame()) ? mctsStringsStochastic : mctsStringsDeterministic;
+
+					for (int evalAgentIdxMCTS = 0; evalAgentIdxMCTS < relevantMCTSNames.length; ++evalAgentIdxMCTS)
+					{				
+						// ... against all non-MCTSes...
 						for (int oppIdx = 0; oppIdx < relevantNonMCTSAIs.size(); ++oppIdx)
 						{
-							if (writer == null || numTrialsThisJob + numPlayers > NUM_TRIALS_PER_SCRIPT)
-							{
-								// Time to open a new job script
-								if (writer != null)
-								{
-									writer.close();
-									writer = null;
-								}
-								
-								final String jobScriptFilename = "Eval" + filepathsGameName + filepathsRulesetName + jobCounterThisGame + ".sh";
-								jobScriptNames.add(jobScriptFilename);
-								numTrialsThisJob = 0;
-								writer = new UnixPrintWriter(new File(scriptsDir + jobScriptFilename), "UTF-8");
-								writer.println("#!/usr/local_rwth/bin/zsh");
-								writer.println("#SBATCH -J Eval" + filepathsGameName + filepathsRulesetName + jobCounterThisGame);
-								writer.println("#SBATCH -o /work/" + userName + "/FindBestBaseAgent/Out"
-										+ filepathsGameName + filepathsRulesetName + jobCounterThisGame + "_%J.out");
-								writer.println("#SBATCH -e /work/" + userName + "/FindBestBaseAgent/Err"
-										+ filepathsGameName + filepathsRulesetName + jobCounterThisGame + "_%J.err");
-								writer.println("#SBATCH -t " + MAX_WALL_TIME);
-								writer.println("#SBATCH --mem-per-cpu=" + MEM_PER_CPU);
-								writer.println("#SBATCH -A " + argParse.getValueString("--project"));
-								writer.println("unset JAVA_TOOL_OPTIONS");
-								++jobCounterThisGame;
-							}
-							
-							numTrialsThisJob += numPlayers;
-							
 							// Take (k - 1) copies of same opponent for a k-player game
 							final String[] agentStrings = new String[numPlayers];
 							for (int i = 0; i < numPlayers - 1; ++i)
 							{
 								final String agent = relevantNonMCTSAIs.get(oppIdx);
 								final String agentCommandString = StringRoutines.quote(agent);
-								
+
 								agentStrings[i] = agentCommandString;
 							}
-							
+
 							// and finally add the eval agent
-							final String evalAgentCommandString = StringRoutines.quote(agentToEval);
-							
-							agentStrings[numPlayers - 1] = evalAgentCommandString;
-							
-							final String javaCall = generateJavaCall
-									(
-										userName,
-										gameName,
-										fullRulesetName,
-										numPlayers,
-										filepathsGameName,
-										filepathsRulesetName,
-										callID,
-										agentStrings
-									);
-							++callID;
-							
-							writer.println(javaCall);
-						}
-					}
-					
-					if (dummyUCT.supportsGame(game))
-					{
-						// Evaluate all MCTSes...
-						final String[] relevantMCTSNames = (game.isStochasticGame()) ? mctsNamesStochastic : mctsNamesDeterministic;
-						final String[] relevantMCTSStrings = (game.isStochasticGame()) ? mctsStringsStochastic : mctsStringsDeterministic;
-						
-						for (int evalAgentIdxMCTS = 0; evalAgentIdxMCTS < relevantMCTSNames.length; ++evalAgentIdxMCTS)
-						{				
-							// ... against all non-MCTSes...
-							for (int oppIdx = 0; oppIdx < relevantNonMCTSAIs.size(); ++oppIdx)
-							{
-								if (writer == null || numTrialsThisJob + numPlayers > NUM_TRIALS_PER_SCRIPT)
-								{
-									// Time to open a new job script
-									if (writer != null)
-									{
-										writer.close();
-										writer = null;
-									}
-									
-									final String jobScriptFilename = "Eval" + filepathsGameName + filepathsRulesetName + jobCounterThisGame + ".sh";
-									jobScriptNames.add(jobScriptFilename);
-									numTrialsThisJob = 0;
-									writer = new UnixPrintWriter(new File(scriptsDir + jobScriptFilename), "UTF-8");
-									writer.println("#!/usr/local_rwth/bin/zsh");
-									writer.println("#SBATCH -J Eval" + filepathsGameName + filepathsRulesetName + jobCounterThisGame);
-									writer.println("#SBATCH -o /work/" + userName + "/FindBestBaseAgent/Out"
-											+ filepathsGameName + filepathsRulesetName + jobCounterThisGame + "_%J.out");
-									writer.println("#SBATCH -e /work/" + userName + "/FindBestBaseAgent/Err"
-											+ filepathsGameName + filepathsRulesetName + jobCounterThisGame + "_%J.err");
-									writer.println("#SBATCH -t " + MAX_WALL_TIME);
-									writer.println("#SBATCH --mem-per-cpu=" + MEM_PER_CPU);
-									writer.println("#SBATCH -A " + argParse.getValueString("--project"));
-									writer.println("unset JAVA_TOOL_OPTIONS");
-									++jobCounterThisGame;
-								}
-								
-								numTrialsThisJob += numPlayers;
-								
-								// Take (k - 1) copies of same opponent for a k-player game
-								final String[] agentStrings = new String[numPlayers];
-								for (int i = 0; i < numPlayers - 1; ++i)
-								{
-									final String agent = relevantNonMCTSAIs.get(oppIdx);
-									final String agentCommandString = StringRoutines.quote(agent);
-									
-									agentStrings[i] = agentCommandString;
-								}
-								
-								// and finally add the eval agent
-								String evalAgentCommandString = relevantMCTSStrings[evalAgentIdxMCTS];
-								
-								evalAgentCommandString = StringRoutines.quote(evalAgentCommandString);
-								
-								agentStrings[numPlayers - 1] = evalAgentCommandString;
-								
-								final String javaCall = generateJavaCall
-										(
-											userName,
-											gameName,
-											fullRulesetName,
-											numPlayers,
-											filepathsGameName,
-											filepathsRulesetName,
-											callID,
-											agentStrings
-										);
-								++callID;
-								
-								writer.println(javaCall);
-							}
-							
-							// ... and once against a randomly selected set of (k - 1) other MCTSes for a k-player game
-							if (writer == null || numTrialsThisJob + numPlayers > NUM_TRIALS_PER_SCRIPT)
-							{
-								// Time to open a new job script
-								if (writer != null)
-								{
-									writer.close();
-									writer = null;
-								}
-								
-								final String jobScriptFilename = "Eval" + filepathsGameName + filepathsRulesetName + jobCounterThisGame + ".sh";
-								jobScriptNames.add(jobScriptFilename);
-								numTrialsThisJob = 0;
-								writer = new UnixPrintWriter(new File(scriptsDir + jobScriptFilename), "UTF-8");
-								writer.println("#!/usr/local_rwth/bin/zsh");
-								writer.println("#SBATCH -J Eval" + filepathsGameName + filepathsRulesetName + jobCounterThisGame);
-								writer.println("#SBATCH -o /work/" + userName + "/FindBestBaseAgent/Out"
-										+ filepathsGameName + filepathsRulesetName + jobCounterThisGame + "_%J.out");
-								writer.println("#SBATCH -e /work/" + userName + "/FindBestBaseAgent/Err"
-										+ filepathsGameName + filepathsRulesetName + jobCounterThisGame + "_%J.err");
-								writer.println("#SBATCH -t " + MAX_WALL_TIME);
-								writer.println("#SBATCH --mem-per-cpu=" + MEM_PER_CPU);
-								writer.println("#SBATCH -A " + argParse.getValueString("--project"));
-								writer.println("unset JAVA_TOOL_OPTIONS");
-								++jobCounterThisGame;
-							}
-							
-							numTrialsThisJob += numPlayers;
-							
-							final String[] agentStrings = new String[numPlayers];
-							for (int i = 0; i < numPlayers - 1; ++i)
-							{
-								boolean success = false;
-								
-								final TIntArrayList sampleIndices = ListUtils.range(relevantMCTSNames.length);
-								while (!success)
-								{
-									final int randIdx = ThreadLocalRandom.current().nextInt(sampleIndices.size());
-									final int otherMCTSIdx = sampleIndices.getQuick(randIdx);
-									ListUtils.removeSwap(sampleIndices, randIdx);
-									String agentCommandString = relevantMCTSStrings[otherMCTSIdx];
-									
-									success = true;
-									
-									agentCommandString = StringRoutines.quote(agentCommandString);
-									
-									agentStrings[i] = agentCommandString;
-								}
-								
-								if (!success)
-								{
-									System.err.println("No suitable MCTS found at all");
-									continue;
-								}
-							}
-							
-							// add the eval agent
 							String evalAgentCommandString = relevantMCTSStrings[evalAgentIdxMCTS];
-							
+
 							evalAgentCommandString = StringRoutines.quote(evalAgentCommandString);
-							
+
 							agentStrings[numPlayers - 1] = evalAgentCommandString;
 							
-							final String javaCall = generateJavaCall
-									(
-										userName,
-										gameName,
-										fullRulesetName,
-										numPlayers,
-										filepathsGameName,
-										filepathsRulesetName,
-										callID,
-										agentStrings
-									);
-							++callID;
-							
-							writer.println(javaCall);
+							processDataList.add
+							(
+								new ProcessData
+								(
+									gameName, fullRulesetName, callID++, 
+									agentStrings
+								)
+							);
 						}
+
+						// ... and once against a randomly selected set of (k - 1) other MCTSes for a k-player game
+						final String[] agentStrings = new String[numPlayers];
+						for (int i = 0; i < numPlayers - 1; ++i)
+						{
+							boolean success = false;
+
+							final TIntArrayList sampleIndices = ListUtils.range(relevantMCTSNames.length);
+							while (!success)
+							{
+								final int randIdx = ThreadLocalRandom.current().nextInt(sampleIndices.size());
+								final int otherMCTSIdx = sampleIndices.getQuick(randIdx);
+								ListUtils.removeSwap(sampleIndices, randIdx);
+								String agentCommandString = relevantMCTSStrings[otherMCTSIdx];
+
+								success = true;
+
+								agentCommandString = StringRoutines.quote(agentCommandString);
+
+								agentStrings[i] = agentCommandString;
+							}
+
+							if (!success)
+							{
+								System.err.println("No suitable MCTS found at all");
+								continue;
+							}
+						}
+
+						// add the eval agent
+						String evalAgentCommandString = relevantMCTSStrings[evalAgentIdxMCTS];
+
+						evalAgentCommandString = StringRoutines.quote(evalAgentCommandString);
+
+						agentStrings[numPlayers - 1] = evalAgentCommandString;
+
+						processDataList.add
+						(
+							new ProcessData
+							(
+								gameName, fullRulesetName, callID++, 
+								agentStrings
+							)
+						);
 					}
-					
-					if (writer != null)
-					{
-						writer.close();
-						writer = null;
-					}
-				}
-				catch (final IOException e)
-				{
-					e.printStackTrace();
 				}
 			}
 		}
+		
+		// Write scripts with all the processes
+		Collections.shuffle(processDataList);
 
+		long totalRequestedCoreHours = 0L;
+		
+		int processIdx = 0;
+		while (processIdx < processDataList.size())
+		{
+			// Start a new job script
+			final String jobScriptFilename = "EvalMCTSVariants_" + jobScriptNames.size() + ".sh";
+					
+			try (final PrintWriter writer = new UnixPrintWriter(new File(scriptsDir + jobScriptFilename), "UTF-8"))
+			{
+				writer.println("#!/bin/bash");
+				writer.println("#SBATCH -J EvalMCTSVariants");
+				writer.println("#SBATCH -p thin");
+				writer.println("#SBATCH -o /home/" + userName + "/EvalMCTSVariants/Out/Out_%J.out");
+				writer.println("#SBATCH -e /home/" + userName + "/EvalMCTSVariants/Out/Err_%J.err");
+				writer.println("#SBATCH -t " + MAX_WALL_TIME);
+				writer.println("#SBATCH -N 1");		// 1 node, no MPI/OpenMP/etc
+				
+				// Compute memory and core requirements
+				final int numProcessesThisJob = Math.min(processDataList.size() - processIdx, PROCESSES_PER_JOB);
+				final boolean exclusive = (numProcessesThisJob > EXCLUSIVE_PROCESSES_THRESHOLD);
+				final int jobMemRequestGB;
+				if (exclusive)
+					jobMemRequestGB = Math.min(MEM_PER_NODE, MAX_REQUEST_MEM);	// We're requesting full node anyway, might as well take all the memory
+				else
+					jobMemRequestGB = Math.min(numProcessesThisJob * MEM_PER_PROCESS, MAX_REQUEST_MEM);
+				
+				writer.println("#SBATCH --cpus-per-task=" + numProcessesThisJob * CORES_PER_PROCESS);
+				writer.println("#SBATCH --mem=" + jobMemRequestGB + "G");		// 1 node, no MPI/OpenMP/etc
+				
+				totalRequestedCoreHours += (CORES_PER_NODE * (MAX_WALL_TIME / 60));
+				
+				if (exclusive)
+					writer.println("#SBATCH --exclusive");
+				
+				// load Java modules
+				writer.println("module load 2021");
+				writer.println("module load Java/11.0.2");
+				
+				// Put up to PROCESSES_PER_JOB processes in this job
+				int numJobProcesses = 0;
+				while (numJobProcesses < PROCESSES_PER_JOB && processIdx < processDataList.size())
+				{
+					final ProcessData processData = processDataList.get(processIdx);
+					final String filepathsGameName = 
+							StringRoutines.cleanGameName(processData.gameName);
+					final String filepathsRulesetName = 
+							StringRoutines.cleanRulesetName(
+									processData.rulesetName.replaceAll(Pattern.quote("Ruleset/"), ""));
+				
+					// Write Java call for this process
+					final String javaCall = 
+								generateJavaCall
+								(
+									userName,
+									processData.gameName,
+									processData.rulesetName,
+									processData.agentStrings.length * 10,
+									filepathsGameName,
+									filepathsRulesetName,
+									processData.callID,
+									processData.agentStrings
+								);
+					
+					writer.println(javaCall);
+					
+					++processIdx;
+					++numJobProcesses;
+				}
+				
+				writer.println("wait");		// Wait for all the parallel processes to finish
+
+				jobScriptNames.add(jobScriptFilename);
+			}
+			catch (final FileNotFoundException | UnsupportedEncodingException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		System.out.println("Total requested core hours = " + totalRequestedCoreHours);
+		
 		final List<List<String>> jobScriptsLists = new ArrayList<List<String>>();
 		List<String> remainingJobScriptNames = jobScriptNames;
-		Collections.shuffle(remainingJobScriptNames);
 
 		while (remainingJobScriptNames.size() > 0)
 		{
@@ -775,7 +688,7 @@ public class EvalMCTSVariantsScriptsGen
 					"-dsa",
 					"-XX:+UseStringDeduplication",
 					"-jar",
-					StringRoutines.quote("/home/" + userName + "/FindBestBaseAgent/Ludii.jar"),
+					StringRoutines.quote("/home/" + userName + "/EvalMCTSVariants/Ludii.jar"),
 					"--eval-agents",
 					"--game",
 					StringRoutines.quote(gameName + ".lud"),
@@ -790,9 +703,9 @@ public class EvalMCTSVariantsScriptsGen
 					"--out-dir",
 					StringRoutines.quote
 					(
-						"/work/" + 
+						"/home/" + 
 						userName + 
-						"/FindBestBaseAgent/" + 
+						"/EvalMCTSVariants/" + 
 						filepathsGameName + filepathsRulesetName +
 						"/" + callID + "/"
 					),
@@ -804,6 +717,42 @@ public class EvalMCTSVariantsScriptsGen
 					"--no-print-out",
 					"--suppress-divisor-warning"
 				);
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Wrapper around data for a single process (multiple processes per job)
+	 *
+	 * @author Dennis Soemers
+	 */
+	private static class ProcessData
+	{
+		public final String gameName;
+		public final String rulesetName;
+		public final long callID;
+		public final String[] agentStrings;
+		
+		/**
+		 * Constructor
+		 * @param gameName
+		 * @param rulesetName
+		 * @param callID
+		 * @param agentStrings
+		 */
+		public ProcessData
+		(
+			final String gameName, 
+			final String rulesetName, 
+			final long callID,
+			final String[] agentStrings
+		)
+		{
+			this.gameName = gameName;
+			this.rulesetName = rulesetName;
+			this.callID = callID;
+			this.agentStrings = agentStrings;
+		}
 	}
 	
 	//-------------------------------------------------------------------------
