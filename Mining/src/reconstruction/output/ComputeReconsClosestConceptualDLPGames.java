@@ -52,7 +52,7 @@ public class ComputeReconsClosestConceptualDLPGames {
 	{
 		final String[] gameNames = FileHandling.listGames();
 		final String output = "ClosestGames.csv";
-		final List<Game> rulesets = new ArrayList<Game>();
+		final List<String> rulesets = new ArrayList<String>();
 		final TIntArrayList rulesetsids = new TIntArrayList();
 		
 		try (final PrintWriter writer = new UnixPrintWriter(new File(output), "UTF-8"))
@@ -95,7 +95,7 @@ public class ComputeReconsClosestConceptualDLPGames {
 							if(!ids.isEmpty())
 							{
 								rulesetsids.add(Integer.parseInt(ids.get(0)));
-								rulesets.add(rulesetGame);
+								rulesets.add(rulesetGame.name() + " " + ruleset.heading());
 								System.out.println(rulesetGame.name() + " " + ruleset.heading() + " found");
 							}
 						}
@@ -107,7 +107,7 @@ public class ComputeReconsClosestConceptualDLPGames {
 					if(!ids.isEmpty())
 					{
 						rulesetsids.add(Integer.parseInt(ids.get(0)));
-						rulesets.add(game);
+						rulesets.add(game.name());
 						System.out.println(game.name() + " found");
 					}
 				}
@@ -116,7 +116,8 @@ public class ComputeReconsClosestConceptualDLPGames {
 		
 		for(int i = 0; i < rulesets.size(); i++)
 		{
-			System.out.println(rulesets.get(i).name() + " - Id:" + rulesetsids.get(i));
+			System.out.println(rulesets.get(i) + " - Id:" + rulesetsids.get(i));
 		}
+		
 	}
 }
