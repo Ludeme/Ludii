@@ -88,7 +88,7 @@ public class ComputeReconsClosestConceptualDLPGames {
 					for (int rs = 0; rs < rulesetsInGame.size(); rs++)
 					{
 						final Ruleset ruleset = rulesetsInGame.get(rs);
-						if (!ruleset.optionSettings().isEmpty()) // We check if the ruleset is implemented.
+						if (!ruleset.optionSettings().isEmpty() && !ruleset.heading().contains("Incomplete")) // We check if the ruleset is implemented and it is not one to recons.
 						{
 							final Game rulesetGame = GameLoader.loadGameFromName(gameName, ruleset.optionSettings());
 							final List<String> ids = rulesetGame.metadata().info().getId();
