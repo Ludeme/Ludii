@@ -28,7 +28,7 @@ public class CreateSneliusClusterTrialsScript
 		//final int allocatedMemoryJava = 4096;
 		final int thinkingTime = 1;
 		final String agentName = "Alpha-Beta"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
-		final String clusterLogin = "cbrowne";
+		final String clusterLogin = "soemers";
 		final String mainScriptName = "GenTrials.sh";
 		
 		final ArrayList<String> rulesetNames = new ArrayList<String>();
