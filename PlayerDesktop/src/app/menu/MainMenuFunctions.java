@@ -365,7 +365,7 @@ public class MainMenuFunctions extends JMenuBar
 					{
 						for (int rs = 0; rs < rulesets.size(); rs++)
 						{
-							if (!rulesets.get(rs).optionSettings().isEmpty())
+							if (!rulesets.get(rs).optionSettings().isEmpty() && !rulesets.get(rs).heading().contains("incomplete"))
 							{
 								validChoices.add(s);
 								gameOptions.add(rulesets.get(rs).optionSettings());
