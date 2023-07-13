@@ -19,6 +19,8 @@ import metadata.ai.misc.Pair;
 import other.action.Action;
 import other.action.ActionType;
 import other.action.move.remove.ActionRemove;
+import other.action.move.remove.ActionRemoveLevel;
+import other.action.move.remove.ActionRemoveNonApplied;
 import other.action.move.remove.ActionRemoveTopPiece;
 import other.concept.Concept;
 import other.context.Context;
@@ -162,6 +164,28 @@ public class UnthreatenedMaterial extends HeuristicTerm
 								final int removeSite = removeAction.to();
 								final int contID = removeSite >= context.containerId().length ? -1 : context.containerId()[removeSite];
 								
+								if (contID == 0)
+								{
+									threatenedSites.add(removeSite);
+								}
+							}
+							else if (action instanceof ActionRemoveLevel)
+							{
+								final ActionRemoveLevel removeAction = (ActionRemoveLevel) action;
+								final int removeSite = removeAction.to();
+								final int contID = removeSite >= context.containerId().length ? -1 : context.containerId()[removeSite];
+
+								if (contID == 0)
+								{
+									threatenedSites.add(removeSite);
+								}
+							}
+							else if (action instanceof ActionRemoveNonApplied)
+							{
+								final ActionRemoveNonApplied removeAction = (ActionRemoveNonApplied) action;
+								final int removeSite = removeAction.to();
+								final int contID = removeSite >= context.containerId().length ? -1 : context.containerId()[removeSite];
+
 								if (contID == 0)
 								{
 									threatenedSites.add(removeSite);
