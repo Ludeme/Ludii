@@ -183,11 +183,12 @@ public class ComputeReconsClosestConceptualDLPGames {
 				final int id = i;
 				for(int j = 0; j < rulesetsdIds.size(); j++)
 					if(rulesetsdIds.get(j) == id)
+					{
 						gameConcepts.set(conceptIds.get(j), conceptValues.get(j));
-				
+					}
 			}
 			conceptsPerGame.add(gameConcepts);
-			System.out.println(gameConcepts);
+			//System.out.println(gameConcepts);
 		}
 		System.out.println("*******Done*******");
 	}
