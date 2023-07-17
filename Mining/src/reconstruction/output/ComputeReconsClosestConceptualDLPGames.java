@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 import game.Game;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.list.array.TIntArrayList;
+import main.Constants;
 import main.FileHandling;
 import main.UnixPrintWriter;
 import main.options.Ruleset;
@@ -34,6 +35,9 @@ public class ComputeReconsClosestConceptualDLPGames {
 	
 	// The precision of the double to use.
 	final static int DOUBLE_PRECISION = 5;
+
+	// Double value used to represented null value concepts.
+	final static double NULL_VALUE_CONCEPT = -999;
 	
 	//-------------------------------------------------------------------------
 	
@@ -168,15 +172,14 @@ public class ComputeReconsClosestConceptualDLPGames {
 		System.out.println("*******Done*******");
 
 		// Gets the concepts for each game in a list.
-		List<TDoubleArrayList> conceptsPerGame = new ArrayList<TDoubleArrayList>();
-		
 		System.out.println("*******Get all concepts values for each id. *******");
+		List<TDoubleArrayList> conceptsPerGame = new ArrayList<TDoubleArrayList>();
 		for(int i = 0; i < rulesets.size(); i++)
 		{
 			final String gameName = rulesets.get(i);
 			TDoubleArrayList gameConcepts = new TDoubleArrayList();
 			for(int j = 0; j < Concept.values().length+1; j++)
-				gameConcepts.add(-1);
+				gameConcepts.add(NULL_VALUE_CONCEPT); // -999 just to replace the null values.
 			
 			if(!gameName.isEmpty())
 			{
@@ -188,8 +191,87 @@ public class ComputeReconsClosestConceptualDLPGames {
 					}
 			}
 			conceptsPerGame.add(gameConcepts);
-			//System.out.println(gameConcepts);
 		}
 		System.out.println("*******Done*******");
+		
+		// Compute the 10 closest rulesets for each reconstruction.
+		System.out.println("*******Get all 10 closest rulesets for each reconstruction. *******");
+		for(int i = 0; i < rulesets.size(); i++)
+		{
+			final String rulesetName = rulesets.get(i);
+			if(rulesetName.contains("Reconstructed"))
+			{
+				final TDoubleArrayList gameConceptsReconstructed = conceptsPerGame.get(i);
+				final TIntArrayList top10Distance = new TIntArrayList();
+				final List<List<String>> top10Closest = new ArrayList<List<String>>();
+				for(int j = 0; j < 10; j++)
+				{
+					top10Distance.add(Constants.INFINITY * -1);
+					top10Closest.add(new ArrayList<String>());
+				}
+				
+				// Check all other rulesets...
+				for(int j = 0; j < rulesets.size(); j++)
+				{
+					// ... which are not reconstructed.
+					if(!rulesets.get(j).contains("Reconstructed"))
+					{
+						final TDoubleArrayList gameConceptsNotReconstructed = conceptsPerGame.get(j);
+						int distance = 0;
+						for(int k = 0; k < gameConceptsReconstructed.size(); k++)
+						{
+							final double conceptValueReconstructed = gameConceptsReconstructed.get(k);
+							final double conceptValueNotReconstructed = gameConceptsNotReconstructed.get(k);
+							if(conceptValueReconstructed != NULL_VALUE_CONCEPT && conceptValueNotReconstructed != NULL_VALUE_CONCEPT)
+							{
+								if(conceptValueReconstructed == conceptValueNotReconstructed)
+									distance++;
+								else
+									distance--;
+							}
+						}
+						// get minimum distance
+						int min = top10Distance.get(0);
+						int indexMin = 0;
+						for(int k = 1; k < top10Distance.size(); k++)
+						{
+							if(min > top10Distance.get(k))
+							{
+								min = top10Distance.get(k);
+								indexMin = k;
+							}
+						}
+						// Check if the min is lower than new distance
+						if(distance > top10Distance.get(indexMin))
+						{
+							top10Distance.set(indexMin, distance);
+							top10Closest.get(indexMin).clear();
+							top10Closest.get(indexMin).add(rulesets.get(j));
+						}
+						else // Check if the value is not equal to another distance.
+						{
+							for(int k = 0; k < top10Distance.size(); k++)
+							{
+								if(distance == top10Distance.get(k))
+								{
+									top10Closest.get(k).add(rulesets.get(j));
+									break;
+								}
+							}
+						}
+					}
+				}
+				
+				System.out.println("***For " + rulesetName + " ***");
+				System.out.println("10 closest rulesets are: ");
+				for(int j = 0; j < top10Closest.size(); j++)
+					System.out.println("Distance = " + top10Distance.get(j) + " RULESET = " + top10Closest.get(j));
+				System.out.println();
+			}
+				
+		}
+
+		System.out.println("*******Done*******");
+		
 	}
 }
