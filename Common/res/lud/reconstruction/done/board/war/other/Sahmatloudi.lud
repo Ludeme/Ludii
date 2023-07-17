@@ -1437,11 +1437,147 @@
     (info
         {
         (description "Sahmatloudi is a game played one a 9x9 board by the Skolt Sámi people of Suenjel village.")
-        (rules "9x9 board. ")
-        (source "DLP Evidence.")
-        (id "1482")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "9x9 board. "))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP Evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1482"))
+        (useFor "Ruleset/Sahmatloudi (Ludii 1) (Reconstructed)" (rules "The game Sahmatloudi is played by two players on a 9x9 rectangle board with square tiling.
+                Regions:
+                OrthogonalSitesCentre: the difference between the centre point of the board expanded by 1 steps and site the centre point of the board for Neutral 
+                Player one plays with Thralls. Player two plays with Thralls and Jarls.
+                Rules for Pieces:
+                Jarls slide from the location of the piece in the orthogonal direction through between is not equal to the centre point of the board and empty then for all flanked pieces on Cells starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is Piece at between is equal to Thrall1 if the friend is is a friend or to is equal to the centre point of the boardremove pieces at between.
+                Thralls slide from the location of the piece in the orthogonal direction through between is not equal to the centre point of the board and empty then for all flanked pieces on Cells starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is Piece at between is equal to Thrall1 if the friend is is a friend or to is equal to the centre point of the boardremove pieces at between.
+                Players take turns moving.
+                Setup:
+                Place a Thrall for player one on sites: D1, E1, F1, E2, A4, A5, A6, B5, I4, I5, I6, H5, E8, D9, E9, F9 and E8.
+                Place a Thrall for player two on sites: E3, E4, E6, E7, C5, D5, F5 and G5..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If Jarl2 is in the outer sites of the board, player two wins If 2 is Surrounded, player one wins.
+                
+        "))
+        (useFor "Ruleset/Sahmatloudi (Ludii 1) (Reconstructed)" (id "4098"))
+        (useFor "Ruleset/Sahmatloudi (Ludii 2) (Reconstructed)" (rules "The game Sahmatloudi is played by two players on a 9x9 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step orthogonal then for all flanked pieces on Cells starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else from cell in Player the moving player's hand site 0 to cell in the set of empty cells moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+                Aim: 
+                If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Sahmatloudi (Ludii 2) (Reconstructed)" (id "4099"))
+        (useFor "Ruleset/Sahmatloudi (Ludii 3) (Reconstructed)" (rules "The game Sahmatloudi is played by two players on a 9x9 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step orthogonal then for all flanked pieces on Cells starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from cell in Player the moving player's hand site 0 to cell in the set of empty cells moveRule: true then if a player places 3 of their pieces in an north direction line, a player places 3 of their pieces in an south direction line, a player places 3 of their pieces in an east direction line or a player places 3 of their pieces in an west direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else if the number of pieces owned by Player the moving player is greater than 4, move one of your pieces, else from cell in sites occupied by any component owned by Mover to cell in the set of empty cells moveRule: true.
+                Aim: 
+                If the number of pieces owned by Player the next player is less than or equal to 2, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Sahmatloudi (Ludii 3) (Reconstructed)" (id "4100"))
+        (useFor "Ruleset/Sahmatloudi (Ludii 4) (Reconstructed)" (rules "The game Sahmatloudi is played by two players on a 9x9 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step orthogonal then for all flanked pieces on Cells starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else from cell in Player the moving player's hand site 0 to cell in the set of empty cells moveRule: true then if a player places 3 of their pieces in an orthogonal direction line, move again if in the same turn, remove pieces at sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Sahmatloudi (Ludii 4) (Reconstructed)" (id "4101"))
+        (useFor "Ruleset/Sahmatloudi (Ludii 5) (Reconstructed)" (rules "The game Sahmatloudi is played by two players on a 9x9 rectangle board with square tiling. 
+                All players play with Knights.
+                Rules for Pieces:
+                Knights leap a piece to not is a friend.
+                Players take turns moving.
+                Setup:
+                Place a Knight for player one at the bottom sites of the board.
+                Place a Knight for player two at the top sites of the board..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the moving player wins If the to location of the last move is in the centre sites of the board, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Sahmatloudi (Ludii 5) (Reconstructed)" (id "4102"))
+        (useFor "Ruleset/Sahmatloudi (Ludii 6) (Reconstructed)" (rules "The game Sahmatloudi is played by two players on a 9x9 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step orthogonal then for all flanked pieces on Cells starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between.
+                Players take turns moving.
+                Rules: 
+                From cell in Player the moving player's hand site 0 to cell in the set of empty cells moveRule: true move one of your pieces.
+                Aim: 
+                If a player places 3 of their pieces in an adjacent direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Sahmatloudi (Ludii 6) (Reconstructed)" (id "4103"))
+        (useFor "Ruleset/Sahmatloudi (Ludii 7) (Reconstructed)" (rules "The game Sahmatloudi is played by two players on a 9x9 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step orthogonal then for all flanked pieces on Cells starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between.
+                Players take turns moving.
+                Rules: 
+                If in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else from cell in Player the moving player's hand site 0 to cell in the set of empty cells moveRule: true then if a player places 3 of their pieces in an adjacent direction line, move again if in the same turn, remove pieces at not a player places 3 of their pieces in an orthogonal direction line sites occupied by any component owned by Enemy in Board, else move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Sahmatloudi (Ludii 7) (Reconstructed)" (id "4104"))
+        (useFor "Ruleset/Sahmatloudi (Ludii 8) (Reconstructed)" (rules "The game Sahmatloudi is played by two players on a 9x9 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step orthogonal then for all flanked pieces on Cells starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the bottom sites of the board expanded by 1 steps.
+                Place a Marker for player two at the top sites of the board expanded by 1 steps..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If there are no pieces owned by Player the next player, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Sahmatloudi (Ludii 8) (Reconstructed)" (id "4105"))
+        (useFor "Ruleset/Sahmatloudi (Ludii 9) (Reconstructed)" (rules "The game Sahmatloudi is played by two players on a 9x9 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step orthogonal then for all flanked pieces on Cells starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between.
+                Players take turns moving.
+                Rules: 
+                From cell in Player the moving player's hand site 0 to cell in the set of empty cells moveRule: true.
+                Aim: 
+                If a player places 3 of their pieces in an adjacent direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Sahmatloudi (Ludii 9) (Reconstructed)" (id "4106"))
+        (useFor "Ruleset/Sahmatloudi (Ludii 10) (Reconstructed)" (rules "The game Sahmatloudi is played by two players on a 9x9 rectangle board with square tiling. 
+                All players play with Markers.
+                Rules for Pieces:
+                Markers step orthogonal then for all flanked pieces on Cells starting from the to location of the last move with Orthogonal direction with a limit of 1 pieces if the target is there is an enemy Player at between if the friend is is a friendremove pieces at between.
+                Players take turns moving.
+                Setup:
+                Place a Marker for player one at the top sites of the board.
+                Place a Marker for player two at the bottom sites of the board..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If the centre point of the board is in sites occupied by any component owned by Mover and a player places 3 of their pieces in an adjacent direction line, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Sahmatloudi (Ludii 10) (Reconstructed)" (id "4107"))
+        (source "Michaelsen 2001: 41.")
         (version "1.3.11")
-        (classification "board/war/reconstruction/pending")
+        (classification "board/war/reconstruction/done")
         (credit "Eric Piette")
         (origin "This game was played in Finland, from around 1800 to 1945.")
         }

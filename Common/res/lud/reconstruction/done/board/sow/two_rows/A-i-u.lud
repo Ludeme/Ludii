@@ -422,11 +422,56 @@
         {
         (description "A-i-ú is a mancala-style board game that was played in Brazil at least until the early twentieth century.")
         (aliases {"A-i-ú"})
-        (rules "Twelve holes.")
-        (source "DLP evidence.")
-        (id "1490")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Twelve holes."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1490"))
+        (useFor "Ruleset/A-i-u (Ludii 1) (Reconstructed)" (rules "The game A-i-u is played by two players on a 2 x 6 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in the union of the bottom sites of the board and the top sites of the board to 4.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: to is in RegionP1 or RegionP2 and the total number of vertex in to is equal to 2 or the total number of vertex in to is equal to 3, backtracking: true, captureEffect: from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: false.
+                Aim: 
+                If the next player cannot move.
+                
+        "))
+        (useFor "Ruleset/A-i-u (Ludii 1) (Reconstructed)" (id "4119"))
+        (useFor "Ruleset/A-i-u (Ludii 2) (Reconstructed)" (rules "The game A-i-u is played by two players on a 2 x 6 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 4.
+                Rules: 
+                Select Vertex in the difference between RegionP1 or RegionP2 and sites <game.functions.intArray.math.If> if 1 is less than the total number of vertex in to then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: true, captureRule: true, type: Vertex, includeSelf: true and if 1 is the mover, remember the value the from location of the last move, else remember the value the from location of the last move.
+                Aim: 
+                If all sites in track of board satisfy the condition the total number of vertex in current site is less than or equal to 1, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/A-i-u (Ludii 2) (Reconstructed)" (id "4120"))
+        (useFor "Ruleset/A-i-u (Ludii 3) (Reconstructed)" (rules "The game A-i-u is played by two players on a 2 x 6 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 4.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: to is in RegionP1 or RegionP2 and the total number of vertex in to is equal to 2 or the total number of vertex in to is equal to 3, backtracking: true, captureEffect: from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: false.
+                Aim: 
+                If all sites in track of board satisfy the condition the total number of vertex in current site is less than or equal to 1, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/A-i-u (Ludii 3) (Reconstructed)" (id "4121"))
         (version "1.3.11")
-        (classification "board/sow/two rows/reconstruction/pending")
+        (classification "board/sow/two rows/reconstruction/done")
         (credit "Eric Piette")
         (origin "This game was played in Brazil, from around 1851 to 1916.")
         }

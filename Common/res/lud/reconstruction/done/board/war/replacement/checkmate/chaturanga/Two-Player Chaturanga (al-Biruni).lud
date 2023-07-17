@@ -3511,11 +3511,325 @@
     (info
         {
         (description "This version of Chatuanga was described by al-Biruni, a Persian scholar who described Chaturanga in India during the tenth century CE.")
-        (rules " The Elephant moves forward one space or diagonally forward or backward. ")
-        (source "DLP evidence.")
-        (id "1441")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules " The Elephant moves forward one space or diagonally forward or backward. "))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1441"))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 1) (Reconstructed)" (rules "The game Two-Player Chaturanga (al-Biruni) is played by two players on a 8x8 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2 
+                All players play with KingnoCrosses, Rooks, Elephants, Knights, Pawns and Queens.
+                Rules for Pieces:
+                Elephants hop orthogonal.
+                KingnoCrosses remove pieces at to then step adjacent.
+                Knights leap a piece to not is a friend.
+                Pawns step forward or remove pieces at to then step forward-right or forward-left.
+                Queens remove pieces at to then step diagonal.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 1 row.
+                Place a Pawn for player two at each cell of the 6 row.
+                Place a Elephant for player one on sites: A1 and H1.
+                Place a Rook for player one on sites: B1 and G1.
+                Place a Knight for player one on sites: C1 and F1.
+                Place a Queen for player one on site D1.
+                Place a KingnoCross for player one on site E1.
+                Place a Elephant for player two on sites: A8 and H8.
+                Place a Rook for player two on sites: B8 and G8.
+                Place a Knight for player two on sites: C8 and F8.
+                Place a Queen for player two on site E8.
+                Place a KingnoCross for player two on site D8..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the number of pieces owned by Player the next player is equal to 1, the moving player loses.
+                
+        "))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 1) (Reconstructed)" (id "4076"))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 2) (Reconstructed)" (rules "The game Two-Player Chaturanga (al-Biruni) is played by two players on a 8x8 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2 
+                All players play with Pawns, Rooks, KingnoCrosses, Elephants, Knights and FerznoCrosses.
+                Rules for Pieces:
+                Elephants hop orthogonal.
+                FerznoCrosses remove pieces at to then step diagonal.
+                KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights leap a piece to not is a friend.
+                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, move again.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 1 row.
+                Place a Pawn for player two at each cell of the 6 row.
+                Place a Rook for player one on sites: A1 and H1.
+                Place a Knight for player one on sites: B1 and G1.
+                Place a Elephant for player one on sites: C1 and F1.
+                Place a FerznoCross for player one on site D1.
+                Place a KingnoCross for player one on site E1.
+                Place a Rook for player two on sites: A8 and H8.
+                Place a Knight for player two on sites: B8 and G8.
+                Place a Elephant for player two on sites: C8 and F8.
+                Place a FerznoCross for player two on site E8.
+                Place a KingnoCross for player two on site D8..
+                Rules: 
+                If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into FerznoCross, else move one of your pieces.
+                Aim: 
+                If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the moving player cannot move, the moving player wins If the number of pieces owned by Player the next player is less than or equal to 1, the next player loses.
+                
+        "))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 2) (Reconstructed)" (id "4077"))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 3) (Reconstructed)" (rules "The game Two-Player Chaturanga (al-Biruni) is played by two players on a 8x8 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2 
+                All players play with Pawns, Rooks, KingnoCrosses, BishopnoCrosses, Knights and FerznoCrosses.
+                Rules for Pieces:
+                BishopnoCrosses hop diagonal.
+                FerznoCrosses remove pieces at to then step diagonal.
+                KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights leap a piece to not is a friend.
+                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, move again.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at each cell of the 1 row.
+                Place a Pawn for player two at each cell of the 6 row.
+                Place a Rook for player one on sites: A1 and H1.
+                Place a Knight for player one on sites: B1 and G1.
+                Place a BishopnoCross for player one on sites: C1 and F1.
+                Place a FerznoCross for player one on site D1.
+                Place a KingnoCross for player one on site E1.
+                Place a Rook for player two on sites: A8 and H8.
+                Place a Knight for player two on sites: B8 and G8.
+                Place a BishopnoCross for player two on sites: C8 and F8.
+                Place a FerznoCross for player two on site D8.
+                Place a KingnoCross for player two on site E8..
+                Rules: 
+                If in the same turn, a piece of the moving player the to location of the last move, this piece can promote into FerznoCross, else move one of your pieces.
+                Aim: 
+                If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the number of pieces owned by Player the next player is equal to 1, the moving player wins If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 3) (Reconstructed)" (id "4078"))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 4) (Reconstructed)" (rules "The game Two-Player Chaturanga (al-Biruni) is played by two players on a noshape board with nobasis tiling. 
+                All players play with Pawns, Rooks, Knights, Elephants, Queens and KingnoCrosses.
+                Rules for Pieces:
+                Elephants from cell in the location of the piece to cell in the number of sites within 1 spaces of the number of sites within 1 spaces of the location of the piece includeOrigin: false includeOrigin: false moveRule: not is a friend and 2 is less than the number of Orthogonal step moves from Cell the location of the piece to to captureRule: there is an enemy Player at to captureEffect: remove pieces at to.
+                KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights if not is a friend and 3 is equal to the number of Orthogonal step moves from Cell the location of the piece to to, from cell in the location of the piece to cell to moveRule: true captureRule: there is an enemy Player at to captureEffect: remove pieces at to, for all sites that can be reached from cell to in the direction diagonal, for all sites that can be reached from cell the location of the piece in the direction orthogonal.
+                Pawns step if State at the location of the piece is equal to 0 then cw else ccw or from cell in the location of the piece to cell in the number of sites within 1 spaces of the to sites of step if State at the location of the piece is equal to 0 then cw else ccw includeOrigin: false moveRule: cell the location of the piece is Diagonal to any site in to and there is an enemy Player at to if State at the to location of the last move is equal to 0, if Piece at  the Cell 1 steps ahead of the to location of the last move in the direction cw is equal to Pawn of the next player, remove pieces at the to location of the last move and remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction cw, else if Piece at  the Cell 1 steps ahead of the to location of the last move in the direction ccw is equal to Pawn of the next player, remove pieces at the to location of the last move and remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction ccw.
+                Queens remove pieces at to then step diagonal.
+                Rooks slide from the location of the piece in the rotational direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Rook for player one at sites [52,53].
+                Place a Rook for player two at sites [61,60].
+                Place a Knight for player one at sites [36,37].
+                Place a Knight for player two at sites [44,45].
+                Place a Elephant for player one at sites [20,21].
+                Place a Elephant for player two at sites [28,29].
+                Place a Pawn for player one at sites [3,19,35,51].
+                Place a Pawn for player one at sites [54,38,22,6].
+                Place a Pawn for player two at sites [11,27,43,59].
+                Place a Pawn for player two at sites [14,30,46,62]..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 4) (Reconstructed)" (id "4079"))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 5) (Reconstructed)" (rules "The game Two-Player Chaturanga (al-Biruni) is played by two players on a noshape board. 
+                All players play with Pawns, Rooks, Knights, Elephants, Queens and KingnoCrosses.
+                Rules for Pieces:
+                Elephants from cell in the location of the piece to cell in the number of sites within 1 spaces of the number of sites within 1 spaces of the location of the piece includeOrigin: false includeOrigin: false moveRule: not is a friend and 2 is less than the number of Orthogonal step moves from Cell the location of the piece to to captureRule: there is an enemy Player at to captureEffect: remove pieces at to.
+                KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights if not is a friend and 3 is equal to the number of Orthogonal step moves from Cell the location of the piece to to, from cell in the location of the piece to cell to moveRule: true captureRule: there is an enemy Player at to captureEffect: remove pieces at to, for all sites that can be reached from cell to in the direction diagonal, for all sites that can be reached from cell the location of the piece in the direction orthogonal.
+                Pawns step if State at the location of the piece is equal to 0 then cw else ccw or from cell in the location of the piece to cell in the number of sites within 1 spaces of the to sites of step if State at the location of the piece is equal to 0 then cw else ccw includeOrigin: false moveRule: cell the location of the piece is Diagonal to any site in to and there is an enemy Player at to if State at the to location of the last move is equal to 0, if Piece at  the Cell 1 steps ahead of the to location of the last move in the direction cw is equal to Pawn of the next player, remove pieces at the to location of the last move and remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction cw, else if Piece at  the Cell 1 steps ahead of the to location of the last move in the direction ccw is equal to Pawn of the next player, remove pieces at the to location of the last move and remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction ccw.
+                Queens remove pieces at to then step diagonal.
+                Rooks slide from the location of the piece in the rotational direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Rook for player one at sites [52,53].
+                Place a Rook for player two at sites [61,60].
+                Place a Knight for player one at sites [36,37].
+                Place a Knight for player two at sites [44,45].
+                Place a Elephant for player one at sites [20,21].
+                Place a Elephant for player two at sites [28,29].
+                Place a Pawn for player one at sites [3,19,35,51].
+                Place a Pawn for player one at sites [54,38,22,6].
+                Place a Pawn for player two at sites [11,27,43,59].
+                Place a Pawn for player two at sites [14,30,46,62]..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 5) (Reconstructed)" (id "4080"))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 6) (Reconstructed)" (rules "The game Two-Player Chaturanga (al-Biruni) is played by two players on a noshape board with nobasis tiling. 
+                All players play with Pawns, Rooks, Knights, Elephants, Queens and KingnoCrosses.
+                Rules for Pieces:
+                Elephants from cell in the location of the piece to cell in the number of sites within 1 spaces of the number of sites within 1 spaces of the location of the piece includeOrigin: false includeOrigin: false moveRule: not is a friend and 2 is less than the number of Orthogonal step moves from Cell the location of the piece to to captureRule: there is an enemy Player at to captureEffect: remove pieces at to.
+                KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights if not is a friend and 3 is equal to the number of Orthogonal step moves from Cell the location of the piece to to, from cell in the location of the piece to cell to moveRule: true captureRule: there is an enemy Player at to captureEffect: remove pieces at to, for all sites that can be reached from cell to in the direction diagonal, for all sites that can be reached from cell the location of the piece in the direction orthogonal.
+                Pawns step if State at the location of the piece is equal to 0 then cw else ccw or from cell in the location of the piece to cell in the number of sites within 1 spaces of the to sites of step if State at the location of the piece is equal to 0 then cw else ccw includeOrigin: false moveRule: cell the location of the piece is Diagonal to any site in to and there is an enemy Player at to if State at the to location of the last move is equal to 0, if Piece at  the Cell 1 steps ahead of the to location of the last move in the direction cw is equal to Pawn of the next player, remove pieces at the to location of the last move and remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction cw, else if Piece at  the Cell 1 steps ahead of the to location of the last move in the direction ccw is equal to Pawn of the next player, remove pieces at the to location of the last move and remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction ccw.
+                Queens remove pieces at to then step diagonal.
+                Rooks slide from the location of the piece in the rotational direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Rook for player one at sites [4,5].
+                Place a Rook for player two at sites [13,12].
+                Place a Knight for player one at sites [20,21].
+                Place a Knight for player two at sites [29,28].
+                Place a Elephant for player one at sites [36,37].
+                Place a Elephant for player two at sites [45,44].
+                Place a Pawn for player one at sites [3,19,35,51].
+                Place a Pawn for player one at sites [54,38,22,6].
+                Place a Pawn for player two at sites [11,27,43,59].
+                Place a Pawn for player two at sites [14,30,46,62]..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If KingnoCross of the moving player is in is in sites [64,65,66,67], it's a draw.
+                
+        "))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 6) (Reconstructed)" (id "4081"))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 7) (Reconstructed)" (rules "The game Two-Player Chaturanga (al-Biruni) is played by two players on a noshape board. 
+                All players play with Pawns, Rooks, Knights, Elephants, Queens and KingnoCrosses.
+                Rules for Pieces:
+                Elephants from cell in the location of the piece to cell in the number of sites within 1 spaces of the number of sites within 1 spaces of the location of the piece includeOrigin: false includeOrigin: false moveRule: not is a friend and 2 is less than the number of Orthogonal step moves from Cell the location of the piece to to captureRule: there is an enemy Player at to captureEffect: remove pieces at to.
+                KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights if not is a friend and 3 is equal to the number of Orthogonal step moves from Cell the location of the piece to to, from cell in the location of the piece to cell to moveRule: true captureRule: there is an enemy Player at to captureEffect: remove pieces at to, for all sites that can be reached from cell to in the direction diagonal, for all sites that can be reached from cell the location of the piece in the direction orthogonal.
+                Pawns step if State at the location of the piece is equal to 0 then cw else ccw or from cell in the location of the piece to cell in the number of sites within 1 spaces of the to sites of step if State at the location of the piece is equal to 0 then cw else ccw includeOrigin: false moveRule: cell the location of the piece is Diagonal to any site in to and there is an enemy Player at to if State at the to location of the last move is equal to 0, if Piece at  the Cell 1 steps ahead of the to location of the last move in the direction cw is equal to Pawn of the next player, remove pieces at the to location of the last move and remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction cw, else if Piece at  the Cell 1 steps ahead of the to location of the last move in the direction ccw is equal to Pawn of the next player, remove pieces at the to location of the last move and remove pieces at  the Cell 1 steps ahead of the to location of the last move in the direction ccw.
+                Queens remove pieces at to then step diagonal.
+                Rooks slide from the location of the piece in the rotational direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Rook for player one at sites [4,5].
+                Place a Rook for player two at sites [13,12].
+                Place a Knight for player one at sites [20,21].
+                Place a Knight for player two at sites [29,28].
+                Place a Elephant for player one at sites [36,37].
+                Place a Elephant for player two at sites [45,44].
+                Place a Pawn for player one at sites [3,19,35,51].
+                Place a Pawn for player one at sites [54,38,22,6].
+                Place a Pawn for player two at sites [11,27,43,59].
+                Place a Pawn for player two at sites [14,30,46,62]..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If KingnoCross of the moving player is in is in sites [64,65,66,67], it's a draw.
+                
+        "))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 7) (Reconstructed)" (id "4082"))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 8) (Reconstructed)" (rules "The game Two-Player Chaturanga (al-Biruni) is played by two players on a 16x4 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2 
+                All players play with KingnoCrosses, Queens, Elephants, Knights, Rooks and Pawns. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Elephants hop diagonal.
+                KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights leap a piece to not is a friend.
+                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of the moving player the to location of the last move, this piece can promote into Queen.
+                Queens remove pieces at to then step diagonal.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Rook for player one at sites [4,5].
+                Place a Rook for player two at sites [13,12].
+                Place a Knight for player one at sites [20,21].
+                Place a Knight for player two at sites [29,28].
+                Place a Elephant for player one at sites [36,37].
+                Place a Elephant for player two at sites [45,44].
+                Place a Pawn for player one at sites [3,19,35,51].
+                Place a Pawn for player one at sites [54,38,22,6].
+                Place a Pawn for player two at sites [11,27,43,59].
+                Place a Pawn for player two at sites [14,30,46,62]..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If KingnoCross of the moving player is in is in sites [64,65,66,67], it's a draw.
+                
+        "))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 8) (Reconstructed)" (id "4083"))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 9) (Reconstructed)" (rules "The game Two-Player Chaturanga (al-Biruni) is played by two players on a 10x9 rectangle board with square tiling.
+                Regions:
+                PalaceP1: contains the sites [3, 4, 5, 12, 13, 14, 21, 22, 23]
+                PalaceP2: contains the sites [66, 67, 68, 75, 76, 77, 84, 85, 86]
+                Home: the bottom sites of the board expanded by 4 steps for P1
+                Home: the top sites of the board expanded by 4 steps for P2 
+                All players play with Jiangs, Shis, Xiangs, Mas, Jus, Paos and Zus.
+                Rules for Pieces:
+                Jiangs remove pieces at to then step orthogonal.
+                Jus slide from the location of the piece in the orthogonal direction through [between] is in the set of empty vertexs.
+                Mas if not is a friend, from vertex in the location of the piece to vertex to moveRule: true captureRule: there is an enemy Player at to captureEffect: remove pieces at to, for all sites that can be reached from vertex to in the direction forward-right or forward-left, for all sites that can be reached from vertex the location of the piece in the direction orthogonal.
+                Paos slide from the location of the piece in the orthogonal direction through [between] is in the set of empty vertexs or hop orthogonal.
+                Shis remove pieces at to then step diagonal.
+                Xiangs slide from the location of the piece in the diagonal direction through between is in Home or Home and empty.
+                Zus remove pieces at to then step if the location of the piece is in Home or Home then forward else forward, rightward or leftward.
+                Players take turns moving.
+                Setup:
+                Place a Jiang for player one on site E1.
+                Place a Shi for player one on sites: D1 and F1.
+                Place a Xiang for player one on sites: C1 and G1.
+                Place a Ma for player one on sites: B1 and H1.
+                Place a Ju for player one on sites: A1 and I1.
+                Place a Pao for player one on sites: B3 and H3.
+                Place a Zu for player one on sites: A4, C4, E4, G4 and I4.
+                Place a Jiang for player two on site E10.
+                Place a Shi for player two on sites: D10 and F10.
+                Place a Xiang for player two on sites: C10 and G10.
+                Place a Ma for player two on sites: B10 and H10.
+                Place a Ju for player two on sites: A10 and I10.
+                Place a Pao for player two on sites: B8 and H8.
+                Place a Zu for player two on sites: A7, C7, E7, G7 and I7..
+                Rules: 
+                Move one of your pieces.
+                Aim: 
+                If Jiang of the next player is threatened and not can move move one of your pieces, the moving player wins If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 9) (Reconstructed)" (id "4084"))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 10) (Reconstructed)" (rules "The game Two-Player Chaturanga (al-Biruni) is played by two players on a 16x4 rectangle board with square tiling.
+                Regions:
+                Promotion: the top sites of the board for P1
+                Promotion: the bottom sites of the board for P2 
+                All players play with KingnoCrosses, Queens, Elephants, Knights, Rooks and Pawns. The following pieces are shared by all players: Dies with 6 faces valued [1, 2, 3, 4, 5, 6].
+                Rules for Pieces:
+                Elephants hop diagonal.
+                KingnoCrosses if there is an enemy Player at to, remove pieces at to then step adjacent.
+                Knights leap a piece to not is a friend.
+                Pawns step forward or remove pieces at to then step forward-right or forward-left if the to location of the last move is in Promotion or Promotion, a piece of the moving player the to location of the last move, this piece can promote into Queen.
+                Queens remove pieces at to then step diagonal.
+                Rooks slide from the location of the piece in the orthogonal direction through [between] is in the set of empty cells.
+                Players take turns moving.
+                Setup:
+                Place a Pawn for player one at the union of each cell of the 4 row and each cell of the 5 row.
+                Place a Pawn for player two at the union of each cell of the 10 row and each cell of the 11 row.
+                Place a Elephant for player one at the cells with coordinates [A1, D1].
+                Place a Knight for player one at the cells with coordinates [B2, C2].
+                Place a Rook for player one at the cells with coordinates [A2, D2].
+                Place a KingnoCross for player one on site B1.
+                Place a Queen for player one on site C1.
+                Place a Elephant for player two at the cells with coordinates [A16, D16].
+                Place a Knight for player two at the cells with coordinates [B15, C15].
+                Place a Rook for player two at the cells with coordinates [A15, D15].
+                Place a KingnoCross for player two on site C16.
+                Place a Queen for player two on site B16..
+                Rules: 
+                Roll the dice and afterwards if KingnoCross of the next player is threatened, pass then trigger NextCanNotEscape for Player the next mover, else if the number of pips owned by Player Shared is equal to 6, move one of your pieces, else if the number of pips owned by Player Shared is equal to 5, move one of your pieces, else if the number of pips owned by Player Shared is equal to 4, move one of your pieces, else if the number of pips owned by Player Shared is equal to 3, move one of your pieces, else if the number of pips owned by Player Shared is equal to 2, move one of your pieces, else move one of your pieces.
+                Aim: 
+                If KingnoCross of the next player is threatened and not can move move one of your pieces, the moving player wins If the next player is CanNotEscape, the moving player wins If not can move move one of your pieces, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Two-Player Chaturanga (al-Biruni) (Ludii 10) (Reconstructed)" (id "4085"))
+        (source "Murray 1913: 57-58.")
         (version "1.3.11")
-        (classification "board/war/reconstruction/pending")
+        (classification "board/war/replacement/checkmate/chaturanga/reconstruction/done")
         (credit "Eric Piette")
         (origin "This game was played in Pakistan, from around 973 to 1043.")
         }

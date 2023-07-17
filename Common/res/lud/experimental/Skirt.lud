@@ -224,6 +224,32 @@
 (metadata
     (info
         {
+        (description "Skirt was part of a series of games created while travelling, that sought to simplify some of my earlier games to their barest essentials. It originally featured moving and then placement near the opponent.
+            
+            Afterwards the restrictions were completely revised, in part to match the name: pieces were confined to skirting moves around other pieces.
+            
+            In order to make the game more interesting by enabling earlier territory creation, the explicit concept of territory was added and then skirting was disallowed onto opponent's territory, and placement restricted to locations next to pieces in friendly territory.
+            
+        The script has now been updated to calculate permanent territory and end the game promptly, instead of playing it out until there are no moves left.")
+        (rules "Goal: Last to place a piece.
+            This goal is automatically achieved when a player creates a territory that is larger than the empty locations outside of that territory.
+            
+            Definitions:
+            -- A player's 'Placement Zone' consists of every empty cell directly adjacent to more of a player's own pieces than opponent's pieces.
+            
+            -- A 'Skirting Move' is a series of steps in which, for each step, the stepping piece remains adjacent to at least one of the pieces it was just adjacent to. None of these steps may enter the enemy's placement zone as determined at the time the individual step is made.
+            
+            -- A player's 'Territory' is every empty location that is connected to that player's own placement zone, but is not connected to such locations outside of the friendly placement zone as are next to an opponent's piece. 
+            By 'connected' is meant that there are a series of adjacent empty locations between the two locations.
+            
+            ... In other words, territory consists of locations permanently sealed off from the opponent's play even if the friendly player only makes placements.
+            
+            Play:
+            The White player places two adjacent pieces on the board: white, then black.
+            
+            The other player either switches their locations or takes the first regular turn. Turns alternate.
+            
+        A turn consists of an optional 'skirting move' followed by a mandatory placement onto one's own placement zone.")
         (id "3962")
         (version "1.3.11")
         (classification "experimental")

@@ -921,6 +921,32 @@
     
     (info
         {
+        (description "In this game each player can see their own pieces, but not those of their opponent. For this reason, it is necessary to have a third person (or computer) act as an umpire, with full information about the progress of the game. Players attempt to move on their turns, and the umpire declares their attempts 'legal' or 'illegal'. If the move is illegal, the player tries again; if it is legal, that move stands. Each player is given information about checks and captures. Since the position of the opponent's pieces is unknown, Kriegspiel is a game of imperfect information.
+        ")
+        (aliases {"Blind Chess" "Wild 16"})
+        (rules "The game is played with three boards, one for each player; the third is for the umpire (and spectators). Each opponent knows the exact position of just their own pieces, and does not know where the opponent's pieces are (but can keep track of how many there are). Only the umpire knows the position of the game. The game proceeds in the following way:
+            The umpire announces:
+            -'White's [or Black's] turn'.
+            -'Pawn at (square) captured', when a pawn is captured. The square of the capture is announced, e.g. Pawn gone on d4, or Pawn captured on d4. (En passant captures are specifically announced as such.)
+            -'Piece at (square) captured', when a piece is captured. The square of the capture is announced.
+            -'Illegal move' when the attempted move is illegal, given the opponent's position. For example: moving the king into check; moving a queen, rook, bishop, or pawn through squares occupied by the opponent's pieces; advancing a pawn into a square occupied by the opponent's pieces; moving a piece under an absolute pin.
+            -'Rank check'.
+            -'File check'.
+            -'Long-diagonal check' (the longer of the two diagonals, from the king's point of view).
+            -'Short-diagonal check'.
+            -'Knight check'.
+            -'(number)  tries' (number of legal capturing moves using pawns).
+            -'Checkmate', 'stalemate', 'draw by repetition', 'draw by insufficient force', '50-move draw'.
+            Pawn promotions are not announced. The precise location of the checking piece is not announced (although it may be deduced).
+        Illegal move attempts are not announced to the opponent.")
+        (id "4185")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Kriegspiel_(chess)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.3.11")
+        (classification "board/war/replacement/checkmate/chess")
+        (author "Henry Michael Temple")
+        (credit "Nikola Novarlic
+        ")
+        (date "1899")
         }
     )
     
