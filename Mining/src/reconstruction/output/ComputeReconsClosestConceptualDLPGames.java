@@ -29,7 +29,7 @@ import other.concept.Concept;
 public class ComputeReconsClosestConceptualDLPGames {
 
 	// Load ruleset avg common true concepts from specific directory.
-	final static String conceptsFilePath = "./res/recons/input/RulesetConcepts.csv";
+	final static String conceptsFilePath = "./res/recons/input/RulesetConceptsUCT.csv";
 	
 	// The rulesets reconstructed.
 	final static String pathReconstructed    = "./res/recons/output/";
