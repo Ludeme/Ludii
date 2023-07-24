@@ -48,6 +48,9 @@ public final class Custodial extends Effect
 	
 	/** Direction chosen. */
 	private final AbsoluteDirection dirnChoice;
+
+	/** Mininum to flank. */
+	private final IntFunction minimum;
 	
 	/** Limit to flank. */
 	private final IntFunction limit;
@@ -93,6 +96,8 @@ public final class Custodial extends Effect
 		startLocationFn = (from == null) ? new LastTo(null) : from.loc();
 		type = (from == null) ? null : from.type();
 		
+		minimum = (between == null || between.range() == null) ? new IntConstant(0)
+				: between.range().minFn();
 		limit = (between == null || between.range() == null) ? new IntConstant(Constants.MAX_DISTANCE)
 				: between.range().maxFn();
 		this.dirnChoice = (dirnChoice == null) ? AbsoluteDirection.Adjacent : dirnChoice;
@@ -130,12 +135,13 @@ public final class Custodial extends Effect
 
 		final List<Radial> radialList = graph.trajectories().radials(type, fromV.index(), dirnChoice);
 
+		final int minPathLength = minimum.eval(context);
 		final int maxPathLength = limit.eval(context);
 
-		if (maxPathLength == 1)
+		if (maxPathLength == 1 && minPathLength < 2)
 			shortSandwich(context, moves, fromV, radialList);
-		else
-			longSandwich(context, moves, fromV, radialList, maxPathLength);
+		else if (maxPathLength > 1 && minPathLength <= maxPathLength)
+			longSandwich(context, moves, fromV, radialList, minPathLength, maxPathLength);
 
 		if (then() != null)
 			for (int j = 0; j < moves.moves().size(); j++)
@@ -209,6 +215,7 @@ public final class Custodial extends Effect
 	 * @param moves
 	 * @param fromV
 	 * @param directionIndices
+	 * @param minPathLength
 	 * @param maxPathLength
 	 */
 	private void longSandwich
@@ -217,6 +224,7 @@ public final class Custodial extends Effect
 		final Moves moves,
 		final TopologyElement fromV,
 		final List<Radial> radials,
+		final int minPathLength,
 		final int maxPathLength
 	)
 	{
@@ -233,7 +241,7 @@ public final class Custodial extends Effect
 				posIdx++;
 			}
 
-			if (!foundEnemy)
+			if (!foundEnemy || minPathLength >= posIdx)
 				continue;
 
 			final int friendPos = posIdx < radial.steps().length ? radial.steps()[posIdx].id() : Constants.OFF;
