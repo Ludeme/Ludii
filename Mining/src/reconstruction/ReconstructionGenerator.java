@@ -46,7 +46,7 @@ public class ReconstructionGenerator
 	
 	final static double  defaultConceptualWeight = 0.5;
 	final static double  defaultHistoricalWeight = 0.5;
-	final static double  defaultGeographicalWeight = 0.5;
+	final static double  defaultGeographicalWeight = 0.0; // Always put it to 0 in current experimentation, because this parameter is used only through the geo threshold.
 	final static double  defaultThreshold = 0.99;
 	final static boolean geographicalOrder = true;
 	

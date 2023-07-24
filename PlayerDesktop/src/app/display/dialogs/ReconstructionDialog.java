@@ -107,11 +107,11 @@ public class ReconstructionDialog extends JDialog
 			lblConceptScore.setBounds(12, 199, 149, 38);
 			contentPanel.add(lblConceptScore);
 		}
-		{
-			final JLabel lblGeographical = new JLabel("Geographical Weight");
-			lblGeographical.setBounds(12, 228, 149, 38);
-			contentPanel.add(lblGeographical);
-		}
+//		{
+//			final JLabel lblGeographical = new JLabel("Geographical Weight");
+//			lblGeographical.setBounds(12, 228, 149, 38);
+//			contentPanel.add(lblGeographical);
+//		}
 		{
 			textFieldCSNScore = new JTextField();
 			textFieldCSNScore.setText("0.5");
@@ -237,7 +237,7 @@ public class ReconstructionDialog extends JDialog
 						
 						System.out.println("the selected lud path is " + selectedLudPath);
 						
-						ReconstructionGenerator.reconstruction(outputPath + File.separatorChar, numRecons.intValue(), maxTries.intValue(), conceptWeight, csnWeight, 0.33, selectedLudPath, "");
+						ReconstructionGenerator.reconstruction(outputPath + File.separatorChar, numRecons.intValue(), maxTries.intValue(), conceptWeight, csnWeight, 0, selectedLudPath, "");
 					}
 					catch (final Exception e)
 					{
