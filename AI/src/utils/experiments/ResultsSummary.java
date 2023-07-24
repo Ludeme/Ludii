@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import game.Game;
+import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import main.math.statistics.Stats;
@@ -45,6 +46,16 @@ public class ResultsSummary
 
 	/** Map from matchup arrays to counts of how frequently we observed that matchup */
 	protected TObjectIntMap<List<String>> matchupCountsMap;
+	
+	/** 
+	 * Map from matchup lists to lists of outcome-lists.
+	 * 
+	 * Map is indexed by a list of strings describing a matchup as key.
+	 * Each value is first indexed by player index (0-based), secondly
+	 * indexed by trial indexed, which finally gives a list of utilities
+	 * for each player in that trial.
+	 */
+	protected Map<List<String>, List<List<TDoubleArrayList>>> matchupOutcomesListsMap;
 	
 	//-------------------------------------------------------------------------
 	
@@ -122,6 +133,13 @@ public class ResultsSummary
 		if (!matchupPayoffsMap.containsKey(agentsList))
 		{
 			matchupPayoffsMap.put(agentsList, new double[utilities.length - 1]);
+			
+			final List<List<TDoubleArrayList>> newOutcomesLists = new ArrayList<List<TDoubleArrayList>>();
+			for (int p = 1; p < utilities.length; ++p)
+			{
+				newOutcomesLists.add(new ArrayList<TDoubleArrayList>());
+			}
+			matchupOutcomesListsMap.put(agentsList, newOutcomesLists);
 		}
 		
 		matchupCountsMap.adjustOrPutValue(agentsList, +1, 1);
@@ -131,6 +149,8 @@ public class ResultsSummary
 		{
 			sumUtils[p - 1] += utilities[p];
 		}
+		
+		// TODO update matchupOutcomesListsMap
 	}
 	
 	//-------------------------------------------------------------------------
