@@ -1033,6 +1033,7 @@ TYPE: game.functions.graph.generators.basis.square.DiagonalsType
 TYPE JAVADOC: Defines how to handle diagonal relations on the Square tiling.
 CONST JAVADOC: Implied: Diagonal connections (not edges) between opposite corners.
 CONST JAVADOC: Solid: Solid edges between opposite diagonals, which split the square into four triangles.
+CONST JAVADOC: SolidNoSplit: Solid edges between opposite diagonals, but do not split the square into four triangles.
 CONST JAVADOC: Alternating: Every second diagonal is a solid edge, as per Alquerque boards.
 CONST JAVADOC: Concentric: Concentric diagonal rings from the centre.
 CONST JAVADOC: Radiating: Diagonals radiating from the centre.
@@ -1086,7 +1087,7 @@ CONST JAVADOC: T3636: Semi-regular tiling made up of triangles and hexagons.
 CONST JAVADOC: T4612: Semi-regular tiling made up of squares, hexagons and dodecagons.
 CONST JAVADOC: T333333_33434: Tiling 3.3.3.3.3.3,3.3.4.3.4.
 TYPE: game.functions.graph.generators.basis.tiling.tiling3464.Tiling3464ShapeType
-TYPE JAVADOC: Defines known shapes for the rhombotrihexahedral (semi-regular 3.4.6.4) tiling.
+TYPE JAVADOC: Defines known shapes for the rhombitrihexahedral (semi-regular 3.4.6.4) tiling.
 CONST JAVADOC: Custom: Custom board shape.
 CONST JAVADOC: Square: Square board shape.
 CONST JAVADOC: Rectangle: Rectangular board shape.
@@ -3503,7 +3504,7 @@ PARAM JAVADOC: [<then>]: The moves applied after that move is applied.
 EXAMPLE: (max Distance (forEach Piece))
 TYPE: game.rules.play.moves.nonDecision.effect.requirement.max.MaxMovesType
 TYPE JAVADOC: Defines the types of properties which can be used for the Max super ludeme with only a move ludeme in entry.
-CONST JAVADOC: Moves: To filter a list of legal moves to keep only the moves allowing the maximum  number of moves in a turn.
+CONST JAVADOC: Moves: To ilter a list of legal moves to keep only the moves allowing the maximum  number of moves in a turn.
 CONST JAVADOC: Captures: To filter a list of moves to keep only the moves doing the maximum possible  number of captures.
 TYPE: game.rules.play.moves.nonDecision.effect.set.Set
 TYPE JAVADOC: Sets some aspect of the game state in response to a move.
@@ -5574,7 +5575,7 @@ CONST JAVADOC: Tile: Style for tiles (components that fill a cell and may have m
 CONST JAVADOC: Card: Style for playing cards.
 CONST JAVADOC: Die: Style for die components used as playing pieces.
 CONST JAVADOC: Domino: Style for dominoes
-CONST JAVADOC: LargePiece: Style for large pieces that straddle more than once site, e.g. the L Game.
+CONST JAVADOC: LargePiece: Style for large pieces that srtaddle more than once site, e.g. the L Game.
 CONST JAVADOC: ExtendedShogi: Extended style for Shogi pieces.
 CONST JAVADOC: ExtendedXiangqi: Extended style for Shogi pieces.
 CONST JAVADOC: NativeAmericanDice: Style for native american dice.
@@ -5679,7 +5680,7 @@ CONST JAVADOC: None: No location.
 CONST JAVADOC: CornerLeft: At the top left corner of the item's location.
 CONST JAVADOC: CornerRight: At the top left corner of the item's location.
 CONST JAVADOC: Top: At the top of the item's location.
-CONST JAVADOC: Middle: Centered on the item's location.
+CONST JAVADOC: Middle: Centred on the item's location.
 TYPE: metadata.graphics.util.WhenScoreType
 TYPE JAVADOC: Specifies when to show player scores to the user.
 CONST JAVADOC: Always: Always show player scores.
