@@ -188,7 +188,7 @@ public class ReconstructionGenerator
 				e.printStackTrace();
 			}
 
-			// Check the completions.
+		// Check the completions.
 			if (completion != null)
 			{
 				final String completionRaw = FormatReconstructionOutputs.indentNicely(StringRoutines.unformatOneLineDesc(completion.raw()));

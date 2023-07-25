@@ -164,7 +164,7 @@ public class CompleterWithPrepro
 				
 		//System.out.println(rulesetDescriptionOneLine);
 
-		allRulesetGeoSimilarities = DistanceUtils.getAllRulesetGeoDistances(rulesetReconId);
+		allRulesetGeoSimilarities = DistanceUtils.getAllRulesetGeoDistances(rulesetReconId, dataPath);
 		Completion comp = new Completion(rulesetDescriptionOneLine);
 
 		if(geoThreshold == -1)
@@ -173,6 +173,7 @@ public class CompleterWithPrepro
 			System.out.println("new threshold = " + threshold + " new geoThreshold = " + geoThreshold);
 		
 		applyThresholdToLudMap(rulesetReconId, dataPath);
+		System.out.println("init applyThresholdToLudMap");
 		while (needsCompleting(comp.raw()))
 		{
 			//System.out.println("before \n" + comp.raw());
@@ -229,7 +230,7 @@ public class CompleterWithPrepro
 		(
 			final Completion completion,
 			final int        rulesetReconId,
-			final String dataPath
+			final String     dataPath
 		)
 		{
 //			System.out.println("\nCompleting next completion for raw string:\n" + completion.raw());
@@ -307,7 +308,7 @@ public class CompleterWithPrepro
 					choices.remove(c);
 				}
 			}
-				
+			
 			if (enumeration > 0)
 			{
 				// Enumerate on parents
@@ -316,11 +317,12 @@ public class CompleterWithPrepro
 //				System.out.println(parent[0]);
 //				System.out.println(parent[1]);
 				
-//				System.out.println("\nEnumerating on parent " + enumeration + ": \"" + parent[0] + "\" + ? + \"" + parent[1] + "\"");
+			//	System.out.println("\nEnumerating on parent " + enumeration + ": \"" + parent[0] + "\" + ? + \"" + parent[1] + "\"");
 				enumerateMatches(completion, left, right, parent, completions, completion.score(), rulesetReconId, dataPath);
 			}
 			else
 			{
+				System.out.println("do you reach that?");
 				// Handle choices as usual
 				for (int n = 0; n < choices.size(); n++)
 				{
@@ -352,6 +354,7 @@ public class CompleterWithPrepro
 						if (!found)
 							continue;  // included text is not present
 					}
+					
 					
 					final String str = raw.substring(0, from) + choice + raw.substring(to + 1);
 					final Completion newCompletion = new Completion(str);
@@ -417,7 +420,8 @@ public class CompleterWithPrepro
 						culturalSimilarity = 1.0;
 					else
 					{
-						final String similaryFilePath = ContextualSimilarity.rulesetContextualiserFilePath;
+						final String similaryFilePath = dataPath + "contextualiser_1000/similarity_";
+								//ContextualSimilarity.rulesetContextualiserFilePath;
 						final File fileSimilarity1 = new File(similaryFilePath + rulesetReconId + ".csv");
 						final File fileSimilarity2 = new File(similaryFilePath + entry.getKey().intValue() + ".csv");
 						
@@ -1009,7 +1013,6 @@ public class CompleterWithPrepro
 //		{
 //			System.out.println(commonExpectedConceptsFilePath);
 //			System.out.println("file exist? " + fileTrueConcept.exists());
-//			//System.out.println(rulesetCommonTrueConcept.toString());
 //		}
 		
 		if(!fileTrueConcept.exists() || (reconsRulesetId == rulesetID)) // If TrueConcept not computing or comparing the same rulesets, trueConceptsAvg is 0.
@@ -1091,7 +1094,8 @@ public class CompleterWithPrepro
 					culturalSimilarity = 1.0;
 				else
 				{
-					final String similaryFilePath = ContextualSimilarity.rulesetContextualiserFilePath;
+					final String similaryFilePath = dataPath + "contextualiser_1000/similarity_"; // ContextualSimilarity.rulesetContextualiserFilePath;
+					
 					final File fileSimilarity1 = new File(similaryFilePath + rulesetReconId + ".csv");
 					final File fileSimilarity2 = new File(similaryFilePath + entry.getKey().intValue() + ".csv");
 					

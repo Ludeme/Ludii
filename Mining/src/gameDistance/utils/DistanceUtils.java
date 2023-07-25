@@ -134,6 +134,9 @@ public class DistanceUtils
 		final String distancesFilePath = dataPath + "contextualiser_1000/similarity_" + rulesetId + ".csv"; 
 		// ContextualSimilarity.rulesetContextualiserFilePath
 		
+//		if(rulesetId == 44)
+//			System.out.println("distancesFilePath = " + distancesFilePath);
+		
 		// Map of rulesetId (key) to CSN distance (value) pairs.
 		final Map<Integer, Double> rulesetCSNDistances = new HashMap<>();	
 		
@@ -159,9 +162,9 @@ public class DistanceUtils
 	/**
 	 * @return Geo distance between two rulesetIds
 	 */
-	public static double getRulesetGeoDistance(final int rulesetId1, final int rulesetId2)
+	public static double getRulesetGeoDistance(final int rulesetId1, final int rulesetId2, final String dataPath)
 	{
-		final Map<Integer, Double> geoSimilarities = getAllRulesetGeoDistances(rulesetId1);
+		final Map<Integer, Double> geoSimilarities = getAllRulesetGeoDistances(rulesetId1, dataPath);
 		final Double geoSimilarity = geoSimilarities.get(Integer.valueOf(rulesetId2));
 		return geoSimilarity != null ? geoSimilarity.doubleValue() : 0.0;
 	}
@@ -169,10 +172,11 @@ public class DistanceUtils
 	/**
 	 * @return Map of rulesetId (key) to Geo distance (value) pairs, based on distance to specified rulesetId.
 	 */
-	public static Map<Integer, Double> getAllRulesetGeoDistances(final int rulesetId)
+	public static Map<Integer, Double> getAllRulesetGeoDistances(final int rulesetId, final String dataPath)
 	{
 		// Load ruleset distances from specific directory.
-		final String distancesFilePath = "../Mining/res/recons/input/rulesetGeographicalDistances.csv";
+		final String distancesFilePath = dataPath + "rulesetGeographicalDistances.csv";
+		//final String distancesFilePath = "../Mining/res/recons/input/rulesetGeographicalDistances.csv";
 
 		final Map<Integer, Double> rulesetGeoDistanceIds = new HashMap<>();	
 		
