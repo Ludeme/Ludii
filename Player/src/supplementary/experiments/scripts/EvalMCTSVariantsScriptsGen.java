@@ -50,7 +50,7 @@ public class EvalMCTSVariantsScriptsGen
 	private static final int MAX_REQUEST_MEM = 224;
 	
 	/** Max wall time (in minutes) */
-	private static final int MAX_WALL_TIME = 1445;
+	private static final int MAX_WALL_TIME = 1000;
 	
 	/** Number of cores per node (this is for Thin nodes on Snellius) */
 	private static final int CORES_PER_NODE = 128;
@@ -713,7 +713,7 @@ public class EvalMCTSVariantsScriptsGen
 					StringRoutines.join(" ", agentStrings),
 					"--max-wall-time",
 					String.valueOf(500),
-					"--output-alpha-rank-data",
+					"--output-raw-results",
 					"--no-print-out",
 					"--suppress-divisor-warning"
 				);
@@ -770,13 +770,6 @@ public class EvalMCTSVariantsScriptsGen
 					true,
 					"Generate Snellius scripts to evaluate different MCTS combinations."
 				);
-		
-		argParse.addOption(new ArgOption()
-				.withNames("--project")
-				.help("Project for which to submit the job on cluster.")
-				.withNumVals(1)
-				.withType(OptionTypes.String)
-				.setRequired());
 		
 		argParse.addOption(new ArgOption()
 				.withNames("--user-name")
