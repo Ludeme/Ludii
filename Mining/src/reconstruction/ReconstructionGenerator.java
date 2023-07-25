@@ -171,11 +171,13 @@ public class ReconstructionGenerator
 		// Run the recons process until enough attempts are executed or all reconstructions are generated.
 		while(numAttempts < maxNumberAttempts && correctCompletions.size() < numReconsExpected)
 		{
+			System.out.println("numAttempts = " + numAttempts);
 			Completion completion = null;
 			
 			// Run the completer.
 			try
 			{
+				System.out.println(idRulesetToRecons);
 				completion = completer.completeSampled(desc, idRulesetToRecons);
 			}
 			catch (final Exception e)
@@ -298,10 +300,10 @@ public class ReconstructionGenerator
 					}
 					System.out.println();
 				}
-		}
-		numAttempts++;
-		System.out.println("Current Num Attempts = " + numAttempts);
-		System.out.println(correctCompletions.size() + " recons generated for now");
+			}
+			numAttempts++;
+			System.out.println("Current Num Attempts = " + numAttempts);
+			System.out.println(correctCompletions.size() + " recons generated for now");
 		}
 
 		// We rank the completions.

@@ -1000,6 +1000,13 @@ public class CompleterWithPrepro
 		final String commonExpectedConceptsFilePath = "./res/recons/input/commonExpectedConcepts/CommonExpectedConcept_" + reconsRulesetId + ".csv";
 		final File fileTrueConcept = new File(commonExpectedConceptsFilePath);
 		
+		if(rulesetID == 44)
+		{
+			System.out.println(commonExpectedConceptsFilePath);
+			System.out.println("file exist? " + fileTrueConcept.exists());
+			//System.out.println(rulesetCommonTrueConcept.toString());
+		}
+		
 		if(!fileTrueConcept.exists() || (reconsRulesetId == rulesetID)) // If TrueConcept not computing or comparing the same rulesets, trueConceptsAvg is 0.
 			return 0.0;
 		
@@ -1087,6 +1094,8 @@ public class CompleterWithPrepro
 						culturalSimilarity = 0.0;
 					else
 						culturalSimilarity = DistanceUtils.getRulesetCSNDistance(rulesetId, rulesetReconId);
+					if(rulesetId == 44)
+						System.out.println("cultural " + culturalSimilarity + " with ruleset id = " + rulesetId);
 					
 					//System.out.println("Id = " + rulesetId + " Other Id = " + rulesetReconId + " CSN Value = " + DistanceUtils.getRulesetCSNDistance(rulesetId, rulesetReconId));
 					
@@ -1096,6 +1105,8 @@ public class CompleterWithPrepro
 						geoSimilarity = getRulesetGeoDistance(rulesetId);
 					
 					conceptualSimilarity = getAVGCommonExpectedConcept(rulesetReconId, rulesetId);
+					if(rulesetId == 44)
+						System.out.println("conceptual " + conceptualSimilarity + " with ruleset id = " + rulesetId);
 				}
 	
 				// We ignore all the ludemes coming from a negative similarity value or 0.
