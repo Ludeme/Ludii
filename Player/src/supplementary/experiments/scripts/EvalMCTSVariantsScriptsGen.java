@@ -86,7 +86,6 @@ public class EvalMCTSVariantsScriptsGen
 			{
 				"ExplorationConstant",
 				"Selection",
-				"Backpropagation",
 				"Playout",
 				"ScoreBounds"
 			};
@@ -94,16 +93,14 @@ public class EvalMCTSVariantsScriptsGen
 	/** Indices for our MCTS hyperparameter types */
 	private static final int IDX_EXPLORATION_CONSTANT = 0;
 	private static final int IDX_SELECTION = 1;
-	private static final int IDX_BACKPROPAGATION = 2;
-	private static final int IDX_PLAYOUT = 3;
-	private static final int IDX_SCORE_BOUNDS = 4;
+	private static final int IDX_PLAYOUT = 2;
+	private static final int IDX_SCORE_BOUNDS = 3;
 
 	/** All the values our hyperparameters for MCTS can take */
 	private static final String[][] mctsHyperParamValues = new String[][]
 			{
 				{"0.1", "0.6", "1.41421356237"},
 				{"ProgressiveHistory", "UCB1", "UCB1GRAVE", "UCB1Tuned"},
-				{"MonteCarlo", "QualitativeBonus"},
 				{"MAST", "NST", "Random200", "Random4", "Random0"},
 				{"true", "false"}
 			};
@@ -113,7 +110,6 @@ public class EvalMCTSVariantsScriptsGen
 			{
 				{true, true, true},
 				{true, true, true, true},
-				{true, true, true, true, true},
 				{true, true, true, true, true},
 				{false, true},
 			};
@@ -136,9 +132,9 @@ public class EvalMCTSVariantsScriptsGen
 	 */
 	public static int[][] generateMCTSCombos(final boolean supportStochasticGames)
 	{
-		if (mctsHyperparamNames.length != 5)
+		if (mctsHyperparamNames.length != 4)
 		{
-			System.err.println("generateMCTSCombos() code currently hardcoded for exactly 5 hyperparams.");
+			System.err.println("generateMCTSCombos() code currently hardcoded for exactly 4 hyperparams.");
 			return null;
 		}
 		
@@ -168,14 +164,7 @@ public class EvalMCTSVariantsScriptsGen
 						if (supportStochasticGames && !mctsSupportsStochastic[3][i4])
 							continue;
 						
-						// Hyperparam 5
-						for (int i5 = 0; i5 < mctsHyperParamValues[4].length; ++i5)
-						{
-							if (supportStochasticGames && !mctsSupportsStochastic[4][i5])
-								continue;
-							
-							combos.add(TIntArrayList.wrap(i1, i2, i3, i4, i5));
-						}
+						combos.add(TIntArrayList.wrap(i1, i2, i3, i4));
 					}
 				}
 			}
@@ -256,21 +245,6 @@ public class EvalMCTSVariantsScriptsGen
 				break;
 			}
 			
-			final String backpropType = mctsHyperParamValues[IDX_BACKPROPAGATION][combo[IDX_BACKPROPAGATION]];
-			nameParts.add(backpropType);
-			switch (backpropType)
-			{
-			case "MonteCarlo":
-				algStringParts.add("backprop=montecarlo");
-				break;
-			case "QualitativeBonus":
-				algStringParts.add("backprop=qualitativebonus");
-				break;
-			default:
-				System.err.println("Unrecognised backprop type: " + backpropType);
-				break;
-			}
-			
 			if (mctsHyperParamValues[IDX_SCORE_BOUNDS][combo[IDX_SCORE_BOUNDS]].equals("true"))
 				algStringParts.add("use_score_bounds=true");
 			
@@ -325,21 +299,6 @@ public class EvalMCTSVariantsScriptsGen
 				break;
 			default:
 				System.err.println("Unrecognised playout type: " + playoutType);
-				break;
-			}
-			
-			final String backpropType = mctsHyperParamValues[IDX_BACKPROPAGATION][combo[IDX_BACKPROPAGATION]];
-			nameParts.add(backpropType);
-			switch (backpropType)
-			{
-			case "MonteCarlo":
-				algStringParts.add("backprop=montecarlo");
-				break;
-			case "QualitativeBonus":
-				algStringParts.add("backprop=qualitativebonus");
-				break;
-			default:
-				System.err.println("Unrecognised backprop type: " + backpropType);
 				break;
 			}
 			
