@@ -11,7 +11,6 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import contextualiser.ContextualSimilarity;
 import game.Game;
 import gameDistance.datasets.Dataset;
 import other.GameLoader;
@@ -121,18 +120,19 @@ public class DistanceUtils
 	/**
 	 * @return CSN distance between two rulesetIds
 	 */
-	public static double getRulesetCSNDistance(final int rulesetId1, final int rulesetId2)
+	public static double getRulesetCSNDistance(final int rulesetId1, final int rulesetId2, final String dataPath)
 	{
-		return getAllRulesetCSNDistances(rulesetId1).get(Integer.valueOf(rulesetId2)).doubleValue();
+		return getAllRulesetCSNDistances(rulesetId1, dataPath).get(Integer.valueOf(rulesetId2)).doubleValue();
 	}
 	
 	/**
 	 * @return Map of rulesetId (key) to CSN distance (value) pairs, based on distance to specified rulesetId.
 	 */
-	public static Map<Integer, Double> getAllRulesetCSNDistances(final int rulesetId)
+	public static Map<Integer, Double> getAllRulesetCSNDistances(final int rulesetId, final String dataPath)
 	{
 		// Load ruleset distances from specific directory.
-		final String distancesFilePath = ContextualSimilarity.rulesetContextualiserFilePath + rulesetId + ".csv";
+		final String distancesFilePath = dataPath + "contextualiser_1000/similarity_" + rulesetId + ".csv"; 
+		// ContextualSimilarity.rulesetContextualiserFilePath
 		
 		// Map of rulesetId (key) to CSN distance (value) pairs.
 		final Map<Integer, Double> rulesetCSNDistances = new HashMap<>();	

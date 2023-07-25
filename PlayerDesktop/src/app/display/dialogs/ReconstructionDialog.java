@@ -253,6 +253,7 @@ public class ReconstructionDialog extends JDialog
 					{
 						final String outputPath = txtOutput.getText();
 						final String selectedLudPath = txtInput.getText();
+						final String dataPath = txtData.getText();
 						final Integer numRecons = Integer.valueOf(textFieldMaxRecons.getText());
 						final Integer maxTries = Integer.valueOf(textFieldMaxTries.getText());
 						Double csnScore = Double.valueOf(textFieldCSNScore.getText());
@@ -263,9 +264,7 @@ public class ReconstructionDialog extends JDialog
 						double conceptWeight = conceptScore.doubleValue() / totalWeight;
 						//double geoWeight = geoScore.doubleValue() / totalWeight;
 						
-						System.out.println("the selected lud path is " + selectedLudPath);
-						
-						ReconstructionGenerator.reconstruction(outputPath + File.separatorChar, numRecons.intValue(), maxTries.intValue(), conceptWeight, csnWeight, 0, selectedLudPath, "");
+						ReconstructionGenerator.reconstruction(dataPath + File.separatorChar, outputPath + File.separatorChar, numRecons.intValue(), maxTries.intValue(), conceptWeight, csnWeight, 0, selectedLudPath, "");
 					}
 					catch (final Exception e)
 					{

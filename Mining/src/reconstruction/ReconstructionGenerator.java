@@ -41,6 +41,7 @@ public class ReconstructionGenerator
 	final static String defaultOutputPath        = "./res/recons/output/";
 	final static int    defaultNumReconsExpected = 10;
 	final static int    defaultNumAttempts       = 20000;
+	final static String defaultDataPath          = "C:/Users/carni/Ludii/Ludii/Mining/res/recons/input/";
 	final static String defaultReconsPath        = "C:/Users/carni/Ludii/Ludii/Common/res/lud/reconstruction/pending/board/hunt/Rongmei Naga Hunt Game.lud";
 	final static String defaultOptionName        = "Variant/Incomplete";
 	
@@ -59,19 +60,21 @@ public class ReconstructionGenerator
 	 */
 	public static void main(final String[] args)
 	{
-		String outputPath = args.length == 0 ?                      defaultOutputPath : args[0];
-		int numReconsNoWarningExpectedConcepts = args.length < 1 ?  defaultNumReconsExpected : Integer.parseInt(args[1]);
-		int maxNumberAttempts = args.length < 2 ?                   defaultNumAttempts : Integer.parseInt(args[2]);
-		double conceptualWeight = args.length < 3 ?                 defaultConceptualWeight : Double.parseDouble(args[3]);
-		double historicalWeight = args.length < 4 ?                 defaultHistoricalWeight : Double.parseDouble(args[4]);
-		double geoWeight = args.length < 5 ?                 	    defaultGeographicalWeight : Double.parseDouble(args[5]);
-		String reconsPath = args.length < 6 ?                       defaultReconsPath : args[6];
-		String optionName = args.length < 7 ?                       defaultOptionName : args[7];
+		String dataPath = args.length == 0 ?                        defaultDataPath : args[0];
+		String outputPath = args.length < 1 ?                       defaultOutputPath : args[1];
+		int numReconsNoWarningExpectedConcepts = args.length < 2 ?  defaultNumReconsExpected : Integer.parseInt(args[2]);
+		int maxNumberAttempts = args.length < 3 ?                   defaultNumAttempts : Integer.parseInt(args[3]);
+		double conceptualWeight = args.length < 4 ?                 defaultConceptualWeight : Double.parseDouble(args[4]);
+		double historicalWeight = args.length < 5 ?                 defaultHistoricalWeight : Double.parseDouble(args[5]);
+		double geoWeight = args.length < 6 ?                 	    defaultGeographicalWeight : Double.parseDouble(args[6]);
+		String reconsPath = args.length < 8 ?                       defaultReconsPath : args[7];
+		String optionName = args.length < 8 ?                       defaultOptionName : args[8];
 	
-		reconstruction(outputPath, numReconsNoWarningExpectedConcepts, maxNumberAttempts, conceptualWeight, historicalWeight, geoWeight, reconsPath, optionName);
+		reconstruction(dataPath, outputPath, numReconsNoWarningExpectedConcepts, maxNumberAttempts, conceptualWeight, historicalWeight, geoWeight, reconsPath, optionName);
 	}
 	
 /**
+	 * @param dataPath           The path of the folder to place the reconstructions.
 	 * @param outputPath         The path of the folder to place the reconstructions.
 	 * @param numReconsExpected  The number of reconstruction expected to generate.
 	 * @param maxNumberAttempts  The number of attempts.
@@ -81,6 +84,7 @@ public class ReconstructionGenerator
 	 */
 	public static void reconstruction
 	(
+		String dataPath, 
 		String outputPath, 
 		int    numReconsExpected, 
 		int    maxNumberAttempts,
@@ -177,8 +181,7 @@ public class ReconstructionGenerator
 			// Run the completer.
 			try
 			{
-				System.out.println(idRulesetToRecons);
-				completion = completer.completeSampled(desc, idRulesetToRecons);
+				completion = completer.completeSampled(desc, idRulesetToRecons, dataPath);
 			}
 			catch (final Exception e)
 			{

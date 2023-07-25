@@ -29,7 +29,8 @@ public class ReconstructionTest
 	public void testCompilingLudFromMemory()
 	{
 		System.out.println("\n=========================================\nTest: Compile all .lud corresponding to reconstruction:\n");
-
+		
+		final String defaultDataPath = "C:/Users/carni/Ludii/Ludii/Mining/res/recons/input/";
 		final List<String> failedGames = new ArrayList<String>();
 
 		boolean failure = false;
@@ -77,7 +78,7 @@ public class ReconstructionTest
 			Completion completion = null;
 			try
 			{
-				completion = completer.completeSampled(desc, idRulesetToRecons);
+				completion = completer.completeSampled(desc, idRulesetToRecons, defaultDataPath);
 			}
 			catch (final Exception e)
 			{
