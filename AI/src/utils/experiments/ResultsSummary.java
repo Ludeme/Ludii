@@ -86,6 +86,7 @@ public class ResultsSummary
 		
 		matchupPayoffsMap = new HashMap<List<String>, double[]>();
 		matchupCountsMap = new TObjectIntHashMap<List<String>>();
+		matchupOutcomesListsMap = new HashMap<List<String>, List<TDoubleArrayList>>();
 	}
 	
 	//-------------------------------------------------------------------------
