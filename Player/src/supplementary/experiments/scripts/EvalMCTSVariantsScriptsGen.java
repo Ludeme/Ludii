@@ -248,6 +248,8 @@ public class EvalMCTSVariantsScriptsGen
 			if (mctsHyperParamValues[IDX_SCORE_BOUNDS][combo[IDX_SCORE_BOUNDS]].equals("true"))
 				algStringParts.add("use_score_bounds=true");
 			
+			algStringParts.add("num_threads=" + CORES_PER_PROCESS);
+			
 			algStringParts.add("friendly_name=" + StringRoutines.join("-", nameParts));
 			mctsNamesDeterministic[i] = StringRoutines.join("-", nameParts);
 			mctsStringsDeterministic[i] = StringRoutines.join(";", algStringParts);
@@ -304,6 +306,8 @@ public class EvalMCTSVariantsScriptsGen
 			
 			if (mctsHyperParamValues[IDX_SCORE_BOUNDS][combo[IDX_SCORE_BOUNDS]].equals("true"))
 				System.err.println("Should never have score bounds in MCTSes for stochastic games!");
+			
+			algStringParts.add("num_threads=" + CORES_PER_PROCESS);
 			
 			algStringParts.add("friendly_name=" + StringRoutines.join("-", nameParts));
 			mctsNamesStochastic[i] = StringRoutines.join("-", nameParts);
@@ -552,7 +556,8 @@ public class EvalMCTSVariantsScriptsGen
 									filepathsGameName,
 									filepathsRulesetName,
 									processData.callID,
-									processData.agentStrings
+									processData.agentStrings,
+									numJobProcesses
 								);
 					
 					writer.println(javaCall);
@@ -622,6 +627,7 @@ public class EvalMCTSVariantsScriptsGen
 	 * @param filepathsRulesetName
 	 * @param callID
 	 * @param agentStrings
+	 * @param numJobProcesses
 	 * @return A complete string for a Java call
 	 */
 	public static String generateJavaCall
@@ -633,12 +639,23 @@ public class EvalMCTSVariantsScriptsGen
 		final String filepathsGameName,
 		final String filepathsRulesetName,
 		final long callID,
-		final String[] agentStrings
+		final String[] agentStrings,
+		final int numJobProcesses
 	)
 	{
 		return StringRoutines.join
 				(
 					" ", 
+					"taskset",			// Assign specific core to each process
+					"-c",
+					StringRoutines.join
+					(
+						",", 
+						String.valueOf(numJobProcesses * 4), 
+						String.valueOf(numJobProcesses * 4 + 1),
+						String.valueOf(numJobProcesses * 4 + 2),
+						String.valueOf(numJobProcesses * 4 + 3)
+					),
 					"java",
 					"-Xms" + JVM_MEM + "M",
 					"-Xmx" + JVM_MEM + "M",
@@ -664,7 +681,7 @@ public class EvalMCTSVariantsScriptsGen
 					(
 						"/home/" + 
 						userName + 
-						"/EvalMCTSVariants/" + 
+						"/EvalMCTSVariants/Out/" + 
 						filepathsGameName + filepathsRulesetName +
 						"/" + callID + "/"
 					),
@@ -674,7 +691,12 @@ public class EvalMCTSVariantsScriptsGen
 					String.valueOf(500),
 					"--output-raw-results",
 					"--no-print-out",
-					"--suppress-divisor-warning"
+					"--suppress-divisor-warning",
+					">",
+					"/home/" + userName + "/EvalMCTSVariants/Out/Out_${SLURM_JOB_ID}_" + callID + ".out",
+					"2>",
+					"/home/" + userName + "/EvalMCTSVariants/Out/Err_${SLURM_JOB_ID}_" + callID + ".err",
+					"&"		// Run processes in parallel
 				);
 	}
 	
