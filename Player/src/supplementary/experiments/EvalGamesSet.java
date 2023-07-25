@@ -80,6 +80,9 @@ public class EvalGamesSet
 	/** Whether we want to output results in a format convenient for subsequently computing alpha-ranks using OpenSpiel */
 	protected boolean outputAlphaRankData = false;
 	
+	/** Whether we want to output all raw results */
+	protected boolean outputRawResults = false;
+	
 	/** Whether to create a small GUI that can be used to manually interrupt experiment */
 	protected boolean useGUI = false;
 	
@@ -353,6 +356,13 @@ public class EvalGamesSet
 						outFile.getParentFile().mkdirs();
 						resultsSummary().writeAlphaRankData(outFile);
 					}
+					
+					if (outputRawResults)
+					{
+						final File outFile = new File(outDir + "/raw_results.csv");
+						outFile.getParentFile().mkdirs();
+						resultsSummary().writeRawResults(outFile);
+					}
 				}
 			}		
 		};
@@ -518,6 +528,17 @@ public class EvalGamesSet
 	public EvalGamesSet setOutputAlphaRankData(final boolean outputAlphaRankData)
 	{
 		this.outputAlphaRankData = outputAlphaRankData;
+		return this;
+	}
+	
+	/**
+	 * Set whether to output all raw results.
+	 * @param outputRawResults
+	 * @return This, modified
+	 */
+	public EvalGamesSet setOutputRawResults(final boolean outputRawResults)
+	{
+		this.outputRawResults = outputRawResults;
 		return this;
 	}
 	
