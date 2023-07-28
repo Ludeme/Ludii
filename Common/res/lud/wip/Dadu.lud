@@ -1,0 +1,50 @@
+(define "ThrowValue" (mapEntry (count Pips)))
+
+//------------------------------------------------------------------------------
+
+(game "Dadu"
+	(players 2)
+	(equipment {
+		(board 
+	            (merge {
+	                    (rectangle 6 1)
+	                    (shift 0 5 (rectangle 1 6))
+	                    (shift 5 0 (rectangle 6 1))
+	                    (shift 5 0 (rectangle 1 6))
+	                    (shift 10 0 (rectangle 6 1))
+	                    (shift 10 5 (rectangle 1 6))
+	                    (shift 15 0 (rectangle 6 1))
+	            })		
+		)
+		(hand Each size:2)
+		(piece "Marker" Each)
+		(piece "King" Each)
+        (regions "Symbol" (sites {"A1" "A6" "F6" "F1" "K1" "K6" "P1" "P6"}))
+        (regions "ReplayThrow" (sites {1 10}))
+        (dice d:2 num:5)
+        (map {(pair 5 10)})
+	})
+	(rules 
+		(start {
+			(place "Marker" "Hand" count:8)
+			(place "King" "Hand")
+	        (set Team 1 {P1})
+	        (set Team 2 {P2})
+		})
+		(play (forEach Piece))
+		(end (if (no Moves Mover) (result Mover Win)))
+	)
+)
+
+(metadata
+	(info {
+		
+	})
+	
+    (graphics {
+        (show Symbol "flower" "Symbol" scale:0.9)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+)
