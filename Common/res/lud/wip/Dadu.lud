@@ -1,4 +1,5 @@
 (define "ThrowValue" (mapEntry (count Pips)))
+(define "Throws" (sites (values Remembered)))
 
 //------------------------------------------------------------------------------
 
@@ -29,6 +30,7 @@
         (regions "ReplayThrow" (sites {1 10}))
         ("StickDice" 5)
         (map {(pair 5 10)})
+        (map "EntryPoint" {(pair 1 0) (pair 2 32)})
     })
     (rules 
         (start {
@@ -43,7 +45,10 @@
         		("RollMove" 
         			(move Pass 
         				(then 
-        					(moveAgain)
+        					(and
+        						(moveAgain)
+        						(remember Value ("ThrowValue"))
+        					)
         				)
         			)
         		)
