@@ -1,135 +1,141 @@
 // Skirt
-
-(define "SameTurn" (is Prev Mover))
-
+  
 (define "IsPlaceableByAt" // (mover) (next)
-    (> 
-        (count Pieces of:#1 in:(sites Around #2 Orthogonal))
-        (count Pieces of:(- 3 #1) in:(sites Around #2 Orthogonal))
+ (> 
+  (count Pieces of:#1 in:(sites Around #2 Orthogonal))
+  (count Pieces of:(- 3 #1) in:(sites Around #2 Orthogonal))
 ))
 
 (define "Placement"
-    (move Add 
-        (piece (id "Disc" Mover))
-        (to 
-            (sites Empty)
-            if:("IsPlaceableByAt" (mover) (to))
-)))
+ (do
+  (set Var "PlacementCount" <Moves:perTurn>
+   (then (set Var "SkirtCount" 0))
+  )
+  next:(move Add 
+   (piece (id "Disc" Mover))
+   (to 
+    (sites Empty)
+    if:("IsPlaceableByAt" (mover) (to))
+   )
+   (then
+    (if
+     (< 0 (var "PlacementCount")) 
+     (moveAgain)
+)))))
+
 
 (define "CanSkirtByFrom" // (mover) (next) ; location ; origin 
-    (>=
-        (+ 1
-            (count Pieces of:(mover)
-                in:(difference (sites Around #1 Orthogonal) #2)
-        ))
-        (count Pieces of:(next) in:(sites Around #1 Orthogonal))
-))
+ (>=
+  (+ 1   // For the moving piece
+   (count Pieces of:(mover)
+    in:(difference
+     (sites Around #1 Orthogonal)
+     #2  // The original location must be treated as empty.
+  )))
+  (count Pieces of:(next)
+   in:(sites Around #1 Orthogonal)
+)))
 
 (define "Skirting"
-    (forEach Piece
-        (do
-            (set Var "LF" (from))
-            next:(move (from)
-                (to (sites Empty)
-                    if:(!= Infinity
-                        (count Steps Orthogonal
-                            (step Orthogonal
-                                (to
-                                    if:(and
-                                        {
-                                        (is Empty (to))
-                                        // the moving piece dynamically affects the territory count.
-                                        ("CanSkirtByFrom" (to) (var "LF"))
-                                        (not
-                                            (no Pieces
-                                                in:(difference
-                                                    (intersection
-                                                        (sites Around (from) Orthogonal)
-                                                        (sites Around (to) Orthogonal)
-                                                    )
-                                                    (var "LF")
-                                                )
-                                        ))
-                                        }
-                            )))
-                            (from)
-                            (to)
-            ))))
-            (then (moveAgain))
-)))       
+ (forEach Piece
+  (do
+   (set Var "LF" (from))
+   next:(move (from)
+    (to (sites Empty)
+     if:(!= Infinity
+      (count Steps Orthogonal
+       (step Orthogonal
+        (to
+         if:(and
+          {
+           (is Empty (to))
+           // the moving piece dynamically affects the territory count.
+           ("CanSkirtByFrom" (to) (var "LF"))
+           // The original location must be treated as empty.
+           (not
+            (no Pieces
+             in:(difference
+              (intersection
+               (sites Around (from) Orthogonal)
+               (sites Around (to) Orthogonal)
+              )
+              (var "LF")
+             )
+           ))
+          }
+       )))
+       (from)
+       (to)
+   ))))
+   (then (set Var "SkirtCount" 1 (then (moveAgain))))
+))) 
+      
+(define  "PieRefusal" 
+ (move Swap Players 1 2
+  (then
+   (set Var "Offerer" 2)
+)))
+       
 
-(define "PieOffer"
-    (move Select 
-        (from (sites Empty))
-        (to (sites Around (from) Orthogonal))
-        (then
-            (and
-                (add (piece (next)) (to (last To)))
-                (add (piece (mover)) (to (last From)))
+(define "Place3rdPiePiece"
+ (move Add (piece (next)) 
+  (to (sites Around (sites Occupied by:Mover) if:(is Empty (to))))
+ )
+ (then (set Var "Offerer" 1))
+)
+
+(define "PlacePiePiece"
+ (move Add (to (sites Empty))
+  (then
+   (set Var "PlacementCount" 0
+    (then (moveAgain))
 ))))
-
-(define "PieRefusal"
-    (do
-        (set Var "LF" (last From)
-            (then 
-                (set Var "LT" (last To))
-        ))
-        next:(move Propose "SwapPieceLocations"
-            (then
-                (if
-                    (is Proposed "SwapPieceLocations")
-                    (and
-                        (add (piece (mover))
-                            (to (var "LF")
-                                (apply (remove (to)))
-                        ))
-                        (add (piece (next))
-                            (to (var "LT")
-                                (apply (remove (to)))
-))))))))
 
 //---------------------------------------
 // Main routine
 //---------------------------------------
-
+  
 (game "Skirt"
-    (players 2)
-    (equipment
-        {
-        (board <Board:size> use:Vertex)
-        (piece "Disc" Each)
-        }
+ (players 2)
+ (equipment
+  {
+   (board <Board:size> use:Vertex)
+   (piece "Disc" Each)
+  }
+ )
+ (rules 
+  (play
+   (if
+    (> 2 (counter))
+    (if
+     (= -1 (counter))
+     ("PlacePiePiece" 0)
+     (if
+      (= 0 (counter))
+      ("PlacePiePiece" 1)
+      ("Place3rdPiePiece")
+    ))
+    (or
+     {
+      (if
+       (= 2 (counter))
+       ("PieRefusal")
+      )
+      (if
+       (!= 1 (var "SkirtCount"))
+       ("Skirting")
+      )
+      ("Placement")
+     }
     )
-    (rules 
-        (play
-            (if
-                (> 0 (counter))
-                ("PieOffer")
-                (if
-                    ("SameTurn")
-                    ("Placement")
-                    (or
-                        (if
-                            (= 0 (counter))
-                            ("PieRefusal")
-                        )
-                        (or
-                            ("Skirting")
-                            ("Placement")
-                )))
-                (then "Score")
-        )) 
-        (end 
-            {
-            (if
-                "EndCondition"
-                (result Mover Loss)
-            )
-            (if ("HeuristicEnd")
-                (byScore
-                    {(score P1 ("ScoreOf" 1)) (score P2 ("ScoreOf" 2))}
-            )) 
-            }  
+    (then "Score")
+  ))
+  (end 
+   {
+    (if ("HeuristicEnd") (result Mover Win)) 
+    (if (no Moves Next) (result Next Loss))
+    (if (no Moves Mover) (result Mover Loss))
+   }  
 )))
 
 //----------------------------------------
@@ -137,58 +143,161 @@
 //
 
 (define "Score"
-    (set Score P1 ("ScoreOf" 1)
-        (then
-            (set Score P2 ("ScoreOf" 2))
+ (set Score P1 ("ScoreOf" 1)
+  (then
+   (set Score P2 ("ScoreOf" 2))
 ))) 
-
-(define "EndCondition"(no Moves Mover)) 
-
 (define "HeuristicEnd"
-    // number of placements left is not the same
-    (< (count Sites in:(sites Empty)) (* 2 (max ("ScoreOf" 1) ("ScoreOf" 2))))
-)
+ (and
+  {
+   (< 1 (counter)) // finish pie offer before testing for a win.
+   (= 0 (var "SkirtCount")) // evaluate after placement (mover has taken a non-skirting action)
+   (if
+    (= (var "Offerer") (mover))
+    (<= 
+     (+ (% (count Vertices) 2) (count Sites in:(sites Empty)))
+     (* 2 ("ScoreOf" (var "Offerer"))) // Mover controls a majority; P1 wins a tie on an even board
+    )
+    (< (count Sites in:(sites Empty)) (* 2 ("ScoreOf" ("OpponentOf" (var "Offerer")))))  // Mover controls a majority
+   )
+  }
+))
+
 //---------------
 // Scoring defines
+(define "OpponentOf"  (- 3 #1))
 
-(define "IsReachableOfAt"
-    (>= 
-        (count Pieces of:#1 in:(sites Around #2 Orthogonal))
-        (count Pieces of:(- 3 #1) in:(sites Around #2 Orthogonal))
-))
-
-(define "SitesReachableOf"
-    (forEach
-        (sites Empty)
-        if:("IsReachableOfAt" #1 (site))
-))
-
-(define "ScoringTerritoryOf"
-    (forEach
-        (sites Empty)
-        if:(and
-            (!= Infinity 
-                (count Steps Orthogonal
-                    (step (to if:(is In (to) (sites Empty))))
-                    (site)
-                    (sites Around
-                        (sites Occupied by:(player #1)) 
-                        if:("IsPlaceableByAt" #1 (to))
-            )))
-            (= Infinity 
-                (count Steps Orthogonal
-                    (step (to if:(is In (to) (sites Empty))))
-                    (site)
-                    (sites Around
-                        (sites Occupied by:(player #2)) 
-                        if:("IsReachableOfAt" #2 (to))
-                ))
+(define "ButAlwaysCanReachOpponentOfPlayer"
+ (= ("OpponentOf" #1) (who at:(to)))
+)          
+         
+(define "NoConnectingStepIfDestinationBlockedByDiagonalOf"
+ (!= 2
+  (count Sites
+   in:(intersection
+    (sites Around (from)) 
+    (sites Around (to) if:(= #1 (who at:(to))))
 ))))
 
+(define "NoConnectingStepIfDestinationBlockedByPlayerCountOf"
+ (or
+  (> #2 (count Pieces of:#1 in:(sites Around (to))))
+  ("ButAlwaysCanReachOpponentOfPlayer" #1)
+  
+)) 
+
+(define "PlayerStepsToSitesWith6Neighbors"
+ (and
+  {
+   (is In (to) (sites Inner)) 
+   ("NoConnectingStepIfDestinationBlockedByPlayerCountOf" #1 3)
+  }
+))
+
+(define "CanPlaceWherePlayerDoesNotBlockPlacement" 
+ // note "from" because the overall testing direction is location to opponent.
+ (no Pieces of:#1 in:(sites Around (from)))
+)
+(define "CanStepFromInnerSites" (is In (from) (sites Inner)))
+
+(define "CanStepWhereThereIsAPivotPiece"
+ (= 1
+  (count Pieces All
+   in:(intersection
+    (sites Around (to)) 
+    (sites Around (from))
+))))
+         
+(define "PlayerStepsToSitesAlongEdge"
+ (and
+  {
+   // When
+   (is In (to) (sites Outer))
+   ("NoConnectingStepIfDestinationBlockedByPlayerCountOf" #1 2)
+   (or
+    {
+     ("CanPlaceWherePlayerDoesNotBlockPlacement" #1)
+     ("CanStepWhereThereIsAPivotPiece")
+     ("CanStepFromInnerSites")
+    }
+   ) 
+   // -- But
+  }
+))
+
+(define "BlockedBy"
+ (= Infinity 
+  (count Steps Orthogonal
+   (step
+    (to
+     if:(and
+      {
+       (is In (to)
+        (union 
+         (sites Occupied by:(player ("OpponentOf" #1))) 
+         (sites Empty)
+       ))
+       ("NoConnectingStepIfDestinationBlockedByDiagonalOf" #1)  
+       (or
+        ("PlayerStepsToSitesWith6Neighbors" #1)
+        ("PlayerStepsToSitesAlongEdge" #1)
+       )
+      }
+   )))
+   (site)
+   (sites Occupied by:(player ("OpponentOf" #1)))
+)))
+  
+(define "InaccessibleTerritoryOf" 
+ (forEach
+  (sites Empty)
+  if:(or
+   {
+    (<
+     (count Orthogonal at:(site))
+     (* 2
+      (count Pieces
+       of:#1 
+       in:(sites Around (site))
+    )))
+    ("BlockedBy" #1)
+   }
+)))
+    
+(define "HardToTestSitesOf"
+ (forEach
+  (sites Empty)
+  if:(=
+   (count Orthogonal at:(site))
+   (* 2
+    (count Pieces
+     of:#1 
+     in:(sites Around (site))
+)))))
+
+(define "ScoringTerritoryOf" 
+ (union 
+  {
+   ("InaccessibleTerritoryOf" #1)
+   (intersection
+    (forEach
+     of:(union 
+      {
+       ("InaccessibleTerritoryOf" #1)
+       ("HardToTestSitesOf" #1) 
+      }
+     )
+     (sites Around (site))
+    )
+    ("HardToTestSitesOf" #1)
+   )
+  }
+))
+
 (define "ScoreOf"
-    (size Array
-        (array
-            ("ScoringTerritoryOf" #1 (- 3 #1))
+ (size Array
+  (array
+   ("ScoringTerritoryOf" #1)
 )))
 
 //---------------------------------------
@@ -196,88 +305,123 @@
 (define "Tri46Bug"  (tri {4 6 4 7 4}))
 (define "Tri56Bug"  (tri {5 6 5 7 5}))
 (define "Tri57Bug"  (tri {5 7 5 8 5}))
+(define "Tri67Bug"  (tri {6 7 6 9 5}))
+(define "Tri68Bug"  (tri {6 8 6 10 5}))
 (define "Tri78Bug"  (tri {7 8 7 10 6}))
 
 (option "Board Size" <Board> args:{ <size> <adj> <diag> }
     {   
-    (item "Hex 2-3 (12)"         <(tri {2 3 2 3 2})>   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 2 and 4")
-    (item "Equiversi 2-4 (18)"   <(tri {2 4 2 4 2})>    <Orthogonal> <Hidden>  "Board & size: Equiversi Hexhex with edges alternating 2 and 4")
-    (item "Equiversi 3-5 (36)"   <(tri {3 5 3 5 3})>    <Orthogonal> <Hidden>  "Board & size: Equiversi Hexhex with edges alternating 3 and 5")***
-    (item "Hex 4-5 (48)"         <(tri {4 5 4 5 4})>   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 4 and 5")**
-    (item "Equiversi 4-6 (60)"   <"Tri46Bug">    <Orthogonal> <Hidden>  "Board & size: Equiversi Hexhex with edges alternating 4 and 6")
-    (item "Equiversi 5-7 (90)"   <"Tri57Bug">    <Orthogonal> <Hidden>  "Board & size: Equiversi Hexhex with edges alternating 5 and 7")**
-    (item "Hex 6-7 (108)"        <(tri {6 7 6 7 6})>   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 6 and 7")
-    (item "Equiversi 6-8 (126)"  <(tri {6 8 6 8 6})>    <Orthogonal> <Hidden>  "Board & size: Equiversi Hexhex with edges alternating 6 and 8") 
-    (item "Hex 3 (19)"           <(tri Hexagon 3)>     <Orthogonal> <Hidden>  "Board & size: Hexhex 3")
-    (item "Hex 3-4 (27)"         <(tri {3 4 3 4 3})>   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 3 and 4")
-    (item "Hex 4 (37)"           <(tri Hexagon 4)>     <Orthogonal> <Hidden>  "Board & size: Hexhex 4")
-    (item "Hex 5 (61)"           <(tri Hexagon 5)>     <Orthogonal> <Hidden>  "Board & size: Hexhex 5") 
-    (item "Hex 5-6 (75)"         <"Tri56Bug">   <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 5 and 6") // standard strategy
-    (item "Hex 6 (91)"           <(tri Hexagon 6)>     <Orthogonal> <Hidden>  "Board & size: Hexhex 6") 
-    (item "Hex 7 (127)"          <(tri Hexagon 7)>     <Orthogonal> <Hidden>  "Board & size: Hexhex 7")
-    (item "Hex 7-8 (147)"        <"Tri78Bug">  <Orthogonal> <Hidden>  "Board & size: Hexhex with edges alternating 7 and 8")
+    (item "H1 2-3 (12)"         <(tri {2 3 2 3 2})>   <Orthogonal> <Hidden> "Board & size: H1 Hexhex with edges alternating 2 and 4")
+    (item "H2 2-4 (18)"   <(tri {2 4 2 4 2})>    <Orthogonal> <Hidden> "Board & size: H2 Hexhex with edges alternating 2 and 4")
+    (item "H2 3-5 (36)"   <(tri {3 5 3 5 3})>    <Orthogonal> <Hidden>  "Board & size: H2 Hexhex with edges alternating 3 and 5")***
+    (item "H1 4-5 (48)"         <(tri {4 5 4 5 4})>   <Orthogonal> <Hidden> "Board & size: H1 Hexhex with edges alternating 4 and 5")
+    (item "H2 4-6 (60)"   <"Tri46Bug">    <Orthogonal> <Hidden> "Board & size: H2 Hexhex with edges alternating 4 and 6")
+    (item "H2 5-7 (90)"   <"Tri57Bug">    <Orthogonal> <Hidden> "Board & size: H2 Hexhex with edges alternating 5 and 7")
+    (item "H1 6-7 (108)"  <"Tri67Bug">   <Orthogonal> <Hidden> "Board & size: Hexhex with edges alternating 6 and 7")
+    (item "H2 6-8 (126)"  <"Tri68Bug">    <Orthogonal> <Hidden> "Board & size: H2 Hexhex with edges alternating 6 and 8")****
+    (item "H 3 (19)"           <(tri Hexagon 3)>     <Orthogonal> <Hidden> "Board & size: Hexhex 3")
+    (item "H1 3-4 (27)"         <(tri {3 4 3 4 3})>   <Orthogonal> <Hidden> "Board & size: H1 Hexhex with edges alternating 3 and 4")
+    (item "H 4 (37)"           <(tri Hexagon 4)>     <Orthogonal> <Hidden> "Board & size: Hexhex 4")
+    (item "H 5 (61)"           <(tri Hexagon 5)>     <Orthogonal> <Hidden> "Board & size: Hexhex 5") 
+    (item "H1 5-6 (75)"         <"Tri56Bug">   <Orthogonal> <Hidden> "Board & size: H1 Hexhex with edges alternating 5 and 6") // standard strategy
+    (item "H 6 (91)"           <(tri Hexagon 6)>     <Orthogonal> <Hidden> "Board & size: Hexhex 6") 
+    (item "H 7 (127)"          <(tri Hexagon 7)>     <Orthogonal> <Hidden> "Board & size: Hexhex 7")
+    (item "H1 7-8 (147)"        <"Tri78Bug">  <Orthogonal> <Hidden> "Board & size: H1 Hexhex with edges alternating 7 and 8")
     }
+)
+
+(option "Alternation" <Moves> args:{<perTurn>}
+ {
+  (item "Single Turns" <0> "One optional skirting move plus single placement per turn")
+  (item "Double Turns" <(% (+ 1 (var "PlacementCount")) 2)> "Players alternate taking two full turns consecutively")**
+ }
 )
 
 //----------------------------------------------------------
 
 (metadata
-    (info
-        {
-        (description "Skirt was part of a series of games created while travelling, that sought to simplify some of my earlier games to their barest essentials. It originally featured moving and then placement near the opponent.
-            
-            Afterwards the restrictions were completely revised, in part to match the name: pieces were confined to skirting moves around other pieces.
-            
-            In order to make the game more interesting by enabling earlier territory creation, the explicit concept of territory was added and then skirting was disallowed onto opponent's territory, and placement restricted to locations next to pieces in friendly territory.
-            
-        The script has now been updated to calculate permanent territory and end the game promptly, instead of playing it out until there are no moves left.")
-        (rules "Goal: Last to place a piece.
-            This goal is automatically achieved when a player creates a territory that is larger than the empty locations outside of that territory.
-            
-            Definitions:
-            -- A player's 'Placement Zone' consists of every empty cell directly adjacent to more of a player's own pieces than opponent's pieces.
-            
-            -- A 'Skirting Move' is a series of steps in which, for each step, the stepping piece remains adjacent to at least one of the pieces it was just adjacent to. None of these steps may enter the enemy's placement zone as determined at the time the individual step is made.
-            
-            -- A player's 'Territory' is every empty location that is connected to that player's own placement zone, but is not connected to such locations outside of the friendly placement zone as are next to an opponent's piece. 
-            By 'connected' is meant that there are a series of adjacent empty locations between the two locations.
-            
-            ... In other words, territory consists of locations permanently sealed off from the opponent's play even if the friendly player only makes placements.
-            
-            Play:
-            The White player places two adjacent pieces on the board: white, then black.
-            
-            The other player either switches their locations or takes the first regular turn. Turns alternate.
-            
-        A turn consists of an optional 'skirting move' followed by a mandatory placement onto one's own placement zone.")
-        (id "3962")
-        (version "1.3.11")
-        (classification "experimental")
-        (author "Dale W. Walton")
-        (credit "Dale W. Walton")
-        (date "31-12-2022")
-        }
-    )
-    
-    (graphics 
-        {
-        (board Style Graph)
-        (board Colour InnerEdges (colour 62 72 55))
-        (board Colour OuterEdges (colour 62 72 55))
-        (board Colour InnerVertices (colour 170 160 140))
-        (board Colour OuterVertices (colour 170 160 140))
-        (board StyleThickness OuterEdges .25)
-        (board StyleThickness InnerEdges .25)
-        (board Background fillColour:(colour HumanLight) edgeColour:(colour 170 160 140) scale:1.3)
-        (show Edges Diagonal <Board:diag> (colour 62 72 55))
-        (piece Scale P1 "Disc" 0.7)
-        (piece Scale P2 "Disc" 0.7)
-        (region Colour 
-            ("ScoringTerritoryOf" 2 1) regionSiteType:Vertex (colour DarkGrey)
-        )
-        (region Colour 
-            ("ScoringTerritoryOf" 1 2) regionSiteType:Vertex (colour VeryLightGrey) scale:1.02
-        )
-        }
-    )
+  (info 
+     {
+  
+      (description "Skirt was part of a series of games created while travelling, that sought to simplify some of my earlier games to their barest essentials. It originally featured moving and then placement near the opponent.
+      
+      Afterwards the restrictions were completely revised, in part to match the name: pieces were confined to skirting moves around other pieces.
+      
+      In order to make the game more interesting by enabling earlier territory creation, the explicit concept of territory was added and then skirting was disallowed onto opponent's territory, and placement restricted to locations next to pieces in friendly territory.
+      
+      The script has now been updated to calculate permanent territory and end the game promptly, instead of playing it out until there are no moves left.
+      
+      The pie rule is of interest, in that the tiebreaker rule goes to the pie offerer, making the pie asymmetrical. On boards where a tie score can be forced, the choice can allow the first player to win, however the mere existance of equal scores, does not assure that they can be forced, or make it clear which pie offers might be wins for the offerer. For those who prefer a symmetrical pie, choose boards with odd numbers of cells.
+      "
+      )
+
+ (rules "
+Materials: A hexagonal grid with an odd number of sites; stones in 2 colors, light and dark
+Goal: Prevent your opponent from completing a full turn.*
+
+This can be known in advance from counting your 'territory', that is, the sites the other player can never reach, no matter how many moves they are allowed.  
+
+When your territory includes more than half of the empty sites on the board after you place a piece, you will win.
+
+Setup:
+One player creates a setup offer, by placing 2 light stones anywhere on the board and then 1 dark stone next to one of them. The other player chooses a color. Dark goes first.
+
+Playing the Game:
+On each turn, move twice. Each of your 2 moves has 2 parts:
+1) an optional skirting move
+2) a required stone placement
+
+In other words, in a turn the player makes two required placements, each optionally preceded by a skirting move. 
+
+Skirting Move
+
+'Skirting' means moving a piece in a series of steps around neighboring stones. A skirting move may have any number of steps, as long as each step follows these 2 rules:
+
+1) After each step of movement, the moving stone must neighbor at least 1 stone that it also neighbored before that step of movement. This neighboring stone may be either color, and it may change after each step. In other words, the moving stone cannot move away from all of its current neighbors: it must 'skirt' at least 1 neighboring stone during each step of its movement.
+
+2) The space into which you move your stone must neighbor at least as many friendly stones as enemy stones. Include the moving stone when counting friendly neighboring stones.
+
+Required Placement
+Place a stone on an empty location that neighbors more friendly stones than enemy stones before placement.
+
+*Even-spaced board variant:  
+When playing on a board with an even number of spaces, the player who created the setup position wins when neither player is able to complete a full turn.
+
+In terms of territory, this extra rule means that the player who created the setup can also win by having territory equal to exacly half of the empty sites on the board after placement.
+
+An option for playing with alternating single turns is also provided."
+  ) 
+
+  (version "1.3.11")
+  (classification "experimental")
+  (author "Dale W. Walton")
+  (credit "Script: Dale W. Walton; Rule review: Drew Edwards, Kanare Kato")
+  (date "15-06-2023")
+  }
 )
+
+
+(graphics 
+  {
+  (board Style Graph)
+  (board Colour InnerEdges (colour 62 72 55))
+  (board Colour OuterEdges (colour 62 72 55))
+  (board Colour InnerVertices (colour 170 160 140))
+  (board Colour OuterVertices (colour 170 160 140))
+  (board StyleThickness OuterEdges .25)
+  (board StyleThickness InnerEdges .25)
+  (board Background fillColour:(colour HumanLight) edgeColour:(colour 170 160 140) scale:1.3)
+  (show Edges Diagonal <Board:diag> (colour 62 72 55))
+  (piece Scale P1 "Disc" 0.7)
+  (piece Scale P2 "Disc" 0.7)
+  (region Colour 
+   ("ScoringTerritoryOf" 2 1) regionSiteType:Vertex (colour DarkGrey)
+  )
+  (region Colour 
+   ("ScoringTerritoryOf" 1 2) regionSiteType:Vertex (colour VeryLightGrey) scale:1.02
+  )
+  }
+)
+)
+
+
