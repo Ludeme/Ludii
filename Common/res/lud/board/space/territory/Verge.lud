@@ -1,35 +1,35 @@
 (define "IsLethal"
-	(not
-		(all Sites
-			(union
-				(sites Around (last To) Empty)
-				(sites Around (last To) Enemy)
-			)
-			if:(is In
-				(site)
-				(sites Group
-					at:(min
-						(array
-							(union
-								(sites Around (last To) Empty)
-								(sites Around (last To) Enemy)
-							)
-						)
-					)
-					if:(not (is Mover (who at:(to))))
-				)
-			)
-		)
-	)
+    (not
+        (all Sites
+            (union
+                (sites Around (last To) Empty)
+                (sites Around (last To) Enemy)
+            )
+            if:(is In
+                (site)
+                (sites Group
+                    at:(min
+                        (array
+                            (union
+                                (sites Around (last To) Empty)
+                                (sites Around (last To) Enemy)
+                            )
+                        )
+                    )
+                    if:(not (is Mover (who at:(to))))
+                )
+            )
+        )
+    )
 )
 
 (define "FrozenGroups"
-	(forEach
-		(sites Occupied by:(player #1))
-		if:(= #1
-			(state at:(site))
-		)
-	)
+    (forEach
+        (sites Occupied by:(player #1))
+        if:(= #1
+            (state at:(site))
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -38,40 +38,40 @@
     (players 2)
     (equipment
         {
-            (board (hex <Size>))
-            (piece "Disc" Each)
+        (board (hex <Size>))
+        (piece "Disc" Each)
         }
     )
     (rules
-		<Pie>
+        <Pie>
         (play
             (move Add
                 (to 
-					(difference
-						(sites Empty)
-						(sites Around ("FrozenGroups" (mover)) Orthogonal)
-					)
-				)
-				(then
-					(if
-						("IsLethal")
-						(and
-						 	(forEach Site
-								(sites Group at:(last To) if:(is Mover (who at:(to))))
-								(set State at:(site) (mover))
-							)
-							(remove
-								(sites Group
-									from:(sites Around 
-										(sites Group at:(last To) if:(is Mover (who at:(to))))
-										Enemy
-										if:(!= (next) (state at:(to)))
-									)
-								)
-							)
-						)
-					)
-				)
+                    (difference
+                        (sites Empty)
+                        (sites Around ("FrozenGroups" (mover)) Orthogonal)
+                    )
+                )
+                (then
+                    (if
+                        ("IsLethal")
+                        (and
+                            (forEach Site
+                                (sites Group at:(last To) if:(is Mover (who at:(to))))
+                                (set State at:(site) (mover))
+                            )
+                            (remove
+                                (sites Group
+                                    from:(sites Around 
+                                        (sites Group at:(last To) if:(is Mover (who at:(to))))
+                                        Enemy
+                                        if:(!= (next) (state at:(to)))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
             )
         )
         (end 
@@ -96,10 +96,10 @@
 )
 
 (option "Pie" <Pie> args:{ <pie> }
-	{
-		(item "On" <(meta (swap))> "The pie rule is currently in force.")*
-		(item "Off" <> "The pie rule is currently not in force.")
-	}
+    {
+    (item "On" <(meta (swap))> "The pie rule is currently in force.")*
+    (item "Off" <> "The pie rule is currently not in force.")
+    }
 )
 
 //------------------------------------------------------------------------------
@@ -107,11 +107,11 @@
 (metadata
     (info {
     })
-	(graphics {
-		(player Colour P1 (colour Black))
-		(player Colour P2 (colour White))
-		(region Colour (sites Board) (colour 250 210 148))
-		(board Colour InnerEdges (colour 178 151 100))
-		(board Colour OuterEdges (colour 178 151 100))
-	})
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (region Colour (sites Board) (colour 250 210 148))
+        (board Colour InnerEdges (colour 178 151 100))
+        (board Colour OuterEdges (colour 178 151 100))
+    })
 )
