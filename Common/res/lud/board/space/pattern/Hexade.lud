@@ -1,0 +1,48 @@
+(define "Custodial" 
+    (custodial 
+        (from (last To)) 
+        All
+        (between 
+            if:(is Next (who at:(between)))
+            (apply (remove (between)))
+        )
+        (to if:(and 
+                (or (= 2 (count Steps Cell All (last To) (to))) (= 3 (count Steps Cell All (last To) (to)))) 
+        (is Mover (who at:(to)))))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Hexade" 
+    (players 2) 
+    (equipment { 
+        (board (hex 8)) 
+        (piece "Marker" Each) 
+    }) 
+    (rules 
+        (meta (swap))    
+        (play (move Add (to (sites Empty)) (then "Custodial")))
+        (end 
+            (if 
+                (or {
+                    (is Pattern {F R F R F R F R F})
+                    (is Line 6)
+                    (is Pattern {F F R R F F R R F})
+                    (is Pattern {F R R F F R R F F})
+                })
+                (result Mover Win)
+            )
+        ) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+)
