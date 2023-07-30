@@ -1,0 +1,49 @@
+(define "LargestGroupCascading"
+    (max (intersection (difference (sizes Group #1) (sizes Group #2)) 
+    (sizes Group #1)))         
+)
+
+//------------------------------------------------------------------------------
+
+(game "Catchup" 
+    (players 2) 
+    (equipment { 
+        (board (hex 5))
+        (piece "Marker" Each) 
+    }) 
+    (rules
+        (play 
+            (if (!= (mover) (prev)) 
+                (move Add (to (sites Empty)) 
+                    (then (if (= (count Moves) 1) (set Var "MaxGroup" 1) 
+                            (if (= (max (union (sizes Group P1) (sizes Group P2))) (var "MaxGroup")) 
+                                (set Var "MaxGroup" (max (union (sizes Group P1) (sizes Group P2))) 
+                                (then (moveAgain)))
+                                (set Var "MaxGroup" (max (union (sizes Group P1) (sizes Group P2))) 
+                                    (then (if (= (var "MaxGroup") (max (sizes Group Mover)))
+                                            (set Score Next  1 (then (moveAgain)))
+                (set Score Mover 1 (then (moveAgain))))))))))
+                (or {(move Add (to (sites Empty)))
+                    (move Pass)}
+                    (then (if (= (score Mover) 1) 
+        (set Score Mover 0 (then (moveAgain))))))))        
+        (end
+            (if (= 0 (count Sites in:(sites Empty)))
+                (byScore {
+                    (score P1 ("LargestGroupCascading" P1))
+(score P2 ("LargestGroupCascading" P2))})))))
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics
+        (show Score)
+    )
+    
+)
