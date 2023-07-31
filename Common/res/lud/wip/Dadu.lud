@@ -13,14 +13,16 @@
 
 (define "MovePieceOnBoard"
     (forEach Site (sites Occupied by:Mover)
-        (if (is Empty ("NextSiteOnTrack" (value) from:(site)))
-            (do
-                (forget Value (value))
-                next:(move
-                    (from (site))
-                    (to ("NextSiteOnTrack" (value) from:(site)))
-                )
-            )
+    	(forEach Level (site)
+            //(if (is Empty ("NextSiteOnTrack" (value) from:(site)))
+            	(do
+            		(forget Value (value))
+            		next:(move
+            			(from (site) level:(level))
+            			(to ("NextSiteOnTrack" (value) from:(site)))
+            		)
+            	)
+           //)
         )
     )
 )
@@ -67,8 +69,10 @@
     })
     (rules 
         (start {
-            (place "Marker" "Hand" count:8)
-            (place "King" "Hand")
+            (place Stack "Marker1" (handSite P1) count:8)
+            (place Stack "Marker2" (handSite P2) count:8)
+            (place Stack "King1" (handSite P1 1))
+            (place Stack "King2" (handSite P2 1))
             (set Team 1 {P1})
             (set Team 2 {P2})
         })
@@ -80,7 +84,7 @@
                         (then 
                             (and {
                                 (moveAgain)
-                                (remember Value ("ThrowValue"))
+                                (if (!= 0 ("ThrowValue")) (remember Value ("ThrowValue")))
                                 (if (= 1 ("ThrowValue")) (set Value Mover 1))
                             })
                         )
