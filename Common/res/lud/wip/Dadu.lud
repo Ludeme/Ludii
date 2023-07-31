@@ -1,5 +1,58 @@
-(define "ThrowValue" (mapEntry (count Pips)))
-(define "Throws" (sites (values Remembered)))
+(define "ThrowValue" (mapEntry "ThrowsValues" (count Pips)))
+(define "Throws" (values Remembered))
+
+(define "EnterPiece"
+    (move
+        (from (sites Hand Mover) if:(is Occupied (from)))
+        (to (mapEntry "EntryPoint" (mover)))
+        (then 
+            (and 
+                (set State at:(last To) 1)
+                (forget Value 1)
+            )
+        )
+    )
+)
+
+(define "ActivatePiece"
+    (if (= 1 (state at:(mapEntry "EntryPoint" (mover))))
+        (move Select 
+            (from (mapEntry "EntryPoint" (mover)))
+            (then
+                (and
+                    (set State at:(mapEntry "EntryPoint" (mover)) 0)
+                    (forget Value 1)
+                )
+            )
+        )
+    )
+)
+
+(define "MovePieceOnBoard"
+    (forEach Site (sites Occupied by:Mover)
+        (if (and (= 0 (state at:(site))) (is Empty ("NextSiteOnTrack" (value) from:(site))))
+            (do
+                (forget Value (value))
+                next:(move
+                    (from (site))
+                    (to ("NextSiteOnTrack" (value) from:(site)))
+                )
+            )
+        )
+    )
+)
+
+(define "UsingThrows"
+    (forEach Value ("Throws")
+        (if (= 1 (value))
+            (or
+                ("EnterPiece")
+                ("ActivatePiece")
+            )
+            ("MovePieceOnBoard")
+        )
+    )	
+)
 
 //------------------------------------------------------------------------------
 
@@ -18,8 +71,8 @@
                 (shift 7.5 3 (square 1))
             })		
             {
-        	 (track "Track1" "0,N,E,S,E,N,E,S,End" P1 directed:True)
-             (track "Track2" "32,N,W,S,W,N,W,S,End" P2 directed:True)
+            (track "Track1" "0,N,E,S,E,N,E,S,End" P1 directed:True)
+            (track "Track2" "32,N,W,S,W,N,W,S,End" P2 directed:True)
             }
         )
         (hand Each size:2)
@@ -29,7 +82,7 @@
         (regions "Symbol" (sites {"A1" "A6" "F6" "F1" "L1" "L6" "Q1" "Q6"}))
         (regions "ReplayThrow" (sites {1 10}))
         ("StickDice" 5)
-        (map {(pair 5 10)})
+        (map "ThrowsValues" {(pair 5 10)})
         (map "EntryPoint" {(pair 1 0) (pair 2 32)})
     })
     (rules 
@@ -41,30 +94,43 @@
         })
         phases:{
         (phase "Throwing"
-        	(play
-        		("RollMove" 
-        			(move Pass 
-        				(then 
-        					(and
-        						(moveAgain)
-        						(remember Value ("ThrowValue"))
-        					)
-        				)
-        			)
-        		)
-        	)
-            (nextPhase Mover 
-                    (not (is In ("ThrowValue") (sites "ReplayThrow")))
-                    "Moving"
+            (play
+                ("RollMove" 
+                    (move Pass 
+                        (then 
+                            (and
+                                (moveAgain)
+                                (remember Value ("ThrowValue"))
+                            )
+                        )
+                    )
                 )
+            )
+            (nextPhase Mover 
+                (not (is In ("ThrowValue") (sites "ReplayThrow")))
+                "Moving"
+            )
         )
         (phase "Moving"
-        	(play
-        		(forEach Piece)
-        	)
+            (play
+                (if (can Move ("UsingThrows"))
+                    ("UsingThrows")
+                    (move Pass (then (forget Value All)))
+                    (then 
+                        (if (can Move ("UsingThrows")) 
+                            (moveAgain)
+                            (forget Value All)
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover 
+                (not (can Move ("UsingThrows")))
+                "Throwing"
+            )
         )
-    	}
-        (end (if (no Moves Mover) (result Mover Win)))
+        }
+        (end (if (no Pieces Mover) (result Mover Win)))
     )
 )
 
@@ -78,5 +144,10 @@
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
+        (stackType 0 Ground)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (stackType 3 Count)
+        (stackType 4 Count)
     })
 )
