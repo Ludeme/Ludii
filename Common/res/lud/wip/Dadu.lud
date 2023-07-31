@@ -6,31 +6,14 @@
         (from (sites Hand Mover) if:(is Occupied (from)))
         (to (mapEntry "EntryPoint" (mover)))
         (then 
-            (and 
-                (set State at:(last To) 1)
-                (forget Value 1)
-            )
-        )
-    )
-)
-
-(define "ActivatePiece"
-    (if (= 1 (state at:(mapEntry "EntryPoint" (mover))))
-        (move Select 
-            (from (mapEntry "EntryPoint" (mover)))
-            (then
-                (and
-                    (set State at:(mapEntry "EntryPoint" (mover)) 0)
-                    (forget Value 1)
-                )
-            )
+            (forget Value 1)
         )
     )
 )
 
 (define "MovePieceOnBoard"
     (forEach Site (sites Occupied by:Mover)
-        (if (and (= 0 (state at:(site))) (is Empty ("NextSiteOnTrack" (value) from:(site))))
+        (if (is Empty ("NextSiteOnTrack" (value) from:(site)))
             (do
                 (forget Value (value))
                 next:(move
@@ -45,10 +28,7 @@
 (define "UsingThrows"
     (forEach Value ("Throws")
         (if (= 1 (value))
-            (or
-                ("EnterPiece")
-                ("ActivatePiece")
-            )
+            ("EnterPiece")
             ("MovePieceOnBoard")
         )
     )	
@@ -98,10 +78,11 @@
                 ("RollMove" 
                     (move Pass 
                         (then 
-                            (and
+                            (and {
                                 (moveAgain)
                                 (remember Value ("ThrowValue"))
-                            )
+                                (if (= 1 ("ThrowValue")) (set Value Mover 1))
+                            })
                         )
                     )
                 )
@@ -113,11 +94,11 @@
         )
         (phase "Moving"
             (play
-                (if (can Move ("UsingThrows"))
+                (if (and (= 1 (value Player Mover)) (can Move ("UsingThrows")))
                     ("UsingThrows")
                     (move Pass (then (forget Value All)))
                     (then 
-                        (if (can Move ("UsingThrows")) 
+                        (if (and (= 1 (value Player Mover)) (can Move ("UsingThrows")))
                             (moveAgain)
                             (forget Value All)
                         )
