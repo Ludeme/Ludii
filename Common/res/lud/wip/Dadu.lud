@@ -11,27 +11,21 @@
     )
 )
 
-(define "MovePieceOnBoard"
-    (forEach Site (sites Occupied by:Mover)
-    	(forEach Level (site)
-            //(if (is Empty ("NextSiteOnTrack" (value) from:(site)))
-            	(do
-            		(forget Value (value))
-            		next:(move
-            			(from (site) level:(level))
-            			(to ("NextSiteOnTrack" (value) from:(site)))
-            		)
-            	)
-           //)
-        )
-    )
+(define "PieceMovement"
+		(do
+    		(forget Value (value))
+    		next:(move
+    			(from (from) level:(level))
+    			(to ("NextSiteOnTrack" (value) from:(from)))
+    		)
+    	)		
 )
 
 (define "UsingThrows"
     (forEach Value ("Throws")
         (if (= 1 (value))
             ("EnterPiece")
-            ("MovePieceOnBoard")
+            (forEach Piece)
         )
     )	
 )
@@ -58,8 +52,8 @@
             }
         )
         (hand Each size:2)
-        (piece "Marker" Each)
-        (piece "King" Each)
+        (piece "Marker" Each ("PieceMovement"))
+        (piece "King" Each ("PieceMovement"))
         (regions "Jail" (sites {"I4"}))
         (regions "Symbol" (sites {"A1" "A6" "F6" "F1" "L1" "L6" "Q1" "Q6"}))
         (regions "ReplayThrow" (sites {1 10}))
