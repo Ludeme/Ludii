@@ -11,12 +11,18 @@
     )
 )
 
+(define "RemoveAPiece" (move Remove (from) level:(level)))
+
 (define "PieceMovement"
 		(do
     		(forget Value (value))
-    		next:(move
-    			(from (from) level:(level))
-    			(to ("NextSiteOnTrack" (value) from:(from)))
+    		next:
+                (if ("IsEndTrack" ("NextSiteOnTrack" (value) from:(from)))
+                    ("RemoveAPiece")
+                	(move
+                		(from (from) level:(level))
+                		(to ("NextSiteOnTrack" (value) from:(from)))
+                	)
     		)
     	)		
 )
