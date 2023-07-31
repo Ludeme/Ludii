@@ -24,7 +24,10 @@
 (define "UsingThrows"
     (forEach Value ("Throws")
         (if (= 1 (value))
-            ("EnterPiece")
+        	(if (or (is Occupied (handSite (mover))) (is Occupied (handSite (mover) 1)))
+        		("EnterPiece")
+        		(forEach Piece)
+            )
             (forEach Piece)
         )
     )	
