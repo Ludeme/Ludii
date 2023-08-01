@@ -204,7 +204,8 @@ public class FileHandling
 					lud.contains("/wip/") ||
 					lud.contains("/WishlistDLP/") ||
 					lud.contains("/simulation/") ||
-					lud.contains("/reconstruction/")
+					lud.contains("/reconstruction/pending/") ||
+					lud.contains("/reconstruction/validation/")
 				);
 	}
 	
