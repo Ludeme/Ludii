@@ -1,0 +1,522 @@
+// Stargazers
+// to do: scoring and end of game. Description & rules
+//-----------------------------------------------------
+// utilities
+
+// Ludii bug note: I added R's at end of patterns as work-around for a Ludii bug in (sites Pattern)
+// the what's record (from) locations, 
+// but (sites Pattern) fails if the (to) location for the last F is off the board.
+// the R R R turns this (to) back to where it came from.
+
+(define "LifegivingLocationsOf"
+ (forEach
+  (sites Board)
+  if:(or
+   (is In (site) (sites Pattern {F F R R R F R R R} from:(site) whats:{#1 0 3 0}))
+   (is In (site) (sites Pattern {F R R R F F R R R} from:(site) whats:{0 0 0 3})) // whats:{0 #1 0 3}))
+)))
+
+(define "IsBlockedForAt" 
+ (or 
+  (>= 0 (size Array (array ("LifegivingLocationsOf" #1))))
+  (= Infinity
+   (count Steps 
+    (step (to if:(is In (to) (union (sites Empty) (sites Occupied by:(player #1))))))
+    #2
+    ("LifegivingLocationsOf" #1)
+))))
+
+(define "SitesOfTrulyDeadPiecesOfx"
+ (forEach 
+  (sites Occupied by:(player #1)) 
+  if:(is In (site) (values Remembered "#1")) 
+))
+
+(define "SitesOfTrulyDeadPiecesOf"
+ (intersection
+  {
+   (sites Occupied by:(player #1)) 
+   (sites (values Remembered "#1")) 
+  }
+))
+ 
+(define "CountOfTrulyDeadPiecesOf"
+ (size Array
+  (array
+   ("SitesOfTrulyDeadPiecesOf" #1)
+)))
+
+(define "RememberSitesBlockedForBy"
+ (forEach Site
+  (difference
+   (union 
+    (intersection (sites Around (sites Occupied by:(player #2))) (sites Empty))
+    (intersection (sites Occupied by:(player #1)) (sites State 1))
+   ) 
+   (sites (values Remembered "#1"))    //use if done after marking dead for small speed-up
+  )
+  (if
+   ("IsBlockedForAt" #1 (site))
+   (remember Value "#1" (site) unique:True)
+)))
+
+//Use of (sites Group) faster than leaving it to the (while) iterations.
+(define "FirstLivePiecesOf"  
+ (forEach
+  of:(sites <Board:stars>)
+  (sites Group
+   from:(difference
+    (intersection
+     (sites Occupied by:(player #1)) 
+     (sites LineOfSight Piece at:(site))
+    )
+    (sites Around (site))
+   )
+   if:(= #1 (who at:(to)))
+)))
+
+(define "MarkDeadAllDependantPiecesOfNotOf"
+ (forEach Site
+//  (difference
+   (difference
+    (sites Occupied by:(player #1))
+    ("FirstLivePiecesOf" #1)  // ("LifegivingLocationsOf" #1) // slower
+   )
+//   (sites (values Remembered "#2")) // adding the test is slower
+//  )
+  (set State at:(site) 1)
+))
+
+(define "UnMarkEachPieceOf"
+ (forEach Value
+  (array 
+   (forEach
+    (intersection (sites Occupied by:(player #1)) (sites State 1))
+    if:(< 0 
+     (size Array
+      (array
+       (intersection
+        {
+         (sites Occupied by:(player #1))
+         (sites State 0)
+         (sites LineOfSight Piece at:(site))
+        }
+  )))))) 
+  (set State at:(value) 0)
+))
+ 
+(define "UnMarkPiecesOf"
+ (set Var "Count" (+ 1 (size Array (array (sites State 1))))
+  (then 
+   (while
+    (> (var "Count") (size Array (array (sites State 1))))
+    (set Var "Count" (size Array (array (sites State 1)))
+     (then
+      ("UnMarkEachPieceOf" #1)
+    ))
+))))
+
+(define "RemarkGroupsOfNotOf"
+ (do
+  ("MarkDeadAllDependantPiecesOfNotOf" #1 #2)
+  next:("UnMarkPiecesOf" #1)
+  (then ("RememberSitesBlockedForBy" #1 #2))
+))
+
+(define "SeesStarGazerOfFrom"
+ (< 0 
+  (size Array
+   (array
+    (forEach 
+     of:(intersection
+      (sites LineOfSight Piece at:#2) 
+      (sites Occupied by:(player #1))
+     )
+     (intersection
+      (sites LineOfSight Piece at:(site)) 
+      (difference
+       (sites <Board:stars>)
+       (union
+        (sites Around (site))     
+        (sites Around (to)) 
+))))))))
+
+(define "SeesStarFrom"
+ (< 0 
+  (size Array
+   (array
+    (forEach
+     (sites LineOfSight Piece at:#1) 
+     if:(is In (site) (difference (sites <Board:stars>) (sites Around #1)))      
+)))))
+
+(define "AddAssuredPieceOfNotOf"
+ (move Add
+  (piece #1)
+  (to
+   (sites Empty)
+   if:(or
+    ("SeesStarFrom" (to))
+    ("SeesStarGazerOfFrom" #1 (to))
+   )
+   (apply (set State at:(to) 0))
+  )
+  (then 
+   (and
+    ("UnMarkPiecesOf" #1)
+    ("RemarkGroupsOfNotOf" #2 #1)
+))))
+
+(define "AddUnassuredPieceOfNotOf"
+ (move Add
+  (piece #1)
+  (to
+   (sites Empty)
+   if:(and
+    (not ("SeesStarFrom" (to)))
+    (not ("SeesStarGazerOfFrom" #1 (to)))
+  ))
+  (then ("RemarkGroupsOfNotOf" #1 #2)) // extra checking needed to find board state of placed piece
+))
+
+//-------------------
+// Basic move of the game
+//-------------------     
+(define "PlaceByThenCaptureOf"
+ (or
+  ("AddAssuredPieceOfNotOf" #1 #2) // no suicide possible at these locations - significant speed-up
+  (do
+   ("AddUnassuredPieceOfNotOf" #1 #2)
+   ifAfterwards:(= 0 (state at:(last To)))  //no suicide allowed
+   (then ("RemarkGroupsOfNotOf" #2 #1))
+  )
+  (then
+   (and
+    {
+     (if
+      (is In (last To) (values Remembered "#2"))
+      (forget Value "#2" (last To))
+     )
+     (if ("IsWinByOver" #1 #2) ("WinnerNotes" #1 #2)
+      (if ("IsWinByOver" #2 #1) ("LoserNotes" #2 #1))
+     )
+    }
+))))
+  
+//----------------
+// Main routine
+//---------------
+(game "Stargazers" 
+ (players 2)
+ (equipment
+   {
+    <Board:used>
+    (piece "Ball" Each) 
+    (piece "StarFour" Neutral)
+   }
+ )
+ (rules
+  (start 
+   {
+    (place "StarFour0" <Board:stars>)
+   }
+  )
+  (play 
+   (if
+    (is Mover P1)
+    ("PlaceByThenCaptureOf" 1 2)  //cannot use (mover) (next) due to double turns and remember naming 
+    ("PlaceByThenCaptureOf" 2 1)
+    (then
+     ("HeuristicScoreC"  // Used to guide the AI
+      <Protocol:type>
+  ))))
+  (end
+   {
+    (if
+     (and
+      (no Moves Mover)
+      (=
+       (count Pieces P2 in:(sites State 1)) 
+       (count Pieces P1 in:(sites State 1))
+     ))
+     (result Mover Loss)
+    )
+    (if
+     (and
+      (no Moves Mover)
+      (!=
+       (count Pieces P2 in:(sites State 1)) 
+       (count Pieces P1 in:(sites State 1))
+     ))
+     (byScore
+      {
+       (score P1 (count Pieces P2 in:(sites State 1))) 
+       (score P2 (count Pieces P1 in:(sites State 1)))
+      }
+    ))
+    (if ("IsWinByOver" 1 2) (result P1 Win)) // Heuristic win
+    (if ("IsWinByOver" 2 1) (result P2 Win)) // Heuristic win
+   }
+)))
+
+//-----------------------------------
+// Win condition, announcements and graphics regions
+//-----------------------------------
+
+(define "Score2DisplayP1" (count Pieces P2 in:(sites State 1)))
+(define "Score2DisplayP2" (count Pieces P1 in:(sites State 1)))
+
+(define "WinnerNotes"
+ (and
+  { 
+   (note player:#1 "Opponent's uninspireable stones (your score)")
+   (note player:#1 ("CountOfTrulyDeadPiecesOf" #2))
+   (note player:#1 "Opponent's best case score (your potentially unispired stones)")
+   (note player:#1 ("EstimateCOfPotentialCapturesOfBy"  #1 #2))
+   (note player:#1 "You won because your opponent has more permanently unispired stones than you can ever have")
+  }
+))
+(define "LoserNotes"
+ (and
+  {
+   (note player:#1 "Your uninspireable stones (your opponent's score)")
+   (note player:#1 ("CountOfTrulyDeadPiecesOf" #2))
+   (note player:#1 "Your best case score (opponent's potentially unispired stones)")
+   (note player:#1 ("EstimateCOfPotentialCapturesOfBy"  #1 #2))
+   (note player:#1 "You lost because your opponent has more unispired stones than you can ever have")
+  }
+))
+
+(define "HeuristicScoreA"  // used to guide the AI based on Permanent Captures
+ (set Score P1 ("CountOfTrulyDeadPiecesOf" 2)
+  (then   
+   (set Score P2 ("CountOfTrulyDeadPiecesOf" 1)
+    #1
+))))
+
+(define "HeuristicScoreB"  // used to guide the AI based on all captures
+ (set Score P1 ("CountOfTrulyDeadPiecesOf" 2)
+  (then   
+   (set Score P2 ("CountOfTrulyDeadPiecesOf" 1)
+    #1
+))))
+
+//----------------
+// HeuristicScoreC is used to guide the AI based on 
+// your actual permanent score vs opponent's max potential score, and is
+// offset (reduced) by the number of pieces you have played so as to stabilize it.
+// as mentioned Below, it is based on the heuristic win algorythm data.
+
+(define "HeuristicScoreC" 
+ (set Score P1
+  (+ (count Sites in:(difference (sites Board) (sites Occupied by:(player 1))))
+   (- ("CountOfTrulyDeadPiecesOf" 2) ("EstimateBOfPotentialCapturesOfBy" 1 2))
+  )
+  (then   
+   (set Score P2  
+    (+ (count Sites in:(difference (sites Board) (sites Occupied by:(player 1))))
+     (- ("CountOfTrulyDeadPiecesOf" 1) ("EstimateBOfPotentialCapturesOfBy" 2 1))
+    )
+    #1
+))))
+
+//-------------------------------------------------------
+// Defines needed for determining Heuristic win condition
+//-------------------------------------------------------
+// -- rational for determining Heuristic wins, and AI scoring. --  scripts used continue below
+//-----------------------------------------------------
+// Empty and friend sites surrounded by enemies witout including live sites are permanently dead.
+// And provide immortality to the enemy as long as they contain an empty locations between the group and a star.
+// Plus a special case where: line of sight across a singleton eye connects a separate group of the connecting pieces.
+// Note it is possible that their are dead pieces making up parts of the walls.  
+
+// The algorithm is conservative. It does not see every possible LoS connected live group that is assured life, because some are very hard to distinguish from grouips that can later be cut-off.
+
+// Likewise it does not look at every permanently dead group condition, as it is hard to determine which can be recovered.
+
+// This adds a lot of overhead, but mostly at the beginning of the game.
+// It guides the AI to meaningful decisions and avoids the game dragging out.
+// and helps beginners to know when the game it over
+// and allows for graphical representation of significant strategic features of the positions.
+//----------------------------------------------------------------------
+
+(define "SitesOfPermanentlyLivePiecesOfNotOf"
+ (sites Group
+  from:(sites Around (intersection (sites Empty) (sites (values Remembered "#2"))))
+  if:(is In (to) (intersection (sites Occupied by:(player #1)) (sites State 0)))
+))
+
+(define "CountOfPermanentlyLivePiecesOfNotOf"
+ (size Array
+  (array ("SitesOfPermanentlyLivePiecesOfNotOf" #1 #2))
+))
+
+(define "SitesOfPossibleFutureCapturesOfBy" //includes existing captures
+ (difference
+  (difference
+   (union (sites Empty) (sites Occupied by:(player #1)))
+   (sites Around ("SitesOfPermanentlyLivePiecesOfNotOf" #1 #2) includeSelf:True)
+  )
+  (intersection (sites Empty) (sites (values Remembered "#1")))
+)) 
+
+(define "IsolatedSitesOfBy"
+ (forEach
+  (sites Empty)
+  if:(= Infinity
+   (count Steps
+    (step (to  if:(is In (to) (union (sites Occupied by:(player #1)) (sites Empty)))))
+    (site)
+    (sites (values Remembered "#2"))
+))))
+
+(define "SitesOfPossibleFutureCapturesOfByLessEyes" 
+ (difference 
+  ("SitesOfPossibleFutureCapturesOfBy" #1 #2)
+  (forEach 
+   of:("IsolatedSitesOfBy" #1 #2)
+   (sites
+    {
+     (min
+      (array
+       (sites Group at:(site) if:(is In (to) ("SitesOfPossibleFutureCapturesOfBy" #1 #2)))
+     ))
+    }
+))))
+
+(define "EstimateBOfPotentialCapturesOfBy"  // 100% faster than A, 50% faster than C
+ (size Array (array ("SitesOfPossibleFutureCapturesOfBy" #1 #2)))
+)
+
+(define "EstimateCOfPotentialCapturesOfBy"
+ (size Array (array ("SitesOfPossibleFutureCapturesOfByLessEyes" #1 #2)))
+)
+// Using estimate B and C are similar in playout speed 
+// except B has very significant speed up toward the end,
+// while C is more accurate in finding the end condition slightly earlier.
+
+(define "IsWinByOver" // Winner, Loser (eg P1,P2)
+ (<
+  ("EstimateBOfPotentialCapturesOfBy" #1 #2) // Estimate B selected for speed
+  ("CountOfTrulyDeadPiecesOf" #2)
+))   
+
+//-------------------------
+// Board generating utilities
+//--------------------------
+// Rotation, board, cells or vertices to remove 
+(define "SymRemover" (renumber (rotate (* (- #1 1) (/ 360 #1)) (trim (remove #2 #3)))))
+
+// symmetry, board, recurrent removals, final edge removal 
+(define "RaggedSquare" ("SymRemover" 4 ("SymRemover" 4 ("SymRemover" 4 ("SymRemover" 4 #1 #2) #2) #2) #3))
+
+// board, recurrent removals, final edge removal 
+(define "RaggedTri" ("SymRemover" 1 ("SymRemover" 3 ("SymRemover" 3 #1 #2) #2) #3))
+(define "RaggedHex" ("SymRemover" 6 ("SymRemover" 6 ("SymRemover" 6 ("SymRemover" 6 ("SymRemover" 6 ("SymRemover" 6 #1 #2) #2) #2) #2) #2) #3))
+
+// board, recurrent removals
+(define "Sym2Remover" ("SymRemover" 2  ("SymRemover" 2 #1 #2) #2))
+  
+//-------------------------------------------------------
+// Board definitions
+
+
+(option "Size" <Board> args:{<used> <stars>} 
+ {
+  (item "12-Star (39 cells)"
+   <(board ("RaggedTri" (hex 5 6) cells:{0..3 6 7 21 30} cells:{0..3 5 6 19 27}) use:Cell)>  
+   <{0 1 5 12 17 22 27 34 38 41 49 50}>
+   "12-Star (39 cells)"
+  )**
+  (item "18-Star (63 cells)"
+   <(board ("RaggedTri" (hex 6 8) cells:{0..5 8..11 17 18 38 50} cells:{0..5 7..10 15 16 35 45}) use:Cell)>  
+   <{0 1 5 12 13 20 27 34 41 42 49 55 60 67 71 74 82 83}>
+   "18-Star (63 cells)"
+  )
+  (item "27-Star (111 cells)"
+   <(board ("RaggedTri" (hex 8 9) cells:{0..5 9..12 19 20 42 55 69 84 85 100} cells:{0..5 7..10 15 16 36 49 62 75 76 89}) use:Cell)>  //0..5 9..12 19 20 42 55
+   <{0 1 5 12 13 20 28 35 38 45 48 55 64 71 74 81 84 91 99 106 107 114 120 125 132 136 137}>
+   "27-Star (111 cells)"
+  )
+//   (item "19-Star (72 cell)"
+//   <(board ("RaggedHex" (hex 7) cells:{0..3 7..8} cells:{0..3 5..6}) use:Cell)>  
+//   <{ 0 1 5 12 17 23 30 31 38 45 52 59 60 67 73 78 85 89 90}>
+//   "19 Stars (72 cell - ties possible)"
+//  )
+ }
+)
+
+(option "Mode" <Mode> args:{<graphics>}
+ {
+  (item "Standard" <"AllGraphics"> "Standard")*
+  (item "Inspired" <"MarkUninspired"> "Inspired")
+  (item "Pro" < > "Pro")
+ }
+)
+
+(option "Protocol" <Protocol> args:{<type>}
+ {
+  (item "Alternating" < > "Alternating")  
+  (item "Turns 122*" <(then (if (and "NewTurn" (<= 0 (counter))) (moveAgain)))> "Turns 122*")**
+ }
+)
+//------------------------------------------------
+(define "ShowPotentialDeadPieceAtEnd"
+ (show Symbol "starFour.svg"
+  (if ("IsWinByOver" #1 #2) ("SitesOfPossibleFutureCapturesOfByLessEyes" #1 #2)) 
+  fillColour:(colour Black) edgeColour:(colour 0 0 0 100) scale:.55 rotation:45
+)) 
+(define "ShowOwnership"
+ (region Colour
+  (union
+   {
+    ("SitesOfPermanentlyLivePiecesOfNotOf" #1 #2)
+    (sites (values Remembered "#2"))
+  })
+  regionSiteType:Cell #3 scale:1.02
+)) 
+ 
+(define "AllGraphics"
+ ("MarkUninspired")
+ ("ShowOwnership" 1 2 (colour 175 150 125))
+ ("ShowOwnership" 2 1 (colour 231 220 197)) 
+ ("ShowPotentialDeadPieceAtEnd" 1 2)
+ ("ShowPotentialDeadPieceAtEnd" 2 1)
+)
+
+(define "MarkUninspired"
+ (piece Foreground P1 state:1 image:"starFour.svg" fillColour:(colour Black) edgeColour:(colour 0 0 0 100) scale:.55 rotation:45)
+ (piece Foreground P2 state:1 image:"starFour.svg" fillColour:(colour Black) edgeColour:(colour 0 0 0 0) scale:.5 rotation:45)
+)
+
+(metadata
+  (info
+    {
+     }
+  ) 
+  (graphics 
+   {
+    (player Colour P1 (colour 144 39 0))
+    (player Colour P2 (colour Cream))
+    (piece Scale "Ball" .8)
+    (piece Background state:0 image:"Disc" fillColour:(colour 0 0 0 130) edgeColour:(colour 0 0 0 0) scale:.87 offsetX:.3 offsetY:.55 )
+    (board StyleThickness InnerEdges 0.4)
+    (board StyleThickness OuterEdges 0.6)
+    (board StyleThickness InnerVertices 0.45)
+    (board StyleThickness OuterVertices 0.45)
+    (board Colour InnerVertices (colour Grey))
+    (board Colour OuterVertices (colour Grey))
+    (board Colour InnerEdges (colour Black))
+    (board Colour OuterEdges (colour Black))
+    (board Background fillColour:(colour 170 160 140) edgeColour:(colour 0 0 0 0) scale:1.35 )
+    (board Colour Phase0 (colour HumanLight))
+    (show Edges Diagonal Hidden (colour DarkGrey))
+    (show Score P1 "Score2DisplayP1")
+    (show Score P2 "Score2DisplayP2")
+    (region Colour <Board:stars> regionSiteType:Cell (colour DarkBlue) scale:1.02)
+    <Mode:graphics>
+  }
+ )
+ (ai (heuristics (score)))
+)
+
