@@ -491,8 +491,45 @@
 (metadata
     (info
         {
+        (description "This game was inspired by BGG post about 'Leblin' by Bryan Said Moreno. In it he implicitly defined groups as stones connected by lines-of-sight, because normally defined chains lived and died together with any LoS connected group. I had previously worked with LoS groups such as in Netted and N-Mesh but had used crossing opponent LoS to deprive liberties, rather than the simple blocking or filling of open sight-lines.
+            
+        Combining the solution of scattering liberty generating sites across the board with the concept of LoS groups, I came to the following game called Stargazers (see rules).")
+        (rules "Play starts with Red placing a stone on the board. Thereafter, players alternate, placing twice per turn. (For the variant protocol, placing once.) Each placement is as follows:
+            
+            Stones are placed on any empty tan cell, 
+            -- but only if 'inspired' at that location.
+            
+            A stone is 'inspired'
+            -- if it has a view of a star across an empty cell,
+            -- or if it has line-of-sight to an 'inspired' friendly stone (whether or not there is space between them.)
+            
+            - Note this definition is recursive, 'inspiration' can be granted by a star-gazing stone many stones away.
+            
+            There are no stone removals.
+            
+            The game ends when one player cannot place a stone.
+            
+            The player with the least number of 'uninspired' pieces wins. If tied, the last to place wins.
+            
+            Note however that the game can end earlier: Namely, when the assured part of your score is more than the opponent's potential to score.
+            
+            This is because the game is territorial: Fully enclosing enemy stones makes them permanently uninspired, while fully enclosing empty spaces without views to a star makes them unplayable (and thus safe from future captures.)
+            
+            -- The assured part of your score means: the number of opponent's stones that you completely (thus permanently) enclose.
+            
+            -- The opponent's best potential to score means: all your own stones and playable spaces that are not directly connected to one of your permanent eyes. (This does not included any empty spaces that are within an enclosure that lacks star views)
+            
+            The application determines this for you, illustrates it with colors, and marks additional potential dead stone placements at the end of the game.
+            There is an option to turn these off, for practicing the Over-the-Board experience.
+        There are also options for board size, and turn alternation protocol.")
+        (id "4097")
+        (version "1.3.12")
+        (classification "board/space/territory")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "16-05-2023")
         }
-    ) 
+    )
     (graphics 
         {
         (player Colour P1 (colour 144 39 0))

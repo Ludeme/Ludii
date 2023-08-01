@@ -105,8 +105,26 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    (info {
-    })
+    (info
+        {
+        (description "Verge is a territory game of placement and group capture.
+        ")
+        (rules "Verge is a two-player game played on an initially empty hexhex board. 
+            The players take turns placing a stone of their color on an empty hex. 
+            The first player UNABLE to place a stone has WON.
+            • A partitioning group is a group separating two hexes outside the group, in the sense that all paths between the two hexes go through the group.
+            • You're not allowed to place adjacent to a friendly partitioning group.
+            • When a group becomes partitioning, remove all nonpartitioning groups adjacent to it.
+            
+        The pie rule is used to balance the game. It can be turned off in the options.")
+        (id "4198")
+        (version "1.3.12")
+        (classification "board/space/territory")
+        (author "Michael Amundsen")
+        (credit "Michael Amundsen")
+        (date "07-2023")
+        }
+    )
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))

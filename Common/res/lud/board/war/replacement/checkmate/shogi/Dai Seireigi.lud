@@ -570,6 +570,36 @@
     
     (info
         {
+        (description "Dai Seireigi (大精霊棋 <i>dai seireigi</i>, great spirit's game) is a large variant of Seireigi which is essentially a version of Chu Shogi that is designed to be played with the drop rule. Because of this, most unpromoted pieces have a forward bias in their movements, and the Lion move is replaced by an <i>igui</i> move (capture without moving).
+        ")
+        (rules "All rules are the same as in standard Shogi, except as follows.
+            ● The Copper General moves one square vertically or forward, promotes to Great Leopard, which moves as a Silver General (one square diagonally or forward) or jumps two squares in a straight line in any sideways or forward direction.
+            ● Silver Generals promote to Venomous Wolf, which moves one square orthogonally or forward, or slides straight forward.
+            ● Gold Generals promote to Great Elephant, which moves one square in any direction except straight backward, or slides diagonally forward.
+            ● Knights promote to Heavenly Horse, which moves one square in any sideways or forward direction, or jumps to either square that is two squares behind in an adjacent file (column).
+            ● The Flying Cat jumps two squares in a straight line in any forward direction, promotes to Free Pup, which slides vertically or forward, moves up to two squares directly sideways, or one square diagonally backward.
+            ● The Violent Bear moves one square sideways or diagonally backward, or up to two squares diagonally forward, promotes to Great Dream Eater, which slides orthogonally, moves up to two squares diagonally backward, or jumps two squares in a straight line diagonally forward.
+            ● The Poisonous Snake moves one square directly backward or diagonally forward, or up to two squares directly sideways or directly forward, promotes to Free Demon, which slides diagonally, moves up to two squares directly backward, or jumps two squares in a straight line directly sideways or forward.
+            ● Lances promote to Free Tiger, which slides sideways, steps vertically, or jumps to any square that is two squares to either side in an adjacent rank (row).
+            ● The Ram's-Head Soldier slides diagonally forward, promotes to Great Stag, which slides vertically, steps sideways, or jumps to any square that is two squares ahead or behind in an adjacent file (column).
+            ● The Kirin moves one square diagonally or jumps two squares in a straight line orthogonally, promotes to Horned Falcon, which slides in any direction except directly forward, moves one square directly forward, jumps two squares directly forward, or captures without moving one square orthogonally.
+            ● The Phoenix moves one square orthogonally or jumps two squares in a straight line diagonally, promotes to Soaring Eagle, which slides in any direction except diagonally forward, moves one square diagonally forward, jumps two squares diagonally forward, or captures without moving one square diagonally.
+            ● The Side Mover slides sideways or moves one square vertically, promotes to Free Boar, which slides sideways or diagonally.
+            ● The Vertical Mover slides vertically or moves one square sideways, promotes to Flying Ox, which slides vertically or diagonally.
+            ● The Vice General moves one square in any direction except straight backward, does not promote.
+            ● The Queen slides in any orthogonal or diagonal direction, does not promote.
+            ● The Lion makes up to two King steps to another square, stopping at the first capture, or captures without moving one square in any direction, does not promote.
+            ● The promotion zone is the farthest four ranks of the board.
+            ● Perpetual check is allowed.
+        ● In over-the-board play, the minimum number of points needed to not lose during an impasse is 62. Each Lion, Queen, Rook, Bishop, Vertical Mover, Side Mover, Phoenix, or Kirin, promoted or not, scores 5 points for the owning player, and all other pieces except Kings score 1 point each.")
+        (id "4118")
+        (source "<a href=\\"https://www.chessvariants.com/invention/daiseireigi\\" target=\\"_blank\\" class=\\"style1\\" style=\\"color: #0000EE\\" />Dai Seireigi</a>
+        ")
+        (version "1.3.12")
+        (classification "board/war/replacement/checkmate/shogi")
+        (author "A. M. DeWitt")
+        (credit "A. M. DeWitt")
+        (date "2023")
         }
     )
     

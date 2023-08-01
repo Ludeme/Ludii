@@ -39,6 +39,17 @@
     
     (info
         {
+        (description "Catchup is played on an empty 5x5 hexagonal board.")
+        (rules "GROUP - A connected chain of friendly stones.
+            TURN - Initially, Black drops one stone, then for the remaining turns players drop one or two stones of either color. If one makes a group larger than the previously largest group on their turn, their opponent may place up to three stones.
+        GOAL - After the board is full, the player with the largest group wins. If there's a tie, the next largest group is scored, and so on. Draws are impossible")
+        (id "4196")
+        (source "<a href=\"https://www.nickbentley.games/my-best-game-i-suspect-ketchup/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.nickbentley.games</a>")
+        (version "1.3.12")
+        (classification "board/space/group")
+        (author "Nick Bentley")
+        (credit "Noah Morris")
+        (date "2011")
         }
     )
     

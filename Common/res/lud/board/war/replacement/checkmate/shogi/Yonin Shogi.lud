@@ -538,6 +538,16 @@
     
     (info
         {
+        (description "A version of 4-player Shogi.")
+        (rules "Pieces move the same as in normal Shogi. Ranks (rows) and files (columns) are defined relative to the direction of the moving player's pieces. Once a player is mated their Osho is removed, but all their other pieces remain on the board as neutral obstacles. Neutral pieces cannot move until they are captured, but will still give check.
+        ")
+        (id "1586")
+        (source "<a href=\\"http://wikipedia.org/wiki/Yonin_shogi/\\" target=\\"_blank\\" class=\\"style1\\" style=\\"color: #0000EE\\" />Yonin shogi</a>")
+        (version "1.3.12")
+        (classification "board/war/replacement/checkmate/shogi")
+        (author "Ota Mitsuyasu")
+        (credit "Matthew Stephenson (and fixed by RubixOne)")
+        (date "1995")
         }
     )
     

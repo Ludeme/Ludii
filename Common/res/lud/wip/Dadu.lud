@@ -27,16 +27,16 @@
                     )
                 )
                 (and
-                	(if (and // TODO change this with checking if any piece at that site belongs to the other team.
-                			(is Occupied ("NextSiteOnTrack" (value) from:(from)))
-                			(!= (mover) (who at:("NextSiteOnTrack" (value) from:(from))))
-                		)
-                		(and (moveAgain) (set Pending))
-                	)
-	                (move
-	                    (from (from) level:(level))
-	                    (to ("NextSiteOnTrack" (value) from:(from)))
-	                )
+                    (if (and // TODO change this with checking if any piece at that site belongs to the other team.
+                            (is Occupied ("NextSiteOnTrack" (value) from:(from)))
+                            (!= (mover) (who at:("NextSiteOnTrack" (value) from:(from))))
+                        )
+                        (and (moveAgain) (set Pending))
+                    )
+                    (move
+                        (from (from) level:(level))
+                        (to ("NextSiteOnTrack" (value) from:(from)))
+                    )
                 )
             )
         )
@@ -117,54 +117,54 @@
         )
         (phase "Moving"
             (play
-            	(if (is Pending) // Check if this is working well after fixing the opponent team detecting in the piece movement.
-            		(and
-	            		(if (is Mover P1)
-		            		(forEach Level (last To)
-		            			(if
-		            				(= (id "Marker" P2) (what at:("NextSiteOnTrack" (value) from:(from))))
-		            				(move
-		            					(from (last To) level:(level))
-		            					(to (handSite P2))
-		            				)
-		            				(if
-		    	            				(= (id "King" P2) (what at:("NextSiteOnTrack" (value) from:(from))))
-		    	            				(move
-		    	            					(from (last To) level:(level))
-		    	            					(to (handSite P2 1))
-		    	            				)
-		    	            			)
-		            			)
-		            		)
-		            		(forEach Level (last To)
-			            			(if
-			            				(= (id "Marker" P1) (what at:("NextSiteOnTrack" (value) from:(from))))
-			            				(move
-			            					(from (last To) level:(level))
-			            					(to (handSite P1))
-			            				)
-			            				(if
-			    	            				(= (id "King" P1) (what at:("NextSiteOnTrack" (value) from:(from))))
-			    	            				(move
-			    	            					(from (last To) level:(level))
-			    	            					(to (handSite P1 1))
-			    	            				)
-			    	            			)
-			            			)
-			            		)
-	            		)
-	            		(moveAgain)
-            		)
-	                (if (and (= 1 (value Player Mover)) (can Move ("UsingThrows")))
-	                    ("UsingThrows")
-	                    (move Pass (then (forget Value All)))
-	                    (then 
-	                        (if (and (= 1 (value Player Mover)) (can Move ("UsingThrows")))
-	                            (moveAgain)
-	                            (forget Value All)
-	                        )
-	                    )
-	                )
+                (if (is Pending) // Check if this is working well after fixing the opponent team detecting in the piece movement.
+                    (and
+                        (if (is Mover P1)
+                            (forEach Level (last To)
+                                (if
+                                    (= (id "Marker" P2) (what at:("NextSiteOnTrack" (value) from:(from))))
+                                    (move
+                                        (from (last To) level:(level))
+                                        (to (handSite P2))
+                                    )
+                                    (if
+                                        (= (id "King" P2) (what at:("NextSiteOnTrack" (value) from:(from))))
+                                        (move
+                                            (from (last To) level:(level))
+                                            (to (handSite P2 1))
+                                        )
+                                    )
+                                )
+                            )
+                            (forEach Level (last To)
+                                (if
+                                    (= (id "Marker" P1) (what at:("NextSiteOnTrack" (value) from:(from))))
+                                    (move
+                                        (from (last To) level:(level))
+                                        (to (handSite P1))
+                                    )
+                                    (if
+                                        (= (id "King" P1) (what at:("NextSiteOnTrack" (value) from:(from))))
+                                        (move
+                                            (from (last To) level:(level))
+                                            (to (handSite P1 1))
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        (moveAgain)
+                    )
+                    (if (and (= 1 (value Player Mover)) (can Move ("UsingThrows")))
+                        ("UsingThrows")
+                        (move Pass (then (forget Value All)))
+                        (then 
+                            (if (and (= 1 (value Player Mover)) (can Move ("UsingThrows")))
+                                (moveAgain)
+                                (forget Value All)
+                            )
+                        )
+                    )
                 )
             )
             (nextPhase Mover 

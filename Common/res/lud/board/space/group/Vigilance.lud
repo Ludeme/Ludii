@@ -270,34 +270,72 @@
 (metadata
     (info
         {
-        }
-    ) 
-    
-    (graphics 
-        {
-        (player Colour P1 (colour 120 36 0))
-        (player Colour P2 (colour Cream))
-        (piece Background image:"Disc" fillColour:(colour 0 0 0 120) edgeColour:(colour 0 0 0 0) scale:.97 offsetX:.26 offsetY:.3 )
-        (board StyleThickness InnerEdges 0.4)
-        (board StyleThickness OuterEdges 0.6)
-        (board StyleThickness InnerVertices 0.45)
-        (board StyleThickness OuterVertices 0.45)
-        (board Colour InnerVertices (colour Grey))
-        (board Colour OuterVertices (colour Grey))
-        (board Colour InnerEdges (colour Black))
-        (board Colour OuterEdges (colour Black))
-        (board Background fillColour:(colour 170 160 140) edgeColour:(colour Grey) scale:1.3 )
-        (board Colour Phase0 (colour HumanLight))
-        (show Edges Diagonal Hidden (colour DarkGrey))
-        (show Piece Value "Disc" Middle)
-        (region Colour 
-            ("SitesAccessibleOnlyTo" 2) regionSiteType:Cell (colour 160 120 100)
-        )
-        (region Colour 
-            ("SitesAccessibleOnlyTo" 1) regionSiteType:Cell (colour VeryLightGrey) scale:1.02
-        )
-        }
+        (description "My first Line-of-Sight game was called Purview, invented in 23-26 APR 2020. It originally was: place a piece out-of-sight then slide a piece, then capture the enclosed pieces, - last to move wins. This was later modified to be first slide, then place out of site, and started with a two piece placement pie. 
+            
+            Shortly after inventing Purview, the game evolved into Shaka, which became a number of place-xor-move variants with constraints on sliding the piece; namely, the destination site must be closer to an enemy than the origin site. One version of Shaka under the name Epoxy has been scripted for Ludii.
+            
+            After neglecting Purview for some time, I have three years later,  come back to it with the use of perforated boards that reduce the cognitive load of line-of-sight games. 
+            
+            Capture turned out not to be essential, however the game is more exciting when it involves captures that the opponent must re-enter onto the board on the next turn. This capture rule keeps the game finite, and makes the nature and advantage of making captures evolve during the course of a play. 
+            
+        The game is presented here under a new name, Vigilance. - The option without capture is also included.")
+        (rules "Goal: Be the last player able to play,
+            
+            This is determined by whether the mover has blocked off more than half of the empty cells from his opponent, taking into account stones awaiting placement.
+            
+            Definitions:
+            -- A 'chain' is all the stones connected to a given stone by any series of steps from stone to stone of the same color, along the movement directions of the board.
+            
+            -- 'Placement liberties' are sites that are not in line-of-sight of an opponent's stone, along the movement directions of the board.
+            
+            -- A 'dead chain' is a chain with no adjacent placement liberties.
+            
+            Play:        
+            Play starts with Red placing 2 red stones and then a white stone, on any separate sites of the board as a 'pie offer.' 
+            
+            White then either takes a standard turn, or exchanges the stones by choosing to 'Decline and Swap'.
+            
+            A turn consists of the following actions, in order:
+        1) Slide a stone of your color,
+    2) Capture and returning the stones of every opponent's dead chain (if any) to the opponent,
+3) Place a new stone onto one of your placement liberties.
+4) Place each captured stone that you received from the opponent's turn (if any) onto placement liberties.
+
+Turns alternate until the moving player's stones block the opponent from reaching half of the remaining empty sites.")
+(id "4200")
+(version "1.3.12")
+(classification "board/space/group")
+(author "Dale W. Walton")
+(credit "Dale W. Walton")
+(date "23-04-2023")
+}
+)
+
+(graphics 
+    {
+    (player Colour P1 (colour 120 36 0))
+    (player Colour P2 (colour Cream))
+    (piece Background image:"Disc" fillColour:(colour 0 0 0 120) edgeColour:(colour 0 0 0 0) scale:.97 offsetX:.26 offsetY:.3 )
+    (board StyleThickness InnerEdges 0.4)
+    (board StyleThickness OuterEdges 0.6)
+    (board StyleThickness InnerVertices 0.45)
+    (board StyleThickness OuterVertices 0.45)
+    (board Colour InnerVertices (colour Grey))
+    (board Colour OuterVertices (colour Grey))
+    (board Colour InnerEdges (colour Black))
+    (board Colour OuterEdges (colour Black))
+    (board Background fillColour:(colour 170 160 140) edgeColour:(colour Grey) scale:1.3 )
+    (board Colour Phase0 (colour HumanLight))
+    (show Edges Diagonal Hidden (colour DarkGrey))
+    (show Piece Value "Disc" Middle)
+    (region Colour 
+        ("SitesAccessibleOnlyTo" 2) regionSiteType:Cell (colour 160 120 100)
     )
-    //  (ai (heuristics (score)))
+    (region Colour 
+        ("SitesAccessibleOnlyTo" 1) regionSiteType:Cell (colour VeryLightGrey) scale:1.02
+    )
+    }
+)
+//  (ai (heuristics (score)))
 )
 
