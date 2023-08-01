@@ -16,7 +16,7 @@
                 (or {
                     ("PlaceUnrestrictedPiece" Next) 
                     ("PlacePawn" Next ifAfterwards:(not ("IsInCheck" "King" Mover)))
-                    ("PlaceRamsHeadSoldier" Next)
+                    ("PlaceRamsHeadSoldier" Next) 
                     ("PlaceFlyingCat" Next) 
                     (forEach Piece Next) 
                 })
@@ -28,7 +28,7 @@
 
 (define "PlaceUnrestrictedPiece"
     (move 
-        (from (sites Occupied by:#1 container:"Hand" components:{"CopperGeneral" "SilverGeneral" "GoldGeneral" "ViolentBear" "PoisonousSnake" "Kirin" "Phoenix" "SideMover" "VerticalMover" "ViceGeneral" "Queen" "Lion"})) 
+        (from (sites Occupied by:#1 container:"Hand" components:{"CopperGeneral" "SilverGeneral" "GoldGeneral" "EnchantedBadger" "RunningRabbit" "Kirin" "Phoenix" "SideMover" "VerticalMover" "ViceGeneral" "Queen" "Lion"})) 
         (to (sites Empty))
     ) 
 )
@@ -155,7 +155,29 @@
     )
 )
 
-(define "IguiMove"
+(define "TwoStepPathToEmpty" 
+    (forEach Direction 
+        #1 
+        (to 
+            if:(is Empty (to)) 
+            (apply 
+                (forEach Direction 
+                    (from (to)) 
+                    #2 
+                    (if (is Empty (to)) 
+                        (move 
+                            (from) 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        #3
+    )
+)
+
+(define "StingingMove"
     (move Step
         #1 
         (to 
@@ -163,9 +185,12 @@
             ("CapturePiece")
         ) 
         (then 
-            (fromTo 
-                (from (last To)) 
-                (to (last From))
+            (step
+                (from (last To))
+                #2
+                (to 
+                    if:(is Empty (to)) 
+                )	
             )
         )
     )
@@ -192,16 +217,16 @@
                 )
             )
         )     
-        
+
         // Copper General
         (piece "CopperGeneral" Each ("StepMove" (directions {Forward Backward FL FR}) "CanPromote"))
-        
+
         // Silver General
         (piece "SilverGeneral" Each ("StepMove" (directions {Forward BL BR FL FR}) "CanPromote"))
-        
+
         // Gold General
         (piece "GoldGeneral" Each ("StepMove" (directions {Forward Backward Leftward Rightward FL FR}) "CanPromote"))
-        
+
         // Flying Cat
         (piece "FlyingCat" Each 
             ("TwoStepLeap" (directions {Forward FL FR}) Forward
@@ -215,13 +240,10 @@
                 )
             )
         )
-        
-        // Violent Bear
-        (piece "ViolentBear" Each (or ("StepMove" (directions {Leftward Rightward BL BR FL FR}) "CanPromote") ("TwoStepPath"  (directions {FL FR}) Forward "CanPromote")))
-        
-        // Poisonous Snake
-        (piece "PoisonousSnake" Each (or ("StepMove" (directions {Forward Leftward Rightward Backward FL FR}) "CanPromote") ("TwoStepPath" (directions {Forward Leftward Rightward}) Forward "CanPromote")))
-        
+
+        // Enchanted Badger
+        (piece "EnchantedBadger" Each (or {("StepMove" (directions {Leftward Rightward BL BR FL FR}) "CanPromote") ("TwoStepLeap" Leftward FR "CanPromote") ("TwoStepLeap" Rightward FL "CanPromote")}))
+
         // Ram's-Head Soldier
         (piece "RamsHeadSoldier" Each 
             ("SlideMove" (directions {FL FR}) 
@@ -235,67 +257,108 @@
                 )
             )
         )  
-        
+
+        // Running Rabbit
+        (piece "RunningRabbit" Each (or ("StepMove" (directions {Backward BL BR FL FR}) "CanPromote") ("SlideMove" Forward "CanPromote")))
+
         // Kirin
         (piece "Kirin" Each (or ("StepMove" Diagonal "CanPromote") ("TwoStepLeap" Orthogonal Forward "CanPromote")))
-        
+
         // Phoenix
         (piece "Phoenix" Each (or ("StepMove" Orthogonal "CanPromote") ("TwoStepLeap" Diagonal Forward "CanPromote")))
-        
+
         // Side Mover
         (piece "SideMover" Each (or ("StepMove" (directions {Forward Backward}) "CanPromote") ("SlideMove" (directions {Leftward Rightward}) "CanPromote")))
-        
+
         // Vertical Mover
         (piece "VerticalMover" Each (or ("StepMove" (directions {Leftward Rightward}) "CanPromote") ("SlideMove" (directions {Forward Backward}) "CanPromote")))
-        
+
         // Vice General
-        (piece "ViceGeneral" Each ("StepMove" (directions {Forward Leftward Rightward BL BR FL FR}) "CanPromote"))
-        
+        (piece "ViceGeneral" Each ("StepMove" (directions {Forward Leftward Rightward BL BR FL FR})))
+
         // Queen
         (piece "Queen" Each ("SlideMove"))
-        
+
         // Lion
-        (piece "Lion" Each (or {("StepMove") ("TwoStepPath" Adjacent (directions {Forward Leftward Rightward FL FR})) ("IguiMove")}))
-        
+        (piece "Lion" Each (or {
+            ("StepMove") 
+            ("TwoStepPath" Orthogonal (directions {Forward FL FR})) 
+            ("TwoStepPath" Diagonal (directions {Forward Leftward Rightward FL FR}))
+            ("StingingMove" Adjacent N)
+            ("StingingMove" Adjacent NE)
+            ("StingingMove" Adjacent E)
+            ("StingingMove" Adjacent SE)
+            ("StingingMove" Adjacent S)
+            ("StingingMove" Adjacent SW)
+            ("StingingMove" Adjacent W)
+            ("StingingMove" Adjacent NW)
+        }))
+
         // King
         (piece "King" Each ("StepMove"))
-        
+
         // Promoted Pawn
-        ("ShogiGold" "Tokin" "CapturePiece")
-        
+        (piece "Tokin" Each ("StepMove" (directions {Forward Backward Leftward Rightward FL FR})))
+
         // Promoted Copper General
         (piece "GreatLeopard" Each (or ("StepMove" (directions {Forward BL BR FL FR})) ("TwoStepLeap" (directions {Forward Leftward Rightward FL FR}) Forward)))
-        
+ 
         // Promoted Silver General
-        (piece "VenomousWolf" Each (or ("SlideMove" Forward) ("StepMove" (directions {FL FR Leftward Rightward Backward}))))
-        
+        (piece "RunningWolf" Each (or ("SlideMove" Forward) ("StepMove" (directions {FL FR Leftward Rightward Backward}))))
+
         // Promoted Gold General
         (piece "GreatElephant" Each (or ("SlideMove" (directions {FL FR})) ("StepMove" (directions {Forward Leftward Rightward BL BR}))))
-        
+
         // Promoted Flying Cat
-        (piece "FreePup" Each (or {("SlideMove" (directions {Forward Backward FL FR})) ("TwoStepPath" (directions {Leftward Rightward}) Forward) ("StepMove" (directions {Leftward Rightward BL BR}))}))
-        
-        // Promoted Violent Bear
-        (piece "GreatDreamEater" Each (or {("StepMove" (directions {BL BR})) ("SlideMove" Orthogonal) ("TwoStepPath" (directions {BL BR}) Forward) ("TwoStepLeap" (directions {FL FR}) Forward)}))
-        
-        // Promoted Poisonous Snake
-        (piece "FreeDemon" Each (or {("StepMove" Backward) ("SlideMove" Diagonal) ("TwoStepPath" Backward Forward) ("TwoStepLeap" (directions {Forward Leftward Rightward}) Forward)}))
-        
+        (piece "FreePup" Each (or {("SlideMove" Forward) ("TwoStepLeap" Orthogonal Forward) ("StepMove" (directions {Backward Leftward Rightward}))}))
+
+        // Promoted Enchanted Badger
+        (piece "Dove" Each (or {("StepMove" (directions {Backward BL BR})) ("SlideMove" (directions {Forward FL FR})) ("TwoStepLeap" Leftward FL) ("TwoStepLeap" Rightward FR)}))
+
         // Promoted Ram's-Head Soldier
         (piece "GreatStag" Each (or {("SlideMove" (directions {Forward Backward})) ("TwoStepLeap" (directions {Forward Backward}) (directions {FL FR})) ("StepMove" (directions {Leftward Rightward}))}))
-        
+
+        // Promoted Running Rabbit
+        (piece "TreacherousFox" Each (or {("SlideMove" (directions {FL FR})) ("TwoStepLeap" Diagonal Forward) ("StepMove" (directions {BL BR}))}))
+
         // Promoted Kirin
-        (piece "HornedFalcon" Each (or {("StepMove" Forward) ("SlideMove" (directions {Backward Leftward Rightward BL BR FL FR})) ("TwoStepLeap" Forward Forward) ("IguiMove" Orthogonal)}))
-        
+        (piece "HornedFalcon" Each (or {
+            ("StepMove" Forward) 
+            ("SlideMove" (directions {Backward Leftward Rightward BL BR FL FR})) 
+            ("TwoStepLeap" Orthogonal Forward) 
+            ("TwoStepPathToEmpty" Forward (directions {FL FR}))
+            ("StingingMove" Forward N)
+            ("StingingMove" Forward NE)
+            ("StingingMove" Forward E)
+            ("StingingMove" Forward SE)
+            ("StingingMove" Forward S)
+            ("StingingMove" Forward SW)
+            ("StingingMove" Forward W)
+            ("StingingMove" Forward NW)
+        }))
+
         // Promoted Phoenix
-        (piece "SoaringEagle" Each (or {("StepMove" (directions {FL FR})) ("SlideMove" (directions {Forward Leftward Rightward Backward BL BR})) ("TwoStepLeap" (directions {FL FR}) Forward) ("IguiMove" Diagonal)}))
-        
+        (piece "SoaringEagle" Each (or {
+            ("StepMove" (directions {FL FR})) 
+            ("SlideMove" (directions {Forward Leftward Rightward Backward BL BR})) 
+            ("TwoStepLeap" Diagonal Forward) 
+            ("TwoStepPathToEmpty" (directions {FL FR}) (directions {Leftward Rightward FL FR}))
+            ("StingingMove" (directions {FL FR}) N)
+            ("StingingMove" (directions {FL FR}) NE)
+            ("StingingMove" (directions {FL FR}) E)
+            ("StingingMove" (directions {FL FR}) SE)
+            ("StingingMove" (directions {FL FR}) S)
+            ("StingingMove" (directions {FL FR}) SW)
+            ("StingingMove" (directions {FL FR}) W)
+            ("StingingMove" (directions {FL FR}) NW)
+        }))
+
         // Promoted Side Mover
         (piece "FreeBoar" Each ("SlideMove" (directions {Rightward Leftward BL BR FL FR})))
-        
+
         // Promoted Vertical Mover
         (piece "FlyingOx" Each ("SlideMove" (directions {Forward Backward BL BR FL FR})))
-        
+
         (regions "LastRankP1" P1 (sites Top))
         (regions "LastRankP2" P2 (sites Bottom))
         (regions "TwoFurthestRankP1" P1 (expand (sites Top)))
@@ -308,9 +371,9 @@
             (pair (id "SilverGeneral" P1) (handSite P2 2)) (pair (id "SilverGeneral" P2) (handSite P1 2)) 
             (pair (id "GoldGeneral" P1) (handSite P2 3)) (pair (id "GoldGeneral" P2) (handSite P1 3)) 
             (pair (id "FlyingCat" P1) (handSite P2 4)) (pair (id "FlyingCat" P2) (handSite P1 4)) 
-            (pair (id "ViolentBear" P1) (handSite P2 5)) (pair (id "ViolentBear" P2) (handSite P1 5)) 
-            (pair (id "PoisonousSnake" P1) (handSite P2 6)) (pair (id "PoisonousSnake" P2) (handSite P1 6)) 
-            (pair (id "RamsHeadSoldier" P1) (handSite P2 7)) (pair (id "RamsHeadSoldier" P2) (handSite P1 7)) 
+            (pair (id "EnchantedBadger" P1) (handSite P2 5)) (pair (id "EnchantedBadger" P2) (handSite P1 5)) 
+            (pair (id "RamsHeadSoldier" P1) (handSite P2 6)) (pair (id "RamsHeadSoldier" P2) (handSite P1 6)) 
+            (pair (id "RunningRabbit" P1) (handSite P2 7)) (pair (id "RunningRabbit" P2) (handSite P1 7)) 
             (pair (id "Kirin" P1) (handSite P2 8)) (pair (id "Kirin" P2) (handSite P1 8)) 
             (pair (id "Phoenix" P1) (handSite P2 9)) (pair (id "Phoenix" P2) (handSite P1 9)) 
             (pair (id "SideMover" P1) (handSite P2 10)) (pair (id "SideMover" P2) (handSite P1 10)) 
@@ -318,15 +381,15 @@
             (pair (id "ViceGeneral" P1) (handSite P2 12)) (pair (id "ViceGeneral" P2) (handSite P1 12)) 
             (pair (id "Queen" P1) (handSite P2 13)) (pair (id "Queen" P2) (handSite P1 13)) 
             (pair (id "Lion" P1) (handSite P2 14)) (pair (id "Lion" P2) (handSite P1 14)) 
-            
+
             (pair (id "Tokin" P1) (handSite P2)) (pair (id "Tokin" P2) (handSite P1)) 
             (pair (id "GreatLeopard" P1) (handSite P2 1)) (pair (id "GreatLeopard" P2) (handSite P1 1)) 
-            (pair (id "VenomousWolf" P1) (handSite P2 2)) (pair (id "VenomousWolf" P2) (handSite P1 2)) 
+            (pair (id "RunningWolf" P1) (handSite P2 2)) (pair (id "RunningWolf" P2) (handSite P1 2)) 
             (pair (id "GreatElephant" P1) (handSite P2 3)) (pair (id "GreatElephant" P2) (handSite P1 3)) 
             (pair (id "FreePup" P1) (handSite P2 4)) (pair (id "FreePup" P2) (handSite P1 4)) 
-            (pair (id "GreatDreamEater" P1) (handSite P2 5)) (pair (id "GreatDreamEater" P2) (handSite P1 5)) 
-            (pair (id "FreeDemon" P1) (handSite P2 6)) (pair (id "FreeDemon" P2) (handSite P1 6)) 
-            (pair (id "GreatStag" P1) (handSite P2 7)) (pair (id "GreatStag" P2) (handSite P1 7)) 
+            (pair (id "Dove" P1) (handSite P2 5)) (pair (id "Dove" P2) (handSite P1 5)) 
+            (pair (id "GreatStag" P1) (handSite P2 6)) (pair (id "GreatStag" P2) (handSite P1 6)) 
+            (pair (id "TreacherousFox" P1) (handSite P2 7)) (pair (id "TreacherousFox" P2) (handSite P1 7)) 
             (pair (id "HornedFalcon" P1) (handSite P2 8)) (pair (id "HornedFalcon" P2) (handSite P1 8)) 
             (pair (id "SoaringEagle" P1) (handSite P2 9)) (pair (id "SoaringEagle" P2) (handSite P1 9)) 
             (pair (id "FreeBoar" P1) (handSite P2 10)) (pair (id "FreeBoar" P2) (handSite P1 10)) 
@@ -338,9 +401,9 @@
             (pair (id "SilverGeneral" P1) (id "SilverGeneral" P2)) (pair (id "SilverGeneral" P2) (id "SilverGeneral" P1)) 
             (pair (id "GoldGeneral" P1) (id "GoldGeneral" P2)) (pair (id "GoldGeneral" P2) (id "GoldGeneral" P1)) 
             (pair (id "FlyingCat" P1) (id "FlyingCat" P2)) (pair (id "FlyingCat" P2) (id "FlyingCat" P1)) 
-            (pair (id "ViolentBear" P1) (id "ViolentBear" P2)) (pair (id "ViolentBear" P2) (id "ViolentBear" P1))
-            (pair (id "PoisonousSnake" P1) (id "PoisonousSnake" P2)) (pair (id "PoisonousSnake" P2) (id "PoisonousSnake" P1))
+            (pair (id "EnchantedBadger" P1) (id "EnchantedBadger" P2)) (pair (id "EnchantedBadger" P2) (id "EnchantedBadger" P1))
             (pair (id "RamsHeadSoldier" P1) (id "RamsHeadSoldier" P2)) (pair (id "RamsHeadSoldier" P2) (id "RamsHeadSoldier" P1)) 
+            (pair (id "RunningRabbit" P1) (id "RunningRabbit" P2)) (pair (id "RunningRabbit" P2) (id "RunningRabbit" P1))
             (pair (id "Kirin" P1) (id "Kirin" P2)) (pair (id "Kirin" P2) (id "Kirin" P1))
             (pair (id "Phoenix" P1) (id "Phoenix" P2)) (pair (id "Phoenix" P2) (id "Phoenix" P1))
             (pair (id "SideMover" P1) (id "SideMover" P2)) (pair (id "SideMover" P2) (id "SideMover" P1)) 
@@ -348,15 +411,15 @@
             (pair (id "ViceGeneral" P1) (id "ViceGeneral" P2)) (pair (id "ViceGeneral" P2) (id "ViceGeneral" P1)) 
             (pair (id "Queen" P1) (id "Queen" P2)) (pair (id "Queen" P2) (id "Queen" P1)) 
             (pair (id "Lion" P1) (id "Lion" P2)) (pair (id "Lion" P2) (id "Lion" P1)) 
-            
+
             (pair (id "Tokin" P1) (id "Pawn" P2)) (pair (id "Tokin" P2) (id "Pawn" P1)) 
             (pair (id "GreatLeopard" P1) (id "CopperGeneral" P2)) (pair (id "GreatLeopard" P2) (id "CopperGeneral" P1)) 
-            (pair (id "VenomousWolf" P1) (id "SilverGeneral" P2)) (pair (id "VenomousWolf" P2) (id "SilverGeneral" P1)) 
+            (pair (id "RunningWolf" P1) (id "SilverGeneral" P2)) (pair (id "RunningWolf" P2) (id "SilverGeneral" P1)) 
             (pair (id "GreatElephant" P1) (id "GoldGeneral" P2)) (pair (id "GreatElephant" P2) (id "GoldGeneral" P1)) 
             (pair (id "FreePup" P1) (id "FlyingCat" P2)) (pair (id "FreePup" P2) (id "FlyingCat" P1)) 
-            (pair (id "GreatDreamEater" P1) (id "ViolentBear" P2)) (pair (id "GreatDreamEater" P2) (id "ViolentBear" P1))
-            (pair (id "FreeDemon" P1) (id "PoisonousSnake" P2)) (pair (id "FreeDemon" P2) (id "PoisonousSnake" P1))
+            (pair (id "Dove" P1) (id "EnchantedBadger" P2)) (pair (id "Dove" P2) (id "EnchantedBadger" P1))
             (pair (id "GreatStag" P1) (id "RamsHeadSoldier" P2)) (pair (id "GreatStag" P2) (id "RamsHeadSoldier" P1)) 
+            (pair (id "TreacherousFox" P1) (id "RunningRabbit" P2)) (pair (id "TreacherousFox" P2) (id "RunningRabbit" P1))
             (pair (id "HornedFalcon" P1) (id "Kirin" P2)) (pair (id "HornedFalcon" P2) (id "Kirin" P1))
             (pair (id "SoaringEagle" P1) (id "Phoenix" P2)) (pair (id "SoaringEagle" P2) (id "Phoenix" P1))
             (pair (id "FreeBoar" P1) (id "SideMover" P2)) (pair (id "FreeBoar" P2) (id "SideMover" P1)) 
@@ -365,12 +428,12 @@
         (map "Promoted" { 
             (pair (id "Pawn" P1) (id "Tokin" P1)) (pair (id "Pawn" P2) (id "Tokin" P2)) 
             (pair (id "CopperGeneral" P1) (id "GreatLeopard" P1)) (pair (id "CopperGeneral" P2) (id "GreatLeopard" P2)) 
-            (pair (id "SilverGeneral" P1) (id "VenomousWolf" P1)) (pair (id "SilverGeneral" P2) (id "VenomousWolf" P2)) 
+            (pair (id "SilverGeneral" P1) (id "RunningWolf" P1)) (pair (id "SilverGeneral" P2) (id "RunningWolf" P2)) 
             (pair (id "GoldGeneral" P1) (id "GreatElephant" P1)) (pair (id "GoldGeneral" P2) (id "GreatElephant" P2)) 
             (pair (id "FlyingCat" P1) (id "FreePup" P1)) (pair (id "FlyingCat" P2) (id "FreePup" P2)) 
-            (pair (id "ViolentBear" P1) (id "GreatDreamEater" P1)) (pair (id "ViolentBear" P2) (id "GreatDreamEater" P2))
-            (pair (id "PoisonousSnake" P1) (id "FreeDemon" P1)) (pair (id "PoisonousSnake" P2) (id "FreeDemon" P2))
+            (pair (id "EnchantedBadger" P1) (id "Dove" P1)) (pair (id "EnchantedBadger" P2) (id "Dove" P2))
             (pair (id "RamsHeadSoldier" P1) (id "GreatStag" P1)) (pair (id "RamsHeadSoldier" P2) (id "GreatStag" P2)) 
+            (pair (id "RunningRabbit" P1) (id "TreacherousFox" P1)) (pair (id "RunningRabbit" P2) (id "TreacherousFox" P2))
             (pair (id "Kirin" P1) (id "HornedFalcon" P1)) (pair (id "Kirin" P2) (id "HornedFalcon" P2))
             (pair (id "Phoenix" P1) (id "SoaringEagle" P1)) (pair (id "Phoenix" P2) (id "SoaringEagle" P2))
             (pair (id "SideMover" P1) (id "FreeBoar" P1)) (pair (id "SideMover" P2) (id "FreeBoar" P2)) 
@@ -382,8 +445,8 @@
     
     (rules 
         (start { 
-            (place "King1" coord:"E1") (place "ViceGeneral1" coord:"F1") (place "GoldGeneral1" {"D1" "G1"}) (place "SilverGeneral1" {"C1" "H1"}) (place "CopperGeneral1" {"B1" "I1"}) (place "FlyingCat1" {"B2" "I2"}) (place "RamsHeadSoldier1" {"A1" "J1"}) (place "PoisonousSnake1" {"A3" "J3"}) (place "ViolentBear1" {"C3" "H3"}) (place "VerticalMover1" coord:"D2") (place "Kirin1" coord:"E2") (place "Lion1" coord:"E3") (place "Queen1" coord:"F3") (place "Phoenix1" coord:"F2") (place "SideMover1" coord:"G2") (place "Pawn1" (sites Row 3))
-            (place "King2" coord:"F10") (place "ViceGeneral2" coord:"E10") (place "GoldGeneral2" {"D10" "G10"}) (place "SilverGeneral2" {"C10" "H10"}) (place "CopperGeneral2" {"B10" "I10"}) (place "FlyingCat2" {"B9" "I9"}) (place "RamsHeadSoldier2" {"A10" "J10"}) (place "PoisonousSnake2" {"A8" "J8"}) (place "ViolentBear2" {"C8" "H8"}) (place "VerticalMover2" coord:"G9") (place "Kirin2" coord:"F9") (place "Lion2" coord:"F8") (place "Queen2" coord:"E8") (place "Phoenix2" coord:"E9") (place "SideMover2" coord:"D9") (place "Pawn2" (sites Row 6))
+            (place "King1" coord:"E1") (place "ViceGeneral1" coord:"F1") (place "GoldGeneral1" {"D1" "G1"}) (place "SilverGeneral1" {"C1" "H1"}) (place "CopperGeneral1" {"B1" "I1"}) (place "RamsHeadSoldier1" {"A1" "J1"}) (place "FlyingCat1" {"A2" "J2"}) (place "EnchantedBadger1" {"C2" "H2"}) (place "Kirin1" coord:"E2") (place "Phoenix1" coord:"F2") (place "RunningRabbit1" {"B3" "I3"}) (place "VerticalMover1" coord:"D3") (place "Lion1" coord:"E3") (place "Queen1" coord:"F3") (place "SideMover1" coord:"G3") (place "Pawn1" (sites Row 3))
+            (place "King2" coord:"F10") (place "ViceGeneral2" coord:"E10") (place "GoldGeneral2" {"D10" "G10"}) (place "SilverGeneral2" {"C10" "H10"}) (place "CopperGeneral2" {"B10" "I10"}) (place "RamsHeadSoldier2" {"A10" "J10"}) (place "FlyingCat2" {"A9" "J9"}) (place "EnchantedBadger2" {"C9" "H9"}) (place "Kirin2" coord:"F9") (place "Phoenix2" coord:"E9") (place "RunningRabbit2" {"B8" "I8"}) (place "VerticalMover2" coord:"G8") (place "Lion2" coord:"F8") (place "Queen2" coord:"E8") (place "SideMover2" coord:"D8") (place "Pawn2" (sites Row 6))
         })
         
         (play
@@ -423,33 +486,6 @@
     
     (info
         {
-        (description "Chu Seireigi (中精霊棋 <i>chū seireigi</i>, middle spirit's game) is a large variant of Seireigi which is essentially a middle ground between that game and Dai Seireigi. It includes all the pieces in Dai Seireigi that are not present in normal Seireigi, as well as the stepping pieces from the latter game.
-        ")
-        (rules "All rules are the same as in standard Shogi, except as follows.
-            ● The Copper General moves one square vertically or forward, promotes to Great Leopard, which moves as a Silver General (one square diagonally or forward) or jumps two squares in a straight line in any sideways or forward direction.
-            ● Silver Generals promote to Venomous Wolf, which moves one square orthogonally or forward, or slides straight forward.
-            ● Gold Generals promote to Great Elephant, which moves one square in any direction except straight backward, or slides diagonally forward.
-            ● The Flying Cat jumps two squares in a straight line in any forward direction, promotes to Free Pup, which slides vertically or forward, moves up to two squares directly sideways, or one square diagonally backward.
-            ● The Violent Bear moves one square sideways or diagonally backward, or up to two squares diagonally forward, promotes to Great Dream Eater, which slides orthogonally, moves up to two squares diagonally backward, or jumps two squares in a straight line diagonally forward.
-            ● The Poisonous Snake moves one square directly backward or diagonally forward, or up to two squares directly sideways or directly forward, promotes to Free Demon, which slides diagonally, moves up to two squares directly backward, or jumps two squares in a straight line directly sideways or forward.
-            ● The Ram's-Head Soldier slides diagonally forward, promotes to Great Stag, which slides vertically, steps sideways, or jumps to any square that is two squares ahead or behind in an adjacent file (column).
-            ● The Kirin moves one square diagonally or jumps two squares in a straight line orthogonally, promotes to Horned Falcon, which slides in any direction except directly forward, moves one square directly forward, jumps two squares directly forward, or captures without moving one square orthogonally.
-            ● The Phoenix moves one square orthogonally or jumps two squares in a straight line diagonally, promotes to Soaring Eagle, which slides in any direction except diagonally forward, moves one square diagonally forward, jumps two squares diagonally forward, or captures without moving one square diagonally.
-            ● The Side Mover slides sideways or moves one square vertically, promotes to Free Boar, which slides sideways or diagonally.
-            ● The Vertical Mover slides vertically or moves one square sideways, promotes to Flying Ox, which slides vertically or diagonally.
-            ● The Vice General moves one square in any direction except straight backward, does not promote.
-            ● The Queen slides in any orthogonal or diagonal direction, does not promote.
-            ● The Lion makes up to two King steps to another square, stopping at the first capture, or captures without moving one square in any direction, does not promote.
-            ● The promotion zone is the farthest three ranks of the board.
-            ● Perpetual check is allowed.
-        ● In over-the-board play, the minimum number of points needed to not lose during an impasse is 47. Each Lion, Queen, Vertical Mover, Side Mover, Phoenix, or Kirin, promoted or not, scores 5 points for the owning player, and all other pieces except Kings score 1 point each.")
-        (id "4187")
-        (source "<a href=\"https://www.chessvariants.com/invention/chuseireigi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.chessvariants.com</a>")
-        (version "1.3.11")
-        (classification "board/war/replacement/checkmate/shogi")
-        (author "A. M. DeWitt")
-        (credit "A. M. DeWitt")
-        (date "2023")
         }
     )
     
@@ -461,12 +497,12 @@
         (piece Rotate P2 degrees:180)
         (piece Colour "Tokin" strokeColour:(colour Red))
         (piece Colour "GreatLeopard" strokeColour:(colour Red))
-        (piece Colour "VenomousWolf" strokeColour:(colour Red))
+        (piece Colour "RunningWolf" strokeColour:(colour Red))
         (piece Colour "GreatElephant" strokeColour:(colour Red))
         (piece Colour "FreePup" strokeColour:(colour Red))
-        (piece Colour "GreatDreamEater" strokeColour:(colour Red))
-        (piece Colour "FreeDemon" strokeColour:(colour Red))
+        (piece Colour "Dove" strokeColour:(colour Red))
         (piece Colour "GreatStag" strokeColour:(colour Red))
+        (piece Colour "TreacherousFox" strokeColour:(colour Red))
         (piece Colour "HornedFalcon" strokeColour:(colour Red))
         (piece Colour "SoaringEagle" strokeColour:(colour Red))
         (piece Colour "FreeBoar" strokeColour:(colour Red))
