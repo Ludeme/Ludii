@@ -233,16 +233,16 @@
                 )
             )
         )     
-
+        
         // Copper General
         (piece "CopperGeneral" Each ("StepMove" (directions {Forward Backward FL FR}) "CanPromote"))
-
+        
         // Silver General
         (piece "SilverGeneral" Each ("StepMove" (directions {Forward BL BR FL FR}) "CanPromote"))
-
+        
         // Gold General
         (piece "GoldGeneral" Each ("StepMove" (directions {Forward Backward Leftward Rightward FL FR}) "CanPromote"))
-
+        
         // Knight
         (piece "Knight" Each 
             ("TwoStepLeap" Forward (directions {FL FR})
@@ -256,7 +256,7 @@
                 )
             )
         )
-
+        
         // Flying Cat
         (piece "FlyingCat" Each 
             ("TwoStepLeap" (directions {Forward FL FR}) Forward
@@ -270,10 +270,10 @@
                 )
             )
         )
-
+        
         // Enchanted Badger
         (piece "EnchantedBadger" Each (or {("StepMove" (directions {Leftward Rightward BL BR FL FR}) "CanPromote") ("TwoStepLeap" Leftward FR "CanPromote") ("TwoStepLeap" Rightward FL "CanPromote")}))
-
+        
         // Lance
         (piece "Lance" Each 
             ("SlideMove" Forward 
@@ -287,7 +287,7 @@
                 )
             )
         )  
-
+        
         // Ram's-Head Soldier
         (piece "RamsHeadSoldier" Each 
             ("SlideMove" (directions {FL FR}) 
@@ -301,126 +301,126 @@
                 )
             )
         )  
-
+        
         // Running Rabbit
         (piece "RunningRabbit" Each (or ("StepMove" (directions {Backward BL BR FL FR}) "CanPromote") ("SlideMove" Forward "CanPromote")))
-
+        
         // Kirin
         (piece "Kirin" Each (or ("StepMove" Diagonal "CanPromote") ("TwoStepLeap" Orthogonal Forward "CanPromote")))
-
+        
         // Phoenix
         (piece "Phoenix" Each (or ("StepMove" Orthogonal "CanPromote") ("TwoStepLeap" Diagonal Forward "CanPromote")))
-
+        
         // Side Mover
         (piece "SideMover" Each (or ("StepMove" (directions {Forward Backward}) "CanPromote") ("SlideMove" (directions {Leftward Rightward}) "CanPromote")))
-
+        
         // Vertical Mover
         (piece "VerticalMover" Each (or ("StepMove" (directions {Leftward Rightward}) "CanPromote") ("SlideMove" (directions {Forward Backward}) "CanPromote")))
-
+        
         // Bishop
         (piece "Bishop" Each ("SlideMove" Diagonal "CanPromote"))
-
+        
         // Rook
         (piece "Rook" Each ("SlideMove" Orthogonal "CanPromote"))
-
+        
         // Vice General
         (piece "ViceGeneral" Each ("StepMove" (directions {Forward Leftward Rightward BL BR FL FR})))
-
+        
         // Queen
         (piece "Queen" Each ("SlideMove"))
-
+        
         // Lion
         (piece "Lion" Each (or {
-            ("StepMove") 
-            ("TwoStepPath" Orthogonal (directions {Forward FL FR})) 
-            ("TwoStepPath" Diagonal (directions {Forward Leftward Rightward FL FR}))
-            ("StingingMove" Adjacent N)
-            ("StingingMove" Adjacent NE)
-            ("StingingMove" Adjacent E)
-            ("StingingMove" Adjacent SE)
-            ("StingingMove" Adjacent S)
-            ("StingingMove" Adjacent SW)
-            ("StingingMove" Adjacent W)
-            ("StingingMove" Adjacent NW)
+                ("StepMove") 
+                ("TwoStepPath" Orthogonal (directions {Forward FL FR})) 
+                ("TwoStepPath" Diagonal (directions {Forward Leftward Rightward FL FR}))
+                ("StingingMove" Adjacent N)
+                ("StingingMove" Adjacent NE)
+                ("StingingMove" Adjacent E)
+                ("StingingMove" Adjacent SE)
+                ("StingingMove" Adjacent S)
+                ("StingingMove" Adjacent SW)
+                ("StingingMove" Adjacent W)
+                ("StingingMove" Adjacent NW)
         }))
-
+        
         // King
         (piece "King" Each ("StepMove"))
-
+        
         // Promoted Pawn
         (piece "Tokin" Each ("StepMove" (directions {Forward Backward Leftward Rightward FL FR})))
-
+        
         // Promoted Copper General
         (piece "GreatLeopard" Each (or ("StepMove" (directions {Forward BL BR FL FR})) ("TwoStepLeap" (directions {Forward Leftward Rightward FL FR}) Forward)))
- 
+        
         // Promoted Silver General
         (piece "RunningWolf" Each (or ("SlideMove" Forward) ("StepMove" (directions {FL FR Leftward Rightward Backward}))))
-
+        
         // Promoted Gold General
         (piece "GreatElephant" Each (or ("SlideMove" (directions {FL FR})) ("StepMove" (directions {Forward Leftward Rightward BL BR}))))
-
+        
         // Promoted Knight
         (piece "HeavenlyHorse" Each (or ("StepMove" (directions {Forward Leftward Rightward FL FR})) ("TwoStepLeap" Backward (directions {FL FR}))))
-
+        
         // Promoted Flying Cat
         (piece "FreePup" Each (or {("SlideMove" Forward) ("TwoStepLeap" Orthogonal Forward) ("StepMove" (directions {Backward Leftward Rightward}))}))
-
+        
         // Promoted Enchanted Badger
         (piece "Dove" Each (or {("StepMove" (directions {Backward BL BR})) ("SlideMove" (directions {Forward FL FR})) ("TwoStepLeap" Leftward FL) ("TwoStepLeap" Rightward FR)}))
-
+        
         // Promoted Lance
         (piece "FreeTiger" Each (or {("SlideMove" (directions {Leftward Rightward})) ("TwoStepLeap" (directions {Leftward Rightward}) (directions {FL FR})) ("StepMove" (directions {Forward Backward}))}))
-
+        
         // Promoted Ram's-Head Soldier
         (piece "GreatStag" Each (or {("SlideMove" (directions {Forward Backward})) ("TwoStepLeap" (directions {Forward Backward}) (directions {FL FR})) ("StepMove" (directions {Leftward Rightward}))}))
-
+        
         // Promoted Running Rabbit
         (piece "TreacherousFox" Each (or {("SlideMove" (directions {FL FR})) ("TwoStepLeap" Diagonal Forward) ("StepMove" (directions {BL BR}))}))
-
+        
         // Promoted Kirin
         (piece "HornedFalcon" Each (or {
-            ("StepMove" Forward) 
-            ("SlideMove" (directions {Backward Leftward Rightward BL BR FL FR})) 
-            ("TwoStepLeap" Orthogonal Forward) 
-            ("TwoStepPathToEmpty" Forward (directions {FL FR}))
-            ("StingingMove" Forward N)
-            ("StingingMove" Forward NE)
-            ("StingingMove" Forward E)
-            ("StingingMove" Forward SE)
-            ("StingingMove" Forward S)
-            ("StingingMove" Forward SW)
-            ("StingingMove" Forward W)
-            ("StingingMove" Forward NW)
+                ("StepMove" Forward) 
+                ("SlideMove" (directions {Backward Leftward Rightward BL BR FL FR})) 
+                ("TwoStepLeap" Orthogonal Forward) 
+                ("TwoStepPathToEmpty" Forward (directions {FL FR}))
+                ("StingingMove" Forward N)
+                ("StingingMove" Forward NE)
+                ("StingingMove" Forward E)
+                ("StingingMove" Forward SE)
+                ("StingingMove" Forward S)
+                ("StingingMove" Forward SW)
+                ("StingingMove" Forward W)
+                ("StingingMove" Forward NW)
         }))
-
+        
         // Promoted Phoenix
         (piece "SoaringEagle" Each (or {
-            ("StepMove" (directions {FL FR})) 
-            ("SlideMove" (directions {Forward Leftward Rightward Backward BL BR})) 
-            ("TwoStepLeap" Diagonal Forward) 
-            ("TwoStepPathToEmpty" (directions {FL FR}) (directions {Leftward Rightward FL FR}))
-            ("StingingMove" (directions {FL FR}) N)
-            ("StingingMove" (directions {FL FR}) NE)
-            ("StingingMove" (directions {FL FR}) E)
-            ("StingingMove" (directions {FL FR}) SE)
-            ("StingingMove" (directions {FL FR}) S)
-            ("StingingMove" (directions {FL FR}) SW)
-            ("StingingMove" (directions {FL FR}) W)
-            ("StingingMove" (directions {FL FR}) NW)
+                ("StepMove" (directions {FL FR})) 
+                ("SlideMove" (directions {Forward Leftward Rightward Backward BL BR})) 
+                ("TwoStepLeap" Diagonal Forward) 
+                ("TwoStepPathToEmpty" (directions {FL FR}) (directions {Leftward Rightward FL FR}))
+                ("StingingMove" (directions {FL FR}) N)
+                ("StingingMove" (directions {FL FR}) NE)
+                ("StingingMove" (directions {FL FR}) E)
+                ("StingingMove" (directions {FL FR}) SE)
+                ("StingingMove" (directions {FL FR}) S)
+                ("StingingMove" (directions {FL FR}) SW)
+                ("StingingMove" (directions {FL FR}) W)
+                ("StingingMove" (directions {FL FR}) NW)
         }))
-
+        
         // Promoted Side Mover
         (piece "FreeBoar" Each ("SlideMove" (directions {Rightward Leftward BL BR FL FR})))
-
+        
         // Promoted Vertical Mover
         (piece "FlyingOx" Each ("SlideMove" (directions {Forward Backward BL BR FL FR})))
-
+        
         // Promoted Bishop
         (piece "DragonHorse" Each (or ("SlideMove" Diagonal) ("StepMove" Orthogonal)))
-
+        
         // Promoted Rook
         (piece "DragonKing" Each (or ("SlideMove" Orthogonal) ("StepMove" Diagonal)))
-
+        
         (regions "LastRankP1" P1 (sites Top))
         (regions "LastRankP2" P2 (sites Bottom))
         (regions "TwoFurthestRankP1" P1 (expand (sites Top)))
@@ -447,7 +447,7 @@
             (pair (id "ViceGeneral" P1) (handSite P2 16)) (pair (id "ViceGeneral" P2) (handSite P1 16)) 
             (pair (id "Queen" P1) (handSite P2 17)) (pair (id "Queen" P2) (handSite P1 17)) 
             (pair (id "Lion" P1) (handSite P2 18)) (pair (id "Lion" P2) (handSite P1 18)) 
-
+            
             (pair (id "Tokin" P1) (handSite P2)) (pair (id "Tokin" P2) (handSite P1)) 
             (pair (id "GreatLeopard" P1) (handSite P2 1)) (pair (id "GreatLeopard" P2) (handSite P1 1)) 
             (pair (id "RunningWolf" P1) (handSite P2 2)) (pair (id "RunningWolf" P2) (handSite P1 2)) 
@@ -485,7 +485,7 @@
             (pair (id "ViceGeneral" P1) (id "ViceGeneral" P2)) (pair (id "ViceGeneral" P2) (id "ViceGeneral" P1)) 
             (pair (id "Queen" P1) (id "Queen" P2)) (pair (id "Queen" P2) (id "Queen" P1)) 
             (pair (id "Lion" P1) (id "Lion" P2)) (pair (id "Lion" P2) (id "Lion" P1)) 
-
+            
             (pair (id "Tokin" P1) (id "Pawn" P2)) (pair (id "Tokin" P2) (id "Pawn" P1)) 
             (pair (id "GreatLeopard" P1) (id "CopperGeneral" P2)) (pair (id "GreatLeopard" P2) (id "CopperGeneral" P1)) 
             (pair (id "RunningWolf" P1) (id "SilverGeneral" P2)) (pair (id "RunningWolf" P2) (id "SilverGeneral" P1)) 
