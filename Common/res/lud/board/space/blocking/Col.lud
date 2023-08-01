@@ -1,0 +1,52 @@
+(game "Col"
+    (players 2)
+    (equipment {
+        (board (hex <Board>))
+        (piece "Hex" P1)
+        (piece "Hex" P2)
+    })
+    (rules
+        (play
+            (move Add
+                (to 
+                    (difference (sites Empty) (sites Around (sites Occupied by:Mover)))
+                )
+            )
+        )
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> } {
+    (item "2" <2> "The game is played on an hexagonal board of size 2")
+    (item "3" <3> "The game is played on an hexagonal board of size 3")
+    (item "4" <4> "The game is played on an hexagonal board of size 4")
+    (item "5" <5> "The game is played on an hexagonal board of size 5")*
+    (item "6" <6> "The game is played on an hexagonal board of size 6")
+    (item "7" <7> "The game is played on an hexagonal board of size 7")
+    (item "8" <8> "The game is played on an hexagonal board of size 8")
+    (item "9" <9> "The game is played on an hexagonal board of size 9")
+    (item "10" <10> "The game is played on an hexagonal board of size 10")
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Hex" 1.25)
+        (player Colour P1 (colour Blue))
+        (player Colour P2 (colour Red))
+        (board Colour Phase0 (colour White))
+        (board Colour OuterEdges (colour Hidden))
+        (board Colour InnerEdges (colour Hidden))
+    })
+    
+)
