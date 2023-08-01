@@ -1,0 +1,370 @@
+//-----------------------------------------------------
+// utilities
+
+(define "QtyAround"
+  (count 
+   Pieces 
+   Next
+   in:(sites Around #1 <LoS:direction>)
+  )
+)
+
+(define "LoSAt"
+  (count 
+   Pieces 
+   Next 
+   in:(sites LineOfSight Piece at:#1 <LoS:direction>)
+  )
+)
+
+(define "SitesControlledBy"
+ (sites
+  (results
+   from:(sites Occupied by:#1)
+   to:(sites LineOfSight Empty at:(from) <LoS:direction>)
+   (to)
+)))
+
+(define "Placement"
+ (move
+  Add
+  (piece #1)
+  (to
+   (difference
+    (sites Empty)
+    ("SitesControlledBy" #2)
+))))
+  
+(define "ByLOS" (> ("LoSAt" (last To)) (var "LoSFrom")))
+(define "ByNeighbors" (> ("QtyAround" (last To))  (var "QtyAroundFrom")))
+(define "ByLOSThenNeighbors"
+ (or "ByLOS"
+  (and 
+   (= ("LoSAt" (last To)) (var "LoSFrom"))
+   "ByNeighbors"
+)))
+
+(define "ByNeighborsThenLOS"
+ (or "ByNeighbors"
+  (and 
+   (= ("QtyAround" (last To)) (var "QtyAroundFrom")) 
+   "ByLOS"
+)))
+
+(define "ForLOSChecking" (set Var "LoSFrom" ("LoSAt" (from))))
+(define "ForNeighborChecking" (set Var "QtyAroundFrom"  ("QtyAround" (from))))
+
+(define "ForCheckingBoth"
+ (and
+  (set Var "LoSFrom" ("LoSAt" (from)))
+  (set Var "QtyAroundFrom"  ("QtyAround" (from)))
+))
+
+(define "Movement"
+ (forEach Piece
+  (do <Move:checking>
+   next:(move Slide <LoS:direction>)
+   ifAfterwards:<Move:isAllowed>
+  )
+  #1      
+))
+
+(define "MPScoring"
+ (set Score
+  #1
+  (+
+   <End:scoring>  // moves available - or - pieces on board
+   (count Sites 
+    in:(difference
+     ("SitesControlledBy" #1)
+     ("SitesControlledBy" #2)
+)))))
+
+(define "ScoreTerritory" (and ("MPScoring" Mover Next) ("MPScoring" Next Mover)))
+
+//-------------------------------------------------
+
+(game "Adhesion"
+ (players 2)
+ (equipment
+  {
+   "BoardUsed"
+   (piece "Ball" Each (move Slide))
+  }
+ )
+ (rules
+  (start 
+    {
+     (set Score Each 0)
+    }
+  )
+  (play 
+   (or
+    {
+     ("Placement" (mover) Next) 
+     ("Movement" Mover) 
+     (if
+      (and
+       (not (is Prev Next))
+       (< 0 (counter)) 
+      )
+      (move Pass)
+     )
+    }
+    (then 
+     (and
+      ("ScoreTerritory")
+      (if
+       (is Prev Next)
+       (moveAgain)
+  )))))
+  <End:condition>
+))
+
+//--------------------------
+// ending rules:
+
+(define "PassEnd"
+ {
+  (if 
+   (and 
+    (is Prev Mover)
+    (no Moves Next) 
+   )
+   (result Mover Win)
+  )
+  (if 
+   (and 
+    (not (is Prev Mover))
+    (no Moves Mover) 
+   )
+   (result Mover Loss)
+  )
+ }
+)
+ 
+//-------------------------------------------------------
+
+(define "BoundardiesAreFixed"
+ (and
+  {
+   (is Prev Mover)
+   (not (can Move (do ("Placement" (mover) Next) next:("Movement" Mover))))
+   (not (can Move (do ("Placement" (next) Mover) next:("Movement"  Next))))
+  }
+))
+
+(define "TerritoryEnd"
+ {
+  (if 
+   (and
+    (= (score P1) (score P2))
+    (or
+     "BoundardiesAreFixed"
+     (no Moves Mover) 
+   ))
+   (result P1 Win)
+  )
+  (if 
+   (and
+    (!= (score P1) (score P2))
+    (or
+     "BoundardiesAreFixed"
+     (no Moves Mover) 
+   ))
+   (byScore)
+  )
+ } 
+)
+
+(define "BoardUsed" <BoardSize:used>)
+
+// Rotation, board, cells or vertices to remove 
+(define "SymRemover" (renumber (rotate (* (- #1 1) (/ 360 #1)) (trim (remove #2 #3)))))
+
+// symmetry, board, recurrent removals, final edge removal 
+(define "RaggedSquare" ("SymRemover" 4 ("SymRemover" 4 ("SymRemover" 4 ("SymRemover" 4 #1 #2) #2) #2) #3))
+
+// board, recurrent removals, final edge removal 
+(define "RaggedTri" ("SymRemover" 1 ("SymRemover" 3 ("SymRemover" 3 #1 #2) #2) #3))
+(define "RaggedHex" ("SymRemover" 6 ("SymRemover" 6 ("SymRemover" 6 ("SymRemover" 6 ("SymRemover" 6 ("SymRemover" 6 (hex #1) #2) #2) #2) #2) #2) #3))
+
+// board, recurrent removals
+(define "Sym2Remover" ("SymRemover" 2  ("SymRemover" 2 #1 #2) #2))
+  
+//-------------------------------------------------------
+// Board definitions
+
+
+(option "Size" <BoardSize> args:{<used>} 
+ {
+  (item "4-hole ragged square grid (36 cells)" 
+   <(board
+     ("SymRemover" 1 
+      ("RaggedSquare" 
+       (square 8)
+       cells:{0..3 8 9} 
+       cells:{0..3 6 7}
+      ) 
+      cells:{10 15 24 29}
+     )
+     use:Cell
+   )>  
+   //<{0..3 6..7}>
+   //<{28..29 32..35}>
+   "4-hole ragged square grid (36 cells)"
+  )
+  
+  (item "9-hole ragged square grid (64 cells)"  
+   <(board
+     ("SymRemover" 1
+      ("RaggedSquare" 
+       (square 11)
+       cells:{0..5 11..14 22 23} 
+       cells:{0..5 8..11 16 17} 
+      )
+      cells:{10 17 24 29 36 43 48 55 62}
+     )
+     use:Cell
+   )> 
+   //<{0..3 6..7 12..13}>
+   //<{50..51 56..57 60..63}> 
+   "9-hole ragged square grid (64 cells)" 
+  )
+  
+  (item "16-hole ragged square grid (100 cells)" 
+   <(board
+     ("SymRemover" 1
+      ("RaggedSquare" 
+       (square 14)
+       cells:{0..7 14..19 28..31 42 43} 
+       cells:{0..7 10..15 20..23 31 32} 
+      )
+      cells:{10 17 26 31 36 41 50 55 60 65 74 79 84 89 98 105} 
+     )
+     use:Cell
+   )>  
+   //<{0..3 6..7 12..13 20..21}>
+   //<{78..79 86..87 92..93 96..99}>
+   "16-hole ragged square grid (100 nodes)" 
+  )***
+  
+  (item "25-hole ragged square grid (144 cells)"  
+   <(board
+     ("SymRemover" 1
+      ("RaggedSquare" 
+       (square 17)
+       cells:{0..9 17..24 34..39 51..54 68 69} 
+       cells:{0..9 12..19 24..29 37..40 50 51} 
+      )
+      cells:{10 17 26 31 38 43 50 55 60 67 72 79 84 89 96 101 108 113 118 125 130 137 142 151 158}
+     )
+     use:Cell
+   )>   
+   //<{0..3 6..7 12..13 20..21}>
+   //<{78..79 86..87 92..93 96..99}> 
+   "25-hole ragged square grid (144 cells)" 
+  )
+  (item "XS (39) hex cells"
+   <(board (remove (hex  4 5) cells:{0 1 15 20 25 32 36 39 44 }) use:Cell)>  
+   "Extra small board (39 cells)"
+  )
+  (item "S  (48) hex cells"
+   <(board (remove (hex 5 6) cells:{0 1 2 3 4 5 6 7 11 12 13 14 21 25 30 37 42 53 63 64 65 69 70 71 72 73 74}) use:Cell)>  
+   "Small board hex (48 cells)"
+  )
+  (item "M  (72) hex cells"
+   <(board (remove (hex 6) cells:{0 1 5 12 17 23 30 37 40 45 50 53 60 67 73 78 85 89 90}) use:Cell)>  
+   "Medium board (72 cells)"
+  )
+  (item "L  (96) hex cells"
+   <(board (remove
+     (hex 7 8)
+     cells:{0 1 2 3 4 5 6 7 8 9 10 11 12 16 17 18 19 26 27 34 38 43 50 53 60 63 64 71 76 77 82 89 92 99 108 116 123 130 131 132 136 137 138 139 140 141 142 143 144 145 146}
+    ) 
+    use:Cell
+   )>  
+   "Large board (96 cells)"
+  )
+  (item "XL (126) hex cells"
+   <(board (remove
+     (hex 8)
+     cells:{0 4 5 6 7 8 13 17 20 27 28 35 44 49 54 61 62 65 72 76 77 84 91 92 96 103 106 107 114 119 124 133 140 141 148 151 155 160 161 162 163 164 168}
+    ) 
+    use:Cell
+   )>  
+   "Extra large board (126 cells)"
+  )
+  (item "XXL (156) hex cells"
+   <(board
+    (remove
+     (hex (poly { { -3.5 -11.75 } { -10.0 -5.25 } { -6.75 12.0 } { 1.25 14.75 } { 15.25 3.25 } { 14.0 -5.75 } } ))
+     cells:{12 25 34 41 50 57 66 75 82 91 98 107 116 123 131 144 150 161}
+    ) 
+    use:Cell
+   )> 
+   "XXL board (156 cells)"
+  )
+ }
+)
+(option "LoS Direction" <LoS> args:{<direction>}
+ { 
+  (item "Adjacent" <Adjacent> "Adjacent sight-lines (i.e. includes diagonals on square grids)")**
+  (item "Orthogonal" <Orthogonal> "Orthogonal sight-lines")
+ }
+)
+(option "Slide Variants" <Move> args:{<checking> <isAllowed>}
+ {
+  (item "Adhesion: By Neighbors only" <"ForNeighborChecking">  <"ByNeighbors"> "The new location for the sliding stone must have a greater number of opponent's stones adjacent to it than before.")**
+  (item "Epoxy: Priority Neighbors, then LoS" <"ForCheckingBoth"> <"ByNeighborsThenLOS"> "The new location for the sliding stone must have at least as many opponent's stones adjacent as before. And if the same count, must have an increase in the line-of-sight count to opponent's stones as well.")
+  (item "Van der Waals: By LoS only" <"ForLOSChecking">  <"ByLOS"> "The new location for the sliding stone must have a greater count of lines-of-sight to opponent's stones than before.")
+  (item "Van der Waals variant: Priority LoS, then Neighbors" <"ForCheckingBoth">  <"ByLOSThenNeighbors"> "The new location for the sliding stone must have at least as many lines-of-sight to opponent's stones as before. And if the same count, must have a greater number of opponent's stones adjacent to it than before.")
+ }
+)
+
+(option "End Scoring" <End> args:{<condition> <scoring>}
+ {
+  (item "Territory"
+   <(end "TerritoryEnd")> 
+   <(count Pieces #1)> 
+   "Win with greater territory, that is pieces plus plcement locations. Ties go to Player 1"
+  )**
+  (item "Last Move (Epoxy goal)"
+   <(end "PassEnd")> 
+   <(size Array (array (sites From ("Movement" #1))))> 
+   "Using Epoxy goal variant: A player who passes the first move of a turn loses."
+  )
+ }
+)
+
+//------------------------------------------------
+
+(metadata
+  (info
+    {
+     }
+  ) 
+  
+  (graphics 
+   {
+    (player Colour P1 (colour 120 36 0))
+    (player Colour P2 (colour Cream))
+    (piece Background image:"Disc" fillColour:(colour 0 0 0 120) edgeColour:(colour 0 0 0 0) scale:.97 offsetX:.26 offsetY:.3 )
+    (board StyleThickness InnerEdges 0.4)
+    (board StyleThickness OuterEdges 0.6)
+    (board StyleThickness InnerVertices 0.45)
+    (board StyleThickness OuterVertices 0.45)
+    (board Colour InnerVertices (colour Grey))
+    (board Colour OuterVertices (colour Grey))
+    (board Colour InnerEdges (colour Black))
+    (board Colour OuterEdges (colour Black))
+    (board Background fillColour:(colour 170 160 140) edgeColour:(colour Grey) scale:1.3 )
+    (board Colour Phase0 (colour HumanLight))
+    (show Edges Diagonal Hidden (colour DarkGrey))
+
+  }
+ )
+ (ai (heuristics (score)))
+)
+
+
