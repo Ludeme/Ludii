@@ -14,25 +14,33 @@
 (define "RemoveAPiece" (move Remove (from) level:(level)))
 
 (define "PieceMovement"
-		(do
-    		(forget Value (value))
-    		next:
-                (if ("IsEndTrack" ("NextSiteOnTrack" (value) from:(from)))
-                    ("RemoveAPiece")
-                	(move
-                		(from (from) level:(level))
-                		(to ("NextSiteOnTrack" (value) from:(from)))
-                	)
-    		)
-    	)		
+    (do
+        (forget Value (value))
+        next:
+        (if ("IsEndTrack" ("NextSiteOnTrack" (value) from:(from)))
+            ("RemoveAPiece")
+            (if (is In ("NextSiteOnTrack" (value) from:(from)) (sites "Symbol")) // Move to symbols sites
+                (if (or (is Empty ("NextSiteOnTrack" (value) from:(from))) (= (mover) (who at:("NextSiteOnTrack" (value) from:(from)))))
+                    (move
+                        (from (from) level:(level))
+                        (to ("NextSiteOnTrack" (value) from:(from)))
+                    )
+                )
+                (move
+                    (from (from) level:(level))
+                    (to ("NextSiteOnTrack" (value) from:(from)))
+                )
+            )
+        )
+    )		
 )
 
 (define "UsingThrows"
     (forEach Value ("Throws")
         (if (= 1 (value))
-        	(if (or (is Occupied (handSite (mover))) (is Occupied (handSite (mover) 1)))
-        		("EnterPiece")
-        		(forEach Piece)
+            (if (or (is Occupied (handSite (mover))) (is Occupied (handSite (mover) 1)))
+                ("EnterPiece")
+                (forEach Piece)
             )
             (forEach Piece)
         )
