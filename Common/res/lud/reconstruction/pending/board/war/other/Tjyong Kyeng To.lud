@@ -10,7 +10,7 @@
         <
         (players 2) 
         (equipment { 
-            (board [#]) // 108 squares, probably to express in the concepts.
+            (board (rectangle 12 9)) // Walter can get the track from the source but that's a big job, so recons in pending until this. 
             (dice d:5 from:1 num:5)
             (piece "Disc" Each (move [#]))
         })
@@ -45,7 +45,7 @@
         ")
         (source "DLP evidence.")
         (id "1211")
-        (version "1.3.11")
+        (version "1.3.12")
         (classification "board/war/reconstruction/pending")
         (credit "Eric Piette")
         (origin "This game was played in Korea, around 1895.")

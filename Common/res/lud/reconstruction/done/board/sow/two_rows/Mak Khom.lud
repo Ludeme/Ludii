@@ -1,0 +1,377 @@
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
+
+//------------------------------------------------------------------------------
+
+(game "Mak Khom" 
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Mak Khom (Ludii 1)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 7 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (map { 
+                (pair P1 FirstSite)
+                
+                (pair P2 LastSite)
+                }
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 7 to:
+                    (sites Track)
+                )
+            )
+            phases:{ 
+            (phase "Opening" 
+                (play 
+                    (move Select 
+                        (from 
+                            (mapEntry Mover)
+                        )
+                        
+                        (then 
+                            (sow origin:True)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover "Playing")
+            )
+            
+            (phase "Playing" 
+                (play 
+                    (move Select 
+                        (from 
+                            (sites Mover)
+                            if:
+                            (< 0 
+                                (count at:
+                                    (from)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (sow if:
+                                (= 
+                                    (count at:
+                                        (to)
+                                    )
+                                1)
+                                apply:
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (handSite Mover)
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            backtracking:True )
+                        )
+                    )
+                )
+                
+                (end 
+                    (if 
+                        (no Moves Mover)
+                        
+                        (byScore { 
+                            (score P1 
+                                (+ 
+                                    (count at:
+                                        (mapEntry P1)
+                                    )
+                                    
+                                    (count in:
+                                        (sites P1)
+                                    )
+                                )
+                            )
+                            
+                            (score P2 
+                                (+ 
+                                    (count at:
+                                        (mapEntry P2)
+                                    )
+                                    
+                                    (count in:
+                                        (sites P2)
+                                    )
+                                )
+                            )
+                            }
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+    > "The Mak Khom (Ludii 1) ruleset.")
+    
+    (item "Mak Khom (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 7 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            
+            (map { 
+                (pair P1 FirstSite)
+                
+                (pair P2 LastSite)
+                }
+            )
+            
+            (hand Each)
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 7 to:
+                    (sites Track)
+                )
+            )
+            phases:{ 
+            (phase "Opening" 
+                (play 
+                    (move Select 
+                        (from 
+                            (mapEntry Mover)
+                        )
+                        
+                        (then 
+                            (sow origin:True)
+                        )
+                    )
+                )
+                
+                (nextPhase Mover "Playing")
+            )
+            
+            (phase "Playing" 
+                (play 
+                    (move Select 
+                        (from 
+                            (sites Mover)
+                            if:
+                            (< 0 
+                                (count at:
+                                    (from)
+                                )
+                            )
+                        )
+                        
+                        (then 
+                            (sow if:
+                                (= 
+                                    (count at:
+                                        (to)
+                                    )
+                                1)
+                                apply:
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (handSite Mover)
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            backtracking:True )
+                        )
+                    )
+                )
+                
+                (end 
+                    (if 
+                        (no Moves Mover)
+                        
+                        (byScore { 
+                            (score P1 
+                                (count Cell at:
+                                    (handSite P1)
+                                )
+                            )
+                            
+                            (score P2 
+                                (count Cell at:
+                                    (handSite P2)
+                                )
+                            )
+                            }
+                        )
+                    )
+                )
+            )
+            }
+        )
+        
+    > "The Mak Khom (Ludii 2) ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2) 
+        
+        (equipment { 
+            (mancalaBoard 2 7 store:None
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            (piece "Seed" Shared)  
+            (regions P1 (sites Bottom))      // P1 home
+            (regions P2 (sites Top))      // P2 home
+            (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
+            (hand Each)
+        }) 
+        (rules 
+            
+            (start (set Count 7 to:(sites Track)))
+            
+            phases:{
+            (phase "Opening"
+                (play
+                    (move Select 
+                        (from 
+                            (mapEntry Mover) 
+                        )
+                        (then 
+                            (sow 
+                                origin:True
+                            )
+                        )
+                    )		
+                )
+                (nextPhase Mover "Playing")
+            )
+            (phase "Playing"
+                (play [#]) // When sowing, players may take the entire contents of a hole, or only part of them. The players agree on a number of counters which need to be captured in order to win.
+                (end [#])
+            )
+            }
+            
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Mak Khom (Ludii 1) (Reconstructed)" {
+        "Variant/Mak Khom (Ludii 1)"
+    })
+    (ruleset "Ruleset/Mak Khom (Ludii 2) (Reconstructed)" {
+        "Variant/Mak Khom (Ludii 2)"
+    })
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Mak Khom is a two-row mancala-style baord game played in Thailand in the nineteenth century.")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "2x7 board. Seven counters in each hole. Sowing occurs in an anti-clockwise direction. In the first move, each player takes the contents of the leftmost hole and sows them except for the last counter, which is set aside. When sowing, players may take the entire contents of a hole, or only part of them. The players agree on a number of counters which need to be captured in order to win."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLp evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "987"))
+        (useFor "Ruleset/Mak Khom (Ludii 1) (Reconstructed)" (rules "The game Mak Khom is played by two players on a 2 x 7 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 7.
+                Rules: 
+                Select Vertex in null of the moving player if true then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: true, captureRule: true, type: Vertex, includeSelf: true select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: the total number of vertex in to is equal to 1, backtracking: true, captureEffect: from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                
+        "))
+        (useFor "Ruleset/Mak Khom (Ludii 1) (Reconstructed)" (id "4170"))
+        (useFor "Ruleset/Mak Khom (Ludii 2) (Reconstructed)" (rules "The game Mak Khom is played by two players on a 2 x 7 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 7.
+                Rules: 
+                Select Vertex in null of the moving player if true then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: true, captureRule: true, type: Vertex, includeSelf: true select Vertex in RegionP1 or RegionP2 if 0 is less than the total number of vertex in the location of the piece then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: the total number of vertex in to is equal to 1, backtracking: true, captureEffect: from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                
+        "))
+        (useFor "Ruleset/Mak Khom (Ludii 2) (Reconstructed)" (id "4171"))
+        (source "Murray 1951: 173-172.")
+        (version "1.3.12")
+        (classification "board/sow/two rows/reconstruction/done")
+        (credit "Eric Piette")
+        (origin "This game was played in Thailand, around 1836.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+    (recon {
+        (concept "SowCapture" True)
+        (concept "Scoring" True)
+    })
+)
+

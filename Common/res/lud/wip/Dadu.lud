@@ -1,0 +1,198 @@
+(define "ThrowValue" (mapEntry "ThrowsValues" (count Pips)))
+(define "Throws" (values Remembered))
+
+(define "EnterPiece"
+    (move
+        (from (sites Hand Mover) if:(is Occupied (from)))
+        (to (mapEntry "EntryPoint" (mover)))
+        (then 
+            (forget Value 1)
+        )
+    )
+)
+
+(define "RemoveAPiece" (move Remove (from) level:(level)))
+
+(define "PieceMovement"
+    (do
+        (forget Value (value))
+        next:
+        (if ("IsEndTrack" ("NextSiteOnTrack" (value) from:(from)))
+            ("RemoveAPiece")
+            (if (is In ("NextSiteOnTrack" (value) from:(from)) (sites "Symbol")) // Move to symbols sites
+                (if (or (is Empty ("NextSiteOnTrack" (value) from:(from))) (= (mover) (who at:("NextSiteOnTrack" (value) from:(from)))))
+                    (move
+                        (from (from) level:(level))
+                        (to ("NextSiteOnTrack" (value) from:(from)))
+                    )
+                )
+                (and
+                    (if (and // TODO change this with checking if any piece at that site belongs to the other team.
+                            (is Occupied ("NextSiteOnTrack" (value) from:(from)))
+                            (!= (mover) (who at:("NextSiteOnTrack" (value) from:(from))))
+                        )
+                        (and (moveAgain) (set Pending))
+                    )
+                    (move
+                        (from (from) level:(level))
+                        (to ("NextSiteOnTrack" (value) from:(from)))
+                    )
+                )
+            )
+        )
+    )		
+)
+
+(define "UsingThrows"
+    (forEach Value ("Throws")
+        (if (= 1 (value))
+            (if (or (is Occupied (handSite (mover))) (is Occupied (handSite (mover) 1)))
+                ("EnterPiece")
+                (forEach Piece)
+            )
+            (forEach Piece)
+        )
+    )	
+)
+
+//------------------------------------------------------------------------------
+
+(game "Dadu"
+    (players 2)
+    (equipment {
+        (board 
+            (merge {
+                (rectangle 6 1)
+                (shift 0 5 (rectangle 1 6))
+                (shift 5 0 (rectangle 6 1))
+                (shift 5 0 (rectangle 1 6))
+                (shift 10 0 (rectangle 6 1))
+                (shift 10 5 (rectangle 1 6))
+                (shift 15 0 (rectangle 6 1))
+                (shift 7.5 3 (square 1))
+            })		
+            {
+            (track "Track1" "0,N,E,S,E,N,E,S,End" P1 directed:True)
+            (track "Track2" "32,N,W,S,W,N,W,S,End" P2 directed:True)
+            }
+        )
+        (hand Each size:2)
+        (piece "Marker" Each ("PieceMovement"))
+        (piece "King" Each ("PieceMovement"))
+        (regions "Jail" (sites {"I4"}))
+        (regions "Symbol" (sites {"A1" "A6" "F6" "F1" "L1" "L6" "Q1" "Q6"}))
+        (regions "ReplayThrow" (sites {1 10}))
+        ("StickDice" 5)
+        (map "ThrowsValues" {(pair 5 10)})
+        (map "EntryPoint" {(pair 1 0) (pair 2 32)})
+    })
+    (rules 
+        (start {
+            (place Stack "Marker1" (handSite P1) count:8)
+            (place Stack "Marker2" (handSite P2) count:8)
+            (place Stack "King1" (handSite P1 1))
+            (place Stack "King2" (handSite P2 1))
+            (set Team 1 {P1})
+            (set Team 2 {P2})
+        })
+        phases:{
+        (phase "Throwing"
+            (play
+                ("RollMove" 
+                    (move Pass 
+                        (then 
+                            (and {
+                                (moveAgain)
+                                (if (!= 0 ("ThrowValue")) (remember Value ("ThrowValue")))
+                                (if (= 1 ("ThrowValue")) (set Value Mover 1))
+                            })
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover 
+                (not (is In ("ThrowValue") (sites "ReplayThrow")))
+                "Moving"
+            )
+        )
+        (phase "Moving"
+            (play
+                (if (is Pending) // Check if this is working well after fixing the opponent team detecting in the piece movement.
+                    (and
+                        (if (is Mover P1)
+                            (forEach Level (last To)
+                                (if
+                                    (= (id "Marker" P2) (what at:("NextSiteOnTrack" (value) from:(from))))
+                                    (move
+                                        (from (last To) level:(level))
+                                        (to (handSite P2))
+                                    )
+                                    (if
+                                        (= (id "King" P2) (what at:("NextSiteOnTrack" (value) from:(from))))
+                                        (move
+                                            (from (last To) level:(level))
+                                            (to (handSite P2 1))
+                                        )
+                                    )
+                                )
+                            )
+                            (forEach Level (last To)
+                                (if
+                                    (= (id "Marker" P1) (what at:("NextSiteOnTrack" (value) from:(from))))
+                                    (move
+                                        (from (last To) level:(level))
+                                        (to (handSite P1))
+                                    )
+                                    (if
+                                        (= (id "King" P1) (what at:("NextSiteOnTrack" (value) from:(from))))
+                                        (move
+                                            (from (last To) level:(level))
+                                            (to (handSite P1 1))
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        (moveAgain)
+                    )
+                    (if (and (= 1 (value Player Mover)) (can Move ("UsingThrows")))
+                        ("UsingThrows")
+                        (move Pass (then (forget Value All)))
+                        (then 
+                            (if (and (= 1 (value Player Mover)) (can Move ("UsingThrows")))
+                                (moveAgain)
+                                (forget Value All)
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover 
+                (not (can Move ("UsingThrows")))
+                "Throwing"
+            )
+        )
+        }
+        (end (if (no Pieces Mover) (result Mover Win)))
+    )
+)
+
+(metadata
+    (info {
+        
+    })
+    
+    (graphics {
+        (show Symbol "flower" "Symbol" scale:0.9)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (stackType 0 Ground)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (stackType 3 Count)
+        (stackType 4 Count)  
+        (piece Scale "Marker" 0.5)
+        (piece Scale "King" 0.5)
+    })
+)

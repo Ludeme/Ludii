@@ -143,12 +143,14 @@ public class CompleterWithPrepro
 	 * Create a completion.
 	 * @param raw            Incomplete raw game description.
 	 * @param rulesetReconId Id of the ruleset to recons.
+	 * @param dataPath Path to a folder containing the csn and the conceptual similarities.
 	 * @return A (raw) game description.        
 	 */
 	public Completion completeSampled
 	(
 		final String raw, 
-		final int rulesetReconId
+		final int rulesetReconId,
+		final String dataPath
 	)
 	{
 //		System.out.println("\nCompleter.complete(): Completing at most " + maxCompletions + " descriptions...");
@@ -162,7 +164,7 @@ public class CompleterWithPrepro
 				
 		//System.out.println(rulesetDescriptionOneLine);
 
-		allRulesetGeoSimilarities = DistanceUtils.getAllRulesetGeoDistances(rulesetReconId);
+		allRulesetGeoSimilarities = DistanceUtils.getAllRulesetGeoDistances(rulesetReconId, dataPath);
 		Completion comp = new Completion(rulesetDescriptionOneLine);
 
 		if(geoThreshold == -1)
@@ -170,11 +172,12 @@ public class CompleterWithPrepro
 		else
 			System.out.println("new threshold = " + threshold + " new geoThreshold = " + geoThreshold);
 		
-		applyThresholdToLudMap(rulesetReconId);
+		applyThresholdToLudMap(rulesetReconId, dataPath);
+		System.out.println("init applyThresholdToLudMap");
 		while (needsCompleting(comp.raw()))
 		{
 			//System.out.println("before \n" + comp.raw());
-			comp = nextCompletionSampled(comp, rulesetReconId);	
+			comp = nextCompletionSampled(comp, rulesetReconId, dataPath);	
 			//System.out.println("after \n" + comp.raw());
 			
 			if(comp == null)
@@ -203,7 +206,7 @@ public class CompleterWithPrepro
 					System.out.println("new threshold = " + threshold + " new geoThreshold = " + geoThreshold);
 				}
 				comp = new Completion(rulesetDescriptionOneLine);
-				applyThresholdToLudMap(rulesetReconId);
+				applyThresholdToLudMap(rulesetReconId, dataPath);
 			}
 		}
 		
@@ -226,7 +229,8 @@ public class CompleterWithPrepro
 		public Completion nextCompletionSampled
 		(
 			final Completion completion,
-			final int        rulesetReconId
+			final int        rulesetReconId,
+			final String     dataPath
 		)
 		{
 //			System.out.println("\nCompleting next completion for raw string:\n" + completion.raw());
@@ -304,7 +308,7 @@ public class CompleterWithPrepro
 					choices.remove(c);
 				}
 			}
-				
+			
 			if (enumeration > 0)
 			{
 				// Enumerate on parents
@@ -313,11 +317,12 @@ public class CompleterWithPrepro
 //				System.out.println(parent[0]);
 //				System.out.println(parent[1]);
 				
-//				System.out.println("\nEnumerating on parent " + enumeration + ": \"" + parent[0] + "\" + ? + \"" + parent[1] + "\"");
-				enumerateMatches(completion, left, right, parent, completions, completion.score(), rulesetReconId);
+			//	System.out.println("\nEnumerating on parent " + enumeration + ": \"" + parent[0] + "\" + ? + \"" + parent[1] + "\"");
+				enumerateMatches(completion, left, right, parent, completions, completion.score(), rulesetReconId, dataPath);
 			}
 			else
 			{
+				System.out.println("do you reach that?");
 				// Handle choices as usual
 				for (int n = 0; n < choices.size(); n++)
 				{
@@ -349,6 +354,7 @@ public class CompleterWithPrepro
 						if (!found)
 							continue;  // included text is not present
 					}
+					
 					
 					final String str = raw.substring(0, from) + choice + raw.substring(to + 1);
 					final Completion newCompletion = new Completion(str);
@@ -397,7 +403,8 @@ public class CompleterWithPrepro
 			final String[]         parent, 
 			final List<Completion> queue,  
 			final double           confidence,
-			final int              rulesetReconId
+			final int              rulesetReconId,
+			final String           dataPath
 		)
 		{
 				for (final Map.Entry<Integer, String> entry : ludMapUsed.entrySet()) 
@@ -413,21 +420,22 @@ public class CompleterWithPrepro
 						culturalSimilarity = 1.0;
 					else
 					{
-						final String similaryFilePath = ContextualSimilarity.rulesetContextualiserFilePath;
+						final String similaryFilePath = dataPath + "contextualiser_1000/similarity_";
+								//ContextualSimilarity.rulesetContextualiserFilePath;
 						final File fileSimilarity1 = new File(similaryFilePath + rulesetReconId + ".csv");
 						final File fileSimilarity2 = new File(similaryFilePath + entry.getKey().intValue() + ".csv");
 						
 						if(!fileSimilarity1.exists() || !fileSimilarity2.exists() || (rulesetReconId == rulesetId)) // If CSN not computing or comparing the same rulesets, similarity is 0.
 							culturalSimilarity = 0.0;
 						else
-							culturalSimilarity = DistanceUtils.getRulesetCSNDistance(rulesetId, rulesetReconId);
+							culturalSimilarity = DistanceUtils.getRulesetCSNDistance(rulesetId, rulesetReconId, dataPath);
 						
 						if(!fileSimilarity1.exists() || !fileSimilarity2.exists() || (rulesetReconId == rulesetId)) // If Geo not computing or comparing the same rulesets, similarity is 0.
 							geoSimilarity = 0.0;
 						else
 							geoSimilarity = getRulesetGeoDistance(rulesetId);
 						
-						conceptualSimilarity = getAVGCommonExpectedConcept(rulesetReconId, rulesetId);
+						conceptualSimilarity = getAVGCommonExpectedConcept(rulesetReconId, rulesetId, dataPath);
 					}
 					
 					// We ignore all the ludemes coming from a negative similarity value or 0.
@@ -994,11 +1002,18 @@ public class CompleterWithPrepro
 	/**
 	 * @return Map of rulesetId (key) to CSN distance (value) pairs, based on distance to specified rulesetId.
 	 */
-	public static double getAVGCommonExpectedConcept(final int reconsRulesetId, final int rulesetID)
+	public static double getAVGCommonExpectedConcept(final int reconsRulesetId, final int rulesetID, final String dataPath)
 	{
 		// Load ruleset avg common true concepts from specific directory.
-		final String commonExpectedConceptsFilePath = "./res/recons/input/commonExpectedConcepts/CommonExpectedConcept_" + reconsRulesetId + ".csv";
+		final String commonExpectedConceptsFilePath = dataPath + "commonExpectedConcepts/CommonExpectedConcept_" + reconsRulesetId + ".csv";
+				//"./res/recons/input/commonExpectedConcepts/CommonExpectedConcept_" + reconsRulesetId + ".csv";
 		final File fileTrueConcept = new File(commonExpectedConceptsFilePath);
+		
+//		if(rulesetID == 44)
+//		{
+//			System.out.println(commonExpectedConceptsFilePath);
+//			System.out.println("file exist? " + fileTrueConcept.exists());
+//		}
 		
 		if(!fileTrueConcept.exists() || (reconsRulesetId == rulesetID)) // If TrueConcept not computing or comparing the same rulesets, trueConceptsAvg is 0.
 			return 0.0;
@@ -1059,7 +1074,7 @@ public class CompleterWithPrepro
 	}
 	
 	/** To update the list of luds to use for recons after each update of the threshold.*/
-	public void applyThresholdToLudMap(final int rulesetReconId)
+	public void applyThresholdToLudMap(final int rulesetReconId, final String dataPath)
 	{
 		// The map used according to the thresholds.
 		ludMapUsed = new HashMap<Integer, String>();
@@ -1079,14 +1094,17 @@ public class CompleterWithPrepro
 					culturalSimilarity = 1.0;
 				else
 				{
-					final String similaryFilePath = ContextualSimilarity.rulesetContextualiserFilePath;
+					final String similaryFilePath = dataPath + "contextualiser_1000/similarity_"; // ContextualSimilarity.rulesetContextualiserFilePath;
+					
 					final File fileSimilarity1 = new File(similaryFilePath + rulesetReconId + ".csv");
 					final File fileSimilarity2 = new File(similaryFilePath + entry.getKey().intValue() + ".csv");
 					
 					if(!fileSimilarity1.exists() || !fileSimilarity2.exists() || (rulesetReconId == rulesetId)) // If CSN not computing or comparing the same rulesets, similarity is 0.
 						culturalSimilarity = 0.0;
 					else
-						culturalSimilarity = DistanceUtils.getRulesetCSNDistance(rulesetId, rulesetReconId);
+						culturalSimilarity = DistanceUtils.getRulesetCSNDistance(rulesetId, rulesetReconId, dataPath);
+//					if(rulesetId == 44)
+//						System.out.println("cultural " + culturalSimilarity + " with ruleset id = " + rulesetId);
 					
 					//System.out.println("Id = " + rulesetId + " Other Id = " + rulesetReconId + " CSN Value = " + DistanceUtils.getRulesetCSNDistance(rulesetId, rulesetReconId));
 					
@@ -1095,7 +1113,9 @@ public class CompleterWithPrepro
 					else
 						geoSimilarity = getRulesetGeoDistance(rulesetId);
 					
-					conceptualSimilarity = getAVGCommonExpectedConcept(rulesetReconId, rulesetId);
+					conceptualSimilarity = getAVGCommonExpectedConcept(rulesetReconId, rulesetId, dataPath);
+//					if(rulesetId == 44)
+//						System.out.println("conceptual " + conceptualSimilarity + " with ruleset id = " + rulesetId);
 				}
 	
 				// We ignore all the ludemes coming from a negative similarity value or 0.

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import game.Game;
+import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import main.math.statistics.Stats;
@@ -46,6 +47,11 @@ public class ResultsSummary
 	/** Map from matchup arrays to counts of how frequently we observed that matchup */
 	protected TObjectIntMap<List<String>> matchupCountsMap;
 	
+	/** 
+	 * Map from matchup lists to lists of outcome-lists.
+	 */
+	protected Map<List<String>, List<TDoubleArrayList>> matchupOutcomesListsMap;
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -80,6 +86,7 @@ public class ResultsSummary
 		
 		matchupPayoffsMap = new HashMap<List<String>, double[]>();
 		matchupCountsMap = new TObjectIntHashMap<List<String>>();
+		matchupOutcomesListsMap = new HashMap<List<String>, List<TDoubleArrayList>>();
 	}
 	
 	//-------------------------------------------------------------------------
@@ -122,15 +129,20 @@ public class ResultsSummary
 		if (!matchupPayoffsMap.containsKey(agentsList))
 		{
 			matchupPayoffsMap.put(agentsList, new double[utilities.length - 1]);
+			matchupOutcomesListsMap.put(agentsList, new ArrayList<TDoubleArrayList>());
 		}
 		
 		matchupCountsMap.adjustOrPutValue(agentsList, +1, 1);
 		final double[] sumUtils = matchupPayoffsMap.get(agentsList);
+		final TDoubleArrayList outcomes = new TDoubleArrayList();
 		
 		for (int p = 1; p < utilities.length; ++p)
 		{
 			sumUtils[p - 1] += utilities[p];
+			outcomes.add(utilities[p]);
 		}
+		
+		matchupOutcomesListsMap.get(agentsList).add(outcomes);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -262,6 +274,54 @@ public class ResultsSummary
 				scoreTuple.append(")\"");
 				
 				writer.write(agentTuple + "," + scoreTuple + "\n");
+			}
+		}
+		catch (final FileNotFoundException | UnsupportedEncodingException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Writes raw results
+	 * 
+	 * @param outFile
+	 */
+	public synchronized void writeRawResults(final File outFile)
+	{
+		try (final PrintWriter writer = new PrintWriter(outFile, "UTF-8"))
+		{
+			writer.write("agents,utilities\n");
+			
+			for (final List<String> matchup : matchupOutcomesListsMap.keySet())
+			{
+				final StringBuilder agentTuple = new StringBuilder();
+				agentTuple.append("\"(");
+				for (int i = 0; i < matchup.size(); ++i)
+				{
+					if (i > 0)
+						agentTuple.append(" / ");
+					
+					agentTuple.append("'");
+					agentTuple.append(matchup.get(i));
+					agentTuple.append("'");
+				}
+				agentTuple.append(")\"");
+				
+				for (final TDoubleArrayList utils : matchupOutcomesListsMap.get(matchup)) {
+					final StringBuilder utilsSb = new StringBuilder();
+					utilsSb.append("\"");
+					for (int i = 0; i < utils.size(); ++i) {
+						if (i > 0)
+							utilsSb.append(";");
+						
+						utilsSb.append(utils.getQuick(i));
+					}
+					utilsSb.append("\"");
+					writer.write(agentTuple.toString() + "," + utilsSb.toString() + "\n");
+				}
 			}
 		}
 		catch (final FileNotFoundException | UnsupportedEncodingException e)

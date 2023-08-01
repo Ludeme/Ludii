@@ -359,16 +359,19 @@ public class MainMenuFunctions extends JMenuBar
 				if (!FileHandling.shouldIgnoreLudThumbnails(s))
 				{
 					System.out.println(s);
-					final Game tempGame = GameLoader.loadGameFromName(s.split("\\/")[s.split("\\/").length-1]);
-					final List<Ruleset> rulesets = tempGame.description().rulesets();
-					if (rulesets != null && !rulesets.isEmpty())
+					if(!s.contains("pending"))
 					{
-						for (int rs = 0; rs < rulesets.size(); rs++)
+						final Game tempGame = GameLoader.loadGameFromName(s.split("\\/")[s.split("\\/").length-1]);
+						final List<Ruleset> rulesets = tempGame.description().rulesets();
+						if (rulesets != null && !rulesets.isEmpty())
 						{
-							if (!rulesets.get(rs).optionSettings().isEmpty())
+							for (int rs = 0; rs < rulesets.size(); rs++)
 							{
-								validChoices.add(s);
-								gameOptions.add(rulesets.get(rs).optionSettings());
+								if (!rulesets.get(rs).optionSettings().isEmpty() && !rulesets.get(rs).heading().contains("incomplete"))
+								{
+									validChoices.add(s);
+									gameOptions.add(rulesets.get(rs).optionSettings());
+								}
 							}
 						}
 					}

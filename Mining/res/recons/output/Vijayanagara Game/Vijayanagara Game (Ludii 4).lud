@@ -1,0 +1,131 @@
+(game "Vijayanagara Game" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (add 
+                (remove 
+                    (merge { 
+                        (scale 1 2 
+                            (wedge 2)
+                        )
+                        
+                        (shift 0.35 1.35 
+                            (scale 0.65 0.65 
+                                (square 3 diagonals:Alternating)
+                            )
+                        )
+                        }
+                    )
+                    edges:{ { 0 4}
+                    { 0 6}
+                    { 0 2}
+                    { 0 10}
+                    }
+                )
+                edges:{ { 2 5}
+                }
+            )
+        use:Vertex)
+        
+        (piece "Marker" P1 
+            (move Step Forward 
+                (to if:
+                    (is Empty 
+                        (to)
+                    )
+                )
+            )
+        )
+        
+        (piece "Marker" P2 
+            (or 
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (difference 
+                    (union 
+                        (expand 
+                            (sites Right)
+                        )
+                        
+                        (expand 
+                            (sites Bottom)
+                        steps:4)
+                    )
+                    
+                    (expand 
+                        (sites Centre)
+                    steps:2 W)
+                )
+            )
+            
+            (place "Marker2" 
+                (difference 
+                    (union 
+                        (expand 
+                            (sites Left)
+                        )
+                        
+                        (expand 
+                            (sites Top)
+                        steps:4)
+                    )
+                    
+                    (expand 
+                        (sites Centre)
+                    steps:2 E)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+

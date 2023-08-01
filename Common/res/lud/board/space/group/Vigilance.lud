@@ -1,0 +1,341 @@
+//Super Vigilant
+// Turn actions:
+// 2) Slide to any empty location (may destine the chain there for capture by opponent) 
+// 3) Remove captured pieces = all chains that cannot be expanded (by either a placement or a slide.)
+// (or maybe = all enemy chains that have no placement sites within view.)
+// 4) Place all of the pieces that your enemy captured from you.
+// 5) Place another of your pieces
+//-----------------------------------------------------
+// utilities
+
+(define "SitesControlledBy"
+    (sites
+        (results
+            from:(intersection (sites Board) (sites Occupied by:(player #1)))
+            to:(sites LineOfSight Empty at:(from) "LoSDirection")
+            (to)
+)))
+(define "SitesPlaceableBy"
+    (difference
+        (intersection (sites Board) (sites Empty))
+        ("SitesControlledBy" #1)
+))
+
+(define "SitesAccessibleOnlyTo"
+    (forEach 
+        ("SitesPlaceableBy" #1)
+        if:(= Infinity
+            (count Steps "LoSDirection"
+                (step 
+                    (to
+                        if:(is In (to)
+                            (sites Empty)
+                )))
+                (site)
+                (sites Around (sites Occupied by:(player #1)))
+))))
+
+(define "ScorePlayerx"
+    (set Score
+        (player #1)
+        (size Array 
+            (array ("SitesPlaceableBy" #2))
+)))
+
+(define "ScorePlayer"
+    (set Score
+        (player #1)
+        (- (size Array (array ("SitesAccessibleOnlyTo" #2))) (value Piece at:(handSite P#1 0)))
+))
+
+(define "AddAPiece" 
+    (move Add
+        (piece (id "Ball" Mover))
+        (to
+            ("SitesPlaceableBy" (next))
+            (apply (set Value at:(handSite Mover 0) (- (value Piece at:(handSite Mover 0)) 1)))
+        )
+        #1
+))
+
+(define "ScoreTerritory" (and ("ScorePlayer" 1 2) ("ScorePlayer" 2 1)))
+
+(define "PlayTurn"
+    (if
+        ("SameTurn")
+        (if
+            (< 1 (value Piece at:(handSite Mover 0)))
+            ("AddAPiece" (then (moveAgain)))
+            ("AddAPiece" (then (remove (handSite Mover 0))))
+        )
+        (forEach Piece
+            (move Slide "LoSDirection" (to (sites Empty))
+                <Game:captures>  
+            )
+            (then 
+                (if
+                    (is Empty (handSite Mover 0))
+                    (add
+                        (piece (id "Disc" Mover))
+                        (to (handSite Mover 0)
+                            (apply (set Value at:(handSite Mover 0) 1))
+                    ))
+                    (set Value at:(handSite Mover 0) (+ 1 (value Piece at:(handSite Mover 0))))
+                    (then
+                        (moveAgain)          
+))))))
+
+(define "MakeCaptures"
+    (do
+        (forEach
+            Group
+            if:(is In (to) (intersection (sites Board) (sites Occupied by:Next)))
+            (if
+                (= 0
+                    (count Sites
+                        in:(difference
+                            (sites Around (sites) "LoSDirection" if:(is Empty (to)))
+                            ("SitesControlledBy" (mover))
+                )))
+                (and
+                    {
+                    (forEach Site (sites) (remember Value (site)))
+                    (remove (sites))
+                    }
+        )))
+        next:(if
+            (and
+                (is Empty (handSite Next 0))
+                (< 0 (size Array (values Remembered)))
+            )
+            (add
+                (piece (id "Disc" Next)) 
+                (to 
+                    (handSite Next 0)
+                    (apply (set Value at:(handSite Next 0) (size Array (values Remembered))))
+                )
+            )
+            (set Value at:(handSite Next 0) (+ (value Piece at:(handSite Next 0)) (size Array (values Remembered))))
+        )
+        (then
+            (forget Value All)
+)))
+
+(define "PieOffer"
+    (if 
+        (> 1 (counter))
+        (move Add (piece "Ball1")
+            (to (sites Empty))
+            (then (moveAgain))
+        )
+        (if
+            (= 1 (counter))
+            (move Add (piece "Ball2")
+                (to (sites Empty))
+                (then (set Var "Site2" (last To)))
+            )
+            (or
+                "PlayTurn"
+                (move Propose "Decline and Swap" 
+                    (then 
+                        (if
+                            (is Proposed "Decline and Swap")
+                            (and
+                                (forEach Site (sites Occupied by:P1)
+                                    (add (piece "Ball2") (to (site) (apply (remove (to)))))
+                                )
+                                (add (piece "Ball1") (to (var "Site2") (apply (remove (to)))))
+))))))))
+
+//-------------------------------------------------
+
+(game "Vigilance"
+    (players 2)
+    (equipment
+        {
+        "BoardUsed"
+        (piece "Ball" Each)
+        (piece "Disc" Each)
+        (hand Each size:1)
+        }
+    )
+    (rules
+        (start      
+            (set Score Each 0)
+        )
+        (play 
+            (if
+                (< 2 (counter))
+                ("PlayTurn")
+                ("PieOffer")
+                (then 
+                    ("ScoreTerritory")
+        )))
+        (end "HeuristicEnd")
+))
+
+//--------------------------
+// ending rules:
+
+(define "HeuristicEnd"
+    (if
+        (and
+            {
+            (< 4 (counter)) // finish pie offer before testing for a win.
+            (if
+                (= 1 (mover))
+                (<=
+                    (- (count Sites in:(sites Empty)) (value Piece at:(handSite P2 0))) 
+                    (* 2 
+                        (- (size Array (array ("SitesAccessibleOnlyTo" 2))) (value Piece at:(handSite P1 0)))
+                )) 
+                (<=
+                    (- (count Sites in:(sites Empty)) (value Piece at:(handSite P1 0))) 
+                    (* 2
+                        (- (size Array (array ("SitesAccessibleOnlyTo" 1))) (value Piece at:(handSite P2 0)))
+            )))
+            }
+        )
+        (result Mover Win)
+))
+
+//-------------------------------------------------------
+
+(define "LoSDirection"  <PerforatedBoard:gridDirections>) //Adjacent) // Orthogonal) //
+(define "BoardUsed" <PerforatedBoard:size>)
+
+//-------------------------------------------------------
+// Board definitions
+
+(define "Jungle" (poly { { -3.5 -11.75 } { -10.0 -5.25 } { -6.75 12.0 } { 1.25 14.75 } { 15.25 3.25 } { 14.0 -5.75 } } )) 
+
+(define "Perf2" (board (remove (hex  4 5) cells:{0 1 15 20 25 32 36 39 44 })))
+(define "Perf3" (board (remove (hex 5 6) cells:{0 1 2 3 4 5 6 7 11 12 13 14 21 25 30 37 42 53 63 64 65 69 70 71 72 73 74})))
+(define "Perf4" (board (remove (hex 6) cells:{0 1 5 12 17 23 30 37 40 45 50 53 60 67 73 78 85 89 90})))
+(define "Perf5" (board (remove (hex 7 8) cells:{0 1 2 3 4 5 6 7 8 9 10 11 12 16 17 18 19 26 27 34
+38 43 50 53 60 63 64 71 76 77 82 89 92 99 108 116 123 130 131 132 136 137 138 139 140 141 142 143 144 145 146})))
+(define "Perf6" (board (remove (hex 8) cells:{0 4 5 6 7 8 13 17 20 27 28 35 44 49 54 61 62 65 72
+76 77 84 91 92 96 103 106 107 114 119 124 133 140 141 148 151 155 160 161 162 163 164 168})) )
+(define "Perf7" (board (remove (hex "Jungle") cells:{12 25 34 41 50 57 66 75 82 91 98 107 116 123 131 144 150 161})))
+
+(define "SymRemover" // Rotation, board, cells or vertices to remove 
+    (renumber (rotate (* (- #1 1) (/ 360 #1)) (remove #2 cells:#3)))
+)
+(define "RaggedSquare" 
+    (board 
+        (trim
+            ("SymRemover" #1 ("SymRemover" #1 ("SymRemover" #1 ("SymRemover" #1 ("SymRemover" #1 (square #2) #3) #3) #3) #4) #5)
+        )
+        use:Cell
+))
+
+(define "RaggedHex" 
+    (board 
+        (trim
+            ("SymRemover" #1 ("SymRemover" #1 ("SymRemover" #1 ("SymRemover" #1 ("SymRemover" #1 ("SymRemover" #1 ("SymRemover" #1 (hex #2) #3) #3) #3) #3) #3) #4) #5)
+        )
+        use:Cell
+))
+
+(option "Game" <Game> args:{<captures>}
+    {
+    (item "Captures" <(then "MakeCaptures")> "After sliding capture any opponent's chains that lack an adjacent placement site.")
+    (item "No Captures" <> "Variant without captures")
+    }
+)
+
+(option "Size" <PerforatedBoard> args:{<gridDirections> <size>} 
+    {
+    (item "SQ-3 (36) Adjacent" <Adjacent> <("RaggedSquare" 4 8 {0..3 8 9} {0..3 6 7} {10 15 24 29})> "Perforated SQ-3 (36) Adjacent")**
+    (item "SQ-4 (64) Adjacent" <Adjacent> <("RaggedSquare" 4 11 {0..5 11..14 22 23} {0..5 8..11 16 17} {10 17 24 29 36 43 48 55 62})>  "Perforated SQ-4 (64) Adjacent")***
+    (item "SQ-5 (100) Adjacent" <Adjacent> <("RaggedSquare" 4 14 {0..7 14..19 28..31 42 43} {0..7 10..15 20..23 31 32} {10 17 26 31 36 41 50 55 60 65 74 79 84 89 98 105} 
+    )>  "SQ-5 (100) Adjacent")
+    (item "SQ-6 (144) Adjacent" <Adjacent> <("RaggedSquare" 4 17 {0..9 17..24 34..39 51..54 68 69} {0..9 12..19 24..29 37..40 50 51} {10 17 26 31 38 43 50 55 60 67 72 79 84 89 96 101 108 113 118 125 130 137 142 151 158})>  "Perforated SQ6 (144) Orthogonal")
+    (item "SQ-3 (36) Orthogonal" <Orthogonal> <("RaggedSquare" 4 8 {0..3 8 9} {0..3 6 7} {10 15 24 29})> "Perforated SQ-3 (36) Orthogonal")**
+    (item "SQ-4 (64) Orthogonal" <Orthogonal> <("RaggedSquare" 4 11 {0..5 11..14 22 23} {0..5 8..11 16 17} {10 17 24 29 36 43 48 55 62})>  "Perforated SQ-4 (64) Orthogonal")
+    (item "SQ-5 (100) Orthogonal" <Orthogonal> <("RaggedSquare" 4 14 {0..7 14..19 28..31 42 43} {0..7 10..15 20..23 31 32} {10 17 26 31 36 41 50 55 60 65 74 79 84 89 98 105} 
+    )>  "SQ-5 (100) Orthogonal")
+    (item "SQ-6 (144) Orthogonal" <Orthogonal> <("RaggedSquare" 4 17 {0..9 17..24 34..39 51..54 68 69} {0..9 12..19 24..29 37..40 50 51} {10 17 26 31 38 43 50 55 60 67 72 79 84 89 96 101 108 113 118 125 130 137 142 151 158})>  "Perforated SQ6 (144) Orthogonal")
+    (item "Hex XS (39)" <Orthogonal> <"Perf2">  "Hex Extra small board (39 nodes)")
+    (item "Hex S  (48)" <Orthogonal> <"Perf3">  "Hex Small board (48 nodes)")
+    (item "Hex M  (72)" <Orthogonal> <"Perf4">  "Hex Medium board (72 nodes)")**
+    (item "Hex L  (96)" <Orthogonal> <"Perf5">  "Hex Large board (96 nodes)")
+    (item "Hex XL (126)" <Orthogonal> <"Perf6">  "Hex Extra large board (126 nodes)")
+    (item "Hex XXL (156)" <Orthogonal> <"Perf7">  "Hex XXL board (156 nodes)")
+    }
+)
+
+//------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "My first Line-of-Sight game was called Purview, invented in 23-26 APR 2020. It originally was: place a piece out-of-sight then slide a piece, then capture the enclosed pieces, - last to move wins. This was later modified to be first slide, then place out of site, and started with a two piece placement pie. 
+            
+            Shortly after inventing Purview, the game evolved into Shaka, which became a number of place-xor-move variants with constraints on sliding the piece; namely, the destination site must be closer to an enemy than the origin site. One version of Shaka under the name Epoxy has been scripted for Ludii.
+            
+            After neglecting Purview for some time, I have three years later,  come back to it with the use of perforated boards that reduce the cognitive load of line-of-sight games. 
+            
+            Capture turned out not to be essential, however the game is more exciting when it involves captures that the opponent must re-enter onto the board on the next turn. This capture rule keeps the game finite, and makes the nature and advantage of making captures evolve during the course of a play. 
+            
+        The game is presented here under a new name, Vigilance. - The option without capture is also included.")
+        (rules "Goal: Be the last player able to play,
+            
+            This is determined by whether the mover has blocked off more than half of the empty cells from his opponent, taking into account stones awaiting placement.
+            
+            Definitions:
+            -- A 'chain' is all the stones connected to a given stone by any series of steps from stone to stone of the same color, along the movement directions of the board.
+            
+            -- 'Placement liberties' are sites that are not in line-of-sight of an opponent's stone, along the movement directions of the board.
+            
+            -- A 'dead chain' is a chain with no adjacent placement liberties.
+            
+            Play:        
+            Play starts with Red placing 2 red stones and then a white stone, on any separate sites of the board as a 'pie offer.' 
+            
+            White then either takes a standard turn, or exchanges the stones by choosing to 'Decline and Swap'.
+            
+            A turn consists of the following actions, in order:
+        1) Slide a stone of your color,
+    2) Capture and returning the stones of every opponent's dead chain (if any) to the opponent,
+3) Place a new stone onto one of your placement liberties.
+4) Place each captured stone that you received from the opponent's turn (if any) onto placement liberties.
+
+Turns alternate until the moving player's stones block the opponent from reaching half of the remaining empty sites.")
+(id "4200")
+(version "1.3.12")
+(classification "board/space/group")
+(author "Dale W. Walton")
+(credit "Dale W. Walton")
+(date "23-04-2023")
+}
+)
+
+(graphics 
+    {
+    (player Colour P1 (colour 120 36 0))
+    (player Colour P2 (colour Cream))
+    (piece Background image:"Disc" fillColour:(colour 0 0 0 120) edgeColour:(colour 0 0 0 0) scale:.97 offsetX:.26 offsetY:.3 )
+    (board StyleThickness InnerEdges 0.4)
+    (board StyleThickness OuterEdges 0.6)
+    (board StyleThickness InnerVertices 0.45)
+    (board StyleThickness OuterVertices 0.45)
+    (board Colour InnerVertices (colour Grey))
+    (board Colour OuterVertices (colour Grey))
+    (board Colour InnerEdges (colour Black))
+    (board Colour OuterEdges (colour Black))
+    (board Background fillColour:(colour 170 160 140) edgeColour:(colour Grey) scale:1.3 )
+    (board Colour Phase0 (colour HumanLight))
+    (show Edges Diagonal Hidden (colour DarkGrey))
+    (show Piece Value "Disc" Middle)
+    (region Colour 
+        ("SitesAccessibleOnlyTo" 2) regionSiteType:Cell (colour 160 120 100)
+    )
+    (region Colour 
+        ("SitesAccessibleOnlyTo" 1) regionSiteType:Cell (colour VeryLightGrey) scale:1.02
+    )
+    }
+)
+//  (ai (heuristics (score)))
+)
+

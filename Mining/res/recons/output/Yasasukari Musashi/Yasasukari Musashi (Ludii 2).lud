@@ -1,0 +1,99 @@
+(game "Yasasukari Musashi" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (rectangle 5 5 diagonals:Alternating)
+        use:Vertex)
+        
+        (piece "Marker" P1 
+            (or 
+                (move Step 
+                    (directions { Forward Rightward Leftward }
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Hop 
+                    (directions { Forward Rightward Leftward }
+                    )
+                    
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Marker" P2 
+            (move Step 
+                (to if:
+                    (and 
+                        (is Empty 
+                            (to)
+                        )
+                        
+                        (not 
+                            (is In 
+                                (to)
+                                
+                                (expand 
+                                    (sites Bottom)
+                                steps:2)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (sites Centre)
+            )
+            
+            (place "Marker2" 
+                (sites Outer)
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+

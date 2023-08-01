@@ -1,0 +1,114 @@
+(game "Sua Ghin Gnua" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (square 5)
+        use:Vertex)
+        
+        (piece "Marker" P1 
+            (move 
+                (from 
+                    (from)
+                    level:
+                    (level)
+                )
+                
+                (to 
+                    (centrePoint)
+                )
+            )
+        )
+        
+        (piece "Marker" P2 
+            (or 
+                (move Step 
+                    (to if:
+                        (not 
+                            (is Friend 
+                                (who at:
+                                    (to)
+                                )
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                
+                (if 
+                    (= 1 
+                        (state at:
+                            (from)
+                        )
+                    )
+                    
+                    (move Leap { { F F R F }
+                        { F F L F }
+                        }
+                        
+                        (to if:
+                            (is Empty 
+                                (to)
+                            )
+                        )
+                    )
+                )
+                
+                (then 
+                    (if 
+                        (= 
+                            (state at:
+                                (last To)
+                            )
+                        1)
+                        
+                        (set State at:
+                            (last To)
+                        0)
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (union 
+                    (sites Row 0)
+                    
+                    (sites Row 2)
+                )
+            )
+            
+            (place "Marker2" 
+                (union 
+                    (sites Row 5)
+                    
+                    (sites Row 7)
+                )
+            )
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (no Pieces Next)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+

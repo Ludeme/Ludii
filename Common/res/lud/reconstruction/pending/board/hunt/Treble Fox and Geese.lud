@@ -11,14 +11,10 @@
         (players 2) 
         (equipment {
             (board [#] use:Vertex) // More than 33 vertices on this board
-            (piece "Fox" #)
-            (piece "Geese" #)
+            (piece "Fox" (or [#]))
+            (piece "Geese" (move [#]))
         })
-        (rules
-            (start [#]) // 3 or 4 foxes and 50 to 60 geese
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
@@ -45,7 +41,7 @@
         ")
         (source "DLP evidence.")
         (id "1111")
-        (version "1.3.11")
+        (version "1.3.12")
         (classification "board/hunt/reconstruction/pending")
         (credit "Eric Piette")
         (origin "This game was played in England, around 1681.")

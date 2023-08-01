@@ -1,0 +1,600 @@
+(define "CapturePiece"
+    (apply 
+        (if ("IsEnemyAt" (to))
+            (add 
+                (piece ("Captured" (what at:(to)))) 
+                (to (mapEntry "Where" ("Captured" (what at:(to)))))
+            )
+        )
+    )
+)
+
+(define "CanNotMove"
+    (not 
+        (can Move 
+            (do 
+                (or {
+                    ("PlaceUnrestrictedPiece" #1) 
+                    ("PlacePawn" #1)
+                    ("PlaceLance" #1)
+                    ("PlaceKnight" #1) 
+                    (forEach Piece #1) 
+                })
+                ifAfterwards:(not ("IsInCheck" "King" #1))
+            ) 
+        )
+    )
+)
+
+(define "CheckPawnDropMate"
+    (not (can Move (do (and (forEach Piece #1) (set NextPlayer (player (id #1)))) ifAfterwards:(not ("IsInCheck" "King" #1)))))
+)
+
+(define "PlaceUnrestrictedPiece"
+    (move 
+        (from (sites Occupied by:#1 container:"Hand" components:{"SilverGeneral" "GoldGeneral" "Bishop" "Rook"})) 
+        (to (sites Empty))
+    ) 
+)
+
+// Fixed OnePawnPerColumn by dale walton and RubixOne
+(define "OnePawnPerColumn"
+    (if
+        (= 0 (% (id #1) 2))  // #1 is even   
+        (=
+            (count Sites in:(sites Occupied by:#1 container:"Board" component:"Pawn"))
+            (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Pawn") (sites Row (row of:(to)))))
+        )
+        (=
+            (count Sites in:(sites Occupied by:#1 container:"Board" component:"Pawn"))
+            (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Pawn") (sites Column (column of:(to)))))
+        )
+    )
+)
+
+(define "PlaceKnight" 
+    (move 
+        (from (sites Occupied by:#1 container:"Hand" component:"Knight")) 
+        (to (difference (sites Empty) (sites #1 "TwoFurthestRank")))
+    )
+)
+
+(define "PlaceLance" 
+    (move 
+        (from (sites Occupied by:#1 container:"Hand" component:"Lance")) 
+        (to (difference (sites Empty) (sites #1 "LastRank")))
+    )
+)
+
+// Fixed PlacePawn by RubixOne
+(define "PlacePawn" 
+    (do 
+        (move 
+            (from (sites Occupied by:#1 container:"Hand" component:"Pawn")) 
+            (to (difference (sites Empty) (sites #1 "LastRank")) 
+                if:("OnePawnPerColumn" #1)
+            )
+        ) 
+        ifAfterwards:(not (or {
+                (and ("IsInCheck" "King" P1) ("CheckPawnDropMate" P1))
+                (and ("IsInCheck" "King" P2) ("CheckPawnDropMate" P2))
+                (and ("IsInCheck" "King" P3) ("CheckPawnDropMate" P3))
+                (and ("IsInCheck" "King" P4) ("CheckPawnDropMate" P4))
+        }))
+    )
+) 
+
+(define "InPromotionZone"
+    (is In #1 (sites Mover "Promotion"))	
+)
+
+(define "InLastRank"
+    (is In #1 (sites Mover "LastRank"))	
+)
+
+(define "InTwoFurthestRank"
+    (is In #1 (sites Mover "TwoFurthestRank"))	
+)
+
+(define "Promote"
+    (move Promote (last To) (piece (mapEntry "Promoted" (what at:(last To)))))	
+)
+
+(define "CanPromote"
+    (then 
+        (if 
+            (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From))) 
+            (moveAgain) 
+        ) 
+    )
+)
+
+(define "SlideMove"
+    (move Slide
+        #1 
+        (to if:("IsEnemyAt" (to)) "CapturePiece")
+        #2 
+    ) 	
+)
+
+(define "StepMove"
+    (move Step
+        #1
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
+        #2 
+    ) 	
+)
+
+(define "TwoStepLeap" 
+    (forEach Direction 
+        #1 
+        (to 
+            if:True 
+            (apply 
+                (forEach Direction 
+                    (from (to)) 
+                    #2 
+                    (if (not ("IsFriendAt" (to))) 
+                        (move 
+                            (from) 
+                            (to 
+                                ("CapturePiece")
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        #3
+    )
+)
+
+(define "Captured"
+    (if (is Mover P1)
+        (if (or {(= #1 (id "Pawn" P2)) (= #1 (id "Pawn" P3)) (= #1 (id "Pawn" P4))})
+            (id "Pawn" P1)
+            (if (or {(= #1 (id "Knight" P2)) (= #1 (id "Knight" P3)) (= #1 (id "Knight" P4))})
+                (id "Knight" P1)
+                (if (or {(= #1 (id "Rook" P2)) (= #1 (id "Rook" P3)) (= #1 (id "Rook" P4))})
+                    (id "Rook" P1)
+                    (if (or {(= #1 (id "SilverGeneral" P2)) (= #1 (id "SilverGeneral" P3)) (= #1 (id "SilverGeneral" P4))})
+                        (id "SilverGeneral" P1)
+                        (if (or {(= #1 (id "Bishop" P2)) (= #1 (id "Bishop" P3)) (= #1 (id "Bishop" P4))})
+                            (id "Bishop" P1)
+                            (if (or {(= #1 (id "Lance" P2)) (= #1 (id "Lance" P3)) (= #1 (id "Lance" P4))})
+                                (id "Lance" P1)
+                                (if (or {(= #1 (id "GoldGeneral" P2)) (= #1 (id "GoldGeneral" P3)) (= #1 (id "GoldGeneral" P4))})
+                                    (id "GoldGeneral" P1)
+                                    (if (or {(= #1 (id "Tokin" P2)) (= #1 (id "Tokin" P3)) (= #1 (id "Tokin" P4))})
+                                        (id "Pawn" P1)
+                                        (if (or {(= #1 (id "RunningWolf" P2)) (= #1 (id "RunningWolf" P3)) (= #1 (id "RunningWolf" P4))})
+                                            (id "SilverGeneral" P1)
+                                            (if (or {(= #1 (id "DragonKing" P2)) (= #1 (id "DragonKing" P3)) (= #1 (id "DragonKing" P4))})
+                                                (id "Rook" P1)
+                                                (if (or {(= #1 (id "DragonHorse" P2)) (= #1 (id "DragonHorse" P3)) (= #1 (id "DragonHorse" P4))})
+                                                    (id "Bishop" P1)
+                                                    (if (or {(= #1 (id "HeavenlyHorse" P2)) (= #1 (id "HeavenlyHorse" P3)) (= #1 (id "HeavenlyHorse" P4))})
+                                                        (id "Knight" P1)
+                                                        (if (or {(= #1 (id "FreeTiger" P2)) (= #1 (id "FreeTiger" P3)) (= #1 (id "FreeTiger" P4))})
+                                                            (id "Lance" P1)
+                                                            (if (or {(= #1 (id "GreatElephant" P2)) (= #1 (id "GreatElephant" P3)) (= #1 (id "GreatElephant" P4))})
+                                                                (id "GoldGeneral" P1)
+                                                                (id "King" P1)
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (if (is Mover P2)
+            (if (or {(= #1 (id "Pawn" P1)) (= #1 (id "Pawn" P3)) (= #1 (id "Pawn" P4))})
+                (id "Pawn" P2)
+                (if (or {(= #1 (id "Knight" P1)) (= #1 (id "Knight" P3)) (= #1 (id "Knight" P4))})
+                    (id "Knight" P2)
+                    (if (or {(= #1 (id "Rook" P1)) (= #1 (id "Rook" P3)) (= #1 (id "Rook" P4))})
+                        (id "Rook" P2)
+                        (if (or {(= #1 (id "SilverGeneral" P1)) (= #1 (id "SilverGeneral" P3)) (= #1 (id "SilverGeneral" P4))})
+                            (id "SilverGeneral" P2)
+                            (if (or {(= #1 (id "Bishop" P1)) (= #1 (id "Bishop" P3)) (= #1 (id "Bishop" P4))})
+                                (id "Bishop" P2)
+                                (if (or {(= #1 (id "Lance" P1)) (= #1 (id "Lance" P3)) (= #1 (id "Lance" P4))})
+                                    (id "Lance" P2)
+                                    (if (or {(= #1 (id "GoldGeneral" P1)) (= #1 (id "GoldGeneral" P3)) (= #1 (id "GoldGeneral" P4))})
+                                        (id "GoldGeneral" P2)
+                                        (if (or {(= #1 (id "Tokin" P1)) (= #1 (id "Tokin" P3)) (= #1 (id "Tokin" P4))})
+                                            (id "Pawn" P2)
+                                            (if (or {(= #1 (id "RunningWolf" P1)) (= #1 (id "RunningWolf" P3)) (= #1 (id "RunningWolf" P4))})
+                                                (id "SilverGeneral" P2)
+                                                (if (or {(= #1 (id "DragonKing" P1)) (= #1 (id "DragonKing" P3)) (= #1 (id "DragonKing" P4))})
+                                                    (id "Rook" P2)
+                                                    (if (or {(= #1 (id "DragonHorse" P1)) (= #1 (id "DragonHorse" P3)) (= #1 (id "DragonHorse" P4))})
+                                                        (id "Bishop" P2)
+                                                        (if (or {(= #1 (id "HeavenlyHorse" P1)) (= #1 (id "HeavenlyHorse" P3)) (= #1 (id "HeavenlyHorse" P4))})
+                                                            (id "Knight" P2)
+                                                            (if (or {(= #1 (id "FreeTiger" P1)) (= #1 (id "FreeTiger" P3)) (= #1 (id "FreeTiger" P4))})
+                                                                (id "Lance" P2)
+                                                                (if (or {(= #1 (id "GreatElephant" P1)) (= #1 (id "GreatElephant" P3)) (= #1 (id "GreatElephant" P4))})
+                                                                    (id "GoldGeneral" P2)
+                                                                    (id "King" P2)
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (if (is Mover P3)
+                (if (or {(= #1 (id "Pawn" P1)) (= #1 (id "Pawn" P2)) (= #1 (id "Pawn" P4))})
+                    (id "Pawn" P3)
+                    (if (or {(= #1 (id "Knight" P1)) (= #1 (id "Knight" P2)) (= #1 (id "Knight" P4))})
+                        (id "Knight" P3)
+                        (if (or {(= #1 (id "Rook" P1)) (= #1 (id "Rook" P2)) (= #1 (id "Rook" P4))})
+                            (id "Rook" P3)
+                            (if (or {(= #1 (id "SilverGeneral" P1)) (= #1 (id "SilverGeneral" P2)) (= #1 (id "SilverGeneral" P4))})
+                                (id "SilverGeneral" P3)
+                                (if (or {(= #1 (id "Bishop" P1)) (= #1 (id "Bishop" P2)) (= #1 (id "Bishop" P4))})
+                                    (id "Bishop" P3)
+                                    (if (or {(= #1 (id "Lance" P1)) (= #1 (id "Lance" P2)) (= #1 (id "Lance" P4))})
+                                        (id "Lance" P3)
+                                        (if (or {(= #1 (id "GoldGeneral" P1)) (= #1 (id "GoldGeneral" P2)) (= #1 (id "GoldGeneral" P4))})
+                                            (id "GoldGeneral" P3)
+                                            (if (or {(= #1 (id "Tokin" P1)) (= #1 (id "Tokin" P2)) (= #1 (id "Tokin" P4))})
+                                                (id "Pawn" P3)
+                                                (if (or {(= #1 (id "RunningWolf" P1)) (= #1 (id "RunningWolf" P2)) (= #1 (id "RunningWolf" P4))})
+                                                    (id "SilverGeneral" P3)
+                                                    (if (or {(= #1 (id "DragonKing" P1)) (= #1 (id "DragonKing" P2)) (= #1 (id "DragonKing" P4))})
+                                                        (id "Rook" P3)
+                                                        (if (or {(= #1 (id "DragonHorse" P1)) (= #1 (id "DragonHorse" P2)) (= #1 (id "DragonHorse" P4))})
+                                                            (id "Bishop" P3)
+                                                            (if (or {(= #1 (id "HeavenlyHorse" P1)) (= #1 (id "HeavenlyHorse" P2)) (= #1 (id "HeavenlyHorse" P4))})
+                                                                (id "Knight" P3)
+                                                                (if (or {(= #1 (id "FreeTiger" P1)) (= #1 (id "FreeTiger" P2)) (= #1 (id "FreeTiger" P4))})
+                                                                    (id "Lance" P3)
+                                                                    (if (or {(= #1 (id "GreatElephant" P1)) (= #1 (id "GreatElephant" P2)) (= #1 (id "GreatElephant" P4))})
+                                                                        (id "GoldGeneral" P3)
+                                                                        (id "King" P3)
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                (if (or {(= #1 (id "Pawn" P1)) (= #1 (id "Pawn" P2)) (= #1 (id "Pawn" P3))})
+                    (id "Pawn" P4)
+                    (if (or {(= #1 (id "Knight" P1)) (= #1 (id "Knight" P2)) (= #1 (id "Knight" P3))})
+                        (id "Knight" P4)
+                        (if (or {(= #1 (id "Rook" P1)) (= #1 (id "Rook" P2)) (= #1 (id "Rook" P3))})
+                            (id "Rook" P4)
+                            (if (or {(= #1 (id "SilverGeneral" P1)) (= #1 (id "SilverGeneral" P2)) (= #1 (id "SilverGeneral" P3))})
+                                (id "SilverGeneral" P4)
+                                (if (or {(= #1 (id "Bishop" P1)) (= #1 (id "Bishop" P2)) (= #1 (id "Bishop" P3))})
+                                    (id "Bishop" P4)
+                                    (if (or {(= #1 (id "Lance" P1)) (= #1 (id "Lance" P2)) (= #1 (id "Lance" P3))})
+                                        (id "Lance" P4)
+                                        (if (or {(= #1 (id "GoldGeneral" P1)) (= #1 (id "GoldGeneral" P2)) (= #1 (id "GoldGeneral" P3))})
+                                            (id "GoldGeneral" P4)
+                                            (if (or {(= #1 (id "Tokin" P1)) (= #1 (id "Tokin" P2)) (= #1 (id "Tokin" P3))})
+                                                (id "Pawn" P4)
+                                                (if (or {(= #1 (id "RunningWolf" P1)) (= #1 (id "RunningWolf" P2)) (= #1 (id "RunningWolf" P3))})
+                                                    (id "SilverGeneral" P4)
+                                                    (if (or {(= #1 (id "DragonKing" P1)) (= #1 (id "DragonKing" P2)) (= #1 (id "DragonKing" P3))})
+                                                        (id "Rook" P4)
+                                                        (if (or {(= #1 (id "DragonHorse" P1)) (= #1 (id "DragonHorse" P2)) (= #1 (id "DragonHorse" P3))})
+                                                            (id "Bishop" P4)
+                                                            (if (or {(= #1 (id "HeavenlyHorse" P1)) (= #1 (id "HeavenlyHorse" P2)) (= #1 (id "HeavenlyHorse" P3))})
+                                                                (id "Knight" P4)
+                                                                (if (or {(= #1 (id "FreeTiger" P1)) (= #1 (id "FreeTiger" P2)) (= #1 (id "FreeTiger" P3))})
+                                                                    (id "Lance" P4)
+                                                                    (if (or {(= #1 (id "GreatElephant" P1)) (= #1 (id "GreatElephant" P2)) (= #1 (id "GreatElephant" P3))})
+                                                                        (id "GoldGeneral" P4)
+                                                                        (id "King" P4)
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+(define "RemoveKingIfCheckmate"
+    (if (and (is Active #1) (not (is Mover #1)))
+        (if 
+            (and 
+                ("IsInCheck" "King" #1)
+                ("CanNotMove" #1)
+            )
+            ("ReappropriatePieces" #1 Mover)
+        )
+    )		
+)
+
+// Reappropriates pieces in the hand of #1 to #2
+(define "ReappropriatePieces"
+    (and {        
+        (remove (where (id "King" #1)))
+        ("AddToHand" #1 #2 "Pawn")
+        ("AddToHand" #1 #2 "Lance")
+        ("AddToHand" #1 #2 "Knight")
+        ("AddToHand" #1 #2 "SilverGeneral")
+        ("AddToHand" #1 #2 "GoldGeneral")
+        ("AddToHand" #1 #2 "Bishop")
+        ("AddToHand" #1 #2 "Rook")
+        (remove (sites Occupied by:#1 container:"Hand"))
+    })
+)
+
+(define "AddToHand"
+    (add (piece (id #3 #2)) (to (mapEntry "Where" (id #3 #2))) count:(count Pieces in:(sites Occupied by:#1 container:"Hand" components:{#3})))
+)
+
+//------------------------------------------------------------------------------
+
+(game "Yonin Seireigi" 
+    (players {(player N) (player E) (player S) (player W)}) 
+    
+    (equipment { 
+        (board (square 9))
+        
+        // Pawn 
+        (piece "Pawn" Each 
+            ("StepMove" Forward 
+                (then 
+                    (if ("InPromotionZone" (last To))
+                        (if ("InLastRank" (last To)) 
+                            ("Promote") 
+                            (moveAgain) 
+                        ) 
+                    ) 
+                )
+            )
+        )
+        
+        // Lance
+        (piece "Lance" Each 
+            ("SlideMove" Forward 
+                (then  
+                    (if ("InPromotionZone" (last To))
+                        (if ("InLastRank" (last To)) 
+                            ("Promote") 
+                            (moveAgain) 
+                        ) 
+                    ) 
+                )
+            )
+        )       
+        
+        // Knight
+        (piece "Knight" Each 
+            ("TwoStepLeap" Forward (directions {FL FR})
+                (then 
+                    (if ("InPromotionZone" (last To))
+                        (if ("InTwoFurthestRank" (last To)) 
+                            ("Promote") 
+                            (moveAgain) 
+                        ) 
+                    ) 
+                )
+            )
+        )
+        
+        // Silver General
+        (piece "SilverGeneral" Each ("StepMove" (directions {Forward BL BR FL FR}) "CanPromote"))
+        
+        // Gold General
+        (piece "GoldGeneral" Each ("StepMove" (directions {Forward Backward Leftward Rightward FL FR}) "CanPromote"))
+        
+        // Bishop
+        (piece "Bishop" Each ("SlideMove" Diagonal "CanPromote"))
+        
+        // Rook
+        (piece "Rook" Each ("SlideMove" Orthogonal "CanPromote"))
+        
+        // King
+        (piece "King" Each ("StepMove"))
+        
+        // Promoted Pawn
+        (piece "Tokin" Each ("StepMove" (directions {Forward Backward Leftward Rightward FL FR})))
+        
+        // Promoted Lance
+        (piece "FreeTiger" Each (or {("SlideMove" (directions {Leftward Rightward})) ("TwoStepLeap" (directions {Leftward Rightward}) (directions {FL FR})) ("StepMove" (directions {Forward Backward}))}))
+        
+        // Promoted Knight
+        (piece "HeavenlyHorse" Each (or ("StepMove" (directions {Forward Leftward Rightward FL FR})) ("TwoStepLeap" Backward (directions {FL FR}))))
+        
+        // Promoted Silver General
+        (piece "RunningWolf" Each (or ("SlideMove" Forward) ("StepMove" (directions {FL FR Leftward Rightward Backward}))))
+        
+        // Promoted Gold General
+        (piece "GreatElephant" Each (or ("SlideMove" (directions {FL FR})) ("StepMove" (directions {Forward Leftward Rightward BL BR}))))
+        
+        // Promoted Bishop
+        (piece "DragonHorse" Each (or ("SlideMove" Diagonal) ("StepMove" Orthogonal)))
+        
+        // Promoted Rook
+        (piece "DragonKing" Each (or ("SlideMove" Orthogonal) ("StepMove" Diagonal)))
+        
+        (regions "LastRankP1" P1 (sites Top))
+        (regions "LastRankP2" P2 (sites Right))
+        (regions "LastRankP3" P3 (sites Bottom))
+        (regions "LastRankP4" P4 (sites Left))
+        (regions "TwoFurthestRankP1" P1 (expand (sites Top)))
+        (regions "TwoFurthestRankP2" P2 (expand (sites Right)))
+        (regions "TwoFurthestRankP3" P3 (expand (sites Bottom)))
+        (regions "TwoFurthestRankP4" P4 (expand (sites Left)))
+        (regions "Promotion" P1 (expand (sites Top) steps:2))
+        (regions "Promotion" P2 (expand (sites Right) steps:2))
+        (regions "Promotion" P3 (expand (sites Bottom) steps:2))
+        (regions "Promotion" P4 (expand (sites Left) steps:2))
+        (map "Where" {
+            (pair (id "Pawn" P1) (handSite P1)) (pair (id "Pawn" P2) (handSite P2)) (pair (id "Pawn" P3) (handSite P3)) (pair (id "Pawn" P4) (handSite P4)) 
+            (pair (id "Lance" P1) (handSite P1 1)) (pair (id "Lance" P2) (handSite P2 1)) (pair (id "Lance" P3) (handSite P3 1)) (pair (id "Lance" P4) (handSite P4 1)) 
+            (pair (id "Knight" P1) (handSite P1 2)) (pair (id "Knight" P2) (handSite P2 2)) (pair (id "Knight" P3) (handSite P3 2)) (pair (id "Knight" P4) (handSite P4 2)) 
+            (pair (id "SilverGeneral" P1) (handSite P1 3)) (pair (id "SilverGeneral" P2) (handSite P2 3)) (pair (id "SilverGeneral" P3) (handSite P3 3)) (pair (id "SilverGeneral" P4) (handSite P4 3)) 
+            (pair (id "GoldGeneral" P1) (handSite P1 4)) (pair (id "GoldGeneral" P2) (handSite P2 4)) (pair (id "GoldGeneral" P3) (handSite P3 4)) (pair (id "GoldGeneral" P4) (handSite P4 4)) 
+            (pair (id "Bishop" P1) (handSite P1 5)) (pair (id "Bishop" P2) (handSite P2 5)) (pair (id "Bishop" P3) (handSite P3 5)) (pair (id "Bishop" P4) (handSite P4 5)) 
+            (pair (id "Rook" P1) (handSite P1 6)) (pair (id "Rook" P2) (handSite P2 6)) (pair (id "Rook" P3) (handSite P3 6)) (pair (id "Rook" P4) (handSite P4 6)) 
+            (pair (id "Tokin" P1) (handSite P1)) (pair (id "Tokin" P2) (handSite P2)) (pair (id "Tokin" P3) (handSite P3)) (pair (id "Tokin" P4) (handSite P4)) 
+            (pair (id "FreeTiger" P1) (handSite P1 1)) (pair (id "FreeTiger" P2) (handSite P2 1)) (pair (id "FreeTiger" P3) (handSite P3 1)) (pair (id "FreeTiger" P4) (handSite P4 1)) 
+            (pair (id "HeavenlyHorse" P1) (handSite P1 2)) (pair (id "HeavenlyHorse" P2) (handSite P2 2)) (pair (id "HeavenlyHorse" P3) (handSite P3 2)) (pair (id "HeavenlyHorse" P4) (handSite P4 2)) 
+            (pair (id "RunningWolf" P1) (handSite P1 3)) (pair (id "RunningWolf" P2) (handSite P2 3)) (pair (id "RunningWolf" P3) (handSite P3 3)) (pair (id "RunningWolf" P4) (handSite P4 3)) 
+            (pair (id "GreatElephant" P1) (handSite P1 4)) (pair (id "GreatElephant" P2) (handSite P2 4)) (pair (id "GreatElephant" P3) (handSite P3 4)) (pair (id "GreatElephant" P4) (handSite P4 4)) 
+            (pair (id "DragonHorse" P1) (handSite P1 5)) (pair (id "DragonHorse" P2) (handSite P2 5)) (pair (id "DragonHorse" P3) (handSite P3 5)) (pair (id "DragonHorse" P4) (handSite P4 5)) 
+            (pair (id "DragonKing" P1) (handSite P1 6)) (pair (id "DragonKing" P2) (handSite P2 6)) (pair (id "DragonKing" P3) (handSite P3 6)) (pair (id "DragonKing" P4) (handSite P4 6)) 
+        })
+        (map "Promoted" { 
+            (pair (id "Pawn" P1) (id "Tokin" P1)) (pair (id "Pawn" P2) (id "Tokin" P2)) (pair (id "Pawn" P3) (id "Tokin" P3)) (pair (id "Pawn" P4) (id "Tokin" P4)) 
+            (pair (id "Lance" P1) (id "FreeTiger" P1)) (pair (id "Lance" P2) (id "FreeTiger" P2)) (pair (id "Lance" P3) (id "FreeTiger" P3)) (pair (id "Lance" P4) (id "FreeTiger" P4)) 
+            (pair (id "Knight" P1) (id "HeavenlyHorse" P1)) (pair (id "Knight" P2) (id "HeavenlyHorse" P2)) (pair (id "Knight" P3) (id "HeavenlyHorse" P3)) (pair (id "Knight" P4) (id "HeavenlyHorse" P4)) 
+            (pair (id "SilverGeneral" P1) (id "RunningWolf" P1)) (pair (id "SilverGeneral" P2) (id "RunningWolf" P2)) (pair (id "SilverGeneral" P3) (id "RunningWolf" P3)) (pair (id "SilverGeneral" P4) (id "RunningWolf" P4)) 
+            (pair (id "GoldGeneral" P1) (id "GreatElephant" P1)) (pair (id "GoldGeneral" P2) (id "GreatElephant" P2)) (pair (id "GoldGeneral" P3) (id "GreatElephant" P3)) (pair (id "GoldGeneral" P4) (id "GreatElephant" P4)) 
+            (pair (id "Bishop" P1) (id "DragonHorse" P1)) (pair (id "Bishop" P2) (id "DragonHorse" P2)) (pair (id "Bishop" P3) (id "DragonHorse" P3)) (pair (id "Bishop" P4) (id "DragonHorse" P4)) 
+            (pair (id "Rook" P1) (id "DragonKing" P1)) (pair (id "Rook" P2) (id "DragonKing" P2)) (pair (id "Rook" P3) (id "DragonKing" P3)) (pair (id "Rook" P4) (id "DragonKing" P4)) 
+        })
+        
+        (hand Each size:7)
+    })
+    
+    (rules 
+        (start { 
+            <PiecePlacement:PiecePlacement>
+        })
+        
+        (play
+            (if ("SameTurn")
+                (or
+                    ("Promote")
+                    (move Pass)
+                )
+                (do 
+                    (or {
+                        ("PlaceUnrestrictedPiece" Mover) 
+                        ("PlacePawn" Mover)
+                        ("PlaceLance" Mover)
+                        ("PlaceKnight" Mover) 
+                        (forEach Piece) 
+                    })
+                    ifAfterwards:(not ("IsInCheck" "King" Mover))
+                )
+                (then
+                    (and {
+                        ("RemoveKingIfCheckmate" P1)
+                        ("RemoveKingIfCheckmate" P2)
+                        ("RemoveKingIfCheckmate" P3)
+                        ("RemoveKingIfCheckmate" P4)
+                    })
+                )
+            )
+        )
+        
+        (end {
+            (forEach NonMover
+                if:("IsOffBoard" (where "King" Player)) 
+                (result Player Loss)
+            ) 
+        })
+    )
+)
+
+(option "Setup" <PiecePlacement> args:{ <PiecePlacement> }
+    {
+    (item "Compact" 	
+        <
+        (place "King1" coord:"E1") (place "GoldGeneral1" {"D1" "F1"}) (place "SilverGeneral1" {"C1" "G1"}) (place "Pawn1" {"D2" "F2" "E3"}) (place "Rook1" coord:"E2")
+        (place "King2" coord:"A5") (place "GoldGeneral2" {"A4" "A6"}) (place "SilverGeneral2" {"A3" "A7"}) (place "Pawn2" {"B4" "B6" "C5"}) (place "Rook2" coord:"B5")
+        (place "King3" coord:"E9") (place "GoldGeneral3" {"D9" "F9"}) (place "SilverGeneral3" {"C9" "G9"}) (place "Pawn3" {"D8" "F8" "E7"}) (place "Rook3" coord:"E8")
+        (place "King4" coord:"I5") (place "GoldGeneral4" {"I4" "I6"}) (place "SilverGeneral4" {"I3" "I7"}) (place "Pawn4" {"H4" "H6" "G5"}) (place "Rook4" coord:"H5")
+        >
+    "This setup can be played using a single standard Shogi set. Knights, Lances, Bishops, and doubly-stacked Pawns represent the extra Silver Generals, Gold Generals, Rooks, and Kings, respectively. Based on Ota Mitsuyasu's Yonin Shogi setup.")**
+    
+    (item "Complete" 	
+        <
+        (place "King1" coord:"E1") (place "GoldGeneral1" {"D1" "F1"}) (place "SilverGeneral1" {"C1" "G1"}) (place "Knight1" {"B1" "H1"}) (place "Lance1" coord:"A1") (place "Pawn1" {"D3" "F3" "E3" "G3" "H3"}) (place "Rook1" coord:"G2") (place "Bishop1" coord:"B2")
+        (place "King2" coord:"A5") (place "GoldGeneral2" {"A4" "A6"}) (place "SilverGeneral2" {"A3" "A7"}) (place "Knight2" {"A2" "A8"}) (place "Lance2" coord:"A9") (place "Pawn2" {"C2" "C3" "C4" "C5" "C6"}) (place "Rook2" coord:"B3") (place "Bishop2" coord:"B8")
+        (place "King3" coord:"E9") (place "GoldGeneral3" {"D9" "F9"}) (place "SilverGeneral3" {"C9" "G9"}) (place "Knight3" {"B9" "H9"}) (place "Lance3" coord:"I9") (place "Pawn3" {"B7" "C7" "D7" "E7" "F7"}) (place "Rook3" coord:"C8") (place "Bishop3" coord:"H8")
+        (place "King4" coord:"I5") (place "GoldGeneral4" {"I4" "I6"}) (place "SilverGeneral4" {"I3" "I7"}) (place "Knight4" {"I2" "I8"}) (place "Lance4" coord:"I1") (place "Pawn4" {"G4" "G5" "G6" "G7" "G8"}) (place "Rook4" coord:"H7") (place "Bishop4" coord:"H2")
+        >
+    "Requires two Shogi sets. Based on a Yonin Shogi setup from a Japanese children's magazine in 1991.")
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Yonin Seireigi (四人精霊棋 <i>yonin seireigi</i>, four person spirit's game) is a 4-player version of Seireigi, a variant of Shogi with has promotable Gold Generals, as well as more varied and animalistic promotions.
+        ")
+        (rules "All rules are the same as in standard Shogi, except as follows.
+            ● Lances promote to Free Tiger, which slides sideways, steps vertically, or jumps to any square that is two squares to either side in an adjacent rank (row).
+            ● Knights promote to Heavenly Horse, which moves one square in any sideways or forward direction, or jumps to either square that is two squares behind in an adjacent file (column).
+            ● Silver Generals promote to Venomous Wolf, which moves one square orthogonally or forward, or slides straight forward.
+            ● Gold Generals promote to Great Elephant, which moves one square in any direction except straight backward, or slides diagonally forward.
+            ● After deciding who goes first, play continues clockwise.
+            ● Ranks (rows) and files (columns) are defined relative to the direction of the moving player's pieces.
+            ● Perpetual check is allowed.
+            ● Stalemate results in a loss of turn.
+            ● Once a player has lost for any reason, their King is removed and the pieces in their hand are reappropriated to the mating player, but all their other pieces remain on the board as neutral obstacles. The mating player is the player making the move that results in mate; for losses not resulting from mate, this is the player who moved last. Pieces that are reappropriated to the mating player must be dropped in the original direction of the mating player. Neutral pieces cannot move until they are captured, but will still give check.
+        ● In over-the-board play, the rules for impasse are as follows. The minimum number of points needed to not lose during an impasse is 21 for the Compact Setup and 41 for the Complete setup. Pieces are scored as in Shogi (5 per Rook/Bishop, 1 for all other pieces besides Kings). Players that score below the minimum lose unless all players score below the minimum, in which case the first to score above the minimum wins. If multiple players score above the minimum, the game ends in a draw for said players, and any players below the minimum lose.")
+        (id "4095")
+        (version "1.3.12")
+        (classification "board/war/replacement/checkmate/shogi")
+        (author "A. M. DeWitt")
+        (credit "A. M. DeWitt")
+        (date "2023")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour White))
+        (player Colour P3 (colour White))
+        (player Colour P4 (colour White))
+        (board Style Shogi)
+        (piece Style ExtendedShogi)
+        (piece Rotate P2 degrees:90)
+        (piece Rotate P3 degrees:180)
+        (piece Rotate P4 degrees:270)
+        (piece Colour "Tokin" strokeColour:(colour Red))
+        (piece Colour "FreeTiger" strokeColour:(colour Red))
+        (piece Colour "HeavenlyHorse" strokeColour:(colour Red))
+        (piece Colour "RunningWolf" strokeColour:(colour Red))
+        (piece Colour "GreatElephant" strokeColour:(colour Red))
+        (piece Colour "DragonHorse" strokeColour:(colour Red))
+        (piece Colour "DragonKing" strokeColour:(colour Red))
+    })
+    
+)

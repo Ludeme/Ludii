@@ -1,0 +1,101 @@
+(game "Vijayanagara Game" 
+    (players 2)
+    
+    (equipment { 
+        (board 
+            (add 
+                (remove 
+                    (merge { 
+                        (scale 1 2 
+                            (wedge 2)
+                        )
+                        
+                        (shift 0.35 1.35 
+                            (scale 0.65 0.65 
+                                (square 3 diagonals:Alternating)
+                            )
+                        )
+                        }
+                    )
+                    edges:{ { 0 4}
+                    { 0 6}
+                    { 0 2}
+                    { 0 10}
+                    }
+                )
+                edges:{ { 2 5}
+                }
+            )
+        use:Vertex)
+        
+        (piece "Marker" P1 
+            (move Remove 
+                (from)
+            )
+        )
+        
+        (piece "Marker" P2 
+            (or 
+                (move Step 
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+                
+                (move Hop 
+                    (between if:
+                        (is Enemy 
+                            (who at:
+                                (between)
+                            )
+                        )
+                        
+                        (apply 
+                            (remove 
+                                (between)
+                            )
+                        )
+                    )
+                    
+                    (to if:
+                        (is Empty 
+                            (to)
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" 
+                (sites Bottom)
+            state:1)
+            
+            (place "Marker2" 
+                (sites Top)
+            state:1)
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end 
+            (if 
+                (<= 
+                    (count Pieces Next)
+                3)
+                
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+

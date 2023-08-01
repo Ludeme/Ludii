@@ -22,7 +22,7 @@ import main.UnixPrintWriter;
 public class MergeDBResultCSV
 {
 	/** The path of the csv folder. */
-	private static final String FolderCSV = "C:\\Users\\eric.piette\\Ludii\\Ludii\\Mining\\res\\concepts\\input\\ToMerge";
+	private static final String FolderCSV = "C:\\Users\\carni\\Ludii\\Ludii\\Mining\\res\\concepts\\input\\ToMerge";
 
 	public static void main(final String[] args) throws IOException
 	{

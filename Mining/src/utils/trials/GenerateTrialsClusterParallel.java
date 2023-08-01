@@ -175,14 +175,14 @@ public class GenerateTrialsClusterParallel
 						final List<List<AI>> aisListPerThread = new ArrayList<List<AI>>(parallelNum);
 						for (int i = 0; i < parallelNum; ++i)
 						{
-							aisListPerThread.add(chooseAI(game, agentName, agentName2, 0));
+							aisListPerThread.add(chooseAI(rulesetGame, agentName, agentName2, 0));
 							
 							for (final AI ai : aisListPerThread.get(i))
 								if (ai != null)
 									ai.setMaxSecondsPerMove(thinkingTime);
 						}
 						
-						final int numPlayers = game.players().count();
+						final int numPlayers = rulesetGame.players().count();
 						final List<TIntArrayList> aiListPermutations;
 						if (numPlayers <= 5)
 						{
@@ -204,7 +204,7 @@ public class GenerateTrialsClusterParallel
 						{
 							agentStrings.add(aisListPerThread.get(0).get(p - 1).friendlyName());
 						}
-						final ResultsSummary resultsSummary = new ResultsSummary(game, agentStrings);
+						final ResultsSummary resultsSummary = new ResultsSummary(rulesetGame, agentStrings);
 						
 						for (int i = beginTrialIndex; i < NUM_TRIALS_PER_GAME; ++i)
 						{

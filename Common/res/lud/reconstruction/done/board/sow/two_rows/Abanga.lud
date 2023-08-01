@@ -1,0 +1,1256 @@
+(game "Abanga"
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Abanga (Ludii 1)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 9 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 2 to:
+                    (sites Board)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover)
+                        if:
+                        (> 
+                            (count at:
+                                (from)
+                            )
+                        0)
+                    )
+                    
+                    (then 
+                        (sow apply:
+                            (if 
+                                (or 
+                                    (= 2 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (= 4 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (handSite Mover)
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (forEach Player if:
+                    (no Moves Player)
+                    
+                    (result Player Loss)
+                )
+            )
+        )
+        
+    > "The Abanga (Ludii 1) ruleset.")
+    
+    (item "Abanga (Ludii 2)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 9 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 2 to:
+                    (sites Board)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover)
+                        if:
+                        (> 
+                            (count at:
+                                (from)
+                            )
+                        0)
+                    )
+                    
+                    (then 
+                        (sow apply:
+                            (if 
+                                (or 
+                                    (= 2 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (= 4 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (handSite Mover)
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (and 
+                        (not 
+                            (is Next Mover)
+                        )
+                        
+                        (no Moves Next)
+                    )
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Abanga (Ludii 2) ruleset.")
+    
+    (item "Abanga (Ludii 3)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 9 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 2 to:
+                    (sites Board)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover)
+                        if:
+                        (> 
+                            (count at:
+                                (from)
+                            )
+                        0)
+                    )
+                    
+                    (then 
+                        (sow apply:
+                            (if 
+                                (or 
+                                    (= 2 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (= 4 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (handSite Mover)
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Mover)
+                    
+                    (byScore { 
+                        (score P1 
+                            (+ 
+                                (count at:
+                                    (mapEntry P1)
+                                )
+                                
+                                (count in:
+                                    (sites P1)
+                                )
+                            )
+                        )
+                        
+                        (score P2 
+                            (+ 
+                                (count at:
+                                    (mapEntry P2)
+                                )
+                                
+                                (count in:
+                                    (sites P2)
+                                )
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Abanga (Ludii 3) ruleset.")
+    
+    (item "Abanga (Ludii 4)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 9 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 7 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover)
+                        if:
+                        (> 
+                            (count at:
+                                (from)
+                            )
+                        0)
+                    )
+                    
+                    (then 
+                        (sow apply:
+                            (if 
+                                (or 
+                                    (= 2 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (= 4 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (handSite Mover)
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (forEach Player if:
+                    (no Moves Player)
+                    
+                    (result Player Loss)
+                )
+            )
+        )
+        
+    > "The Abanga (Ludii 4) ruleset.")
+    
+    (item "Abanga (Ludii 5)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 9 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 2 to:
+                    (sites Board)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover)
+                        if:
+                        (> 
+                            (count at:
+                                (from)
+                            )
+                        0)
+                    )
+                    
+                    (then 
+                        (sow apply:
+                            (if 
+                                (or 
+                                    (= 2 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (= 4 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (handSite Mover)
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Abanga (Ludii 5) ruleset.")
+    
+    (item "Abanga (Ludii 6)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 9 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 7 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover)
+                        if:
+                        (> 
+                            (count at:
+                                (from)
+                            )
+                        0)
+                    )
+                    
+                    (then 
+                        (sow apply:
+                            (if 
+                                (or 
+                                    (= 2 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (= 4 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (handSite Mover)
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Abanga (Ludii 6) ruleset.")
+    
+    (item "Abanga (Ludii 7)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 9 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 4 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover)
+                        if:
+                        (> 
+                            (count at:
+                                (from)
+                            )
+                        0)
+                    )
+                    
+                    (then 
+                        (sow apply:
+                            (if 
+                                (or 
+                                    (= 2 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (= 4 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (handSite Mover)
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (all Sites 
+                        (sites Board)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (byScore { 
+                        (score P1 
+                            (+ 
+                                (count Cell at:
+                                    (handSite P1)
+                                )
+                                
+                                (count in:
+                                    (sites P1)
+                                )
+                            )
+                        )
+                        
+                        (score P2 
+                            (+ 
+                                (count Cell at:
+                                    (handSite P2)
+                                )
+                                
+                                (count in:
+                                    (sites P2)
+                                )
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Abanga (Ludii 7) ruleset.")
+    
+    (item "Abanga (Ludii 8)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 9 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 7 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover)
+                        if:
+                        (> 
+                            (count at:
+                                (from)
+                            )
+                        0)
+                    )
+                    
+                    (then 
+                        (sow apply:
+                            (if 
+                                (or 
+                                    (= 2 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (= 4 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (handSite Mover)
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (all Sites 
+                        (sites Board)
+                        if:
+                        (= 0 
+                            (count at:
+                                (site)
+                            )
+                        )
+                    )
+                    
+                    (byScore { 
+                        (score P1 
+                            (+ 
+                                (count Cell at:
+                                    (handSite P1)
+                                )
+                                
+                                (count in:
+                                    (sites P1)
+                                )
+                            )
+                        )
+                        
+                        (score P2 
+                            (+ 
+                                (count Cell at:
+                                    (handSite P2)
+                                )
+                                
+                                (count in:
+                                    (sites P2)
+                                )
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Abanga (Ludii 8) ruleset.")
+    
+    (item "Abanga (Ludii 9)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 9 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 4 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover)
+                        if:
+                        (> 
+                            (count at:
+                                (from)
+                            )
+                        0)
+                    )
+                    
+                    (then 
+                        (sow apply:
+                            (if 
+                                (or 
+                                    (= 2 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (= 4 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (handSite Mover)
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Next)
+                    
+                    (result Mover Win)
+                )
+            )
+        )
+        
+    > "The Abanga (Ludii 9) ruleset.")
+    
+    (item "Abanga (Ludii 10)" <
+        
+        (players 2)
+        
+        (equipment { 
+            (mancalaBoard 2 9 store:None 
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            
+            (piece "Seed" Shared)
+            
+            (hand Each)
+            
+            (regions P1 
+                (sites Bottom)
+            )
+            
+            (regions P2 
+                (sites Top)
+            )
+            }
+        )
+        
+        (rules 
+            (start 
+                (set Count 7 to:
+                    (sites Track)
+                )
+            )
+            
+            (play 
+                (move Select 
+                    (from 
+                        (sites Mover)
+                        if:
+                        (> 
+                            (count at:
+                                (from)
+                            )
+                        0)
+                    )
+                    
+                    (then 
+                        (sow apply:
+                            (if 
+                                (or 
+                                    (= 2 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                    
+                                    (= 4 
+                                        (count at:
+                                            (to)
+                                        )
+                                    )
+                                )
+                                
+                                (fromTo 
+                                    (from 
+                                        (to)
+                                    )
+                                    
+                                    (to 
+                                        (handSite Mover)
+                                    )
+                                    count:
+                                    (count at:
+                                        (to)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end 
+                (if 
+                    (no Moves Mover)
+                    
+                    (byScore { 
+                        (score P1 
+                            (+ 
+                                (count at:
+                                    (mapEntry P1)
+                                )
+                                
+                                (count in:
+                                    (sites P1)
+                                )
+                            )
+                        )
+                        
+                        (score P2 
+                            (+ 
+                                (count at:
+                                    (mapEntry P2)
+                                )
+                                
+                                (count in:
+                                    (sites P2)
+                                )
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        
+    > "The Abanga (Ludii 10) ruleset.")
+    
+    (item "Incomplete"
+        <
+        (players 2) 
+        (equipment { 
+            (mancalaBoard 2 9 store:None
+                (track "Track" "0,E,N,W" loop:True)
+            )
+            (piece "Seed" Shared)
+            (hand Each)
+            (regions P1 (sites Bottom))      // P1 home
+            (regions P2 (sites Top))      // P2 home
+        }) 
+        (rules 
+            (start [#])
+            (play [#])
+            (end [#])
+        )
+        >
+        "The incomplete ruleset."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets {
+    
+    (ruleset "Ruleset/Abanga (Ludii 1) (Reconstructed)" {
+        "Variant/Abanga (Ludii 1)"
+    })
+    (ruleset "Ruleset/Abanga (Ludii 2) (Reconstructed)" {
+        "Variant/Abanga (Ludii 2)"
+    })
+    (ruleset "Ruleset/Abanga (Ludii 3) (Reconstructed)" {
+        "Variant/Abanga (Ludii 3)"
+    })
+    (ruleset "Ruleset/Abanga (Ludii 4) (Reconstructed)" {
+        "Variant/Abanga (Ludii 4)"
+    })
+    (ruleset "Ruleset/Abanga (Ludii 5) (Reconstructed)" {
+        "Variant/Abanga (Ludii 5)"
+    })
+    (ruleset "Ruleset/Abanga (Ludii 6) (Reconstructed)" {
+        "Variant/Abanga (Ludii 6)"
+    })
+    (ruleset "Ruleset/Abanga (Ludii 7) (Reconstructed)" {
+        "Variant/Abanga (Ludii 7)"
+    })
+    (ruleset "Ruleset/Abanga (Ludii 8) (Reconstructed)" {
+        "Variant/Abanga (Ludii 8)"
+    })
+    (ruleset "Ruleset/Abanga (Ludii 9) (Reconstructed)" {
+        "Variant/Abanga (Ludii 9)"
+    })
+    (ruleset "Ruleset/Abanga (Ludii 10) (Reconstructed)" {
+        "Variant/Abanga (Ludii 10)"
+    }) 
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        "Variant/Incomplete"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Abanga is a two-row mancala-style game board that was played by the Zande people of central Africa in the mid-nineteenth century.")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "2x9 board. About 24 counters per player. Pieces are sown around the board."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (id "1259"))
+        (useFor "Ruleset/Abanga (Ludii 1) (Reconstructed)" (rules "The game Abanga is played by two players on a 2 x 9 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in the sites of the board to 2.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if the total number of vertex in the location of the piece is greater than 0 then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if 2 is equal to the total number of vertex in to or 4 is equal to the total number of vertex in to, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                
+        "))
+        (useFor "Ruleset/Abanga (Ludii 1) (Reconstructed)" (id "4108"))
+        (useFor "Ruleset/Abanga (Ludii 2) (Reconstructed)" (rules "The game Abanga is played by two players on a 2 x 9 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in the sites of the board to 2.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if the total number of vertex in the location of the piece is greater than 0 then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if 2 is equal to the total number of vertex in to or 4 is equal to the total number of vertex in to, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                Aim: 
+                If not Player the moving player is the next mover and the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Abanga (Ludii 2) (Reconstructed)" (id "4109"))
+        (useFor "Ruleset/Abanga (Ludii 3) (Reconstructed)" (rules "The game Abanga is played by two players on a 2 x 9 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in the sites of the board to 2.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if the total number of vertex in the location of the piece is greater than 0 then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if 2 is equal to the total number of vertex in to or 4 is equal to the total number of vertex in to, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                Aim: 
+                If the moving player cannot move, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Abanga (Ludii 3) (Reconstructed)" (id "4110"))
+        (useFor "Ruleset/Abanga (Ludii 4) (Reconstructed)" (rules "The game Abanga is played by two players on a 2 x 9 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 7.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if the total number of vertex in the location of the piece is greater than 0 then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if 2 is equal to the total number of vertex in to or 4 is equal to the total number of vertex in to, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                
+        "))
+        (useFor "Ruleset/Abanga (Ludii 4) (Reconstructed)" (id "4111"))
+        (useFor "Ruleset/Abanga (Ludii 5) (Reconstructed)" (rules "The game Abanga is played by two players on a 2 x 9 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in the sites of the board to 2.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if the total number of vertex in the location of the piece is greater than 0 then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if 2 is equal to the total number of vertex in to or 4 is equal to the total number of vertex in to, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                Aim: 
+                If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Abanga (Ludii 5) (Reconstructed)" (id "4112"))
+        (useFor "Ruleset/Abanga (Ludii 6) (Reconstructed)" (rules "The game Abanga is played by two players on a 2 x 9 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 7.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if the total number of vertex in the location of the piece is greater than 0 then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if 2 is equal to the total number of vertex in to or 4 is equal to the total number of vertex in to, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                Aim: 
+                If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Abanga (Ludii 6) (Reconstructed)" (id "4113"))
+        (useFor "Ruleset/Abanga (Ludii 7) (Reconstructed)" (rules "The game Abanga is played by two players on a 2 x 9 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 4.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if the total number of vertex in the location of the piece is greater than 0 then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if 2 is equal to the total number of vertex in to or 4 is equal to the total number of vertex in to, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                Aim: 
+                If all sites in the sites of the board satisfy the condition 0 is equal to the total number of vertex in current site, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Abanga (Ludii 7) (Reconstructed)" (id "4114"))
+        (useFor "Ruleset/Abanga (Ludii 8) (Reconstructed)" (rules "The game Abanga is played by two players on a 2 x 9 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 7.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if the total number of vertex in the location of the piece is greater than 0 then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if 2 is equal to the total number of vertex in to or 4 is equal to the total number of vertex in to, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                Aim: 
+                If all sites in the sites of the board satisfy the condition 0 is equal to the total number of vertex in current site, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Abanga (Ludii 8) (Reconstructed)" (id "4115"))
+        (useFor "Ruleset/Abanga (Ludii 9) (Reconstructed)" (rules "The game Abanga is played by two players on a 2 x 9 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 4.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if the total number of vertex in the location of the piece is greater than 0 then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if 2 is equal to the total number of vertex in to or 4 is equal to the total number of vertex in to, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                Aim: 
+                If the next player cannot move, the moving player wins.
+                
+        "))
+        (useFor "Ruleset/Abanga (Ludii 9) (Reconstructed)" (id "4116"))
+        (useFor "Ruleset/Abanga (Ludii 10) (Reconstructed)" (rules "The game Abanga is played by two players on a 2 x 9 Mancala board with 2 none stores.
+                Regions:
+                RegionP1: the bottom sites of the board for P1
+                RegionP2: the top sites of the board for P2 
+                All players play with null The following pieces are shared by all players: Seeds.
+                Players take turns moving.
+                Setup:
+                Set the count of the vertexes in track of board to 7.
+                Rules: 
+                Select Vertex in RegionP1 or RegionP2 if the total number of vertex in the location of the piece is greater than 0 then Sow with the following rules, startLoc: the to location of the last move, countFn: the total number of vertex in the to location of the last move, numPerHoleFn: 1, origin: false, captureRule: true, captureEffect: if 2 is equal to the total number of vertex in to or 4 is equal to the total number of vertex in to, from vertex in to to vertex Player the moving player's hand site 0 moveRule: true, type: Vertex, includeSelf: true.
+                Aim: 
+                If the moving player cannot move, the game ends and the player with the highest score wins.
+                
+        "))
+        (useFor "Ruleset/Abanga (Ludii 10) (Reconstructed)" (id "4117"))
+        (source "Avelot 1906: 268.")
+        (version "1.3.12")
+        (classification "board/sow/two rows/reconstruction/done")
+        (credit "Eric Piette")
+        (origin "This game was played in Central Africa, from around 1868 to 1871.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+    (recon {
+        (concept "Sow" True)
+    })
+)
+

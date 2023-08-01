@@ -11,7 +11,15 @@
         (players 2) 
         
         (equipment { 
-            (mancalaBoard 2 4)
+            (mancalaBoard 2 4
+                { 
+                (track "TrackCCW" "1,E,N,W" loop:True)
+                (track "TrackCW" "5,E,S,W" loop:True)
+                }
+            )
+            (regions P1 (sites Bottom))     // P1 home
+            (regions P2 (sites Top))      // P2 home
+            (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
             (piece "Seed" Shared)
         }) 
         (rules 
@@ -33,10 +41,6 @@
     })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
-    })
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
         "Variant/Incomplete"
     })
     
@@ -51,7 +55,7 @@
         (rules "2x4 board. Two extra holes, to the side. ")
         (source "DLP evidence.")
         (id "1791")
-        (version "1.3.11")
+        (version "1.3.12")
         (classification "board/sow/two rows/reconstruction/pending")
         (credit "Eric Piette")
         (origin "This game was played in Spain, from around 800 to 1099.")

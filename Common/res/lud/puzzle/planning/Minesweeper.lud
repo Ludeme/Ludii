@@ -1,0 +1,149 @@
+(define "Nbors"
+    (count Sites 
+        in:(intersection 
+            (sites Around #1) 
+            (sites Occupied by:P1 component:"Bomb") 
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Minesweeper" 
+    (players 1) 
+    (equipment { 
+        (board (square <Version:size>)) 
+        (piece "Flag"   P1)
+        (piece "Bomb"   P1)
+        (piece "Square" P1)
+        (hand P1 size:1)
+    }) 
+    
+    (rules
+        (start {
+            (place "Flag" (^ <Version:size> 2))
+            (place Random {"Bomb"} count:(/ (* <Board:rate> (^ <Version:size> 2)) 20))
+            (set Hidden (forEach (sites Board) if:(= (what at:(site)) (id "Bomb"))) to:P1)
+        }) 
+        
+        (play 
+            (or 
+                (move (from (sites Hand Mover)) 
+                    (to (sites Board)) copy:True stack:True
+                )
+                (move Select 
+                    (from (sites Board)) 
+                    (then 
+                        (if (= (what at:(last From)) (id "Bomb")) 
+                            (set Var 1 
+                                (then (set Hidden 
+                            (forEach (sites Board) if:(= (what at:(site)) (id "Bomb"))) False to:P1)))
+                            (add (piece "Square") (to (last From)) 
+                                (then (set Value at:(last To) ("Nbors" (last To))))
+                            )
+                        )
+                    )
+                ) 
+                (then (if (= ("Nbors" (last To)) 0) (add (piece "Square") (to 
+                    (forEach (sites Around (last To) Adjacent) if:(= ("Nbors" (site)) 0)))))
+                )
+            )
+        )    
+        
+        (end {
+            (if (= 
+                    (^ <Version:size> 2) 
+                    (count Sites in:(union (sites Occupied by:P1 component:"Bomb")  
+                    (sites Occupied by:P1 component:"Square")))
+                ) 
+            (result Mover  Win)) 
+            (if (= (var) 1) (result Mover Loss))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Grid Size" <Version> args:{<size>} {
+    
+    (item "7x7" 
+        <7>
+        ""
+    )
+    
+    (item "10x10" 
+        <10>
+        ""
+    )
+    
+    (item "15x15" 
+        <15>
+        ""
+    )
+    
+    (item "25x25" 
+        <25>
+        ""
+    )
+})
+
+(option "Bomb Density" <Board> args:{<rate>} {
+    
+    (item "10%"
+        <2>
+        ""
+    )
+    
+    (item "15%"
+        <3>
+        ""
+    )
+    
+    (item "20%"
+        <4>
+        ""
+    )
+    
+    (item "25%"
+        <5>
+        ""
+    )
+    
+    (item "30%"
+        <6>
+        ""
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "Minesweeper is a logic puzzle video game genre generally played on personal computers. The game features a grid of clickable squares, with hidden \"mines\" scattered throughout the board.")
+        (rules "In the game, mines are scattered throughout a board, which is divided into cells. Cells have three states: unopened, opened, and flagged. An unopened cell is blank and clickable, while an opened cell is exposed. Flagged cells are unopened cells marked by the player to indicate a potential mine location.
+            
+            A player selects a cell to open it. If a player opens a mined cell, the game ends in a loss. Otherwise, the opened cell displays either a number, indicating the number of mines diagonally and/or adjacent to it, or a blank tile, and all adjacent non-mined cells will automatically be opened. Players can also flag a cell, visualised by a flag being put on the location, to denote that they believe a mine to be in that place. Flagged cells are still considered unopened, and may be unflagged.
+            
+        The player wins in opening all non-mined cells.")
+        (id "4197")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Minesweeper_(video_game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.3.12")
+        (classification "puzzle/planning")
+        (credit "Noah Morris")
+        (date "1990")
+        }
+    )
+    
+    (graphics {
+        (stackType None)
+        (piece Foreground value:1  image:"1" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4)
+        (piece Foreground value:2  image:"2" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4)
+        (piece Foreground value:3  image:"3" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4)
+        (piece Foreground value:4  image:"4" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4)
+        (piece Foreground value:5  image:"5" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4)
+        (piece Foreground value:6  image:"6" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4)
+        (piece Foreground value:7  image:"7" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4)
+        (piece Foreground value:8  image:"8" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4)
+}))

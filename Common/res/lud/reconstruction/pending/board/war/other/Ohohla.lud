@@ -8,12 +8,10 @@
     {
     (item "Incomplete"
         <
-        (players 2) 
+        (players [#])
         (equipment { 
             ("StarBoard" 5)
-            (hand Each)
-            (piece "Marker" P1 (or [#]))
-            (piece "Marker" P2 (move [#]))
+            [#]
         }) 
         (rules [#])
         >
@@ -41,7 +39,7 @@
         (rules "Five-pointed star-shaped board.")
         (source "DLP evidence.")
         (id "1234")
-        (version "1.3.11")
+        (version "1.3.12")
         (classification "board/war/reconstruction/pending")
         (credit "Eric Piette")
         (origin "This game was played in Arizona, around 1907.")

@@ -578,8 +578,8 @@ public class Expander
 			return null;
 		}
 
-		String rulesetsStr = str.substring(c+8, cc-1).trim();
-		str = str.substring(0, c) + str.substring(cc);  // remove rulesets from game description
+		String rulesetsStr = str.substring(c + "(rulesets".length(), cc).trim();
+		str = str.substring(0, c) + str.substring(cc + 1);  // remove rulesets from game description
 
 		// Process this rulesets string
 		while (true)

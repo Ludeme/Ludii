@@ -15,13 +15,9 @@
                 use:Vertex
             )
             (piece "Disc" P1 (move [#])) 
-            (piece "Disc" P2 (move [#])) 
+            (piece "Disc" P2 (or [#])) 
         }) 
-        (rules 
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+        (rules [#])
         >
         "The incomplete ruleset."
     )
@@ -46,7 +42,7 @@
         (rules "5x3 intersecting lines, with diagonals in each quadrant. Hunt game.")
         (source "DLP evidence.")
         (id "1099")
-        (version "1.3.11")
+        (version "1.3.12")
         (classification "board/hunt/reconstruction/pending")
         (credit "Eric Piette")
         (origin "This game was played in India, around 1911.")
