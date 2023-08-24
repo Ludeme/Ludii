@@ -53,6 +53,7 @@ import other.context.Context;
 import other.model.Model;
 import other.move.Move;
 import other.state.container.ContainerState;
+import other.topology.Edge;
 import other.trial.Trial;
 import search.minimax.AlphaBetaSearch;
 import search.minimax.AlphaBetaSearch.AllowedSearchDepths;
@@ -1386,12 +1387,18 @@ public class ExportDbCsvConcepts
 			frequencyPlayouts.add(0.0);
 
 		// FOR THE MUSEUM GAME
-//		final TIntArrayList edgesUsage = new TIntArrayList();	
-//		for(int i = 0; i < game.board().topology().edges().size(); i++)
-//			edgesUsage.add(0);
+		final TIntArrayList edgesUsage = new TIntArrayList();	
+		for(int i = 0; i < game.board().topology().edges().size(); i++)
+			edgesUsage.add(0);
+		final String outputEdgesPerTrialResults = "EdgesResultPerTrial" + game.name() + "-" + game.getRuleset().heading().substring(8) + ".csv";
 		
 		for (int trialIndex = 0; trialIndex < trials.size(); trialIndex++)
 		{
+			// FOR THE MUSEUM GAME
+			final TIntArrayList edgesUsagePerTrial = new TIntArrayList();	
+			for(int i = 0; i < game.board().topology().edges().size(); i++)
+				edgesUsagePerTrial.add(0);
+			
 			final Trial trial = trials.get(trialIndex);
 			final RandomProviderState rngState = allStoredRNG.get(trialIndex);
 
@@ -1442,20 +1449,23 @@ public class ExportDbCsvConcepts
 				
 				// FOR THE MUSEUM GAME
 				// To count the frequency/usage of each edge on the board.
-//				final Move lastMove = context.trial().lastMove();
-//				final int vertexFrom = lastMove.fromNonDecision();
-//				// To not take in account moves coming from the hand.
-//				if(vertexFrom < 0 || vertexFrom >= game.board().topology().vertices().size())
-//					continue;
-//				final int vertexTo = lastMove.toNonDecision();
-//
-//				for(int j = 0; j < game.board().topology().edges().size(); j++)
-//				{
-//					final Edge edge = game.board().topology().edges().get(j);
-//					if((edge.vertices().get(0).index() == vertexFrom && edge.vertices().get(1).index() == vertexTo) ||
-//							(edge.vertices().get(0).index() == vertexTo && edge.vertices().get(1).index() == vertexFrom))
-//						edgesUsage.set(j, edgesUsage.get(j) + 1);
-//				}
+				final Move lastMove = context.trial().lastMove();
+				final int vertexFrom = lastMove.fromNonDecision();
+				// To not take in account moves coming from the hand.
+				if(vertexFrom < 0 || vertexFrom >= game.board().topology().vertices().size())
+					continue;
+				final int vertexTo = lastMove.toNonDecision();
+
+				for(int j = 0; j < game.board().topology().edges().size(); j++)
+				{
+					final Edge edge = game.board().topology().edges().get(j);
+					if((edge.vertices().get(0).index() == vertexFrom && edge.vertices().get(1).index() == vertexTo) ||
+							(edge.vertices().get(0).index() == vertexTo && edge.vertices().get(1).index() == vertexFrom))
+					{
+						edgesUsage.set(j, edgesUsage.get(j) + 1);
+						edgesUsagePerTrial.set(j, edgesUsagePerTrial.get(j) + 1);
+					}
+				}
 
 				// TO PRINT THE NUMBER OF PIECES PER TRIAL (this was for LL xp)
 ////				 int countPieces = 0;
@@ -1559,46 +1569,63 @@ public class ExportDbCsvConcepts
 					}
 				}
 			}
+			// FOR THE MUSEUM GAME
+			try (final PrintWriter writer = new UnixPrintWriter(new File(outputEdgesPerTrialResults), "UTF-8"))
+			{
+				for(int i = 0; i < edgesUsage.size(); i++)
+					writer.print(edgesUsagePerTrial.get(i) + ",");
+				writer.println("");
+			}
+			catch (FileNotFoundException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (UnsupportedEncodingException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		// FOR THE MUSEUM GAME
-//		int totalEdgesUsage = 0;
-//		for(int i = 0; i < edgesUsage.size(); i++)
-//			totalEdgesUsage += edgesUsage.get(i);
-//		
-//		System.out.println("Total Moves on Edges = " + totalEdgesUsage);
-//		for(int i = 0; i < edgesUsage.size(); i++)
-//		{
-//			final Edge edge = game.board().topology().edges().get(i);
-//			final int vFrom = edge.vertices().get(0).index();
-//			final int vTo = edge.vertices().get(1).index();
-//			if(totalEdgesUsage == 0)
-//				System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(0.0) + "% ("+edgesUsage.get(i) + " times)");
-//			else
-//				System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0)) + "% ("+edgesUsage.get(i) + " times)");
-//		}
-//		
-//		final String outputEdgesResults = "EdgesResult" + game.name() + "-" + game.getRuleset().heading().substring(8) + ".csv";
-//		try (final PrintWriter writer = new UnixPrintWriter(new File(outputEdgesResults), "UTF-8"))
-//		{
-//			for(int i = 0; i < edgesUsage.size(); i++)
-//			{
-//				if(totalEdgesUsage == 0)
-//					writer.println(i + ","+ edgesUsage.get(i) + ","+ new DecimalFormat("##.##").format(0.0*100.0));
-//				else
-//					writer.println(i + ","+ edgesUsage.get(i) + ","+ new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0)));
-//			}
-//		}
-//		catch (FileNotFoundException e)
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		catch (UnsupportedEncodingException e)
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		int totalEdgesUsage = 0;
+		for(int i = 0; i < edgesUsage.size(); i++)
+			totalEdgesUsage += edgesUsage.get(i);
+		
+		System.out.println("Total Moves on Edges = " + totalEdgesUsage);
+		for(int i = 0; i < edgesUsage.size(); i++)
+		{
+			final Edge edge = game.board().topology().edges().get(i);
+			final int vFrom = edge.vertices().get(0).index();
+			final int vTo = edge.vertices().get(1).index();
+			if(totalEdgesUsage == 0)
+				System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(0.0) + "% ("+edgesUsage.get(i) + " times)");
+			else
+				System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0)) + "% ("+edgesUsage.get(i) + " times)");
+		}
+		
+		final String outputEdgesResults = "EdgesResult" + game.name() + "-" + game.getRuleset().heading().substring(8) + ".csv";
+		try (final PrintWriter writer = new UnixPrintWriter(new File(outputEdgesResults), "UTF-8"))
+		{
+			for(int i = 0; i < edgesUsage.size(); i++)
+			{
+				if(totalEdgesUsage == 0)
+					writer.println(i + ","+ edgesUsage.get(i) + ","+ new DecimalFormat("##.##").format(0.0*100.0));
+				else
+					writer.println(i + ","+ edgesUsage.get(i) + ","+ new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0)));
+			}
+		}
+		catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (UnsupportedEncodingException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// Compute avg frequency for the game.
 		for (int i = 0; i < frequencyPlayouts.size(); i++)
