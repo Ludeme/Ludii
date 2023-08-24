@@ -1391,6 +1391,7 @@ public class ExportDbCsvConcepts
 		for(int i = 0; i < game.board().topology().edges().size(); i++)
 			edgesUsage.add(0);
 		final String outputEdgesPerTrialResults = "EdgesResultPerTrial" + game.name() + "-" + game.getRuleset().heading().substring(8) + ".csv";
+		final List<TIntArrayList> edgesUsagePerTrialList = new ArrayList<TIntArrayList>();
 		
 		for (int trialIndex = 0; trialIndex < trials.size(); trialIndex++)
 		{
@@ -1569,23 +1570,7 @@ public class ExportDbCsvConcepts
 					}
 				}
 			}
-			// FOR THE MUSEUM GAME
-			try (final PrintWriter writer = new UnixPrintWriter(new File(outputEdgesPerTrialResults), "UTF-8"))
-			{
-				for(int i = 0; i < edgesUsage.size(); i++)
-					writer.print(edgesUsagePerTrial.get(i) + ",");
-				writer.println("");
-			}
-			catch (FileNotFoundException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch (UnsupportedEncodingException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			edgesUsagePerTrialList.add(edgesUsagePerTrial);
 		}
 		
 		// FOR THE MUSEUM GAME
@@ -1603,6 +1588,28 @@ public class ExportDbCsvConcepts
 				System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(0.0) + "% ("+edgesUsage.get(i) + " times)");
 			else
 				System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0)) + "% ("+edgesUsage.get(i) + " times)");
+		}
+		
+		try (final PrintWriter writer = new UnixPrintWriter(new File(outputEdgesPerTrialResults), "UTF-8"))
+		{
+			for(int index_trial = 0; index_trial < edgesUsagePerTrialList.size(); index_trial ++)
+			{
+				String buffer = "";
+				final TIntArrayList edgesUsagePerTrial = edgesUsagePerTrialList.get(index_trial);
+				for(int i = 0; i < edgesUsagePerTrial.size(); i++)
+					buffer = edgesUsagePerTrial.get(i) + ",";
+				writer.println(buffer);
+			}
+		}
+		catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (UnsupportedEncodingException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		final String outputEdgesResults = "EdgesResult" + game.name() + "-" + game.getRuleset().heading().substring(8) + ".csv";
