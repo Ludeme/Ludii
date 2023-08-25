@@ -1597,7 +1597,7 @@ public class ExportDbCsvConcepts
 				String buffer = "";
 				final TIntArrayList edgesUsagePerTrial = edgesUsagePerTrialList.get(index_trial);
 				for(int i = 0; i < edgesUsagePerTrial.size(); i++)
-					buffer = edgesUsagePerTrial.get(i) + ",";
+					buffer += edgesUsagePerTrial.get(i) + ",";
 				writer.println(buffer);
 			}
 		}
