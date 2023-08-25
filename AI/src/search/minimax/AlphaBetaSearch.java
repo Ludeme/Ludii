@@ -290,12 +290,12 @@ public class AlphaBetaSearch extends ExpertPolicy
 		currentRootMoves = new FastArrayList<Move>(game.moves(context).moves());
 		
 		// Create a shuffled version of list of moves (random tie-breaking)
-		final FastArrayList<Move> tempMovesList = new FastArrayList<Move>(currentRootMoves);
-		sortedRootMoves = new FastArrayList<Move>(currentRootMoves.size());
-		while (!tempMovesList.isEmpty())
-		{
-			sortedRootMoves.add(tempMovesList.removeSwap(ThreadLocalRandom.current().nextInt(tempMovesList.size())));
-		}
+		//final FastArrayList<Move> tempMovesList = new FastArrayList<Move>(currentRootMoves);
+		sortedRootMoves = new FastArrayList<Move>(currentRootMoves);
+//		while (!tempMovesList.isEmpty())
+//		{
+//			sortedRootMoves.add(tempMovesList.removeSwap(ThreadLocalRandom.current().nextInt(tempMovesList.size())));
+//		}
 		
 		final int numRootMoves = sortedRootMoves.size();
 		final List<ScoredMove> scoredMoves = new ArrayList<ScoredMove>(sortedRootMoves.size());
