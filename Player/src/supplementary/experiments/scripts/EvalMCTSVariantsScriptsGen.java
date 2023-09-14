@@ -245,6 +245,7 @@ public class EvalMCTSVariantsScriptsGen
 				break;
 			}
 			
+			nameParts.add(mctsHyperParamValues[IDX_SCORE_BOUNDS][combo[IDX_SCORE_BOUNDS]]);
 			if (mctsHyperParamValues[IDX_SCORE_BOUNDS][combo[IDX_SCORE_BOUNDS]].equals("true"))
 				algStringParts.add("use_score_bounds=true");
 			
@@ -304,6 +305,7 @@ public class EvalMCTSVariantsScriptsGen
 				break;
 			}
 			
+			nameParts.add(mctsHyperParamValues[IDX_SCORE_BOUNDS][combo[IDX_SCORE_BOUNDS]]);
 			if (mctsHyperParamValues[IDX_SCORE_BOUNDS][combo[IDX_SCORE_BOUNDS]].equals("true"))
 				System.err.println("Should never have score bounds in MCTSes for stochastic games!");
 			
