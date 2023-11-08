@@ -1,0 +1,65 @@
+(game "FrogGame"
+    (players 1)
+    (equipment {
+        (board (rectangle 2 10))
+        (piece "StarOutline" Neutral)
+        (piece "Stone" Neutral)
+        (piece "Leaf" Neutral)
+        (piece "Wood" Neutral)
+        (piece "Flag" Neutral)
+        (piece "Frog" 
+            (move Step Orthogonal
+                (to 
+                    if:(or
+                        (is Pending)
+                        (!= (what at:(from) level:0) (what at:(to) level:0))
+                    )
+                )
+            )
+        )
+        (hand Each)
+    })
+    (rules
+        (start {
+            (place "Stone0" {"A2" "B2" "C2" "B1" "E2" "H2"})
+            (place "Wood0" {"D1" "E1" "F1" "G1" "H1" "I1" "I2"})
+            (place "Leaf0" {"C1" "D2" "F2" "G2" "J1"})
+            (place Stack items:{"Leaf0" "Flag0"} 19)
+            (place Stack items:{"Wood0" "Frog"} 0)
+            (place "StarOutline0" (handSite P1 0))
+        })
+        (play 
+            (or
+                (forEach Piece)
+                (if ("HandOccupied" P1)
+                    (move Select 
+                        (from (handSite P1 0))
+                        (then
+                            (and
+                                (set Pending)
+                                (remove (handSite P1 0))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (end {
+            (if (no Moves Mover) (result Mover Loss))
+            (if (= (where "Frog" Mover) (where "Flag" Neutral)) (result Mover Win))
+        })
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata 
+    
+    (graphics {
+        (piece Colour P1 fillColour:(colour Green))
+        (piece Scale P1 0.5)
+        (piece Colour "Flag" fillColour:(colour Red))
+        (piece Scale "Flag" 0.8)
+        (piece Colour "StarOutline0" fillColour:(colour Yellow))
+    })
+)
