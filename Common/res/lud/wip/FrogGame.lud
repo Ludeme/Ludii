@@ -47,6 +47,7 @@
         (end {
             (if (no Moves Mover) (result Mover Loss))
             (if (= (where "Frog" Mover) (where "Flag" Neutral)) (result Mover Win))
+            
         })
     )
 )
