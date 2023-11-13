@@ -46,6 +46,7 @@ import search.mcts.finalmoveselection.FinalMoveSelectionStrategy;
 import search.mcts.finalmoveselection.MaxAvgScore;
 import search.mcts.finalmoveselection.ProportionalExpVisitCount;
 import search.mcts.finalmoveselection.RobustChild;
+import search.mcts.nodes.AlphaBetaBoundsNode;
 import search.mcts.nodes.BaseNode;
 import search.mcts.nodes.OpenLoopNode;
 import search.mcts.nodes.ScoreBoundsNode;
@@ -61,6 +62,7 @@ import search.mcts.selection.SelectionStrategy;
 import search.mcts.selection.UCB1;
 import search.mcts.selection.UCB1GRAVE;
 import search.mcts.selection.UCB1Tuned;
+import search.mcts.selection.UCB1WithAlphaBetaBounds;
 import training.expert_iteration.ExItExperience;
 import training.expert_iteration.ExpertPolicy;
 import utils.AIUtils;
@@ -224,6 +226,12 @@ public class MCTS extends ExpertPolicy
 	
 	/** Do we want to track pessimistic and optimistic score bounds in nodes, for solving? */
 	protected boolean useScoreBounds = false;
+	
+	/** Do we want to use alpha-beta-style bounds (and, if not 0, in what way)? */
+	protected int useAlphaBetaBounds = 0;
+	
+	/** Version of "pruning" (actually, resetting or keeping bounds) if alpha-beta bounds are used */
+	protected int abPruneVersion = 0;
 	
 	/** 
 	 * If we have heuristic value estimates in nodes, we assign this weight to playout outcomes, 
@@ -629,6 +637,21 @@ public class MCTS extends ExpertPolicy
 							
 							Context playoutContext = null;
 							
+							double[] alphaBounds = null;
+							double[] betaBounds = null;
+							double explorationConstant = Double.NaN;
+							boolean boundsCrossed = false;
+							if (useAlphaBetaBounds != 0)
+							{
+								alphaBounds = new double[game.players().count() + 1];
+								Arrays.fill(alphaBounds, Double.NEGATIVE_INFINITY);
+								betaBounds = new double[game.players().count() + 1];
+								Arrays.fill(betaBounds, Double.POSITIVE_INFINITY);
+								
+								// TODO would be better if any selection strategy could compute bounds
+								explorationConstant = ((UCB1WithAlphaBetaBounds) selectionStrategy).explorationConstant();
+							}
+							
 							while (current.contextRef().trial().status() == null)
 							{
 								BaseNode prevNode = current;
@@ -636,6 +659,61 @@ public class MCTS extends ExpertPolicy
 
 								try
 								{
+									if 
+									(
+										useAlphaBetaBounds != 0 && !boundsCrossed && 
+										current.parent() != null && current.numVisits() > 0
+									)
+									{
+										final int mover = current.contextRef().state().mover();
+										final int opponent = 3 - mover;		// TODO only correct in 2-player games
+										final double expectedVal = current.expectedScore(mover);
+										final double margin = explorationConstant * 
+												Math.sqrt
+												(
+													Math.log(current.parent().numVisits())
+													/
+													current.numVisits()
+												);
+										
+										if 
+										(
+											-expectedVal + margin <= betaBounds[opponent] &&
+											-expectedVal - margin >= alphaBounds[opponent] &&
+											expectedVal - margin > alphaBounds[mover] &&
+											expectedVal + margin < betaBounds[mover]
+										)
+										{
+											// Can narrow the bounds
+											alphaBounds[mover] = expectedVal - margin;
+											betaBounds[opponent] = -expectedVal + margin;
+										}
+										else if (Double.isFinite(alphaBounds[mover]) && Double.isFinite(betaBounds[mover]))
+										{
+											// Bounds crossed: reset everything to infinity
+											Arrays.fill(alphaBounds, Double.NEGATIVE_INFINITY);
+											Arrays.fill(betaBounds, Double.POSITIVE_INFINITY);
+											
+											if (abPruneVersion == 1)
+											{
+												// Memorise that bounds were crossed and stop using them
+												boundsCrossed = true;
+											}
+											else if (abPruneVersion == 2)
+											{
+												// Don't memorise anything, open up bounds and allow using them again
+											}
+											else
+											{
+												System.err.println("Unknown abPruneVersion: " + abPruneVersion);
+											}
+										}
+										
+										// Tell the node what it's new bounds are for this iteration
+										((AlphaBetaBoundsNode) current).setAlphaBound(alphaBounds[mover]);
+										((AlphaBetaBoundsNode) current).setBetaBound(betaBounds[mover]);
+									}
+									
 									final int selectedIdx = selectionStrategy.select(this, current);
 									BaseNode nextNode = current.childForNthLegalMove(selectedIdx);
 									
@@ -842,6 +920,8 @@ public class MCTS extends ExpertPolicy
 		{
 			if (useScoreBounds)
 				return new ScoreBoundsNode(mcts, parent, parentMove, parentMoveWithoutConseq, context);
+			else if (useAlphaBetaBounds != 0 && context.game().players().count() == 2)	// TODO can we handle more than 2 players?
+				return new AlphaBetaBoundsNode(mcts, parent, parentMove, parentMoveWithoutConseq, context);
 			else
 				return new StandardNode(mcts, parent, parentMove, parentMoveWithoutConseq, context);
 		}
@@ -966,6 +1046,24 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	/**
+	 * Sets whether (and how) we want to use alpha-beta-style bounds
+	 * @param val
+	 */
+	public void setUseAlphaBetaBounds(final int val)
+	{
+		useAlphaBetaBounds = val;
+	}
+	
+	/**
+	 * Set version of pruning/resetting bounds used if alpha-beta-style bounds are used.
+	 * @param val
+	 */
+	public void setAbPruneVersion(final int val)
+	{
+		abPruneVersion = val;
+	}
+	
+	/**
 	 * Sets the Q-init strategy
 	 * @param init
 	 */
@@ -1029,6 +1127,14 @@ public class MCTS extends ExpertPolicy
 	public IncrementalStats[] heuristicStats()
 	{
 		return heuristicStats;
+	}
+	
+	/**
+	 * @return How (if at all) do we want to use alpha-beta style bounds?
+	 */
+	public int useAlphaBetaBoundsVersion()
+	{
+		return useAlphaBetaBounds;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -1374,6 +1480,8 @@ public class MCTS extends ExpertPolicy
 		// Defaults - some extras
 		boolean treeReuse = false;
 		boolean useScoreBounds = false;
+		int useAlphaBetaBounds = 0;
+		int abPruneVersion = 0;
 		int numThreads = 1;
 		Policy learnedSelectionPolicy = null;
 		Heuristics heuristics = null;
@@ -1431,6 +1539,11 @@ public class MCTS extends ExpertPolicy
 				else if (lineParts[0].toLowerCase().endsWith("ucb1tuned"))
 				{
 					selection = new UCB1Tuned();
+					selection.customise(lineParts);
+				}
+				else if (lineParts[0].toLowerCase().endsWith("ucb1withalphabetabounds"))
+				{
+					selection = new UCB1WithAlphaBetaBounds();
 					selection.customise(lineParts);
 				}
 				else
@@ -1520,6 +1633,35 @@ public class MCTS extends ExpertPolicy
 					System.err.println("Error in line: " + line);
 				}
 			}
+			else if (lineParts[0].toLowerCase().startsWith("use_alpha_beta_bounds="))
+			{
+				if (lineParts[0].toLowerCase().endsWith("false"))
+				{
+					useAlphaBetaBounds = 0;
+				}
+				else
+				{
+					try
+					{
+						useAlphaBetaBounds = Integer.parseInt(lineParts[0].substring("use_alpha_beta_bounds=".length()));
+					}
+					catch (final Exception e)
+					{
+						System.err.println("Error in line: " + line);
+					}
+				}
+			}
+			else if (lineParts[0].toLowerCase().startsWith("ab_prune_version="))
+			{
+				try
+				{
+					abPruneVersion = Integer.parseInt(lineParts[0].substring("ab_prune_version=".length()));
+				}
+				catch (final Exception e)
+				{
+					System.err.println("Error in line: " + line);
+				}
+			}
 			else if (lineParts[0].toLowerCase().startsWith("num_threads="))
 			{
 				numThreads = Integer.parseInt(lineParts[0].substring("num_threads=".length()));
@@ -1571,6 +1713,8 @@ public class MCTS extends ExpertPolicy
 
 		mcts.setTreeReuse(treeReuse);
 		mcts.setUseScoreBounds(useScoreBounds);
+		mcts.setUseAlphaBetaBounds(useAlphaBetaBounds);
+		mcts.setAbPruneVersion(abPruneVersion);
 		mcts.setNumThreads(numThreads);
 		mcts.setLearnedSelectionPolicy(learnedSelectionPolicy);
 		mcts.setHeuristics(heuristics);
@@ -1596,6 +1740,7 @@ public class MCTS extends ExpertPolicy
 		sb.append("friendly name = " + friendlyName + "\n");
 		sb.append("tree reuse = " + treeReuse + "\n");
 		sb.append("use score bounds = " + useScoreBounds + "\n");
+		sb.append("use alpha-beta bounds = " + useAlphaBetaBounds + "\n");
 		sb.append("qinit = " + qInit + "\n");
 		sb.append("playout value weight = " + playoutValueWeight + "\n");
 		sb.append("final move selection = " + finalMoveSelectionStrategy + "\n");
