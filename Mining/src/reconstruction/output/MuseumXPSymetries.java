@@ -27,7 +27,7 @@ public class MuseumXPSymetries {
  
 	/** The trials. */
 	private static List<Trial> trials = new ArrayList<Trial>();
-
+	
 	/** The folder with the trials to use. */
 	private static String folderTrials = "/res/trials/";
 
@@ -36,8 +36,9 @@ public class MuseumXPSymetries {
 	
 	// The transformations (left/right for the moment).
 	final static TIntIntHashMap transformations = new TIntIntHashMap();
-	
-	
+
+	/** The path of the museum game. */
+	private static String gameName = "/lud/board/hunt/Ludus Coriovalli.lud";
 	
 	//final static String rulesetName = "Ruleset/Haretavl Three Dogs Two Hares Starting Position - Both Extensions Joined Diagonal (Suggested)";
 	//final static String rulesetName = "Ruleset/Haretavl Three Dogs Two Hares - Top Extension No Joined Diagonal (Suggested)";
@@ -105,42 +106,16 @@ public class MuseumXPSymetries {
 	 */
 	public static void computeEdgeSymetries(final String rulesetExpected)
 	{
-		final String gameName = "/lud/board/hunt/Ludus Coriovalli.lud";
-		final Game game = GameLoader.loadGameFromName(gameName);
-		
-		final List<Ruleset> rulesetsInGame = game.description().rulesets();
-		
-		Game rulesetGame = null;
-		
-		// Code for games with many rulesets
-		if (rulesetsInGame != null && !rulesetsInGame.isEmpty()) 
-		{
-			for (int rs = 0; rs < rulesetsInGame.size(); rs++)
-			{
-				final Ruleset ruleset = rulesetsInGame.get(rs);
-
-				// We check if we want a specific ruleset.
-				if (!rulesetExpected.isEmpty() && !rulesetExpected.equals(ruleset.heading()))
-					continue;
-
-				rulesetGame = GameLoader.loadGameFromName(gameName, ruleset.optionSettings());
-			}
-		}
-
-		if(rulesetGame == null)
-			System.err.println("Game or Ruleset unknown");
-		
-		System.out.println("Game Name = " + rulesetGame.name());
-		System.out.println("Ruleset Name = " + rulesetGame.getRuleset().heading());
-		
+		Game rulesetGame = getRuleset(gameName, rulesetExpected);
 		getTrials(rulesetGame);
 		
 		System.out.println("trial size = " + trials.size());
 		
-		// The iterative vector and the final vector to obtain.
+		// The vector used to get the edge usage after each trial.
 		final TDoubleArrayList edgesUsageMinisingSymetryDistance = new TDoubleArrayList();	
 		for(int i = 0; i < rulesetGame.board().topology().edges().size(); i++)
 			edgesUsageMinisingSymetryDistance.add(0.0);
+		
 		
 		for (int trialIndex = 0; trialIndex < trials.size() ; trialIndex++)
 		{
@@ -246,6 +221,42 @@ public class MuseumXPSymetries {
 			System.out.println(i + "," + edgesUsageMinisingSymetryDistance.get(i));
 	}
 	
+	// ---------------------------
+	
+	/**
+	 * @param game The game.
+	 */
+	private static Game getRuleset(final String gameName, final String rulesetExpected)
+	{
+		final Game game = GameLoader.loadGameFromName(gameName);
+		final List<Ruleset> rulesetsInGame = game.description().rulesets();
+		Game rulesetGame = null;
+		// Code for games with many rulesets
+		if (rulesetsInGame != null && !rulesetsInGame.isEmpty()) 
+		{
+			for (int rs = 0; rs < rulesetsInGame.size(); rs++)
+			{
+				final Ruleset ruleset = rulesetsInGame.get(rs);
+	
+				// We check if we want a specific ruleset.
+				if (!rulesetExpected.isEmpty() && !rulesetExpected.equals(ruleset.heading()))
+					continue;
+	
+				rulesetGame = GameLoader.loadGameFromName(gameName, ruleset.optionSettings());
+			}
+		}
+	
+		if(rulesetGame == null)
+			System.err.println("Game or Ruleset unknown");
+		
+		System.out.println("Game Name = " + rulesetGame.name());
+		System.out.println("Ruleset Name = " + rulesetGame.getRuleset().heading());
+		
+		return rulesetGame;
+	}
+	
+	// ---------------------------
+	
 	/**
 	 * @param game The game.
 	 */
@@ -256,19 +267,14 @@ public class MuseumXPSymetries {
 		final String gameName = game.name();
 		final String rulesetName = game.getRuleset() == null ? "" : game.getRuleset().heading();
 
-//		System.out.println("GAME NAME = " + gameName);
-//		System.out.println("RULESET NAME = " + rulesetName);
-
 		String trialFolderPath = folder + "/" + gameName;
 		if (!rulesetName.isEmpty())
 			trialFolderPath += File.separator + rulesetName.replace("/", "_");
 
 		final File trialFolder = new File(trialFolderPath);
 
-		if (trialFolder.exists())
-			System.out.println("TRIALS FOLDER EXIST");
-		else
-			System.out.println("DO NOT FOUND IT - Path is " + trialFolder);
+		if (!trialFolder.exists())
+			System.out.println("DO NOT FOUND TRIALS - Path is " + trialFolder);
 
 		for (final File trialFile : trialFolder.listFiles())
 		{
@@ -294,6 +300,8 @@ public class MuseumXPSymetries {
 			}
 		}
 	}
+	
+	// ---------------------------
 	
 	/**
 	 * Note: We assume both vectors have the same size.
