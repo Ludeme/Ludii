@@ -37,7 +37,12 @@ public class MuseumXPSymetries {
 	// The transformations (left/right for the moment).
 	final static TIntIntHashMap transformations = new TIntIntHashMap();
 	
-	final static String rulesetName = "Ruleset/Haretavl Switch Three Dogs Two Hares Starting Position - Both Extensions Joined Diagonal (Suggested)";
+	
+	
+	//final static String rulesetName = "Ruleset/Haretavl Three Dogs Two Hares Starting Position - Both Extensions Joined Diagonal (Suggested)";
+	//final static String rulesetName = "Ruleset/Haretavl Three Dogs Two Hares - Top Extension No Joined Diagonal (Suggested)";
+	//final static String rulesetName = "Ruleset/Haretavl Switch Three Dogs Two Hares Starting Position 1 - Top Extension No Joined Diagonal (Suggested)";
+	final static String rulesetName = "Ruleset/Haretavl Three Dogs Two Hares Starting Position 2 - Top Extension No Joined Diagonal (Suggested)";
 	
 	// -----------------------------------------------------------------------------------
 	
@@ -47,13 +52,47 @@ public class MuseumXPSymetries {
 	 */
 	public static void main(final String[] args)
 	{
-		transformations.put(0,1);
-		transformations.put(2,3);
-		transformations.put(15,16);
-		transformations.put(12,13);
-		transformations.put(18,17);
-		transformations.put(5,4);
-		transformations.put(6,7);
+		// Ruleset/Haretavl Three Dogs Two Hares Starting Position - Both Extensions Joined Diagonal (Suggested)
+//		transformations.put(0,1);
+//		transformations.put(2,3);
+//		transformations.put(15,16);
+//		transformations.put(12,13);
+//		transformations.put(18,17);
+//		transformations.put(5,4);
+//		transformations.put(6,7);
+		
+		// Ruleset/Haretavl Three Dogs Two Hares - Top Extension No Joined Diagonal (Suggested)
+//		transformations.put(0,3);
+//		transformations.put(1,2);
+//		transformations.put(4,5);
+//		transformations.put(15,19);
+//		transformations.put(14,20);
+//		transformations.put(7,6);
+//		transformations.put(16,18);
+//		transformations.put(8,11);
+//		transformations.put(9,10);
+		
+		// Ruleset/Haretavl Switch Three Dogs Two Hares Starting Position 1 - Top Extension No Joined Diagonal (Suggested)
+//		transformations.put(0,3);
+//		transformations.put(1,2);
+//		transformations.put(4,5);
+//		transformations.put(15,19);
+//		transformations.put(14,20);
+//		transformations.put(7,6);
+//		transformations.put(16,18);
+//		transformations.put(8,11);
+//		transformations.put(9,10);
+		
+		// Ruleset/Haretavl Three Dogs Two Hares Starting Position 2 - Top Extension No Joined Diagonal (Suggested)
+		transformations.put(0,3);
+		transformations.put(1,2);
+		transformations.put(4,5);
+		transformations.put(15,19);
+		transformations.put(14,20);
+		transformations.put(7,6);
+		transformations.put(16,18);
+		transformations.put(8,11);
+		transformations.put(9,10);
 		
 		computeEdgeSymetries(rulesetName);
 	}
@@ -143,7 +182,7 @@ public class MuseumXPSymetries {
 			}
 			
 			for(int i = 0; i < rulesetGame.board().topology().edges().size(); i++)
-				edgesUsageCurrentTrial.set(i, edgesUsageCurrentTrial.get(i) / (double) totalEdgesUsage*100);
+				edgesUsageCurrentTrial.set(i, edgesUsageCurrentTrial.get(i) / (double) totalEdgesUsage * 100);
 			
 			if(trialIndex == 0)
 			{
