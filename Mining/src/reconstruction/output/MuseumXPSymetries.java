@@ -3,6 +3,8 @@ package reconstruction.output;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +14,8 @@ import game.Game;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.hash.TIntIntHashMap;
 import main.Constants;
+import main.StringRoutines;
+import main.UnixPrintWriter;
 import main.options.Ruleset;
 import manager.utils.game_logs.MatchRecord;
 import metrics.Utils;
@@ -293,6 +297,22 @@ public class MuseumXPSymetries {
 		System.out.println("Final results are");
 		for(int i = 0; i < rulesetGame.board().topology().edges().size(); i++)
 			System.out.println(i + "," + edgesUsageMinisingSymetryDistance.get(i));
+		
+		final String output = "EdgesResultLudus Coriovalli-" + rulesetName.substring(rulesetName.indexOf("/")+1) +".csv";
+		// Write the new CSV.
+		try (final PrintWriter writer = new UnixPrintWriter(new File(output), "UTF-8"))
+		{
+			for(int i = 0; i < rulesetGame.board().topology().edges().size(); i++)
+				writer.println(i + "," + edgesUsageMinisingSymetryDistance.get(i));
+		}
+		catch (FileNotFoundException e1)
+		{
+			e1.printStackTrace();
+		}
+		catch (UnsupportedEncodingException e1)
+		{
+			e1.printStackTrace();
+		}
 	}
 	
 	// ---------------------------
