@@ -47,7 +47,7 @@ public class MuseumXPSymetries {
 	/** The path of the museum game. */
 	private static String gameName = "/lud/board/hunt/Ludus Coriovalli.lud";
 	
-	final static String rulesetName = "Ruleset/Haretavl - No Extension Joined Diagonal (Suggested)";
+	//final static String rulesetName = "Ruleset/Haretavl - No Extension Joined Diagonal (Suggested)";
 	//final static String rulesetName = "Ruleset/Haretavl - Top Extension Joined Diagonal (Suggested)";
 	//final static String rulesetName = "Ruleset/Haretavl - Both Extension Joined Diagonal (Suggested)";
 	//final static String rulesetName = "Ruleset/Haretavl - No Extension No Joined Diagonal (Suggested)";
@@ -94,7 +94,7 @@ public class MuseumXPSymetries {
 	//final static String rulesetName = "Ruleset/Line Game Three pieces - Both Extension Joined Diagonal (Suggested)";
 	//final static String rulesetName = "Ruleset/Line Game Three pieces - No Extension No Joined Diagonal (Suggested)";
 	//final static String rulesetName = "Ruleset/Line Game Three pieces - Top Extension No Joined Diagonal (Suggested)";
-	//final static String rulesetName = "Ruleset/Line Game Three pieces - Both Extension No Joined Diagonal (Suggested)";
+	final static String rulesetName = "Ruleset/Line Game Three pieces - Both Extension No Joined Diagonal (Suggested)";
 	//final static String rulesetName = "Ruleset/Janes Soppi - No Extension Joined Diagonal (Suggested)";
 	//final static String rulesetName = "Ruleset/Janes Soppi - Top Extension Joined Diagonal (Suggested)";
 	//final static String rulesetName = "Ruleset/Janes Soppi - Both Extensions Joined Diagonal (Suggested)";
