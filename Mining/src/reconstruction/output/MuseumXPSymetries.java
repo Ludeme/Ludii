@@ -11,6 +11,7 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.hash.TIntIntHashMap;
+import main.Constants;
 import main.options.Ruleset;
 import manager.utils.game_logs.MatchRecord;
 import metrics.Utils;
@@ -35,7 +36,10 @@ public class MuseumXPSymetries {
 	private static List<RandomProviderState> allStoredRNG = new ArrayList<RandomProviderState>();
 	
 	// The transformations (left/right for the moment).
-	final static TIntIntHashMap transformations = new TIntIntHashMap();
+	final static TIntIntHashMap transformationsLeftRight = new TIntIntHashMap();
+	
+	// The transformations (left/right for the moment).
+	final static TIntIntHashMap transformationsTopBottom = new TIntIntHashMap();
 
 	/** The path of the museum game. */
 	private static String gameName = "/lud/board/hunt/Ludus Coriovalli.lud";
@@ -43,7 +47,8 @@ public class MuseumXPSymetries {
 	//final static String rulesetName = "Ruleset/Haretavl Three Dogs Two Hares Starting Position - Both Extensions Joined Diagonal (Suggested)";
 	//final static String rulesetName = "Ruleset/Haretavl Three Dogs Two Hares - Top Extension No Joined Diagonal (Suggested)";
 	//final static String rulesetName = "Ruleset/Haretavl Switch Three Dogs Two Hares Starting Position 1 - Top Extension No Joined Diagonal (Suggested)";
-	final static String rulesetName = "Ruleset/Haretavl Three Dogs Two Hares Starting Position 2 - Top Extension No Joined Diagonal (Suggested)";
+	//final static String rulesetName = "Ruleset/Haretavl Three Dogs Two Hares Starting Position 2 - Top Extension No Joined Diagonal (Suggested)";
+	final static String rulesetName = "Ruleset/Haretavl - No Extension Joined Diagonal (Suggested)";
 	
 	// -----------------------------------------------------------------------------------
 	
@@ -53,47 +58,71 @@ public class MuseumXPSymetries {
 	 */
 	public static void main(final String[] args)
 	{
-		// Ruleset/Haretavl Three Dogs Two Hares Starting Position - Both Extensions Joined Diagonal (Suggested)
-//		transformations.put(0,1);
-//		transformations.put(2,3);
-//		transformations.put(15,16);
-//		transformations.put(12,13);
-//		transformations.put(18,17);
-//		transformations.put(5,4);
-//		transformations.put(6,7);
+		switch(rulesetName)
+		{
+		case "Ruleset/Haretavl Three Dogs Two Hares Starting Position - Both Extensions Joined Diagonal (Suggested)":
+		transformationsLeftRight.put(0,1);
+		transformationsLeftRight.put(2,3);
+		transformationsLeftRight.put(15,16);
+		transformationsLeftRight.put(12,13);
+		transformationsLeftRight.put(18,17);
+		transformationsLeftRight.put(5,4);
+		transformationsLeftRight.put(6,7);
+		break;
 		
-		// Ruleset/Haretavl Three Dogs Two Hares - Top Extension No Joined Diagonal (Suggested)
-//		transformations.put(0,3);
-//		transformations.put(1,2);
-//		transformations.put(4,5);
-//		transformations.put(15,19);
-//		transformations.put(14,20);
-//		transformations.put(7,6);
-//		transformations.put(16,18);
-//		transformations.put(8,11);
-//		transformations.put(9,10);
+		case "Ruleset/Haretavl Three Dogs Two Hares - Top Extension No Joined Diagonal (Suggested)":
+		transformationsLeftRight.put(0,3);
+		transformationsLeftRight.put(1,2);
+		transformationsLeftRight.put(4,5);
+		transformationsLeftRight.put(15,19);
+		transformationsLeftRight.put(14,20);
+		transformationsLeftRight.put(7,6);
+		transformationsLeftRight.put(16,18);
+		transformationsLeftRight.put(8,11);
+		transformationsLeftRight.put(9,10);
+		break;
 		
-		// Ruleset/Haretavl Switch Three Dogs Two Hares Starting Position 1 - Top Extension No Joined Diagonal (Suggested)
-//		transformations.put(0,3);
-//		transformations.put(1,2);
-//		transformations.put(4,5);
-//		transformations.put(15,19);
-//		transformations.put(14,20);
-//		transformations.put(7,6);
-//		transformations.put(16,18);
-//		transformations.put(8,11);
-//		transformations.put(9,10);
+		case "Ruleset/Haretavl Switch Three Dogs Two Hares Starting Position 1 - Top Extension No Joined Diagonal (Suggested)":
+		transformationsLeftRight.put(0,3);
+		transformationsLeftRight.put(1,2);
+		transformationsLeftRight.put(4,5);
+		transformationsLeftRight.put(15,19);
+		transformationsLeftRight.put(14,20);
+		transformationsLeftRight.put(7,6);
+		transformationsLeftRight.put(16,18);
+		transformationsLeftRight.put(8,11);
+		transformationsLeftRight.put(9,10);
+		break;
 		
-		// Ruleset/Haretavl Three Dogs Two Hares Starting Position 2 - Top Extension No Joined Diagonal (Suggested)
-		transformations.put(0,3);
-		transformations.put(1,2);
-		transformations.put(4,5);
-		transformations.put(15,19);
-		transformations.put(14,20);
-		transformations.put(7,6);
-		transformations.put(16,18);
-		transformations.put(8,11);
-		transformations.put(9,10);
+		case "Ruleset/Haretavl Three Dogs Two Hares Starting Position 2 - Top Extension No Joined Diagonal (Suggested)":
+		transformationsLeftRight.put(0,3);
+		transformationsLeftRight.put(1,2);
+		transformationsLeftRight.put(4,5);
+		transformationsLeftRight.put(15,19);
+		transformationsLeftRight.put(14,20);
+		transformationsLeftRight.put(7,6);
+		transformationsLeftRight.put(16,18);
+		transformationsLeftRight.put(8,11);
+		transformationsLeftRight.put(9,10);
+		break;
+
+		case "Ruleset/Haretavl - No Extension Joined Diagonal (Suggested)":
+		transformationsLeftRight.put(0,1);
+		transformationsLeftRight.put(11,12);
+		transformationsLeftRight.put(2,3);
+		transformationsLeftRight.put(8,9);
+		transformationsLeftRight.put(5,4);
+		transformationsLeftRight.put(14,13);
+		transformationsLeftRight.put(6,7);
+		
+		transformationsTopBottom.put(5,2);
+		transformationsTopBottom.put(3,4);
+		transformationsTopBottom.put(7,1);
+		transformationsTopBottom.put(6,0);
+		transformationsTopBottom.put(13,12);
+		transformationsTopBottom.put(14,11);
+		break;
+		}
 		
 		computeEdgeSymetries(rulesetName);
 	}
@@ -169,25 +198,48 @@ public class MuseumXPSymetries {
 			}
 			else // Minimise vector edge usage on current trial and the vector edge usage of all previous trials.
 			{
-				// Compute transformation of current edge
-				final TDoubleArrayList edgesUsageCurrentTrialAfterTransformation = new TDoubleArrayList();
-				for(int i = 0; i < rulesetGame.board().topology().edges().size(); i++)
-					edgesUsageCurrentTrialAfterTransformation.add(0.0);
-					
-				for(int i = 0; i < edgesUsageCurrentTrial.size(); i++)
-					edgesUsageCurrentTrialAfterTransformation.set(i, edgesUsageCurrentTrial.get(i));
-				for(int i = 0; i < edgesUsageCurrentTrial.size(); i++)
+				// Compute transformation Left/Right of current edge
+				final TDoubleArrayList edgesUsageCurrentTrialAfterTransformationLeftRight = new TDoubleArrayList();
+				if(!transformationsLeftRight.isEmpty())
 				{
-					if(transformations.get(i) != -99) // -99 is the value returned if the key does not exist.
+					for(int i = 0; i < rulesetGame.board().topology().edges().size(); i++)
+						edgesUsageCurrentTrialAfterTransformationLeftRight.add(0.0);
+						
+					for(int i = 0; i < edgesUsageCurrentTrial.size(); i++)
+						edgesUsageCurrentTrialAfterTransformationLeftRight.set(i, edgesUsageCurrentTrial.get(i));
+					for(int i = 0; i < edgesUsageCurrentTrial.size(); i++)
 					{
-						edgesUsageCurrentTrialAfterTransformation.set(i, edgesUsageCurrentTrial.get(transformations.get(i)));
-						edgesUsageCurrentTrialAfterTransformation.set(transformations.get(i), edgesUsageCurrentTrial.get(i));
+						if(transformationsLeftRight.get(i) != -99) // -99 is the value returned if the key does not exist.
+						{
+							edgesUsageCurrentTrialAfterTransformationLeftRight.set(i, edgesUsageCurrentTrial.get(transformationsLeftRight.get(i)));
+							edgesUsageCurrentTrialAfterTransformationLeftRight.set(transformationsLeftRight.get(i), edgesUsageCurrentTrial.get(i));
+						}
+					}
+				}
+				
+				// Compute transformation Left/Right of current edge
+				final TDoubleArrayList edgesUsageCurrentTrialAfterTransformationTopBottom = new TDoubleArrayList();
+				if(!transformationsTopBottom.isEmpty())
+				{
+					for(int i = 0; i < rulesetGame.board().topology().edges().size(); i++)
+						edgesUsageCurrentTrialAfterTransformationTopBottom.add(0.0);
+					
+					for(int i = 0; i < edgesUsageCurrentTrial.size(); i++)
+						edgesUsageCurrentTrialAfterTransformationTopBottom.set(i, edgesUsageCurrentTrial.get(i));
+					for(int i = 0; i < edgesUsageCurrentTrial.size(); i++)
+					{
+						if(transformationsTopBottom.get(i) != -99) // -99 is the value returned if the key does not exist.
+						{
+							edgesUsageCurrentTrialAfterTransformationTopBottom.set(i, edgesUsageCurrentTrial.get(transformationsTopBottom.get(i)));
+							edgesUsageCurrentTrialAfterTransformationTopBottom.set(transformationsTopBottom.get(i), edgesUsageCurrentTrial.get(i));
+						}
 					}
 				}
 				
 				// Compute distance with vector edge usage of all previous trials
 				final double distanceCurrent = euclidianDistance(edgesUsageMinisingSymetryDistance, edgesUsageCurrentTrial);
-				final double distanceCurrentWithTransformation = euclidianDistance(edgesUsageMinisingSymetryDistance, edgesUsageCurrentTrialAfterTransformation);
+				final double distanceCurrentWithTransformationLeftRight = (edgesUsageCurrentTrialAfterTransformationLeftRight.isEmpty()) ? Constants.INFINITY : euclidianDistance(edgesUsageMinisingSymetryDistance, edgesUsageCurrentTrialAfterTransformationLeftRight);
+				final double distanceCurrentWithTransformationTopBottom = (edgesUsageCurrentTrialAfterTransformationTopBottom.isEmpty()) ? Constants.INFINITY : euclidianDistance(edgesUsageMinisingSymetryDistance, edgesUsageCurrentTrialAfterTransformationTopBottom);
 				
 //				System.out.println("current trial edge usage");
 //				for(int i = 0; i < rulesetGame.board().topology().edges().size(); i++)
@@ -200,11 +252,21 @@ public class MuseumXPSymetries {
 //				System.out.println("distance with previous = " + distanceCurrentWithTransformation);
 				
 				// Keep the transformation only if they make the distance smaller.
-				if(distanceCurrent > distanceCurrentWithTransformation)
+				if(distanceCurrentWithTransformationTopBottom > distanceCurrentWithTransformationLeftRight)
 				{
-					//System.out.println("transformation applied");
-					for(int i = 0; i < edgesUsageCurrentTrial.size(); i++)
-						edgesUsageCurrentTrial.set(i, edgesUsageCurrentTrialAfterTransformation.get(i));
+					if(distanceCurrent > distanceCurrentWithTransformationLeftRight)
+					{
+						//System.out.println("transformation applied");
+						for(int i = 0; i < edgesUsageCurrentTrial.size(); i++)
+							edgesUsageCurrentTrial.set(i, edgesUsageCurrentTrialAfterTransformationLeftRight.get(i));
+					}
+					
+					if(distanceCurrent > distanceCurrentWithTransformationTopBottom)
+					{
+						//System.out.println("transformation applied");
+						for(int i = 0; i < edgesUsageCurrentTrial.size(); i++)
+							edgesUsageCurrentTrial.set(i, edgesUsageCurrentTrialAfterTransformationTopBottom.get(i));
+					}
 				}
 				
 				// Compute the new avg usage after applying or not the transformation
