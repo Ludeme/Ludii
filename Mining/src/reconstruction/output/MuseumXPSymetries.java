@@ -48,7 +48,8 @@ public class MuseumXPSymetries {
 	//final static String rulesetName = "Ruleset/Haretavl Three Dogs Two Hares - Top Extension No Joined Diagonal (Suggested)";
 	//final static String rulesetName = "Ruleset/Haretavl Switch Three Dogs Two Hares Starting Position 1 - Top Extension No Joined Diagonal (Suggested)";
 	//final static String rulesetName = "Ruleset/Haretavl Three Dogs Two Hares Starting Position 2 - Top Extension No Joined Diagonal (Suggested)";
-	final static String rulesetName = "Ruleset/Haretavl - No Extension Joined Diagonal (Suggested)";
+	//final static String rulesetName = "Ruleset/Haretavl - No Extension Joined Diagonal (Suggested)";
+	final static String rulesetName = "Ruleset/Haretavl - Top Extension Joined Diagonal (Suggested)";
 	
 	// -----------------------------------------------------------------------------------
 	
@@ -60,6 +61,17 @@ public class MuseumXPSymetries {
 	{
 		switch(rulesetName)
 		{
+		case "Ruleset/Haretavl - Top Extension Joined Diagonal (Suggested)":
+		transformationsLeftRight.put(0,1);
+		transformationsLeftRight.put(2,3);
+		transformationsLeftRight.put(10,11);
+		transformationsLeftRight.put(5,4);
+		transformationsLeftRight.put(13,14);
+		transformationsLeftRight.put(16,15);
+		transformationsLeftRight.put(6,7);
+		transformationsLeftRight.put(8,9);
+		break;
+		
 		case "Ruleset/Haretavl Three Dogs Two Hares Starting Position - Both Extensions Joined Diagonal (Suggested)":
 		transformationsLeftRight.put(0,1);
 		transformationsLeftRight.put(2,3);
