@@ -5,7 +5,7 @@ package game.rules.play.moves.decision;
  */
 public enum MoveSiteType
 {
-	/** Makes a add move. */
+	/** Makes an add move. */
 	Add,
 
 	/** Makes a claim move. */

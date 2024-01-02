@@ -109,13 +109,13 @@
     {
     (item "All colors, Cascading (00'Y')" <(or ("FlipFromTo" Next Mover) ("FlipFromTo" Mover Next))> "All, Cascading (00'Y')")**
     (item "Opponents into Friends" <("FlipFromTo" Next Mover)> "Opponent pieces become friends (Defector Y)")  // if alternating
-    (item "Friends into Enemies" <("FlipFromTo" Mover Next)>  "Freinly pieces become Opponent's pieces")  // if alternating
+    (item "Friends into Enemies" <("FlipFromTo" Mover Next)>  "Friendly pieces become Opponent's pieces")  // if alternating
     }
 )
 
 (option "Winning" <Winning> args:{<player>}
     {
-    (item "At begining of turn" <Next> "Win with connections before you start your move.")**
+    (item "At beginning of turn" <Next> "Win with connections before you start your move.")**
     (item "At end of turn" <Mover> "Win with connections at the end of your last move in your last turn")
     }
 )
@@ -188,7 +188,7 @@
             
             Options are:
             -- 00'Y': All - Each applicable stone flips, one at a time with cascading effects, until no more can flip.
-            -- Defector Y: Enemies flip into Friends - these might be pieces near/at the stone just placed placed, and/or a stone the opponent flipped.
+            -- Defector Y: Enemies flip into Friends - these might be pieces near/at the stone just placed, and/or a stone the opponent flipped.
             -- Friends flip into Enemies - these might be pieces near/at the opponent's last placements or flips.
             
         The first player to connect all 3 sides after the all flips have been made is the winner.")

@@ -801,7 +801,7 @@ public class APTED<C extends CostModel, D> {
       // TODO: Move this property away from node indexer and pass directly to spfs.
       it1.setCurrentNode(currentSubtree1);
 
-      // Pass to spfs a boolean that says says if the order of input subtrees
+      // Pass to spfs a boolean that says if the order of input subtrees
       // has been swapped compared to the order of the initial input trees.
       // Used for accessing delta array and deciding on the edit operation
       // [1, Section 3.4].
@@ -831,7 +831,7 @@ public class APTED<C extends CostModel, D> {
     // TODO: Move this property away from node indexer and pass directly to spfs.
     it2.setCurrentNode(currentSubtree2);
 
-    // Pass to spfs a boolean that says says if the order of input subtrees
+    // Pass to spfs a boolean that says if the order of input subtrees
     // has been swapped compared to the order of the initial input trees. Used
     // for accessing delta array and deciding on the edit operation
     // [1, Section 3.4].

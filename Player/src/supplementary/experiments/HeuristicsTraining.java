@@ -362,7 +362,7 @@ public class HeuristicsTraining
 //
 //	/**
 //	 * Uses a transposition table to calculate the value associated to states and fill the training data.
-//	 * Takes the value directly from the TT, and ignores leaves which are are not terminal states.
+//	 * Takes the value directly from the TT, and ignores leaves which are not terminal states.
 //	 * 
 //	 * @param TT
 //	 * @return 

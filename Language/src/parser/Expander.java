@@ -180,7 +180,7 @@ public class Expander
 		while (str.contains(": "))
 			str = str.replaceAll(": ", ":");
 
-//		// Hack so that ItemCount() objects don't need to be be named. 
+//		// Hack so that ItemCount() objects don't need to be named. 
 //		// Do this AFTER all defines have been expanded!
 //		str = str.replaceAll("\\(\"", "\\(itemCount \"");		
 
@@ -844,7 +844,7 @@ public class Expander
 		{
 //			throw new BadSyntaxException("define", "Badly formed define. Should be start (define \"name\".");
 			if (report != null)
-				report.addError("Badly fomred '(define \"name\"...' in '" + Report.clippedString(desc, 20) + "'.");
+				report.addError("Badly formed '(define \"name\"...' in '" + Report.clippedString(desc, 20) + "'.");
 			return null;
 		}
 			

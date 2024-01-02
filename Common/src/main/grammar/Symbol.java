@@ -22,7 +22,7 @@ public class Symbol
 	//-------------------------------------------------------------------------
 
 	/**
-	 * Types of of ludemes implemented. 
+	 * Types of ludemes implemented. 
 	 */
 	public static enum LudemeType
 	{

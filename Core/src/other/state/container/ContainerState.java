@@ -817,7 +817,7 @@ public interface ContainerState extends Serializable
 	public void addItemEdge(final State trialState, final int site, final int what, final int who, final Game game);
 
 	/**
-	 * Insert a element to an edge.
+	 * Insert an element to an edge.
 	 * 
 	 * @param trialState
 	 * @param site
@@ -834,7 +834,7 @@ public interface ContainerState extends Serializable
 			final Game game);
 
 	/**
-	 * Add a element to an edge.
+	 * Add an element to an edge.
 	 * 
 	 * @param trialState
 	 * @param site

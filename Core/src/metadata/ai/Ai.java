@@ -20,7 +20,7 @@ import metadata.ai.heuristics.Heuristics;
  */
 public class Ai implements MetadataItem
 {
-	// WARNING: The weird capitalisation of of the class name is INTENTIONAL!
+	// WARNING: The weird capitalisation of the class name is INTENTIONAL!
 	// This makes the type name in the grammar and documentation look better,
 	// as just "<ai>" instead of the really silly "<aI>" that we would get 
 	// otherwise.

@@ -509,7 +509,7 @@ public class LInputArea extends JPanel
     }
 
     /**
-     * Called when the connection of a input field is removed
+     * Called when the connection of an input field is removed
      * Attempts to merge the input field into the input field above or below (or both)
      * @param inputField the input field which connection is removed
      * @return whether the input field was merged
@@ -944,7 +944,7 @@ public class LInputArea extends JPanel
 
       //
      // For Dynamic Nodes.
-     // Called when the connection of a input field is removed
+     // Called when the connection of an input field is removed
      // Attempts to merge the input field into the input field above or below (or both)
      // @param inputField the input field which connection is removed
 
@@ -1057,7 +1057,7 @@ public class LInputArea extends JPanel
     }
 
      // For Dynamic Nodes.
-     // When the remaining NodeArguments to be provided by the user are known, add a inputfield for each
+     // When the remaining NodeArguments to be provided by the user are known, add an inputfield for each
 
     private void addRemainingInputFields()
     {

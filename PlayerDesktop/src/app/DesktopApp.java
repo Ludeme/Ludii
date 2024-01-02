@@ -490,7 +490,7 @@ public class DesktopApp extends PlayerApp
 			
 			if (firstTry)
 			{
-				// Try and load the default game.
+				// Try to load the default game.
 				manager().setSavedLudName(null);
 				settingsPlayer().setLoadedFromMemory(true);
 				setLoadTrial(false);

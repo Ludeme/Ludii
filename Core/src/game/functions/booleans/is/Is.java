@@ -811,7 +811,7 @@ public class Is extends BaseBooleanFunction
 			numNonNull++;
 		if (numNonNull != 1)
 			throw new IllegalArgumentException(
-					"Is(): wtih IsConnectType Exactly one regions, role or regionType parameter must be non-null.");
+					"Is(): with IsConnectType Exactly one regions, role or regionType parameter must be non-null.");
 
 		switch (isType)
 		{

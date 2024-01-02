@@ -1,13 +1,13 @@
-(define "AgressiveRegion"
+(define "AggressiveRegion"
     (if (is In (last To) (sites "Dark"))
         (sites "Light")
         (sites "Dark")
     )
 )
 
-(define "AgressiveMoves" 
+(define "AggressiveMoves" 
     (forEach Piece 
-        (if (is In (from) ("AgressiveRegion"))
+        (if (is In (from) ("AggressiveRegion"))
             (or
                 (move Slide 
                     ("LastDirection" Cell)
@@ -115,13 +115,13 @@
                         )
                         (then (moveAgain))
                     )
-                    ifAfterwards:(can Move ("AgressiveMoves"))
+                    ifAfterwards:(can Move ("AggressiveMoves"))
                 )
             )
             (nextPhase Mover "Aggressive")
         )
         (phase "Aggressive"
-            (play ("AgressiveMoves"))
+            (play ("AggressiveMoves"))
             (nextPhase Mover "Passive")
         )
         }

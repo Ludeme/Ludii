@@ -2487,7 +2487,7 @@ public class Grammar
 
 //	/**
 //	 * Find subludemes.
-//	 * These will be be classes in the subfolder of a superludeme (or below)
+//	 * These will be classes in the subfolder of a superludeme (or below)
 //	 * that are not in the grammar or game descriptions.
 //	 */
 //	private void findSubludemes()
@@ -2530,7 +2530,7 @@ public class Grammar
 
 	/**
 	 * Find subludemes.
-	 * These will be be classes in the subfolder of a superludeme (or below)
+	 * These will be classes in the subfolder of a superludeme (or below)
 	 * that are not in the grammar or game descriptions.
 	 */
 	private void findSubludemes()

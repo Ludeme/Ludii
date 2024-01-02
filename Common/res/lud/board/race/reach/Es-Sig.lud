@@ -7,7 +7,7 @@
 (define "BeforeFinalSite" 12)
 (define "TopRightSquare" 49)
 (define "NextTopRightSquare" 48)
-(define "BegginingFinalTrack" 45)
+(define "BeginningFinalTrack" 45)
 (define "CentralSquare" 31)
 (define "NextCentralSquare" 32)
 
@@ -131,7 +131,7 @@
                             )
                         )
                     )
-                    (if (and (!= (from) ("BegginingFinalTrack")) (is In (from) (sites Track "Track")))
+                    (if (and (!= (from) ("BeginningFinalTrack")) (is In (from) (sites Track "Track")))
                         (move
                             (from (from) level:(level)
                                 if:(if ("ActivatedPiece" (from) (level))

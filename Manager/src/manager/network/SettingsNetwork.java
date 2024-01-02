@@ -86,7 +86,7 @@ public class SettingsNetwork
 	/** The active players in the current Network game. */
 	private boolean[] activePlayers = new boolean[Constants.MAX_PLAYERS+1];
 
-	/** The players who are online in in the current Network game. */
+	/** The players who are online in the current Network game. */
 	private boolean[] onlinePlayers = new boolean[Constants.MAX_PLAYERS+1];
 	
 	/** The players who have proposed a draw this move. */
